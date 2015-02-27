@@ -259,7 +259,7 @@ function draw_node(ctx, id_node, node) {
     case 'ALLOCATED':
     case 'ALLOCATED*':
       state_color = "green";
-      node_color = pick_job_color(node.total_cpus);
+      node_color = pick_job_color(Math.abs(node.total_cpus));
       break;
     case 'DRAINED':
     case 'DRAINED*':
