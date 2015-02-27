@@ -1,0 +1,5 @@
+conf/slurm-web-dashboard.conf etc/apache2/conf-available
+html/* usr/share/slurm-web/dashboard
+js/* usr/share/slurm-web/dashboard/js
+css/* usr/share/slurm-web/dashboard/css
+static/* usr/share/slurm-web/dashboard/static

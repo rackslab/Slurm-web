@@ -1,0 +1,18 @@
+Source: slurm-web
+Maintainer: Rémi Palancher <remi-externe.palancher@edf.fr>
+Section: web
+Priority: extra
+Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 9), apache2-dev
+
+Package: slurm-web-restapi
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm
+Description: Slurm Web Python REST API
+ Slurm Web backend  REST API developed in Python using Flask web framework.
+
+Package: slurm-web-dashboard
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery
+Description: Slurm Web HTML+JS dashboard
+ The dashboard in HTML and Javascript that runs in a browser.

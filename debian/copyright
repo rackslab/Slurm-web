@@ -1,0 +1,18 @@
+This work was packaged for Debian by:
+
+    Rémi Palancher <remi-externe.palancher@edf.fr> on Thu, 26 Fab 2015 17:54:38 +0100
+
+It was downloaded from https://github.com/edf-hpc/slurm-web
+
+Upstream Author:
+
+    Rémi Palancher <remi-externe.palancher@edf.fr>
+
+Copyright:
+
+    Copyright (C) 2015 EDF SA
+
+License:
+
+This software and the debian packaging are provided under the GPL version 3,
+see `/usr/share/common-licenses/GPL-3'.

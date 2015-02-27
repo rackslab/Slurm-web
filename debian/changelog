@@ -1,0 +1,5 @@
+slurm-web (0.1.0) calibre9; urgency=medium
+
+  * Initial release.
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 26 Feb 2015 17:44:04 +0100

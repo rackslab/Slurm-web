@@ -1,0 +1,2 @@
+conf/slurm-web-restapi.conf etc/apache2/conf-available
+rest/* usr/share/slurm-web/restapi
