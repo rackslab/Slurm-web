@@ -18,6 +18,14 @@ designed to run as WSGI application on a HTTP server such as Apache2.
 The dashboard frontend is developed in HTML and Javascript, using Bootstrap
 and JQuery libraries.
 
+Disclaimer
+----------
+
+At this stage, slurm-web is nothing more than a 2-days prototype. Unless your
+are using Debian distribution and you really know what you are doing, their are
+chances that you will experience hard times trying slurm-web on your own Slurm
+HPC cluster for the moment.
+
 Licence
 -------
 
