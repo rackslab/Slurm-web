@@ -27,9 +27,6 @@ var interval_handler = 0;
 
 var api_dir = "/slurm-restapi";
 
-var canvas_width = 1480;
-var canvas_height = 950;
-
 var left_margin = 60;
 var top_margin = 2;
 var rack_horz_margin = 100;
@@ -40,6 +37,23 @@ var rack_border_width = 10;
 
 var nb_racks = 9;
 var racks_per_row = 5;
+
+/*
+ * Defines whether racks are drawn in one large canvas or in multiple canvas,
+ * one per rack.
+ */
+var multi_canvas = true;
+
+if (multi_canvas) {
+  // TODO: compute based on racks dimensions
+  var canvas_width = 300;
+  var canvas_height = 480;
+}
+else {
+  // TODO: compute based on racks dimensions + nb racks / racks_per_row
+  var canvas_width = 1480;
+  var canvas_height = 950;
+}
 
 var nodes_per_rack = 72;
 var nodes_per_row = 2;
@@ -166,12 +180,18 @@ function show_racks() {
 }
 
 function get_rack_abs_coord(id_rack) {
-  rack_coord_x = id_rack % racks_per_row;
-  rack_coord_y = Math.floor(id_rack / racks_per_row);
-  //console.log("rack_id: " + id_rack + " -> " + rack_coord_x + "/" + rack_coord_y);
 
+  if (multi_canvas) {
+    rack_coord_x = 0;
+    rack_coord_y = 0;
+  } else {
+    rack_coord_x = id_rack % racks_per_row;
+    rack_coord_y = Math.floor(id_rack / racks_per_row);
+    //console.log("rack_id: " + id_rack + " -> " + rack_coord_x + "/" + rack_coord_y);
+  }
   rack_abs_x = left_margin + (rack_coord_x * (rack_width + rack_horz_margin));
   rack_abs_y = top_margin + (rack_coord_y * (rack_height + rack_vert_margin));
+
   return [rack_abs_x, rack_abs_y];
 }
 
@@ -191,7 +211,14 @@ function draw_rect_bdr(ctx, x, y, width, height, border_width, color_fill, color
   //console.log("draw_rect_bdr: x:" + x + " y:" + y + " width: " + width + " height:" + height + " border:" + border_width);
 }
 
-function draw_rack(ctx, id_rack) {
+function draw_rack(id_rack) {
+
+  if (multi_canvas) {
+    var ctx = document.getElementById("cv_rackmap_"+id_rack).getContext("2d");
+  } else {
+    var ctx = document.getElementById("cv_rackmap").getContext("2d");
+  }
+
   rack_abs = get_rack_abs_coord(id_rack);
   rack_abs_x = rack_abs[0];
   rack_abs_y = rack_abs[1];
@@ -228,10 +255,16 @@ function pick_job_color(job_id) {
   return color;
 }
 
-function draw_node(ctx, id_node, node) {
+function draw_node(id_node, node) {
 
   node_rack = Math.floor(id_node / nodes_per_rack);
   id_node_in_rack = id_node % nodes_per_rack;
+
+  if (multi_canvas) {
+    var ctx = document.getElementById("cv_rackmap_" + node_rack).getContext("2d");
+  } else {
+    var ctx = document.getElementById("cv_rackmap").getContext("2d");
+  }
 
   /* relative coordinate of node inside the rack */
   node_coord_x = id_node_in_rack % nodes_per_row;
@@ -295,7 +328,13 @@ function draw_node(ctx, id_node, node) {
 
 }
 
-function draw_legend(ctx) {
+function draw_legend() {
+
+  if (multi_canvas) {
+    var ctx = document.getElementById("cv_rackmap_legend").getContext("2d");
+  } else {
+    var ctx = document.getElementById("cv_rackmap").getContext("2d");
+  }
 
   legend_x = canvas_width - 80;
   legend_y = canvas_height - 50;
@@ -316,27 +355,42 @@ function load_racks() {
   $.getJSON(api_dir + "/nodes",
     function(nodes) {
 
-      var html_rackmap = "<canvas id='cv_rackmap' width='" + canvas_width + "' height='" + canvas_height + "'/>"
       $("#rackmap").empty();
-      $("#rackmap").append(html_rackmap);
 
-      var c = document.getElementById("cv_rackmap");
-      var ctx = c.getContext("2d");
+      if (multi_canvas) {
+        for (id_rack = 0; id_rack < nb_racks; id_rack++) {
+          var html_rackmap = "<canvas id='cv_rackmap_" + id_rack +
+                             "' width='" + canvas_width +
+                             "' height='" + canvas_height + "'/>";
+          $("#rackmap").append(html_rackmap);
+        }
+        var html_rackmap = "<canvas id='cv_rackmap_legend'" +
+                           " width='" + canvas_width +
+                           "' height='" + canvas_height + "'/>";
+        $("#rackmap").append(html_rackmap);
+
+      } else {
+        var html_rackmap = "<canvas id='cv_rackmap'" +
+                           " width='" + canvas_width +
+                           "' height='" + canvas_height + "'/>";
+        $("#rackmap").append(html_rackmap);
+      }
 
       for (id_rack = 0; id_rack < nb_racks; id_rack++) {
-        draw_rack(ctx, id_rack);
+        draw_rack(id_rack);
       }
 
       var id_node = 0;
 
       $.each(nodes,
         function(id,node) {
-          draw_node(ctx, id_node, node);
+          draw_node(id_node, node);
           id_node++;
         }
       );
 
-      draw_legend(ctx);
+      draw_legend();
+
     }
   );
 }
