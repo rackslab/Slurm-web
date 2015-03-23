@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rackmap SYSTEM "/usr/share/slurm-web/restapi/schema/dtd/racks.dtd">
+<rackmap>
+
+  <!--
+    This file is an example of XML rackmap file for slurm-web.
+
+    You must adapt it (or write one from scratch) to fit the racks composition
+    of your own HPC cluster.
+
+    First define your node types with their model name and dimensions. Then,
+    define your racks with their positions and their nodes. You do not need to
+    specify the position of all nodes. Specify the positions of the nodes in
+    the 1st row + the position of the first node in the 2nd row. Then, the
+    backend program is able to compute the positions of all other nodes (in
+    nodesets) based on these initial positions.
+  -->
+
+  <nodetypes>
+    <nodetype id="m32x4321">
+      <model>Vendor A 32 x4321</model>
+      <height>1</height>
+      <width>0.5</width>
+    </nodetype>
+    <nodetype id="b43">
+      <model>Vendor B 43</model>
+      <height>2</height>
+      <width>1</width>
+    </nodetype>
+  </nodetypes>
+
+  <racks>
+
+    <!-- Rack A1 -->
+    <rack id="A1">
+      <posx>0</posx>
+      <posy>0</posy>
+      <nodes>
+        <!-- A1 down -->
+        <node id="cn001">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>3</posy>
+        </node>
+        <node id="cn002">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>3</posy>
+        </node>
+        <node id="cn003">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>4</posy>
+        </node>
+        <nodeset id="A1-down">
+          <range>cn[004-036]</range>
+          <type>m32x4321</type>
+        </nodeset>
+        <!-- A1 top -->
+        <node id="cn037">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>23</posy>
+        </node>
+        <node id="cn038">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>23</posy>
+        </node>
+        <node id="cn039">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>24</posy>
+        </node>
+        <nodeset id="A1-top">
+          <range>cn[040-072]</range>
+          <type>m32x4321</type>
+        </nodeset>
+      </nodes>
+    </rack>
+
+    <!-- Rack C4 -->
+    <rack id="C4">
+      <posx>1</posx>
+      <posy>0</posy>
+      <nodes>
+        <!-- C4 down -->
+        <node id="cn505">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>3</posy>
+        </node>
+        <node id="cn506">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>3</posy>
+        </node>
+        <node id="cn507">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>4</posy>
+        </node>
+
+        <node id="cn519">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>5</posy>
+        </node>
+        <node id="cn520">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>5</posy>
+        </node>
+        <node id="cn521">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>7</posy>
+        </node>
+        <node id="cn522">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>7</posy>
+        </node>
+        <node id="cn523">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>8</posy>
+        </node>
+        <node id="cn524">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>8</posy>
+        </node>
+
+        <node id="cn508">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>9</posy>
+        </node>
+        <node id="cn509">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>9</posy>
+        </node>
+        <node id="cn510">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>10</posy>
+        </node>
+        <nodeset id="C4-down-middle">
+          <range>cn[511-518]</range>
+          <type>m32x4321</type>
+        </nodeset>
+
+        <node id="cn525" newset="true">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>15</posy>
+        </node>
+        <node id="cn526">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>15</posy>
+        </node>
+        <node id="cn527">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>16</posy>
+        </node>
+        <nodeset id="C4-down-top">
+          <range>cn[528-536]</range>
+          <type>m32x4321</type>
+        </nodeset>
+
+        <node id="cn537">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>23</posy>
+        </node>
+        <node id="cn538">
+          <type>m32x4321</type>
+          <posx>0.5</posx>
+          <posy>23</posy>
+        </node>
+        <node id="cn539">
+          <type>m32x4321</type>
+          <posx>0</posx>
+          <posy>24</posy>
+        </node>
+        <nodeset id="C4-top">
+          <range>cn[540-572]</range>
+          <type>m32x4321</type>
+        </nodeset>
+
+      </nodes>
+    </rack>
+
+  </racks>
+
+</rackmap>

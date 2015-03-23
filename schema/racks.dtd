@@ -1,0 +1,20 @@
+<!ELEMENT rackmap (nodetypes,racks)>
+<!ELEMENT nodetypes (nodetype+)>
+<!ELEMENT nodetype (model,height,width)>
+<!ATTLIST nodetype id ID #REQUIRED>
+<!ELEMENT model (#PCDATA)>
+<!ELEMENT height (#PCDATA)>
+<!ELEMENT width (#PCDATA)>
+<!ELEMENT racks (rack+)>
+<!ELEMENT rack (posx,posy,nodes)>
+<!ATTLIST rack id ID #REQUIRED>
+<!ELEMENT nodes (node+,nodeset)*>
+<!ELEMENT node (type,posx,posy)>
+<!ATTLIST node id ID #REQUIRED>
+<!ATTLIST node newset (true|false) "false">
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT posx (#PCDATA)>
+<!ELEMENT posy (#PCDATA)>
+<!ELEMENT nodeset (range,type)>
+<!ATTLIST nodeset id ID #REQUIRED>
+<!ELEMENT range (#PCDATA)>
