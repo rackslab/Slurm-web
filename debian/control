@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9), apache2-dev
 
 Package: slurm-web-restapi
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm
+Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm, clustershell
 Description: Slurm Web Python REST API
  Slurm Web backend  REST API developed in Python using Flask web framework.
 
