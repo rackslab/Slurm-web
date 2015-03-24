@@ -31,12 +31,17 @@ var left_margin = 60;
 var top_margin = 2;
 var rack_horz_margin = 100;
 var rack_vert_margin = 30;
-var rack_width = 190;
-var rack_height = 453;
-var rack_border_width = 10;
 
-var nb_racks = 9;
-var racks_per_row = 5;
+var rack_nb_u = 42;
+var rack_u_height = 12;
+var rack_border_width = 10;
+var floor_width = 5;
+var foot_height = 3;
+var foot_width = 7;
+var rack_inside_width = 150;
+var rack_width = rack_inside_width + 2*rack_border_width;
+var rack_inside_height = rack_nb_u * rack_u_height;
+var rack_height = rack_inside_height + 2*rack_border_width; // racks floor and feet are ignored
 
 /*
  * Defines whether racks are drawn in one large canvas or in multiple canvas,
@@ -46,8 +51,8 @@ var multi_canvas = true;
 
 if (multi_canvas) {
   // TODO: compute based on racks dimensions
-  var canvas_width = 300;
-  var canvas_height = 480;
+  var canvas_width = 280;
+  var canvas_height = rack_height + 30;
 }
 else {
   // TODO: compute based on racks dimensions + nb racks / racks_per_row
@@ -179,15 +184,15 @@ function show_racks() {
   interval_handler = window.setInterval(load_racks, refresh);
 }
 
-function get_rack_abs_coord(id_rack) {
+function get_rack_abs_coord(rack) {
 
   if (multi_canvas) {
     rack_coord_x = 0;
     rack_coord_y = 0;
   } else {
-    rack_coord_x = id_rack % racks_per_row;
-    rack_coord_y = Math.floor(id_rack / racks_per_row);
-    //console.log("rack_id: " + id_rack + " -> " + rack_coord_x + "/" + rack_coord_y);
+    rack_coord_x = rack['posx'];
+    rack_coord_y = rack['posy'];
+    //console.log("rack: " + rack['name'] + " -> " + rack_coord_x + "/" + rack_coord_y);
   }
   rack_abs_x = left_margin + (rack_coord_x * (rack_width + rack_horz_margin));
   rack_abs_y = top_margin + (rack_coord_y * (rack_height + rack_vert_margin));
@@ -211,23 +216,20 @@ function draw_rect_bdr(ctx, x, y, width, height, border_width, color_fill, color
   //console.log("draw_rect_bdr: x:" + x + " y:" + y + " width: " + width + " height:" + height + " border:" + border_width);
 }
 
-function draw_rack(id_rack) {
+function draw_rack(rack) {
 
   if (multi_canvas) {
-    var ctx = document.getElementById("cv_rackmap_"+id_rack).getContext("2d");
+    var ctx = document.getElementById("cv_rackmap_"+rack['name']).getContext("2d");
   } else {
     var ctx = document.getElementById("cv_rackmap").getContext("2d");
   }
 
-  rack_abs = get_rack_abs_coord(id_rack);
+  rack_abs = get_rack_abs_coord(rack);
   rack_abs_x = rack_abs[0];
   rack_abs_y = rack_abs[1];
 
+  // global rect for whole rack (except floor and feet)
   draw_rect(ctx, rack_abs_x, rack_abs_y, rack_width, rack_height, "rgba(89,89,89,1)");
-
-  floor_width = 5;
-  foot_height = 3;
-  foot_width = 7;
   // rack borders
   draw_rect_bdr(ctx, rack_abs_x, rack_abs_y, rack_border_width, rack_height, 1, "rgba(141,141,141,1)", "rgba(85,85,85,1)");
   draw_rect_bdr(ctx, rack_abs_x + rack_width - rack_border_width, rack_abs_y, rack_border_width, rack_height, 1, "rgba(141,141,141,1)", "rgba(85,85,85,1)");
@@ -255,35 +257,34 @@ function pick_job_color(job_id) {
   return color;
 }
 
-function draw_node(id_node, node) {
-
-  node_rack = Math.floor(id_node / nodes_per_rack);
-  id_node_in_rack = id_node % nodes_per_rack;
+function draw_node(rack, racknode, slurmnode) {
 
   if (multi_canvas) {
-    var ctx = document.getElementById("cv_rackmap_" + node_rack).getContext("2d");
+    var ctx = document.getElementById("cv_rackmap_" + rack.name).getContext("2d");
   } else {
     var ctx = document.getElementById("cv_rackmap").getContext("2d");
   }
 
   /* relative coordinate of node inside the rack */
-  node_coord_x = id_node_in_rack % nodes_per_row;
-  node_coord_y = Math.floor(id_node_in_rack / nodes_per_row);
+  node_coord_x = racknode.posx; // unit is the number of U, starting from the bottom of the rack
+  node_coord_y = racknode.posy;
 
-  rack_abs = get_rack_abs_coord(node_rack);
+  rack_abs = get_rack_abs_coord(rack);
   rack_abs_x = rack_abs[0];
   rack_abs_y = rack_abs[1];
 
-  /* TODO: check if start with bottom or top */
-  node_abs_x = rack_abs_x + rack_border_width + node_margin + (node_coord_x * (node_width + node_margin));
-  node_abs_y = rack_abs_y + rack_height - rack_border_width - (node_height + node_margin) - (node_coord_y * (node_height + node_margin));
+  node_abs_x = rack_abs_x + rack_border_width + (node_coord_x * rack_inside_width);
+  node_abs_y = rack_abs_y + rack_height - rack_border_width - (node_coord_y * rack_u_height);
+
+  node_width = racknode.width * rack_inside_width - node_margin;
+  node_height = racknode.height * rack_u_height - node_margin;
 
   //console.log("node_id: " + id_node + " -> " + node_rack + "/" + id_node_in_rack + " -> coord:" + node_coord_x + "/" + node_coord_y + " abs: " + node_abs_x + "/" + node_abs_y);
 
   var state_color = "green";
 
   /* node state */
-  switch(node.node_state) {
+  switch(slurmnode.node_state) {
     case 'IDLE':
     case 'IDLE*':
       state_color = "green";
@@ -294,7 +295,7 @@ function draw_node(id_node, node) {
     case 'COMPLETING':
     case 'COMPLETING*':
       state_color = "green";
-      node_color = pick_job_color(Math.abs(node.total_cpus));
+      node_color = pick_job_color(Math.abs(slurmnode.total_cpus));
       break;
     case 'DRAINED':
     case 'DRAINED*':
@@ -307,7 +308,7 @@ function draw_node(id_node, node) {
       node_color = "rgba(150,150,150,0.5)";
       break;
     default:
-      console.log("node_id: " + id_node + " -> state: " + node.node_state);
+      console.log("node_id: " + id_node + " -> state: " + slurmnode.node_state);
       state_color = "black"
       node_color = "rgba(39,39,39,1)";
   }
@@ -321,9 +322,9 @@ function draw_node(id_node, node) {
   /* add node name */
   ctx.fillStyle = "black";
   if (node_coord_x == 0) {
-    ctx.fillText(node.name, node_abs_x - 55, node_abs_y + node_height - 3);
+    ctx.fillText(racknode.name, node_abs_x - 55, node_abs_y + node_height - 3);
   } else {
-    ctx.fillText(node.name, node_abs_x + node_width + rack_border_width + 3, node_abs_y + node_height - 3);
+    ctx.fillText(racknode.name, node_abs_x + node_width + rack_border_width + 3, node_abs_y + node_height - 3);
   }
 
 }
@@ -352,18 +353,40 @@ function draw_legend() {
 }
 
 function load_racks() {
+
+  slurmnodes = null;
+
+  /*
+   * The first ajax JSON call to /nodes must be done synchronously
+   * to make sure slurmnodes variables is set before the async loop
+   * after call to /racks is run.
+   */
+  $.ajaxSetup({ async: false });
+
   $.getJSON(api_dir + "/nodes",
     function(nodes) {
+      slurmnodes = nodes;
+    }
+  );
+
+  $.ajaxSetup({ async: true });
+
+  $.getJSON(api_dir + "/racks",
+    function(racks) {
+
+      nb_racks = Object.keys(racks).length
 
       $("#rackmap").empty();
 
       if (multi_canvas) {
-        for (id_rack = 0; id_rack < nb_racks; id_rack++) {
-          var html_rackmap = "<canvas id='cv_rackmap_" + id_rack +
-                             "' width='" + canvas_width +
-                             "' height='" + canvas_height + "'/>";
-          $("#rackmap").append(html_rackmap);
-        }
+        $.each(racks,
+          function(name, rack) {
+            var html_rackmap = "<canvas id='cv_rackmap_" + name +
+                               "' width='" + canvas_width +
+                               "' height='" + canvas_height + "'/>";
+            $("#rackmap").append(html_rackmap);
+          }
+        );
         var html_rackmap = "<canvas id='cv_rackmap_legend'" +
                            " width='" + canvas_width +
                            "' height='" + canvas_height + "'/>";
@@ -376,16 +399,14 @@ function load_racks() {
         $("#rackmap").append(html_rackmap);
       }
 
-      for (id_rack = 0; id_rack < nb_racks; id_rack++) {
-        draw_rack(id_rack);
-      }
-
-      var id_node = 0;
-
-      $.each(nodes,
-        function(id,node) {
-          draw_node(id_node, node);
-          id_node++;
+      $.each(racks,
+        function(id_rack, rack) {
+          draw_rack(rack);
+          $.each(rack.nodes,
+            function(id_racknode,racknode) {
+              draw_node(rack, racknode, slurmnodes[racknode.name]);
+            }
+          );
         }
       );
 
