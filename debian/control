@@ -13,6 +13,6 @@ Description: Slurm Web Python REST API
 
 Package: slurm-web-dashboard
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery
+Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot
 Description: Slurm Web HTML+JS dashboard
  The dashboard in HTML and Javascript that runs in a browser.

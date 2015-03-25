@@ -50,6 +50,16 @@ def get_nodes():
     nodes = pyslurm.node().get()
     return jsonify(nodes)
 
+@app.route('/cluster', methods=['GET'])
+def get_cluster():
+    nodes = pyslurm.node().get()
+    cluster = {}
+    cluster['nodes'] = len(nodes.keys())
+    cluster['cores'] = 0
+    for nodename, node in nodes.iteritems():
+        cluster['cores'] += node['cores']
+    return jsonify(cluster)
+
 @app.route('/racks', methods=['GET'])
 def get_racks():
     racks = parse_racks()

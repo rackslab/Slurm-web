@@ -108,3 +108,27 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+/*
+ * Plot containers
+ */
+
+.plot-sub-div {
+  width: 230px;
+  /* trick to center fixed width element within responsive sized block */
+  position: relative;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.plot-div {
+  width: 230px; /* must be identical to .plot-sub-div width */
+  height: 160px;
+}
+
+.plot-div-small {
+  width: 230px; /* must be identical to .plot-sub-div width */
+  height: 130px;
+}

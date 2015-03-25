@@ -98,9 +98,56 @@ function show_jobs() {
 }
 
 function load_jobs() {
+
+  var cluster = null;
+
+  $.ajaxSetup({ async: false });
+
+  $.getJSON(api_dir + "/cluster",
+    function(xcluster) {
+      cluster = xcluster;
+    }
+  );
+
+  $.ajaxSetup({ async: true });
+
   $.getJSON(api_dir + "/jobs",
     function(jobs) {
-      $("#listjobs").empty();
+
+      var plotsholder =
+        "<div id='alloc-cores' class='col-xs-6 col-sm-4 placeholder'> \
+           <div class='plot-sub-div'> \
+             <div id='plot-alloc-cores' class='plot-div'></div> \
+           </div> \
+           <h4>Allocated cores</h4> \
+         </div> \
+        <div id='part-nodes' class='col-xs-6 col-sm-2 placeholder'> \
+           <div class='plot-sub-div'> \
+             <div id='plot-part-nodes' class='plot-div-small'></div> \
+           </div> \
+           <h4>Nodes/Partition</h4> \
+         </div> \
+         <div id='part-cores' class='col-xs-6 col-sm-2 placeholder'> \
+           <div class='plot-sub-div'> \
+             <div id='plot-part-cores' class='plot-div-small'></div> \
+           </div> \
+           <h4>Cores/Partition</h4> \
+         </div> \
+         <div id='qos-nodes' class='col-xs-6 col-sm-2 placeholder'> \
+           <div class='plot-sub-div'> \
+             <div id='plot-qos-nodes' class='plot-div-small'></div> \
+           </div> \
+           <h4>Nodes/QOS</h4> \
+         </div> \
+         <div id='qos-cores' class='col-xs-6 col-sm-2 placeholder'> \
+           <div class='plot-sub-div'> \
+             <div id='plot-qos-cores' class='plot-div-small'></div> \
+           </div> \
+           <h4>Cores/QOS</h4> \
+         </div>";
+
+      $("#plotjobs").empty();
+      $("#plotjobs").append(plotsholder);
 
       var table_header =
           "<div class='table-responsive'>       \
@@ -119,7 +166,12 @@ function load_jobs() {
               <tbody id='jobs-tbody'/>          \
             </table>                            \
           </div>";
+      $("#listjobs").empty();
       $("#listjobs").append(table_header);
+
+      var qosstats = {};
+      var partstats = {};
+      var nb_alloc_cores = 0;
 
       $.each(jobs,
         function(id,job) {
@@ -139,6 +191,28 @@ function load_jobs() {
             reason = job.state_reason;
           }
 
+          /* compute stats about part and qos */
+          if (job.job_state == "RUNNING" || job.job_state == "COMPLETED") {
+
+            if (qosstats.hasOwnProperty(job.qos)) {
+              qosstats[job.qos]['cores'] += job.num_cpus;
+              qosstats[job.qos]['nodes'] += job.num_nodes;
+            } else {
+              qosstats[job.qos] = {};
+              qosstats[job.qos]['cores'] = job.num_cpus;
+              qosstats[job.qos]['nodes'] = job.num_nodes;
+            }
+
+            if (partstats.hasOwnProperty(job.partition)) {
+              partstats[job.partition]['cores'] += job.num_cpus;
+              partstats[job.partition]['nodes'] += job.num_nodes;
+            } else {
+              partstats[job.partition] = {};
+              partstats[job.partition]['cores'] = job.num_cpus;
+              partstats[job.partition]['nodes'] = job.num_nodes;
+            }
+            nb_alloc_cores += job.num_cpus
+          }
           var html_job = "<tr><td>" + id + "</td><td>"
                         + job.login + " (" + job.username + ")</td><td>"
                         + nodes + "</td><td>"
@@ -147,8 +221,48 @@ function load_jobs() {
                         + job.qos + "</td><td>"
                         + job.partition + "</td></tr>";
           $("#jobs-tbody").append(html_job);
+
         }
       );
+
+      data_alloc_cores = [ { label: 'allocated', data: nb_alloc_cores },
+                           { label: 'idle'     , data: cluster.cores-nb_alloc_cores } ]
+
+      data_qos_nodes = []
+      data_qos_cores = []
+
+      for (var qos in qosstats) {
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (qosstats.hasOwnProperty(qos)) {
+          data_qos_nodes.push({ label: qos, data: qosstats[qos]['nodes'] })
+          data_qos_cores.push({ label: qos, data: qosstats[qos]['cores'] })
+        }
+      }
+
+      data_part_nodes = []
+      data_part_cores = []
+
+      for (var part in partstats) {
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (partstats.hasOwnProperty(part)) {
+          data_part_nodes.push({ label: part, data: partstats[part]['nodes'] })
+          data_part_cores.push({ label: part, data: partstats[part]['cores'] })
+        }
+      }
+
+      var plot_params =
+        {
+          series: {
+            pie: {
+              show: true,
+            }
+          }
+        };
+      $.plot('#plot-alloc-cores', data_alloc_cores, plot_params);
+      $.plot('#plot-part-nodes', data_part_nodes, plot_params);
+      $.plot('#plot-part-cores', data_part_cores, plot_params);
+      $.plot('#plot-qos-nodes', data_qos_nodes, plot_params);
+      $.plot('#plot-qos-cores', data_qos_cores, plot_params);
 
     }
   );
@@ -156,6 +270,7 @@ function load_jobs() {
 
 /* not used anymore */
 function show_nodes() {
+  $("#plotjobs").empty();
   $("#listjobs").empty();
   $("#rackmap").empty();
   $("#jobs").hide();
@@ -183,6 +298,7 @@ function load_nodes() {
 }
 
 function show_racks() {
+  $("#plotjobs").empty();
   $("#listjobs").empty();
   $("#listnodes").empty();
   $("#jobs").hide();
