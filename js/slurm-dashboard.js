@@ -132,7 +132,7 @@ function load_jobs() {
           }
 
           var html_job = "<tr><td>" + id + "</td><td>"
-                        + job.user_id + "</td><td>"
+                        + job.login + " (" + job.username + ")</td><td>"
                         + nodes + "</td><td>"
                         + job.job_state + "</td><td>"
                         + reason + "</td><td>"

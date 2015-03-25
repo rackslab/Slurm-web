@@ -21,6 +21,7 @@
 from flask import Flask, jsonify
 import pyslurm
 import xml.etree.ElementTree as ET
+import pwd
 from ClusterShell.NodeSet import NodeSet
 
 app = Flask(__name__)
@@ -28,6 +29,20 @@ app = Flask(__name__)
 @app.route('/jobs', methods=['GET'])
 def get_jobs():
     jobs = pyslurm.job().get()
+
+    # add login and username (additionally to UID) for each job
+    uids = {}
+    for jobid, job in jobs.iteritems():
+        uid = job['user_id']
+        uid_s = str(uid)
+        if not uids.has_key(uid_s):
+            pw = pwd.getpwuid(uid)
+            uids[uid_s] = {}
+            uids[uid_s]['login'] = pw[0]
+            uids[uid_s]['username'] = pw[4].split(',')[0] # user name is the first part of gecos
+        job['login'] = uids[uid_s]['login']
+        job['username'] = uids[uid_s]['username']
+
     return jsonify(jobs)
 
 @app.route('/nodes', methods=['GET'])
