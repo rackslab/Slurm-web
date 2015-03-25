@@ -27,6 +27,9 @@ var interval_handler = 0;
 
 var api_dir = "/slurm-restapi";
 
+// the maximum number of chars in nodesets in jobs view before being cut
+var max_nodes_len = 25;
+
 var left_margin = 60;
 var top_margin = 10;
 var rack_horz_margin = 100;
@@ -123,7 +126,12 @@ function load_jobs() {
           if (job.job_state == "PENDING") {
             nodes = "-";
           } else {
-            nodes = job.nodes;
+            // check nodeset length and cut it if too long
+            if (job.nodes.length > max_nodes_len) {
+                nodes = job.nodes.substring(0, max_nodes_len) + "...";
+            } else {
+                nodes = job.nodes;
+            }
           }
           if (job.job_state == "RUNNING" || job.job_state == "COMPLETED") {
             reason = "-";
