@@ -90,7 +90,9 @@ var job_colors = [ "rgba(105,138,188,1)",
 function show_jobs() {
   $("#listnodes").empty();
   $("#rackmap").empty();
+  $("#listresv").empty();
   $("#racks").hide();
+  $("#reservations").hide();
   $("#jobs").show();
   load_jobs();
   clearInterval(interval_handler);
@@ -281,8 +283,10 @@ function show_nodes() {
   $("#plotjobs").empty();
   $("#listjobs").empty();
   $("#rackmap").empty();
+  $("#listresv").empty();
   $("#jobs").hide();
   $("#racks").hide();
+  $("#reservations").hide();
   $("#nodes").show();
   load_nodes();
   clearInterval(interval_handler);
@@ -309,7 +313,9 @@ function show_racks() {
   $("#plotjobs").empty();
   $("#listjobs").empty();
   $("#listnodes").empty();
+  $("#listresv").empty();
   $("#jobs").hide();
+  $("#reservations").hide();
   $("#racks").show();
   load_racks();
   clearInterval(interval_handler);
@@ -563,6 +569,62 @@ function load_racks() {
       );
 
       draw_legend();
+
+    }
+  );
+}
+
+function show_reservations() {
+  $("#plotjobs").empty();
+  $("#listjobs").empty();
+  $("#listnodes").empty();
+  $("#rackmap").empty();
+  $("#jobs").hide();
+  $("#racks").hide();
+  $("#reservations").show();
+  load_reservations();
+  clearInterval(interval_handler);
+  interval_handler = window.setInterval(load_reservations, refresh);
+}
+
+function load_reservations() {
+
+  $.getJSON(api_dir + "/reservations",
+    function(reservations) {
+
+      var table_header =
+          "<div class='table-responsive'>       \
+            <table class='table table-striped'> \
+              <thead>                           \
+                <tr>                            \
+                  <th>Name</th>                 \
+                  <th>Users</th>                \
+                  <th>Nodes</th>                \
+                  <th>Start</th>                \
+                  <th>End</th>                  \
+                </tr>                           \
+              </thead>                          \
+              <tbody id='resv-tbody'/>          \
+            </table>                            \
+          </div>";
+      $("#listresv").empty();
+      $("#listresv").append(table_header);
+
+      $.each(reservations,
+        function(reservation_name, reservation) {
+
+          starttime = new Date(reservation.start_time * 1000);
+          endtime = new Date(reservation.end_time * 1000);
+
+          var html_job = "<tr><td>" + reservation_name + "</td><td>"
+                        + reservation.users + "</td><td>"
+                        + reservation.node_list + "</td><td>"
+                        + starttime + "</td><td>"
+                        + endtime + "</td></tr>";
+          $("#resv-tbody").append(html_job);
+
+        }
+      );
 
     }
   );

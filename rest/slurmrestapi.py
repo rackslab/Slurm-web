@@ -65,6 +65,11 @@ def get_racks():
     racks = parse_racks()
     return jsonify(racks)
 
+@app.route('/reservations', methods=['GET'])
+def get_reservations():
+    reservations = pyslurm.reservation().get()
+    return jsonify(reservations)
+
 class NodeType(object):
 
     def __init__(self, name, model, height, width):
