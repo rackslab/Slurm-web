@@ -409,34 +409,52 @@ function draw_node(rack, racknode, slurmnode) {
 
   var state_color = "green";
 
+  var color_idle = "rgba(150,150,150,1)";
+  var color_fully_allocated = "rgba(0,91,154,1)";
+  var color_part_allocated = "rgba(86,128,184,1)";
+  var color_unavailable = "rgba(150,150,150,0.5)"; // idle but more transparent
+  var color_unknown = "rgba(39,39,39,1)";
+
   /* node state */
   switch(slurmnode.node_state) {
     case 'IDLE':
     case 'IDLE*':
       state_color = "green";
-      node_color = "rgba(150,150,150,1)";
+      node_color = color_idle;
       break;
     case 'ALLOCATED':
     case 'ALLOCATED*':
     case 'COMPLETING':
     case 'COMPLETING*':
+
+      /*
+       * Check whether the node is fully allocated of not (aka. mix state).
+       * For this check, we compare total_cpus (which decreases down to -cpus)
+       * as long as cores are allocated on the node. When total_cpus is equal
+       * to -cpus, the node can be considered as fully allocated.
+       */
+      fully_allocated = slurmnode.total_cpus == -slurmnode.cpus ? true:false;
       state_color = "green";
-      node_color = pick_job_color(Math.abs(slurmnode.total_cpus));
+      if (fully_allocated) {
+        node_color = color_fully_allocated;
+      } else {
+        node_color = color_part_allocated;
+      }
       break;
     case 'DRAINED':
     case 'DRAINED*':
       state_color = "yellow";
-      node_color = "rgba(150,150,150,0.5)";
+      node_color = color_unavailable;
       break;
     case 'DOWN':
     case 'DOWN*':
       state_color = "red";
-      node_color = "rgba(150,150,150,0.5)";
+      node_color = color_unavailable;
       break;
     default:
       console.log("node_id: " + id_node + " -> state: " + slurmnode.node_state);
       state_color = "black"
-      node_color = "rgba(39,39,39,1)";
+      node_color = color_unknown;
   }
 
   /* node rectangle */
