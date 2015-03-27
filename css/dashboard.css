@@ -71,6 +71,13 @@ body {
   background-color: #428bca;
 }
 
+/*
+ * Overload default bootstrap navbar grey color links to turn them into white.
+ * Use important tag to have priority for sure.
+ */
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff !important;
+}
 
 /*
  * Main content
