@@ -175,7 +175,7 @@ function load_jobs() {
 
       $.each(jobs,
         function(id,job) {
-          if (job.job_state == "PENDING") {
+          if (job.nodes == null) {
             nodes = "-";
           } else {
             // check nodeset length and cut it if too long
