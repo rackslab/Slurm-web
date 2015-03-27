@@ -159,6 +159,7 @@ function load_jobs() {
                   <th>Nodes</th>                \
                   <th>State</th>                \
                   <th>Reason</th>               \
+                  <th>Start</th>                \
                   <th>QOS</th>                  \
                   <th>Partition</th>            \
                 </tr>                           \
@@ -213,11 +214,18 @@ function load_jobs() {
             }
             nb_alloc_cores += job.num_cpus
           }
+
+          if (job.job_state == 'PENDING' && job.start_time > 0) {
+              starttime = new Date(job.start_time*1000);
+          } else {
+              starttime = '-';
+          }
           var html_job = "<tr><td>" + id + "</td><td>"
                         + job.login + " (" + job.username + ")</td><td>"
                         + nodes + "</td><td>"
                         + job.job_state + "</td><td>"
                         + reason + "</td><td>"
+                        + starttime + "</td><td>"
                         + job.qos + "</td><td>"
                         + job.partition + "</td></tr>";
           $("#jobs-tbody").append(html_job);
