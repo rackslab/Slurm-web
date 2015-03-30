@@ -111,6 +111,7 @@ function show_modal_job(job_id) {
 
       state_reason = job.state_reason == 'None' ? "-":job.state_reason;
       command = job.command == null ? "-":job.command;
+      exclusive = job.shared == 0 ? "yes":"no";
 
       job_details = "<ul>"
                   + "<li>user: " + job.login + " (" + job.username + ")</li>"
@@ -121,7 +122,7 @@ function show_modal_job(job_id) {
                   + "<li>account: " + job.account + "</li>"
                   + "<li>QOS: " + job.qos + "</li>"
                   + "<li>partition: " + job.partition + "</li>"
-                  + "<li>exclusive: " + job.shared + "</li>"
+                  + "<li>exclusive: " + exclusive + "</li>"
                   + "<li>command: " + command + "</li>"
                   + "<li>start time: " + start_time + "</li>"
                   + "<li>eligible time: " + eligible_time + "</li>"
