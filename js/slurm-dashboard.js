@@ -31,7 +31,7 @@ var api_dir = "/slurm-restapi";
 var max_nodes_len = 25;
 
 var left_margin = 60;
-var top_margin = 10;
+var top_margin = 15;
 var rack_horz_margin = 100;
 var rack_vert_margin = 30;
 
@@ -421,7 +421,9 @@ function draw_rack(rack) {
   draw_rect_bdr(ctx, rack_abs_x + rack_width - foot_width, rack_abs_y + rack_height + floor_width, foot_width, foot_height, 1, "rgba(49,49,49,1)", "rgba(39,39,39,1)");
 
   // rack name
-  ctx.fillText("rack " + rack.name, rack_abs_x + 70, rack_abs_y - 3);
+  ctx.font = "14px sans-serif";
+  ctx.fillText("rack " + rack.name, rack_abs_x + 60, rack_abs_y - 3);
+  ctx.font = "10px sans-serif"; // back to default
 }
 
 function draw_led(ctx, x, y, color) {
