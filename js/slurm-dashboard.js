@@ -99,6 +99,43 @@ function show_jobs() {
   interval_handler = window.setInterval(load_jobs, refresh);
 }
 
+function show_modal_job(job_id) {
+
+  $.getJSON(api_dir + "/job/" + job_id,
+    function(job) {
+      $('#modal-job-title').text("job " + job_id);
+
+      start_time = new Date(job.start_time*1000);
+      eligible_time = new Date(job.eligible_time*1000);
+      end_time = new Date(job.end_time*1000);
+
+      state_reason = job.state_reason == 'None' ? "-":job.state_reason;
+      command = job.command == null ? "-":job.command;
+
+      job_details = "<ul>"
+                  + "<li>user: " + job.login + " (" + job.username + ")</li>"
+                  + "<li>state: " + job.job_state + "</li>"
+                  + "<li>reason: " + state_reason + "</li>"
+                  + "<li>nodes: " + job.nodes + " (" + job.num_nodes + ")</li>"
+                  + "<li>cores: " + job.num_cpus + "</li>"
+                  + "<li>account: " + job.account + "</li>"
+                  + "<li>QOS: " + job.qos + "</li>"
+                  + "<li>partition: " + job.partition + "</li>"
+                  + "<li>exclusive: " + job.shared + "</li>"
+                  + "<li>command: " + command + "</li>"
+                  + "<li>start time: " + start_time + "</li>"
+                  + "<li>eligible time: " + eligible_time + "</li>"
+                  + "<li>end time: " + end_time + "</li>"
+                  + "<li>time limit: " + job.time_limit + " mins</li>"
+                  + "</ul>";
+      $('#modal-job-body').empty();
+      $('#modal-job-body').append(job_details);
+      $('#modal-job').modal('show');
+    }
+  );
+
+}
+
 function load_jobs() {
 
   var cluster = null;
@@ -222,7 +259,10 @@ function load_jobs() {
           } else {
               starttime = '-';
           }
-          var html_job = "<tr><td>" + id + "</td><td>"
+
+
+          var html_job = "<tr class='job-row' id='tr-job-" + id + "'>"
+                        + "<td>" + id + "</td><td>"
                         + job.login + " (" + job.username + ")</td><td>"
                         + nodes + "</td><td>"
                         + job.job_state + "</td><td>"
@@ -231,7 +271,7 @@ function load_jobs() {
                         + job.qos + "</td><td>"
                         + job.partition + "</td></tr>";
           $("#jobs-tbody").append(html_job);
-
+          $("#tr-job-" + id).click(function() { show_modal_job(id); });
         }
       );
 

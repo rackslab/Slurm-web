@@ -26,24 +26,23 @@ from ClusterShell.NodeSet import NodeSet
 
 app = Flask(__name__)
 
+uids = {} # cache of user login/names to avoid duplicate NSS resolutions
+
 @app.route('/jobs', methods=['GET'])
 def get_jobs():
     jobs = pyslurm.job().get()
 
     # add login and username (additionally to UID) for each job
-    uids = {}
     for jobid, job in jobs.iteritems():
-        uid = job['user_id']
-        uid_s = str(uid)
-        if not uids.has_key(uid_s):
-            pw = pwd.getpwuid(uid)
-            uids[uid_s] = {}
-            uids[uid_s]['login'] = pw[0]
-            uids[uid_s]['username'] = pw[4].split(',')[0] # user name is the first part of gecos
-        job['login'] = uids[uid_s]['login']
-        job['username'] = uids[uid_s]['username']
+        fill_job_user(job)
 
     return jsonify(jobs)
+
+@app.route('/job/<int:job_id>')
+def show_job(job_id):
+    job = pyslurm.job().find_id(job_id)
+    fill_job_user(job)
+    return jsonify(job)
 
 @app.route('/nodes', methods=['GET'])
 def get_nodes():
@@ -223,6 +222,17 @@ def parse_racks():
         # set positions for all nodes
         rack.map_nodes()
     return Rack.racks2dict(racks)
+
+def fill_job_user(job):
+    uid = job['user_id']
+    uid_s = str(uid)
+    if not uids.has_key(uid_s):
+        pw = pwd.getpwuid(uid)
+        uids[uid_s] = {}
+        uids[uid_s]['login'] = pw[0]
+        uids[uid_s]['username'] = pw[4].split(',')[0] # user name is the first part of gecos
+    job['login'] = uids[uid_s]['login']
+    job['username'] = uids[uid_s]['username']
 
 if __name__ == '__main__':
     app.run(debug=True)

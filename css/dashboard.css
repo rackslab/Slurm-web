@@ -117,6 +117,14 @@ body {
 }
 
 /*
+ * Change cursor (to hand/pointer) when over a job row in jobs view
+ */
+tr.job-row {
+  cursor: pointer;
+}
+
+/*
+
  * Plot containers
  */
 
