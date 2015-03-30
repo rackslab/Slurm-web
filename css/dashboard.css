@@ -148,3 +148,15 @@ tr.job-row {
   width: 230px; /* must be identical to .plot-sub-div width */
   height: 130px;
 }
+
+/*
+ * Plot legend
+ */
+
+.legend {
+  text-align: left;
+}
+
+td.legendLabel {
+  padding-left: 3px;
+}
