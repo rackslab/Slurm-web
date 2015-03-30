@@ -56,7 +56,7 @@ def get_cluster():
     cluster['nodes'] = len(nodes.keys())
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
-        cluster['cores'] += node['cores']
+        cluster['cores'] += node['cpus']
     return jsonify(cluster)
 
 @app.route('/racks', methods=['GET'])
