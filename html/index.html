@@ -45,6 +45,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a id="menu-jobs" href="#">Jobs</a></li>
             <li><a id="menu-racks" href="#">Racks</a></li>
+            <li><a id="menu-jobsmap" href="#">JobsMap</a></li>
             <li><a id="menu-reservations" href="#">Reservations</a></li>
           </ul>
         </div>
@@ -79,6 +80,10 @@
         <h1 class="page-header">Racks</h1>
         <div id="rackmap"></div>
       </div>
+      <div id="jobsmap" class="main">
+        <h1 class="page-header">Jobs Map</h1>
+        <div id="jobsmap-cont"></div>
+      </div>
       <div id="reservations" class="main">
         <h1 class="page-header">Reservations</h1>
         <div id="listresv"></div>
@@ -100,6 +105,7 @@
         function() {
           $("#menu-jobs").click(show_jobs);
           $("#menu-racks").click(show_racks);
+          $("#menu-jobsmap").click(show_jobsmap);
           $("#menu-reservations").click(show_reservations);
           show_jobs();
         }

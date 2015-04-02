@@ -85,24 +85,33 @@ var color_part_allocated = "rgba(86,128,184,1)";
 var color_unavailable = "rgba(150,150,150,0.5)"; // idle but more transparent
 var color_unknown = "rgba(39,39,39,1)";
 
-var job_colors = [ "rgba(105,138,188,1)",
-                   "rgba(0,139,195,1)",
-                   "rgba(42,96,108,1)",
-                   "rgba(0,91,154,1)",
-                   "rgba(0,86,139,1)",
-                   "rgba(55,76,134,1)",
-                   "rgba(20,83,81,1)",
-                   "rgba(6,59,123,1)" ]
+var color_core_border = "rgba(100,100,100,1)";
+
+var job_colors = [ "rgba(237,212,0,1)",  // normal yellow
+                   "rgba(245,121,0,1)",  // normal orange
+                   "rgba(193,125,17,1)", // normal brown
+                   "rgba(115,210,22,1)", // normal green
+                   "rgba(52,101,164,1)", // normal blue
+                   "rgba(117,80,123,1)", // normal purple
+                   "rgba(204,0,0,1)",    // normal red
+                   "rgba(196,160,0,1)",  // dark yellow
+                   "rgba(206,92,0,1)",   // dark orange
+                   "rgba(143,89,2,1)",   // dark brown
+                   "rgba(78,154,6,1)",   // dark green
+                   "rgba(32,74,135,1)",  // dark blue
+                   "rgba(92,53,102,1)",  // dark purple
+                   "rgba(164,0,0,1)" ];  // dark red
 
 /*
  * Functions
  */
 
 function show_jobs() {
-  $("#listnodes").empty();
   $("#rackmap").empty();
+  $("#jobsmap-cont").empty();
   $("#listresv").empty();
   $("#racks").hide();
+  $("#jobsmap").hide();
   $("#reservations").hide();
   $("#jobs").show();
   load_jobs();
@@ -330,43 +339,13 @@ function load_jobs() {
   );
 }
 
-/* not used anymore */
-function show_nodes() {
-  $("#plotjobs").empty();
-  $("#listjobs").empty();
-  $("#rackmap").empty();
-  $("#listresv").empty();
-  $("#jobs").hide();
-  $("#racks").hide();
-  $("#reservations").hide();
-  $("#nodes").show();
-  load_nodes();
-  clearInterval(interval_handler);
-  interval_handler = window.setInterval(load_nodes, refresh);
-}
-
-/* not used anymore */
-function load_nodes() {
-  $.getJSON(api_dir + "/nodes",
-    function(nodes) {
-      $("#listnodes").empty();
-      $.each(nodes,
-        function(id,node) {
-          var html_node = "<li class='node' id='node_" + id + "'>"
-                           + id + "," + node.node_state + "</li>";
-          $("#listnodes").append(html_node);
-        }
-      );
-    }
-  );
-}
-
 function show_racks() {
   $("#plotjobs").empty();
   $("#listjobs").empty();
-  $("#listnodes").empty();
   $("#listresv").empty();
+  $("#jobsmap-cont").empty();
   $("#jobs").hide();
+  $("#jobsmap").hide();
   $("#reservations").hide();
   $("#racks").show();
   load_racks();
@@ -451,31 +430,10 @@ function pick_job_color(job_id) {
   return color;
 }
 
-function draw_node(rack, racknode, slurmnode) {
-
-  if (multi_canvas) {
-    var ctx = document.getElementById("cv_rackmap_" + rack.name).getContext("2d");
-  } else {
-    var ctx = document.getElementById("cv_rackmap").getContext("2d");
-  }
-
-  /* relative coordinate of node inside the rack */
-  node_coord_x = racknode.posx; // unit is the number of U, starting from the bottom of the rack
-  node_coord_y = racknode.posy;
-
-  rack_abs = get_rack_abs_coord(rack);
-  rack_abs_x = rack_abs[0];
-  rack_abs_y = rack_abs[1];
-
-  node_abs_x = rack_abs_x + rack_border_width + (node_coord_x * rack_inside_width);
-  node_abs_y = rack_abs_y + rack_height - rack_border_width - (node_coord_y * rack_u_height);
-
-  node_width = racknode.width * rack_inside_width - node_margin;
-  node_height = racknode.height * rack_u_height - node_margin;
-
-  //console.log("node_id: " + id_node + " -> " + node_rack + "/" + id_node_in_rack + " -> coord:" + node_coord_x + "/" + node_coord_y + " abs: " + node_abs_x + "/" + node_abs_y);
+function get_node_colors(slurmnode) {
 
   var state_color = "green";
+  var node_color = color_unknown;
 
   /* node state */
   switch(slurmnode.node_state) {
@@ -519,19 +477,56 @@ function draw_node(rack, racknode, slurmnode) {
       node_color = color_unknown;
   }
 
+  return [ node_color, state_color ];
+
+}
+
+function write_node_name(ctx, nodename, ndode_abs_x, node_abs_y, node_height, node_width) {
+  /* add node name */
+  ctx.fillStyle = "black";
+  if (node_coord_x == 0) {
+    ctx.fillText(nodename, node_abs_x - 55, node_abs_y + node_height - 3);
+  } else {
+    ctx.fillText(nodename, node_abs_x + node_width + rack_border_width + 3, node_abs_y + node_height - 3);
+  }
+}
+
+function draw_node(rack, racknode, slurmnode) {
+
+  if (multi_canvas) {
+    var ctx = document.getElementById("cv_rackmap_" + rack.name).getContext("2d");
+  } else {
+    var ctx = document.getElementById("cv_rackmap").getContext("2d");
+  }
+
+  /* relative coordinate of node inside the rack */
+  node_coord_x = racknode.posx; // unit is the number of U, starting from the bottom of the rack
+  node_coord_y = racknode.posy;
+
+  rack_abs = get_rack_abs_coord(rack);
+  rack_abs_x = rack_abs[0];
+  rack_abs_y = rack_abs[1];
+
+  node_abs_x = rack_abs_x + rack_border_width + (node_coord_x * rack_inside_width);
+  node_abs_y = rack_abs_y + rack_height - rack_border_width - (node_coord_y * rack_u_height);
+
+  node_width = racknode.width * rack_inside_width - node_margin;
+  node_height = racknode.height * rack_u_height - node_margin;
+
+  //console.log("node_id: " + id_node + " -> " + node_rack + "/" + id_node_in_rack + " -> coord:" + node_coord_x + "/" + node_coord_y + " abs: " + node_abs_x + "/" + node_abs_y);
+
+  var node_colors = get_node_colors(slurmnode);
+  var node_color = node_colors[0];
+  var state_color = node_colors[1];
+
   /* node rectangle */
   draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, node_color);
 
   /* draw status LED */
   draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
 
-  /* add node name */
-  ctx.fillStyle = "black";
-  if (node_coord_x == 0) {
-    ctx.fillText(racknode.name, node_abs_x - 55, node_abs_y + node_height - 3);
-  } else {
-    ctx.fillText(racknode.name, node_abs_x + node_width + rack_border_width + 3, node_abs_y + node_height - 3);
-  }
+  /* write node name */
+  write_node_name(ctx, racknode.name, node_abs_x, node_abs_y, node_height, node_width);
 
 }
 
@@ -641,10 +636,11 @@ function load_racks() {
 function show_reservations() {
   $("#plotjobs").empty();
   $("#listjobs").empty();
-  $("#listnodes").empty();
   $("#rackmap").empty();
+  $("#jobsmap-cont").empty();
   $("#jobs").hide();
   $("#racks").hide();
+  $("#jobsmap").hide();
   $("#reservations").show();
   load_reservations();
   clearInterval(interval_handler);
@@ -689,6 +685,247 @@ function load_reservations() {
 
         }
       );
+
+    }
+  );
+}
+
+function factors(num) {
+
+  var n_factors = [], i;
+
+  for (i = 1; i <= Math.floor(Math.sqrt(num)); i += 1)
+    if (num % i === 0) {
+      n_factors.push([i,num/i]);
+    }
+
+  n_factors.sort( function(a, b) { return a[0] - b[0];} );  // numeric sort
+  return n_factors;
+
+}
+
+function best_factor(num) {
+
+  var all_factors = factors(num)
+  var goal_ratio = 6;
+  var ratio = -1, best_ratio = -1;
+  var best_factor_id = 0;
+
+  for (var i = 0; i < all_factors.length; i++) {
+    ratio = all_factors[i][1] / all_factors[i][0];
+    //console.log("%d/%d: ratio: %f best_ratio: %f", all_factors[i][1], all_factors[i][0], ratio, best_ratio);
+    if (Math.abs(ratio-goal_ratio) < Math.abs(best_ratio-goal_ratio)) {
+      best_ratio = ratio;
+      best_factor_id = i;
+    }
+  }
+
+  return all_factors[best_factor_id];
+
+}
+
+function get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size) {
+  var core_x = Math.floor(core_id / cores_rows);
+  var core_y = Math.floor(core_id % cores_rows);
+  var core_abs_x = node_abs_x + 10 + (core_x * core_size);
+  var core_abs_y = node_abs_y + 2 + (core_y * core_size);
+  return [ core_abs_x, core_abs_y ];
+}
+
+function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
+
+  if (multi_canvas) {
+    var ctx = document.getElementById("cv_rackmap_" + rack.name).getContext("2d");
+  } else {
+    var ctx = document.getElementById("cv_rackmap").getContext("2d");
+  }
+
+  /* relative coordinate of node inside the rack */
+  node_coord_x = racknode.posx; // unit is the number of U, starting from the bottom of the rack
+  node_coord_y = racknode.posy;
+
+  rack_abs = get_rack_abs_coord(rack);
+  rack_abs_x = rack_abs[0];
+  rack_abs_y = rack_abs[1];
+
+  node_abs_x = rack_abs_x + rack_border_width + (node_coord_x * rack_inside_width);
+  node_abs_y = rack_abs_y + rack_height - rack_border_width - (node_coord_y * rack_u_height);
+
+  node_width = racknode.width * rack_inside_width - node_margin;
+  node_height = racknode.height * rack_u_height - node_margin;
+
+  var node_colors = get_node_colors(slurmnode);
+  var state_color = node_colors[1];
+
+  //console.log("node_id: " + id_node + " -> " + node_rack + "/" + id_node_in_rack + " -> coord:" + node_coord_x + "/" + node_coord_y + " abs: " + node_abs_x + "/" + node_abs_y);
+
+  /* node rectangle */
+  draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, color_idle);
+
+  /* draw status LED */
+  draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+
+  var cores_nb = slurmnode.cpus;
+  var cores_factor = best_factor(cores_nb);
+  var cores_cols = cores_factor[1];
+  var cores_rows = cores_factor[0];
+
+  //console.log("best factor for node %s: cols %d, rows: %d", slurmnode.name, cores_cols, cores_rows);
+
+  var core_abs_x = 0;
+  var core_abs_y = 0;
+
+  var core_height = (node_height - 3) / cores_rows;
+  var core_width = (node_width - 10) / cores_cols;
+  var core_size = Math.min(core_height, core_width);
+
+  var core_id = 0;
+  var nb_cores_job = 0;
+  var cores_drawn = 0;
+  var core_coords = null;
+  var core_color = null;
+
+  /* draw allocated core */
+  for (var job in allocated_cpus) {
+    if (allocated_cpus.hasOwnProperty(job)) {
+      nb_cores_job = allocated_cpus[job];
+      core_color = pick_job_color(parseInt(job));
+      for (; core_id < cores_drawn + nb_cores_job; core_id++) {
+        core_coords = get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size);
+        core_abs_x = core_coords[0];
+        core_abs_y = core_coords[1];
+        draw_rect_bdr(ctx, core_abs_x, core_abs_y, core_size, core_size, 1, core_color, color_core_border);
+      }
+      cores_drawn += nb_cores_job;
+    }
+  }
+
+  /* draw idle cores */
+  for (; core_id < cores_nb; core_id++) {
+    //console.log("node %s: core %d: x: %f, y: %f, abs_x: %f, abs_y: %f", slurmnode.name, core_id, core_x, core_y, core_abs_x, core_abs_y);
+    core_coords = get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size);
+    core_abs_x = core_coords[0];
+    core_abs_y = core_coords[1];
+    draw_rect_bdr(ctx, core_abs_x, core_abs_y, core_size, core_size, 1, color_idle, color_core_border);
+  }
+
+  /* write node name */
+  write_node_name(ctx, racknode.name, node_abs_x, node_abs_y, node_height, node_width);
+
+}
+
+function build_allocated_cpus(jobs) {
+
+  var allocated_cpus = {};
+  var nodes_cpus = null;
+
+  // build hash with this format:
+  //   allocated_cpus['node'] = { "jobid1": nb_cores, "jobid2" : nb_cores }
+  for (var job in jobs) {
+    if (jobs.hasOwnProperty(job)) {
+      if (jobs[job]['job_state'] == 'RUNNING') {
+        nodes_cpus = jobs[job]['cpus_allocated'];
+        for (var node in nodes_cpus) {
+          if (!allocated_cpus.hasOwnProperty(node)) {
+            allocated_cpus[node] = {};
+          }
+          allocated_cpus[node][job] = nodes_cpus[node];
+        }
+      }
+    }
+  }
+
+  return allocated_cpus;
+
+}
+
+function show_jobsmap() {
+  $("#plotjobs").empty();
+  $("#listjobs").empty();
+  $("#rackmap").empty();
+  $("#listresv").empty();
+  $("#jobs").hide();
+  $("#racks").hide();
+  $("#reservations").hide();
+  $("#jobsmap").show();
+  load_jobsmap();
+  clearInterval(interval_handler);
+  interval_handler = window.setInterval(load_jobsmap, refresh);
+}
+
+function load_jobsmap() {
+
+  var slurmnodes = null;
+
+  /*
+   * The first ajax JSON call to /nodes must be done synchronously
+   * to make sure slurmnodes variables is set before the async loop
+   * after call to /racks is run.
+   */
+  $.ajaxSetup({ async: false });
+
+  $.getJSON(api_dir + "/nodes",
+    function(nodes) {
+      slurmnodes = nodes;
+    }
+  );
+
+  /*
+   * The second ajax JSON call to /jobs
+   */
+  var allocated_cpus = {};
+
+  $.getJSON(api_dir + "/jobs",
+    function(jobs) {
+      allocated_cpus = build_allocated_cpus(jobs);
+      //console.log(JSON.stringify(allocated_cpus));
+    }
+  );
+
+  $.ajaxSetup({ async: true });
+
+  $.getJSON(api_dir + "/racks",
+    function(racks) {
+
+      nb_racks = Object.keys(racks).length
+
+      cont = "#jobsmap-cont";
+      $(cont).empty();
+
+      if (multi_canvas) {
+        $.each(racks,
+          function(name, rack) {
+            var html_rackmap = "<canvas id='cv_rackmap_" + name +
+                               "' width='" + canvas_width +
+                               "' height='" + canvas_height + "'/>";
+            $(cont).append(html_rackmap);
+          }
+        );
+        var html_rackmap = "<canvas style='position:absolute;top:55px;right:180px;'" +
+                           " id='cv_rackmap_legend'" +
+                           " width='" + canvas_legend_width +
+                           "' height='" + canvas_legend_height + "'/>";
+        $(cont).prepend(html_rackmap);
+
+      } else {
+        var html_rackmap = "<canvas id='cv_rackmap'" +
+                           " width='" + canvas_width +
+                           "' height='" + canvas_height + "'/>";
+        $(cont).append(html_rackmap);
+      }
+
+      $.each(racks,
+        function(id_rack, rack) {
+          draw_rack(rack);
+          $.each(rack.nodes,
+            function(id_racknode,racknode) {
+              draw_node_cores(rack, racknode, slurmnodes[racknode.name], allocated_cpus[racknode.name]);
+            }
+          );
+        }
+      );
+
+      draw_legend();
 
     }
   );
