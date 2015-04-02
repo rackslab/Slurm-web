@@ -530,7 +530,7 @@ function draw_node(rack, racknode, slurmnode) {
 
 }
 
-function draw_legend() {
+function draw_legend(is_jobmaps) {
 
   if (multi_canvas) {
     var ctx = document.getElementById("cv_rackmap_legend").getContext("2d");
@@ -542,7 +542,15 @@ function draw_legend() {
     legend_y = canvas_height - 50;
   }
 
-  draw_rect_bdr(ctx, 1, 1, 98, 75, 1, "rgba(255,255,255,1)", "rgba(200,200,200,1)");
+  if (is_jobmaps === true) {
+    legend_height = 55;
+    legend_width = 80;
+  } else {
+    legend_height = 75;
+    legend_width = 98;
+  }
+
+  draw_rect_bdr(ctx, 1, 1, legend_width, legend_height, 1, "rgba(255,255,255,1)", "rgba(200,200,200,1)");
 
   ctx.fillStyle = "black";
   ctx.font = "12px sans-serif";
@@ -559,13 +567,14 @@ function draw_legend() {
   ctx.fillStyle = "black";
   ctx.fillText("down", legend_x + 10, legend_y + 33);
 
-  draw_rect(ctx, legend_x-2, legend_y+35, 9, 9, color_fully_allocated);
-  ctx.fillStyle = "black";
-  ctx.fillText("fully allocated", legend_x + 10, legend_y + 43);
-  draw_rect(ctx, legend_x-2, legend_y+45, 9, 9, color_part_allocated);
-  ctx.fillStyle = "black";
-  ctx.fillText("partly allocated", legend_x + 10, legend_y + 53);
-
+  if (is_jobmaps === false) {
+    draw_rect(ctx, legend_x-2, legend_y+35, 9, 9, color_fully_allocated);
+    ctx.fillStyle = "black";
+    ctx.fillText("fully allocated", legend_x + 10, legend_y + 43);
+    draw_rect(ctx, legend_x-2, legend_y+45, 9, 9, color_part_allocated);
+    ctx.fillStyle = "black";
+    ctx.fillText("partly allocated", legend_x + 10, legend_y + 53);
+  }
 }
 
 function load_racks() {
@@ -627,7 +636,7 @@ function load_racks() {
         }
       );
 
-      draw_legend();
+      draw_legend(false);
 
     }
   );
@@ -925,7 +934,7 @@ function load_jobsmap() {
         }
       );
 
-      draw_legend();
+      draw_legend(true);
 
     }
   );
