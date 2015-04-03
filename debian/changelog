@@ -1,3 +1,26 @@
+slurm-web (1.0.0) unstable; urgency=medium
+
+  * Consider node COMPLETING state as being ALLOCATED
+  * CCN written in white in the logo for dark background
+  * Add ability to split rackview into multiple canvas
+  * Add code to parse racks XML and return JSON
+  * Add example XML rackmap file + DTD
+  * Add new dependency to clustershell package for -restapi
+  * Racks are now drawn based on information from API
+  * Add rack names in rackmap
+  * Show login/username instead of UID in jobs view
+  * Cut the nodesets in jobs view if too long
+  * Add some pie plots in job view
+  * Turn navbar links and brand name into white
+  * Distinct mix / fully allocated nodes in rack view
+  * Fix bug when job.nodes null with state != PENDING
+  * Add start time for pending jobs when available
+  * Add reservations page
+  * Show modal with all information when click on job
+  * Add new JobsMap view in dashboard
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 03 Apr 2015 09:35:50 +0200
+
 slurm-web (0.1.0) calibre9; urgency=medium
 
   * Initial release.
