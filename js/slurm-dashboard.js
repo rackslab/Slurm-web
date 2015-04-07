@@ -472,7 +472,7 @@ function get_node_colors(slurmnode) {
       node_color = color_unavailable;
       break;
     default:
-      console.log("node_id: " + id_node + " -> state: " + slurmnode.node_state);
+      console.log("node: " + slurmnode.name + " -> state: " + slurmnode.node_state);
       state_color = "black"
       node_color = color_unknown;
   }
