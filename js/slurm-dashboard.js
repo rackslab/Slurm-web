@@ -461,6 +461,8 @@ function get_node_colors(slurmnode) {
         node_color = color_part_allocated;
       }
       break;
+    case 'DRAINING':
+    case 'DRAINING*':
     case 'DRAINED':
     case 'DRAINED*':
       state_color = "yellow";
