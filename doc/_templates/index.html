@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% set title = _('Overview') %}
+{% block body %}
+  <h1>Slurm-web</h1>
+
+  <p>{%trans%}
+    Slurm-web is a web application that serves both as web frontend and REST API to
+    a supercomputer running <a href='http://slurm.schedmd.com'>Slurm</a> workload
+    manager. It is a free software licensed under the GPLv3. Read the{%endtrans%}
+    <a href="{{ pathto("introduction") }}">{%trans%}introduction{%endtrans%}</a>
+    {%trans%}for more details.{%endtrans%}
+  </p>
+
+  <h2 style="margin-bottom: 0">{%trans%}Documentation{%endtrans%}</h2>
+
+  <table class="contentstable" align="center" style="margin-left: 30px"><tr>
+    <td width="50%">
+      <p class="biglink"><a class="biglink" href="{{ pathto("introduction") }}">{%trans%}Introduction{%endtrans%}</a><br/>
+         <span class="linkdescr">{%trans%}General software overview{%endtrans%}</span></p>
+      <p class="biglink"><a class="biglink" href="{{ pathto("installation") }}">{%trans%}Installation Guide{%endtrans%}</a><br/>
+         <span class="linkdescr">{%trans%}Download, install and configure Slurm-web{%endtrans%}</span></p>
+      <p class="biglink"><a class="biglink" href="{{ pathto("usage") }}">{%trans%}Users Guide{%endtrans%}</a><br/>
+         <span class="linkdescr">{%trans%}Usage of the web dashboard{%endtrans%}</span></p>
+    </td><td width="50%">
+      <p class="biglink"><a class="biglink" href="{{ pathto("architecture") }}">{%trans%}Software Architecture{%endtrans%}</a><br/>
+         <span class="linkdescr">{%trans%}Software components integration{%endtrans%}</span></p>
+      <p class="biglink"><a class="biglink" href="{{ pathto("api") }}">{%trans%}Reference API{%endtrans%}</a><br/>
+         <span class="linkdescr">{%trans%}Backend REST API reference documentation{%endtrans%}</span></p>
+    </td></tr>
+  </table>
+
+  <h2>{%trans%}Screenshots{%endtrans%}</h2>
+
+  <p>
+    <a href="{{ pathto("_static/screenshot_jobs.png", 1) }}">
+      <img src="{{ pathto("_static/screenshot_jobs_thumb_200.png", 1) }}"/>
+    </a>
+    <a href="{{ pathto("_static/screenshot_racks.png", 1) }}">
+      <img src="{{ pathto("_static/screenshot_racks_thumb_200.png", 1) }}"/>
+    </a>
+    <a href="{{ pathto("_static/screenshot_jobsmap.png", 1) }}">
+      <img src="{{ pathto("_static/screenshot_jobsmap_thumb_200.png", 1) }}"/>
+    </a>
+  </p>
+
+  <h2>{%trans%}Contact and support{%endtrans%}</h2>
+
+  <p>{%trans%}If you want to contribute to the project or need support,
+     you can either open issues
+     <a href='https://github.com/edf-hpc/slurm-web'>the project</a> hosted
+     on GitHub or by email at this address:
+     dsp [dash] cspite [dash] ccn-hpc [at] edf [dot] fr{%endtrans%}</p>
+
+{% endblock %}
