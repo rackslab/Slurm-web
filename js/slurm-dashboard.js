@@ -107,12 +107,8 @@ var job_colors = [ "rgba(237,212,0,1)",  // normal yellow
  */
 
 function show_jobs() {
-  $("#rackmap").empty();
-  $("#jobsmap-cont").empty();
-  $("#listresv").empty();
-  $("#racks").hide();
-  $("#jobsmap").hide();
-  $("#reservations").hide();
+  $(".pane").empty();
+  $(".main").hide();
   $("#jobs").show();
   load_jobs();
   clearInterval(interval_handler);
@@ -340,13 +336,8 @@ function load_jobs() {
 }
 
 function show_racks() {
-  $("#plotjobs").empty();
-  $("#listjobs").empty();
-  $("#listresv").empty();
-  $("#jobsmap-cont").empty();
-  $("#jobs").hide();
-  $("#jobsmap").hide();
-  $("#reservations").hide();
+  $(".pane").empty();
+  $(".main").hide();
   $("#racks").show();
   load_racks();
   clearInterval(interval_handler);
@@ -645,13 +636,8 @@ function load_racks() {
 }
 
 function show_reservations() {
-  $("#plotjobs").empty();
-  $("#listjobs").empty();
-  $("#rackmap").empty();
-  $("#jobsmap-cont").empty();
-  $("#jobs").hide();
-  $("#racks").hide();
-  $("#jobsmap").hide();
+  $(".pane").empty();
+  $(".main").hide();
   $("#reservations").show();
   load_reservations();
   clearInterval(interval_handler);
@@ -851,13 +837,8 @@ function build_allocated_cpus(jobs) {
 }
 
 function show_jobsmap() {
-  $("#plotjobs").empty();
-  $("#listjobs").empty();
-  $("#rackmap").empty();
-  $("#listresv").empty();
-  $("#jobs").hide();
-  $("#racks").hide();
-  $("#reservations").hide();
+  $(".pane").empty();
+  $(".main").hide();
   $("#jobsmap").show();
   load_jobsmap();
   clearInterval(interval_handler);
