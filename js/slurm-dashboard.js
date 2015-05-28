@@ -452,6 +452,15 @@ function get_node_colors(slurmnode) {
         node_color = color_part_allocated;
       }
       break;
+    case 'RESERVED':
+      fully_allocated = slurmnode.total_cpus == -slurmnode.cpus ? true:false;
+      state_color = "blue";
+      if (fully_allocated) {
+        node_color = color_fully_allocated;
+      } else {
+        node_color = color_part_allocated;
+      }
+      break;
     case 'DRAINING':
     case 'DRAINING*':
     case 'DRAINED':
