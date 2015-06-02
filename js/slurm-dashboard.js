@@ -545,11 +545,11 @@ function draw_legend(is_jobmaps) {
   }
 
   if (is_jobmaps === true) {
-    legend_height = 55;
-    legend_width = 80;
+    legend_height = 65;
+    legend_width = 90;
   } else {
-    legend_height = 75;
-    legend_width = 98;
+    legend_height = 85;
+    legend_width = 108;
   }
 
   draw_rect_bdr(ctx, 1, 1, legend_width, legend_height, 1, "rgba(255,255,255,1)", "rgba(200,200,200,1)");
@@ -568,14 +568,17 @@ function draw_legend(is_jobmaps) {
   draw_led(ctx, legend_x + 1, legend_y + 30, "red");
   ctx.fillStyle = "black";
   ctx.fillText("down", legend_x + 10, legend_y + 33);
+  draw_led(ctx, legend_x + 1, legend_y + 40, "blue");
+  ctx.fillStyle = "black";
+  ctx.fillText("reserved", legend_x + 10, legend_y + 43);
 
   if (is_jobmaps === false) {
-    draw_rect(ctx, legend_x-2, legend_y+35, 9, 9, color_fully_allocated);
+    draw_rect(ctx, legend_x-2, legend_y+45, 9, 9, color_fully_allocated);
     ctx.fillStyle = "black";
-    ctx.fillText("fully allocated", legend_x + 10, legend_y + 43);
-    draw_rect(ctx, legend_x-2, legend_y+45, 9, 9, color_part_allocated);
+    ctx.fillText("fully allocated", legend_x + 10, legend_y + 53);
+    draw_rect(ctx, legend_x-2, legend_y+55, 9, 9, color_part_allocated);
     ctx.fillStyle = "black";
-    ctx.fillText("partly allocated", legend_x + 10, legend_y + 53);
+    ctx.fillText("partly allocated", legend_x + 10, legend_y + 63);
   }
 }
 
