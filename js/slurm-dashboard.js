@@ -84,6 +84,10 @@ var color_fully_allocated = "rgba(0,91,154,1)";
 var color_part_allocated = "rgba(86,128,184,1)";
 var color_unavailable = "rgba(150,150,150,0.5)"; // idle but more transparent
 var color_unknown = "rgba(39,39,39,1)";
+var color_available = "green";
+var color_drained = "yellow";
+var color_down = "red";
+var color_reserved = "blue";
 
 var color_core_border = "rgba(100,100,100,1)";
 
@@ -423,14 +427,14 @@ function pick_job_color(job_id) {
 
 function get_node_colors(slurmnode) {
 
-  var state_color = "green";
+  var state_color = color_idle;
   var node_color = color_unknown;
 
   /* node state */
   switch(slurmnode.node_state) {
     case 'IDLE':
     case 'IDLE*':
-      state_color = "green";
+      state_color = color_available;
       node_color = color_idle;
       break;
     case 'ALLOCATED':
@@ -445,7 +449,7 @@ function get_node_colors(slurmnode) {
        * to -cpus, the node can be considered as fully allocated.
        */
       fully_allocated = slurmnode.total_cpus == -slurmnode.cpus ? true:false;
-      state_color = "green";
+      state_color = color_available;
       if (fully_allocated) {
         node_color = color_fully_allocated;
       } else {
@@ -454,7 +458,7 @@ function get_node_colors(slurmnode) {
       break;
     case 'RESERVED':
       fully_allocated = slurmnode.total_cpus == -slurmnode.cpus ? true:false;
-      state_color = "blue";
+      state_color = color_reserved;
       if (fully_allocated) {
         node_color = color_fully_allocated;
       } else {
@@ -465,12 +469,12 @@ function get_node_colors(slurmnode) {
     case 'DRAINING*':
     case 'DRAINED':
     case 'DRAINED*':
-      state_color = "yellow";
+      state_color = color_drained;
       node_color = color_unavailable;
       break;
     case 'DOWN':
     case 'DOWN*':
-      state_color = "red";
+      state_color = color_down;
       node_color = color_unavailable;
       break;
     default:
@@ -548,37 +552,47 @@ function draw_legend(is_jobmaps) {
     legend_height = 65;
     legend_width = 90;
   } else {
-    legend_height = 85;
-    legend_width = 108;
+    legend_height = 90;
+    legend_width = 98;
   }
 
   draw_rect_bdr(ctx, 1, 1, legend_width, legend_height, 1, "rgba(255,255,255,1)", "rgba(200,200,200,1)");
 
   ctx.fillStyle = "black";
   ctx.font = "12px sans-serif";
-  ctx.fillText("node state:", legend_x-3, legend_y);
+  ctx.fillText("node state:", legend_x - 3, legend_y);
   ctx.font = "10px sans-serif"; // back to default
 
-  draw_led(ctx, legend_x + 1, legend_y + 10, "green");
+  legend_y += 10;
+  draw_led(ctx, legend_x + 1, legend_y, color_available);
   ctx.fillStyle = "black";
-  ctx.fillText("available", legend_x + 10, legend_y + 13);
-  draw_led(ctx, legend_x + 1, legend_y + 20, "yellow");
+  ctx.fillText("available", legend_x + 10, legend_y + 3);
+
+  legend_y += 10;
+  draw_led(ctx, legend_x + 1, legend_y, color_drained);
   ctx.fillStyle = "black";
-  ctx.fillText("drained", legend_x + 10, legend_y + 23);
-  draw_led(ctx, legend_x + 1, legend_y + 30, "red");
+  ctx.fillText("drained", legend_x + 10, legend_y + 3);
+
+  legend_y += 10;
+  draw_led(ctx, legend_x + 1, legend_y, color_down);
   ctx.fillStyle = "black";
-  ctx.fillText("down", legend_x + 10, legend_y + 33);
-  draw_led(ctx, legend_x + 1, legend_y + 40, "blue");
+  ctx.fillText("down", legend_x + 10, legend_y + 3);
+
+  legend_y += 10;
+  draw_led(ctx, legend_x + 1, legend_y, color_reserved);
   ctx.fillStyle = "black";
-  ctx.fillText("reserved", legend_x + 10, legend_y + 43);
+  ctx.fillText("reserved", legend_x + 10, legend_y + 3);
 
   if (is_jobmaps === false) {
-    draw_rect(ctx, legend_x-2, legend_y+45, 9, 9, color_fully_allocated);
+    legend_y += 10;
+    draw_rect(ctx, legend_x-2, legend_y, 9, 9, color_fully_allocated);
     ctx.fillStyle = "black";
-    ctx.fillText("fully allocated", legend_x + 10, legend_y + 53);
-    draw_rect(ctx, legend_x-2, legend_y+55, 9, 9, color_part_allocated);
+    ctx.fillText("fully allocated", legend_x + 10, legend_y + 10);
+
+    legend_y += 10;
+    draw_rect(ctx, legend_x-2, legend_y, 9, 9, color_part_allocated);
     ctx.fillStyle = "black";
-    ctx.fillText("partly allocated", legend_x + 10, legend_y + 63);
+    ctx.fillText("partly allocated", legend_x + 10, legend_y + 10);
   }
 }
 
