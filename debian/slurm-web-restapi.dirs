@@ -1,3 +1,4 @@
 usr/share/slurm-web/restapi
 usr/share/slurm-web/restapi/schema/dtd
 etc/slurm-web
+etc/apache2/conf.d

@@ -1,4 +1,4 @@
-conf/slurm-web-restapi.conf etc/apache2/conf-available
+conf/slurm-web-restapi.conf etc/apache2/conf.d
 conf/racks.xml etc/slurm-web
 schema/racks.dtd usr/share/slurm-web/restapi/schema/dtd
 rest/* usr/share/slurm-web/restapi
