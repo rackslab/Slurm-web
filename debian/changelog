@@ -1,3 +1,21 @@
+slurm-web (1.0.1) UNRELEASED; urgency=low
+
+  [ Mehdi Dogguy ]
+  * Known colors as parameters and ease drawing of map legend
+  * Add Reserved state in legend
+  * Handle RESERVED node state (Fixes #27)
+  * More generic code to show/hide elements when switching between pages
+
+  [ Rémi Palancher ]
+  * Add 1st version of users guide in documentation
+  * Set doc latexpdf format to a4paper
+  * Add first version of the documentation
+  * Add 1st version of gitignore file
+  * Handle DRAINING state just as DRAINED
+  * Fix wrong reference to unknown variable id_node
+
+ -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Mon, 08 Jun 2015 11:53:27 +0200
+
 slurm-web (1.0.0) unstable; urgency=medium
 
   * Consider node COMPLETING state as being ALLOCATED
