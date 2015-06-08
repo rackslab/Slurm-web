@@ -3,7 +3,7 @@ Maintainer: Rémi Palancher <remi-externe.palancher@edf.fr>
 Section: web
 Priority: extra
 Standards-Version: 3.9.6
-Build-Depends: debhelper (>= 9), apache2-dev
+Build-Depends: debhelper (>= 8), apache2-dev
 
 Package: slurm-web-restapi
 Architecture: any
