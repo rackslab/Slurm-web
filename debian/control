@@ -1,5 +1,6 @@
 Source: slurm-web
-Maintainer: Rémi Palancher <remi-externe.palancher@edf.fr>
+Maintainer: CCN HPC <dsp-cspito-ccn-hpc@edf.fr>
+Uploaders: Rémi Palancher <remi-externe.palancher@edf.fr>, Mehdi Dogguy <mehdi.dogguy@edf.fr>
 Section: web
 Priority: extra
 Standards-Version: 3.9.6
