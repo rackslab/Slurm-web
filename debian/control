@@ -20,6 +20,6 @@ Description: Slurm Web HTML+JS dashboard
 
 Package: slurm-web
 Architecture: any
-Depends: slurm-web-restapi, slurm-web-dashboard
+Depends: slurm-web-restapi (= ${binary:Version}), slurm-web-dashboard (= ${binary:Version})
 Description: Slurm Web meta-package with all components
  This meta-package installs both the REST API and the dashboard.
