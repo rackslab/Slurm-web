@@ -747,11 +747,15 @@ function best_factor(node_width, node_height, nb_cores) {
 
 }
 
-function get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size) {
+function get_core_abs_coords(node_width, node_height, node_abs_x, node_abs_y, core_id, cores_rows, cores_cols, core_size) {
   var core_x = Math.floor(core_id / cores_rows);
   var core_y = Math.floor(core_id % cores_rows);
-  var core_abs_x = node_abs_x + 10 + (core_x * core_size);
-  var core_abs_y = node_abs_y + 2 + (core_y * core_size);
+
+  //console.log("node_abs_x: " + node_abs_x + " node_width: " + node_width + " cores_rows: " + cores_rows + " core_size: " + core_size)
+  var core_x_orig = (node_abs_x + node_width) - (cores_cols * core_size) - 2;
+  var core_y_orig = node_abs_y + Math.round((node_height - (cores_rows * core_size)) / 2);
+  var core_abs_x = core_x_orig + (core_x * core_size);
+  var core_abs_y = core_y_orig + (core_y * core_size);
   return [ core_abs_x, core_abs_y ];
 }
 
@@ -800,7 +804,6 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
 
   var core_height = Math.round((node_height - 4) / cores_rows);
   var core_width = Math.round((node_width - 20) / cores_cols);
-
   var core_size = Math.min(core_height, core_width);
 
   var core_id = 0;
@@ -815,9 +818,10 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
       nb_cores_job = allocated_cpus[job];
       core_color = pick_job_color(parseInt(job));
       for (; core_id < cores_drawn + nb_cores_job; core_id++) {
-        core_coords = get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size);
+        core_coords = get_core_abs_coords(node_width, node_height, node_abs_x, node_abs_y, core_id, cores_rows, cores_cols, core_size);
         core_abs_x = core_coords[0];
         core_abs_y = core_coords[1];
+        //console.log("core_abs_x: " + core_abs_x + " core_abs_y: " + core_abs_y);
         draw_rect_bdr(ctx, core_abs_x, core_abs_y, core_size, core_size, 1, core_color, color_core_border);
       }
       cores_drawn += nb_cores_job;
@@ -827,7 +831,7 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
   /* draw idle cores */
   for (; core_id < cores_nb; core_id++) {
     //console.log("node %s: core %d: x: %f, y: %f, abs_x: %f, abs_y: %f", slurmnode.name, core_id, core_x, core_y, core_abs_x, core_abs_y);
-    core_coords = get_core_abs_coords(node_abs_x, node_abs_y, core_id, cores_rows, core_size);
+    core_coords = get_core_abs_coords(node_width, node_height, node_abs_x, node_abs_y, core_id, cores_rows, cores_cols, core_size);
     core_abs_x = core_coords[0];
     core_abs_y = core_coords[1];
     draw_rect_bdr(ctx, core_abs_x, core_abs_y, core_size, core_size, 1, color_idle, color_core_border);
