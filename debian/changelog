@@ -1,4 +1,16 @@
-slurm-web (1.0.1) UNRELEASED; urgency=low
+slurm-web (1.0.2+c7+1) calibre7; urgency=medium
+
+  [ Mehdi Dogguy ]
+  * Backport to Debian Squeeze
+
+  [ Rémi Palancher ]
+  * Calculate best cores ratio based on node dimensions
+  * Round cores height/width to avoid blured rects
+  * Slightly alter cores positions inside nodes
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Tue, 09 Jun 2015 13:31:32 +0200
+
+slurm-web (1.0.1) unstable; urgency=low
 
   [ Mehdi Dogguy ]
   * Known colors as parameters and ease drawing of map legend
