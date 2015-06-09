@@ -8,7 +8,7 @@
 <!ELEMENT racks (rack+)>
 <!ELEMENT rack (posx,posy,nodes)>
 <!ATTLIST rack id ID #REQUIRED>
-<!ELEMENT nodes (node+,nodeset)*>
+<!ELEMENT nodes (node+,nodeset*)*>
 <!ELEMENT node (type,posx,posy)>
 <!ATTLIST node id ID #REQUIRED>
 <!ATTLIST node newset (true|false) "false">
