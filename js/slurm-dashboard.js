@@ -798,8 +798,9 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
   var core_abs_x = 0;
   var core_abs_y = 0;
 
-  var core_height = (node_height - 3) / cores_rows;
-  var core_width = (node_width - 10) / cores_cols;
+  var core_height = Math.round((node_height - 4) / cores_rows);
+  var core_width = Math.round((node_width - 20) / cores_cols);
+
   var core_size = Math.min(core_height, core_width);
 
   var core_id = 0;
