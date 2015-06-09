@@ -727,10 +727,10 @@ function factors(num) {
 
 }
 
-function best_factor(num) {
+function best_factor(node_width, node_height, nb_cores) {
 
-  var all_factors = factors(num)
-  var goal_ratio = 6;
+  var all_factors = factors(nb_cores)
+  var goal_ratio = (node_width - 20) / (node_height - 4);
   var ratio = -1, best_ratio = -1;
   var best_factor_id = 0;
 
@@ -789,7 +789,7 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
   draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
 
   var cores_nb = slurmnode.cpus;
-  var cores_factor = best_factor(cores_nb);
+  var cores_factor = best_factor(node_width, node_height, cores_nb);
   var cores_cols = cores_factor[1];
   var cores_rows = cores_factor[0];
 
