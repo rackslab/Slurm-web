@@ -1,3 +1,14 @@
+slurm-web (1.0.4+c7+1) calibre7; urgency=medium
+
+  [ Mehdi Dogguy ]
+  * Redirect logs to stderr
+  * Allow <nodes> to contain <node>s without <nodeset>s
+
+  [ Rémi Palancher ]
+  * Add binary version constraints on meta-pkg deps
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 10 Jun 2015 12:38:27 +0200
+
 slurm-web (1.0.3+c7+1) calibre7; urgency=medium
 
   * New slurm-web meta-package to install all slurm-web components at once
