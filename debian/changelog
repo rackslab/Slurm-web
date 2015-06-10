@@ -1,3 +1,9 @@
+slurm-web (1.0.3+c7+1) calibre7; urgency=medium
+
+  * New slurm-web meta-package to install all slurm-web components at once
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 10 Jun 2015 12:11:36 +0200
+
 slurm-web (1.0.2+c7+1) calibre7; urgency=medium
 
   [ Mehdi Dogguy ]
