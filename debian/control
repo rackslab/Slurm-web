@@ -17,3 +17,9 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot
 Description: Slurm Web HTML+JS dashboard
  The dashboard in HTML and Javascript that runs in a browser.
+
+Package: slurm-web
+Architecture: any
+Depends: slurm-web-restapi (= ${binary:Version}), slurm-web-dashboard (= ${binary:Version})
+Description: Slurm Web meta-package with all components
+ This meta-package installs both the REST API and the dashboard.
