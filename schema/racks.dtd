@@ -1,20 +1,31 @@
 <!ELEMENT rackmap (nodetypes,racks)>
+
 <!ELEMENT nodetypes (nodetype+)>
-<!ELEMENT nodetype (model,height,width)>
+
+<!ELEMENT nodetype EMPTY>
 <!ATTLIST nodetype id ID #REQUIRED>
-<!ELEMENT model (#PCDATA)>
-<!ELEMENT height (#PCDATA)>
-<!ELEMENT width (#PCDATA)>
+<!ATTLIST nodetype model CDATA #REQUIRED>
+<!ATTLIST nodetype height CDATA #REQUIRED>
+<!ATTLIST nodetype width CDATA #REQUIRED>
+
 <!ELEMENT racks (rack+)>
-<!ELEMENT rack (posx,posy,nodes)>
+
+<!ELEMENT rack (nodes)>
 <!ATTLIST rack id ID #REQUIRED>
-<!ELEMENT nodes (node+,nodeset*)*>
-<!ELEMENT node (type,posx,posy)>
+<!ATTLIST rack posx CDATA #IMPLIED>
+<!ATTLIST rack posy CDATA #IMPLIED>
+
+<!ELEMENT nodes (node|nodeset)*>
+
+<!ELEMENT node EMPTY>
 <!ATTLIST node id ID #REQUIRED>
-<!ATTLIST node newset (true|false) "false">
-<!ELEMENT type (#PCDATA)>
-<!ELEMENT posx (#PCDATA)>
-<!ELEMENT posy (#PCDATA)>
-<!ELEMENT nodeset (range,type)>
+<!ATTLIST node type IDREF #REQUIRED>
+<!ATTLIST node posx CDATA #IMPLIED>
+<!ATTLIST node posy CDATA #IMPLIED>
+
+<!ELEMENT nodeset EMPTY>
 <!ATTLIST nodeset id ID #REQUIRED>
-<!ELEMENT range (#PCDATA)>
+<!ATTLIST nodeset type IDREF #REQUIRED>
+<!ATTLIST nodeset posx CDATA #IMPLIED>
+<!ATTLIST nodeset posy CDATA #IMPLIED>
+<!ATTLIST nodeset draw (up|down) "up">
