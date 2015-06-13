@@ -219,7 +219,7 @@ function load_jobs() {
 
       var table_header =
           "<div class='table-responsive'>       \
-            <table class='table table-striped'> \
+            <table class='table table-striped tablesorter'> \
               <thead>                           \
                 <tr>                            \
                   <th>#</th>                    \
@@ -343,6 +343,7 @@ function load_jobs() {
       $.plot('#plot-qos-nodes', data_qos_nodes, plot_params);
       $.plot('#plot-qos-cores', data_qos_cores, plot_params);
 
+      $(".tablesorter").tablesorter();
     }
   );
 }
@@ -691,7 +692,7 @@ function load_reservations() {
 
       var table_header =
           "<div class='table-responsive'>       \
-            <table class='table table-striped'> \
+            <table class='table table-striped tablesorter'> \
               <thead>                           \
                 <tr>                            \
                   <th>Name</th>                 \
@@ -723,6 +724,7 @@ function load_reservations() {
         }
       );
 
+      $(".tablesorter").tablesorter();
     }
   );
 }
