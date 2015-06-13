@@ -438,6 +438,10 @@ function get_node_colors(slurmnode) {
   var state_color = color_idle;
   var node_color = color_unknown;
 
+  if (slurmnode == null) {
+      return [ node_color, null ];
+  }
+
   /* node state */
   switch(slurmnode.node_state) {
     case 'IDLE':
@@ -537,7 +541,9 @@ function draw_node(rack, racknode, slurmnode) {
   draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, node_color);
 
   /* draw status LED */
-  draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  if (state_color) {
+    draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  }
 
   /* write node name */
   write_node_name(ctx, racknode.name, node_abs_x, node_abs_y, node_height, node_width);
@@ -737,6 +743,10 @@ function factors(num) {
 
 function best_factor(node_width, node_height, nb_cores) {
 
+  if (nb_cores == 0) {
+      return [ null, null ];
+  }
+
   var all_factors = factors(nb_cores)
   var goal_ratio = (node_width - 20) / (node_height - 4);
   var ratio = -1, best_ratio = -1;
@@ -798,9 +808,11 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
   draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, color_idle);
 
   /* draw status LED */
-  draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  if (state_color) {
+    draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  }
 
-  var cores_nb = slurmnode.cpus;
+  var cores_nb = slurmnode ? slurmnode.cpus : 0;
   var cores_factor = best_factor(node_width, node_height, cores_nb);
   var cores_cols = cores_factor[1];
   var cores_rows = cores_factor[0];
