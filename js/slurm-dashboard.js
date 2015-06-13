@@ -26,6 +26,7 @@ var refresh = 30 * 1000;
 var interval_handler = 0;
 
 var api_dir = "/slurm-restapi";
+var cluster = null;
 
 // the maximum number of chars in nodesets in jobs view before being cut
 var max_nodes_len = 25;
@@ -110,6 +111,25 @@ var job_colors = [ "rgba(237,212,0,1)",  // normal yellow
  * Functions
  */
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+function init_cluster() {
+  $.ajaxSetup({ async: false });
+  $.getJSON(api_dir + "/cluster",
+    function(xcluster) {
+      cluster = xcluster;
+      if (cluster["name"]) {
+        title = cluster["name"].capitalize() + "'s Slurm HPC Dashboard";
+        document.title = title;
+        $('#brand-name').text(title);
+      }
+    }
+  );
+  $.ajaxSetup({ async: true });
+}
+
 function show_jobs() {
   $(".pane").empty();
   $(".main").hide();
@@ -158,18 +178,6 @@ function show_modal_job(job_id) {
 }
 
 function load_jobs() {
-
-  var cluster = null;
-
-  $.ajaxSetup({ async: false });
-
-  $.getJSON(api_dir + "/cluster",
-    function(xcluster) {
-      cluster = xcluster;
-    }
-  );
-
-  $.ajaxSetup({ async: true });
 
   $.getJSON(api_dir + "/jobs",
     function(jobs) {

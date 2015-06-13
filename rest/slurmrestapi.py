@@ -53,6 +53,7 @@ def get_nodes():
 def get_cluster():
     nodes = pyslurm.node().get()
     cluster = {}
+    cluster['name'] = pyslurm.config().get()['cluster_name']
     cluster['nodes'] = len(nodes.keys())
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
