@@ -24,6 +24,7 @@
 
 var refresh = 30 * 1000;
 var interval_handler = 0;
+var the_origin = new Date("01/01/1970");
 
 var api_dir = "/slurm-restapi";
 var cluster = null;
@@ -139,15 +140,24 @@ function show_jobs() {
   interval_handler = window.setInterval(load_jobs, refresh);
 }
 
+function new_date(date) {
+  var d = new Date(date);
+  if (d <= the_origin) {
+      return "N/A";
+  } else {
+      return d;
+  }
+}
+
 function show_modal_job(job_id) {
 
   $.getJSON(api_dir + "/job/" + job_id,
     function(job) {
       $('#modal-job-title').text("job " + job_id);
 
-      start_time = new Date(job.start_time*1000);
-      eligible_time = new Date(job.eligible_time*1000);
-      end_time = new Date(job.end_time*1000);
+      start_time = new_date(job.start_time*1000);
+      eligible_time = new_date(job.eligible_time*1000);
+      end_time = new_date(job.end_time*1000);
 
       state_reason = job.state_reason == 'None' ? "-":job.state_reason;
       command = job.command == null ? "-":job.command;
