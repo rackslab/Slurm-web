@@ -70,6 +70,11 @@ def get_reservations():
     reservations = pyslurm.reservation().get()
     return jsonify(reservations)
 
+@app.route('/partitions', methods=['GET'])
+def get_partitions():
+    partitions = pyslurm.partition().get()
+    return jsonify(partitions)
+
 class NodeType(object):
 
     def __init__(self, name, model, height, width):

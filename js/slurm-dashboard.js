@@ -739,6 +739,56 @@ function load_reservations() {
   );
 }
 
+function show_partitions() {
+  $(".pane").empty();
+  $(".main").hide();
+  $("#partitions").show();
+  load_partitions();
+  clearInterval(interval_handler);
+  interval_handler = window.setInterval(load_partitions, refresh);
+}
+
+function load_partitions() {
+
+  $.getJSON(api_dir + "/partitions",
+    function(partitions) {
+
+      var table_header =
+          "<div class='table-responsive'>       \
+            <table class='table table-striped tablesorter'> \
+              <thead>                           \
+                <tr>                            \
+                  <th>Name</th>                 \
+                  <th>Default</th>              \
+                  <th>Nodes</th>                \
+                  <th>#Nodes</th>               \
+                  <th>#CPUs</th>                \
+                </tr>                           \
+              </thead>                          \
+              <tbody id='part-tbody'/>          \
+            </table>                            \
+          </div>";
+      $("#listpart").empty();
+      $("#listpart").append(table_header);
+
+      $.each(partitions,
+        function(partition_name, partition) {
+
+          var html_job = "<tr><td>" + partition_name + "</td><td>"
+                        + ((partition['flags']['Default'] == 1) ? "Yes" : "No" )+ "</td><td>"
+                        + partition['nodes'].join(",") + "</td><td>"
+                        + partition['total_nodes'] + "</td><td>"
+                        + partition['total_cpus'] + "</td></tr>";
+          $("#part-tbody").append(html_job);
+
+        }
+      );
+
+      $(".tablesorter").tablesorter();
+    }
+  );
+}
+
 function factors(num) {
 
   var n_factors = [], i;

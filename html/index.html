@@ -46,6 +46,7 @@
             <li><a id="menu-jobs" href="#">Jobs</a></li>
             <li><a id="menu-racks" href="#">Racks</a></li>
             <li><a id="menu-jobsmap" href="#">JobsMap</a></li>
+            <li><a id="menu-partitions" href="#">Partitions</a></li>
             <li><a id="menu-reservations" href="#">Reservations</a></li>
           </ul>
         </div>
@@ -83,6 +84,10 @@
         <h1 class="page-header">Jobs Map</h1>
         <div id="jobsmap-cont" class="pane"></div>
       </div>
+      <div id="partitions" class="main">
+        <h1 class="page-header">Partitions</h1>
+        <div id="listpart" class="pane"></div>
+      </div>
       <div id="reservations" class="main">
         <h1 class="page-header">Reservations</h1>
         <div id="listresv" class="pane"></div>
@@ -107,6 +112,7 @@
           $("#menu-jobs").click(show_jobs);
           $("#menu-racks").click(show_racks);
           $("#menu-jobsmap").click(show_jobsmap);
+          $("#menu-partitions").click(show_partitions);
           $("#menu-reservations").click(show_reservations);
           show_jobs();
         }
