@@ -116,6 +116,29 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+function get_time_diff(datetime, datetime2) {
+    var datetime = new Date(datetime).getTime();
+    var refdate = (typeof datetime2 === 'undefined') ? new Date().getTime() : new Date(datetime2).getTime();
+
+    if(isNaN(datetime)) {
+      return "";
+    }
+
+    if (datetime < refdate) {
+      var milisec_diff = refdate - datetime;
+    } else {
+      var milisec_diff = datetime - refdate;
+    }
+
+    var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
+    var date_diff = new Date(milisec_diff);
+
+    return (days == 0 ? "" : days + "d ")
+        + (date_diff.getHours() == 0 ? "" : date_diff.getHours() + "h ")
+        + (date_diff.getMinutes() == 0 ? "" : date_diff.getMinutes() + "min ")
+        + (date_diff.getSeconds() == 0 ? "" : date_diff.getSeconds() + "s");
+}
+
 function init_cluster() {
   $.ajaxSetup({ async: false });
   $.getJSON(api_dir + "/cluster",
@@ -294,7 +317,16 @@ function load_jobs() {
           }
 
           if (job.job_state == 'PENDING' && job.start_time > 0) {
-              starttime = new Date(job.start_time*1000);
+              starttime = "within " + get_time_diff(job.start_time*1000);
+          } else if (job.job_state == 'PENDING') {
+              var eligible_time = new Date(job.eligible_time*1000);
+              if (eligible_time < new Date()) {
+                  starttime = '-';
+              } else {
+                  starttime = "within " + get_time_diff(job.eligible_time*1000);
+              }
+          } else if (job.job_state == 'RUNNING') {
+              starttime = "since " + get_time_diff(job.start_time*1000);
           } else {
               starttime = '-';
           }
