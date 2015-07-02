@@ -75,6 +75,11 @@ def get_partitions():
     partitions = pyslurm.partition().get()
     return jsonify(partitions)
 
+@app.route('/qos', methods=['GET'])
+def get_qos():
+    qos = pyslurm.qos().get()
+    return jsonify(qos)
+
 class NodeType(object):
 
     def __init__(self, name, model, height, width):
