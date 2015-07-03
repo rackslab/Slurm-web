@@ -1,3 +1,11 @@
+slurm-web (1.1.1) unstable; urgency=low
+
+  * Handle DST (Daylight Saving Time)
+  * Small change in function minutes_to_delay: Use isNaN before converting
+    the time offset.
+
+ -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Fri, 03 Jul 2015 18:07:46 +0200
+
 slurm-web (1.1.0) unstable; urgency=low
 
   [ Mehdi Dogguy ]
