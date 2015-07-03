@@ -24,8 +24,10 @@
 
 var refresh = 30 * 1000;
 var interval_handler = 0;
+var the_origin = new Date("01/01/1970");
 
 var api_dir = "/slurm-restapi";
+var cluster = null;
 
 // the maximum number of chars in nodesets in jobs view before being cut
 var max_nodes_len = 25;
@@ -110,6 +112,61 @@ var job_colors = [ "rgba(237,212,0,1)",  // normal yellow
  * Functions
  */
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+function minutes_to_delay(minutes) {
+    if (minutes == '-') return minutes;
+
+    var days = Math.floor(minutes / 1440);
+    minutes -= days * 1440;
+    var hours = Math.floor(minutes / 60) % 24;
+    minutes -= hours * 60;
+
+    return (days == 0 ? '' : days + 'd ')
+        + (hours == 0 ? '' : hours + 'h ')
+        + (minutes == 0 ? '' : minutes + 'm');
+}
+
+function get_time_diff(datetime, datetime2) {
+    var datetime = new Date(datetime).getTime();
+    var refdate = (typeof datetime2 === 'undefined') ? new Date().getTime() : new Date(datetime2).getTime();
+
+    if(isNaN(datetime)) {
+      return "";
+    }
+
+    if (datetime < refdate) {
+      var milisec_diff = refdate - datetime;
+    } else {
+      var milisec_diff = datetime - refdate;
+    }
+
+    var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
+    var date_diff = new Date(milisec_diff);
+
+    return (days == 0 ? "" : days + "d ")
+        + (date_diff.getHours() == 0 ? "" : date_diff.getHours() + "h ")
+        + (date_diff.getMinutes() == 0 ? "" : date_diff.getMinutes() + "min ")
+        + (date_diff.getSeconds() == 0 ? "" : date_diff.getSeconds() + "s");
+}
+
+function init_cluster() {
+  $.ajaxSetup({ async: false });
+  $.getJSON(api_dir + "/cluster",
+    function(xcluster) {
+      cluster = xcluster;
+      if (cluster["name"]) {
+        title = cluster["name"].capitalize() + "'s Slurm HPC Dashboard";
+        document.title = title;
+        $('#brand-name').text(title);
+      }
+    }
+  );
+  $.ajaxSetup({ async: true });
+}
+
 function show_jobs() {
   $(".pane").empty();
   $(".main").hide();
@@ -119,15 +176,24 @@ function show_jobs() {
   interval_handler = window.setInterval(load_jobs, refresh);
 }
 
+function new_date(date) {
+  var d = new Date(date);
+  if (d <= the_origin) {
+      return "N/A";
+  } else {
+      return d;
+  }
+}
+
 function show_modal_job(job_id) {
 
   $.getJSON(api_dir + "/job/" + job_id,
     function(job) {
       $('#modal-job-title').text("job " + job_id);
 
-      start_time = new Date(job.start_time*1000);
-      eligible_time = new Date(job.eligible_time*1000);
-      end_time = new Date(job.end_time*1000);
+      start_time = new_date(job.start_time*1000);
+      eligible_time = new_date(job.eligible_time*1000);
+      end_time = new_date(job.end_time*1000);
 
       state_reason = job.state_reason == 'None' ? "-":job.state_reason;
       command = job.command == null ? "-":job.command;
@@ -158,18 +224,6 @@ function show_modal_job(job_id) {
 }
 
 function load_jobs() {
-
-  var cluster = null;
-
-  $.ajaxSetup({ async: false });
-
-  $.getJSON(api_dir + "/cluster",
-    function(xcluster) {
-      cluster = xcluster;
-    }
-  );
-
-  $.ajaxSetup({ async: true });
 
   $.getJSON(api_dir + "/jobs",
     function(jobs) {
@@ -211,7 +265,7 @@ function load_jobs() {
 
       var table_header =
           "<div class='table-responsive'>       \
-            <table class='table table-striped'> \
+            <table class='table table-striped tablesorter'> \
               <thead>                           \
                 <tr>                            \
                   <th>#</th>                    \
@@ -276,7 +330,16 @@ function load_jobs() {
           }
 
           if (job.job_state == 'PENDING' && job.start_time > 0) {
-              starttime = new Date(job.start_time*1000);
+              starttime = "within " + get_time_diff(job.start_time*1000);
+          } else if (job.job_state == 'PENDING') {
+              var eligible_time = new Date(job.eligible_time*1000);
+              if (eligible_time < new Date()) {
+                  starttime = '-';
+              } else {
+                  starttime = "within " + get_time_diff(job.eligible_time*1000);
+              }
+          } else if (job.job_state == 'RUNNING') {
+              starttime = "since " + get_time_diff(job.start_time*1000);
           } else {
               starttime = '-';
           }
@@ -335,6 +398,7 @@ function load_jobs() {
       $.plot('#plot-qos-nodes', data_qos_nodes, plot_params);
       $.plot('#plot-qos-cores', data_qos_cores, plot_params);
 
+      $(".tablesorter").tablesorter();
     }
   );
 }
@@ -429,6 +493,10 @@ function get_node_colors(slurmnode) {
 
   var state_color = color_idle;
   var node_color = color_unknown;
+
+  if (slurmnode == null) {
+      return [ node_color, null ];
+  }
 
   /* node state */
   switch(slurmnode.node_state) {
@@ -529,7 +597,9 @@ function draw_node(rack, racknode, slurmnode) {
   draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, node_color);
 
   /* draw status LED */
-  draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  if (state_color) {
+    draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  }
 
   /* write node name */
   write_node_name(ctx, racknode.name, node_abs_x, node_abs_y, node_height, node_width);
@@ -677,7 +747,7 @@ function load_reservations() {
 
       var table_header =
           "<div class='table-responsive'>       \
-            <table class='table table-striped'> \
+            <table class='table table-striped tablesorter'> \
               <thead>                           \
                 <tr>                            \
                   <th>Name</th>                 \
@@ -709,6 +779,146 @@ function load_reservations() {
         }
       );
 
+      $(".tablesorter").tablesorter();
+    }
+  );
+}
+
+function show_partitions() {
+  $(".pane").empty();
+  $(".main").hide();
+  $("#partitions").show();
+  load_partitions();
+  clearInterval(interval_handler);
+  interval_handler = window.setInterval(load_partitions, refresh);
+}
+
+function load_partitions() {
+
+  $.getJSON(api_dir + "/partitions",
+    function(partitions) {
+
+      var table_header =
+          "<div class='table-responsive'>       \
+            <table class='table table-striped tablesorter'> \
+              <thead>                           \
+                <tr>                            \
+                  <th>Name</th>                 \
+                  <th>Default</th>              \
+                  <th>Nodes</th>                \
+                  <th>#Nodes</th>               \
+                  <th>#CPUs</th>                \
+                </tr>                           \
+              </thead>                          \
+              <tbody id='part-tbody'/>          \
+            </table>                            \
+          </div>";
+      $("#listpart").empty();
+      $("#listpart").append(table_header);
+
+      $.each(partitions,
+        function(partition_name, partition) {
+
+          var html_job = "<tr><td>" + partition_name + "</td><td>"
+                        + ((partition['flags']['Default'] == 1) ? "Yes" : "No" )+ "</td><td>"
+                        + partition['nodes'].join(",") + "</td><td>"
+                        + partition['total_nodes'] + "</td><td>"
+                        + partition['total_cpus'] + "</td></tr>";
+          $("#part-tbody").append(html_job);
+
+        }
+      );
+
+      $(".tablesorter").tablesorter();
+    }
+  );
+}
+
+function show_qos() {
+  $(".pane").empty();
+  $(".main").hide();
+  $("#qos").show();
+  load_qos();
+  clearInterval(interval_handler);
+  interval_handler = window.setInterval(load_qos, refresh);
+}
+
+function fix_number(num) {
+  var infinite = parseInt('0xffffffff', 16);
+  var no_val = parseInt('0xfffffffe', 16);
+
+  return (num == infinite || num == no_val ? "-" : num);
+}
+
+function load_qos() {
+
+  $.getJSON(api_dir + "/qos",
+    function(qos) {
+
+      var table_header =
+          "<div class='table-responsive'>            \
+            <table class='table table-striped tablesorter'> \
+              <thead>                                \
+                <tr>                                 \
+                  <th>Name</th>                      \
+                  <th>Priority</th>                  \
+                  <th>Walltime</th>                  \
+                  <th>Grp #CPU mins</th>             \
+                  <th>Grp #CPU min in Running</th>   \
+                  <th>Grp #CPU</th>                  \
+                  <th>Grp #Jobs</th>                 \
+                  <th>Grp Memory</th>                \
+                  <th>Grp Nodes</th>                 \
+                  <th>Grp Submitted Jobs</th>        \
+                  <th>Grp Walltime</th>              \
+                  <th>Max CPU mins/Job</th>          \
+                  <th>Max CPU mins for Running jobs</th> \
+                  <th>Max #CPUs/Job</th>             \
+                  <th>Max #CPUs/User</th>            \
+                  <th>Max #Jobs/User</th>            \
+                  <th>Max #Nodes/Job</th>            \
+                  <th>Max #Nodes/User</th>           \
+                  <th>Max Submit Jobs/User</th>      \
+                  <th>Preempt Mode</th>              \
+                  <th>Preemption Grace Time</th>     \
+                </tr>                                \
+              </thead>                               \
+              <tbody id='qos-tbody'/>                \
+            </table>                                 \
+          </div>";
+      $("#listqos").empty();
+      $("#listqos").append(table_header);
+
+      $.each(qos,
+        function(name, qos) {
+
+          var html_job = "<tr><td>" + name + "</td><td>"
+                + fix_number(qos['priority']) + "</td><td>"
+                + minutes_to_delay(fix_number(qos['max_wall_pj'])) + "</td><td>"
+                + fix_number(qos['grp_cpu_mins']) + "</td><td>"
+                + fix_number(qos['grp_cpu_run_mins']) + "</td><td>"
+                + fix_number(qos['grp_cpus']) + "</td><td>"
+                + fix_number(qos['grp_jobs']) + "</td><td>"
+                + fix_number(qos['grp_mem']) + "</td><td>"
+                + fix_number(qos['grp_nodes']) + "</td><td>"
+                + fix_number(qos['grp_submit_jobs']) + "</td><td>"
+                + minutes_to_delay(fix_number(qos['grp_wall'])) + "</td><td>"
+                + fix_number(qos['max_cpu_mins_pj']) + "</td><td>"
+                + fix_number(qos['max_cpu_run_mins_pu']) + "</td><td>"
+                + fix_number(qos['max_cpus_pj']) + "</td><td>"
+                + fix_number(qos['max_cpus_pu']) + "</td><td>"
+                + fix_number(qos['max_jobs_pu']) + "</td><td>"
+                + fix_number(qos['max_nodes_pj']) + "</td><td>"
+                + fix_number(qos['max_nodes_pu']) + "</td><td>"
+                + fix_number(qos['max_submit_jobs_pu']) + "</td><td>"
+                + qos['preempt_mode'] + "</td><td>"
+                + minutes_to_delay(fix_number(qos['grace_time'])) + "</td></tr>";
+          $("#qos-tbody").append(html_job);
+
+        }
+      );
+
+      $(".tablesorter").tablesorter();
     }
   );
 }
@@ -728,6 +938,10 @@ function factors(num) {
 }
 
 function best_factor(node_width, node_height, nb_cores) {
+
+  if (nb_cores == 0) {
+      return [ null, null ];
+  }
 
   var all_factors = factors(nb_cores)
   var goal_ratio = (node_width - 20) / (node_height - 4);
@@ -790,9 +1004,11 @@ function draw_node_cores(rack, racknode, slurmnode, allocated_cpus) {
   draw_rect(ctx, node_abs_x, node_abs_y, node_width, node_height, color_idle);
 
   /* draw status LED */
-  draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  if (state_color) {
+    draw_led(ctx, node_abs_x + 4, node_abs_y + 4, state_color);
+  }
 
-  var cores_nb = slurmnode.cpus;
+  var cores_nb = slurmnode ? slurmnode.cpus : 0;
   var cores_factor = best_factor(node_width, node_height, cores_nb);
   var cores_cols = cores_factor[1];
   var cores_rows = cores_factor[0];

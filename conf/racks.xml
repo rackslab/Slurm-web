@@ -17,181 +17,71 @@
   -->
 
   <nodetypes>
-    <nodetype id="m32x4321">
-      <model>Vendor A 32 x4321</model>
-      <height>1</height>
-      <width>0.5</width>
-    </nodetype>
-    <nodetype id="b43">
-      <model>Vendor B 43</model>
-      <height>2</height>
-      <width>1</width>
-    </nodetype>
+    <nodetype id="m32x4321"
+              model="Vendor A 32 x4321"
+              height="1"
+              width="0.5"
+              />
+    <nodetype id="b43"
+              model="Vendor B 43"
+              height="2"
+              width="1"
+              />
   </nodetypes>
 
   <racks>
 
     <!-- Rack A1 -->
     <rack id="A1">
-      <posx>0</posx>
-      <posy>0</posy>
       <nodes>
-        <!-- A1 down -->
-        <node id="cn001">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>3</posy>
-        </node>
-        <node id="cn002">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>3</posy>
-        </node>
-        <node id="cn003">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>4</posy>
-        </node>
-        <nodeset id="A1-down">
-          <range>cn[004-036]</range>
-          <type>m32x4321</type>
-        </nodeset>
-        <!-- A1 top -->
-        <node id="cn037">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>23</posy>
-        </node>
-        <node id="cn038">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>23</posy>
-        </node>
-        <node id="cn039">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>24</posy>
-        </node>
-        <nodeset id="A1-top">
-          <range>cn[040-072]</range>
-          <type>m32x4321</type>
-        </nodeset>
+        <nodeset id="cn[001-036]"
+                 type="m32x4321"
+                 posx="0"
+                 posy="3" />
+
+        <nodeset id="cn[037-072]"
+                 type="m32x4321"
+                 posx="0"
+                 posy="23" />
       </nodes>
     </rack>
 
-    <!-- Rack C4 -->
-    <rack id="C4">
-      <posx>1</posx>
-      <posy>0</posy>
+    <!-- Rack A2 -->
+    <rack id="A2">
       <nodes>
-        <!-- C4 down -->
-        <node id="cn505">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>3</posy>
-        </node>
-        <node id="cn506">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>3</posy>
-        </node>
-        <node id="cn507">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>4</posy>
-        </node>
+        <nodeset id="cn[500-506],cn900"
+                 type="m32x4321"
+                 posx="0"
+                 posy="42"
+                 draw="down" />
+        <node id="cn800"
+              type="m32x4321"
+              posx="0"
+              posy="1" />
+        <node id="cn801"
+              type="b43"
+              posx="0"
+              posy="3" />
+      </nodes>
+    </rack>
 
-        <node id="cn519">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>5</posy>
-        </node>
-        <node id="cn520">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>5</posy>
-        </node>
-        <node id="cn521">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>7</posy>
-        </node>
-        <node id="cn522">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>7</posy>
-        </node>
-        <node id="cn523">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>8</posy>
-        </node>
-        <node id="cn524">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>8</posy>
-        </node>
+    <!-- Rack A3 -->
+    <rack id="A3" posx="1" posy="0">
+      <nodes>
+        <nodeset id="cn[505-518]"
+                 type="m32x4321"
+                 posx="0"
+                 posy="2" />
 
-        <node id="cn508">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>9</posy>
-        </node>
-        <node id="cn509">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>9</posy>
-        </node>
-        <node id="cn510">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>10</posy>
-        </node>
-        <nodeset id="C4-down-middle">
-          <range>cn[511-518]</range>
-          <type>m32x4321</type>
-        </nodeset>
+        <nodeset id="cn[519-536]"
+                 type="m32x4321"
+                 posx="0"
+                 posy="10" />
 
-        <node id="cn525" newset="true">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>15</posy>
-        </node>
-        <node id="cn526">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>15</posy>
-        </node>
-        <node id="cn527">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>16</posy>
-        </node>
-        <nodeset id="C4-down-top">
-          <range>cn[528-536]</range>
-          <type>m32x4321</type>
-        </nodeset>
-
-        <node id="cn537">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>23</posy>
-        </node>
-        <node id="cn538">
-          <type>m32x4321</type>
-          <posx>0.5</posx>
-          <posy>23</posy>
-        </node>
-        <node id="cn539">
-          <type>m32x4321</type>
-          <posx>0</posx>
-          <posy>24</posy>
-        </node>
-        <nodeset id="C4-top">
-          <range>cn[540-572]</range>
-          <type>m32x4321</type>
-        </nodeset>
-
+        <nodeset id="cn[537-572]"
+                 type="m32x4321"
+                 posx="0"
+                 posy="23" />
       </nodes>
     </rack>
 

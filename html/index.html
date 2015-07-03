@@ -46,6 +46,8 @@
             <li><a id="menu-jobs" href="#">Jobs</a></li>
             <li><a id="menu-racks" href="#">Racks</a></li>
             <li><a id="menu-jobsmap" href="#">JobsMap</a></li>
+            <li><a id="menu-partitions" href="#">Partitions</a></li>
+            <li><a id="menu-qos" href="#">QOS</a></li>
             <li><a id="menu-reservations" href="#">Reservations</a></li>
           </ul>
         </div>
@@ -83,6 +85,14 @@
         <h1 class="page-header">Jobs Map</h1>
         <div id="jobsmap-cont" class="pane"></div>
       </div>
+      <div id="partitions" class="main">
+        <h1 class="page-header">Partitions</h1>
+        <div id="listpart" class="pane"></div>
+      </div>
+      <div id="qos" class="main">
+        <h1 class="page-header">QOS</h1>
+        <div id="listqos" class="pane"></div>
+      </div>
       <div id="reservations" class="main">
         <h1 class="page-header">Reservations</h1>
         <div id="listresv" class="pane"></div>
@@ -97,14 +107,18 @@
     <script type="text/javascript" src="/javascript/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascript/jquery-flot/jquery.flot.min.js"></script>
     <script type="text/javascript" src="/javascript/jquery-flot/jquery.flot.pie.min.js"></script>
+    <script type="text/javascript" src="/javascript/jquery-tablesorter/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="js/slurm-dashboard.js"></script>
     <script type="text/javascript">
       // show jobs by default
       $(document).ready(
         function() {
+          init_cluster();
           $("#menu-jobs").click(show_jobs);
           $("#menu-racks").click(show_racks);
           $("#menu-jobsmap").click(show_jobsmap);
+          $("#menu-partitions").click(show_partitions);
+          $("#menu-qos").click(show_qos);
           $("#menu-reservations").click(show_reservations);
           show_jobs();
         }

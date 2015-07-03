@@ -1,3 +1,23 @@
+slurm-web (1.1.0) unstable; urgency=low
+
+  [ Mehdi Dogguy ]
+  * Add a QOS view
+  * Add a Partitions view
+  * Hide 1/1/1970 dates
+  * Show cluster name in title
+  * Show time diff until/since job starts/started.
+  * Redirect logs to stderr
+  * Allow <nodes> to contain <node>s without <nodeset>s
+  * Add ability to sort on columns in tables
+  * Do not fail when node is not known to Slurm
+  * Simpler code to draw nodes
+
+  [ Rémi Palancher ]
+  * New slurm-web meta-package to install all slurm-web components at once
+  * Add binary version constraints on meta-pkg deps
+
+ -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Fri, 03 Jul 2015 14:34:04 +0200
+
 slurm-web (1.0.4+c7+1) calibre7; urgency=medium
 
   [ Mehdi Dogguy ]

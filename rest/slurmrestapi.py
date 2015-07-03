@@ -53,6 +53,7 @@ def get_nodes():
 def get_cluster():
     nodes = pyslurm.node().get()
     cluster = {}
+    cluster['name'] = pyslurm.config().get()['cluster_name']
     cluster['nodes'] = len(nodes.keys())
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
@@ -68,6 +69,16 @@ def get_racks():
 def get_reservations():
     reservations = pyslurm.reservation().get()
     return jsonify(reservations)
+
+@app.route('/partitions', methods=['GET'])
+def get_partitions():
+    partitions = pyslurm.partition().get()
+    return jsonify(partitions)
+
+@app.route('/qos', methods=['GET'])
+def get_qos():
+    qos = pyslurm.qos().get()
+    return jsonify(qos)
 
 class NodeType(object):
 
@@ -95,35 +106,6 @@ class Rack(object):
     def _sort_nodes(self):
         self.nodes.sort(key=lambda node: node.name)
 
-    def map_nodes(self):
-        self._sort_nodes()
-
-        # list of nodes widths in one row
-        nodes_posx_one_row = []
-
-        node_1st_row = None
-        node_2nd_row = None
-        node_id = 0
-        for node in self.nodes:
-            if not node_1st_row or node.setflag:
-                node_1st_row = node
-                node_2nd_row = None
-                node_id = 0
-                nodes_posx_one_row = [ node.posx ]
-            elif node.posy == node_1st_row.posy:
-                nodes_posx_one_row.append(node.posx)
-            elif not node_2nd_row:
-                node_2nd_row = node
-            elif node.posx == 0.0 and node.posy is not None:
-                node_1st_row = node
-                node_2nd_row = None
-                node_id = 0
-                nodes_posx_one_row = [ node.posx ]
-            elif node.posx is None and node.posy is None:
-                node.posx = nodes_posx_one_row[node_id % len(nodes_posx_one_row)]
-                node.posy = node_1st_row.posy + ((node_2nd_row.posy - node_1st_row.posy) * (node_id / len(nodes_posx_one_row)))
-            node_id += 1
-
     @staticmethod
     def rack2dict(rack):
         xrack = {}
@@ -145,14 +127,13 @@ class Rack(object):
 
 class Node(object):
 
-    def __init__(self, name, rack, nodetype, posx, posy, setflag=False):
+    def __init__(self, name, rack, nodetype, posx, posy):
 
         self.name = name
         self.rack = rack
         self.nodetype = nodetype
         self.posx = posx
         self.posy = posy
-        self.setflag = setflag
 
     def __repr__(self):
         noderepr = "%s (model: %s, posx: %f, posy %f)" % (self.name, self.nodetype.model, self.posx, self.posy)
@@ -185,42 +166,46 @@ def parse_racks():
     nodetypes_e = root.find('nodetypes').findall('nodetype')
     for nodetype_e in nodetypes_e:
         nodetype = NodeType(nodetype_e.get('id'),
-                            nodetype_e.find('model').text,
-                            float(nodetype_e.find('height').text),
-                            float(nodetype_e.find('width').text))
+                            nodetype_e.get('model'),
+                            float(nodetype_e.get('height')),
+                            float(nodetype_e.get('width')))
         nodetypes[nodetype.name] = nodetype
 
     racks = {}
     # parse racks with nodes
     racks_e = root.find('racks').findall('rack')
     for rack_e in racks_e:
-        rack = Rack(rack_e.get('id'),
-                    int(rack_e.find('posx').text),
-                    int(rack_e.find('posy').text))
+        posx = int(rack_e.get('posx')) if rack_e.get('posx') else 0
+        posy = int(rack_e.get('posy')) if rack_e.get('posy') else 0
+        rack = Rack(rack_e.get('id'), posx, posy)
         racks[rack.name] = rack
 
-        # parse nodes with positions
+        # parse nodes
         nodes_e = rack_e.find('nodes').findall('node')
         for node_e in nodes_e:
-            nodetype = nodetypes[node_e.find('type').text]
-            setflag = node_e.get('newset') == 'true'
-            node = Node(node_e.get('id'), rack, nodetype,
-                        float(node_e.find('posx').text),
-                        float(node_e.find('posy').text),
-                        setflag)
+            nodetype = nodetypes[node_e.get('type')]
+            posx = float(node_e.get('posx')) if node_e.get('posx') else 0
+            posy = float(node_e.get('posy')) if node_e.get('posy') else 0
+            node = Node(node_e.get('id'), rack, nodetype, posx, posy)
             # add node to rack
             rack.nodes.append(node)
 
-        # parse nodesets w/o positions
+        # parse nodesets
         nodesets_e = rack_e.find('nodes').findall('nodeset')
         for nodeset_e in nodesets_e:
-            nodeset = NodeSet(nodeset_e.find('range').text)
-            nodetype = nodetypes[nodeset_e.find('type').text]
+            nodeset = NodeSet(nodeset_e.get('id'))
+            draw_dir = 1 if not nodeset_e.get('draw') or nodeset_e.get('draw') == "up" else -1
+            nodetype = nodetypes[nodeset_e.get('type')]
+            cur_x = float(nodeset_e.get('posx')) if nodeset_e.get('posx') else 0
+            cur_y = float(nodeset_e.get('posy')) if nodeset_e.get('posy') else 0
             for xnode in nodeset:
-                node = Node(xnode, rack, nodetype, None, None)
+                node = Node(xnode, rack, nodetype, cur_x, cur_y)
                 rack.nodes.append(node)
-        # set positions for all nodes
-        rack.map_nodes()
+                cur_x += nodetype.width
+                if cur_x == 1:
+                    cur_x = float(0)
+                    cur_y += nodetype.height * draw_dir
+
     return Rack.racks2dict(racks)
 
 def fill_job_user(job):
