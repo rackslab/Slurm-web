@@ -1,4 +1,4 @@
-slurm-web (1.1.0) UNRELEASED; urgency=low
+slurm-web (1.1.0) unstable; urgency=low
 
   [ Mehdi Dogguy ]
   * Add a QOS view
@@ -19,7 +19,7 @@ slurm-web (1.1.0) UNRELEASED; urgency=low
   * Round cores height/width to avoid blured rects
   * Slightly alter cores positions inside nodes
 
- -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Fri, 03 Jul 2015 14:15:26 +0200
+ -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Fri, 03 Jul 2015 14:34:04 +0200
 
 slurm-web (1.0.1) UNRELEASED; urgency=low
 
