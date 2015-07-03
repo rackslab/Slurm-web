@@ -117,7 +117,7 @@ String.prototype.capitalize = function() {
 }
 
 function minutes_to_delay(minutes) {
-    if (minutes == '-') return minutes;
+    if (isNaN(minutes)) return minutes;
 
     var days = Math.floor(minutes / 1440);
     minutes -= days * 1440;
