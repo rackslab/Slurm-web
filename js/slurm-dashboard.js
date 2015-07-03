@@ -129,24 +129,26 @@ function minutes_to_delay(minutes) {
         + (minutes == 0 ? '' : minutes + 'm');
 }
 
-function get_time_diff(datetime, datetime2) {
-    var datetime = new Date(datetime).getTime();
-    var refdate = (typeof datetime2 === 'undefined') ? new Date().getTime() : new Date(datetime2).getTime();
+function is_dst() {
+    var _t = new Date();
+    var jan = new Date(_t.getFullYear(),0,1);
+    var jul = new Date(_t.getFullYear(),6,1);
+    return Math.min(jan.getTimezoneOffset(),jul.getTimezoneOffset()) == _t.getTimezoneOffset();
+}
+
+function get_time_diff(datetime) {
+    var _date = new Date().getTime();
 
     if(isNaN(datetime)) {
       return "";
     }
 
-    if (datetime < refdate) {
-      var milisec_diff = refdate - datetime;
-    } else {
-      var milisec_diff = datetime - refdate;
-    }
+    var diff = Math.abs(datetime - _date) - (is_dst() ? 60 * 60 * 1000 : 0);
 
-    var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
-    var date_diff = new Date(milisec_diff);
+    var days = Math.floor(diff / 1000 / 60 / (60 * 24));
+    var date_diff = new Date(diff);
 
-    return (days == 0 ? "" : days + "d ")
+    return (days <= 0 ? "" : days + "d ")
         + (date_diff.getHours() == 0 ? "" : date_diff.getHours() + "h ")
         + (date_diff.getMinutes() == 0 ? "" : date_diff.getMinutes() + "min ")
         + (date_diff.getSeconds() == 0 ? "" : date_diff.getSeconds() + "s");
