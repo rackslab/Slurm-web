@@ -1,3 +1,9 @@
+slurm-web (1.1.1~bpo60+1) calibre7; urgency=low
+
+  * Backport to Calibre 7.
+
+ -- Mehdi Dogguy <mehdi.dogguy@edf.fr>  Mon, 06 Jul 2015 17:15:46 +0200
+
 slurm-web (1.1.1) unstable; urgency=low
 
   * Handle DST (Daylight Saving Time)
