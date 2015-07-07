@@ -19,6 +19,8 @@ With these links, you can navigate to 4 differents views:
 * the Jobs view
 * the Racks view
 * the JobsMap view
+* the Partitions view
+* the QOS view
 * the Reservations view
 
 All these views are described in details in the following sections.
@@ -148,6 +150,51 @@ same color.
 
 Again, a small legendary in a frame at the top right corner gives a recap of
 these information.
+
+Partitions view
+---------------
+
+The Partitions view give the list of configured partitions in the supercomputer:
+
+.. figure:: img/screenshot_partitions.*
+
+The table has the following columns:
+
+#. Name
+#. Default (Yes or No)
+#. Nodes
+#. Number of Nodes
+#. Number of CPUs
+
+QOS view
+--------
+
+The QOS view gives the list of configured QOSes in the supercomputer:
+
+.. figure:: img/screenshot_qos.*
+
+The table has the following columns:
+
+#. Name
+#. Priority
+#. Walltime
+#. Grp CPUs mins
+#. Grp CPUs min in Running state
+#. Grp CPUs
+#. Grp Memory
+#. Grp Nodes
+#. Grp Submitted Jobs
+#. Grp Walltime
+#. Max CPU mins per Job
+#. Max CPU mins for Running jobs
+#. Max CPUs per Job
+#. Max CPUs per User
+#. Max Jobs per User
+#. Max Nodes per Job
+#. Max Nodes per User
+#. Max Submitted Jobs per User
+#. Preemption Mode
+#. Preemption Grace Time
 
 Reservations view
 -----------------
