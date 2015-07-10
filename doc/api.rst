@@ -33,9 +33,23 @@ One job details:
 
 ``/job/<id>``
 
+Partitions
+----------
+
+List of all partitions:
+
+``/partitions``
+
+QOS
+---
+
+List of all QOS:
+
+``/qos``
+
 Reservations
 ------------
 
-List of all reservations
+List of all reservations:
 
 ``/reservations``
