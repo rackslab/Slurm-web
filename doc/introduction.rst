@@ -42,5 +42,20 @@ JobsMap view:
 .. image:: img/screenshot_jobsmap.*
    :width: 800px
 
+Partitions view:
+
+.. image:: img/screenshot_partitions.*
+   :width: 800px
+
+QOS view:
+
+.. image:: img/screenshot_qos.*
+   :width: 800px
+
+Reservation view:
+
+.. image:: img/screenshot_resv_view.*
+   :width: 800px
+
 Please refer to :doc:`software architecture </architecture>` section for more
 detailed description of components inner working and integration.

@@ -110,64 +110,26 @@ format. Here is an example of file:
     <rackmap>
 
       <nodetypes>
-        <nodetype id="m32x4321">
-          <model>Vendor A 32 x4321</model>
-          <height>1</height>
-          <width>0.5</width>
-        </nodetype>
-        <nodetype id="b43">
-          <model>Vendor B 43</model>
-          <height>2</height>
-          <width>1</width>
-        </nodetype>
+        <nodetype id="m32x4321" model="Vendor A 32 x4321" height="1" width="0.5" />
+        <nodetype id="b43" model="Vendor B 43" height="2" width="1" />
       </nodetypes>
 
       <racks>
 
-        <rack id="rack1">
-          <posx>0</posx>
-          <posy>0</posy>
+        <rack id="rack1" posx="0" posy="0">
           <nodes>
-            <node id="cn001">
-              <type>m32x4321</type>
-              <posx>0</posx>
-              <posy>3</posy>
-            </node>
-            <node id="cn002">
-              <type>m32x4321</type>
-              <posx>0.5</posx>
-              <posy>3</posy>
-            </node>
-            <node id="cn003">
-              <type>m32x4321</type>
-              <posx>0</posx>
-              <posy>4</posy>
-            </node>
-            <nodeset id="A1-down">
-              <range>cn[004-072]</range>
-              <type>m32x4321</type>
-            </nodeset>
+            <node id="cn001" type="m32x4321" posx="0" posy="3" />
+            <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
+            <node id="cn003" type="m32x4321" posx="0" posy="4" />
+
+            <nodeset id="cn[004-072]" type="m32x4321" />
           </nodes>
         </rack>
 
-        <rack id="rack2">
-          <posx>1</posx>
-          <posy>0</posy>
+        <rack id="rack2" posx="1">
           <nodes>
-            <node id="cn100">
-              <type>m32x4321</type>
-              <posx>0</posx>
-              <posy>3</posy>
-            </node>
-            <node id="cn101">
-              <type>m32x4321</type>
-              <posx>0</posx>
-              <posy>5</posy>
-            </node>
-            <nodeset id="A1-down">
-              <range>cn[002-021]</range>
-              <type>m32x4321</type>
-            </nodeset>
+            <node id="cn101" type="m32x4321" posx="0" posy="3" />
+            <nodeset id="cn[102-021]" type="m32x4321" posy="5" />
           </nodes>
         </rack>
 
@@ -181,77 +143,39 @@ The root element of the XML file ``<rackmap>``. This root element must contain
 The ``<nodetypes>`` element contains the description of all types of nodes with
 their models and sizes. Each type of node is described within a distinct
 ``<nodetype>`` element with a unique ID (ex: *m32x4321*). This ID will be later
-used as a reference of type for nodes. Each node type must have a ``<model>``
-whose content is free text, a ``<height>`` and a ``<width>`` whose values must
-be floats in U unit. For example, a node with a width of 0.5 uses half of rack
-width. With a height of 2, a node will uses 2 U in rack height.
+used as a reference of type for nodes. Each node type must have a
+``model`` attribute whose content is free text, a ``height`` and a ``width``
+whose values must be floats in U unit. For example, a node with a width of 0.5
+uses half of rack width. With a height of 2, a node will uses 2 U in rack height.
 
 The ``<racks>`` element contains the list of all racks composing the
 supercomputer, each one being described in a distinct ``<rack>`` element. Each
 rack element must have a unique ID which will be then used as rack name. A rack
-must have a position, within ``<posx>`` and ``<posy>`` elements. These elements
+must have a position, within ``posx`` and ``posy`` elements. These elements
 must be integer, they represent the rack position within a grid with all racks.
-Two racks cannot have the same positions.
+If ``posx`` and ``posy`` attributes are skipped, then we assume they are equal
+to ``0``. Two racks should not have the same positions.
 
-A rack contains a set of nodes within ``<nodes>`` element. To avoid useless
-explicit declaration of all nodes, and considering that most racks are composed
-with homogenous series of nodes, you can limit the declaration to only the first
-*row* of nodes plus the first node of the second row. Then, Slurm-web will be
-able to compute automatically the positions of the nodes in the following
-nodeset. Here is an example from *rack2* in the previous complete example:
-
-.. code-block:: xml
-
-    <node id="cn100">
-      <type>m32x4321</type>
-      <posx>0</posx>
-      <posy>3</posy>
-    </node>
-    <node id="cn101">
-      <type>m32x4321</type>
-      <posx>0</posx>
-      <posy>5</posy>
-    </node>
-    <nodeset id="A1-down">
-      <range>cn[002-021]</range>
-      <type>m32x4321</type>
-    </nodeset>
-
-The first row is composed of *cn100*. The first node of the second row is
-*cn101*. With the description, Slurm-web is able to calculate that *cn002*
-position is *x=0,y=7* then *cn003* is *x=0,y=9*, up to *cn021*.
-
-Here is another example from *rack1* in the previous complete example:
-
-.. code-block:: xml
-
-    <node id="cn001">
-      <type>m32x4321</type>
-      <posx>0</posx>
-      <posy>3</posy>
-    </node>
-    <node id="cn002">
-      <type>m32x4321</type>
-      <posx>0.5</posx>
-      <posy>3</posy>
-    </node>
-    <node id="cn003">
-      <type>m32x4321</type>
-      <posx>0</posx>
-      <posy>4</posy>
-    </node>
-    <nodeset id="A1-down">
-      <range>cn[004-072]</range>
-      <type>m32x4321</type>
-    </nodeset>
-
-The first row is composed of *cn001* and *cn002* since they have the same
-``<posy>`` at 3. The first node of the second row is *cn003*. Then, Slurm-web
-is able to calculate that position of *cn004* is *x=0.5,y=4*, *cn005* is
-*x=0,y=5*, etc.
+A rack contains a set of nodes within ``<nodes>`` element as shown in
+the previous example. As usual, ``posx`` and ``posy`` attributes are assumed
+to be equal to ``0`` if missing. Besides, ``<nodeset>`` elements can have
+an attribute ``draw`` which will tell in which direction Slurm-Web
+will draw the nodes in the rack (``up`` or ``down``). When missing, it is
+set to ``up``.
 
 Once you have completely described all the racks and nodes composing your
 supercomputer, you can check the file format by validating it against the
 provided DTD file with the following command::
 
     xmllint --valid --noout /etc/slurm-web/racks.xml
+
+User running the REST API
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the user running the REST API is set to ``www-data`` in
+``/etc/apache2/conf-available/slurm-web-restapi.conf``. If some
+resources in your Slurm cluster are accessible to only some of your
+users, then Slurm-Web won't show them. Using a user with enough
+credentials will fix the problem. Usually, setting the user to ``slurm``
+(see *slurm.conf*) is enough.
+
