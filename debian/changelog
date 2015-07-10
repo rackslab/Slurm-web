@@ -1,3 +1,13 @@
+slurm-web (1.1.2) unstable; urgency=medium
+
+  [ Mehdi Dogguy ]
+  * Update documentation with new features of 1.1
+
+  [ Rémi Palancher ]
+  * Fix screenshot thumbnails in html doc
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 10 Jul 2015 14:41:06 +0200
+
 slurm-web (1.1.1) unstable; urgency=low
 
   * Handle DST (Daylight Saving Time)
