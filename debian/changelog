@@ -1,7 +1,13 @@
+slurm-web (1.1.3) UNRELEASED; urgency=low
+
+  * Add missing qos/partitions calls in reference API doc 
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 10 Jul 2015 15:07:36 +0200
+
 slurm-web (1.1.2) unstable; urgency=medium
 
   [ Mehdi Dogguy ]
-  * Update documentation with new features of 1.1
+  * Update documentation with new features of 1.1 (Fixes #41).
 
   [ Rémi Palancher ]
   * Fix screenshot thumbnails in html doc
@@ -19,15 +25,15 @@ slurm-web (1.1.1) unstable; urgency=low
 slurm-web (1.1.0) unstable; urgency=low
 
   [ Mehdi Dogguy ]
-  * Add a QOS view
+  * Add a QOS view (Fixes #28)
   * Add a Partitions view
-  * Hide 1/1/1970 dates
-  * Show cluster name in title
-  * Show time diff until/since job starts/started.
+  * Hide 1/1/1970 dates (Fixes #39)
+  * Show cluster name in title (Fixes #37)
+  * Show time diff until/since job starts/started (Fixes #31).
   * Redirect logs to stderr
   * Allow <nodes> to contain <node>s without <nodeset>s
-  * Add ability to sort on columns in tables
-  * Do not fail when node is not known to Slurm
+  * Add ability to sort on columns in tables  (Fixes #35)
+  * Do not fail when node is not known to Slurm (Fixes #36)
   * Simpler code to draw nodes
 
   [ Rémi Palancher ]
