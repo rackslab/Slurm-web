@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dashboard usage &mdash; Slurm-web 1.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+        <link rel="next" title="Software architecture" href="architecture.html"/>
+        <link rel="prev" title="Installation Guide" href="installation.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Slurm-web</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Dashboard usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#jobs-view">Jobs view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#racks-view">Racks view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jobsmap-view">JobsMap view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#partitions-view">Partitions view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qos-view">QOS view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reservations-view">Reservations view</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs">Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Slurm-web</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Dashboard usage</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/usage.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="dashboard-usage">
+<h1>Dashboard usage<a class="headerlink" href="#dashboard-usage" title="Permalink to this headline">¶</a></h1>
+<p>To start using the web dashboard, first connect to this URL with a web browser
+(where <em>server</em> is the network hostname of the server hosting the dashboard):
+<a class="reference external" href="http://server/slurm/">http://server/slurm/</a></p>
+<p>You should then arrive to the homepage of the web dashboard. It is the Jobs view
+which looks like the following screenshot:</p>
+<div class="figure">
+<img alt="_images/screenshot_jobs_view.png" src="_images/screenshot_jobs_view.png" />
+</div>
+<p>In the top right corner of this web page, there is a menu with 4 entries:</p>
+<div class="figure">
+<img alt="_images/screenshot_menu.png" src="_images/screenshot_menu.png" />
+</div>
+<p>With these links, you can navigate to 4 differents views:</p>
+<ul class="simple">
+<li>the Jobs view</li>
+<li>the Racks view</li>
+<li>the JobsMap view</li>
+<li>the Partitions view</li>
+<li>the QOS view</li>
+<li>the Reservations view</li>
+</ul>
+<p>All these views are described in details in the following sections.</p>
+<div class="section" id="jobs-view">
+<h2>Jobs view<a class="headerlink" href="#jobs-view" title="Permalink to this headline">¶</a></h2>
+<p>The Jobs view gives an overview of all Slurm jobs currently running or pending
+on the supercomputer.</p>
+<p>At the top of this view, there are 5 pie charts. The biggest one on the left
+represents the part of cores allocated to jobs among the total number of cores
+available on the supercomputer.</p>
+<p>Then, from left to right, the 4 other pie charts represent:</p>
+<ol class="arabic simple">
+<li>The distribution of allocated nodes among partitions</li>
+<li>The distribution of allocated cores among partitions</li>
+<li>The distribution of allocated nodes among QOS</li>
+<li>The distribution of allocated cores among QOS</li>
+</ol>
+<p>Note that the last 4 charts only consider currently allocated resources. So, if
+there is only one running job on only one core, all these charts will show one
+partition and one QOS at 100%, even though the vast majority of the resources
+are idle. These diagrams become really relevant when you have multiple QOS and
+partitions and there are many running jobs.</p>
+<p>Then, after the charts, there is a table with one job per row. This is the list
+of all jobs running or pending on the system.</p>
+<p>There are 8 columns:</p>
+<ol class="arabic simple">
+<li>The Slurm job ID</li>
+<li>The name of the user with his/her login on the system between parenthesis</li>
+<li>The list of nodes that are allocated for this job, if any. If the job is
+pending or blocked for any reason, the field could be empty since Slurm may
+have not decided yet on which nodes this job will run.</li>
+<li>The current state of the job</li>
+<li>If the job is pending or blocked, the reason which explains why the job is
+in this state. If the job is running or completing, this field is empty.</li>
+<li>The start time of the job if the job is pending and Slurm is able to forecast
+its start time in the future.</li>
+<li>The QOS of the job</li>
+<li>The partition of the job</li>
+</ol>
+<p>To get more details about one specific job, you can click anywhere on the job
+row:</p>
+<div class="figure">
+<img alt="_images/screenshot_job_open_details.png" src="_images/screenshot_job_open_details.png" />
+</div>
+<p>Once clicked, an information box shows up with all details:</p>
+<div class="figure">
+<img alt="_images/screenshot_job_details.png" src="_images/screenshot_job_details.png" />
+</div>
+<p>The job ID is reminded in the title of this information box. Then, the fields
+are:</p>
+<ol class="arabic simple">
+<li>The name of the user, with his/her login between parenthesis</li>
+<li>The current state of the job</li>
+<li>If the job is pending or blocked, the reason which explains why the job is
+in this state. If the job is running or completing, this field is empty.</li>
+<li>The list of nodes that are allocated for this job, if any. If the job is
+pending or blocked for any reason, the field could be empty since Slurm may
+have not decided yet on which nodes this job will run. If the node list is
+not empty, the number of nodes is given between parenthesis.</li>
+<li>The number of requested (and eventually allocated) cores for the job</li>
+<li>The Slurm account used for this job</li>
+<li>The QOS of the job</li>
+<li>The partition of the job</li>
+<li>The exclusive flag whose value is <em>yes</em> or <em>no</em>, as requested by users at the
+job submission. If <em>yes</em>, the job get exclusive to resources on allocated
+nodes. That means that no other job could run on these nodes at the same time
+even if this job does not allocate all cores of these nodes.</li>
+<li>The command run in the batch step of the job. Generally, for batch jobs, this
+is a submission script.</li>
+<li>The start time of the job. If the job is pending or blocked, Slurm is not
+always able to forecast this start time in the future so this field may be
+empty.</li>
+<li>The elligible time which is the moment when this job was accepted in the
+scheduling queue of Slurm.</li>
+<li>The end time of the job. It could be empty if the job is not started yet or
+the walltime is not set.</li>
+<li>The time limit of the job, in minutes. It may be empty if infinite.</li>
+</ol>
+<p>You can close this box by clicking on the <em>Close</em> button:</p>
+<div class="figure">
+<img alt="_images/screenshot_job_close_details.png" src="_images/screenshot_job_close_details.png" />
+</div>
+</div>
+<div class="section" id="racks-view">
+<h2>Racks view<a class="headerlink" href="#racks-view" title="Permalink to this headline">¶</a></h2>
+<p>The Racks view shows the current status of all nodes in the supercomputer:</p>
+<div class="figure">
+<img alt="_images/screenshot_racks_view.png" src="_images/screenshot_racks_view.png" />
+</div>
+<p>The nodes are drawn in their corresponding racks, at their appropriate position
+and scaled size. Each node is a rectangle in the rack. The name of the node is
+written on the side of the rack.</p>
+<p>The small LED in the upper left corner of the node gives its general status. If
+the LED is green, the node is available to run jobs. If it is yellow, the node
+is alive but disable in Slurm (<em>drained</em> or <em>draining</em>). Finally, if the LED is
+red, the node is down according to Slurm.</p>
+<p>Then, the color of node rectangle depends upon current job allocations. If all
+the cores of the node are allocated, the color is dark blue. If only a subset
+of all cores of the node are allocated, the color is light blue. If the node is
+totally idle, the color stays grey.</p>
+<p>A small legendary in a frame at the top right corner gives a recap of these
+information.</p>
+</div>
+<div class="section" id="jobsmap-view">
+<h2>JobsMap view<a class="headerlink" href="#jobsmap-view" title="Permalink to this headline">¶</a></h2>
+<p>The JobMaps view gives more or less the same information then the Racks view
+with more details about cores allocation:</p>
+<div class="figure">
+<img alt="_images/screenshot_jobsmap_view.png" src="_images/screenshot_jobsmap_view.png" />
+</div>
+<p>All available CPU cores are drawn within the nodes, each core is a small
+rectangle. If a core is allocated to a job, the core is colored with a color
+depending on the job ID. All cores allocated to a job have the same color.
+However, note that due to limited number of colors, when there are a lot of
+running jobs, 2 cores allocated to 2 different jobs could potentially have the
+same color.</p>
+<p>Again, a small legendary in a frame at the top right corner gives a recap of
+these information.</p>
+</div>
+<div class="section" id="partitions-view">
+<h2>Partitions view<a class="headerlink" href="#partitions-view" title="Permalink to this headline">¶</a></h2>
+<p>The Partitions view give the list of configured partitions in the supercomputer:</p>
+<div class="figure">
+<img alt="_images/screenshot_partitions.png" src="_images/screenshot_partitions.png" />
+</div>
+<p>The table has the following columns:</p>
+<ol class="arabic simple">
+<li>Name</li>
+<li>Default (Yes or No)</li>
+<li>Nodes</li>
+<li>Number of Nodes</li>
+<li>Number of CPUs</li>
+</ol>
+</div>
+<div class="section" id="qos-view">
+<h2>QOS view<a class="headerlink" href="#qos-view" title="Permalink to this headline">¶</a></h2>
+<p>The QOS view gives the list of configured QOSes in the supercomputer:</p>
+<div class="figure">
+<img alt="_images/screenshot_qos.png" src="_images/screenshot_qos.png" />
+</div>
+<p>The table has the following columns:</p>
+<ol class="arabic simple">
+<li>Name</li>
+<li>Priority</li>
+<li>Walltime</li>
+<li>Grp CPUs mins</li>
+<li>Grp CPUs min in Running state</li>
+<li>Grp CPUs</li>
+<li>Grp Memory</li>
+<li>Grp Nodes</li>
+<li>Grp Submitted Jobs</li>
+<li>Grp Walltime</li>
+<li>Max CPU mins per Job</li>
+<li>Max CPU mins for Running jobs</li>
+<li>Max CPUs per Job</li>
+<li>Max CPUs per User</li>
+<li>Max Jobs per User</li>
+<li>Max Nodes per Job</li>
+<li>Max Nodes per User</li>
+<li>Max Submitted Jobs per User</li>
+<li>Preemption Mode</li>
+<li>Preemption Grace Time</li>
+</ol>
+</div>
+<div class="section" id="reservations-view">
+<h2>Reservations view<a class="headerlink" href="#reservations-view" title="Permalink to this headline">¶</a></h2>
+<p>The Reservations view gives an overview of current and future reservations set
+on the supercomputer:</p>
+<div class="figure">
+<img alt="_images/screenshot_resv_view.png" src="_images/screenshot_resv_view.png" />
+</div>
+<p>The table is composed of one row per reservation and 5 columns:</p>
+<ol class="arabic simple">
+<li>The reservation name</li>
+<li>The list of users allowed to submit jobs in this reservation</li>
+<li>The list of nodes allocated to this reservation</li>
+<li>The start time of this reservation</li>
+<li>The end time of this reservation</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Software architecture"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation Guide"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, EDF CCN-HPC.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
