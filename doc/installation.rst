@@ -179,3 +179,11 @@ users, then Slurm-Web won't show them. Using a user with enough
 credentials will fix the problem. Usually, setting the user to ``slurm``
 (see *slurm.conf*) is enough.
 
+Configure CORS for the REST API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can configure CORS by giving a list of allowed origins in the file
+``conf/restapi.conf``. This file will be copied in ``/etc/slurm-web`` directory
+during the installation.
+Otherwise, you can use another path by setting it in the env variable
+``RESTAPI_CONF``.

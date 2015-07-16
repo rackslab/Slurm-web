@@ -24,12 +24,29 @@ import xml.etree.ElementTree as ET
 import pwd
 from ClusterShell.NodeSet import NodeSet
 
+# for mocking json
+from mocks import mock, mocking
+
+# for CORS
+from cors import crossdomain
+from settings import origins
+
 app = Flask(__name__)
 
 uids = {} # cache of user login/names to avoid duplicate NSS resolutions
 
-@app.route('/jobs', methods=['GET'])
+
+@app.route('/version', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
+def version():
+    return "Slurm-web REST API v2.0"
+
+@app.route('/jobs', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_jobs():
+    if mocking:
+        return mock('jobs.json')
+
     jobs = pyslurm.job().get()
 
     # add login and username (additionally to UID) for each job
@@ -39,18 +56,30 @@ def get_jobs():
     return jsonify(jobs)
 
 @app.route('/job/<int:job_id>')
+@crossdomain(origin=origins)
 def show_job(job_id):
+    if mocking:
+        return mock('job.json')
+
     job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
     return jsonify(job)
 
-@app.route('/nodes', methods=['GET'])
+@app.route('/nodes', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_nodes():
+    if mocking:
+        return mock('nodes.json')
+
     nodes = pyslurm.node().get()
     return jsonify(nodes)
 
-@app.route('/cluster', methods=['GET'])
+@app.route('/cluster', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_cluster():
+    if mocking:
+        return mock('cluster.json')
+
     nodes = pyslurm.node().get()
     cluster = {}
     cluster['name'] = pyslurm.config().get()['cluster_name']
@@ -60,23 +89,39 @@ def get_cluster():
         cluster['cores'] += node['cpus']
     return jsonify(cluster)
 
-@app.route('/racks', methods=['GET'])
+@app.route('/racks', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_racks():
+    if mocking:
+        return mock('racks.json')
+
     racks = parse_racks()
     return jsonify(racks)
 
-@app.route('/reservations', methods=['GET'])
+@app.route('/reservations', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_reservations():
+    if mocking:
+        return mock('reservations.json')
+
     reservations = pyslurm.reservation().get()
     return jsonify(reservations)
 
-@app.route('/partitions', methods=['GET'])
+@app.route('/partitions', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_partitions():
+    if mocking:
+        return mock('reservations.json')
+
     partitions = pyslurm.partition().get()
     return jsonify(partitions)
 
-@app.route('/qos', methods=['GET'])
+@app.route('/qos', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
 def get_qos():
+    if mocking:
+        return mock('qos.json')
+
     qos = pyslurm.qos().get()
     return jsonify(qos)
 
