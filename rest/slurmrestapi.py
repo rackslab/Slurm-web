@@ -19,7 +19,9 @@
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
 from flask import Flask, jsonify
+
 import pyslurm
+
 import xml.etree.ElementTree as ET
 import pwd
 from ClusterShell.NodeSet import NodeSet
@@ -29,17 +31,20 @@ from mocks import mock, mocking
 
 # for CORS
 from cors import crossdomain
-from settings import origins
+from settings import settings
 
 app = Flask(__name__)
 
-uids = {} # cache of user login/names to avoid duplicate NSS resolutions
+uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
+
+origins = settings.get('cors', 'authorized_origins')
 
 
 @app.route('/version', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def version():
-    return "Slurm-web REST API v2.0"
+    return "Slurm-web REST API v%s" % settings.get('infos', 'version')
+
 
 @app.route('/jobs', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
@@ -55,6 +60,7 @@ def get_jobs():
 
     return jsonify(jobs)
 
+
 @app.route('/job/<int:job_id>')
 @crossdomain(origin=origins)
 def show_job(job_id):
@@ -65,6 +71,7 @@ def show_job(job_id):
     fill_job_user(job)
     return jsonify(job)
 
+
 @app.route('/nodes', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def get_nodes():
@@ -73,6 +80,7 @@ def get_nodes():
 
     nodes = pyslurm.node().get()
     return jsonify(nodes)
+
 
 @app.route('/cluster', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
@@ -89,6 +97,7 @@ def get_cluster():
         cluster['cores'] += node['cpus']
     return jsonify(cluster)
 
+
 @app.route('/racks', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def get_racks():
@@ -97,6 +106,7 @@ def get_racks():
 
     racks = parse_racks()
     return jsonify(racks)
+
 
 @app.route('/reservations', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
@@ -107,14 +117,16 @@ def get_reservations():
     reservations = pyslurm.reservation().get()
     return jsonify(reservations)
 
+
 @app.route('/partitions', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def get_partitions():
     if mocking:
-        return mock('reservations.json')
+        return mock('partitions.json')
 
     partitions = pyslurm.partition().get()
     return jsonify(partitions)
+
 
 @app.route('/qos', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
@@ -125,6 +137,7 @@ def get_qos():
     qos = pyslurm.qos().get()
     return jsonify(qos)
 
+
 class NodeType(object):
 
     def __init__(self, name, model, height, width):
@@ -133,17 +146,19 @@ class NodeType(object):
         self.height = height
         self.width = width
 
+
 class Rack(object):
 
     def __init__(self, name, posx, posy):
         self.name = name
         self.posx = posx
         self.posy = posy
-        self.nodes = [] # list of nodes in the rack
+        self.nodes = []  # list of nodes in the rack
 
     def __repr__(self):
 
-        rackrepr = "rack %s (posx: %d, posy: %d):\n" % (self.name, self.posx, self.posy)
+        rackrepr = "rack %s (posx: %d, posy: %d):\n" % (self.name, self.posx,
+                                                        self.posy)
         for node in self.nodes:
             rackrepr += " - %s\n" % (str(node))
         return rackrepr
@@ -170,6 +185,7 @@ class Rack(object):
             xracks[rack.name] = Rack.rack2dict(rack)
         return xracks
 
+
 class Node(object):
 
     def __init__(self, name, rack, nodetype, posx, posy):
@@ -181,7 +197,9 @@ class Node(object):
         self.posy = posy
 
     def __repr__(self):
-        noderepr = "%s (model: %s, posx: %f, posy %f)" % (self.name, self.nodetype.model, self.posx, self.posy)
+        noderepr = "%s (model: %s, posx: %f, posy %f)" % (self.name,
+                                                          self.nodetype.model,
+                                                          self.posx, self.posy)
         return str(noderepr)
 
     @staticmethod
@@ -195,12 +213,14 @@ class Node(object):
         xnode['width'] = node.nodetype.width
         return xnode
 
+
 def parse_racks():
 
     FILE = '/etc/slurm-web/racks.xml'
     try:
         tree = ET.parse(FILE)
     except ET.ParseError as error:
+        print error
         return None
 
     root = tree.getroot()
@@ -239,10 +259,15 @@ def parse_racks():
         nodesets_e = rack_e.find('nodes').findall('nodeset')
         for nodeset_e in nodesets_e:
             nodeset = NodeSet(nodeset_e.get('id'))
-            draw_dir = 1 if not nodeset_e.get('draw') or nodeset_e.get('draw') == "up" else -1
+            draw_dir = 1 if (not nodeset_e.get('draw') or
+                             nodeset_e.get('draw') == "up") else -1
             nodetype = nodetypes[nodeset_e.get('type')]
-            cur_x = float(nodeset_e.get('posx')) if nodeset_e.get('posx') else 0
-            cur_y = float(nodeset_e.get('posy')) if nodeset_e.get('posy') else 0
+            cur_x = float(
+                nodeset_e.get('posx')
+                ) if nodeset_e.get('posx') else 0
+            cur_y = float(
+                nodeset_e.get('posy')
+                ) if nodeset_e.get('posy') else 0
             for xnode in nodeset:
                 node = Node(xnode, rack, nodetype, cur_x, cur_y)
                 rack.nodes.append(node)
@@ -253,14 +278,16 @@ def parse_racks():
 
     return Rack.racks2dict(racks)
 
+
 def fill_job_user(job):
     uid = job['user_id']
     uid_s = str(uid)
-    if not uids.has_key(uid_s):
+    if uid_s not in uids:
         pw = pwd.getpwuid(uid)
         uids[uid_s] = {}
         uids[uid_s]['login'] = pw[0]
-        uids[uid_s]['username'] = pw[4].split(',')[0] # user name is the first part of gecos
+        # user name is the first part of gecos
+        uids[uid_s]['username'] = pw[4].split(',')[0]
     job['login'] = uids[uid_s]['login']
     job['username'] = uids[uid_s]['username']
 

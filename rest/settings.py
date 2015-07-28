@@ -25,12 +25,10 @@ import ConfigParser
 path = os.getenv('RESTAPI_CONF', '/etc/slurm-web/restapi.conf')
 
 default = {
-  'cors': {
-    'authorized_origins': ""
-  }
+    'cors': {
+        'authorized_origins': ""
+    }
 }
 
 settings = ConfigParser.ConfigParser(default)
 settings.read(path)
-
-origins = settings.get('cors', 'authorized_origins')
