@@ -3,8 +3,7 @@ import Radium from 'radium'
 import { PieChart } from 'react-d3'
 import * as config from './config'
 
-
-const debug = require('debug')('slurm-web:plots/Plots.js')
+// const debug = require('debug')('slurm-web:plots/Plots.js')
 
 const styles = {
   plotJobs: {
@@ -101,29 +100,7 @@ export default class Plots extends React.Component {
   }
 
   plotRendering (datas, options) {
-    // let colors = config.colors
-    //
-    // for (let i in datas)
-    //   datas[i].color = colors[i % colors.length]
-    //
-    // if (d3.select('#' + target + '-svg').empty()) {
-    //   let svg = d3
-    //     .select('#' + target)
-    //     .append('svg')
-    //     .attr('width', options.width)
-    //     .attr('height', options.height)
-    //     .attr('id', target + '-svg')
-    //
-    //   svg.append('g')
-    //
-    //   donut3d.draw(target + '-svg', datas,
-    //     options.width / 2, options.height / 2,
-    //     options.width * 0.4, options.height * 0.3, 20, 0)
-    // } else
-    //   donut3d.transition(target + '-svg', datas, 100, 60, 20, 0)
     if (!datas) return null
-
-    debug(`plotRendering datas : ${datas}`, datas)
 
     return (
       <PieChart

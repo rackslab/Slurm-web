@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react'
+import Modal from 'react-modal'
 import Radium from 'radium'
-// import RestAPIJobs from '../restAPI/Jobs'
 import { fetchOnUpdate } from '../../decorators'
 import Table from '../elements/table/Table'
 import Plots from '../elements/plots/Plots'
-import { showModalJob, getTimeDiff, maxNodesLen } from '../../utils/utils'
+import JobModal from '../elements/JobModal'
+import { getTimeDiff, maxNodesLen } from '../../utils/utils'
 
+const debug = require('debug')('slurm-web:Jobs.js')
 
 const styles = {
   base: {
@@ -87,7 +89,13 @@ const CONFIG = {
   }
 }
 
-@fetchOnUpdate([], (params, actions) => {
+@fetchOnUpdate(['jobId'], (params, actions) => {
+  debug('@fetchOnUpdate params', params, actions, this)
+  const { jobId } = params
+
+  if (jobId)
+    actions.fetchJob({ jobId })
+
   actions.fetchJobs()
   actions.fetchCluster()
 })
@@ -101,10 +109,6 @@ export default class Jobs extends React.Component {
   // others
   // render@
 
-  constructor (props, context) {
-    super(props, context)
-  }
-
   static propTypes = {
     children: PropTypes.any,
     dispatch: PropTypes.func.isRequired,
@@ -112,11 +116,24 @@ export default class Jobs extends React.Component {
     restAPI: PropTypes.object
   }
 
-  handleRowClick (data) {
-    showModalJob(data.id)
+  constructor (props, context) {
+    super(props, context)
   }
 
-  comp
+  handleRowClick (job) {
+    let appElement = document.getElementById('modal-job')
+    Modal.setAppElement(appElement)
+    Modal.injectCSS()
+
+    let closeModal = () => {
+      React.render(<JobModal isOpen={false}/>, appElement)
+    }
+
+    React.render(
+      <JobModal job={job} isOpen={true} closeModal={closeModal}/>,
+      appElement
+    )
+  }
 
   render () {
     const { restAPI: { jobs, cluster } } = this.props
@@ -138,6 +155,8 @@ export default class Jobs extends React.Component {
           config={CONFIG}
           onRowClick={this.handleRowClick}
         />
+
+        <div id='modal-job'></div>
       </div>
     )
   }

@@ -13,7 +13,6 @@ export default class Table extends React.Component {
   }
 
   render () {
-
     const { config, datas, onRowClick } = this.props
 
     let rows = datas.map( (data) => {
@@ -21,17 +20,16 @@ export default class Table extends React.Component {
         <Row
           datas={data}
           config={config}
-          onClick={onRowClick}
-        />)
+          onClick={onRowClick} />
+      )
     })
 
     let columns = config.columns.map( (column) => {
       return column.name
     })
 
-
     return (
-      <table cellSpacing='0' className='table table-striped tablesorter'>
+      <table cellSpacing='0' className='table table-striped'>
         <thead
           id={config.ids.thead.self}
           className={config.classnames.thead.self}
@@ -39,8 +37,7 @@ export default class Table extends React.Component {
           <Row
             datas={columns}
             config={config}
-            header={true}
-          />
+            header={true} />
         </thead>
         <tbody
           id={config.ids.tbody.self}

@@ -1,5 +1,4 @@
 import 'whatwg-fetch'
-// import parseLinkHeader from 'parse-link-header'
 import * as constants from '../constants'
 
 const REST_URI = constants.REST_URI
@@ -12,8 +11,6 @@ const REST_QOS = `${REST_URI}/qos`
 const REST_RESERVATIONS = `${REST_URI}/reservations`
 
 export function fetchJobs () {
-  // const { username } = options
-  console.log('Executing fetchJobs()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_JOBS)
@@ -25,8 +22,8 @@ export function fetchJobs () {
   }
 }
 
+
 export function fetchCluster () {
-  console.log('Executing fetchCluster()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_CLUSTER)
@@ -39,7 +36,6 @@ export function fetchCluster () {
 }
 
 export function fetchRacks () {
-  console.log('Executing fetchRacks()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_RACKS)
@@ -52,7 +48,6 @@ export function fetchRacks () {
 }
 
 export function fetchNodes () {
-  console.log('Executing fetchNodes()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_NODES)
@@ -65,7 +60,6 @@ export function fetchNodes () {
 }
 
 export function fetchPartitions () {
-  console.log('Executing fetchPartitions()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_PARTITIONS)
@@ -78,7 +72,6 @@ export function fetchPartitions () {
 }
 
 export function fetchQOS () {
-  console.log('Executing fetchQOS()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_QOS)
@@ -91,7 +84,6 @@ export function fetchQOS () {
 }
 
 export function fetchReservations () {
-  console.log('Executing fetchReservations()...')
   return dispatch => {
     // TODO: handle errors
     fetch(REST_RESERVATIONS)

@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react'
-// import classnames from 'classnames'
 import Menu from './Menu'
 import { connect } from 'redux/react'
 import { bindActionCreators } from 'redux'
 import * as restAPIActions from '../actions/restAPI'
-import JobModal from './elements/JobModal'
 
 
 @connect(state => ({
@@ -30,8 +28,6 @@ export default class Application extends React.Component {
         <Menu/>
 
         <div id='main' className='container-fluid'>
-
-          <JobModal />
 
           {/* this will render the child routes */}
           {this.props.children &&

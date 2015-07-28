@@ -13,7 +13,7 @@ export const bigPlot = {
 }
 
 export const smallPlot = {
-  'width': 230,
+  'width': '170',
   'height': 200,
-  'radius': 50
+  'radius': 60
 }

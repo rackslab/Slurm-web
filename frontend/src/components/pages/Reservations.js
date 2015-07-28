@@ -1,10 +1,7 @@
 import React, { PropTypes } from 'react'
 import Radium from 'radium'
-// import RestAPIJobs from '../restAPI/Jobs'
 import { fetchOnUpdate } from '../../decorators'
 import Table from '../elements/table/Table'
-// import { fixNumber, minutesToDelay } from '../../utils/utils'
-
 
 const styles = {
   base: {
@@ -13,7 +10,6 @@ const styles = {
   jobs: {}
 }
 
-// TableSorter Config
 const CONFIG = {
   columns: [
     { id: 'id', name: 'Name' },
@@ -51,15 +47,12 @@ const CONFIG = {
   }
 }
 
+
 @fetchOnUpdate([], (params, actions) => {
   actions.fetchReservations()
 })
 @Radium
 export default class Partitions extends React.Component {
-
-  constructor (props, context) {
-    super(props, context)
-  }
 
   static propTypes = {
     children: PropTypes.any,
@@ -83,8 +76,7 @@ export default class Partitions extends React.Component {
 
         <Table
           datas={datas}
-          config={CONFIG}
-        />
+          config={CONFIG} />
       </div>
     )
   }

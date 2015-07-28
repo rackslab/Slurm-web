@@ -13,7 +13,6 @@ export default class Row extends React.Component {
   }
 
   render () {
-
     const { config, datas, header } = this.props
 
     let cells = header ? datas.map( (data) => {
@@ -50,19 +49,13 @@ export default class Row extends React.Component {
     return (
       <tr
         id={
-          header ?
-          config.ids.thead.tr(datas) :
-          config.ids.tbody.tr(datas)
+          header ? config.ids.thead.tr(datas) : config.ids.tbody.tr(datas)
         }
         className={
-          header ?
-          config.classnames.thead.tr :
-          config.classnames.tbody.tr
+          header ? config.classnames.thead.tr : config.classnames.tbody.tr
         }
         onClick={
-          this.props.onClick ?
-          this.props.onClick.bind(this, datas) :
-          undefined
+          this.props.onClick ? this.props.onClick.bind(this, datas) : undefined
         }
       >
         { cells }

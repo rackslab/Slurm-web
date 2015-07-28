@@ -31,6 +31,7 @@
     "radium": "^0.13.4",
     "react": "0.13.3",
     "react-d3": "^0.3.1",
+    "react-modal": "^0.3.0",
     "react-pure-render": "1.0.2",
     "react-router": "1.0.0-beta2",
     "redux": "0.12.0",

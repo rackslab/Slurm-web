@@ -13,7 +13,7 @@ export default class MenuListItem {
 
   render () {
     return (
-      <li className="pure-menu-item">
+      <li>
         {this.renderLink()}
       </li>
     )
@@ -22,13 +22,13 @@ export default class MenuListItem {
   renderLink () {
     if (this.props.isExternal)
       return (
-        <a href={this.props.link} target="_blank" className="pure-menu-link">
+        <a href={this.props.link} target="_blank">
           {this.props.text}
         </a>
       )
     else
       return (
-        <Link to={this.props.link} className="pure-menu-link">
+        <Link to={this.props.link}>
           {this.props.text}
         </Link>
       )

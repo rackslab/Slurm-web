@@ -16,7 +16,6 @@ export default class Legend extends React.Component {
   }
 
   render () {
-
     const styles = {
       position: 'absolute',
       top: '55px',

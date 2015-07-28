@@ -6,7 +6,6 @@ import Rack from '../elements/racks/Rack'
 import Legend from '../elements/racks/Legend'
 import * as config from '../elements/racks/config'
 
-
 const styles = {
   base: {
     padding: '20px 40px'
@@ -47,8 +46,7 @@ export default class Racks extends React.Component {
       return (
         <Rack
           rack={rack}
-          slurmnodes={slurmnodes}
-        />
+          slurmnodes={slurmnodes} />
       )
     })
   }

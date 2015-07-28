@@ -12,7 +12,6 @@ const styles = {
   jobs: {}
 }
 
-// TableSorter Config
 const CONFIG = {
   columns: [
     { id: 'id', name: 'Name' },
@@ -55,10 +54,6 @@ const CONFIG = {
 })
 @Radium
 export default class Partitions extends React.Component {
-
-  constructor (props, context) {
-    super(props, context)
-  }
 
   static propTypes = {
     children: PropTypes.any,

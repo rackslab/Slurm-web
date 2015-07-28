@@ -20,7 +20,7 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('app.css', { allChunks: true }),
     new HtmlWebpackPlugin({
-      title: 'Redux React Router Async Example',
+      title: 'Slurm HPC Dashboard',
       filename: 'index.html',
       template: 'index.template.html'
     })
