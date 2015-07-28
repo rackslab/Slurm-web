@@ -16,7 +16,6 @@ const styles = {
   jobs: {}
 }
 
-// TableSorter Config
 const CONFIG = {
   columns: [
     { id: 'id', name: '#' },
@@ -101,13 +100,6 @@ const CONFIG = {
 })
 @Radium
 export default class Jobs extends React.Component {
-
-  // statics
-  // constructor
-  // lifecycle methods (willmount...)
-  // handlers
-  // others
-  // render@
 
   static propTypes = {
     children: PropTypes.any,
