@@ -20,18 +20,13 @@ export const rackInsideHeight = rackNbU * rackUHeight
 // racks floor and feet are ignored
 export const rackHeight = rackInsideHeight + 2 * rackBorderWidth
 
-/*
- * Defines whether racks are drawn in one large canvas or in multiple canvas,
- * one per rack.
- */
-export const multiCanvas = true
-
 // TODO: compute based on racks dimensions
 // TODO: compute based on racks dimensions + nb racks / racks_per_row
-export const canvasWidth = multiCanvas ? 280 : 1480
-export const canvasHeight = multiCanvas ? rackHeight + 30 : 950
+export const canvasWidth = 280
+export const canvasHeight = rackHeight + 30
 export const canvasLegendHeight = 100
 export const canvasLegendWidth = 100
+export const canvasIdBase = 'cv_rackmap_'
 
 export const nodesPerRack = 72
 export const nodesPerRow = 2

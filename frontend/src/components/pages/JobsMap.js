@@ -1,17 +1,14 @@
 import React, { PropTypes } from 'react'
 import Radium from 'radium'
-// import RestAPIJobs from '../restAPI/Jobs'
 import { fetchOnUpdate } from '../../decorators'
 import Rack from '../elements/racks/Rack'
 import Legend from '../elements/racks/Legend'
-import * as config from '../elements/racks/config'
 
 
 const styles = {
   base: {
     padding: '20px 40px'
-  },
-  jobs: {}
+  }
 }
 
 
@@ -22,10 +19,6 @@ const styles = {
 })
 @Radium
 export default class JobsMap extends React.Component {
-
-  constructor (props, context) {
-    super(props, context)
-  }
 
   static propTypes = {
     children: PropTypes.any,
@@ -60,10 +53,6 @@ export default class JobsMap extends React.Component {
   loadJobsmap (jobs, racks, slurmnodes) {
 
     let allocatedCpus = this.buildAllocatedCpus(jobs)
-    // let nbRacks = Object.keys(racks).length
-
-    if (!config.multiCanvas)
-      console.log('Rack drawing not well implemented for multiCanvas "false"')
 
     let datas = []
     for (let key in racks) {
@@ -90,7 +79,7 @@ export default class JobsMap extends React.Component {
       jobsmap = this.loadJobsmap(jobs, racks, nodes)
 
     return (
-      <div id='racks' className='main' style={[ styles.base, styles.jobs ]}>
+      <div id='racks' className='main' style={[styles.base]}>
         <h1 className='page-header'>Jobs Map</h1>
         <div id='jobmap-cont' className='pane'>
           <Legend isJobsMap={true} />

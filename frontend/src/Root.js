@@ -40,7 +40,7 @@ export default class Root extends React.Component {
 function renderRoutes (history) {
   return (
     <Router history={history}>
-      <Route component={Application} >
+      <Route component={Application}>
         <Route path="jobs" component={Jobs} />
         <Route path="racks" component={Racks} />
         <Route path="jobsmap" component={JobsMap} />

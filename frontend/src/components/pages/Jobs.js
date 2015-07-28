@@ -7,13 +7,12 @@ import Plots from '../elements/plots/Plots'
 import JobModal from '../elements/JobModal'
 import { getTimeDiff, maxNodesLen } from '../../utils/utils'
 
-const debug = require('debug')('slurm-web:Jobs.js')
+// const debug = require('debug')('slurm-web:Jobs.js')
 
 const styles = {
   base: {
     padding: '20px 40px'
-  },
-  jobs: {}
+  }
 }
 
 const CONFIG = {
@@ -88,13 +87,8 @@ const CONFIG = {
   }
 }
 
-@fetchOnUpdate(['jobId'], (params, actions) => {
-  debug('@fetchOnUpdate params', params, actions, this)
-  const { jobId } = params
 
-  if (jobId)
-    actions.fetchJob({ jobId })
-
+@fetchOnUpdate([], (params, actions) => {
   actions.fetchJobs()
   actions.fetchCluster()
 })
@@ -106,10 +100,6 @@ export default class Jobs extends React.Component {
     dispatch: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     restAPI: PropTypes.object
-  }
-
-  constructor (props, context) {
-    super(props, context)
   }
 
   handleRowClick (job) {
@@ -137,7 +127,7 @@ export default class Jobs extends React.Component {
     }
 
     return (
-      <div id='jobs' className='main' style={[ styles.base, styles.jobs ]}>
+      <div id='jobs' className='main' style={[styles.base]}>
         <h1 className='page-header'>Jobs</h1>
 
         <Plots datas={datas} cluster={cluster} />

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import shallowEqualScalar from 'redux/lib/utils/shallowEqualScalar'
+import config from '../config'
 
 function mapParams (paramKeys, params) {
   return paramKeys.reduce((acc, key) => {
@@ -17,7 +18,15 @@ export default function fetchOnUpdate (paramKeys, fn) {
     }
 
     componentWillMount () {
-      fn(mapParams(paramKeys, this.props.params), this.props.actions)
+      let fnCall = () => {
+        fn(mapParams(paramKeys, this.props.params), this.props.actions)
+      }
+      fnCall()
+      this.intervalHandler = setInterval(fnCall, config.refresh.delay)
+    }
+
+    componentWillUnmount () {
+      clearInterval(this.intervalHandler)
     }
 
     componentDidUpdate (prevProps) {

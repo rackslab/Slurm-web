@@ -1,21 +1,13 @@
 import * as config from './config'
 import * as colors from './colors'
 
-function getRackAbsCoord (rack) {
-  let rackCoordX, rackCoordY, rackAbsX, rackAbsY
+function getRackAbsCoord () {
+  let rackCoordX = 0
+  let rackCoordY = 0
 
-  if (config.multiCanvas) {
-    rackCoordX = 0
-    rackCoordY = 0
-  } else {
-    rackCoordX = rack['posx']
-    rackCoordY = rack['posy']
-    //console.log('rack: ' + rack['name'] +
-    // ' -> ' + rackCoordX + '/' + rackCoordY)
-  }
-  rackAbsX = config.leftMargin +
+  let rackAbsX = config.leftMargin +
     (rackCoordX * (config.rackWidth + config.rackHorzMargin))
-  rackAbsY = config.topMargin +
+  let rackAbsY = config.topMargin +
     (rackCoordY * (config.rackHeight + config.rackVertMargin))
 
   return [ rackAbsX, rackAbsY ]
@@ -123,9 +115,7 @@ function drawLed (ctx, x, y, color) {
 }
 
 export function drawNode (rack, racknode, slurmnode) {
-  // console.log('Rack racknode(rack, racknode, slurmnode)',
-  //   rack, racknode, slurmnode)
-  let canvasId = config.multiCanvas ? 'cv_rackmap_' + rack.name : 'cv_rackmap'
+  let canvasId = config.canvasIdBase + rack.name
   let ctx = document.getElementById(canvasId).getContext('2d')
 
   /* relative coordinate of node inside the rack */
@@ -133,7 +123,7 @@ export function drawNode (rack, racknode, slurmnode) {
   let nodeCoordX = racknode.posx
   let nodeCoordY = racknode.posy
 
-  let rackAbs = getRackAbsCoord(rack)
+  let rackAbs = getRackAbsCoord()
   let rackAbsX = rackAbs[0]
   let rackAbsY = rackAbs[1]
 
@@ -183,7 +173,7 @@ export function drawNode (rack, racknode, slurmnode) {
 
 function drawNodeCores (rack, racknode, slurmnode, allocatedCpus) {
 
-  let canvasId = config.multiCanvas ? 'cv_rackmap_' + rack.name : 'cv_rackmap'
+  let canvasId = config.canvasIdBase + rack.name
   let ctx = document.getElementById(canvasId).getContext('2d')
 
   /* relative coordinate of node inside the rack */
@@ -380,9 +370,7 @@ export function drawRectBdr (ctx, x, y, width, height, borderWidth,
 
 export function drawRack (rack, slurmnodes, allocatedCpus) {
 
-  let canvasId = config.multiCanvas ?
-    'cv_rackmap_' + rack['name'] :
-    'cv_rackmap'
+  let canvasId = config.canvasIdBase + rack['name']
   let canvas = document.getElementById(canvasId)
 
   // set canvas dimensions here because you cannot get them
@@ -508,7 +496,7 @@ function pickJobColor (jobId) {
 }
 
 export function drawLegend (isJobMaps) {
-  let canvasId = config.multiCanvas ? 'cv_rackmap_legend' : 'cv_rackmap'
+  let canvasId = 'cv_rackmap_legend'
   let canvas = document.getElementById(canvasId)
 
   // set canvas dimensions here because you cannot get them
@@ -517,8 +505,8 @@ export function drawLegend (isJobMaps) {
   canvas.height = config.canvasLegendHeight
 
   let ctx = canvas.getContext('2d')
-  let legendX = config.multiCanvas ? 10 : config.canvasWidth - 80
-  let legendY = config.multiCanvas ? 15 : config.canvasHeight - 50
+  let legendX = 10
+  let legendY = 15
   let legendWidth = isJobMaps ? 90 : 98
   let legendHeight = isJobMaps ? 65 : 90
 

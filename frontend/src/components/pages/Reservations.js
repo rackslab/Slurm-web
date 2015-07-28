@@ -6,8 +6,7 @@ import Table from '../elements/table/Table'
 const styles = {
   base: {
     padding: '20px 40px'
-  },
-  jobs: {}
+  }
 }
 
 const CONFIG = {

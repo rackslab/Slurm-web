@@ -21,13 +21,7 @@ export default class Rack extends React.Component {
   render () {
 
     return (
-      <canvas
-        id={
-          config.multiCanvas ?
-          'cv_rackmap_' + this.props.rack.id :
-          'cv_rackmap'
-        }
-      />
+      <canvas id={config.canvasIdBase + this.props.rack.id} />
     )
   }
 }

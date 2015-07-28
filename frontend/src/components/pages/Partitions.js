@@ -1,15 +1,12 @@
 import React, { PropTypes } from 'react'
 import Radium from 'radium'
-// import RestAPIJobs from '../restAPI/Jobs'
 import { fetchOnUpdate } from '../../decorators'
 import Table from '../elements/table/Table'
-
 
 const styles = {
   base: {
     padding: '20px 40px'
-  },
-  jobs: {}
+  }
 }
 
 const CONFIG = {
