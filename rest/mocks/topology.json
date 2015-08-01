@@ -1,0 +1,460 @@
+{
+  "swibfstl34": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[307-324]"
+    ],
+    "name": "swibfstl34",
+    "level": 0
+  },
+  "swibfstl37": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[685-702]"
+    ],
+    "name": "swibfstl37",
+    "level": 0
+  },
+  "swibfstl40": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[739-756]"
+    ],
+    "name": "swibfstl40",
+    "level": 0
+  },
+  "swibfstl41": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[361-378]"
+    ],
+    "name": "swibfstl41",
+    "level": 0
+  },
+  "swibfstl42": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[379-396]"
+    ],
+    "name": "swibfstl42",
+    "level": 0
+  },
+  "swibfstl43": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[757-772]"
+    ],
+    "name": "swibfstl43",
+    "level": 0
+  },
+  "swibfstl44": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[773-776]"
+    ],
+    "name": "swibfstl44",
+    "level": 0
+  },
+  "swibfstl21": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[541-558]"
+    ],
+    "name": "swibfstl21",
+    "level": 0
+  },
+  "swibfstl46": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atbm[026-027]"
+    ],
+    "name": "swibfstl46",
+    "level": 0
+  },
+  "swibfstl04": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[055-072]"
+    ],
+    "name": "swibfstl04",
+    "level": 0
+  },
+  "swibfstl05": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[397-414]"
+    ],
+    "name": "swibfstl05",
+    "level": 0
+  },
+  "swibfstl06": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[415-432]"
+    ],
+    "name": "swibfstl06",
+    "level": 0
+  },
+  "swibfstl07": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[433-450]"
+    ],
+    "name": "swibfstl07",
+    "level": 0
+  },
+  "swibfstl26": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[235-252]"
+    ],
+    "name": "swibfstl26",
+    "level": 0
+  },
+  "swibfstl01": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[001-018]"
+    ],
+    "name": "swibfstl01",
+    "level": 0
+  },
+  "swibfstl02": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[019-036]"
+    ],
+    "name": "swibfstl02",
+    "level": 0
+  },
+  "swibfstl03": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[037-054]"
+    ],
+    "name": "swibfstl03",
+    "level": 0
+  },
+  "swibfstl28": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[271-288]"
+    ],
+    "name": "swibfstl28",
+    "level": 0
+  },
+  "swibfstl29": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[613-630]"
+    ],
+    "name": "swibfstl29",
+    "level": 0
+  },
+  "swibfstl08": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[451-468]"
+    ],
+    "name": "swibfstl08",
+    "level": 0
+  },
+  "swibfstl09": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[073-090]"
+    ],
+    "name": "swibfstl09",
+    "level": 0
+  },
+  "swibfstl22": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[559-576]"
+    ],
+    "name": "swibfstl22",
+    "level": 0
+  },
+  "swibfstl23": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[577-594]"
+    ],
+    "name": "swibfstl23",
+    "level": 0
+  },
+  "swibfstl20": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[199-216]"
+    ],
+    "name": "swibfstl20",
+    "level": 0
+  },
+  "swibfstl27": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[253-270]"
+    ],
+    "name": "swibfstl27",
+    "level": 0
+  },
+  "swibfstl19": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[181-198]"
+    ],
+    "name": "swibfstl19",
+    "level": 0
+  },
+  "swibfstl18": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[163-180]"
+    ],
+    "name": "swibfstl18",
+    "level": 0
+  },
+  "swibfstl52": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atbm[007-024]"
+    ],
+    "name": "swibfstl52",
+    "level": 0
+  },
+  "swibfstl51": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atbm[001-006]"
+    ],
+    "name": "swibfstl51",
+    "level": 0
+  },
+  "swibfstl13": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[469-486]"
+    ],
+    "name": "swibfstl13",
+    "level": 0
+  },
+  "swibfstl12": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[127-144]"
+    ],
+    "name": "swibfstl12",
+    "level": 0
+  },
+  "swibfstl11": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[109-126]"
+    ],
+    "name": "swibfstl11",
+    "level": 0
+  },
+  "swibfstl10": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[091-108]"
+    ],
+    "name": "swibfstl10",
+    "level": 0
+  },
+  "swibfstl17": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[145-162]"
+    ],
+    "name": "swibfstl17",
+    "level": 0
+  },
+  "swibfstl16": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[523-540]"
+    ],
+    "name": "swibfstl16",
+    "level": 0
+  },
+  "swibfstl15": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[505-522]"
+    ],
+    "name": "swibfstl15",
+    "level": 0
+  },
+  "swibfstl14": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[487-504]"
+    ],
+    "name": "swibfstl14",
+    "level": 0
+  },
+  "swibfstl31": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[649-666]"
+    ],
+    "name": "swibfstl31",
+    "level": 0
+  },
+  "swibfstl30": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[631-648]"
+    ],
+    "name": "swibfstl30",
+    "level": 0
+  },
+  "swibfstl33": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[289-306]"
+    ],
+    "name": "swibfstl33",
+    "level": 0
+  },
+  "swibfstl32": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[667-684]"
+    ],
+    "name": "swibfstl32",
+    "level": 0
+  },
+  "swibfstl35": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[325-342]"
+    ],
+    "name": "swibfstl35",
+    "level": 0
+  },
+  "swibcore01": {
+    "link_speed": 1,
+    "switches": [
+      "swibfstl[01-46",
+      "51-52]"
+    ],
+    "nodes": [
+      "atbm[001-027]",
+      "atcn[001-776]"
+    ],
+    "name": "swibcore01",
+    "level": 1
+  },
+  "swibcore02": {
+    "link_speed": 1,
+    "switches": [
+      "swibfstl[01-46",
+      "51-52]"
+    ],
+    "nodes": [
+      "atbm[001-027]",
+      "atcn[001-776]"
+    ],
+    "name": "swibcore02",
+    "level": 1
+  },
+  "swibfstl36": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[343-360]"
+    ],
+    "name": "swibfstl36",
+    "level": 0
+  },
+  "swibfstl39": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[721-738]"
+    ],
+    "name": "swibfstl39",
+    "level": 0
+  },
+  "swibfstl38": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[703-720]"
+    ],
+    "name": "swibfstl38",
+    "level": 0
+  },
+  "swibfstl25": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[217-234]"
+    ],
+    "name": "swibfstl25",
+    "level": 0
+  },
+  "swibfstl24": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atcn[595-612]"
+    ],
+    "name": "swibfstl24",
+    "level": 0
+  },
+  "swibfstl45": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": [
+      "atbm025"
+    ],
+    "name": "swibfstl45",
+    "level": 0
+  }
+}

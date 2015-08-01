@@ -3,6 +3,7 @@ import Radium from 'radium'
 import { fetchOnUpdate } from '../../decorators'
 import Table from '../elements/table/Table'
 import { fixNumber, minutesToDelay } from '../../utils/utils'
+import authenticatedComponent from '../../decorators/AuthenticatedComponent'
 
 const styles = {
   base: {
@@ -118,8 +119,9 @@ const CONFIG = {
 }
 
 
-@fetchOnUpdate([], (params, actions) => {
-  actions.fetchQOS()
+@authenticatedComponent
+@fetchOnUpdate([], (params, actions, props) => {
+  actions.fetchQOS(props)
 })
 @Radium
 export default class Partitions extends React.Component {

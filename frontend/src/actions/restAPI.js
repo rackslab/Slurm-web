@@ -10,10 +10,25 @@ const REST_PARTITIONS = `${REST_URI}/partitions`
 const REST_QOS = `${REST_URI}/qos`
 const REST_RESERVATIONS = `${REST_URI}/reservations`
 
-export function fetchJobs () {
+function fetchOptions (props) {
+  return {
+    method: 'POST',
+    crossDomain: true,
+    type: 'json',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      token: props.jwt
+    })
+  }
+}
+
+export function fetchJobs (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_JOBS)
+    fetch(REST_JOBS, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_JOBS,
@@ -23,10 +38,10 @@ export function fetchJobs () {
 }
 
 
-export function fetchCluster () {
+export function fetchCluster (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_CLUSTER)
+    fetch(REST_CLUSTER, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_CLUSTER,
@@ -35,10 +50,10 @@ export function fetchCluster () {
   }
 }
 
-export function fetchRacks () {
+export function fetchRacks (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_RACKS)
+    fetch(REST_RACKS, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_RACKS,
@@ -47,10 +62,10 @@ export function fetchRacks () {
   }
 }
 
-export function fetchNodes () {
+export function fetchNodes (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_NODES)
+    fetch(REST_NODES, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_NODES,
@@ -59,10 +74,10 @@ export function fetchNodes () {
   }
 }
 
-export function fetchPartitions () {
+export function fetchPartitions (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_PARTITIONS)
+    fetch(REST_PARTITIONS, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_PARTITIONS,
@@ -71,10 +86,10 @@ export function fetchPartitions () {
   }
 }
 
-export function fetchQOS () {
+export function fetchQOS (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_QOS)
+    fetch(REST_QOS, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_QOS,
@@ -83,10 +98,10 @@ export function fetchQOS () {
   }
 }
 
-export function fetchReservations () {
+export function fetchReservations (props) {
   return dispatch => {
     // TODO: handle errors
-    fetch(REST_RESERVATIONS)
+    fetch(REST_RESERVATIONS, fetchOptions(props))
     .then(res => res.json())
     .then(res => dispatch({
       type: constants.FETCH_RESERVATIONS,

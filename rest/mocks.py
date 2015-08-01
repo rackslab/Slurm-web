@@ -20,13 +20,11 @@
 
 import os
 import json
-from flask import jsonify
 
 mocks = os.path.join(os.path.dirname(__file__), 'mocks/')
 mocking = os.environ.get('REST_ENV') == 'development'
 
-def mock(filename):
-    with open(mocks + filename, 'r') as data_file:    
-        data = json.load(data_file)
 
-    return jsonify(data)
+def mock(filename):
+    with open(mocks + filename, 'r') as data_file:
+        return json.load(data_file)

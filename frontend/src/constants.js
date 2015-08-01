@@ -1,4 +1,6 @@
-export const REST_URI = 'http://server:8000/slurm-restapi'
+export const REST_URI = 'http://server.local:8000/slurm-restapi'
+export const LOGIN_URL = REST_URI + '/login'
+export const LOGOUT_URL = REST_URI + '/logout'
 
 export const FETCH_JOBS = 'FETCH_JOBS'
 export const FETCH_CLUSTER = 'FETCH_CLUSTER'

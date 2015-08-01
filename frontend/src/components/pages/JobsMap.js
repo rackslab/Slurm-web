@@ -3,6 +3,7 @@ import Radium from 'radium'
 import { fetchOnUpdate } from '../../decorators'
 import Rack from '../elements/racks/Rack'
 import Legend from '../elements/racks/Legend'
+import authenticatedComponent from '../../decorators/AuthenticatedComponent'
 
 
 const styles = {
@@ -12,10 +13,11 @@ const styles = {
 }
 
 
-@fetchOnUpdate([], (params, actions) => {
-  actions.fetchRacks()
-  actions.fetchJobs()
-  actions.fetchNodes()
+@authenticatedComponent
+@fetchOnUpdate([], function (params, actions, props) {
+  actions.fetchRacks(props)
+  actions.fetchJobs(props)
+  actions.fetchNodes(props)
 })
 @Radium
 export default class JobsMap extends React.Component {

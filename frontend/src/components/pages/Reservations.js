@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import Radium from 'radium'
 import { fetchOnUpdate } from '../../decorators'
 import Table from '../elements/table/Table'
+import authenticatedComponent from '../../decorators/AuthenticatedComponent'
 
 const styles = {
   base: {
@@ -47,8 +48,9 @@ const CONFIG = {
 }
 
 
-@fetchOnUpdate([], (params, actions) => {
-  actions.fetchReservations()
+@authenticatedComponent
+@fetchOnUpdate([], (params, actions, props) => {
+  actions.fetchReservations(props)
 })
 @Radium
 export default class Partitions extends React.Component {
