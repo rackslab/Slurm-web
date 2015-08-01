@@ -18,7 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session, request
+from flask.sessions import SecureCookieSessionInterface
 
 import pyslurm
 
@@ -33,7 +34,15 @@ from mocks import mock, mocking
 from cors import crossdomain
 from settings import settings
 
+# for authentication
+from auth import User, authentication_verify
+
 app = Flask(__name__)
+
+app.config['SESSION_COOKIE_DOMAIN'] = 'local.host:3000'
+app.config['SERVER_NAME'] = settings.get('config', 'server_name')
+app.secret_key = settings.get('config', 'secret_key')
+
 
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
@@ -46,8 +55,25 @@ def version():
     return "Slurm-web REST API v%s" % settings.get('infos', 'version')
 
 
-@app.route('/jobs', methods=['GET', 'OPTIONS'])
+@app.route('/login', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins)
+def login():
+    user = User(request.form['username'], request.form['password'])
+    token = user.generate_auth_token()
+    resp = {'id_token': token}
+    return jsonify(resp)
+
+
+@app.route('/logout', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
+def logout():
+    return "Logout"
+
+
+@app.route('/jobs', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_jobs():
     if mocking:
         return mock('jobs.json')
@@ -58,32 +84,38 @@ def get_jobs():
     for jobid, job in jobs.iteritems():
         fill_job_user(job)
 
-    return jsonify(jobs)
+    return jobs
 
 
-@app.route('/job/<int:job_id>')
-@crossdomain(origin=origins)
+@app.route('/job/<int:job_id>', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def show_job(job_id):
     if mocking:
         return mock('job.json')
 
     job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
-    return jsonify(job)
+    return job
 
 
-@app.route('/nodes', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/nodes', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_nodes():
     if mocking:
         return mock('nodes.json')
 
     nodes = pyslurm.node().get()
-    return jsonify(nodes)
+    return nodes
 
 
-@app.route('/cluster', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/cluster', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_cluster():
     if mocking:
         return mock('cluster.json')
@@ -95,47 +127,55 @@ def get_cluster():
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
         cluster['cores'] += node['cpus']
-    return jsonify(cluster)
+    return cluster
 
 
-@app.route('/racks', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/racks', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_racks():
     if mocking:
         return mock('racks.json')
 
     racks = parse_racks()
-    return jsonify(racks)
+    return racks
 
 
-@app.route('/reservations', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/reservations', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_reservations():
     if mocking:
         return mock('reservations.json')
 
     reservations = pyslurm.reservation().get()
-    return jsonify(reservations)
+    return reservations
 
 
-@app.route('/partitions', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/partitions', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_partitions():
     if mocking:
         return mock('partitions.json')
 
     partitions = pyslurm.partition().get()
-    return jsonify(partitions)
+    return partitions
 
 
-@app.route('/qos', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins)
+@app.route('/qos', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
 def get_qos():
     if mocking:
         return mock('qos.json')
 
     qos = pyslurm.qos().get()
-    return jsonify(qos)
+    return qos
 
 
 class NodeType(object):

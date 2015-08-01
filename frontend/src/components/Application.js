@@ -3,6 +3,8 @@ import Menu from './Menu'
 import { connect } from 'redux/react'
 import { bindActionCreators } from 'redux'
 import * as restAPIActions from '../actions/restAPI'
+import LoginStore from '../stores/LoginStore'
+import AuthService from '../services/AuthService'
 
 
 @connect(state => ({
@@ -17,6 +19,31 @@ export default class Application extends React.Component {
 
   constructor (props, context) {
     super(props, context)
+    this.state = this._getLoginState()
+  }
+
+  componentDidMount () {
+    this.changeListener = this._onChange.bind(this)
+    LoginStore.addChangeListener(this.changeListener)
+  }
+
+  componentWillUnmount () {
+    LoginStore.removeChangeListener(this.changeListener)
+  }
+
+  _getLoginState () {
+    return {
+      userLoggedIn: LoginStore.isLoggedIn()
+    }
+  }
+
+  _onChange () {
+    this.setState(this._getLoginState())
+  }
+
+  logout (e) {
+    e.preventDefault()
+    AuthService.logout()
   }
 
   render () {
@@ -25,7 +52,7 @@ export default class Application extends React.Component {
 
     return (
       <div id='layout'>
-        <Menu/>
+        <Menu userLoggedIn={this.state.userLoggedIn} logout={this.logout} />
 
         <div id='main' className='container-fluid'>
 

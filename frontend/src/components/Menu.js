@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import RadiumLink from './RadiumLink'
 import MenuListItem from './MenuListItem'
 import Radium from 'radium'
 
-// for packing logo
-require('../assets/images/logo.png')
+// for packing header
+require('../assets/images/header.png')
 
 const menuItems = [
   { text: 'Jobs', link: '/jobs' },
@@ -17,7 +17,7 @@ const menuItems = [
 
 const styles = {
   navbar: {
-    backgroundImage: 'url(/images/logo.png)',
+    backgroundImage: 'url(/images/header.png)',
     backgroundRepeat: 'no-repeat',
     border: 0
   },
@@ -31,7 +31,23 @@ const styles = {
 @Radium
 export default class Menu extends React.Component {
 
+  static propTypes = {
+    userLoggedIn: PropTypes.bool,
+    logout: PropTypes.func
+  }
+
   render () {
+
+    const loggingLink = this.props.userLoggedIn ? (
+      <li className="navbar-header">
+        <a href='#' onClick={this.props.logout}>
+          Logout
+        </a>
+      </li>
+    ) : (
+      <MenuListItem text='Login' link='/login' key='login' />
+    )
+
     return (
       <div id="menu" ref="menu" className="navbar navbar-inverse
       navbar-fixed-top" style={[styles.navbar]}>
@@ -48,6 +64,7 @@ export default class Menu extends React.Component {
           <div className="navbar-collapse collapse">
             <ul className="nav navbar-nav navbar-right">
               {menuItems.map((item, i) => <MenuListItem {...item} key={i} />)}
+              {loggingLink}
             </ul>
           </div>
         </div>

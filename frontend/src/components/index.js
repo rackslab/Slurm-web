@@ -1,5 +1,6 @@
 export { default as Application } from './Application'
 
+export { default as Login } from './pages/Login'
 export { default as Jobs } from './pages/Jobs'
 export { default as Racks } from './pages/Racks'
 export { default as JobsMap } from './pages/JobsMap'

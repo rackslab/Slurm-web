@@ -3,6 +3,7 @@ import Radium from 'radium'
 import { fetchOnUpdate } from '../../decorators'
 import Rack from '../elements/racks/Rack'
 import Legend from '../elements/racks/Legend'
+import authenticatedComponent from '../../decorators/AuthenticatedComponent'
 
 const styles = {
   base: {
@@ -10,10 +11,10 @@ const styles = {
   }
 }
 
-
-@fetchOnUpdate([], (params, actions) => {
-  actions.fetchRacks()
-  actions.fetchNodes()
+@authenticatedComponent
+@fetchOnUpdate([], (params, actions, props) => {
+  actions.fetchRacks(props)
+  actions.fetchNodes(props)
 })
 @Radium
 export default class Racks extends React.Component {

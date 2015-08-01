@@ -19,7 +19,8 @@ export default function fetchOnUpdate (paramKeys, fn) {
 
     componentWillMount () {
       let fnCall = () => {
-        fn(mapParams(paramKeys, this.props.params), this.props.actions)
+        fn(mapParams(paramKeys, this.props.params),
+          this.props.actions, this.props)
       }
       fnCall()
       this.intervalHandler = setInterval(fnCall, config.refresh.delay)
@@ -34,7 +35,7 @@ export default function fetchOnUpdate (paramKeys, fn) {
       const prevParams = mapParams(paramKeys, prevProps.params)
 
       if (!shallowEqualScalar(params, prevParams))
-        fn(params, this.props.actions)
+        fn(params, this.props.actions, this.props)
     }
 
     render () {

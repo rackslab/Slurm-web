@@ -6,6 +6,7 @@ import Table from '../elements/table/Table'
 import Plots from '../elements/plots/Plots'
 import JobModal from '../elements/JobModal'
 import { getTimeDiff, maxNodesLen } from '../../utils/utils'
+import authenticatedComponent from '../../decorators/AuthenticatedComponent'
 
 // const debug = require('debug')('slurm-web:Jobs.js')
 
@@ -87,10 +88,10 @@ const CONFIG = {
   }
 }
 
-
-@fetchOnUpdate([], (params, actions) => {
-  actions.fetchJobs()
-  actions.fetchCluster()
+@authenticatedComponent
+@fetchOnUpdate([], (params, actions, props) => {
+  actions.fetchJobs(props)
+  actions.fetchCluster(props)
 })
 @Radium
 export default class Jobs extends React.Component {
