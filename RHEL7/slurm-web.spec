@@ -42,8 +42,6 @@ Requires:   python-pyslurm
 The role of the API is to serve raw runtime data about a system (typically a supercomputer) running Slurm. All data are delivered in common and standard JSON format. This backend API is developed in Python programming language.
 
 %prep
-tar -xvf $RPM_SOURCE_DIR/slurm-web.tar.gz
-cd slurm-web
 
 %build
 
