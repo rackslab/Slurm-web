@@ -1,11 +1,19 @@
-define(['jquery', 'text!config.json', 'token'], function ($, config, token) {
+define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token) {
   config = JSON.parse(config);
 
   return function () {
-    var self = this;
+    this.setCluster = function (cluster) {
+      this.cluster = cluster;
+    };
+
+    this.getCluster = function () {
+      return this.cluster;
+    };
+
     var options = {
       type: 'POST',
       dataType: 'json',
+      async: false,
       crossDomain: true,
       headers: {
         'Accept': 'application/json',
@@ -20,18 +28,11 @@ define(['jquery', 'text!config.json', 'token'], function ($, config, token) {
       name: ''
     };
 
+    var self = this;
     $.ajax(config.apiURL + config.apiPath + '/cluster', options)
       .success(function (cluster) {
         self.setCluster(cluster);
       });
-
-    this.setCluster = function (cluster) {
-      this.cluster = cluster;
-    };
-
-    this.getCluster = function () {
-      return this.cluster;
-    };
 
     return this;
   };

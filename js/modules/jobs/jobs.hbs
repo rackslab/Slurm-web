@@ -3,38 +3,38 @@
     <h1 class="page-header">
       Jobs
     </h1>
-    <div id='alloc-cores' class='col-xs-6 col-sm-4 placeholder'>
+    <div id='alloc-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
       <div class='plot-sub-div'>
-        <div id='plot-alloc-cores' class='plot-div'></div>
+        <div id='plot-alloc-cores' class='plot-div-small'></div>
       </div>
       <h4>Allocated cores</h4>
     </div>
-    <div id='part-nodes' class='col-xs-6 col-sm-2 placeholder'>
+    <div id='part-nodes' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
       <div class='plot-sub-div'>
         <div id='plot-part-nodes' class='plot-div-small'></div>
       </div>
       <h4>Nodes/Partition</h4>
     </div>
-    <div id='part-cores' class='col-xs-6 col-sm-2 placeholder'>
+    <div id='part-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
       <div class='plot-sub-div'>
         <div id='plot-part-cores' class='plot-div-small'></div>
       </div>
       <h4>Cores/Partition</h4>
     </div>
-    <div id='qos-nodes' class='col-xs-6 col-sm-2 placeholder'>
+    <div id='qos-nodes' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
       <div class='plot-sub-div'>
         <div id='plot-qos-nodes' class='plot-div-small'></div>
       </div>
       <h4>Nodes/QOS</h4>
     </div>
-    <div id='qos-cores' class='col-xs-6 col-sm-2 placeholder'>
+    <div id='qos-cores' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
       <div class='plot-sub-div'>
         <div id='plot-qos-cores' class='plot-div-small'></div>
       </div>
       <h4>Cores/QOS</h4>
     </div>
     <div class='table-responsive'>
-      {{#if jobs.length}}
+      {{#if count}}
         <table class='table table-striped tablesorter'>
           <thead>
             <tr>
@@ -50,7 +50,7 @@
           </thead>
           <tbody>
             {{#each jobs}}
-              <tr class="job-row" id="tr-job-{{@key}}">
+              <tr class="job-row" id="tr-job-{{@key}}" onClick="$(document).trigger('modal-job', { jobId: {{@key}} })">
                 <td>{{@key}}</td>
                 <td>{{login}} ({{username}})</td>
                 <td>{{printNodes nodes}}</td>

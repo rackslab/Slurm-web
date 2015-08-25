@@ -1,11 +1,13 @@
-define(['jquery', 'handlebars', 'text!/js/modules/partitions/partitions.hbs',  'text!/js/core/config.json', 'token', 'tablesorter', 'array', 'boolean'], function ($, Handlebars, template, config, token) {
+define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'array-utils', 'boolean-utils', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, tablesorter) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
 
   return function () {
     this.interval = null;
+    this.tablesorterOptions = {};
 
     this.init = function () {
+      var self = this;
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -22,12 +24,12 @@ define(['jquery', 'handlebars', 'text!/js/modules/partitions/partitions.hbs',  '
       $.ajax(config.apiURL + config.apiPath + '/partitions', options)
         .success(function (partitions) {
           var context = {
-            count: Object.keys(partitions).length
+            count: Object.keys(partitions).length,
             partitions: partitions
           };
 
           $('body').append(template(context));
-          $('.tablesorter').tablesorter();
+          $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
     };
 
@@ -35,9 +37,10 @@ define(['jquery', 'handlebars', 'text!/js/modules/partitions/partitions.hbs',  '
       var self = this;
 
       this.interval = setInterval(function () {
+        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
         $('#partitions').parent('.container-fluid').remove();
         self.init();
-      }, config.refresh);
+      }, config.apiRefresh);
     };
 
     this.destroy = function () {
