@@ -80,9 +80,9 @@ class User(object):
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
-            return None
+            self.role = 'all'
 
-    def generate_auth_token(self, expiration=600):
+    def generate_auth_token(self, expiration=1296000):
         s = Serializer(secret_key, expires_in=expiration)
         token = s.dumps({
             'username': self.username,

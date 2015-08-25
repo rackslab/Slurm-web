@@ -28,3 +28,11 @@ mocking = os.environ.get('REST_ENV') == 'development'
 def mock(filename):
     with open(mocks + filename, 'r') as data_file:
         return json.load(data_file)
+
+
+def mock_job(job_id):
+    datas = mock('jobs.json')
+    try:
+        return datas[job_id]
+    except KeyError:
+        return {}
