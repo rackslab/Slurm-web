@@ -1,0 +1,13 @@
+{
+  "apiURL": "http://192.168.99.100",
+  "apiPath": "/slurm-restapi",
+  "apiRefresh": 30000,
+  "firstPage": "qos",
+  "display": {
+    "maxNodesLength": 25,
+    "canvas": {
+      "width": 1480,
+      "height": 950
+    }
+  }
+}

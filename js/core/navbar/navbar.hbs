@@ -1,0 +1,48 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-expanded="false"
+              aria-controls="navbar">
+        <span class="sr-only">
+          Toggle navigation
+        </span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="navbar-brand" id="brand-name">
+        {{#if cluster.name}}
+          {{cluster.name}}
+          {{else}}
+            HPC Dashboard
+        {{/if}}
+      </span>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a id="menu-jobs" href="#">Jobs</a>
+        </li>
+        <li>
+          <a id="menu-racks" href="#">Racks</a>
+        </li>
+        <li>
+          <a id="menu-jobsmap" href="#">JobsMap</a>
+        </li>
+        <li>
+          <a id="menu-partitions" href="#">Partitions</a>
+        </li>
+        <li>
+          <a id="menu-qos" href="#">QOS</a>
+        </li>
+        <li>
+          <a id="menu-reservations" href="#">Reservations</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
