@@ -1,0 +1,28 @@
+{
+  "colorIdle": "rgba(150,150,150,1)",
+  "colorFullyAllocated": "rgba(0,91,154,1)",
+  "colorPartAllocated": "rgba(86,128,184,1)",
+  "colorUnavailable": "rgba(150,150,150,0.5)",
+  "colorUnknown": "rgba(39,39,39,1)",
+  "colorAvailable": "green",
+  "colorDrained": "yellow",
+  "colorDown": "red",
+  "colorReserved": "blue",
+  "colorCoreBorder": "rgba(100,100,100,1)",
+  "jobColors": [
+    "rgba(237,212,0,1)",
+    "rgba(245,121,0,1)",
+    "rgba(193,125,17,1)",
+    "rgba(115,210,22,1)",
+    "rgba(52,101,164,1)",
+    "rgba(117,80,123,1)",
+    "rgba(204,0,0,1)",
+    "rgba(196,160,0,1)",
+    "rgba(206,92,0,1)",
+    "rgba(143,89,2,1)",
+    "rgba(78,154,6,1)",
+    "rgba(32,74,135,1)",
+    "rgba(92,53,102,1)",
+    "rgba(164,0,0,1)"
+    ]
+}

@@ -160,3 +160,24 @@ tr.job-row {
 td.legendLabel {
   padding-left: 3px;
 }
+
+/*
+  * table sorter
+  */
+table.tablesorter thead tr th {
+  padding-right: 20px;
+}
+
+table.tablesorter thead tr .header {
+  background-image: url(../static/bg.gif);
+  background-repeat: no-repeat;
+  background-position: center right;
+  cursor: pointer;
+}
+
+table.tablesorter thead tr .headerSortUp {
+  background-image: url(../static/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+  background-image: url(../static/desc.gif);
+}

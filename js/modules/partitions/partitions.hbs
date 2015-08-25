@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div id="partitions" class="main">
+    <h1 class="page-header">
+      Partitions
+    </h1>
+    <div class='table-responsive'>
+      {{#if partitions.length}}
+        <table class='table table-striped tablesorter'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Default</th>
+              <th>Nodes</th>
+              <th>#Nodes</th>
+              <th>#CPUs</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each partitions}}
+              <tr>
+                <td>{{partition_name}}</td>
+                <td>{{yesOrNo partition.flags.Default}}</td>
+                <td>{{join partition.nodes}}</td>
+                <td>{{partition.total_nodes}}</td>
+                <td>{{partition.total_cpus}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+          <p>There is no data to display.</p>
+      {{/if}}
+    </div>
+  </div>
+</div>
