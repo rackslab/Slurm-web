@@ -1,4 +1,6 @@
-define(['jquery', 'handlebars', 'text!/js/core/config.json', 'token', 'date'], function ($, Handlebars, config, token, date) {
+define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils'], function ($, Handlebars, config, token, date) {
+  config = JSON.parse(config);
+
   Handlebars.registerHelper('printCommand', function (command) {
     if (command === null) {
       return '-';

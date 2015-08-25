@@ -4,15 +4,22 @@ require.config({
     jquery: '/javascript/jquery/jquery.min',
     'jquery-tablesorter': '/javascript/jquery-tablesorter/jquery.tablesorter.min',
     'jquery-flot': '/javascript/jquery-flot/jquery.flot.min',
-    'jquery-flot-pie': '/javascript/jquery-float/jquery.flot.pie.min',
+    'jquery-flot-pie': '/javascript/jquery-flot/jquery.flot.pie.min',
     handlebars: '/javascript/handlebars/handlebars',
     bootstrap: '/javascript/bootstrap/js/bootstrap.min',
-    cluster: '../../js/utils/cluster',
-    token: '../../js/utils/token',
-    date: '../../js/utils/date',
-    number: '../../js/utils/number',
-    page: '../../js/utils/page',
+    'helpers-utils': '../../js/utils/helpers',
+    'cluster-utils': '../../js/utils/cluster',
+    'token-utils': '../../js/utils/token',
+    'date-utils': '../../js/utils/date',
+    'number-utils': '../../js/utils/number',
+    'array-utils': '../../js/utils/array',
+    'boolean-utils': '../../js/utils/boolean',
+    'tablesorter-utils': '../../js/utils/tablesorter',
+    'jobs-utils': '../../js/utils/jobs',
+    'page-utils': '../../js/utils/page',
     navbar: '../../js/core/navbar/navbar',
+    jobs: '../../js/modules/jobs/jobs',
+    partitions: '../../js/modules/partitions/partitions',
     qos: '../../js/modules/qos/qos',
     reservations: '../../js/modules/reservations/reservations'
   },
@@ -26,8 +33,8 @@ require.config({
     'jquery-flot': {
       deps: [ 'jquery' ]
     },
-    'jquery-float-pie': {
-      deps: [ 'jquery', 'jquery-float-pie' ]
+    'jquery-flot-pie': {
+      deps: [ 'jquery', 'jquery-flot' ]
     },
     handlebars: {
       exports: 'Handlebars'
@@ -38,7 +45,7 @@ require.config({
   }
 });
 
-require(['cluster', 'page', 'text!config.json', 'qos', 'partitions', 'reservations', 'navbar'], function (Cluster, Page, config, QOS, Partitions, Reservations, Navbar) {
+require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'qos', 'partitions', 'reservations'], function (Cluster, Page, config, Navbar, Jobs, QOS, Partitions, Reservations) {
   var cluster = new Cluster();
   var navbar = new Navbar(cluster.getCluster());
   var page = new Page();
@@ -53,6 +60,7 @@ require(['cluster', 'page', 'text!config.json', 'qos', 'partitions', 'reservatio
 
     switch (options.page) {
     case 'jobs':
+      $.extend(page,  new Page(), new Jobs(cluster));
       break;
     case 'jobsmap':
       break;

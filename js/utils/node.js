@@ -1,4 +1,4 @@
-define(['jquery', 'text!/js/core/config.json', 'token'], function ($, config, token) {
+define(['jquery', 'text!/js/core/config.json', 'token-utils'], function ($, config, token) {
   return {
     getNodes: function () {
       var slurmNodes = null;

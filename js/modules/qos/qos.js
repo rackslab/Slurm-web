@@ -1,11 +1,13 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!config.json', 'token', 'number', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, number) {
+define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'number-utils', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, tablesorter) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
 
   return function () {
     this.interval = null;
+    this.tablesorterOptions = {};
 
     this.init = function () {
+      var self = this;
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -27,7 +29,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!conf
           };
 
           $('body').append(template(context));
-          $('.tablesorter').tablesorter();
+          $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
     };
 
@@ -35,6 +37,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!conf
       var self = this;
 
       this.interval = setInterval(function () {
+        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
         $('#qos').parent('.container-fluid').remove();
         self.init();
       }, config.apiRefresh);

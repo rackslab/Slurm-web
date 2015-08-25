@@ -1,4 +1,4 @@
-define(['jquery', 'handlebars', 'text!/js/modules/racks/racks.hbs', 'text!/js/core/config.json', 'token', 'draw', 'nodes'], function ($, Handlebars, template, config, token, draw, nodes) {
+define(['jquery', 'handlebars', 'text!/js/modules/racks/racks.hbs', 'text!/js/core/config.json', 'token-utils', 'draw-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, draw, nodes) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
 

@@ -4,7 +4,7 @@
       Partitions
     </h1>
     <div class='table-responsive'>
-      {{#if partitions.length}}
+      {{#if count}}
         <table class='table table-striped tablesorter'>
           <thead>
             <tr>
@@ -18,11 +18,11 @@
           <tbody>
             {{#each partitions}}
               <tr>
-                <td>{{partition_name}}</td>
-                <td>{{yesOrNo partition.flags.Default}}</td>
-                <td>{{join partition.nodes}}</td>
-                <td>{{partition.total_nodes}}</td>
-                <td>{{partition.total_cpus}}</td>
+                <td>{{@key}}</td>
+                <td>{{yesOrNo flags.Default}}</td>
+                <td>{{join nodes ','}}</td>
+                <td>{{total_nodes}}</td>
+                <td>{{total_cpus}}</td>
               </tr>
             {{/each}}
           </tbody>

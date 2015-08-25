@@ -1,70 +1,82 @@
-define(['jquery', 'handlebars', 'text!/js/modules/jobs/jobs.hbs', 'text!/js/modules/jobs/jobs-modal.hbs',  'text!/js/core/config.json', 'jobs', 'date', 'boolean', 'token', 'tablesorter', 'jquery-flot', 'jquery-flot-pie'], function ($, Handlebars, template, modalTemplate, config, token) {
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, config, token, tablesorter) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
-  return function(cluster) {
+  return function (cluster) {
     this.interval = null;
+    this.tablesorterOptions = {};
 
-    // here link with event click
+    function closeModal(e) {
+      e.stopPropagation();
+
+      $('#modal-job').remove();
+    }
+
     function toggleModal(jobId) {
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/jobs/' + jobId,
-        cache: false,
-        type: 'json',
+        type: 'POST',
+        dataType: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
 
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/job/' + jobId, options)
         .success(function (job) {
-          $('body').append(modalTemplate(job));
+          var context = {
+            job: job
+          };
+
+          $('body').append(modalTemplate(context));
+          $('#modal-job').on('hidden.bs.modal', closeModal);
+          $('#modal-job').modal('show');
         });
-    };
+    }
 
-    function closeModal() {
+    $(document).on('modal-job', function (e, options) {
+      e.stopPropagation();
 
-    };
+      toggleModal(options.jobId);
+    });
 
     this.init = function () {
+      var self = this;
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/jobs',
-        cache: false,
-        type: 'json',
+        type: 'POST',
+        dataType: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
-      var cluster = {};
 
-      $.ajax($.extend(options, { async: false, url: config.apiURL + config.apiPath + '/cluster' })
-        .success(data) {
-          cluster = data;
-        });
-
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/jobs', options)
         .success(function (jobs) {
           var context = {
+            count: Object.keys(jobs).length,
             jobs: jobs
           };
-          var plot_params = {
+          var plotParams = {
             series: {
               pie: {
                 show: true,
               }
             }
           };
+
+          $('body').append(template(context));
+          $('.tablesorter').tablesorter(self.tablesorterOptions);
+
           var dataAllocatedCores = [
             {
               label: 'allocated',
@@ -74,30 +86,69 @@ define(['jquery', 'handlebars', 'text!/js/modules/jobs/jobs.hbs', 'text!/js/modu
               data: 0
             }
           ];
+
+          var QOSStats = {};
+          var partStats = {};
+
+          var index;
+          var job;
+          for (index in jobs) {
+            if (jobs.hasOwnProperty(index)) {
+              job = jobs[index];
+
+              if (job.hasOwnProperty('job_state') &&
+                  job.hasOwnProperty('qos') &&
+                  job.hasOwnProperty('partition') &&
+                  (job.job_state === 'RUNNING' || job.job_state === 'COMPLETED')) {
+                if (!QOSStats.hasOwnProperty(job.qos)) {
+                  QOSStats[job.qos] = { cores: 0, nodes: 0 };
+                }
+                if (!partStats.hasOwnProperty(job.partition)) {
+                  partStats[job.partition] = { cores: 0, nodes: 0 };
+                }
+                if (job.hasOwnProperty('num_cpus')) {
+                  QOSStats[job.qos].cores += job.num_cpus;
+                  partStats[job.partition].cores += job.num_cpus;
+                  dataAllocatedCores[0].data += job.num_cpus;
+                }
+                if (job.hasOwnProperty('num_nodes')) {
+                  QOSStats[job.qos].nodes += job.num_nodes;
+                  partStats[job.partition].nodes += job.num_nodes;
+                }
+              }
+            }
+          }
+
+          dataAllocatedCores[1].data += cluster.getCluster().cores - dataAllocatedCores[0].data;
+
           var dataQOSNodes = [];
-          var DataQosCores = [];
+          var dataQOSCores = [];
+
+          var QOS;
+          for (QOS in QOSStats) {
+            if (QOSStats.hasOwnProperty(QOS)) {
+              dataQOSNodes.push({ label: QOS, data: QOSStats[QOS].nodes });
+              dataQOSCores.push({ label: QOS, data: QOSStats[QOS].cores });
+            }
+          }
+
           var dataPartNodes = [];
           var dataPartCores = [];
 
-          jobs.forEach(function(job) {
-            if (job.job_state === 'RUNNING' || job.job_state === 'COMPLETED') {
-              dataQOSNodes.push({ label: job.qos, data: job.num_cpus });
-              dataQOSCores.push({ label: job.qos, data: job.num_nodes });
-              dataPartNodes.push({ label: job.partition, data: job.num_cpus });
-              dataPartCores.push({ lable: job.partition, data: job.num_nodes });
-              dataAllocatedCores[0].data += job.num_cpus;
+          var part;
+          for (part in partStats) {
+            if (partStats.hasOwnProperty(part)) {
+              dataPartNodes.push({ label: part, data: partStats[part].nodes });
+              dataPartCores.push({ label: part, data: partStats[part].cores });
             }
-          });
+          }
 
-          dataAllocatedCores[1].data += cluster.cores - job.num_cpus;
+          $.plot('#plot-alloc-cores', dataAllocatedCores, plotParams);
+          $.plot('#plot-part-nodes', dataPartNodes, plotParams);
+          $.plot('#plot-part-cores', dataPartCores, plotParams);
+          $.plot('#plot-qos-nodes', dataQOSNodes, plotParams);
+          $.plot('#plot-qos-cores', dataQOSCores, plotParams);
 
-          $('body').append(modalTemplate(context));
-
-          $.plot('#plot-alloc-cores', data_alloc_cores, plot_params);
-          $.plot('#plot-part-nodes', data_part_nodes, plot_params);
-          $.plot('#plot-part-cores', data_part_cores, plot_params);
-          $.plot('#plot-qos-nodes', data_qos_nodes, plot_params);
-          $.plot('#plot-qos-cores', data_qos_cores, plot_params);
         });
     };
 
@@ -105,9 +156,10 @@ define(['jquery', 'handlebars', 'text!/js/modules/jobs/jobs.hbs', 'text!/js/modu
       var self = this;
 
       this.interval = setInterval(function () {
+        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
         $('#jobs').parent('.container-fluid').remove();
         self.init();
-      }, config.refresh);
+      }, config.apiRefresh);
     };
 
     this.destroy = function () {
@@ -122,4 +174,3 @@ define(['jquery', 'handlebars', 'text!/js/modules/jobs/jobs.hbs', 'text!/js/modu
     return this;
   };
 });
-

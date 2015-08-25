@@ -1,8 +1,8 @@
 {
   "apiURL": "http://192.168.99.100",
   "apiPath": "/slurm-restapi",
-  "apiRefresh": 30000,
-  "firstPage": "qos",
+  "apiRefresh": 10000,
+  "firstPage": "reservations",
   "display": {
     "maxNodesLength": 25,
     "canvas": {
