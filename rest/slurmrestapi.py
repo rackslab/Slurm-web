@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, jsonify, session, request
-from flask.sessions import SecureCookieSessionInterface
+from flask import Flask, jsonify, request
 
 import pyslurm
 
@@ -39,10 +38,7 @@ from auth import User, authentication_verify
 
 app = Flask(__name__)
 
-app.config['SESSION_COOKIE_DOMAIN'] = 'local.host:3000'
-app.config['SERVER_NAME'] = settings.get('config', 'server_name')
 app.secret_key = settings.get('config', 'secret_key')
-
 
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
