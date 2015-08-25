@@ -26,7 +26,10 @@ path = os.getenv('RESTAPI_CONF', '/etc/slurm-web/restapi.conf')
 
 default = {
     'cors': {
-        'authorized_origins': ""
+        'authorized_origins': 'http://localhost'
+    },
+    'racks': {
+        'path': '/etc/slurm-web/racks.xml'
     }
 }
 

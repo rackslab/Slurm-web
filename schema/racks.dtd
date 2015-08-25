@@ -8,7 +8,9 @@
 <!ATTLIST nodetype height CDATA #REQUIRED>
 <!ATTLIST nodetype width CDATA #REQUIRED>
 
-<!ELEMENT racks (rack+)>
+<!ELEMENT racks (racksrow+)>
+
+<!ELEMENT racksrow (rack+)>
 
 <!ELEMENT rack (nodes)>
 <!ATTLIST rack id ID #REQUIRED>
