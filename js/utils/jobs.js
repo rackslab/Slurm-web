@@ -57,21 +57,20 @@ define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils']
     getJobs: function () {
       var slurmJobs = null;
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/jobs',
-        cache: false,
+        type: 'POST',
+        dataType: 'json',
         async: false,
-        type: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
 
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/jobs', options)
         .success(function (jobs) {
           slurmJobs = jobs;
         });
@@ -88,10 +87,12 @@ define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils']
         if (jobs.hasOwnProperty(job) && jobs[job].job_state === 'RUNNING') {
           nodesCPUs = jobs[job].cpus_allocated;
           for (node in nodesCPUs) {
-            if (!allocatedCPUs.hasOwnProperty(node)) {
-              allocatedCPUs[node] = {};
+            if (nodesCPUs.hasOwnProperty(node)) {
+              if (!allocatedCPUs.hasOwnProperty(node)) {
+                allocatedCPUs[node] = {};
+              }
+              allocatedCPUs[node][job] = nodesCPUs[node];
             }
-            allocatedCPUs[node][job] = nodesCPUs[node];
           }
         }
       }
@@ -100,3 +101,5 @@ define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils']
     }
   };
 });
+
+

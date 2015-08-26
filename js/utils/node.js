@@ -1,23 +1,24 @@
-define(['jquery', 'text!/js/core/config.json', 'token-utils'], function ($, config, token) {
+define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token) {
+  config = JSON.parse(config);
+
   return {
     getNodes: function () {
       var slurmNodes = null;
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/nodes',
-        cache: false,
+        type: 'POST',
+        dataType: 'json',
         async: false,
-        type: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
 
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/nodes', options)
         .success(function (nodes) {
           slurmNodes = nodes;
         });

@@ -2,7 +2,6 @@
  * Base structure
  */
 
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
 }
@@ -34,7 +33,6 @@ body {
  * Sidebar
  */
 
-/* Hide for mobile, show later */
 .sidebar {
   display: none;
 }
@@ -48,7 +46,7 @@ body {
     display: block;
     padding: 20px;
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
   }
@@ -56,7 +54,7 @@ body {
 
 /* Sidebar navigation */
 .nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
+  margin-right: -21px;
   margin-bottom: 20px;
   margin-left: -20px;
 }
@@ -131,7 +129,6 @@ tr.job-row {
 
 .plot-sub-div {
   width: 230px;
-  /* trick to center fixed width element within responsive sized block */
   position: relative;
   right: 0;
   left: 0;
@@ -140,12 +137,12 @@ tr.job-row {
 }
 
 .plot-div {
-  width: 230px; /* must be identical to .plot-sub-div width */
+  width: 230px;
   height: 160px;
 }
 
 .plot-div-small {
-  width: 230px; /* must be identical to .plot-sub-div width */
+  width: 230px;
   height: 130px;
 }
 
@@ -180,4 +177,14 @@ table.tablesorter thead tr .headerSortUp {
 }
 table.tablesorter thead tr .headerSortDown {
   background-image: url(../static/desc.gif);
+}
+
+/*
+ * Canvas legend
+ */
+
+.canvas-legend {
+  position: absolute;
+  top: 55px;
+  right: 180px;   
 }

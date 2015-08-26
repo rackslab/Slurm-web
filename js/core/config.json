@@ -1,13 +1,30 @@
 {
   "apiURL": "http://192.168.99.100",
   "apiPath": "/slurm-restapi",
-  "apiRefresh": 10000,
-  "firstPage": "reservations",
+  "apiRefresh": 1000000,
+  "firstPage": "racks",
   "display": {
     "maxNodesLength": 25,
     "canvas": {
-      "width": 1480,
-      "height": 950
+      "leftMargin": 60,
+      "topMargin": 15,
+      "rackHorizontalMargin": 100,
+      "rackVerticalMargin": 30,
+      "rackBorderWidth": 10,
+      "rackUnitNumber": 42,
+      "rackUnitHeight": 12,
+      "floorWidth": 5,
+      "footWidth": 7,
+      "footHeight": 3,
+      "rackInsideWidth": 150,
+      "canvasWidth": 280,
+      "canvasMarginTop": 30,
+      "canvasLegendHeight": 100,
+      "canvasLegendWidth": 100,
+      "nodesPerRack": 72,
+      "nodesPerRow": 2,
+      "nodeMargin": 1,
+      "nodeStateWidth": 10
     }
   }
 }

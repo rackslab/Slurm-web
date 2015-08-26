@@ -1,47 +1,47 @@
-define(['jquery', 'handlebars', 'text!/js/modules/racks/racks.hbs', 'text!/js/core/config.json', 'token-utils', 'draw-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, draw, nodes) {
+define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, Draw, nodes) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
+  draw = new Draw();
 
   return function () {
     this.slurmNodes = null;
-    this.ctx = null;
     this.interval = null;
+    this.canvasConfig = draw.getConfig();
 
     this.init = function () {
       var self = this;
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/racks',
-        cache: false,
-        type: 'json',
+        type: 'POST',
+        dataType: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
 
       this.slurmNodes = nodes.getNodes();
 
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/racks', options)
         .success(function (racks) {
           var context = {
-            canvas: config.canvas
+            canvas: self.canvasConfig,
+            racks: racks
           };
 
           $('body').append(template(context));
-          self.ctx = $('#cv_rackmap');
 
           $.each(racks, function (idRack, rack) {
-            draw.drawRack(self.ctx, rack);
+            draw.drawRack(rack);
             $.each(rack.nodes, function (idRackNode, rackNode) {
-              draw.drawNode(self.ctx, rack, rackNode, self.slurmNodes[rackNode.name]);
+              draw.drawNode(rack, rackNode, self.slurmNodes[rackNode.name]);
             });
           });
 
-          nodes.drawRacksLegend(self.ctx, false);
+          //nodes.drawRacksLegend(self.ctx, false);
         });
     };
 
