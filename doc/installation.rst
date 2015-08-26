@@ -12,7 +12,7 @@ https://github.com/edf-hpc/slurm-web
 
 You can download latest version of this source code by clone the Git repository::
 
-    git clone https://github.com/edf-hpc/slurm-web.git 
+    git clone https://github.com/edf-hpc/slurm-web.git
 
 Debian packages
 ^^^^^^^^^^^^^^^
@@ -67,7 +67,7 @@ Installation
 From source
 ^^^^^^^^^^^
 
-Not supported yet. Please contact us if you want to improve this part. 
+Not supported yet. Please contact us if you want to improve this part.
 
 Distributions
 ^^^^^^^^^^^^^
@@ -98,7 +98,7 @@ XML racks and nodes description
 Slurm does not provide sufficient information about the nodes and the racks
 composing a supercomputer for representing it accurately with correct node sizes
 and distribution over the racks. For this purpose, Slurm-web backend API relies
-on an additional file located under the poath ``/etc/slurm-web/racks.xml``.
+on an additional file located under the path ``/etc/slurm-web/racks.xml``.
 
 This file must contain the complete description of your racks and nodes in XML
 format. Here is an example of file:
@@ -115,29 +115,48 @@ format. Here is an example of file:
       </nodetypes>
 
       <racks>
+        <racksrow>
+          <rack id="rack1-1" posx="0" posy="0">
+            <nodes>
+              <node id="cn001" type="m32x4321" posx="0" posy="3" />
+              <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
+              <node id="cn003" type="m32x4321" posx="0" posy="4" />
 
-        <rack id="rack1" posx="0" posy="0">
-          <nodes>
-            <node id="cn001" type="m32x4321" posx="0" posy="3" />
-            <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
-            <node id="cn003" type="m32x4321" posx="0" posy="4" />
+              <nodeset id="cn[004-072]" type="m32x4321" />
+            </nodes>
+          </rack>
 
-            <nodeset id="cn[004-072]" type="m32x4321" />
-          </nodes>
-        </rack>
+          <rack id="rack1-2" posx="1">
+            <nodes>
+              <node id="cn101" type="m32x4321" posx="0" posy="3" />
+              <nodeset id="cn[102-121]" type="m32x4321" posy="5" />
+            </nodes>
+          </rack>
+        </racksrow>
 
-        <rack id="rack2" posx="1">
-          <nodes>
-            <node id="cn101" type="m32x4321" posx="0" posy="3" />
-            <nodeset id="cn[102-021]" type="m32x4321" posy="5" />
-          </nodes>
-        </rack>
+        <racksrow>
+          <rack id="rack2-1" posx="0" posy="0">
+            <nodes>
+              <node id="cn201" type="m32x4321" posx="0" posy="3" />
+              <node id="cn202" type="m32x4321" posx="0.5" posy="3" />
+              <node id="cn203" type="m32x4321" posx="0" posy="4" />
 
+              <nodeset id="cn[204-272]" type="m32x4321" />
+            </nodes>
+          </rack>
+
+          <rack id="rack2-2" posx="1">
+            <nodes>
+              <node id="cn301" type="m32x4321" posx="0" posy="3" />
+              <nodeset id="cn[302-321]" type="m32x4321" posy="5" />
+            </nodes>
+          </rack>
+        </racksrow>
       </racks>
     </rackmap>
 
 
-The root element of the XML file ``<rackmap>``. This root element must contain
+The root element of the XML file is ``<rackmap>``. This root element must contain
 2 elements: ``<nodetypes>`` and ``<racks>``.
 
 The ``<nodetypes>`` element contains the description of all types of nodes with
@@ -148,8 +167,12 @@ used as a reference of type for nodes. Each node type must have a
 whose values must be floats in U unit. For example, a node with a width of 0.5
 uses half of rack width. With a height of 2, a node will uses 2 U in rack height.
 
-The ``<racks>`` element contains the list of all racks composing the
-supercomputer, each one being described in a distinct ``<rack>`` element. Each
+The organization of the different racks is designed by rows of racks, in order
+to generate a 3D view of the room containing the racks composing the supercomputer.
+
+The ``<racks>`` element contains the list of the rows of racks, corresponding to
+the ``<racksrow>`` elements. Each ``<racksrow>`` element contains a list of
+racks, each one being described in a distinct ``<rack>`` element. Each
 rack element must have a unique ID which will be then used as rack name. A rack
 must have a position, within ``posx`` and ``posy`` elements. These elements
 must be integer, they represent the rack position within a grid with all racks.
@@ -178,12 +201,3 @@ resources in your Slurm cluster are accessible to only some of your
 users, then Slurm-Web won't show them. Using a user with enough
 credentials will fix the problem. Usually, setting the user to ``slurm``
 (see *slurm.conf*) is enough.
-
-Configure CORS for the REST API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You can configure CORS by giving a list of allowed origins in the file
-``conf/restapi.conf``. This file will be copied in ``/etc/slurm-web`` directory
-during the installation.
-Otherwise, you can use another path by setting it in the env variable
-``RESTAPI_CONF``.
