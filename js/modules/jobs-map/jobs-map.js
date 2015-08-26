@@ -1,25 +1,25 @@
-define(['jquery', 'handlebars', 'text!/js/modules/jobs-map/jobs-map.hbs', 'text!/js/core/config.json', 'token', 'draw', 'nodes', 'jobs'], function ($, Handlebars, template, config, token, draw, nodes, jobs) {
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, config, token, draw, nodes, jobs) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
+  draw = new draw();
 
   return function () {
     this.slurmNodes = null;
-    this.ctx = null;
     this.interval = null;
+    this.canvasConfig = draw.getConfig();
 
     this.init = function () {
       var self = this;
       var allocatedCPUs = null;
       var options = {
-        method: 'POST',
-        url: config.apiURL + config.apiPath + '/racks',
-        cache: false,
-        type: 'json',
+        type: 'POST',
+        dataType: 'json',
+        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        data: JSON.stringify({
           token: token.getToken()
         })
       };
@@ -27,14 +27,14 @@ define(['jquery', 'handlebars', 'text!/js/modules/jobs-map/jobs-map.hbs', 'text!
       this.slurmNodes = nodes.getNodes();
       allocatedCPUs = jobs.buildAllocatedCPUs(jobs.getJobs());
 
-      $.ajax(options)
+      $.ajax(config.apiURL + config.apiPath + '/racks', options)
         .success(function (racks) {
           var context = {
-            canvas: config.canvas
+            canvas: self.canvasConfig,
+            racks: racks
           };
 
           $('body').append(template(context));
-          self.ctx = $('#cv_rackmap');
 
           $.each(racks, function (idRack, rack) {
             draw.drawRack(rack);
@@ -43,7 +43,7 @@ define(['jquery', 'handlebars', 'text!/js/modules/jobs-map/jobs-map.hbs', 'text!
             });
           });
 
-          nodes.drawJobsMapLegend(self.ctx);
+          //draw.drawJobsMapLegend(self.ctx);
         });
     };
 

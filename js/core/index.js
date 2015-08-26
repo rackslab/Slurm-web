@@ -16,9 +16,13 @@ require.config({
     'boolean-utils': '../../js/utils/boolean',
     'tablesorter-utils': '../../js/utils/tablesorter',
     'jobs-utils': '../../js/utils/jobs',
+    'draw-utils': '../../js/utils/draw',
+    'nodes-utils': '../../js/utils/node',
     'page-utils': '../../js/utils/page',
     navbar: '../../js/core/navbar/navbar',
     jobs: '../../js/modules/jobs/jobs',
+    racks: '../../js/modules/racks/racks',
+    'jobs-map': '../../js/modules/jobs-map/jobs-map',
     partitions: '../../js/modules/partitions/partitions',
     qos: '../../js/modules/qos/qos',
     reservations: '../../js/modules/reservations/reservations'
@@ -45,7 +49,7 @@ require.config({
   }
 });
 
-require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'qos', 'partitions', 'reservations'], function (Cluster, Page, config, Navbar, Jobs, QOS, Partitions, Reservations) {
+require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations'], function (Cluster, Page, config, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
   var cluster = new Cluster();
   var navbar = new Navbar(cluster.getCluster());
   var page = new Page();
@@ -59,10 +63,14 @@ require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'q
     page.destroy();
 
     switch (options.page) {
+    case 'login':
+
+      break;
     case 'jobs':
       $.extend(page,  new Page(), new Jobs(cluster));
       break;
     case 'jobsmap':
+      $.extend(page,  new Page(), new JobsMap());
       break;
     case 'partitions':
       $.extend(page,  new Page(), new Partitions());
@@ -71,6 +79,7 @@ require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'q
       $.extend(page,  new Page(), new QOS());
       break;
     case 'racks':
+      $.extend(page,  new Page(), new Racks());
       break;
     case 'reservations':
       $.extend(page,  new Page(), new Reservations());
