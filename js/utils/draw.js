@@ -1,10 +1,11 @@
-define(['jquery', 'text!config.json', 'text!colors.config.json'], function ($, config, colors) {
+define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersections-utils'], function ($, config, colors, Intersections) {
   var config = JSON.parse(config);
   var canvasConfig = config.display.canvas;
   var colors = JSON.parse(colors);
 
   return function() {
     var self = this;
+    this.intersections = new Intersections();
     this.config = $.extend(config.display.canvas, {
       rackInsideHeight: canvasConfig.rackUnitNumber * canvasConfig.rackUnitHeight,
       rackHeight: (canvasConfig.rackUnitNumber * canvasConfig.rackUnitHeight) + (2 * canvasConfig.rackBorderWidth),
@@ -259,6 +260,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json'], function ($, c
       var nodeColors = getNodeColors(slurmNode).node;
       var stateColor = getNodeColors(slurmNode).state;
 
+      //this.intersections.addNodeIntersections('node', nodeABSX, (nodeABSX + this.config.nodeWidth), nodeABSY, (nodeABSY + this.config.nodeHeight));
       drawRectangleBorder(ctx, nodeABSX, nodeABSY, this.config.nodeWidth, this.config.nodeHeight, 1, colors.colorIdle, colors.colorCoreBorder);
 
       if (stateColor) {
@@ -302,6 +304,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json'], function ($, c
             coreABSX = coreCoords.x;
             coreABSY = coreCoords.y;
 
+            this.intersections.addCoreIntersections('toto', coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.colorCoreBorder);
           }
 

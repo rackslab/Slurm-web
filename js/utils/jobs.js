@@ -73,6 +73,9 @@ define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils']
       $.ajax(config.apiURL + config.apiPath + '/jobs', options)
         .success(function (jobs) {
           slurmJobs = jobs;
+        })
+        .error(function () {
+          $(document).trigger('show', { page: 'login' });
         });
 
       return slurmJobs;

@@ -95,6 +95,24 @@ body {
   margin-top: 0;
 }
 
+/*
+ * Login content
+ */
+
+#login {
+  padding:20px 40px;
+}
+
+#login .align {
+  margin:0 auto;
+  width: 200px;
+}
+
+#login .align-error {
+  display: none;
+  margin:0 auto;
+  width: 400px;
+}
 
 /*
  * Placeholder dashboard ideas
@@ -188,3 +206,12 @@ table.tablesorter thead tr .headerSortDown {
   top: 55px;
   right: 180px;   
 }
+
+/*
+ * Utils
+ */
+
+.text-center {
+  text-align: center;
+}
+
