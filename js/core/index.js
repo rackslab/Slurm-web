@@ -73,6 +73,9 @@ require(['cluster-utils', 'page-utils', 'text!config.json', 'login', 'navbar', '
       $.extend(page, new Page(), new Login());
       break;
     case 'jobs':
+      //cluster = new Cluster();
+      //navbar.destroy();
+      //navbar = new Navbar(cluster.getCluster());
       $.extend(page,  new Page('jobs'), new Jobs(cluster));
       break;
     case 'jobsmap':

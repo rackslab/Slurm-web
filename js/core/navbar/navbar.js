@@ -16,5 +16,9 @@ define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs'], functio
         });
       });
     };
+
+    this.destroy = function () {
+      $('#navbar').parent('nav').remove();
+    };
   };
 });
