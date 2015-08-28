@@ -34,6 +34,10 @@ class User(object):
         self.username = username
         self.password = password
 
+        # for mocked authentication
+        self.role = 'admin'
+        return
+
         # here deal with ldap to get user role
         conn = get_ldap_connection()
 

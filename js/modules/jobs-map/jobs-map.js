@@ -41,7 +41,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
               e.preventDefault();
               var offset = $(this).offset();
 
-              $(document).trigger('canvas-click', { x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
+              $(document).trigger('canvas-click', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
             });
 
             draw.drawRack(rack);
