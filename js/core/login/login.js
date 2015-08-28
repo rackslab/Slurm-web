@@ -24,8 +24,8 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
 
           $.post(config.apiURL + config.apiPath + '/login', options)
             .success(function (credentials) {
-              token.setToken(credentials.token);
-              $(document).trigger('show', { page: config.firstPage });
+              token.setToken(credentials.id_token);
+              $(document).trigger('logged', { page: config.firstPage });
             })
             .error(function () {
               $('#login #error').show();
