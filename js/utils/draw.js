@@ -304,7 +304,8 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
             coreABSX = coreCoords.x;
             coreABSY = coreCoords.y;
 
-            this.intersections.addCoreIntersections('toto', coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
+            //console.log({ rack: rack.name, node: rackNode.name, core: coreId });
+            //this.intersections.addCoreIntersections({ node: rackNode.name, job: job }, coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.colorCoreBorder);
           }
 
