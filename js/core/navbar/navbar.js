@@ -3,7 +3,11 @@ define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs'], functio
 
   return function (cluster) {
     this.init = function () {
-      $('body').append(template(cluster));
+      var context = {
+        cluster: cluster
+      };
+
+      $('body').append(template(context));
 
       $('#navbar a').each(function () {
         $(this).click(function (e) {

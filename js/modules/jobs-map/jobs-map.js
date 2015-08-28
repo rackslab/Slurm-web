@@ -37,6 +37,13 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
           $('body').append(template(context));
 
           $.each(racks, function (idRack, rack) {
+            $('#cv_rackmap_' + idRack).click(function (e) {
+              e.preventDefault();
+              var offset = $(this).offset();
+
+              $(document).trigger('canvas-click', { x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
+            });
+
             draw.drawRack(rack);
             $.each(rack.nodes, function (idRacknode, rackNode) {
               draw.drawNodeCores(rack, rackNode, self.slurmNodes[rackNode.name], allocatedCPUs[rackNode.name]);

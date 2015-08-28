@@ -19,6 +19,9 @@ require.config({
     'draw-utils': '../../js/utils/draw',
     'nodes-utils': '../../js/utils/node',
     'page-utils': '../../js/utils/page',
+    'ajax-utils': '../../js/utils/ajax',
+    'draw-intersections-utils': '../../js/utils/draw-intersections',
+    login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
     jobs: '../../js/modules/jobs/jobs',
     racks: '../../js/modules/racks/racks',
@@ -49,7 +52,7 @@ require.config({
   }
 });
 
-require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations'], function (Cluster, Page, config, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
+require(['cluster-utils', 'page-utils', 'text!config.json', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Cluster, Page, config, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
   var cluster = new Cluster();
   var navbar = new Navbar(cluster.getCluster());
   var page = new Page();
@@ -64,25 +67,28 @@ require(['cluster-utils', 'page-utils', 'text!config.json', 'navbar', 'jobs', 'r
 
     switch (options.page) {
     case 'login':
-
+      if (options.page === page.getPageName()) {
+        return;
+      }
+      $.extend(page, new Page(), new Login());
       break;
     case 'jobs':
-      $.extend(page,  new Page(), new Jobs(cluster));
+      $.extend(page,  new Page('jobs'), new Jobs(cluster));
       break;
     case 'jobsmap':
-      $.extend(page,  new Page(), new JobsMap());
+      $.extend(page,  new Page('jobsmap'), new JobsMap());
       break;
     case 'partitions':
-      $.extend(page,  new Page(), new Partitions());
+      $.extend(page,  new Page('partitions'), new Partitions());
       break;
     case 'qos':
-      $.extend(page,  new Page(), new QOS());
+      $.extend(page,  new Page('qos'), new QOS());
       break;
     case 'racks':
-      $.extend(page,  new Page(), new Racks());
+      $.extend(page,  new Page('racks'), new Racks());
       break;
     case 'reservations':
-      $.extend(page,  new Page(), new Reservations());
+      $.extend(page,  new Page('reservations'), new Reservations());
       break;
     }
 

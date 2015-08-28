@@ -2,7 +2,7 @@
   "apiURL": "http://192.168.99.100",
   "apiPath": "/slurm-restapi",
   "apiRefresh": 1000000,
-  "firstPage": "racks",
+  "firstPage": "jobs",
   "display": {
     "maxNodesLength": 25,
     "canvas": {
