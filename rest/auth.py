@@ -4,6 +4,7 @@ from settings import settings
 from functools import wraps
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
+import os
 
 secret_key = settings.get('config', 'secret_key')
 
@@ -33,6 +34,16 @@ class User(object):
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.role = self.get_role_from_ldap()
+
+    def get_role_from_ldap(self):
+        # mock LDAP in development
+        if os.environ.get('LDAP_ENV') == 'development':
+            print "LDAP authentication mocked"
+            if self.username == 'marie' or self.username == 'pierre':
+                if self.password == 'secret':
+                    return 'admin'
+            return 'all'
 
         # for mocked authentication
         self.role = 'admin'
@@ -45,19 +56,19 @@ class User(object):
             # authicate user on ldap
             conn.simple_bind_s(
                 'uid=%s,ou=%s,%s' % (
-                    username,
+                    self.username,
                     settings.get('ldap', 'ugroup'),
                     settings.get('ldap', 'base')
                 ),
-                password
+                self.password
             )
 
-            print "User %s authenticated" % username
+            print "User %s authenticated" % self.username
 
             # retrieve user's group id
             results = conn.search_s(
                 'uid=%s,ou=%s,%s' % (
-                    username,
+                    self.username,
                     settings.get('ldap', 'ugroup'),
                     settings.get('ldap', 'base')
                 ),
@@ -80,13 +91,15 @@ class User(object):
 
             print "User's group name: %s" % gName
 
-            self.role = 'admin'
+            return 'admin'
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
-            self.role = 'all'
+            return 'all'
 
-    def generate_auth_token(self, expiration=1296000):
+    def generate_auth_token(
+        self, expiration=int(settings.get('ldap', 'expiration'))
+    ):
         s = Serializer(secret_key, expires_in=expiration)
         token = s.dumps({
             'username': self.username,
