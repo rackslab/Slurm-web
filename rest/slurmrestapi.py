@@ -55,7 +55,11 @@ def version():
 def login():
     user = User(request.form['username'], request.form['password'])
     token = user.generate_auth_token()
-    resp = {'id_token': token}
+    resp = {
+        'id_token': token,
+        'username': user.username,
+        'role':     user.role
+    }
     return jsonify(resp)
 
 
