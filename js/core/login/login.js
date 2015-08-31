@@ -38,6 +38,27 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
         }
       })
 
+      $('#login input').on('keypress', function (e) {
+        if (e.which === 13) {
+          var form = {
+            username: $('#login #username').val(),
+            password: $('#login #password').val()
+          };
+
+          if (!form.username || !form.password) {
+            $('#login #error').show();
+          } else {
+            var options = {
+              mimeType: 'multipart/form-data',
+              username: form.username,
+              password: form.password
+            };
+
+            login(options);
+          }
+        }
+      });
+
       $('#login #guest').on('click', function () {
         var options = {
           mimeType: 'multipart/form-data',
@@ -49,6 +70,9 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
     };
 
     this.destroy = function () {
+      $('#login input').off('keypress');
+      $('#login #user').off('click');
+      $('#login #guest').off('click');
       $('#login').parent('.container-fluid').remove();
     };
 

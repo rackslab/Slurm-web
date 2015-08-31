@@ -167,6 +167,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
         clearInterval(this.interval);
       }
 
+      $('#modal-job').off('hidden.bs.modal'),
       $('#jobs').parent('.container-fluid').remove();
       $('.modal').remove();
     };

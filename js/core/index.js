@@ -9,6 +9,7 @@ require.config({
     bootstrap: '/javascript/bootstrap/js/bootstrap.min',
     'helpers-utils': '../../js/utils/helpers',
     'cluster-utils': '../../js/utils/cluster',
+    'string-utils': '../../js/utils/string',
     'token-utils': '../../js/utils/token',
     'user-utils': '../../js/utils/user',
     'date-utils': '../../js/utils/date',
@@ -64,8 +65,6 @@ require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login',
   $(document).on('logout', function (e) {
     e.preventDefault();
 
-    user.removeUser();
-    token.removeToken();
     $(document).trigger('show', { page: 'login' });
   });
 
