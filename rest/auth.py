@@ -120,6 +120,9 @@ class User(object):
         except BadSignature:
             print "verify_auth_token : BadSignature "
             return None  # invalid token
+        except TypeError:
+            print "verify_auth_token : TypeError"
+            return None
         user = User(data['username'], data['password'])
         return user
 
@@ -129,6 +132,9 @@ def authentication_verify():
         @wraps(f)
         def inner(*args, **kwargs):
             token = request.json['token']
+            if token is None:
+                return abort(403)
+
             user = User.verify_auth_token(token)
             if user is not None:
                 if user.role not in (
