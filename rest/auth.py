@@ -30,24 +30,40 @@ def filter_dict(to_filter={}, filtered_keys=[]):
                 filter_dict(to_filter[key], filtered_keys)
 
 
+class AuthenticationError(Exception):
+    pass
+
+
 class User(object):
-    def __init__(self, username, password):
+    def __init__(self, username, password, role):
         self.username = username
         self.password = password
-        self.role = self.get_role_from_ldap()
+        self.role = role
 
-    def get_role_from_ldap(self):
+    # create authenticated user
+    @staticmethod
+    def user(username, password):
+        try:
+            role = User.get_role_from_ldap(username, password)
+        except AuthenticationError:
+            return None
+
+        return User(username, password, role)
+
+    # create a guest user
+    @staticmethod
+    def guest():
+        return User('guest', 'guest', 'all')
+
+    @staticmethod
+    def get_role_from_ldap(username, password):
         # mock LDAP in development
         if os.environ.get('LDAP_ENV') == 'development':
             print "LDAP authentication mocked"
-            if self.username == 'marie' or self.username == 'pierre':
-                if self.password == 'secret':
+            if username == 'marie' or username == 'pierre':
+                if password == 'secret':
                     return 'admin'
             return 'all'
-
-        # for mocked authentication
-        self.role = 'admin'
-        return
 
         # here deal with ldap to get user role
         conn = get_ldap_connection()
@@ -56,19 +72,19 @@ class User(object):
             # authicate user on ldap
             conn.simple_bind_s(
                 'uid=%s,ou=%s,%s' % (
-                    self.username,
+                    username,
                     settings.get('ldap', 'ugroup'),
                     settings.get('ldap', 'base')
                 ),
-                self.password
+                password
             )
 
-            print "User %s authenticated" % self.username
+            print "User %s authenticated" % username
 
             # retrieve user's group id
             results = conn.search_s(
                 'uid=%s,ou=%s,%s' % (
-                    self.username,
+                    username,
                     settings.get('ldap', 'ugroup'),
                     settings.get('ldap', 'base')
                 ),
@@ -95,7 +111,7 @@ class User(object):
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
-            return 'all'
+            raise AuthenticationError
 
     def generate_auth_token(
         self, expiration=int(settings.get('ldap', 'expiration'))
@@ -123,7 +139,7 @@ class User(object):
         except TypeError:
             print "verify_auth_token : TypeError"
             return None
-        user = User(data['username'], data['password'])
+        user = User.user(data['username'], data['password'])
         return user
 
 
