@@ -1,4 +1,4 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/navbar.hbs', 'user-utils'], function ($, Handlebars, config, template, user) {
+define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/navbar.hbs', 'user-utils'], function ($, Handlebars, config, template, user, token) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
 

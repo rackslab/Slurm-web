@@ -53,7 +53,7 @@ require.config({
   }
 });
 
-require(['page-utils', 'text!config.json', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Page, config, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
+require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
   var navbar = new Navbar();
   var page = new Page();
 
@@ -64,6 +64,8 @@ require(['page-utils', 'text!config.json', 'login', 'navbar', 'jobs', 'racks', '
   $(document).on('logout', function (e) {
     e.preventDefault();
 
+    user.removeUser();
+    token.removeToken();
     $(document).trigger('show', { page: 'login' });
   });
 
