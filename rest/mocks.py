@@ -33,6 +33,6 @@ def mock(filename):
 def mock_job(job_id):
     datas = mock('jobs.json')
     try:
-        return datas[job_id]
+        return datas[str(job_id)]
     except KeyError:
         return {}

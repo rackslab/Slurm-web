@@ -13,7 +13,7 @@ filtered_keys_by_role = {
     'user': ['command'],
     'admin': []
 }
-unauthorized_roles = ['all']
+unauthorized_roles = []
 
 
 def get_ldap_connection():
@@ -46,7 +46,7 @@ class User(object):
         try:
             role = User.get_role_from_ldap(username, password)
         except AuthenticationError:
-            return None
+            role = 'all'
 
         return User(username, password, role)
 
