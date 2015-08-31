@@ -10,6 +10,7 @@ require.config({
     'helpers-utils': '../../js/utils/helpers',
     'cluster-utils': '../../js/utils/cluster',
     'token-utils': '../../js/utils/token',
+    'user-utils': '../../js/utils/user',
     'date-utils': '../../js/utils/date',
     'number-utils': '../../js/utils/number',
     'array-utils': '../../js/utils/array',
@@ -52,13 +53,19 @@ require.config({
   }
 });
 
-require(['cluster-utils', 'page-utils', 'text!config.json', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Cluster, Page, config, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
-  var cluster = new Cluster();
-  var navbar = new Navbar(cluster.getCluster());
+require(['page-utils', 'text!config.json', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Page, config, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
+  var navbar = new Navbar();
   var page = new Page();
 
   config = JSON.parse(config);
+  $('title').html(config.clusterName + '\'s HPC Dashboard');
   navbar.init();
+
+  $(document).on('logout', function (e) {
+    e.preventDefault();
+
+    $(document).trigger('show', { page: 'login' });
+  });
 
   $(document).on('show', function (e, options) {
     e.stopPropagation();
@@ -67,16 +74,10 @@ require(['cluster-utils', 'page-utils', 'text!config.json', 'login', 'navbar', '
 
     switch (options.page) {
     case 'login':
-      if (options.page === page.getPageName()) {
-        return;
-      }
-      $.extend(page, new Page(), new Login());
+      $.extend(page,  new Page('login'), new Login());
       break;
     case 'jobs':
-      //cluster = new Cluster();
-      //navbar.destroy();
-      //navbar = new Navbar(cluster.getCluster());
-      $.extend(page,  new Page('jobs'), new Jobs(cluster));
+      $.extend(page,  new Page('jobs'), new Jobs());
       break;
     case 'jobsmap':
       $.extend(page,  new Page('jobsmap'), new JobsMap());

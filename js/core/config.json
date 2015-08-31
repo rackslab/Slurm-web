@@ -1,4 +1,5 @@
 {
+  "clusterName": "Test",
   "apiURL": "http://192.168.99.100",
   "apiPath": "/slurm-restapi",
   "apiRefresh": 1000000,

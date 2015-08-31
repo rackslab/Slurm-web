@@ -1,9 +1,9 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, config, token, tablesorter) {
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'cluster-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, config, token, tablesorter, cluster) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
-  return function (cluster) {
+  return function () {
     this.interval = null;
     this.tablesorterOptions = {};
 
@@ -119,7 +119,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
             }
           }
 
-          dataAllocatedCores[1].data += cluster.getCluster().cores - dataAllocatedCores[0].data;
+          dataAllocatedCores[1].data += cluster.getClusterAsync().cores - dataAllocatedCores[0].data;
 
           var dataQOSNodes = [];
           var dataQOSCores = [];

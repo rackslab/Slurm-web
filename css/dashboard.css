@@ -29,6 +29,29 @@ body {
 #brand-name {
   margin-left: 220px;
 }
+
+.navbar-inverse .navbar-nav > .open > a:focus, 
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:visited,
+.navbar-inverse .navbar-nav > .open > a:active {
+  background-color: #222;
+}
+
+.dropdown-menu {
+  background-color: #222;
+  border: none;
+  border-radius: 0;
+}
+
+.dropdown-menu > li > a, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-color: #222;
+  color: #FFFFFF;
+}
+
+.dropdown-toggle, .dropdown-toggle:hover {
+  background-color: #222;
+}
+
 /*
  * Sidebar
  */

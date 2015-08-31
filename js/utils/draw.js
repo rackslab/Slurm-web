@@ -293,6 +293,8 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
         // here
       }
 
+      console.log(rack.name);
+
       for (var job in allocatedCPUs) {
         if (allocatedCPUs.hasOwnProperty(job)) {
           coresJobNumber = allocatedCPUs[job];

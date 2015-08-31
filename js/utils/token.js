@@ -4,7 +4,10 @@ define([], function () {
       return localStorage.getItem('jwt');
     },
     setToken: function (token) {
-      localStorage.setItem('jwt', token)
+      localStorage.setItem('jwt', token);
+    },
+    removeToken: function () {
+      localStorage.removeItem('jwt');
     }
   };
 });
