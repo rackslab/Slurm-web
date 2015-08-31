@@ -3,10 +3,23 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
   template = Handlebars.compile(template);
 
   return function () {
+    function login(options) {
+      $.post(config.apiURL + config.apiPath + '/login', options)
+        .success(function (credentials) {
+          token.setToken(credentials.id_token);
+          user.setUser(credentials.username, credentials.role);
+          $(document).trigger('logged');
+          $(document).trigger('show', { page: config.firstPage });
+        })
+        .error(function () {
+          $('#login #error').show();
+        });
+    };
+
     this.init = function () {
       $('body').append(template());
-      $('#login form').on('submit', function(e) {
-        e.preventDefault();
+
+      $('#login #user').on('click', function () {
         var form = {
           username: $('#login #username').val(),
           password: $('#login #password').val()
@@ -21,18 +34,18 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
             password: form.password
           };
 
-          $.post(config.apiURL + config.apiPath + '/login', options)
-            .success(function (credentials) {
-              token.setToken(credentials.id_token);
-              user.setUser(credentials.username, credentials.role);
-              $(document).trigger('logged');
-              $(document).trigger('show', { page: config.firstPage });
-            })
-            .error(function () {
-              $('#login #error').show();
-            });
+          login(options);
         }
-      });
+      })
+
+      $('#login #guest').on('click', function () {
+        var options = {
+          mimeType: 'multipart/form-data',
+          guest: true
+        };
+
+        login(options)
+      })
     };
 
     this.destroy = function () {
