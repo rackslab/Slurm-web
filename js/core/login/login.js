@@ -1,9 +1,8 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/login.hbs', 'token-utils'], function ($, Handlebars, config, template, token) {
+define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/login.hbs', 'token-utils', 'user-utils'], function ($, Handlebars, config, template, token, user) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
 
   return function () {
-
     this.init = function () {
       $('body').append(template());
       $('#login form').on('submit', function(e) {
@@ -25,7 +24,9 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
           $.post(config.apiURL + config.apiPath + '/login', options)
             .success(function (credentials) {
               token.setToken(credentials.id_token);
-              $(document).trigger('logged', { page: config.firstPage });
+              user.setUser(credentials.username, credentials.role);
+              $(document).trigger('logged');
+              $(document).trigger('show', { page: config.firstPage });
             })
             .error(function () {
               $('#login #error').show();
