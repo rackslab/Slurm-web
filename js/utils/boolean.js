@@ -6,4 +6,12 @@ define(['handlebars'], function (Handlebars) {
 
     return 'No';
   });
+
+  Handlebars.registerHelper('isTrue', function (item) {
+    if (item) {
+      return 1;
+    }
+
+    return 0;
+  });
 });

@@ -1,7 +1,5 @@
-define([], function () {
-  return {
-    capitalize: function () {
-      return (this.charAt(0).toUpperCase() + this.slice(1));
-    }
-  };
+define(['handlebars'], function (Handlebars) {
+  Handlebars.registerHelper('capitalize', function (item) {
+    return (item.charAt(0).toUpperCase() + item.slice(1));
+  });
 });

@@ -1,5 +1,5 @@
-define([], function () {
-  return {
+define(['jquery'], function ($) {
+  var user = {
     setUser: function (username, role) {
       var user = JSON.stringify({
         username: username,
@@ -15,4 +15,12 @@ define([], function () {
       localStorage.removeItem('user');
     }
   };
+
+  $(document).on('logout', function (e) {
+    e.preventDefault();
+
+    user.removeUser();
+  });
+
+  return user;
 });

@@ -1,5 +1,5 @@
-define([], function () {
-  return {
+define(['jquery'], function ($) {
+  var token =  {
     getToken: function () {
       return localStorage.getItem('jwt');
     },
@@ -10,4 +10,12 @@ define([], function () {
       localStorage.removeItem('jwt');
     }
   };
+
+  $(document).on('logout', function (e) {
+    e.preventDefault();
+
+    token.removeToken();
+  });
+
+  return token;
 });
