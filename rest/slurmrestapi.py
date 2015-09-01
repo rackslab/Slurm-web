@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 import pyslurm
 import pwd
 
@@ -33,7 +33,8 @@ from cors import crossdomain
 from settings import settings
 
 # for authentication
-from auth import User, authentication_verify
+from auth import (User, authentication_verify, AuthenticationError,
+                  all_restricted)
 
 app = Flask(__name__)
 
@@ -56,7 +57,10 @@ def login():
     if request.form.get('guest', None) == 'true':
         user = User.guest()
     else:
-        user = User.user(request.form['username'], request.form['password'])
+        try:
+            user = User.user(request.form['username'], request.form['password'])
+        except AuthenticationError:
+            abort(403)
 
     token = user.generate_auth_token()
     resp = {
@@ -67,10 +71,10 @@ def login():
     return jsonify(resp)
 
 
-@app.route('/logout', methods=['GET', 'OPTIONS'])
+@app.route('/guest', methods=['GET'])
 @crossdomain(origin=origins)
-def logout():
-    return "Logout"
+def guest():
+    return jsonify({'guest': not all_restricted})
 
 
 @app.route('/jobs', methods=['POST', 'OPTIONS'])
