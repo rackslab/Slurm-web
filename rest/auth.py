@@ -9,12 +9,13 @@ import os
 secret_key = settings.get('config', 'secret_key')
 
 filtered_keys_by_role = {
-    'all': ['command'],
-    'user': ['command'],
-    'admin': []
+    'all': settings.get('roles', 'resticted_fields_for_all').split(','),
+    'user': settings.get('roles', 'resticted_fields_for_user').split(','),
+    'admin': settings.get('roles', 'resticted_fields_for_admin').split(',')
 }
-unauthorized_roles = []
-
+all_restricted = not(settings.get('roles', 'all') == 'all')
+users = settings.get('roles', 'user').split(',')
+admins = settings.get('roles', 'admin').split(',')
 
 def get_ldap_connection():
     conn = ldap.initialize(settings.get('ldap', 'uri'))
@@ -43,11 +44,7 @@ class User(object):
     # create authenticated user
     @staticmethod
     def user(username, password):
-        try:
-            role = User.get_role_from_ldap(username, password)
-        except AuthenticationError:
-            role = 'all'
-
+        role = User.get_role_from_ldap(username, password)
         return User(username, password, role)
 
     # create a guest user
@@ -62,8 +59,13 @@ class User(object):
             print "LDAP authentication mocked"
             if username == 'marie' or username == 'pierre':
                 if password == 'secret':
-                    return 'admin'
-            return 'all'
+                    groupname = 'chimistes'
+                    if username in admins or ("@" + groupname) in admins:
+                        return 'admin'
+                    if username in users or ("@" + groupname) in users:
+                        return 'user'
+                    return 'all'
+            raise AuthenticationError
 
         # here deal with ldap to get user role
         conn = get_ldap_connection()
@@ -103,11 +105,15 @@ class User(object):
                 filter
             )
             print results
-            gName = results[0][1]['cn'][0]
+            groupname = results[0][1]['cn'][0]
 
-            print "User's group name: %s" % gName
+            print "User's group name: %s" % groupname
 
-            return 'admin'
+            if username in admins or ("@" + groupname) in admins:
+                return 'admin'
+            if username in users or ("@" + groupname) in users:
+                return 'user'
+            return 'all'
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
@@ -119,7 +125,8 @@ class User(object):
         s = Serializer(secret_key, expires_in=expiration)
         token = s.dumps({
             'username': self.username,
-            'password': self.password
+            'password': self.password,
+            'role':     self.role
         })
         print "generate_auth_token : token -> %s" % token
         return token
@@ -139,6 +146,10 @@ class User(object):
         except TypeError:
             print "verify_auth_token : TypeError"
             return None
+
+        if data['role'] == 'all':
+            return User.guest()
+
         user = User.user(data['username'], data['password'])
         return user
 
@@ -153,9 +164,8 @@ def authentication_verify():
 
             user = User.verify_auth_token(token)
             if user is not None:
-                if user.role not in (
-                    set(filtered_keys_by_role) - set(unauthorized_roles)
-                ):
+                if user.role == 'all' and all_restricted:
+                    print "role 'all' unauthorized"
                     return abort(403)
 
                 resp = f(*args, **kwargs)

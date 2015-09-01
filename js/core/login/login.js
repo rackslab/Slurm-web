@@ -19,6 +19,15 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
     this.init = function () {
       $('body').append(template());
 
+      $.get(config.apiURL + config.apiPath + '/guest')
+        .success(function (response) {
+          if (response.guest)
+            $('#login #guest').show();
+        })
+        .error(function (error) {
+          console.log(error);
+        });
+
       $('#login #user').on('click', function () {
         var form = {
           username: $('#login #username').val(),
