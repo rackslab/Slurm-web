@@ -17,6 +17,7 @@ all_restricted = not(settings.get('roles', 'all') == 'all')
 users = settings.get('roles', 'user').split(',')
 admins = settings.get('roles', 'admin').split(',')
 
+
 def get_ldap_connection():
     conn = ldap.initialize(settings.get('ldap', 'uri'))
     return conn
