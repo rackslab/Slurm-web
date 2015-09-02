@@ -63,13 +63,18 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
         })
       };
 
-      var context = {
-        nodeId: nodeId
-      };
+      $.ajax(config.apiURL + config.apiPath + '/jobs-by-node/' + nodeId, options)
+        .success(function (jobs) {
+          var context = {
+            count: Object.keys(jobs).length,
+            nodeId: nodeId,
+            jobs: jobs
+          };
 
-      $('body').append(modalNodeTemplate(context));
-      $('#modal-node').on('hidden.bs.modal', closeModalNode);
-      $('#modal-node').modal('show');
+          $('body').append(modalNodeTemplate(context));
+          $('#modal-node').on('hidden.bs.modal', closeModalNode);
+          $('#modal-node').modal('show');
+        });
     }
 
     $(document).on('modal-core', function (e, options) {

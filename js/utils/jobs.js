@@ -1,5 +1,10 @@
-define(['jquery', 'handlebars', 'text!config.json', 'token-utils', 'date-utils'], function ($, Handlebars, config, token, date) {
+define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', 'token-utils', 'date-utils'], function ($, Handlebars, config, colors, token, date) {
   config = JSON.parse(config);
+  colors = JSON.parse(colors);
+
+  Handlebars.registerHelper('pickJobColor', function (jobId) {
+    return colors.jobColors[(jobId % colors.jobColors.length)];
+  })
 
   Handlebars.registerHelper('printCommand', function (command) {
     if (command === null) {
