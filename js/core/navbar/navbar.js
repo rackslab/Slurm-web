@@ -29,11 +29,9 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/n
 
       $('body').prepend(template(context));
 
-      $("#navbar > ul > li > a[id^='menu-']").each(function () {
-        $(this).click(function (e) {
-          e.preventDefault();
-          $(document).trigger('show', { page: e.target.id.split('-')[1] });
-        });
+      $("#navbar > ul > li > a[id^='menu-']").on('click', function (e) {
+        e.preventDefault();
+        $(document).trigger('show', { page: e.target.id.split('-')[1] });
       });
 
       $('#menu-logout').on('click', function (e) {
@@ -45,6 +43,7 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/n
     };
 
     this.destroy = function () {
+      $("#navbar > ul > li > a[id^='menu-']").off('click');
       $('#menu-logout').off('click');
       $('nav').remove();
     };

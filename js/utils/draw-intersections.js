@@ -1,51 +1,67 @@
-define([], function () {
+define(['jquery'], function ($) {
   return function () {
     var self = this;
-    this.nodesIntersections = {};
     this.coresIntersections = {};
+    this.nodesIntersections = {};
 
     $(document).on('canvas-click', function (e, options) {
       e.stopPropagation();
+
       var X = options.x;
       var Y = options.y;
 
       var index;
+      var core;
+      for (index in self.coresIntersections[options.rack]) {
+        if (self.coresIntersections[options.rack].hasOwnProperty(index)) {
+          core = self.coresIntersections[options.rack][index];
+          if (X >= core.XMIN && X <= core.XMAX && 
+              Y >= core.YMIN && Y <= core.YMAX) {
+
+            $(document).trigger('modal-core', { jobId: core.job });
+            return;
+          }
+        }
+      };
+
       var node;
-      for (index in this.coresIntersections) {
-        console.log(index)
-        if (this.coresIntersections.hasOwnProperty(index)) {
-          node = this.coresIntersections[index];
-          console.log(node.XMIN, ' ', node.XMAX)
-          return
+      for (index in self.nodesIntersections[options.rack]) {
+        if (self.nodesIntersections[options.rack].hasOwnProperty(index)) {
+          node = self.nodesIntersections[options.rack][index];
           if (X >= node.XMIN && X <= node.XMAX && 
               Y >= node.YMIN && Y <= node.YMAX) {
-            console.log('yeah !');
+            $(document).trigger('modal-node', { nodeId: index });
+            return;
           }
         }
       };
     });
-/*
-    this.addNodeIntersections = function (name, XMIN, XMAX, YMIN, YMAX) {
-      console.log(name, XMIN, XMAX, YMIN, YMAX);
-    };
-*/
+
     this.addCoreIntersections = function (infos, XMIN, XMAX, YMIN, YMAX) {
-      if (typeof this.coresIntersections[infos.node + '-' + infos.core] !== 'array') {
-        this.coresIntersections[infos.node + '-' + infos.core] = [];
+      if (!this.coresIntersections.hasOwnProperty(infos.rack)) {
+        this.coresIntersections[infos.rack] = {};
       }
 
-      this.coresIntersections[infos.node + '-' + infos.core].push({ 
+      this.coresIntersections[infos.rack][infos.node + '-' + infos.core] =  {
+        job: infos.job,
         XMIN: XMIN,
         XMAX: XMAX,
         YMIN: YMIN,
         YMAX: YMAX
-      });
+      };
     };
 
-    this.isCoreIntersections = function (x, y) {
-      var key = '';
+    this.addNodeIntersections = function (infos, XMIN, XMAX, YMIN, YMAX) {
+      if (!this.nodesIntersections.hasOwnProperty(infos.rack)) {
+        this.nodesIntersections[infos.rack] = {};
+      }
 
-      return key;
+      this.nodesIntersections[infos.rack][infos.node] =  {
+        XMIN: XMIN,
+        XMAX: XMAX,
+        YMIN: YMIN,
+        YMAX: YMAX
+      };
     };
 
     return this;

@@ -53,7 +53,7 @@
             </thead>
             <tbody>
               {{#each jobs}}
-                <tr class="job-row" id="tr-job-{{@key}}" onClick="$(document).trigger('modal-job', { jobId: {{@key}} })">
+                <tr class="job-row" id="tr-job-{{@key}}">
                   <td>{{@key}}</td>
                   <td>{{login}} ({{username}})</td>
                   <td>{{printNodes nodes}}</td>

@@ -75,6 +75,14 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
           };
 
           $('body').append(template(context));
+
+          $("tr[id^='tr-job-']").on('click', function (e) {
+            e.preventDefault();
+
+            var jobId = $(e.target).parent('tr').attr('id').split('-')[2];
+            $(document).trigger('modal-job', { jobId: jobId });
+          });
+
           $('.tablesorter').tablesorter(self.tablesorterOptions);
 
           var dataAllocatedCores = [
@@ -167,9 +175,11 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
         clearInterval(this.interval);
       }
 
-      $('#modal-job').off('hidden.bs.modal'),
+      $("tr[id^='tr-job-']").off('click');
+      $('#modal-job').off('hidden.bs.modal');
       $('#jobs').parent('.container-fluid').remove();
-      $('.modal').remove();
+      $('#modal-job').remove();
+      $(document).off('modal-job');
     };
 
     return this;
