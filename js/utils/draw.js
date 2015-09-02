@@ -5,7 +5,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
 
   return function() {
     var self = this;
-    this.intersections = new Intersections();
+    this.intersections = null;
     this.config = $.extend(config.display.canvas, {
       rackInsideHeight: canvasConfig.rackUnitNumber * canvasConfig.rackUnitHeight,
       rackHeight: (canvasConfig.rackUnitNumber * canvasConfig.rackUnitHeight) + (2 * canvasConfig.rackBorderWidth),
@@ -160,6 +160,15 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
       return { x: coreABSX, y: coreABSY };
     }
 
+    function writeNodeName(ctx, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth) {
+      ctx.fillStyle = 'black';
+      if (rackABSX == 0) {
+        ctx.fillText(nodeName, nodeABSX - 55, nodeABSY + nodeHeight - 3);
+      } else {
+        ctx.fillText(nodeName, nodeABSX + nodeWidth + self.config.rackBorderWidth + 3, nodeABSY + nodeHeight - 3);
+      }
+    }
+
     this.getConfig = function () {
       return this.config;
     };
@@ -220,48 +229,41 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
       var nodeWidth = rackNode.width * this.config.rackInsideWidth - this.config.nodeMargin;
       var nodeHeight = rackNode.height * this.config.rackUnitHeight - this.config.nodeMargin;
 
-      //console.log("node_id: " + id_node + " -> " + node_rack + "/" + id_node_in_rack + " -> coord:" + node_coord_x + "/" + node_coord_y + " abs: " + node_abs_x + "/" + node_abs_y);
-
       var nodeColors = getNodeColors(slurmNode);
       var nodeColor = nodeColors.node;
       var stateColor = nodeColors.state;
 
-      /* node rectangle */
       drawRectangle(ctx, nodeABSX, nodeABSY, nodeWidth, nodeHeight, nodeColor);
 
-      /* draw status LED */
       if (stateColor) {
         drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);
       }
 
-      /* write node name */
-      //write_node_name(ctx, racknode.name, node_abs_x, node_abs_y, node_height, node_width);
-
+      writeNodeName(ctx, rackNode.name, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
     }
 
-/******/
-/*
-
-*/
-
     this.drawNodeCores = function (rack, rackNode, slurmNode, allocatedCPUs) {
+      if (!this.intersections) {
+        this.intersections = new Intersections();
+      }
+
       var ctx = ($('#cv_rackmap_' + rack.name)[0]).getContext("2d");
 
       var rackABS = getRackABSCoordinates(rack)
       var rackABSX = rackABS.X;
       var rackABSY = rackABS.Y;
 
-      nodeABSX = rackABSX + this.config.rackBorderWidth + (rackNode.posx * this.config.rackInsideWidth);
-      nodeABSY = rackABSY + this.config.rackHeight - this.config.rackBorderWidth - (rackNode.posy * this.config.rackUnitHeight);
+      var nodeABSX = rackABSX + this.config.rackBorderWidth + (rackNode.posx * this.config.rackInsideWidth);
+      var nodeABSY = rackABSY + this.config.rackHeight - this.config.rackBorderWidth - (rackNode.posy * this.config.rackUnitHeight);
 
-      nodeWidth = rackNode.width * this.config.rackInsideWidth - this.config.nodeMargin;
-      nodeHeight = rackNode.height * this.config.rackUnitHeight - this.config.nodeMargin;
+      var nodeWidth = rackNode.width * this.config.rackInsideWidth - this.config.nodeMargin;
+      var nodeHeight = rackNode.height * this.config.rackUnitHeight - this.config.nodeMargin;
 
       var nodeColors = getNodeColors(slurmNode).node;
       var stateColor = getNodeColors(slurmNode).state;
 
-      //this.intersections.addNodeIntersections('node', nodeABSX, (nodeABSX + this.config.nodeWidth), nodeABSY, (nodeABSY + this.config.nodeHeight));
-      drawRectangleBorder(ctx, nodeABSX, nodeABSY, this.config.nodeWidth, this.config.nodeHeight, 1, colors.colorIdle, colors.colorCoreBorder);
+      this.intersections.addNodeIntersections({ rack: rack.name, node: rackNode.name }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
+      drawRectangle(ctx, nodeABSX, nodeABSY, nodeWidth, nodeHeight, colors.colorIdle);
 
       if (stateColor) {
         drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);
@@ -289,32 +291,36 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
       var coreCoords = null;
       var coreColor = null;
 
-      if (!allocatedCPUs) {
-        // here
-      }
-
-      console.log(rack.name);
-
       for (var job in allocatedCPUs) {
         if (allocatedCPUs.hasOwnProperty(job)) {
           coresJobNumber = allocatedCPUs[job];
           coreColor = pickJobColor(parseInt(job));
 
           for (coreId = 0; coreId < coresDrawn + coresJobNumber; coreId++) {
-            coreCoords = getCoreABSCoordinates(this.config.nodeWidth, this.config.nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
+            coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
 
             coreABSX = coreCoords.x;
             coreABSY = coreCoords.y;
 
-            //console.log({ rack: rack.name, node: rackNode.name, core: coreId });
-            //this.intersections.addCoreIntersections({ node: rackNode.name, job: job }, coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
+            this.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
+
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.colorCoreBorder);
           }
+
+          return;
 
           coresDrawn += coresJobNumber;
         }
       }
+
+      for (coreId= 0; coreId < coresNumber; coreId++) {
+        coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
+        coreABX = coreCoords.x;
+        coreABSY = coreCoords.y;
+        drawRectangleBorder(ctx, coreABX, coreABSY, coreSize, coreSize, 1, colors.colorIdle, colors.colorCoreBorder);
+      }
       
+      writeNodeName(ctx, rackNode.name, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
     }
   };
 });
