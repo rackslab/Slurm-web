@@ -192,6 +192,33 @@ def get_qos():
     return qos
 
 
+@app.route('/jobs-by-node/<node_id>', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+def get_jobs_by_node_id(node_id):
+    if mocking:
+        jobs = mock('jobs.json')
+    else:
+        jobs = pyslurm.job().get()
+
+    returned_jobs = {}
+
+    # filter jobs by node
+    for jobid, job in jobs.iteritems():
+        nodes_list = job['cpus_allocated'].keys()
+        print "Nodelist for %s : %s" % (node_id, nodes_list)
+        if node_id in nodes_list:
+            returned_jobs[jobid] = job
+            print "Node %s added to jobs : %s" % (node_id, returned_jobs)
+
+    if not mocking:
+        for jobid, job in returned_jobs.iteritems():
+            fill_job_user(job)
+
+    return returned_jobs
+
+
 def fill_job_user(job):
     uid = job['user_id']
     uid_s = str(uid)
