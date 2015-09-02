@@ -7,35 +7,42 @@
       </div>
       <div class="modal-body" id="modal-job-body">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Collapsible Group Item #1 JobId here
-                </a>
-              </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-              <div class="panel-body">
-                <ul>
-                  <li>user: {{job.login}} ({{job.username}})</li>
-                  <li>state: {{job.job_state}}</li>
-                  <li>reason: {{printStateReason job.state_reason}}</li>
-                  <li>nodes: {{job.nodes}} ({{job.num_nodes}})</li>
-                  <li>cores: {{job.num_cpus}}</li>
-                  <li>account: {{job.account}}</li>
-                  <li>QOS: {{job.qos}}</li>
-                  <li>partition: {{job.partition}}</li>
-                  <li>exclusive: {{yesOrNo (different job.exclusive)}}</li>
-                  <li>command: {{printCommand job.command}}</li>
-                  <li>start time: {{printDateFromTimestamp job.start_time}}</li>
-                  <li>eligible time: {{printDateFromTimestamp job.eligible_time}}</li>
-                  <li>end time: {{printDateFromTimestamp job.end_time}}</li>
-                  <li>time limit: {{job.time_limit}} mins</li>
-                </ul>
+          {{#if count}}
+            {{#each jobs}}
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne" style="background-color: {{pickJobColor @key}};">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Job {{@key}}
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                    <ul>
+                      <li>user: {{login}} ({{username}})</li>
+                      <li>state: {{job_state}}</li>
+                      <li>reason: {{printStateReason state_reason}}</li>
+                      <li>nodes: {{nodes}} ({{num_nodes}})</li>
+                      <li>cores: {{num_cpus}}</li>
+                      <li>account: {{account}}</li>
+                      <li>QOS: {{qos}}</li>
+                      <li>partition: {{partition}}</li>
+                      <li>exclusive: {{yesOrNo (different exclusive)}}</li>
+                      <li>command: {{printCommand command}}</li>
+                      <li>start time: {{printDateFromTimestamp start_time}}</li>
+                      <li>eligible time: {{printDateFromTimestamp eligible_time}}</li>
+                      <li>end time: {{printDateFromTimestamp end_time}}</li>
+                      <li>time limit: {{time_limit}} mins</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-      </h4>
+            {{/each}}
+          {{else}}
+            <p>There is no data to display.</p>
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
