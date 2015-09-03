@@ -23,6 +23,7 @@ require.config({
     'page-utils': '../../js/utils/page',
     'ajax-utils': '../../js/utils/ajax',
     'draw-intersections-utils': '../../js/utils/draw-intersections',
+    'draw-legend-utils': '../../js/utils/draw-legend',
     login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
     jobs: '../../js/modules/jobs/jobs',

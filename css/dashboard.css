@@ -225,9 +225,7 @@ table.tablesorter thead tr .headerSortDown {
  */
 
 .canvas-legend {
-  position: absolute;
-  top: 55px;
-  right: 180px;   
+  float: left;  
 }
 
 /*
