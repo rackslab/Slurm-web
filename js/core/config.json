@@ -3,7 +3,7 @@
   "apiURL": "http://192.168.99.100/",
   "apiPath": "/slurm-restapi",
   "apiRefresh": 1000000,
-  "firstPage": "jobsmap",
+  "firstPage": "firstpersonview",
   "display": {
     "maxNodesLength": 25,
     "canvas": {
@@ -30,6 +30,11 @@
     "canvasLegend": {
       "width": 100,
       "height": 100
+    },
+    "canvas3d": {
+      "unitSize": 250,
+      "moveSpeed": 100,
+      "rotateSpeed": 0.075
     }
   }
 }

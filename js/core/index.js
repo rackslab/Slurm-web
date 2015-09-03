@@ -7,6 +7,7 @@ require.config({
     'jquery-flot-pie': '/javascript/jquery-flot/jquery.flot.pie.min',
     handlebars: '/javascript/handlebars/handlebars',
     bootstrap: '/javascript/bootstrap/js/bootstrap.min',
+    three: '../../js/libraries/three.min',
     'helpers-utils': '../../js/utils/helpers',
     'cluster-utils': '../../js/utils/cluster',
     'string-utils': '../../js/utils/string',
@@ -24,6 +25,7 @@ require.config({
     'ajax-utils': '../../js/utils/ajax',
     'draw-intersections-utils': '../../js/utils/draw-intersections',
     'draw-legend-utils': '../../js/utils/draw-legend',
+    'draw-three-dimensional-utils': '../../js/utils/draw-three-dimensional',
     login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
     jobs: '../../js/modules/jobs/jobs',
@@ -31,7 +33,8 @@ require.config({
     'jobs-map': '../../js/modules/jobs-map/jobs-map',
     partitions: '../../js/modules/partitions/partitions',
     qos: '../../js/modules/qos/qos',
-    reservations: '../../js/modules/reservations/reservations'
+    reservations: '../../js/modules/reservations/reservations',
+    'first-person-view': '../../js/modules/first-person-view/first-person-view'
   },
   shim: {
     jquery: {
@@ -49,13 +52,16 @@ require.config({
     handlebars: {
       exports: 'Handlebars'
     },
+    three: {
+      exports: 'THREE'
+    },
     bootstrap: {
       deps: [ 'jquery' ]
     }
   }
 });
 
-require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'ajax-utils'], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations) {
+require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'first-person-view', 'ajax-utils'], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, FirstPersonView) {
   var navbar = new Navbar();
   var page = new Page();
 
@@ -95,6 +101,9 @@ require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login',
       break;
     case 'reservations':
       $.extend(page,  new Page('reservations'), new Reservations());
+      break;
+    case 'firstpersonview':
+      $.extend(page, new Page('3dview'), new FirstPersonView());
       break;
     }
 
