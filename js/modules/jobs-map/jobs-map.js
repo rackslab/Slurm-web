@@ -1,4 +1,4 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!../../js/modules/jobs-map/modal-core.hbs', 'text!../../js/modules/jobs-map/modal-node.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, config, token, draw, nodes, jobs) {
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!../../js/modules/jobs-map/modal-core.hbs', 'text!../../js/modules/jobs-map/modal-node.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, config, token, draw, drawLegend, nodes, jobs) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
   modalCoreTemplate = Handlebars.compile(modalCoreTemplate);
@@ -112,6 +112,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
         .success(function (racks) {
           var context = {
             canvas: self.canvasConfig,
+            canvasLegend: config.display.canvasLegend,
             racks: racks
           };
 
@@ -130,7 +131,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
             });
           });
 
-          //draw.drawJobsMapLegend(self.ctx);
+          drawLegend.drawLegend('jobs-map');
         });
     };
 

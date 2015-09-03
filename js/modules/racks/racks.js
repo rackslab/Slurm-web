@@ -1,4 +1,4 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, Draw, nodes) {
+define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, Draw, drawLegend, nodes) {
   config = JSON.parse(config);
   template = Handlebars.compile(template);
   draw = new Draw();
@@ -29,6 +29,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!c
         .success(function (racks) {
           var context = {
             canvas: self.canvasConfig,
+            canvasLegend: config.display.canvasLegend,
             racks: racks
           };
 
@@ -41,7 +42,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!c
             });
           });
 
-          //nodes.drawRacksLegend(self.ctx, false);
+          drawLegend.drawLegend('racks');
         });
     };
 

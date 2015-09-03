@@ -26,6 +26,10 @@
       "nodesPerRow": 2,
       "nodeMargin": 1,
       "nodeStateWidth": 10
+    },
+    "canvasLegend": {
+      "width": 100,
+      "height": 100
     }
   }
 }
