@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div id="gantt" class="main">
+    <h1 class="page-header">
+      Gantt
+    </h1>
+    <div class="content" style="height:{{height}}px;">
+      <div id="nodes-list">
+        {{#each nodes}}
+          <div class="node" id="node-{{this}}">
+            {{this}}
+          </div>
+        {{/each}}
+      </div>
+      <div id="jobs-chart">
+        {{#each jobs}}
+          <div class="job" data-id="{{id}}" style="height:{{height}}px;line-height:{{height}}px;top:{{positionY}}px;width:{{width}}%;left:{{positionX}}%;">
+            {{id}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

@@ -30,7 +30,7 @@ body {
   margin-left: 220px;
 }
 
-.navbar-inverse .navbar-nav > .open > a:focus, 
+.navbar-inverse .navbar-nav > .open > a:focus,
 .navbar-inverse .navbar-nav > .open > a:hover,
 .navbar-inverse .navbar-nav > .open > a:visited,
 .navbar-inverse .navbar-nav > .open > a:active {
@@ -225,7 +225,7 @@ table.tablesorter thead tr .headerSortDown {
  */
 
 .canvas-legend {
-  float: left;  
+  float: left;
 }
 
 /*
@@ -236,3 +236,35 @@ table.tablesorter thead tr .headerSortDown {
   text-align: center;
 }
 
+/*
+ * Gantt
+ */
+#gantt .content {
+  position: relative;
+}
+
+#nodes-list {
+  position: absolute;
+  left: -50px;
+}
+
+#nodes-list .node {
+  font-size: 0.6em;
+  height: 25px;
+  width: 50px;
+  line-height: 25px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+#jobs-chart .job {
+  position: absolute;
+  text-align: center;
+  background-color: lavender;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+#jobs-chart .job:hover {
+  background-color: lightblue;
+}

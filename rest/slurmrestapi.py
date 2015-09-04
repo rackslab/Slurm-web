@@ -192,6 +192,8 @@ def get_qos():
     return qos
 
 
+# returns a dict composed with all jobs running on the given node
+# with their ID as key
 @app.route('/jobs-by-node/<node_id>', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
@@ -217,6 +219,37 @@ def get_jobs_by_node_id(node_id):
             fill_job_user(job)
 
     return returned_jobs
+
+
+# returns a dict composed with all nodes ID as key associated to a dict
+# composed by all jobs running on the concerned node
+@app.route('/jobs-by-nodes', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+def get_jobs_by_nodes():
+    if mocking:
+        jobs = mock('jobs.json')
+        nodes = mock('nodes.json')
+    else:
+        jobs = pyslurm.job().get()
+        nodes = pyslurm.node().get()
+
+    returned_nodes = {}
+
+    for node_id, node in nodes.iteritems():
+        returned_jobs = {}
+        # filter jobs by node
+        for jobid, job in jobs.iteritems():
+            nodes_list = job['cpus_allocated'].keys()
+            print "Nodelist for %s : %s" % (node_id, nodes_list)
+            if node_id in nodes_list:
+                returned_jobs[jobid] = job
+                print "Node %s added to jobs : %s" % (node_id, returned_jobs)
+
+        returned_nodes[node_id] = returned_jobs
+
+    return returned_nodes
 
 
 def fill_job_user(job):

@@ -34,7 +34,8 @@ require.config({
     partitions: '../../js/modules/partitions/partitions',
     qos: '../../js/modules/qos/qos',
     reservations: '../../js/modules/reservations/reservations',
-    'first-person-view': '../../js/modules/first-person-view/first-person-view'
+    'first-person-view': '../../js/modules/first-person-view/first-person-view',
+    gantt: '../../js/modules/gantt/gantt'
   },
   shim: {
     jquery: {
@@ -61,7 +62,7 @@ require.config({
   }
 });
 
-require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'first-person-view', 'ajax-utils'], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, FirstPersonView) {
+require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login', 'navbar', 'jobs', 'racks', 'jobs-map', 'qos', 'partitions', 'reservations', 'first-person-view', 'gantt', 'ajax-utils'], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, FirstPersonView, Gantt) {
   var navbar = new Navbar();
   var page = new Page();
 
@@ -104,6 +105,9 @@ require(['page-utils', 'text!config.json', 'token-utils', 'user-utils', 'login',
       break;
     case 'firstpersonview':
       $.extend(page, new Page('3dview'), new FirstPersonView());
+      break;
+    case 'gantt':
+      $.extend(page,  new Page('gantt'), new Gantt());
       break;
     }
 
