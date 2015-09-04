@@ -20,14 +20,34 @@
 
 import os
 import json
+import time
 
 mocks = os.path.join(os.path.dirname(__file__), 'mocks/')
 mocking = os.environ.get('REST_ENV') == 'development'
 
+referal_timestamp = 1435564250
+time_keys_to_shift = [
+    "eligible_time",
+    "end_time",
+    "start_time",
+    "submit_time"
+]
+
+
+def time_shift_dict(datas, time_interval):
+    for key in set(datas):
+        if key in time_keys_to_shift:
+            datas[key] += time_interval
+        else:
+            if isinstance(datas[key], dict):
+                time_shift_dict(datas[key], time_interval)
+    return datas
+
 
 def mock(filename):
+    time_interval = int(time.time()) - referal_timestamp
     with open(mocks + filename, 'r') as data_file:
-        return json.load(data_file)
+        return time_shift_dict(json.load(data_file), time_interval)
 
 
 def mock_job(job_id):
