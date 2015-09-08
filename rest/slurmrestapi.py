@@ -252,6 +252,34 @@ def get_jobs_by_nodes():
     return returned_nodes
 
 
+# returns a dict composed with all qos ID as key associated to a dict
+# composed by all jobs on the concerned node
+@app.route('/jobs-by-qos', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+def get_jobs_by_qos():
+    if mocking:
+        jobs = mock('jobs.json')
+        qos = mock('qos.json')
+    else:
+        jobs = pyslurm.job().get()
+        qos = pyslurm.qos().get()
+
+    returned_qos = {}
+
+    for qos_id, q in qos.iteritems():
+        returned_jobs = {}
+        # filter jobs by node
+        for jobid, job in jobs.iteritems():
+            if qos_id == job['qos']:
+                returned_jobs[jobid] = job
+
+        returned_qos[qos_id] = returned_jobs
+
+    return returned_qos
+
+
 def fill_job_user(job):
     uid = job['user_id']
     uid_s = str(uid)

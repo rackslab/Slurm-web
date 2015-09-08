@@ -1,4 +1,5 @@
 import ldap
+import json
 from flask import request, abort, jsonify
 from settings import settings
 from functools import wraps
@@ -24,12 +25,16 @@ def get_ldap_connection():
 
 
 def filter_dict(to_filter={}, filtered_keys=[]):
-    for key in set(to_filter):
-        if key in filtered_keys:
-            del to_filter[key]
-        else:
-            if isinstance(to_filter[key], dict):
-                filter_dict(to_filter[key], filtered_keys)
+    if isinstance(to_filter, dict):
+        for key in set(to_filter):
+            if key in filtered_keys:
+                del to_filter[key]
+            else:
+                if isinstance(to_filter[key], dict):
+                    filter_dict(to_filter[key], filtered_keys)
+    if isinstance(to_filter, list):
+        for elem in to_filter:
+            filter_dict(elem, filtered_keys)
 
 
 class AuthenticationError(Exception):
@@ -171,7 +176,11 @@ def authentication_verify():
 
                 resp = f(*args, **kwargs)
                 filter_dict(resp, filtered_keys_by_role[user.role])
-                return jsonify(resp)
+
+                if isinstance(resp, dict):
+                    return jsonify(resp)
+                if isinstance(resp, list):
+                    return json.dumps(resp)
 
             return abort(403)
 

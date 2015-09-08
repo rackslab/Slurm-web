@@ -3,21 +3,43 @@
     <h1 class="page-header">
       Gantt
     </h1>
-    <div class="content" style="height:{{height}}px;">
-      <div id="nodes-list">
-        {{#each nodes}}
-          <div class="node" id="node-{{this}}">
-            {{this}}
+
+    <!-- <ul class="nav nav-tabs" role="tablist" id="tabs">
+      <li role="presentation" class="active"><a href="#nodes" aria-controls="nodes" role="tab" data-toggle="tab">Nodes</a></li>
+      <li role="presentation"><a href="#qos" aria-controls="qos" role="tab" data-toggle="tab">QoS</a></li>
+    </ul> -->
+
+    <!-- <div class="tab-content"> -->
+      <div role="tabpanel" class="tab-pane active content" id="nodes">
+        <div id="nodes-list">
+          {{#each nodes}}
+            <div class="node" data-id="{{this}}">
+              {{this}}
+            </div>
+          {{/each}}
+        </div>
+        <div id="jobs-chart">
+          <div class="wrapper" style="width:{{width}}px;height:{{height}}px;">
+            {{#each jobs}}
+              <div class="job" data-id="{{id}}" title="Job #{{id}}"
+                  style="height:{{height}}px;line-height:{{height}}px;top:{{positionY}}px;width:{{width}}%;left:{{positionX}}%;">
+                <span data-id="{{id}}">{{id}}</span>
+              </div>
+            {{/each}}
+            <div id="time" style="width:{{width}}px;">
+              {{#each times}}
+                <div class="time" style="right:{{position}}%;">
+                  {{value}}
+                </div>
+              {{/each}}
+            </div>
           </div>
-        {{/each}}
+        </div>
       </div>
-      <div id="jobs-chart">
-        {{#each jobs}}
-          <div class="job" data-id="{{id}}" style="height:{{height}}px;line-height:{{height}}px;top:{{positionY}}px;width:{{width}}%;left:{{positionX}}%;">
-            {{id}}
-          </div>
-        {{/each}}
-      </div>
-    </div>
+
+      <!-- <div role="tabpanel" class="tab-pane content" id="qos">
+        Jobs by QoS
+      </div> -->
+    <!-- </div> -->
   </div>
 </div>

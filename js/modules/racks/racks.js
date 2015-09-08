@@ -27,6 +27,16 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!c
 
       $.ajax(config.apiURL + config.apiPath + '/racks', options)
         .success(function (racks) {
+          if (racks instanceof Array) {
+            result = {};
+            for (var i in racks) {
+              for (var rack in racks[i]) {
+                result[rack] = racks[i][rack];
+              }
+            }
+            racks = result;
+          }
+
           var context = {
             canvas: self.canvasConfig,
             canvasLegend: config.display.canvasLegend,
