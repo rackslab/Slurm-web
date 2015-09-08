@@ -19,6 +19,7 @@ require.config({
     'boolean-utils': '../../js/utils/boolean',
     'tablesorter-utils': '../../js/utils/tablesorter',
     'jobs-utils': '../../js/utils/jobs',
+    'racks-utils': '../../js/utils/racks',
     'draw-utils': '../../js/utils/draw',
     'nodes-utils': '../../js/utils/node',
     'page-utils': '../../js/utils/page',

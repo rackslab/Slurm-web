@@ -1,4 +1,12 @@
-define(['jquery', 'three'], function ($, THREE) {
+define(['jquery', 'text!config.json', 'three'], function ($, config, THREE) {
+
+/* Box Helper */
+/*
+  var hex  = 0xff0000;
+  var bbox = new THREE.BoundingBoxHelper( mesh, hex );
+  bbox.update();
+  self.scene.add(bbox);
+*/
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -279,72 +287,68 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 };
 
-  return function () {
+  return function (map, racks, jobs) {
+    //this.map = map;
+    this.racks = racks;
+    this.map = {
+      data: [
+/*x: -------------------------> */
+/*y:*/ 1, 1, 1, 1, 1, 1, 1, 1,
+/*|*/  1, 0, 0, 0, 0, 0, 0, 1,
+/*|*/  1, 0, 'A1', 'A2', 'A3', 'A4', 0, 1,
+/*|*/  1, 0, 0, 0, 0, 0, 0, 1,
+/*|*/  1, 0, 'A5', 'A6', 'A7', 'A8', 0, 1,
+/*|*/  1, 0, 0, 0, 0, 0, 0, 1,
+/*|*/  1, 0, 'A9', 'A10', 0, 'A12', 0, 1,
+/*|*/  1, 0, 0, 0, 0, 0, 0, 1,
+/*|*/  1, 1, 1, 1, 1, 1, 1, 1
+      ],
+      width: 8,
+      height: 9
+    };
     /* Later, put it in config */
     var MOVESPEED = 1;
     var LOOKSPEED = 0.05;
     var UNITSIZE = 1;
-    var WALLHEIGHT = UNITSIZE / 3;
+    var RACKWIDTH = UNITSIZE; // x
+    var RACKHEIGHT = UNITSIZE / 10; // z
+    var RACKDEPTH = UNITSIZE; // y
+    var RACKMARGIN = UNITSIZE / 10;
+    var WALLHEIGHT = 1;
+    var RACKCOLOR = 0x979797;
     /**/
     var self = this;
-    this.map = [
-      [1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 2, 2, 2, 2, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 2, 2, 2, 2, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 2, 2, 2, 2, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1]
-    ];
-
-    this.mapWidth = this.map.length;
-    this.mapHeight = this.map[0].length;
 
     this.camera;
     this.clock;
 
-    function onMouseMove(e) {
-      e.preventDefault();
-
-      //self.mouse.x = (e.clientX / self.canvas.width()) * 2 - 1;
-      //self.mouse.y = -(e.clientY / self.canvas.height()) * 2 + 1;
-    }
-
     function onMouseDown(evenet) {
       event.preventDefault();
- 
 
-       var vector = new THREE.Vector3();
+      var canvasMouseX = event.clientX - self.canvasRect.left; 
+      var canvasMouseY = event.clientY - self.canvasRect.top; 
+      self.mouse.set((canvasMouseX / self.canvas.width()) * 2 - 1, -(canvasMouseY / self.canvas.height()) * 2 + 1, 0.5);
+      self.mouse.unproject(self.camera);
 
-var canvasMouseX = event.clientX - self.canvasRect.left; 
-var canvasMouseY = event.clientY - self.canvasRect.top; 
-vector.set((canvasMouseX / $('canvas').width()) * 2 - 1, -(canvasMouseY / $('canvas').height()) * 2 + 1, 0.5);
-
-
-      vector.unproject( self.camera );
-
-      self.raycaster.set( self.camera.position, vector.sub( self.camera.position ).normalize() );
-
-      //self.raycaster.setFromCamera( vector, self.camera );
+      self.raycaster.set(self.camera.position, self.mouse.sub( self.camera.position ).normalize());
 
       var intersects = self.raycaster.intersectObjects( self.scene.children, true );
-      console.log(intersects)
-      for ( var i = 0; i < intersects.length; i++ ) {
-        //intersects[ i ].object.material.color.set( 0xff0000 );
+      for (var i = 0; i < intersects.length; i++) {
+        console.log(intersects[i].object);
       }
     }
 
+    function getMapValue(x, y) {
+      return self.map.data[y * self.map.width + x];
+    }
+
     function setControls() {
-      self.mouse = { x: 0, y: 0 };
       self.controls = new THREE.FirstPersonControls(self.camera);
       self.controls.movementSpeed = MOVESPEED;
       self.controls.lookSpeed = LOOKSPEED;
       self.controls.lookVertical = true;
       self.controls.noFly = true;
-      //$(self.canvas).on('mousemove', onMouseMove);
-      $(self.canvas).on('mousedown', onMouseDown);
+      self.canvas.on('mousedown', onMouseDown);
     }
 
     function addLight() {
@@ -360,15 +364,14 @@ vector.set((canvasMouseX / $('canvas').width()) * 2 - 1, -(canvasMouseY / $('can
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set( 32, 32 );
+      texture.repeat.set(32, 32);
       var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-      var floorGeometry = new THREE.PlaneGeometry(self.mapWidth * UNITSIZE, self.mapHeight * UNITSIZE, 100, 100);
+      var floorGeometry = new THREE.PlaneGeometry(self.map.width * UNITSIZE, self.map.height * UNITSIZE, 1, 1);
       var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-      floor.rotation.x = (-Math.PI / 2);
-      console.log(floor);
+      //floor.rotation.x = (-Math.PI / 2);
       self.scene.add(floor);
     }
-
+/*
     function addWall() {
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
@@ -381,21 +384,107 @@ vector.set((canvasMouseX / $('canvas').width()) * 2 - 1, -(canvasMouseY / $('can
         for (var j = 0, m = self.map[i].length; j < m; j++) {
           if (self.map[i][j] === 1) {
             var wall = new THREE.Mesh(cube, materials);
-            wall.position.x = (i - self.mapWidth / 2) * UNITSIZE;
-            wall.position.y = WALLHEIGHT / 2;
-            wall.position.z = (j - self.mapWidth / 2) * UNITSIZE;
+            wall.position.x = (i - self.mapWidth / 2) * 1;
+            wall.position.y = 1 / 2;
+            wall.position.z = (j - self.mapWidth / 2) * 1;
             self.scene.add(wall);
           }
         }
       }
     }
+*/
+
+    function addCores() {
+      
+    }
+
+    function addLed(x, y, z, nodeWidth, rackDepth, nodeHeight) {
+      var ledDimensions = nodeWidth / 40;
+
+      var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDimensions);
+      var material = new THREE.MeshBasicMaterial({ color: 0x18ff00 });
+      var mesh = new THREE.Mesh(geometry, material);
+
+      mesh.position.x = x - (nodeWidth / 2) + (2 * ledDimensions);
+      mesh.position.y = y + (rackDepth / 2);
+      mesh.position.z = z;
+
+      self.scene.add(mesh);
+
+      addCores
+    }
+
+    function addNode(node, x, y, z) {
+      var geometry;
+      var material;
+      var mesh;
+
+      var positionX;
+      var positionY;
+      var positionZ;
+
+      geometry = new THREE.BoxGeometry(RACKWIDTH * node.width, RACKDEPTH, RACKHEIGHT * node.height);
+      material = new THREE.MeshBasicMaterial({ color: 0x202020});
+      mesh = new THREE.Mesh(geometry, material);
+
+      positionX = x + node.posx * RACKWIDTH;
+      positionY = y;
+      positionZ = z + node.posy * RACKHEIGHT;
+
+      mesh.position.x = positionX;
+      mesh.position.y = positionY;
+      mesh.position.z = positionZ;
+
+      self.scene.add(mesh);
+
+      addLed(positionX, positionY, positionZ, node.width, RACKDEPTH, node.height);
+    }
 
     function addRack() {
+      var rack;
+      var rackHeight;
+      var positionX;
+      var positionY;
+      var positionZ;
 
+      var geometry;
+      var material;
+      var mesh;
+
+      var x;
+      var y;
+      var index;
+      for (y = 0; y < self.map.height; y++) {
+        for (x = 0; x < self.map.width; x++) {
+          if (getMapValue(x, y) !== 1 && getMapValue(x, y) !== 0 && self.racks.hasOwnProperty(getMapValue(x, y))) {
+            rack = self.racks[getMapValue(x, y)];
+            positionX = (x - (self.map.width - 1) / 2) * (RACKWIDTH + 2 * RACKMARGIN);
+            positionY = (y - (self.map.height - 1) / 2) * (RACKDEPTH + 2 * RACKMARGIN);
+            positionZ = (RACKHEIGHT / 2);
+
+            for (index in rack.nodes) {
+              if (rack.nodes.hasOwnProperty(index)) {
+                addNode(rack.nodes[index], positionX, positionY, positionZ);
+                rackHeight = rack.nodes[index].posy * RACKHEIGHT + (RACKHEIGHT * 2);
+              }
+            }
+
+            geometry = new THREE.BoxGeometry(RACKWIDTH, RACKDEPTH, rackHeight);
+            material = new THREE.MeshBasicMaterial({ color: RACKCOLOR });
+            mesh = new THREE.Mesh(geometry, material);
+
+            mesh.position.x = positionX;
+            mesh.position.y = positionY;
+            mesh.position.z = rackHeight / 2;
+
+            //self.scene.add(mesh);
+          }
+        }
+      }
     }
 
     function addCamera() {
-      self.camera = new THREE.PerspectiveCamera(60, self.canvas.width() / self.canvas.height(), 1, 10000);
+      self.camera = new THREE.PerspectiveCamera(45, self.canvas.width() / self.canvas.height(), 1, 1000);
       self.scene.add(self.camera);
     }
 
@@ -410,23 +499,21 @@ vector.set((canvasMouseX / $('canvas').width()) * 2 - 1, -(canvasMouseY / $('can
     this.init = function (canvas) {
       this.canvas = canvas;
       this.clock = new THREE.Clock();
-      this.mouse = new THREE.Vector2();
+      this.mouse = new THREE.Vector3();
       this.raycaster = new THREE.Raycaster();
-      console.log(this.raycaster.near)
-      console.log(this.raycaster.far)
-      //this.raycaster.near = 1000000;
-      //this.raycaster.far = 1000000;
       this.renderer = new THREE.WebGLRenderer({ canvas: canvas[0] });
       this.scene = new THREE.Scene();
-
 
       this.canvasRect = this.renderer.domElement.getBoundingClientRect();
 
       addCamera(canvas);
       setControls();
-      //addFloor();
+      addFloor();
+      //addWall();
+      addRack();
+      this.scene.add(new THREE.AxisHelper(100));
 
-      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+      /*var geometry = new THREE.BoxGeometry( 1, 1, 1 );
       var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
       this.cube = new THREE.Mesh( geometry, material );
       this.cube.custom = {
@@ -434,6 +521,7 @@ vector.set((canvasMouseX / $('canvas').width()) * 2 - 1, -(canvasMouseY / $('can
       };
       this.cube.position.y = 0.5;
       this.scene.add(this.cube);
+      */
 
       this.camera.position.z = 5;
 
