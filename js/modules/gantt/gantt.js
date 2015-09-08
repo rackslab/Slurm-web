@@ -4,20 +4,30 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
   modalTemplate = Handlebars.compile(modalTemplate);
 
   function computeJobs (jobsByNodes) {
-    var jobs = [];
-    var positionY = 0;
-    var previousJobId = null;
-    var currentUnixTimestamp = Date.now() / 1000 | 0;
-    var chartStartTimestamp = currentUnixTimestamp;
+    var jobs = [],
+        times = [],
+        positionY = 0,
+        previousJobId = null,
+        currentUnixTimestamp = Date.now() / 1000 | 0,
+        chartStartTimestamp = currentUnixTimestamp,
+        timeScale = 1800, // seconds
+        scaleFactor = 0.2;
 
     for (var nodeId in jobsByNodes) {
       for (var jobId in jobsByNodes[nodeId]) {
         chartStartTimestamp = Math.min(chartStartTimestamp, jobsByNodes[nodeId][jobId].start_time);
       }
     }
-    chartStartTimestamp = Math.max(chartStartTimestamp, currentUnixTimestamp - 3600);
+    // chartStartTimestamp = Math.max(chartStartTimestamp, currentUnixTimestamp - 3600);
 
-    var abscissaValue = currentUnixTimestamp - chartStartTimestamp;
+    var timeRange = (currentUnixTimestamp - chartStartTimestamp);
+
+    for (var i = 0; i * timeScale < timeRange; i++) {
+      times.push({
+        value: (i * timeScale / 3600) + "h",
+        position: i * timeScale / timeRange * 100
+      });
+    }
 
     for (var nodeId in jobsByNodes) {
       for (var jobId in jobsByNodes[nodeId]) {
@@ -33,8 +43,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
           job.height = 25 / Object.keys(jobsByNodes[nodeId]).length;
           job.positionY = (jobs.length ? jobs[jobs.length - 1].height + jobs[jobs.length - 1].positionY : 0) + positionY;
           // set width for job's line (width's unit in percents)
-          job.width = (Math.min(currentUnixTimestamp, job.end_time) - Math.max(job.start_time, chartStartTimestamp)) / abscissaValue * 100;
-          job.positionX = (Math.max(job.start_time, chartStartTimestamp) - chartStartTimestamp) / abscissaValue * 100;
+          job.width = (Math.min(currentUnixTimestamp, job.end_time) - Math.max(job.start_time, chartStartTimestamp)) / timeRange * 100;
+          job.positionX = (Math.max(job.start_time, chartStartTimestamp) - chartStartTimestamp) / timeRange * 100;
 
           // reset markers
           positionY = 0;
@@ -50,7 +60,11 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       }
     }
 
-    return jobs;
+    return {
+      jobs: jobs,
+      times: times,
+      width: timeRange * scaleFactor
+    };
   }
 
   function closeModal(e) {
@@ -104,20 +118,35 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
 
       $.ajax(config.apiURL + config.apiPath + '/jobs-by-nodes', options)
         .success(function (jobsByNodes) {
+          var datas = computeJobs(jobsByNodes);
           var context = {
             nodes:  Object.keys(jobsByNodes),
-            jobs:   computeJobs(jobsByNodes),
-            height: Object.keys(jobsByNodes).length * 25
+            jobs:   datas.jobs,
+            times:  datas.times,
+            width:  datas.width,
+            height: Object.keys(jobsByNodes).length * 25 + 50
           }
 
           $('body').append(template(context));
 
+          // bind navbar
+          // $('#tabs a').click(function (e) {
+          //   e.preventDefault();
+          //   $(this).tab('show');
+          // });
+          // $('#tabs a[href="#nodes"]').tab('show');
+
+          // bind modal-job
           $(".job").on('click', function (e) {
             e.preventDefault();
-
             var jobId = $(e.target).data('id');
             $(document).trigger('modal-job', { jobId: jobId });
           });
+
+          $.ajax(config.apiURL + config.apiPath + '/jobs-by-qos', options)
+            .success(function (jobsByQos) {
+              console.log(jobsByQos);
+            });
         });
 
       $(document).on('modal-job', function (e, options) {

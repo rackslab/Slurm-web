@@ -241,11 +241,14 @@ table.tablesorter thead tr .headerSortDown {
  */
 #gantt .content {
   position: relative;
+  /*margin-left: 60px;*/
+  height: 70vh;
+  overflow: scroll;
 }
 
 #nodes-list {
   position: absolute;
-  left: -50px;
+  /*left: -60px;*/
 }
 
 #nodes-list .node {
@@ -254,17 +257,44 @@ table.tablesorter thead tr .headerSortDown {
   width: 50px;
   line-height: 25px;
   vertical-align: middle;
-  text-align: center;
+  direction: rtl;
+}
+
+#jobs-chart {
+  overflow-x: scroll;
+  direction: rtl;
+  margin-left: 60px;
+}
+
+#jobs-chart .wrapper {
+  position: relative;
 }
 
 #jobs-chart .job {
   position: absolute;
   text-align: center;
-  background-color: lavender;
+  background-color: royalblue;
   border: 1px solid white;
   cursor: pointer;
 }
 
 #jobs-chart .job:hover {
-  background-color: lightblue;
+  opacity: 0.9;
+}
+
+#jobs-chart .job span {
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+#time {
+  /*position: fixed;
+  bottom: -20px;*/
+}
+
+#time .time {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.8em;
 }
