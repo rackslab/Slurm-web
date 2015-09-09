@@ -36,6 +36,8 @@ from settings import settings
 from auth import (User, authentication_verify, AuthenticationError,
                   all_restricted)
 
+from cache import cache
+
 app = Flask(__name__)
 
 app.secret_key = settings.get('config', 'secret_key')
@@ -58,7 +60,8 @@ def login():
         user = User.guest()
     else:
         try:
-            user = User.user(request.form['username'], request.form['password'])
+            user = User.user(request.form['username'],
+                             request.form['password'])
         except AuthenticationError:
             abort(403)
 
@@ -81,7 +84,9 @@ def guest():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_jobs():
+    print "get_jobs() reached, no cache"
     if mocking:
         return mock('jobs.json')
 
@@ -98,6 +103,7 @@ def get_jobs():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def show_job(job_id):
     if mocking:
         return mock_job(job_id)
@@ -118,6 +124,7 @@ def show_job(job_id):
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_nodes():
     if mocking:
         return mock('nodes.json')
@@ -130,6 +137,7 @@ def get_nodes():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_cluster():
     if mocking:
         return mock('cluster.json')
@@ -148,6 +156,7 @@ def get_cluster():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_racks():
     if mocking:
         return mock('racks.json')
@@ -160,6 +169,7 @@ def get_racks():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_reservations():
     if mocking:
         return mock('reservations.json')
@@ -172,6 +182,7 @@ def get_reservations():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_partitions():
     if mocking:
         return mock('partitions.json')
@@ -184,6 +195,7 @@ def get_partitions():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_qos():
     if mocking:
         return mock('qos.json')
@@ -198,6 +210,7 @@ def get_qos():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_jobs_by_node_id(node_id):
     if mocking:
         jobs = mock('jobs.json')
@@ -227,6 +240,7 @@ def get_jobs_by_node_id(node_id):
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_jobs_by_nodes():
     if mocking:
         jobs = mock('jobs.json')
@@ -242,10 +256,8 @@ def get_jobs_by_nodes():
         # filter jobs by node
         for jobid, job in jobs.iteritems():
             nodes_list = job['cpus_allocated'].keys()
-            print "Nodelist for %s : %s" % (node_id, nodes_list)
             if node_id in nodes_list:
                 returned_jobs[jobid] = job
-                print "Node %s added to jobs : %s" % (node_id, returned_jobs)
 
         returned_nodes[node_id] = returned_jobs
 
@@ -258,6 +270,7 @@ def get_jobs_by_nodes():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 @authentication_verify()
+@cache()
 def get_jobs_by_qos():
     if mocking:
         jobs = mock('jobs.json')

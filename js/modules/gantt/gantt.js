@@ -194,7 +194,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
   }
 
   function showJobsByNodes(options) {
-    console.log(token.getToken(), options);
     $.ajax(config.apiURL + config.apiPath + '/jobs-by-nodes', options)
       .success(function (jobsByNodes) {
         var jobsDatas = computeJobsForNodes(jobsByNodes);
