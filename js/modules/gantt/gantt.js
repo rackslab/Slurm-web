@@ -11,19 +11,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     'COMPLETED': 'khaki'
   };
 
-  var options = {
-    type: 'POST',
-    dataType: 'json',
-    crossDomain: true,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    data: JSON.stringify({
-      token: token.getToken()
-    }),
-  };
-
   function computeTimesForJobs(jobsBySt) {
     var times = [];
     var currentTime = Date.now() / 1000 | 0; // seconds
@@ -184,12 +171,12 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     };
   }
 
-  function bindUtils(jobsDatas) {
+  function bindUtils(jobsDatas, options) {
     // bind modal-job
     $(".job").on('click', function (e) {
       e.preventDefault();
       var jobId = $(e.target).data('id');
-      $(document).trigger('modal-job', { jobId: jobId });
+      $(document).trigger('modal-job', { jobId: jobId, options: options });
     });
 
     // sync jobs-chart with axis of times
@@ -206,7 +193,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     $('#time').width($('#jobs-chart').width());
   }
 
-  function showJobsByNodes() {
+  function showJobsByNodes(options) {
+    console.log(token.getToken(), options);
     $.ajax(config.apiURL + config.apiPath + '/jobs-by-nodes', options)
       .success(function (jobsByNodes) {
         var jobsDatas = computeJobsForNodes(jobsByNodes);
@@ -216,11 +204,11 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
 
         $('#nodes').append(nodesTemplate(context));
 
-        bindUtils(jobsDatas);
+        bindUtils(jobsDatas, options);
       });
   };
 
-  function showJobsByQos() {
+  function showJobsByQos(options) {
     $.ajax(config.apiURL + config.apiPath + '/jobs-by-qos', options)
       .success(function (jobsByQos) {
         console.log(jobsByQos);
@@ -231,7 +219,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
 
         $('#qos').append(qosTemplate(context));
 
-        bindUtils(jobsDatas);
+        bindUtils(jobsDatas, options);
       });
   };
 
@@ -241,7 +229,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     $('#modal-job').remove();
   }
 
-  function toggleModal(jobId) {
+  function toggleModal(jobId, options) {
     $.ajax(config.apiURL + config.apiPath + '/job/' + jobId, options)
       .success(function (job) {
         var context = {
@@ -258,7 +246,18 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
 
     this.init = function () {
       var self = this;
-
+      var options = {
+        type: 'POST',
+        dataType: 'json',
+        crossDomain: true,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+          token: token.getToken()
+        }),
+      };
 
       $('body').append(template());
 
@@ -271,12 +270,20 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       // on show 'nodes'
       $('#tabs a[href="#nodes"]').on('show.bs.tab', function (e) {
         $('.tab-pane').empty();
-        showJobsByNodes();
+        $(".job").off('click');
+        $('#modal-job').off('hidden.bs.modal');
+        $('#modal-job').remove();
+        $(document).off('modal-job');
+        showJobsByNodes(options);
       })
       // on show 'qos'
       $('#tabs a[href="#qos"]').on('show.bs.tab', function (e) {
         $('.tab-pane').empty();
-        showJobsByQos();
+        $(".job").off('click');
+        $('#modal-job').off('hidden.bs.modal');
+        $('#modal-job').remove();
+        $(document).off('modal-job');
+        showJobsByQos(options);
       })
       // init navbar
       $('#tabs a[href="#nodes"]').tab('show');
@@ -284,13 +291,16 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
 
       $(document).on('modal-job', function (e, options) {
         e.stopPropagation();
-
-        toggleModal(options.jobId);
+        toggleModal(options.jobId, options.options);
       });
     }
 
     this.destroy = function () {
+      $(".job").off('click');
+      $('#modal-job').off('hidden.bs.modal');
       $('#gantt').parent('.container-fluid').remove();
+      $('#modal-job').remove();
+      $(document).off('modal-job');
     }
 
     return this;
