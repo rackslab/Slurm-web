@@ -37,7 +37,7 @@ time_keys_to_shift = [
 def time_shift_dict(datas, time_interval):
     if isinstance(datas, dict):
         for key in set(datas):
-            if key in time_keys_to_shift:
+            if key in time_keys_to_shift and datas[key] != 0:
                 datas[key] += time_interval
             else:
                 if isinstance(datas[key], dict):

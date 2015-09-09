@@ -241,29 +241,49 @@ table.tablesorter thead tr .headerSortDown {
  */
 #gantt .content {
   position: relative;
-  /*margin-left: 60px;*/
-  height: 70vh;
   overflow: scroll;
 }
 
-#nodes-list {
+#tabs {
+ float: right;
+}
+
+#tabs li {
+border: 1px solid #ddd;
+}
+
+#tabs li.active {
+background-color: #ddd;
+}
+
+#tabs li a {
+background-color: transparent;
+border: none;
+}
+
+#nodes-list, #qos-list {
   position: absolute;
-  /*left: -60px;*/
 }
 
 #nodes-list .node {
   font-size: 0.6em;
   height: 25px;
-  width: 50px;
+  width: 70px;
   line-height: 25px;
   vertical-align: middle;
-  direction: rtl;
+}
+
+#qos-list .qos {
+  font-size: 0.6em;
+  width: 70px;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-bottom: 1px solid lightgrey;
 }
 
 #jobs-chart {
   overflow-x: scroll;
-  direction: rtl;
-  margin-left: 60px;
+  margin-left: 70px;
 }
 
 #jobs-chart .wrapper {
@@ -273,13 +293,20 @@ table.tablesorter thead tr .headerSortDown {
 #jobs-chart .job {
   position: absolute;
   text-align: center;
-  background-color: royalblue;
   border: 1px solid white;
   cursor: pointer;
+  min-width: 4px;
 }
 
 #jobs-chart .job:hover {
   opacity: 0.9;
+}
+
+#jobs-chart .current {
+  width: 1px;
+  background-color: red;
+  position: absolute;
+  z-index: 1;
 }
 
 #jobs-chart .job span {
@@ -289,12 +316,21 @@ table.tablesorter thead tr .headerSortDown {
 }
 
 #time {
-  /*position: fixed;
-  bottom: -20px;*/
+  bottom: -20px;
+  bottom: 0;
+  width: 100%;
+  overflow-x: hidden;
+  margin-left: 70px;
+}
+
+#time .wrapper {
+  position: relative;
+  height: 50px;
 }
 
 #time .time {
   position: absolute;
   bottom: 20px;
   font-size: 0.8em;
+  transform: translateX(-50%);
 }

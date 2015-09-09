@@ -4069,7 +4069,7 @@
     "assoc_id": 158,
     "batch_flag": 1,
     "batch_host": null,
-    "batch_script": null, 
+    "batch_script": null,
     "block_id": null,
     "blrts_image": null,
     "boards_per_node": 0,
