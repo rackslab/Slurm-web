@@ -1,8 +1,7 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/modules/3d-view/3d-view.hbs', 'token-utils', 'draw-three-dimensional-utils', 'racks-utils', 'jobs-utils'], function ($, Handlebars, config, template, token, d3Draw, racksUtils, jobsUtils) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'token-utils', 'draw-three-dimensional-utils', 'racks-utils', 'jobs-utils'], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function (config) {
 
     this.init = function () {
       $('body').append(template());
@@ -28,11 +27,11 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/modules/3d-vi
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/racks', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
-          $.ajax(config.apiURL + config.apiPath + '/nodes', options)
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
             .success(function (nodesInfos) {
-              $.ajax(config.apiURL + config.apiPath + '/jobs', options)
+              $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
                 .success(function (jobs) {
                   jobs = jobsUtils.buildAllocatedCPUs(jobs);
 

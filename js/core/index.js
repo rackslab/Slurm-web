@@ -86,6 +86,7 @@ require([
   'ajax-utils'
 ], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt) {
 
+  config = JSON.parse(config);
   var page = new Page();
   var clusters = new Clusters(config);
   clusters.init();
@@ -93,7 +94,7 @@ require([
   $(document).on('loadPage', function(e, options) {
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
-
+console.log(options.config);
     var navbar = new Navbar(options.config);
     navbar.init();
 
