@@ -1,8 +1,7 @@
-define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token) {
-  config = JSON.parse(config);
+define(['jquery', 'token-utils'], function ($, token) {
 
   return {
-    getNodes: function () {
+    getNodes: function (config) {
       var slurmNodes = null;
       var options = {
         type: 'POST',
@@ -18,7 +17,7 @@ define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/nodes', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
         .success(function (nodes) {
           slurmNodes = nodes;
         });

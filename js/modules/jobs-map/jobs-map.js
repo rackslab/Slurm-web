@@ -1,11 +1,10 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!../../js/modules/jobs-map/modal-core.hbs', 'text!../../js/modules/jobs-map/modal-node.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, config, token, draw, drawLegend, nodes, jobs) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!../../js/modules/jobs-map/modal-core.hbs', 'text!../../js/modules/jobs-map/modal-node.hbs', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, draw, drawLegend, nodes, jobs) {
   template = Handlebars.compile(template);
   modalCoreTemplate = Handlebars.compile(modalCoreTemplate);
   modalNodeTemplate = Handlebars.compile(modalNodeTemplate);
   draw = new draw();
 
-  return function () {
+  return function (config) {
     this.slurmNodes = null;
     this.interval = null;
     this.canvasConfig = draw.getConfig();
@@ -36,7 +35,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/job/' + jobId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
         .success(function (job) {
           var context = {
             jobId: jobId,
@@ -63,7 +62,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/jobs-by-node/' + nodeId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
         .success(function (jobs) {
           var context = {
             count: Object.keys(jobs).length,
@@ -105,10 +104,10 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
         })
       };
 
-      this.slurmNodes = nodes.getNodes();
-      allocatedCPUs = jobs.buildAllocatedCPUs(jobs.getJobs());
+      this.slurmNodes = nodes.getNodes(config);
+      allocatedCPUs = jobs.buildAllocatedCPUs(jobs.getJobs(config));
 
-      $.ajax(config.apiURL + config.apiPath + '/racks', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
           if (racks instanceof Array) {
             result = {};

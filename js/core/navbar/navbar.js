@@ -1,8 +1,7 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/navbar.hbs', 'user-utils', 'boolean-utils', 'string-utils'], function ($, Handlebars, config, template, user, token) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs', 'user-utils', 'boolean-utils', 'string-utils'], function ($, Handlebars, template, user, token) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function (config) {
     var self = this;
     this.userLogged = true;
 
@@ -20,9 +19,13 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/n
       self.init();
     });
 
+    $(document).on('destroyNavbar', function (e) {
+      self.destroy();
+    });
+
     this.init = function () {
       var context = {
-        clusterName: config.clusterName + '\'s Slurm HPC Dashboard',
+        clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
         userLogged: this.userLogged,
         user: $.extend({ username: '' }, user.getUser())
       };
@@ -40,12 +43,14 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/navbar/n
 
         $(document).trigger('logout');
       });
+
+      $(document).trigger('navbarLoaded', { height: $('#navbar').height() });
     };
 
     this.destroy = function () {
       $("#navbar > ul > li > a[id^='menu-']").off('click');
       $('#menu-logout').off('click');
-      $('nav').remove();
+      $('nav:first-child').remove();
     };
   };
 });

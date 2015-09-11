@@ -1,8 +1,7 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'number-utils', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, tablesorter) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'token-utils', 'tablesorter-utils', 'number-utils', 'jquery-tablesorter'], function ($, Handlebars, template, token, tablesorter) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function(config) {
     this.interval = null;
     this.tablesorterOptions = {};
 
@@ -21,7 +20,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'text!conf
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/qos', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/qos', options)
         .success(function (qos) {
           var context = {
             count: Object.keys(qos).length,

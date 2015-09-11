@@ -1,8 +1,7 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'array-utils', 'boolean-utils', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, tablesorter) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs',  'token-utils', 'tablesorter-utils', 'array-utils', 'boolean-utils', 'jquery-tablesorter'], function ($, Handlebars, template, token, tablesorter) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function(config) {
     this.interval = null;
     this.tablesorterOptions = {};
 
@@ -21,7 +20,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/partitions', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/partitions', options)
         .success(function (partitions) {
           var context = {
             count: Object.keys(partitions).length,

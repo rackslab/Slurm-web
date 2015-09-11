@@ -1,5 +1,4 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!../../js/modules/gantt/gantt-nodes.hbs', 'text!../../js/modules/gantt/gantt-qos.hbs', 'text!../../js/modules/jobs/modal-job.hbs', 'text!config.json', 'token-utils', 'jobs-utils', 'nodes-utils'], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, config, token, jobs, nodes) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!../../js/modules/gantt/gantt-nodes.hbs', 'text!../../js/modules/gantt/gantt-qos.hbs', 'text!../../js/modules/jobs/modal-job.hbs', 'token-utils', 'jobs-utils', 'nodes-utils'], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs, nodes) {
   template = Handlebars.compile(template);
   nodesTemplate = Handlebars.compile(nodesTemplate);
   qosTemplate = Handlebars.compile(qosTemplate);
@@ -193,8 +192,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     $('#time').width($('#jobs-chart').width());
   }
 
-  function showJobsByNodes(options) {
-    $.ajax(config.apiURL + config.apiPath + '/jobs-by-nodes', options)
+  function showJobsByNodes(options, config) {
+    $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-nodes', options)
       .success(function (jobsByNodes) {
         var jobsDatas = computeJobsForNodes(jobsByNodes);
         var context = {
@@ -207,10 +206,9 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       });
   };
 
-  function showJobsByQos(options) {
-    $.ajax(config.apiURL + config.apiPath + '/jobs-by-qos', options)
+  function showJobsByQos(options, config) {
+    $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-qos', options)
       .success(function (jobsByQos) {
-        console.log(jobsByQos);
         var jobsDatas = computeJobsForQos(jobsByQos);
         var context = {
           jobs: jobsDatas
@@ -228,8 +226,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     $('#modal-job').remove();
   }
 
-  function toggleModal(jobId, options) {
-    $.ajax(config.apiURL + config.apiPath + '/job/' + jobId, options)
+  function toggleModal(jobId, options, config) {
+    $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
       .success(function (job) {
         var context = {
           job: job
@@ -241,7 +239,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       });
   }
 
-  return function () {
+  return function(config) {
 
     this.init = function () {
       var self = this;
@@ -270,27 +268,20 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       $('#tabs a[href="#nodes"]').on('show.bs.tab', function (e) {
         $('.tab-pane').empty();
         $(".job").off('click');
-        $('#modal-job').off('hidden.bs.modal');
-        $('#modal-job').remove();
-        $(document).off('modal-job');
-        showJobsByNodes(options);
+        showJobsByNodes(options, config);
       })
       // on show 'qos'
       $('#tabs a[href="#qos"]').on('show.bs.tab', function (e) {
         $('.tab-pane').empty();
         $(".job").off('click');
-        $('#modal-job').off('hidden.bs.modal');
-        $('#modal-job').remove();
-        $(document).off('modal-job');
-        showJobsByQos(options);
+        showJobsByQos(options, config);
       })
       // init navbar
       $('#tabs a[href="#nodes"]').tab('show');
-      // $('#tabs a[href="#nodes"]').click();
 
       $(document).on('modal-job', function (e, options) {
         e.stopPropagation();
-        toggleModal(options.jobId, options.options);
+        toggleModal(options.jobId, options.options, config);
       });
     }
 

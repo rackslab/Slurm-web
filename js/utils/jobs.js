@@ -1,5 +1,5 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', 'token-utils', 'date-utils'], function ($, Handlebars, config, colors, token, date) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', 'token-utils', 'date-utils'], function ($, Handlebars, staticConfig, colors, token, date) {
+  staticConfig = JSON.parse(staticConfig);
   colors = JSON.parse(colors);
 
   Handlebars.registerHelper('pickJobColor', function (jobId) {
@@ -27,8 +27,8 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', '
       return '-';
     }
 
-    if (nodes.length > config.display.maxNodesLength) {
-      return (nodes.substring(0, config.display.maxNodesLength) + '...');
+    if (nodes.length > staticConfig.display.maxNodesLength) {
+      return (nodes.substring(0, staticConfig.display.maxNodesLength) + '...');
     }
 
     return nodes;
@@ -59,7 +59,7 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', '
   });
 
   return {
-    getJobs: function () {
+    getJobs: function(config) {
       var slurmJobs = null;
       var options = {
         type: 'POST',
@@ -75,7 +75,7 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', '
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/jobs', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
         .success(function (jobs) {
           slurmJobs = jobs;
         })
@@ -109,5 +109,3 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', '
     }
   };
 });
-
-

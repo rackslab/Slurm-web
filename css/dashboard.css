@@ -102,6 +102,42 @@ body {
 }
 
 /*
+ * Clusters selection
+ */
+
+#clusters {
+  position: fixed;
+    bottom: 0;
+    left: 0;
+  height: 100%;
+  width: 50px;
+}
+
+#clusters .text {
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  position: absolute;
+  bottom: -40px;
+  color: white;
+  font-size: 30px;
+  padding: 3px 0;
+}
+
+#clusters div {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#clusters .cluster {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/*
  * Main content
  */
 
@@ -263,11 +299,12 @@ border: none;
 
 #nodes-list, #qos-list {
   position: absolute;
+  z-index: 1;
 }
 
 #nodes-list .node {
   font-size: 0.6em;
-  height: 25px;
+  height: 20px;
   width: 70px;
   line-height: 25px;
   vertical-align: middle;

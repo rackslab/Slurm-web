@@ -1,9 +1,7 @@
 {
-  "clusterName": "Test",
-  "apiURL": "http://62.210.105.204:8081",
-  "apiPath": "/slurm-restapi",
-  "apiRefresh": 1000000,
+  "apiRefresh": 30000,
   "firstPage": "3dview",
+  "firstPage": "jobs",
   "display": {
     "maxNodesLength": 25,
     "canvas": {

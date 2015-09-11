@@ -1,9 +1,8 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!config.json', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils'], function ($, Handlebars, template, config, token, Draw, drawLegend, nodes) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils'], function ($, Handlebars, template, token, Draw, drawLegend, nodes) {
   template = Handlebars.compile(template);
   draw = new Draw();
 
-  return function () {
+  return function(config) {
     this.slurmNodes = null;
     this.interval = null;
     this.canvasConfig = draw.getConfig();
@@ -23,9 +22,9 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'text!c
         })
       };
 
-      this.slurmNodes = nodes.getNodes();
+      this.slurmNodes = nodes.getNodes(config);
 
-      $.ajax(config.apiURL + config.apiPath + '/racks', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
           if (racks instanceof Array) {
             result = {};
