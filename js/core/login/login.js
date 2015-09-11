@@ -1,10 +1,9 @@
-define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/login.hbs', 'token-utils', 'user-utils'], function ($, Handlebars, config, template, token, user) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-utils', 'user-utils'], function ($, Handlebars, template, token, user) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function (config) {
     function login(options) {
-      $.post(config.apiURL + config.apiPath + '/login', options)
+      $.post(config.cluster.api.url + config.cluster.api.path + '/login', options)
         .success(function (credentials) {
           token.setToken(credentials.id_token);
           user.setUser(credentials.username, credentials.role);
@@ -19,7 +18,7 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!../../js/core/login/lo
     this.init = function () {
       $('body').append(template());
 
-      $.get(config.apiURL + config.apiPath + '/guest')
+      $.get(config.cluster.api.url + config.cluster.api.path + '/guest')
         .success(function (response) {
           if (response.guest)
             $('#login #guest').show();

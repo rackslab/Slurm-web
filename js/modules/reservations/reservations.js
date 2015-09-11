@@ -1,8 +1,7 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'date-utils', 'jquery-tablesorter'], function ($, Handlebars, template, config, token, tablesorter) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations.hbs',  'token-utils', 'tablesorter-utils', 'date-utils', 'jquery-tablesorter'], function ($, Handlebars, template, token, tablesorter) {
   template = Handlebars.compile(template);
 
-  return function () {
+  return function(config) {
     this.interval = null;
     this.tablesorterOptions = {};
 
@@ -21,7 +20,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/reservations', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/reservations', options)
         .success(function (reservations) {
           var context = {
             count: Object.keys(reservations).length,

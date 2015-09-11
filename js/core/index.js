@@ -31,6 +31,7 @@ require.config({
     'draw-three-dimensional-utils': '../../js/utils/draw-three-dimensional',
     login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
+    clusters: '../../js/core/clusters/clusters',
     jobs: '../../js/modules/jobs/jobs',
     racks: '../../js/modules/racks/racks',
     'jobs-map': '../../js/modules/jobs-map/jobs-map',
@@ -73,6 +74,7 @@ require([
   'user-utils',
   'login',
   'navbar',
+  'clusters',
   'jobs',
   'racks',
   'jobs-map',
@@ -82,13 +84,23 @@ require([
   '3d-view',
   'gantt',
   'ajax-utils'
-], function (Page, config, token, user, Login, Navbar, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt) {
-  var navbar = new Navbar();
-  var page = new Page();
+], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt) {
 
-  config = JSON.parse(config);
-  $('title').html(config.clusterName + '\'s HPC Dashboard');
-  navbar.init();
+  var page = new Page();
+  var clusters = new Clusters(config);
+  clusters.init();
+
+  $(document).on('loadPage', function(e, options) {
+    e.stopPropagation();
+    $(document).trigger('destroyNavbar');
+
+    var navbar = new Navbar(options.config);
+    navbar.init();
+
+    $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
+
+    $(document).trigger('show', { page: options.config.firstPage });
+  })
 
   $(document).on('logout', function (e) {
     e.preventDefault();
@@ -103,31 +115,31 @@ require([
 
     switch (options.page) {
     case 'login':
-      $.extend(page,  new Page('login'), new Login());
+      $.extend(page,  new Page('login'), new Login(config));
       break;
     case 'jobs':
-      $.extend(page,  new Page('jobs'), new Jobs());
+      $.extend(page,  new Page('jobs'), new Jobs(config));
       break;
     case 'jobsmap':
-      $.extend(page,  new Page('jobsmap'), new JobsMap());
+      $.extend(page,  new Page('jobsmap'), new JobsMap(config));
       break;
     case 'partitions':
-      $.extend(page,  new Page('partitions'), new Partitions());
+      $.extend(page,  new Page('partitions'), new Partitions(config));
       break;
     case 'qos':
-      $.extend(page,  new Page('qos'), new QOS());
+      $.extend(page,  new Page('qos'), new QOS(config));
       break;
     case 'racks':
-      $.extend(page,  new Page('racks'), new Racks());
+      $.extend(page,  new Page('racks'), new Racks(config));
       break;
     case 'reservations':
-      $.extend(page,  new Page('reservations'), new Reservations());
+      $.extend(page,  new Page('reservations'), new Reservations(config));
       break;
     case '3dview':
-      $.extend(page, new Page('3dview'), new d3View());
+      $.extend(page, new Page('3dview'), new d3View(config));
       break;
     case 'gantt':
-      $.extend(page,  new Page('gantt'), new Gantt());
+      $.extend(page,  new Page('gantt'), new Gantt(config));
       break;
     }
 
@@ -135,5 +147,5 @@ require([
     page.refresh();
   });
 
-  $(document).trigger('show', { page: config.firstPage });
+  $(document).trigger('loadPage', { config: config });
 });

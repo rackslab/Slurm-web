@@ -1,9 +1,8 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'text!config.json', 'token-utils', 'tablesorter-utils', 'cluster-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, config, token, tablesorter, cluster) {
-  config = JSON.parse(config);
+define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'token-utils', 'tablesorter-utils', 'cluster-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, token, tablesorter, cluster) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
-  return function () {
+  return function (config) {
     this.interval = null;
     this.tablesorterOptions = {};
 
@@ -27,7 +26,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/job/' + jobId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
         .success(function (job) {
           var context = {
             job: job
@@ -60,7 +59,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
         })
       };
 
-      $.ajax(config.apiURL + config.apiPath + '/jobs', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
         .success(function (jobs) {
           var context = {
             count: Object.keys(jobs).length,
@@ -127,7 +126,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
             }
           }
 
-          dataAllocatedCores[1].data += cluster.getClusterAsync().cores - dataAllocatedCores[0].data;
+          dataAllocatedCores[1].data += cluster.getClusterAsync(config).cores - dataAllocatedCores[0].data;
 
           var dataQOSNodes = [];
           var dataQOSCores = [];

@@ -1,8 +1,7 @@
-define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token) {
-  config = JSON.parse(config);
+define(['jquery', 'token-utils'], function ($, token) {
 
   return {
-    getClusterAsync: function () {
+    getClusterAsync: function (config) {
       var cluster = {};
 
       var options = {
@@ -20,7 +19,7 @@ define(['jquery', 'text!config.json', 'token-utils'], function ($, config, token
       };
 
       var self = this;
-      $.ajax(config.apiURL + config.apiPath + '/cluster', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
         .success(function (cluster) {
           cluster = cluster;
         });

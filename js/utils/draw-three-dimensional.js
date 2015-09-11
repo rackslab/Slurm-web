@@ -25,7 +25,7 @@ define([
       event.preventDefault();
 
       var canvasMouseX = event.clientX - self.canvasRectangle.left; 
-      var canvasMouseY = event.clientY - self.canvasRectangle.top; 
+      var canvasMouseY = event.clientY - self.canvasRectangle.top;
       self.mouse.set((canvasMouseX / self.canvas.width()) * 2 - 1, -(canvasMouseY / self.canvas.height()) * 2 + 1, 0.5);
       self.mouse.unproject(self.camera);
 
@@ -74,7 +74,7 @@ define([
 
       if (!cpus) {
         return
-      } 
+      }
 
       var geometry;
       var color;
@@ -115,13 +115,13 @@ define([
       var cpuPadding = cpuDimensions * config.CPUPADDING;
       for (cpu = 0; cpu < cpus; cpu++) {
         geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDimensions - cpuPadding);
-        
+
         if (!jobs[cpu]) {
           color = 0x000;
         } else {
           color = drawColors.findJobColor(jobs[cpu]);
         }
-        
+
         material = new THREE.MeshBasicMaterial({ color: color });
         mesh = new THREE.Mesh(geometry, material);
 
@@ -217,8 +217,8 @@ define([
             }
 
             geometry = new THREE.BoxGeometry(
-              config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING, 
-              self.map.altitude * config.UNITSIZE * config.RACKHEIGHT, 
+              config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING,
+              self.map.altitude * config.UNITSIZE * config.RACKHEIGHT,
               config.UNITSIZE * config.RACKDEPTH - config.UNITSIZE * config.RACKPADDING
             );
             material = new THREE.MeshBasicMaterial({ color: colors.RACK });
@@ -267,7 +267,7 @@ define([
       setControls();
       addFloor();
       addRack();
-      
+
       if (config.DEBUG) {
         this.scene.add(new THREE.AxisHelper(100));
       }
@@ -276,5 +276,5 @@ define([
     }
 
     return this;
-  }; 
+  };
 });
