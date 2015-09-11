@@ -110,9 +110,9 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
 
       var i = 0;
       for (i = 1; i <= Math.floor(Math.sqrt(number)); i++)
-        if (number % i === 0) {
-          nFactors.push([ i, (number / i) ]);
-        }
+      if (number % i === 0) {
+        nFactors.push([ i, (number / i) ]);
+      }
 
       nFactors.sort(function (a, b) {
         return a[0] - b[0];
