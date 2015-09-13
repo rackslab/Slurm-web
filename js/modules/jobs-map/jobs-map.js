@@ -31,7 +31,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken()
+          token: token.getToken(config.cluster)
         })
       };
 
@@ -58,7 +58,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken()
+          token: token.getToken(config.cluster)
         })
       };
 
@@ -100,7 +100,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken()
+          token: token.getToken(config.cluster)
         })
       };
 

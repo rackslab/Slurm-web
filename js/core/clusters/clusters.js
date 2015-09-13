@@ -1,6 +1,9 @@
 define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs', 'text!../../js/config/clusters.config.json'], function ($, Handlebars, template, clusters) {
   template = Handlebars.compile(template);
   clusters = JSON.parse(clusters);
+  for (var index in clusters) {
+    clusters[index].id = clusters[index].name + '-' + index;
+  }
 
   return function (config) {
     var self = this;

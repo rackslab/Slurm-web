@@ -6,8 +6,9 @@ from functools import wraps
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 import os
+import platform
 
-secret_key = settings.get('config', 'secret_key')
+secret_key = settings.get('config', 'secret_key') + platform.node()
 
 filtered_keys_by_role = {
     'all': settings.get('roles', 'resticted_fields_for_all').split(','),

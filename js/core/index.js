@@ -94,7 +94,7 @@ require([
   $(document).on('loadPage', function(e, options) {
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
-console.log(options.config);
+
     var navbar = new Navbar(options.config);
     navbar.init();
 

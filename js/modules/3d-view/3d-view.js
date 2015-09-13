@@ -23,7 +23,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'to
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken()
+          token: token.getToken(config.cluster)
         })
       };
 
