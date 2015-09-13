@@ -5,8 +5,8 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
     function login(options) {
       $.post(config.cluster.api.url + config.cluster.api.path + '/login', options)
         .success(function (credentials) {
-          token.setToken(credentials.id_token);
-          user.setUser(credentials.username, credentials.role);
+          token.setToken(config.cluster, credentials.id_token);
+          user.setUser(config.cluster, credentials.username, credentials.role);
           $(document).trigger('logged');
           $(document).trigger('show', { page: config.firstPage });
         })

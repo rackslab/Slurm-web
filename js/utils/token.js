@@ -1,20 +1,21 @@
 define(['jquery'], function ($) {
   var token =  {
-    getToken: function () {
-      return localStorage.getItem('jwt');
+    getToken: function (cluster) {
+      return localStorage.getItem('jwt-' + cluster.id);
     },
-    setToken: function (token) {
-      localStorage.setItem('jwt', token);
+    setToken: function (cluster, token) {
+      localStorage.setItem('jwt-' + cluster.id, token);
     },
-    removeToken: function () {
-      localStorage.removeItem('jwt');
+    removeToken: function (cluster) {
+      localStorage.removeItem('jwt-' + cluster.id);
     }
   };
 
-  $(document).on('logout', function (e) {
+  $(document).on('logout', function (e, options) {
     e.preventDefault();
-
-    token.removeToken();
+    if (options && options.cluster) {
+      token.removeToken(options.cluster);
+    }
   });
 
   return token;

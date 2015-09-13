@@ -52,6 +52,11 @@ body {
   background-color: #222;
 }
 
+.nav>li>a {
+  font-size: 1em;
+  padding: 15px 10px;
+}
+
 /*
  * Sidebar
  */
@@ -135,6 +140,9 @@ body {
   background-color: white;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 25px;
+  color: black;
+  text-align: center;
 }
 
 /*

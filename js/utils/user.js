@@ -1,25 +1,27 @@
 define(['jquery'], function ($) {
   var user = {
-    setUser: function (username, role) {
+    setUser: function(cluster, username, role) {
       var user = JSON.stringify({
         username: username,
         role: role
       });
 
-      localStorage.setItem('user', user);
+      localStorage.setItem('user-' + cluster.id, user);
     },
-    getUser: function () {
-      return JSON.parse(localStorage.getItem('user'));
+    getUser: function(cluster) {
+      return JSON.parse(localStorage.getItem('user-' + cluster.id));
     },
-    removeUser: function () {
-      localStorage.removeItem('user');
+    removeUser: function(cluster) {
+      localStorage.removeItem('user-' + cluster.id);
     }
   };
 
-  $(document).on('logout', function (e) {
+  $(document).on('logout', function (e, options) {
     e.preventDefault();
 
-    user.removeUser();
+    if (options && options.cluster) {
+      user.removeUser(options.cluster);
+    }
   });
 
   return user;

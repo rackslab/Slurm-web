@@ -16,7 +16,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken()
+          token: token.getToken(config.cluster)
         })
       };
 
