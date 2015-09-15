@@ -52,7 +52,7 @@ body {
   background-color: #222;
 }
 
-.nav>li>a {
+#navbar>.nav>li>a {
   font-size: 1em;
   padding: 15px 10px;
 }
@@ -130,7 +130,8 @@ body {
 
 #clusters div {
   height: 100%;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #clusters .cluster {
@@ -143,6 +144,7 @@ body {
   font-size: 25px;
   color: black;
   text-align: center;
+  overflow: hidden;
 }
 
 /*
@@ -285,7 +287,7 @@ table.tablesorter thead tr .headerSortDown {
  */
 #gantt .content {
   position: relative;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 #tabs {
@@ -308,6 +310,9 @@ border: none;
 #nodes-list, #qos-list {
   position: absolute;
   z-index: 1;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 #nodes-list .node {
@@ -329,18 +334,30 @@ border: none;
 #jobs-chart {
   overflow-x: scroll;
   margin-left: 70px;
+  height: 100%;
 }
 
-#jobs-chart .wrapper {
+#jobs-chart>.wrapper {
   position: relative;
+}
+
+#jobs-chart .job-wrapper {
+  position: absolute;
+  border: 1px solid white;
+  width: 100%;
+}
+
+#jobs-chart .job-wrapper:hover {
+  background-color: rgba(230,230,230,1);
 }
 
 #jobs-chart .job {
   position: absolute;
   text-align: center;
-  border: 1px solid white;
   cursor: pointer;
   min-width: 4px;
+  height: 100%;
+  opacity: 1;
 }
 
 #jobs-chart .job:hover {
