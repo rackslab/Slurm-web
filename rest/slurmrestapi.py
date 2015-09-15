@@ -108,14 +108,8 @@ def show_job(job_id):
     if mocking:
         return mock_job(job_id)
 
-    # cache_key = "show_job_" + job_id
-    # if redis.exists(cache_key)
-    #     return redis.get(cache_key)
-
     job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
-
-    # redis.set(cache_key, job, 10)
 
     return job
 
