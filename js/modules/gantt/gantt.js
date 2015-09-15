@@ -186,17 +186,10 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     // sync jobs-chart with axis of times
     $("#jobs-chart").on('scroll', function (e) {
       $('#time').scrollLeft($(this).scrollLeft());
-      console.log($(this).scrollLeft(),$('#time').scrollLeft());
-      $('#nodes-list').scrollTop($(this).scrollTop());
-      $('#qos-list').scrollTop($(this).scrollTop());
-      console.log($("#nodes-list").scrollTop(),$("#qos-list").scrollTop(),$(this).scrollTop());
+      $('#nodes-list, #qos-list').scrollTop($(this).scrollTop());
     });
     // scroll up to the current time
     $("#jobs-chart").scrollLeft(jobsDatas.currentPosition * jobsDatas.width / 100 - $('#jobs-chart').width() / 2);
-    console.log($("#jobs-chart").width(),$('#time').width());
-    $("#jobs-chart .wrapper").on('scroll', function (e) {
-      console.log('wrapper',$(this).scrollLeft());
-    });
 
     // set height of the view
     var ganttHeight = $(window).height() - ($('body>nav').height() + parseInt($('#gantt').css('padding-top').slice(0,2)) + $('#gantt .page-header').height() + parseInt($('#gantt .page-header').css('margin-bottom').slice(0,2)) + 80);
