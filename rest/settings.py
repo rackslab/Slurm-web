@@ -30,6 +30,11 @@ default = {
     },
     'racks': {
         'path': '/etc/slurm-web/racks.xml'
+    },
+    'cache': {
+        'redis_url': 'redis://localhost:6379',
+        'jobs_expiration': 10,
+        'global_expiration': 86400
     }
 }
 

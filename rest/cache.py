@@ -44,9 +44,13 @@ def cache():
                 print "get %s from cache" % cache_key
                 return json.loads(r.get(cache_key))
 
+            if 'job' in f.__name__:
+                expiration = settings.get('cache', 'jobs_expiration')
+            else:
+                expiration = settings.get('cache', 'global_expiration')
+
             resp = f(*args, **kwargs)
-            r.set(cache_key, json.dumps(resp),
-                  settings.get('cache', 'expiration'))
+            r.set(cache_key, json.dumps(resp), expiration)
             return resp
 
         return inner
