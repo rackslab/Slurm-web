@@ -1,6 +1,6 @@
 define(['handlebars'], function (Handlebars) {
   Handlebars.registerHelper('printDateFromTimestamp', function (timestamp) {
-    return (new Date(timestamp * 1000));
+    return timestamp ? (new Date(timestamp * 1000)).toLocaleString() : '-';
   });
 
   Handlebars.registerHelper('minutesToDelay', function (minutes) {
