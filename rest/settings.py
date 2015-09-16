@@ -23,20 +23,5 @@ import ConfigParser
 
 # path can be set by the env variable REST_CONF
 path = os.getenv('RESTAPI_CONF', '/etc/slurm-web/restapi.conf')
-
-default = {
-    'cors': {
-        'authorized_origins': 'http://localhost'
-    },
-    'racks': {
-        'path': '/etc/slurm-web/racks.xml'
-    },
-    'cache': {
-        'redis_url': 'redis://localhost:6379',
-        'jobs_expiration': 10,
-        'global_expiration': 86400
-    }
-}
-
-settings = ConfigParser.ConfigParser(default)
+settings = ConfigParser.ConfigParser()
 settings.read(path)

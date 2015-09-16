@@ -26,8 +26,9 @@ import json
 from functools import wraps
 from settings import settings
 
-redis_url = settings.get('cache', 'redis_url')
-r = redis.from_url(redis_url)
+redis_host = settings.get('cache', 'redis_host')
+redis_port = settings.get('cache', 'redis_port')
+r = redis.Redis(redis_host, redis_port)
 
 
 def cache():
