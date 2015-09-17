@@ -1,4 +1,6 @@
-define(['handlebars'], function (Handlebars) {
+define([
+  'handlebars'
+], function (Handlebars) {
   Handlebars.registerHelper('printDateFromTimestamp', function (timestamp) {
     return timestamp ? (new Date(timestamp * 1000)).toLocaleString() : '-';
   });

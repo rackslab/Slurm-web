@@ -114,8 +114,8 @@ define([
             $(document).trigger('modal-job', { jobId: jobId });
           });
 
+          tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
-          // here add option to delete all '-' Value (in tablesorterUtils)
 
           var labels = [];
           var labelsPartitions = [];

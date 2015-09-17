@@ -2,13 +2,42 @@ define([
   'jquery'
 ], function ($) {
   return {
-    // here
-    eraseEmptyColumn: function() {
-      var totalColumn = 0;
+    eraseEmptyColumn: function(selector) {
+      var totalRow = $(selector + ' tbody tr').length;
+      var tabInfos = {};
+      var removable = [];
 
-      $(selector + ' thead tr th').each(function (index, item) {
-        console.log(index)
+      $(selector + ' tbody tr').each(function (indexTr, itemTr) {
+        $(itemTr).children('td').each(function (indexTd, itemTd) {
+          if (!tabInfos.hasOwnProperty(indexTd)) {
+            tabInfos[indexTd] = 0;
+          }
+
+          if ($(itemTd).text() === '-') {
+            tabInfos[indexTd]++;
+          }
+        });
       });
+
+      var index;
+      for (index in tabInfos) {
+        if (tabInfos.hasOwnProperty(index)) {
+          if (tabInfos[index] === totalRow) {
+            $(selector + ' thead tr').each(function (indexTr, itemTr) {
+              removable.push($(itemTr).children('th')[index]);
+            });
+
+            $(selector + ' tbody tr').each(function (indexTr, itemTr) {
+              removable.push($(itemTr).children('td')[index]);
+            });
+          }
+        }
+      }
+
+      var i;
+      for (i = 0; i < removable.length; i++) {
+        $(removable[i]).remove();
+      }
     },
     findTablesorterOptions: function (selector) {
       var options = {
