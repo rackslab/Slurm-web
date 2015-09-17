@@ -6,7 +6,7 @@ define([
   'tablesorter-utils',
   'number-utils',
   'jquery-tablesorter'
-], function ($, Handlebars, template, token, tablesorterUtils) {
+], function ($, Handlebars, template, tokenUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -23,7 +23,7 @@ define([
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken(config.cluster)
+          token: tokenUtils.getToken(config.cluster)
         })
       };
 
@@ -35,6 +35,7 @@ define([
           };
 
           $('body').append(template(context));
+          tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
     };

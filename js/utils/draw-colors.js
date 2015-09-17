@@ -1,4 +1,6 @@
-define(['text!../config/3d.colors.config.json'], function (colors) {
+define([
+  'text!../config/3d.colors.config.json'
+], function (colors) {
   colors = JSON.parse(colors);
 
   return {

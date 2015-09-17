@@ -1,4 +1,12 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations.hbs',  'token-utils', 'tablesorter-utils', 'date-utils', 'jquery-tablesorter'], function ($, Handlebars, template, token, tablesorter) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/reservations/reservations.hbs',
+  'token-utils',
+  'tablesorter-utils',
+  'date-utils',
+  'jquery-tablesorter'
+], function ($, Handlebars, template, tokenUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -15,7 +23,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken(config.cluster)
+          token: tokenUtils.getToken(config.cluster)
         })
       };
 
@@ -27,6 +35,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations
           };
 
           $('body').append(template(context));
+          tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
     };
@@ -35,7 +44,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/reservations/reservations
       var self = this;
 
       this.interval = setInterval(function () {
-        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
+        self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#reservations').parent('.container-fluid').remove();
         self.init();
       }, config.apiRefresh);

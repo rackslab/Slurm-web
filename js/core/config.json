@@ -1,7 +1,6 @@
 {
   "apiRefresh": 30000,
-  "firstPage": "3dview",
-  "firstPage": "jobs",
+  "firstPage": "qos",
   "display": {
     "maxNodesLength": 25,
     "canvas": {
