@@ -1,3 +1,10 @@
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+if (isIE) {
+  console.log('IE detected, 3D-view not loaded');
+} else {
+  console.log('IE not detected, 3D-view loaded');
+
 define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'token-utils', 'draw-three-dimensional-utils', 'racks-utils', 'jobs-utils'], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
   template = Handlebars.compile(template);
 
@@ -17,7 +24,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'to
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -66,3 +72,4 @@ define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'to
     return this;
   };
 });
+}

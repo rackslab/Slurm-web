@@ -8,7 +8,6 @@ define(['jquery', 'token-utils'], function ($, token) {
         type: 'POST',
         dataType: 'json',
         async: false,
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
