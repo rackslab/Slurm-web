@@ -1,5 +1,7 @@
-define(['jquery'], function ($) {
-  var token =  {
+define([
+  'jquery'
+], function ($) {
+  var token = {
     getToken: function (cluster) {
       return localStorage.getItem('jwt-' + cluster.id);
     },

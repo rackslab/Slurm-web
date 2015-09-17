@@ -221,12 +221,12 @@ tr.job-row {
  */
 
 .plot-sub-div {
-  width: 230px;
+  width: 100%;
   position: relative;
   right: 0;
   left: 0;
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .plot-div {
@@ -235,7 +235,7 @@ tr.job-row {
 }
 
 .plot-div-small {
-  width: 230px;
+  width: 100%;
   height: 130px;
 }
 

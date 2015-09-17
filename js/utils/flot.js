@@ -2,6 +2,7 @@ define([], function () {
   function percent(value, total) {
     return Math.round(value * 100 / total);
   }
+
   return {
     addPercentInLegend: function (tab) {
       var total = 0;

@@ -1,5 +1,7 @@
-define(['jquery', 'token-utils'], function ($, token) {
-
+define([
+  'jquery',
+  'token-utils'
+], function ($, token) {
   return {
     getClusterSync: function (config) {
       var cluster = {};
