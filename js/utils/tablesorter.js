@@ -1,5 +1,13 @@
 define(['jquery'], function ($) {
   return {
+    // here
+    eraseEmptyColumn: function() {
+      var totalColumn = 0;
+
+      $(selector + ' thead tr th').each(function (index, item) {
+        console.log(index)
+      });
+    },
     findTablesorterOptions: function (selector) {
       var options = {
         sortList: []

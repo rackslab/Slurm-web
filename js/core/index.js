@@ -6,8 +6,10 @@ require.config({
     'jquery-flot': '/javascript/jquery-flot/jquery.flot.min',
     'jquery-flot-pie': '/javascript/jquery-flot/jquery.flot.pie.min',
     handlebars: '/javascript/handlebars/handlebars',
-    bootstrap: '/javascript/bootstrap/js/bootstrap.min',
+    bootstrap: '/javascript/bootstrap/js/bootstrap',
+    'bootstrap-typeahead': '../../js/libraries/typeahead/typeahead.jquery',
     three: '../../js/libraries/three.min',
+    'bootstrap-tagsinput': '../../js/libraries/bootstrap-tagsinput/bootstrap-tagsinput.min',
     'helpers-utils': '../../js/utils/helpers',
     'cluster-utils': '../../js/utils/cluster',
     'string-utils': '../../js/utils/string',
@@ -25,6 +27,8 @@ require.config({
     'page-utils': '../../js/utils/page',
     'ajax-utils': '../../js/utils/ajax',
     'factor-utils': '../../js/utils/factor',
+    'flot-utils': '../../js/utils/flot',
+    'tagsinput-utils': '../../js/utils/tagsinput',
     'draw-colors-utils': '../../js/utils/draw-colors',
     'draw-intersections-utils': '../../js/utils/draw-intersections',
     'draw-legend-utils': '../../js/utils/draw-legend',
@@ -63,6 +67,15 @@ require.config({
     },
     bootstrap: {
       deps: [ 'jquery' ]
+    },
+    'bootstrap-typeahead': {
+      deps: [ 'jquery' ],
+      init: function ($) {
+        return require.s.contexts._.registry['typeahead.js'].factory($);
+      }
+    },
+    'bootstrap-tagsinput': {
+      deps: [ 'jquery', 'bootstrap', 'bootstrap-typeahead' ]
     }
   }
 });

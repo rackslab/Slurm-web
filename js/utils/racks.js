@@ -16,7 +16,6 @@ define(['text!../config/3d.config.json'], function (config) {
     return number;
   }
 
-
   function findMapAltitude(racks) {
     var altitude = 0;
     var rackAltitude;

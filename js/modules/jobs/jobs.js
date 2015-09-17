@@ -1,10 +1,31 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../../js/modules/jobs/modal-job.hbs',  'token-utils', 'tablesorter-utils', 'cluster-utils', 'jobs-utils', 'date-utils', 'jquery-tablesorter', 'jquery-flot', 'jquery-flot-pie', 'boolean-utils', 'helpers-utils', 'bootstrap'], function ($, Handlebars, template, modalTemplate, token, tablesorter, cluster) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/jobs/jobs.hbs',
+  'text!../../js/modules/jobs/modal-job.hbs',
+  'token-utils',
+  'tablesorter-utils',
+  'flot-utils',
+  'cluster-utils',
+  'tagsinput-utils',
+  'jobs-utils',
+  'date-utils',
+  'jquery-tablesorter',
+  'jquery-flot',
+  'jquery-flot-pie',
+  'boolean-utils',
+  'helpers-utils',
+  'bootstrap',
+  'bootstrap-tagsinput'
+], function ($, Handlebars, template, modalTemplate, tokenUtils, tablesorterUtils, flotUtils, clusterUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
   return function (config) {
     this.interval = null;
     this.tablesorterOptions = {};
+    this.tagsinputOptions = [];
+    this.tagsinputOtionsApplyed = [];
 
     function closeModal(e) {
       e.stopPropagation();
@@ -21,7 +42,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken(config.cluster)
+          token: tokenUtils.getToken(config.cluster)
         })
       };
 
@@ -53,7 +74,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken(config.cluster)
+          token: tokenUtils.getToken(config.cluster)
         })
       };
 
@@ -61,7 +82,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
         .success(function (jobs) {
           var context = {
             count: Object.keys(jobs).length,
-            jobs: jobs
+            jobs: jobs,
+            tagsinputOptions: self.tagsinputOptions.toString()
           };
           var plotParams = {
             series: {
@@ -71,7 +93,19 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
             }
           };
 
+          context.jobs = tagsinputUtils.filterJobs(jobs, self.tagsinputOtionsApplyed);
+
           $('body').append(template(context));
+
+          $('#apply-tags').on('click', function (e) {
+            e.preventDefault();
+
+            self.tagsinputOtionsApplyed = tagsinputUtils.getTagsinputOptions('.typeahead');
+            self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
+            self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
+            $('#jobs').parent('.container-fluid').remove();
+            self.init();
+          });
 
           $("tr[id^='tr-job-']").on('click', function (e) {
             e.preventDefault();
@@ -81,6 +115,52 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
           });
 
           $('.tablesorter').tablesorter(self.tablesorterOptions);
+          // here add option to delete all '-' Value (in tablesorterUtils)
+
+          var labels = [];
+          var labelsPartitions = [];
+          var labelsQOS = [];
+
+          var index;
+          for (index in jobs) {
+            if (jobs.hasOwnProperty(index)) {
+              if (labelsPartitions.indexOf(jobs[index].partition) === -1) {
+                labelsPartitions.push(jobs[index].partition);
+              }
+              if (labelsQOS.indexOf(jobs[index].qos) === -1) {
+                labelsQOS.push(jobs[index].qos);
+              }
+            }
+          }
+
+          for (index in labelsPartitions) {
+            if (labelsPartitions.hasOwnProperty(index)) {
+              labelsPartitions[index] = { text: 'partition-' + labelsPartitions[index], type: 'partition' }
+            }
+          }
+
+          for (index in labelsQOS) {
+            if (labelsQOS.hasOwnProperty(index)) {
+              labelsQOS[index] = { text: 'qos-' + labelsQOS[index], type: 'qos' }
+            }
+          }
+
+          labels = labelsPartitions.concat(labelsQOS)
+          $('.typeahead').tagsinput({
+            allowDuplicates: false,
+            freeInput: false,
+            typeaheadjs: {
+              hint: true,
+              highlight: true,
+              minLength: 1,
+              source: tagsinputUtils.jobsSubstringMatcher(labels)
+            }
+          });
+
+          $('.tt-input').css('width', '100%');
+          $('input.typeahead').on('itemAdded', function(event) {
+            $('.tt-input').css('width', '100%');
+          });
 
           var dataAllocatedCores = [
             {
@@ -124,7 +204,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
             }
           }
 
-          dataAllocatedCores[1].data += cluster.getClusterAsync(config).cores - dataAllocatedCores[0].data;
+          dataAllocatedCores[1].data += clusterUtils.getClusterSync(config).cores - dataAllocatedCores[0].data;
 
           var dataQOSNodes = [];
           var dataQOSCores = [];
@@ -148,12 +228,17 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
             }
           }
 
+          dataAllocatedCores = flotUtils.addPercentInLegend(dataAllocatedCores);
+          dataPartNodes = flotUtils.addPercentInLegend(dataPartNodes);
+          dataPartCores = flotUtils.addPercentInLegend(dataPartCores);
+          dataQOSNodes = flotUtils.addPercentInLegend(dataQOSNodes);
+          dataQOSCores = flotUtils.addPercentInLegend(dataQOSCores);
+
           $.plot('#plot-alloc-cores', dataAllocatedCores, plotParams);
           $.plot('#plot-part-nodes', dataPartNodes, plotParams);
           $.plot('#plot-part-cores', dataPartCores, plotParams);
           $.plot('#plot-qos-nodes', dataQOSNodes, plotParams);
           $.plot('#plot-qos-cores', dataQOSCores, plotParams);
-
         });
     };
 
@@ -161,7 +246,8 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
       var self = this;
 
       this.interval = setInterval(function () {
-        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
+        self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
+        self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
         $('#jobs').parent('.container-fluid').remove();
         self.init();
       }, config.apiRefresh);
@@ -173,6 +259,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs/jobs.hbs', 'text!../
       }
 
       $("tr[id^='tr-job-']").off('click');
+      $('#apply-tags').off('click');
       $('#modal-job').off('hidden.bs.modal');
       $('#jobs').parent('.container-fluid').remove();
       $('#modal-job').remove();
