@@ -1,4 +1,12 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'token-utils', 'tablesorter-utils', 'number-utils', 'jquery-tablesorter'], function ($, Handlebars, template, token, tablesorter) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/qos/qos.hbs',
+  'token-utils',
+  'tablesorter-utils',
+  'number-utils',
+  'jquery-tablesorter'
+], function ($, Handlebars, template, token, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -35,9 +43,9 @@ define(['jquery', 'handlebars', 'text!../../js/modules/qos/qos.hbs',  'token-uti
       var self = this;
 
       this.interval = setInterval(function () {
-        self.tablesorterOptions = tablesorter.findTablesorterOptions('.tablesorter');
+        self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#qos').parent('.container-fluid').remove();
-        self.init();
+          self.init();
       }, config.apiRefresh);
     };
 

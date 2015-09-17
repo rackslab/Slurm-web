@@ -35,6 +35,14 @@
         <h4>Cores/QOS</h4>
       </div>
     </div>
+    <div class="row filter">
+      <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+        <input id="filter" type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" value="{{tagsinputOptions}}">
+      </div>
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+        <button id="apply-tags" class="btn btn-default" type="submit">Go</button>
+      </div>
+    </div>
     <div class="row">
       <div class='table-responsive'>
         {{#if count}}
