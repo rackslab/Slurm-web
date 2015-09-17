@@ -33,9 +33,11 @@
         <li>
           <a id="menu-jobsmap" href="#">JobsMap</a>
         </li>
-        <li>
-          <a id="menu-3dview" href="#">3D View</a>
-        </li>
+        {{#if notIE}}
+          <li>
+            <a id="menu-3dview" href="#">3D View</a>
+          </li>
+        {{/if}}
         <li>
           <a id="menu-partitions" href="#">Partitions</a>
         </li>

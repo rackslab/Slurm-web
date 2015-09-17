@@ -252,7 +252,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

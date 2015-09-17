@@ -25,7 +25,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -52,7 +51,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -94,7 +92,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

@@ -10,7 +10,6 @@ define(['jquery', 'handlebars', 'text!../../js/modules/partitions/partitions.hbs
       var options = {
         type: 'POST',
         dataType: 'json',
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

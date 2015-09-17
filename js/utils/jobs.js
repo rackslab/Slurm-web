@@ -65,7 +65,6 @@ define(['jquery', 'handlebars', 'text!config.json', 'text!colors.config.json', '
         type: 'POST',
         dataType: 'json',
         async: false,
-        crossDomain: true,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
