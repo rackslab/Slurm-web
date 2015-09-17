@@ -119,7 +119,13 @@ body {
 }
 
 #clusters .text {
+  -ms-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   transform: rotate(-90deg);
+  -ms-transform-origin: left top;
+  -webkit-transform-origin: left top;
+  -moz-transform-origin: left top;
   transform-origin: left top;
   position: absolute;
   bottom: -40px;
@@ -373,6 +379,9 @@ border: none;
 
 #jobs-chart .job span {
   position: absolute;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
   transform: translateX(-50%);
   left: 50%;
 }
@@ -394,5 +403,8 @@ border: none;
   position: absolute;
   bottom: 20px;
   font-size: 0.8em;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
   transform: translateX(-50%);
 }
