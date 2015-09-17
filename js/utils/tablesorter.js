@@ -1,4 +1,6 @@
-define(['jquery'], function ($) {
+define([
+  'jquery'
+], function ($) {
   return {
     // here
     eraseEmptyColumn: function() {
