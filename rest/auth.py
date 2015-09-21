@@ -10,7 +10,7 @@ import os
 import platform
 
 secret_key = settings.get('config', 'secret_key') + platform.node()
-
+enabled = settings.get('config', 'authentication') == 'enable'
 filtered_keys_by_role = {
     'all': settings.get('roles', 'resticted_fields_for_all').split(','),
     'user': settings.get('roles', 'resticted_fields_for_user').split(','),
@@ -175,6 +175,10 @@ def authentication_verify():
     def decorator(f):
         @wraps(f)
         def inner(*args, **kwargs):
+            resp = f(*args, **kwargs)
+            if not enabled:
+                return json.dumps(resp)
+
             token = json.loads(request.data)['token']
 
             if token is None:
@@ -186,13 +190,8 @@ def authentication_verify():
                     print "role 'all' unauthorized"
                     return abort(403)
 
-                resp = f(*args, **kwargs)
                 filter_dict(resp, filtered_keys_by_role[user.role])
-
-                if isinstance(resp, dict):
-                    return jsonify(resp)
-                if isinstance(resp, list):
-                    return json.dumps(resp)
+                return json.dumps(resp)
 
             return abort(403)
 

@@ -26,6 +26,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs', 'user-ut
     this.init = function () {
       var context = {
         clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
+        authEnabled: config.cluster.authentication.enabled,
         userLogged: this.userLogged,
         user: $.extend({ username: '' }, user.getUser(config.cluster)),
         notIE: !(/*@cc_on!@*/false || !!document.documentMode)

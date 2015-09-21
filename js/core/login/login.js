@@ -18,14 +18,8 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
     this.init = function () {
       $('body').append(template());
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/guest')
-        .success(function (response) {
-          if (response.guest)
-            $('#login #guest').show();
-        })
-        .error(function (error) {
-          console.log(error);
-        });
+      if (config.cluster.authentication.guest)
+        $('#login #guest').show();
 
       $('#login #user').on('click', function () {
         var form = {
