@@ -36,7 +36,7 @@ from settings import settings
 
 # for authentication
 from auth import (User, authentication_verify, AuthenticationError,
-                  all_restricted)
+                  all_restricted, enabled)
 
 from cache import cache
 
@@ -91,11 +91,14 @@ def login():
     return jsonify(resp)
 
 
-@app.route('/guest', methods=['GET', 'OPTIONS'])
+@app.route('/authentication', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type'])
 def guest():
-    return jsonify({'guest': not all_restricted})
+    return jsonify({
+        'enabled': enabled,
+        'guest': not all_restricted
+        })
 
 
 @app.route('/jobs', methods=['POST', 'OPTIONS'])

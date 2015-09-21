@@ -9,6 +9,25 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
     var self = this;
     var context = {};
 
+    $(document).on('selectCluster', function(e, options) {
+      e.stopPropagation();
+      var cluster = clusters[options.clusterId];
+
+      // retrieve informations about authentication on the selected cluster
+      if (!cluster.authentication) {
+        $.ajax(cluster.api.url + cluster.api.path + '/authentication', { async: false })
+          .success(function (response) {
+            cluster.authentication = response;
+          })
+          .error(function (error) {
+            console.log(error);
+          });
+      }
+
+      config.cluster = cluster;
+      $(document).trigger('loadPage', { config: config });
+    });
+
     this.init = function () {
       var context = {
         clusters: clusters,
@@ -26,7 +45,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
         })
       }
 
-      config.cluster = clusters[0];
+      $(document).trigger('selectCluster', { clusterId: 0 });
 
       if (clusters.length <= 1)
         return;
@@ -43,12 +62,12 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
       $('.cluster').on('click', function(e) {
         e.stopPropagation();
 
+        // abort if the selected cluster is yet the current one
         if (config.cluster === clusters[$(this).data('id')]) {
             return false;
         }
 
-        config.cluster = clusters[$(this).data('id')];
-        $(document).trigger('loadPage', { config: config });
+        $(document).trigger('selectCluster', { clusterId: $(this).data('id') });
       });
     };
 

@@ -132,7 +132,7 @@ require([
   $(document).on('logout', function (e) {
     e.preventDefault();
 
-    $(document).trigger('show', { page: 'login' });
+    $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.firstPage });
   });
 
   $(document).on('show', function (e, options) {
