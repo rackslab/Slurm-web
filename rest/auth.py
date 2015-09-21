@@ -1,6 +1,6 @@
 import ldap
 import json
-from flask import request, abort, jsonify
+from flask import request, abort
 from settings import settings
 from functools import wraps
 from werkzeug.exceptions import Forbidden
@@ -19,6 +19,8 @@ filtered_keys_by_role = {
 all_restricted = not(settings.get('roles', 'all') == 'all')
 users = settings.get('roles', 'user').split(',')
 admins = settings.get('roles', 'admin').split(',')
+
+ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
 
 def get_ldap_connection():
@@ -135,6 +137,9 @@ class User(object):
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
             raise AuthenticationError
+
+        finally:
+            conn.unbind_s()
 
     def generate_auth_token(
         self, expiration=int(settings.get('ldap', 'expiration'))
