@@ -18,9 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, jsonify, request, abort
+from flask import (Flask, jsonify, request, abort, send_from_directory,
+                   render_template)
 import pyslurm
 import pwd
+import json
 
 # for racks description
 from racks import parse_racks
@@ -53,15 +55,30 @@ def version():
     return "Slurm-web REST API v%s" % settings.get('infos', 'version')
 
 
+@app.route('/static/<path:path>')
+def send_js(path):
+    return send_from_directory('static', path)
+
+
+@app.route('/proxy')
+def proxy():
+    masters = ", ".join(map(lambda s: "\"%s\": \"*\"" % s, origins.split(',')))
+    return render_template('proxy.html',
+                           url_root=request.url_root,
+                           masters=masters)
+
+
 @app.route('/login', methods=['POST', 'OPTIONS'])
-@crossdomain(origin=origins)
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
 def login():
-    if request.form.get('guest', None) == 'true':
+    data = json.loads(request.data)
+    if data.get('guest', None) == True:
         user = User.guest()
     else:
         try:
-            user = User.user(request.form['username'],
-                             request.form['password'])
+            user = User.user(data['username'],
+                             data['password'])
         except AuthenticationError:
             abort(403)
 
@@ -74,8 +91,9 @@ def login():
     return jsonify(resp)
 
 
-@app.route('/guest', methods=['GET'])
-@crossdomain(origin=origins)
+@app.route('/guest', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['GET'],
+             headers=['Accept', 'Content-Type'])
 def guest():
     return jsonify({'guest': not all_restricted})
 
@@ -86,7 +104,6 @@ def guest():
 @authentication_verify()
 @cache()
 def get_jobs():
-    print "get_jobs() reached, no cache"
     if mocking:
         return mock('jobs.json')
 
