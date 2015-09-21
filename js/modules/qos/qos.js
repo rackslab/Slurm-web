@@ -35,6 +35,9 @@ define([
             context = {
               error: qos.error
             }
+            if (self.interval) {
+              clearInterval(self.interval);
+            }
           } else {
             context = {
               count: Object.keys(qos).length,
