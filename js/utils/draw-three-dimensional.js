@@ -241,7 +241,7 @@ define([
               currentRange = range;
             }
 
-            positionX = (x - (self.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN);
+            positionX = (x - (self.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN + 2 * config.RACKCLOSURE * config.RACKWIDTH);
             positionY = (config.UNITSIZE * config.RACKHEIGHT / 2);
             positionZ = (y - (self.map.height - 1) / 2) * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
 
@@ -252,16 +252,16 @@ define([
             }
 
             geometry = new THREE.BoxGeometry(
-              config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING,
+              config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING + 2 * config.RACKCLOSURE * config.RACKWIDTH,
               self.map.altitude * config.UNITSIZE * config.RACKHEIGHT,
-              config.UNITSIZE * config.RACKDEPTH - config.UNITSIZE * config.RACKPADDING
+              config.UNITSIZE * config.RACKDEPTH - config.UNITSIZE * config.RACKPADDING + config.RACKCLOSURE * config.RACKDEPTH
             );
             material = new THREE.MeshBasicMaterial({ color: colors.RACK });
             mesh = new THREE.Mesh(geometry, material);
 
             mesh.position.x = positionX;
             mesh.position.y = (self.map.altitude * config.UNITSIZE * config.RACKHEIGHT / 2);
-            mesh.position.z = positionZ;
+            mesh.position.z = positionZ + temperatureCoefficient * config.RACKCLOSURE * config.RACKDEPTH;
 
             self.scene.add(mesh);
           }
