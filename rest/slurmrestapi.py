@@ -214,7 +214,10 @@ def get_qos():
     if mocking:
         return mock('qos.json')
 
-    qos = pyslurm.qos().get()
+    try:
+        qos = pyslurm.qos().get()
+    except Exception as e:
+        qos = {'error': str(e)}
     return qos
 
 
