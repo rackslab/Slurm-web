@@ -29,10 +29,18 @@ define([
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/qos', options)
         .success(function (qos) {
-          var context = {
-            count: Object.keys(qos).length,
-            qos: qos
-          };
+          var context;
+
+          if (qos.error) {
+            context = {
+              error: qos.error
+            }
+          } else {
+            context = {
+              count: Object.keys(qos).length,
+              qos: qos
+            };
+          }
 
           $('body').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');

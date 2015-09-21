@@ -13,7 +13,7 @@ define([
             tabInfos[indexTd] = 0;
           }
 
-          if ($(itemTd).text() === '-') {
+          if (['-', ''].indexOf($(itemTd).text()) + 1) {
             tabInfos[indexTd]++;
           }
         });

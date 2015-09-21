@@ -4,6 +4,11 @@
       QOS
     </h1>
     <div class='table-responsive'>
+      {{#if error}}
+        <div class="alert alert-danger" role="alert">
+          Error : {{error}}
+        </div>
+      {{/if}}
       {{#if count}}
         <table class='table table-striped tablesorter'>
           <thead>
