@@ -1,6 +1,6 @@
-define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs', 'text!../../js/config/clusters.config.json'], function ($, Handlebars, template, clusters) {
+define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], function ($, Handlebars, template) {
   template = Handlebars.compile(template);
-  clusters = JSON.parse(clusters);
+  clusters = window.clusters;
   for (var index in clusters) {
     clusters[index].id = clusters[index].name + '-' + index;
   }
@@ -16,10 +16,11 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs', 'tex
       }
 
       if (!clusters.length) {
+        var loc = window.location;
         clusters.push({
           name: 'local',
           api: {
-            url: window.location.origin,
+            url: loc.origin || loc.protocol + '//' + loc.host,
             path: '/slurm-restapi'
           }
         })

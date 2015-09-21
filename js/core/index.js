@@ -5,6 +5,7 @@ require.config({
     'jquery-tablesorter': '/javascript/jquery-tablesorter/jquery.tablesorter.min',
     'jquery-flot': '/javascript/jquery-flot/jquery.flot.min',
     'jquery-flot-pie': '/javascript/jquery-flot/jquery.flot.pie.min',
+    xdomain: '../../js/libraries/xdomain.min',
     handlebars: '/javascript/handlebars/handlebars',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
     'bootstrap-typeahead': '../../js/libraries/typeahead/typeahead.jquery',
@@ -79,6 +80,18 @@ require.config({
     }
   }
 });
+
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+if (isIE) {
+  require(['xdomain'], function(xdomain){
+    var slaves = {};
+    for (var index in window.clusters) {
+      slaves[window.clusters[index].api.url] = window.clusters[index].api.path + "/proxy";
+    }
+    xdomain.slaves(slaves);
+  })
+}
 
 require([
   'page-utils',

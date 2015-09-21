@@ -3,6 +3,7 @@ import json
 from flask import request, abort, jsonify
 from settings import settings
 from functools import wraps
+from werkzeug.exceptions import Forbidden
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 import os
@@ -40,6 +41,15 @@ def filter_dict(to_filter={}, filtered_keys=[]):
 
 class AuthenticationError(Exception):
     pass
+
+
+class CORSForbidden(Forbidden):
+    def get_headers(self, environ):
+        """Prevent CORS error on Forbidden response."""
+        return [('Content-Type', 'text/html'),
+                ('Access-Control-Allow-Origin', '*')]
+
+abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
@@ -165,7 +175,8 @@ def authentication_verify():
     def decorator(f):
         @wraps(f)
         def inner(*args, **kwargs):
-            token = request.json['token']
+            token = json.loads(request.data)['token']
+
             if token is None:
                 return abort(403)
 

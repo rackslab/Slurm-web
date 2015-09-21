@@ -3,7 +3,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
 
   return function (config) {
     function login(options) {
-      $.post(config.cluster.api.url + config.cluster.api.path + '/login', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/login', options)
         .success(function (credentials) {
           token.setToken(config.cluster, credentials.id_token);
           user.setUser(config.cluster, credentials.username, credentials.role);
@@ -18,7 +18,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
     this.init = function () {
       $('body').append(template());
 
-      $.get(config.cluster.api.url + config.cluster.api.path + '/guest')
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/guest')
         .success(function (response) {
           if (response.guest)
             $('#login #guest').show();
@@ -37,9 +37,16 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
           $('#login #error').show();
         } else {
           var options = {
-            mimeType: 'multipart/form-data',
-            username: form.username,
-            password: form.password
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              username: form.username,
+              password: form.password
+            })
           };
 
           login(options);
@@ -57,9 +64,16 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
             $('#login #error').show();
           } else {
             var options = {
-              mimeType: 'multipart/form-data',
-              username: form.username,
-              password: form.password
+              type: 'POST',
+              dataType: 'json',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              data: JSON.stringify({
+                username: form.username,
+                password: form.password
+              })
             };
 
             login(options);
@@ -69,8 +83,15 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
 
       $('#login #guest').on('click', function () {
         var options = {
-          mimeType: 'multipart/form-data',
-          guest: true
+          type: 'POST',
+          dataType: 'json',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            guest: true
+          })
         };
 
         login(options)
