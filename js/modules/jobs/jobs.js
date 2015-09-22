@@ -248,7 +248,7 @@ define([
       this.interval = setInterval(function () {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
-        $('#jobs').parent('.container-fluid').remove();
+        $('#jobs').remove();
         self.init();
       }, config.apiRefresh);
     };

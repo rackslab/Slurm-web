@@ -144,7 +144,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       var self = this;
 
       this.interval = setInterval(function () {
-        $('#jobsmap').parent('.container-fluid').remove();
+        $('#jobsmap').remove();
         self.init();
       }, config.apiRefresh);
     };
