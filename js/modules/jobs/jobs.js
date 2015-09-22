@@ -95,7 +95,7 @@ define([
 
           context.jobs = tagsinputUtils.filterJobs(jobs, self.tagsinputOtionsApplyed);
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
 
           $('#apply-tags').on('click', function (e) {
             e.preventDefault();
@@ -261,7 +261,7 @@ define([
       $("tr[id^='tr-job-']").off('click');
       $('#apply-tags').off('click');
       $('#modal-job').off('hidden.bs.modal');
-      $('#jobs').parent('.container-fluid').remove();
+      $('#jobs').remove();
       $('#modal-job').remove();
       $(document).off('modal-job');
     };

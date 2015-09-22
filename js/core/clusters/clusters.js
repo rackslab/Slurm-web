@@ -47,17 +47,18 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
 
       $(document).trigger('selectCluster', { clusterId: 0 });
 
-      if (clusters.length <= 1)
+      if (clusters.length <= 1) {
+        $(document).ready(function() {
+          $('#main p.visible-xs').remove();
+          $('#main').removeClass('col-md-10');
+          $('#main').addClass('col-md-12');
+          $('#clusters').addClass('hidden');
+        });
+
         return;
+      }
 
-      $('body').css("margin-left", "50px");
-      $('body').append(template(context));
-      $('#clusters').css("padding-bottom", ($('#clusters .text').width() + 20) + "px");
-
-      $(document).on('navbarLoaded', function (e, options) {
-        e.stopPropagation();
-        $('#clusters').css("padding-top", options.height + "px");
-      });
+      $('#clusters').append(template(context));
 
       $('.cluster').on('click', function(e) {
         e.stopPropagation();
@@ -69,11 +70,37 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
 
         $(document).trigger('selectCluster', { clusterId: $(this).data('id') });
       });
+
+      $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+          if ($('body').width() < 768) {
+            $('.row-offcanvas').toggleClass('active');
+          } else {
+            $('#main').toggleClass('col-md-10');
+            $('#main').toggleClass('col-md-12');
+            $('#clusters').toggleClass('hidden');
+          }
+        });
+      });
+
+      $(window).on('resize', function() {
+        if ($('body').width() < 768) {
+          $('#main').addClass('col-md-10');
+          $('#main').removeClass('col-md-12');
+          $('#clusters').removeClass('hidden');
+        } else {
+          if (!$('.row-offcanvas').hasClass('active')) {
+            $('#main').removeClass('col-md-10');
+            $('#main').addClass('col-md-12');
+            $('#clusters').addClass('hidden');
+          }
+        }
+      });
     };
 
     this.destroy = function () {
       if (clusters.length <= 1) {
-        $('#clusters').remove();
+        $('#clusters').empty();
       }
     };
 

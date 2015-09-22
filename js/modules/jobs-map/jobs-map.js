@@ -121,7 +121,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
             racks: racks
           };
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
           $.each(racks, function (idRack, rack) {
             $('#cv_rackmap_' + idRack).on('click', function (e) {
               e.stopPropagation();
@@ -159,7 +159,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       $('#modal-core').remove();
       $('#modal-node').off('hidden.bs.modal');
       $('#modal-node').remove();
-      $('#jobsmap').parent('.container-fluid').remove();
+      $('#jobsmap').remove();
       $(document).off('modal-core');
     };
 

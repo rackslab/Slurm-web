@@ -1,11 +1,9 @@
-<div class="container-fluid">
-  <div id="racks" class="main">
-    <h1 class="page-header">
-      Racks
-    </h1>
-    <canvas id="cv_rackmap_legend" class="canvas-legend" width="{{canvasLegend.width}}" height="{{canvasLegend.height}}"/>
-    {{#each racks}}
-      <canvas id="cv_rackmap_{{@key}}" width="{{../canvas.canvasWidth}}" height="{{../canvas.canvasHeight}}" />
-    {{/each}}
-  </div>
+<div id="racks">
+  <h1 class="page-header">
+    Racks
+  </h1>
+  <canvas id="cv_rackmap_legend" class="canvas-legend" width="{{canvasLegend.width}}" height="{{canvasLegend.height}}"/>
+  {{#each racks}}
+    <canvas id="cv_rackmap_{{@key}}" width="{{../canvas.canvasWidth}}" height="{{../canvas.canvasHeight}}" />
+  {{/each}}
 </div>

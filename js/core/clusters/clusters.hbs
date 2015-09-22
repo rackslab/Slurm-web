@@ -1,10 +1,5 @@
-<div id="clusters" class="navbar-inverse">
-  <span class="text">
-    CLUSTERS
-  </span>
-  <div>
-    {{#each clusters}}
-      <div class="cluster" data-id="{{@index}}" title="{{name}}">{{@index}}</div>
-    {{/each}}
-  </div>
-</div>
+<ul class="nav nav-sidebar">
+  {{#each clusters}}
+    <li><a class="cluster" data-id="{{@index}}" href="#">{{name}}</a></li>
+  {{/each}}
+</ul>

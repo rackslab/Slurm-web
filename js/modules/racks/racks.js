@@ -41,7 +41,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-
             racks: racks
           };
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
 
           $.each(racks, function (idRack, rack) {
             draw.drawRack(rack);
@@ -68,7 +68,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-
         clearInterval(this.interval);
       }
 
-      $('#racks').parent('.container-fluid').remove();
+      $('#racks').remove();
     };
 
     return this;

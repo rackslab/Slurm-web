@@ -34,7 +34,7 @@ define([
             reservations: reservations
           };
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
@@ -55,7 +55,7 @@ define([
         clearInterval(this.interval);
       }
 
-      $('#reservations').parent('.container-fluid').remove();
+      $('#reservations').remove();
     };
 
     return this;

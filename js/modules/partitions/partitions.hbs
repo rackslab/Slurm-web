@@ -1,35 +1,33 @@
-<div class="container-fluid">
-  <div id="partitions" class="main">
-    <h1 class="page-header">
-      Partitions
-    </h1>
-    <div class='table-responsive'>
-      {{#if count}}
-        <table class='table table-striped tablesorter'>
-          <thead>
+<div id="partitions">
+  <h1 class="page-header">
+    Partitions
+  </h1>
+  <div class='table-responsive'>
+    {{#if count}}
+      <table class='table table-striped tablesorter'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Default</th>
+            <th>Nodes</th>
+            <th>#Nodes</th>
+            <th>#CPUs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each partitions}}
             <tr>
-              <th>Name</th>
-              <th>Default</th>
-              <th>Nodes</th>
-              <th>#Nodes</th>
-              <th>#CPUs</th>
+              <td>{{@key}}</td>
+              <td>{{yesOrNo flags.Default}}</td>
+              <td>{{join nodes ','}}</td>
+              <td>{{total_nodes}}</td>
+              <td>{{total_cpus}}</td>
             </tr>
-          </thead>
-          <tbody>
-            {{#each partitions}}
-              <tr>
-                <td>{{@key}}</td>
-                <td>{{yesOrNo flags.Default}}</td>
-                <td>{{join nodes ','}}</td>
-                <td>{{total_nodes}}</td>
-                <td>{{total_cpus}}</td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-        {{else}}
-          <p>There is no data to display.</p>
-      {{/if}}
-    </div>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}
+        <p>There is no data to display.</p>
+    {{/if}}
   </div>
 </div>
