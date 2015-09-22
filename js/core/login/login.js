@@ -16,7 +16,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
     };
 
     this.init = function () {
-      $('body').append(template());
+      $('#main').append(template());
 
       if (config.cluster.authentication.guest)
         $('#login #guest').show();
@@ -96,7 +96,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-uti
       $('#login input').off('keypress');
       $('#login #user').off('click');
       $('#login #guest').off('click');
-      $('#login').parent('.container-fluid').remove();
+      $('#login').remove();
     };
 
     return this;

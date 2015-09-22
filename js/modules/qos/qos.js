@@ -45,7 +45,7 @@ define([
             };
           }
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
@@ -66,7 +66,7 @@ define([
         clearInterval(this.interval);
       }
 
-      $('#qos').parent('.container-fluid').remove();
+      $('#qos').remove();
     };
 
     return this;

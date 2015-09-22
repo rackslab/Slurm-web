@@ -1,83 +1,81 @@
-<div class="container-fluid">
-  <div id="jobs" class="main">
-    <h1 class="page-header">
-      Jobs
-    </h1>
-    <div class="row">
-      <div id='alloc-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
-        <div class='plot-sub-div'>
-          <div id='plot-alloc-cores' class='plot-div-small'></div>
-        </div>
-        <h4>Allocated cores</h4>
+<div id="jobs">
+  <h1 class="page-header">
+    Jobs
+  </h1>
+  <div class="row">
+    <div id='alloc-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
+      <div class='plot-sub-div'>
+        <div id='plot-alloc-cores' class='plot-div-small'></div>
       </div>
-      <div id='part-nodes' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
-        <div class='plot-sub-div'>
-          <div id='plot-part-nodes' class='plot-div-small'></div>
-        </div>
-        <h4>Nodes/Partition</h4>
-      </div>
-      <div id='part-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
-        <div class='plot-sub-div'>
-          <div id='plot-part-cores' class='plot-div-small'></div>
-        </div>
-        <h4>Cores/Partition</h4>
-      </div>
-      <div id='qos-nodes' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
-        <div class='plot-sub-div'>
-          <div id='plot-qos-nodes' class='plot-div-small'></div>
-        </div>
-        <h4>Nodes/QOS</h4>
-      </div>
-      <div id='qos-cores' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
-        <div class='plot-sub-div'>
-          <div id='plot-qos-cores' class='plot-div-small'></div>
-        </div>
-        <h4>Cores/QOS</h4>
-      </div>
+      <h4>Allocated cores</h4>
     </div>
-    <div class="row filter">
-      <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-        <input id="filter" type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" value="{{tagsinputOptions}}">
+    <div id='part-nodes' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
+      <div class='plot-sub-div'>
+        <div id='plot-part-nodes' class='plot-div-small'></div>
       </div>
-      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-        <button id="apply-tags" class="btn btn-default" type="submit">Go</button>
-      </div>
+      <h4>Nodes/Partition</h4>
     </div>
-    <div class="row">
-      <div class='table-responsive'>
-        {{#if count}}
-          <table class='table table-striped tablesorter'>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>User</th>
-                <th>Nodes</th>
-                <th>State</th>
-                <th>Reason</th>
-                <th>Start</th>
-                <th>QOS</th>
-                <th>Partition</th>
+    <div id='part-cores' class='col-xs-6 col-sm-2 col-md-2 placeholder'>
+      <div class='plot-sub-div'>
+        <div id='plot-part-cores' class='plot-div-small'></div>
+      </div>
+      <h4>Cores/Partition</h4>
+    </div>
+    <div id='qos-nodes' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
+      <div class='plot-sub-div'>
+        <div id='plot-qos-nodes' class='plot-div-small'></div>
+      </div>
+      <h4>Nodes/QOS</h4>
+    </div>
+    <div id='qos-cores' class='col-xs-6 col-sm-2 col-md-3 placeholder'>
+      <div class='plot-sub-div'>
+        <div id='plot-qos-cores' class='plot-div-small'></div>
+      </div>
+      <h4>Cores/QOS</h4>
+    </div>
+  </div>
+  <div class="row filter">
+    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+      <input id="filter" type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" value="{{tagsinputOptions}}">
+    </div>
+    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+      <button id="apply-tags" class="btn btn-default" type="submit">Go</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class='table-responsive'>
+      {{#if count}}
+        <table class='table table-striped tablesorter'>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Nodes</th>
+              <th>State</th>
+              <th>Reason</th>
+              <th>Start</th>
+              <th>QOS</th>
+              <th>Partition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each jobs}}
+              <tr class="job-row" id="tr-job-{{@key}}">
+                <td>{{@key}}</td>
+                <td>{{login}} ({{username}})</td>
+                <td>{{printNodes nodes}}</td>
+                <td>{{job_state}}</td>
+                <td>{{printReason job_state state_reason}}</td>
+                <td>{{printStartTime start_time eligible_time job_state}}</td>
+                <td>{{qos}}</td>
+                <td>{{partition}}</td>
               </tr>
-            </thead>
-            <tbody>
-              {{#each jobs}}
-                <tr class="job-row" id="tr-job-{{@key}}">
-                  <td>{{@key}}</td>
-                  <td>{{login}} ({{username}})</td>
-                  <td>{{printNodes nodes}}</td>
-                  <td>{{job_state}}</td>
-                  <td>{{printReason job_state state_reason}}</td>
-                  <td>{{printStartTime start_time eligible_time job_state}}</td>
-                  <td>{{qos}}</td>
-                  <td>{{partition}}</td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-          {{else}}
-            <p>There is no data to display.</p>
-        {{/if}}
-      </div>
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+          <p>There is no data to display.</p>
+      {{/if}}
     </div>
   </div>
 </div>

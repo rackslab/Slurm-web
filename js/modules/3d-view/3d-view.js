@@ -19,7 +19,7 @@ define([
   return function (config) {
 
     this.init = function () {
-      $('body').append(template());
+      $('#main').append(template());
 
       var canvas = {
         width: $(window).width() - $('canvas').offset().left * 2,
@@ -74,7 +74,7 @@ define([
     };
 
     this.destroy = function () {
-      $('#3d-view').parent('.container-fluid').remove();
+      $('#3d-view').remove();
     };
 
     return this;

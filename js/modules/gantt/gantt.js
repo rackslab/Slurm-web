@@ -261,7 +261,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
         }),
       };
 
-      $('body').append(template());
+      $('#main').append(template());
 
       // bind navbar
       $('#tabs a').click(function (e) {
@@ -292,7 +292,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     this.destroy = function () {
       $(".job").off('click');
       $('#modal-job').off('hidden.bs.modal');
-      $('#gantt').parent('.container-fluid').remove();
+      $('#gantt').remove();
       $('#modal-job').remove();
       $(document).off('modal-job');
     }

@@ -35,7 +35,7 @@ define([
             partitions: partitions
           };
 
-          $('body').append(template(context));
+          $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
         });
@@ -56,7 +56,7 @@ define([
         clearInterval(this.interval);
       }
 
-      $('#partitions').parent('.container-fluid').remove();
+      $('#partitions').remove();
     };
 
     return this;
