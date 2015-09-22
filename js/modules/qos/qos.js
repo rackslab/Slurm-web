@@ -56,7 +56,7 @@ define([
 
       this.interval = setInterval(function () {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
-        $('#qos').parent('.container-fluid').remove();
+        $('#qos').remove();
           self.init();
       }, config.apiRefresh);
     };

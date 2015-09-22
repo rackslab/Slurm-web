@@ -45,7 +45,7 @@ define([
 
       this.interval = setInterval(function () {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
-        $('#reservations').parent('.container-fluid').remove();
+        $('#reservations').remove();
         self.init();
       }, config.apiRefresh);
     };

@@ -58,7 +58,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-
       var self = this;
 
       this.interval = setInterval(function () {
-        $('#racks').parent('.container-fluid').remove();
+        $('#racks').remove();
         self.init();
       }, config.apiRefresh);
     };
