@@ -5,7 +5,15 @@ if (isIE) {
 } else {
   console.log('IE not detected, 3D-view loaded');
 
-define(['jquery', 'handlebars', 'text!../../js/modules/3d-view/3d-view.hbs', 'token-utils', 'draw-three-dimensional-utils', 'racks-utils', 'jobs-utils'], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/3d-view/3d-view.hbs',
+  'token-utils',
+  'draw-three-dimensional-utils',
+  'racks-utils',
+  'jobs-utils'
+], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
   template = Handlebars.compile(template);
 
   return function (config) {
