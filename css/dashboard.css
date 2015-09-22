@@ -349,7 +349,7 @@ border: none;
 
 #jobs-chart .job-wrapper {
   position: absolute;
-  border: 1px solid white;
+  border: 1px solid transparent;
   width: 100%;
 }
 
@@ -364,6 +364,8 @@ border: none;
   min-width: 4px;
   height: 100%;
   opacity: 1;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px #888888;
 }
 
 #jobs-chart .job:hover {
