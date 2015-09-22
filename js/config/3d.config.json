@@ -1,21 +1,23 @@
 {
   "UNITSIZE": 8.0,
+  "WALLHEIGHT": 5.0,
   "PATHSIZE": 2,
   "MOVESPEED": 10.0,
-  "LOOKSPEED": 0.4,
+  "LOOKSPEED": 0.2,
   "RACKWIDTH": 1,
   "RACKHEIGHT": 0.1,
   "RACKDEPTH": 1,
   "RACKMARGIN": 0.5,
-  "RACKPADDING": 0.05,
+  "RACKPADDING": 0.001,
   "NODEPADDINGTOP": 0.1,
   "LEDDIMENSIONS": 0.025,
   "CPUPADDING": 0.3,
-  "DEBUG": false,
+  "DEBUG": true,
   "CONTROLS": {
     "FORWARD": 90,
     "BACKWARD": 83,
     "LEFT": 81,
-    "RIGHT": 68
+    "RIGHT": 68,
+    "FREEZE": 32
   }
 }

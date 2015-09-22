@@ -45,6 +45,7 @@ require.config({
     reservations: '../../js/modules/reservations/reservations',
     '3d-view': '../../js/modules/3d-view/3d-view',
     'three-first-person-controls': '../../js/modules/3d-view/camera/first-person-controls',
+    'three-orbit-controls': '../../js/modules/3d-view/camera/orbit-controls',
     gantt: '../../js/modules/gantt/gantt'
   },
   shim: {

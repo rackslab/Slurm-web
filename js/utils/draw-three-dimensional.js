@@ -43,6 +43,7 @@ define([
 
     function setControls() {
       self.controls = new THREE.FirstPersonControls(self.camera);
+      //self.controls = new THREE.OrbitControls(self.camera);
       self.controls.movementSpeed = config.MOVESPEED;
       self.controls.lookSpeed = config.LOOKSPEED;
       self.controls.lookVertical = true;
@@ -55,11 +56,45 @@ define([
       self.scene.add(light);
     }
 
+    function addWalls() {
+      var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xA9A9A9 });
+
+      var topWallGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var bottomWallGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var leftWallGeometry = new THREE.PlaneGeometry(self.map.height * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var rightWallGeometry = new THREE.PlaneGeometry(self.map.height * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+
+      var topWall = new THREE.Mesh(topWallGeometry, wallMaterial);
+      var bottomWall = new THREE.Mesh(bottomWallGeometry, wallMaterial);
+      var leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
+      var rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
+
+      topWall.position.z = -(self.map.height * config.UNITSIZE / 2);
+      topWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
+
+      bottomWall.position.z = (self.map.height * config.UNITSIZE / 2);
+      bottomWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
+      bottomWall.rotation.x = 180 * Math.PI / 180;
+
+      leftWall.position.x = -(self.map.width * config.UNITSIZE / 2);
+      leftWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
+      leftWall.rotation.y = 90 * Math.PI / 180;
+
+      rightWall.position.x = self.map.width * config.UNITSIZE / 2;
+      rightWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
+      rightWall.rotation.y = -90 * Math.PI / 180;
+
+      self.scene.add(topWall);
+      self.scene.add(bottomWall);
+      self.scene.add(leftWall);
+      self.scene.add(rightWall);
+    }
+
     function addFloor() {
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(32, 32);
+      texture.repeat.set(8, 8);
       var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
       var floorGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, self.map.height * config.UNITSIZE, 1, 1);
       var floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -266,6 +301,7 @@ define([
       addCamera(canvas);
       setControls();
       addFloor();
+      addWalls();
       addRack();
 
       if (config.DEBUG) {
