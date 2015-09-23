@@ -29,6 +29,7 @@ require.config({
     'ajax-utils': '../../js/utils/ajax',
     'factor-utils': '../../js/utils/factor',
     'flot-utils': '../../js/utils/flot',
+    'keycode-utils': '../../js/utils/keycode',
     'tagsinput-utils': '../../js/utils/tagsinput',
     'draw-colors-utils': '../../js/utils/draw-colors',
     'draw-intersections-utils': '../../js/utils/draw-intersections',

@@ -12,7 +12,8 @@ define([
   'token-utils',
   'draw-three-dimensional-utils',
   'racks-utils',
-  'jobs-utils'
+  'jobs-utils',
+  'keycode-utils'
 ], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
   template = Handlebars.compile(template);
 
@@ -21,7 +22,12 @@ define([
     this.init = function () {
       $('#main').append(template());
 
+      $('#tabs a[href="#camera"]').on('show.bs.tab', function (e) {
+        $(document).trigger('camera-change', { cameraType: $(this).attr('aria-controls')});
+      });
+
       var canvas = {
+        element: $('canvas')[0],
         width: $(window).width() - $('canvas').offset().left * 2,
         height: $(window).height() - $('canvas').offset().top
       };
@@ -62,6 +68,31 @@ define([
                     }
                   }
 
+                  $('#tabs a[href="#fullscreen"]').on('click', function (e) {
+                    if (canvas.element.webkitRequestFullScreen) {
+                      canvas.element.webkitRequestFullscreen();
+                      $(document).trigger('fullscreen-enter');
+                    } else if (canvas.element.mozRequestFullScreen) {
+                      canvas.element.mozRequestFullscreen();
+                      $(document).trigger('fullscreen-enter');
+                    } else if (canvas.element.msRequestFullscreen) {
+                      canvas.element.msRequestFullscreen();
+                      $(document).trigger('fullscreen-enter');
+                    } else if (canvas.element.requestFullScreen) {
+                      canvas.element.requestFullscreen();
+                      $(document).trigger('fullscreen-enter');
+                    }
+                  });
+
+                  $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function (e) {
+                    if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
+                      $('canvas').removeAttr('style');
+                      $('canvas').attr('width', canvas.width);
+                      $('canvas').attr('height', canvas.height);
+                      $(document).trigger('fullscreen-exit');
+                    }
+                  });
+
                   var draw = new d3Draw(map, racksList, nodesInfos, jobs);
                   draw.init($('canvas'));
                 });
@@ -69,11 +100,12 @@ define([
         });
     };
 
-    this.refresh = function () {
-
-    };
-
     this.destroy = function () {
+      $('#tabs a[href="#fullscreen"]').off('click');
+      $('#tabs a[href="#camera"]').off('show.bs.tab');
+      $(document).off('fullscreen-enter fullscreen-exit');
+      $(document).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
+      $(document).off('camera-change screen-change');
       $('#3d-view').remove();
     };
 
