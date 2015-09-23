@@ -13,7 +13,7 @@ define([], function () {
       }
 
       for (i = 0; i < tab.length; i++) {
-        tab[i].label += ' ' + percent(tab[i].data, total) + '%';
+        tab[i].label += ' (' + percent(tab[i].data, total) + '%)';
       }
 
       return tab;
