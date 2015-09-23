@@ -5,6 +5,7 @@ define([
   'three',
   'factor-utils',
   'draw-colors-utils',
+  'three-orbit-controls',
   'three-first-person-controls'
 ], function ($, config, colors, THREE, factor, drawColors) {
   config = JSON.parse(config);
@@ -41,14 +42,19 @@ define([
       return self.map.data[y * self.map.width + x];
     }
 
-    function setControls() {
-      self.controls = new THREE.FirstPersonControls(self.camera);
-      //self.controls = new THREE.OrbitControls(self.camera);
-      self.controls.movementSpeed = config.MOVESPEED;
-      self.controls.lookSpeed = config.LOOKSPEED;
-      self.controls.lookVertical = true;
-      self.controls.noFly = true;
-      self.canvas.on('mousedown', onMouseDown);
+    function setControls(cameraType, canvas) {
+      addCamera(canvas);
+
+      if (self.interfaceOptions.cameraType === 'orbit') {
+        self.controls = new THREE.OrbitControls(self.camera);
+      } else if (self.interfaceOptions.cameraType === 'fps') {
+        self.controls = new THREE.FirstPersonControls(self.camera);
+        self.controls.movementSpeed = config.MOVESPEED;
+        self.controls.lookSpeed = config.LOOKSPEED;
+        self.controls.lookVertical = true;
+        self.controls.noFly = true;
+        self.canvas.on('mousedown', onMouseDown);
+      }
     }
 
     function addLight() {
@@ -289,6 +295,10 @@ define([
 
     this.init = function (canvas) {
       this.canvas = canvas;
+      this.interfaceOptions = {
+        cameraType: 'orbit',
+        screenType: 'page'
+      };
 
       this.clock = new THREE.Clock();
       this.mouse = new THREE.Vector3();
@@ -298,8 +308,34 @@ define([
 
       this.canvasRectangle = this.renderer.domElement.getBoundingClientRect();
 
-      addCamera(canvas);
-      setControls();
+      setControls(canvas);
+
+      $(document).on('camera-change', function (e, options) {
+        self.interfaceOptions.cameraType = options.cameraType;
+
+        setControls(canvas);
+      });
+
+      $(document).on('screen-change', function (e, options) {
+        self.interfaceOptions.screenType = options.screenType;
+
+        setControls(canvas);
+      });
+
+      $(document).on('fullscreen-enter', function (e) {
+        self.camera.aspect = $(window).width() / $(window).height();
+        self.camera.updateProjectionMatrix();
+
+        self.renderer.setSize($(window).width(), $(window).height());
+      });
+
+      $(document).on('fullscreen-exit', function (e) {
+        self.camera.aspect = self.canvas.width() / self.canvas.height();
+        self.camera.updateProjectionMatrix();
+
+        self.renderer.setSize(self.canvas.width(), self.canvas.height());
+      });
+
       addFloor();
       addWalls();
       addRack();
