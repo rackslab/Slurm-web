@@ -10,7 +10,8 @@
     "AVAILABLE": "rgb(0, 255, 0)",
     "DRAINED": "rgb(255, 255, 0)",
     "DOWN": "rgb(255, 0, 0)",
-    "RESERVED": "rgb(0, 0, 255)"
+    "RESERVED": "rgb(0, 0, 255)",
+    "NOTVISIBLE": "rgb(0, 0, 0)"
   },
   "JOB": [
     "rgb(237, 212, 0)",
