@@ -106,6 +106,7 @@ define([
       $(document).off('fullscreen-enter fullscreen-exit');
       $(document).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
       $(document).off('camera-change screen-change');
+      $(document).trigger('three-destroy');
       $('#3d-view').remove();
     };
 

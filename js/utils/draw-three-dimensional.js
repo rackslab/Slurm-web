@@ -111,7 +111,7 @@ define([
     function addCores(node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
 
-      var cpus = self.nodes[node.name].alloc_cpus;
+      var cpus = self.nodes[node.name].cpus;
 
       if (!cpus) {
         return
@@ -160,7 +160,7 @@ define([
         geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth);
 
         if (!jobs[cpu]) {
-          color = 0x000;
+          color = colors.NOJOB;
         } else {
           color = drawColors.findJobColor(jobs[cpu]);
         }
@@ -216,8 +216,8 @@ define([
 
       self.scene.add(mesh);
 
-      addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      //addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      //addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
     function addRack() {
@@ -289,14 +289,18 @@ define([
     }
 
     function render() {
-      var delta = self.clock.getDelta();
-      self.controls.update(delta);
-
-      requestAnimationFrame(render);
-      self.renderer.render(self.scene, self.camera);
+      if (self.idFrame !== false) {
+        var delta = self.clock.getDelta();
+        self.controls.update(delta);
+        self.idFrame = requestAnimationFrame(render);
+        self.renderer.render(self.scene, self.camera);
+      } else {
+        cancelAnimationFrame(self.idFrame);
+      }
     }
 
     this.init = function (canvas) {
+      this.idFrame = null;
       this.canvas = canvas;
       this.interfaceOptions = {
         cameraType: 'orbit',
@@ -337,6 +341,29 @@ define([
         self.camera.updateProjectionMatrix();
 
         self.renderer.setSize(self.canvas.width(), self.canvas.height());
+      });
+
+      $(document).one('three-destroy', function() {
+        if (self.idFrame) {
+          self.idFrame = false;
+
+          $(document).off('contextmenu');
+          $(document).off('mousedown');
+          $(document).off('mousewheel');
+          $(document).off('DOMMouseScroll');
+          $(document).off('keydown');
+          $(document).off('touchstart');
+          $(document).off('touchend');
+          $(document).off('touchmove');
+
+          $(document).on('mousemove');
+          $(document).on('mouseup');
+
+          $(document).off('keydown');
+          $(document).off('keyup');
+
+          self.canvas.off('mousedown');
+        }
       });
 
       addFloor();
