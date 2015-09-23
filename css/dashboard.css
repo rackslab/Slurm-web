@@ -107,7 +107,7 @@ body {
   padding-right: 20px;
   padding-left: 20px;
 }
-.nav-sidebar > .active > a {
+.nav-sidebar > .active > a, .nav > .active > a:hover, .nav > .active > a:focus {
   color: #fff;
   background-color: #428bca;
 }
@@ -115,6 +115,9 @@ body {
 @media screen and (min-width: 768px) {
   #main p.visible-xs {
     display: block !important;
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
 }
 
