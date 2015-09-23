@@ -185,7 +185,8 @@ define([
       var ledDepth = nodeWidth * config.LEDDEPTH;
 
       var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth);
-      var material = new THREE.MeshBasicMaterial({ color: drawColors.findLEDColor(self.nodes[node.name]) });
+
+      var material = new THREE.MeshBasicMaterial({ color: drawColors.findLEDColor(self.nodes[node.name]).state });
       var mesh = new THREE.Mesh(geometry, material);
 
       mesh.position.x = x - ((nodeWidth / 2) - (ledDimensions + 0.5 * ledDimensions)) * -1 * temperatureCoefficient;
@@ -216,8 +217,8 @@ define([
 
       self.scene.add(mesh);
 
-      //addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      //addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
     function addRack() {

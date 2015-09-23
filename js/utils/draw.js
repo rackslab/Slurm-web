@@ -76,7 +76,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
           } else {
             nodeColor = colors.colorPartAllocated;
           }
-          stateColor = color_reserved;
+          stateColor = colors.colorReserved;
           break;
         case 'DRAINING':
         case 'DRAINING*':
@@ -91,8 +91,8 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
           nodeColor = colors.colorUnavailable;
           break;
         default:
-          state_color = 'black';
-          node_color = colors.colorUnknown;
+          stateColor = 'black';
+          nodeColor = colors.colorUnknown;
       }
 
       return { node: nodeColor, state: stateColor };

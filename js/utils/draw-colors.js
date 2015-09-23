@@ -8,37 +8,56 @@ define([
       return colors.JOB[(jobId % colors.JOB.length)];
     },
     findLEDColor: function (node) {
-      var color;
+      var stateColor = colors.LED.IDLE;
+      var nodeColor = colors.LED.UNKNOWN;
+
+      if (node == null) {
+        return { node: nodeColor, state: null };
+      }
 
       switch(node.node_state) {
         case 'IDLE':
         case 'IDLE*':
-          color = colors.LED.IDLE;
+          stateColor = colors.LED.AVAILABLE;
+          nodeColor = colors.LED.IDLE;
           break;
         case 'ALLOCATED':
         case 'ALLOCATED*':
         case 'COMPLETING':
-        case 'RESERVED':
         case 'COMPLETING*':
           if (node.total_cpus === -node.cpus) {
-            color = colors.LED.FULLYALLOCATED;
-            break;
+            nodeColor = colors.LED.FULLYALLOCATED;
+          } else {
+            nodeColor = colors.LED.PARTALLOCATED;
           }
-          color = colors.LED.PARTALLOCATED;
+          stateColor = colors.LED.AVAILABLE;
+          break;
+        case 'RESERVED':
+          if (node.total_cpus === -node.cpus) {
+            nodeColor = colors.LED.FULLYALLOCATED;
+          } else {
+            nodeColor = colors.LED.PARTALLOCATED;
+          }
+          stateColor = colors.LED.RESERVED;
           break;
         case 'DRAINING':
         case 'DRAINING*':
         case 'DRAINED':
         case 'DRAINED*':
+          stateColor = colors.LED.DRAINED;
+          nodeColor = colors.LED.UNAVAILABLE;
+          break;
         case 'DOWN':
         case 'DOWN*':
-          color = colors.LED.UNAVAILABLE;
+          stateColor = colors.LED.DOWN;
+          nodeColor = colors.LED.UNAVAILABLE;
           break;
         default:
-          color = colors.LED.UNKNOWN;
+          stateColor = colors.LED.NOTVISIBLE;
+          nodeColor = colors.LED.UNKNOWN;
       }
 
-      return color;
+      return { node: nodeColor, state: stateColor };
     }
   };
 });
