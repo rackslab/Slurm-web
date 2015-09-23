@@ -146,8 +146,10 @@ define([
 
       if (row / column === 1) {
         cpuDimensions = Math.min(width, height);
+        var cpuDepth = nodeWidth * config.CPUDEPTH;
       } else {
         var cpuDimensions = width / column;
+        var cpuDepth = nodeWidth * config.CPUDEPTH;
       }
 
       var factorWidth = column * cpuDimensions;
@@ -155,7 +157,7 @@ define([
 
       var cpuPadding = cpuDimensions * config.CPUPADDING;
       for (cpu = 0; cpu < cpus; cpu++) {
-        geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDimensions - cpuPadding);
+        geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth);
 
         if (!jobs[cpu]) {
           color = 0x000;
@@ -180,8 +182,9 @@ define([
 
     function addLed(node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
+      var ledDepth = nodeWidth * config.LEDDEPTH;
 
-      var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDimensions);
+      var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth);
       var material = new THREE.MeshBasicMaterial({ color: drawColors.findLEDColor(self.nodes[node.name]) });
       var mesh = new THREE.Mesh(geometry, material);
 
@@ -259,14 +262,14 @@ define([
 
             geometry = new THREE.BoxGeometry(
               config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING + 2 * config.RACKCLOSURE * config.RACKWIDTH,
-              self.map.altitude * config.UNITSIZE * config.RACKHEIGHT,
+              (self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
               config.UNITSIZE * config.RACKDEPTH - config.UNITSIZE * config.RACKPADDING + config.RACKCLOSURE * config.RACKDEPTH
             );
             material = new THREE.MeshBasicMaterial({ color: colors.RACK });
             mesh = new THREE.Mesh(geometry, material);
 
             mesh.position.x = positionX;
-            mesh.position.y = (self.map.altitude * config.UNITSIZE * config.RACKHEIGHT / 2);
+            mesh.position.y = ((self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT / 2);
             mesh.position.z = positionZ + temperatureCoefficient * config.RACKCLOSURE * config.RACKDEPTH;
 
             self.scene.add(mesh);
