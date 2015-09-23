@@ -141,6 +141,7 @@ require([
     e.stopPropagation();
 
     page.destroy();
+    $('#flash').hide();
 
     switch (options.page) {
     case 'login':
