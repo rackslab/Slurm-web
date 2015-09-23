@@ -192,7 +192,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!.
     $("#jobs-chart").scrollLeft(jobsDatas.currentPosition * jobsDatas.width / 100 - $('#jobs-chart').width() / 2);
 
     // set height of the view
-    var ganttHeight = $(window).height() - ($('body>nav').height() + parseInt($('#gantt').css('padding-top').slice(0,2)) + $('#gantt .page-header').height() + parseInt($('#gantt .page-header').css('margin-bottom').slice(0,2)) + 80);
+    var ganttHeight = $(window).height() - ($('body>nav').height() + parseInt($('#main').css('padding-top').slice(0,2)) + $('#gantt .page-header').height() + parseInt($('#gantt .page-header').css('margin-bottom').slice(0,2)) + 80);
     $('#gantt .content').height(ganttHeight);
     // set width of abscissa
     $('#time').width($('#jobs-chart').width());
