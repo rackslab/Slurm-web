@@ -94,7 +94,7 @@ def login():
 @app.route('/authentication', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type'])
-def guest():
+def authentication():
     return jsonify({
         'enabled': enabled,
         'guest': not all_restricted
