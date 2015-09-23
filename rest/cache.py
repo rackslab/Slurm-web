@@ -27,7 +27,24 @@ from functools import wraps
 from settings import settings
 
 redis_host = settings.get('cache', 'redis_host')
-redis_port = settings.get('cache', 'redis_port')
+try:
+    redis_port = int(settings.get('cache', 'redis_port'))
+except ValueError as e:
+    print "Error while parsing redis_port, check restapi.conf : %s" % str(e)
+    redis_port = 6379
+try:
+    jobs_expiration = int(settings.get('cache', 'jobs_expiration'))
+except ValueError as e:
+    print ("Error while parsing jobs_expiration," +
+           (" check restapi.conf : %s" % (str(e))))
+    jobs_expiration = 10
+try:
+    global_expiration = int(settings.get('cache', 'global_expiration'))
+except ValueError as e:
+    print ("Error while parsing global_expiration," +
+           (" check restapi.conf : %s" % str(e)))
+    global_expiration = 86400
+
 r = redis.Redis(redis_host, redis_port)
 
 
@@ -46,12 +63,13 @@ def cache():
                 return json.loads(r.get(cache_key))
 
             if 'job' in f.__name__:
-                expiration = settings.get('cache', 'jobs_expiration')
+                expiration = jobs_expiration
             else:
-                expiration = settings.get('cache', 'global_expiration')
+                expiration = global_expiration
 
             resp = f(*args, **kwargs)
-            r.set(cache_key, json.dumps(resp), expiration)
+            if isinstance(resp, dict):
+                r.set(cache_key, json.dumps(resp), expiration)
             return resp
 
         return inner
