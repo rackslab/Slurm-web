@@ -4,10 +4,11 @@
  * @author paulirish / http://paulirish.com/
  */
 
-define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
+define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE, d3config) {
   d3config = JSON.parse(d3config);
 
   THREE.FirstPersonControls = function (object, domElement) {
+    var self = this;
     this.object = object;
     this.target = new THREE.Vector3(0, 0, 0);
 
@@ -53,9 +54,7 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
     this.viewHalfY = 0;
 
     if (this.domElement !== document) {
-
       this.domElement.setAttribute('tabindex', -1);
-
     }
 
     this.handleResize = function () {
@@ -75,15 +74,13 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
     };
 
     this.onMouseDown = function (event) {
+      event.preventDefault();
 
       if (this.domElement !== document) {
 
         this.domElement.focus();
 
       }
-
-      event.preventDefault();
-      event.stopPropagation();
 
       if (this.activeLook) {
 
@@ -103,7 +100,6 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
     this.onMouseUp = function (event) {
 
       event.preventDefault();
-      event.stopPropagation();
 
       if (this.activeLook) {
 
@@ -122,6 +118,8 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
 
     this.onMouseMove = function (event) {
 
+      event.preventDefault();
+
       if (this.domElement === document) {
 
         this.mouseX = event.pageX - this.viewHalfX;
@@ -137,6 +135,8 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
     };
 
     this.onKeyDown = function (event) {
+
+      event.preventDefault();
 
       switch (event.keyCode) {
 
@@ -250,7 +250,15 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
       this.object.lookAt(targetPosition);
     };
 
+    $(document).on('contextmenu', function (event) { event.preventDefault(); });
+    $(document).on('mousemove', bind(this, this.onMouseMove));
+    $(document).on('mousedown', bind(this, this.onMouseDown));
+    $(document).on('mouseup', bind(this, this.onMouseUp));
 
+    $(document).on('keydown', bind(this, this.onKeyDown));
+    $(document).on('keyup', bind(this, this.onKeyUp));
+
+/*
     this.domElement.addEventListener('contextmenu', function (event) { event.preventDefault(); }, false);
 
     this.domElement.addEventListener('mousemove', bind(this, this.onMouseMove), false);
@@ -259,7 +267,7 @@ define(['three', 'text!../config/3d.config.json'], function (THREE, d3config) {
 
     window.addEventListener('keydown', bind(this, this.onKeyDown), false);
     window.addEventListener('keyup', bind(this, this.onKeyUp), false );
-
+*/
     function bind(scope, fn) {
 
       return function () {

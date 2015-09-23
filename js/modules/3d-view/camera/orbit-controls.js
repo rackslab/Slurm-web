@@ -21,7 +21,7 @@
 //      controls.target.z = 150;
 // Simple substitute "OrbitControls" and the control should work as-is.
 
-define(['three'], function (THREE) {
+define(['jquery', 'three'], function ($, THREE) {
 
   THREE.OrbitControls = function ( object, domElement ) {
 
@@ -101,7 +101,6 @@ define(['three'], function (THREE) {
     // events
 
     var changeEvent = { type: 'change' };
-
 
     this.rotateLeft = function ( angle ) {
 
@@ -311,9 +310,10 @@ define(['three'], function (THREE) {
       }
 
       // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-      scope.domElement.addEventListener( 'mousemove', onMouseMove, false );
-      scope.domElement.addEventListener( 'mouseup', onMouseUp, false );
-
+      //scope.domElement.addEventListener( 'mousemove', onMouseMove, false );
+      //scope.domElement.addEventListener( 'mouseup', onMouseUp, false );
+      $(document).on('mousemove', onMouseMove);
+      $(document).on('mouseup', onMouseUp);
     }
 
     function onMouseMove( event ) {
@@ -376,18 +376,21 @@ define(['three'], function (THREE) {
     }
 
     function onMouseUp( /* event */ ) {
-
       if ( scope.enabled === false ) return;
 
       // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-      scope.domElement.removeEventListener( 'mousemove', onMouseMove, false );
-      scope.domElement.removeEventListener( 'mouseup', onMouseUp, false );
+      //scope.domElement.removeEventListener( 'mousemove', onMouseMove, false );
+      //scope.domElement.removeEventListener( 'mouseup', onMouseUp, false );
+
+      $(document).on('mousemove', onMouseMove);
+      $(document).on('mouseup', onMouseUp);
 
       state = STATE.NONE;
 
     }
 
     function onMouseWheel( event ) {
+      event.wheelDelta = event.originalEvent.wheelDelta;
 
       if ( scope.enabled === false || scope.noZoom === true ) return;
 
@@ -569,6 +572,15 @@ define(['three'], function (THREE) {
       state = STATE.NONE;
     }
 
+    $(document).on('contextmenu', function (event) { event.preventDefault() });
+    $(document).on('mousedown', onMouseDown);
+    $(document).on('mousewheel', onMouseWheel);
+    $(document).on('DOMMouseScroll', onMouseWheel);
+    $(document).on('keydown', onKeyDown);
+    $(document).on('touchstart', touchstart);
+    $(document).on('touchend', touchend);
+    $(document).on('touchmove', touchmove);
+/*
     this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
     this.domElement.addEventListener( 'mousedown', onMouseDown, false );
     this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
@@ -579,7 +591,7 @@ define(['three'], function (THREE) {
     this.domElement.addEventListener( 'touchstart', touchstart, false );
     this.domElement.addEventListener( 'touchend', touchend, false );
     this.domElement.addEventListener( 'touchmove', touchmove, false );
-
+*/
   };
 
   THREE.OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
