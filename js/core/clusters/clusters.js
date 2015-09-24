@@ -18,14 +18,19 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
         $.ajax(cluster.api.url + cluster.api.path + '/authentication', { async: false })
           .success(function (response) {
             cluster.authentication = response;
+
+            if (options.$cluster) {
+              $('.cluster').parent('li').removeClass('active');
+              options.$cluster.parent('li').addClass('active');
+            }
+
+            config.cluster = cluster;
+            $(document).trigger('loadPage', { config: config });
           })
           .error(function (error) {
             console.log(error);
           });
       }
-
-      config.cluster = cluster;
-      $(document).trigger('loadPage', { config: config });
     });
 
     this.init = function () {
@@ -68,10 +73,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
             return false;
         }
 
-        $('.cluster').parent('li').removeClass('active');
-        $(this).parent('li').addClass('active');
-
-        $(document).trigger('selectCluster', { clusterId: $(this).data('id') });
+        $(document).trigger('selectCluster', { clusterId: $(this).data('id'), $cluster: $(this) });
       });
 
       $(document).ready(function() {
