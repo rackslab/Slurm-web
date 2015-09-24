@@ -84,7 +84,7 @@ define([
           $('#topology .wrapper').height($(window).height() - (
             $('#navbar').outerHeight()  + parseInt($('#main').css('padding-top').slice(0,2)) + $('#topology .page-header').outerHeight() + parseInt($('#topology .page-header').css('margin-bottom').slice(0,2)) + parseInt($('#main').css('padding-bottom').slice(0,2))
           ));
-          $('#topology .graph').height($('#topology .wrapper').height() - 5);
+          $('#topology .graph').height($('#topology .wrapper').height() - 25);
           $('#topology .wrapper').scrollLeft(($('#topology .graph').width() - $('#topology .wrapper').width()) / 2);
 
           // bind modal-node

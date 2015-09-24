@@ -6,7 +6,8 @@ define(['text!../config/topology.config.json'], function (config) {
     this.createSVGElement = function(data, options) {
       var g = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
           box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'),
-          text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+          text = document.createElementNS("http://www.w3.org/2000/svg", 'text'),
+          tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
 
 
       for (var attribute in options.g.attributes) {
@@ -25,7 +26,7 @@ define(['text!../config/topology.config.json'], function (config) {
       }
       text.setAttribute('x', data.x);
       text.setAttribute('y', data.y + options.box.attributes.height / 2);
-      text.innerHTML = data.name;
+      text.appendChild(document.createTextNode(data.name));
 
       g.appendChild(box);
       g.appendChild(text);
