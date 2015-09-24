@@ -47,7 +47,9 @@ require.config({
     '3d-view': '../../js/modules/3d-view/3d-view',
     'three-first-person-controls': '../../js/modules/3d-view/camera/first-person-controls',
     'three-orbit-controls': '../../js/modules/3d-view/camera/orbit-controls',
-    gantt: '../../js/modules/gantt/gantt'
+    gantt: '../../js/modules/gantt/gantt',
+    topology: '../../js/modules/topology/topology',
+    'topology-utils': '../../js/utils/topology'
   },
   shim: {
     jquery: {
@@ -111,8 +113,9 @@ require([
   'reservations',
   '3d-view',
   'gantt',
+  'topology',
   'ajax-utils'
-], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt) {
+], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt, Topology) {
 
   config = JSON.parse(config);
   var page = new Page();
@@ -170,6 +173,9 @@ require([
       break;
     case 'gantt':
       $.extend(page,  new Page('gantt'), new Gantt(config));
+      break;
+    case 'topology':
+      $.extend(page,  new Page('topology'), new Topology(config));
       break;
     }
 

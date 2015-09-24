@@ -221,6 +221,22 @@ def get_qos():
     return qos
 
 
+@app.route('/topology', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_topology():
+    if mocking:
+        return mock('topology.json')
+
+    try:
+        topology = pyslurm.topology().get()
+    except Exception as e:
+        topology = {'error': str(e)}
+    return topology
+
+
 # returns a dict composed with all jobs running on the given node
 # with their ID as key
 @app.route('/jobs-by-node/<node_id>', methods=['POST', 'OPTIONS'])

@@ -1,0 +1,48 @@
+{
+  "graph": {
+    "attributes": {
+      "class": "graph",
+      "preserveAspectRatio": "xMidYMid meet"
+    },
+    "paddingX": 5,
+    "paddingY": 5,
+    "rowSpacing": 400
+  },
+  "switches": {
+    "g": {
+      "attributes": {
+        "class": "switch"
+      }
+    },
+    "box": {
+      "attributes": {
+        "width": 80,
+        "height": 40
+      }
+    },
+    "text": {
+      "attributes": {
+        "dy": ".3em"
+      }
+    }
+  },
+  "nodes": {
+    "g": {
+      "attributes": {
+        "class": "node"
+      }
+    },
+    "box": {
+      "attributes": {
+        "width": 60,
+        "height": 40
+      },
+      "paddingX": 2
+    },
+    "text": {
+      "attributes": {
+        "dy": ".3em"
+      }
+    }
+  }
+}
