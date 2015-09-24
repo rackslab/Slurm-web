@@ -161,6 +161,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       $('#modal-node').remove();
       $('#jobsmap').remove();
       $(document).off('modal-core');
+      $(document).off('modal-node');
     };
 
     return this;
