@@ -62,6 +62,11 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
         .success(function (jobs) {
+          // expand the first job's informations
+          if (Object.keys(jobs).length) {
+            jobs[Object.keys(jobs)[0]].expanded = 'in';
+          }
+
           var context = {
             count: Object.keys(jobs).length,
             nodeId: nodeId,
