@@ -198,7 +198,8 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
           this.mouseX > -(this.domElement.width * 0.1) && 
           this.mouseY < (this.domElement.height * 0.1) &&
           this.mouseY > -(this.domElement.height * 0.1)) {
-        return;
+        this.mouseX = 0;
+        this.mouseY = 0;
       }
 
       if (this.heightSpeed) {

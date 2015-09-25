@@ -26,7 +26,7 @@ define(['text!../config/3d.config.json'], function (config) {
     for (rackIndex in racks) {
       if (racks.hasOwnProperty(rackIndex)) {
         for (nodeIndex in racks[rackIndex]) {
-          if (racks[rackIndex][nodeIndex]) {
+          if (racks[rackIndex].hasOwnProperty(nodeIndex) && racks[rackIndex][nodeIndex].hasOwnProperty('nodes')) {
             for (i = 0; i < racks[rackIndex][nodeIndex].nodes.length; i++) {
               rackAltitude = racks[rackIndex][nodeIndex].nodes[i].posy + racks[rackIndex][nodeIndex].nodes[i].height;
               if (rackAltitude > altitude) {
@@ -67,36 +67,58 @@ define(['text!../config/3d.config.json'], function (config) {
     return paths;
   }
 
-  function getMapRangeX(rack, max) {
+  function getMapRangeX(racks, max) {
+    var rangeMap = [];
     var range = [];
 
-    range.push(1);
+    rangeMap.push(1);
     var i;
     for (i = 0; i < config.PATHSIZE; i++) {
-      range.push(0);
+      rangeMap.push(0);
     }
 
     i = 0;
     var index;
-    for (index in rack) {
-      if (rack.hasOwnProperty(index)) {
-        range.push(rack[index].name)
+    var pos;
+    for (index in racks) {
+      if (racks.hasOwnProperty(index) && racks[index].hasOwnProperty('name')) {
+        pos = racks.length;
+        if (racks[index].hasOwnProperty('posy')) {
+          pos = racks[index].posy;
+        }
+
+        range.push({ name: racks[index].name, position: pos });
+        i++;
       }
-      i++;
+    }
+
+    range.sort(function (a, b) {
+      if (a.position < b.position) {
+        return -1;
+      }
+      if (a.position > b.position) {
+        return 1;
+      }
+      return 0;
+    });
+
+    var k;
+    for (var k = 0; k < range.length; k++) {
+      rangeMap.push(range[k].name);
     }
 
     if (i < max) {
       for (; i < max; i++) {
-        range.push(0);
+        rangeMap.push(0);
       }
     }
 
     for (i = 0; i < config.PATHSIZE; i++) {
-      range.push(0);
+      rangeMap.push(0);
     }
-    range.push(1);
+    rangeMap.push(1);
 
-    return range;
+    return rangeMap;
   }
 
   return {
@@ -117,12 +139,21 @@ define(['text!../config/3d.config.json'], function (config) {
       for (i = 0; i < config.PATHSIZE; i++) {
         map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
-
+      var hotRange = true;
       for (index in racks) {
-        map.data = map.data.concat(getMapRangeX(racks[index], rangeMaxRacksNumber))
-        for (i = 0; i < config.PATHSIZE; i++) {
-          map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
-        }
+        map.data = map.data.concat(getMapRangeX(racks[index], rangeMaxRacksNumber));
+        if (hotRange) {
+          for (i = 0; i < config.PATHSIZE; i++) {
+            map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
+          }
+          hotRange = false;
+        } else {
+          hotRange = true;
+        } 
+      }
+
+      for (i = 0; i < config.PATHSIZE; i++) {
+        map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
 
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));

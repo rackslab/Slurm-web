@@ -1,7 +1,7 @@
 {
   "UNITSIZE": 8.0,
   "WALLHEIGHT": 5.0,
-  "PATHSIZE": 2,
+  "PATHSIZE": 3,
   "MOVESPEED": 10.0,
   "LOOKSPEED": 0.2,
   "RACKWIDTH": 1,

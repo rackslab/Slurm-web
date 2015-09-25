@@ -218,8 +218,8 @@ define([
 
       self.scene.add(mesh);
 
-      //addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      //addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
     function addRack() {
@@ -281,9 +281,21 @@ define([
     }
 
     function addCamera() {
-      var x = -(((self.map.height - 1) * config.UNITSIZE) / 2 - (2 * config.UNITSIZE));
-      var y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+      var x = 0;
+      var y = 0;
       var z = 0;
+
+      if (self.interfaceOptions.cameraType === 'orbit') {
+        x = -(self.map.width * config.UNITSIZE);
+        y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+        z = 0;
+      }
+
+      if (self.interfaceOptions.cameraType === 'fps') {
+        x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
+        y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+        z = 0;
+      }
 
       self.camera = new THREE.PerspectiveCamera(45, self.canvas.width / self.canvas.height, 0.1, 10000);
       self.camera.position.set(x, y, z);
