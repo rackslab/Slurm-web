@@ -390,6 +390,8 @@ define(['jquery', 'three'], function ($, THREE) {
     }
 
     function onMouseWheel( event ) {
+      event.preventDefault();
+
       event.wheelDelta = event.originalEvent.wheelDelta;
 
       if ( scope.enabled === false || scope.noZoom === true ) return;
