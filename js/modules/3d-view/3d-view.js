@@ -56,6 +56,7 @@ define([
                   jobs = jobsUtils.buildAllocatedCPUs(jobs);
 
                   var map = racksUtils.racksToMap(racks);
+
                   var racksList = {};
 
                   var range;
