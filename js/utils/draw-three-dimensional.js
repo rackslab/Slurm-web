@@ -27,7 +27,8 @@ define([
 
       var canvasMouseX = event.clientX - self.canvasRectangle.left; 
       var canvasMouseY = event.clientY - self.canvasRectangle.top;
-      self.mouse.set((canvasMouseX / self.canvas.width()) * 2 - 1, -(canvasMouseY / self.canvas.height()) * 2 + 1, 0.5);
+
+      self.mouse.set((canvasMouseX / self.canvas.width) * 2 - 1, -(canvasMouseY / self.canvas.height) * 2 + 1, 0.5);
       self.mouse.unproject(self.camera);
 
       self.raycaster.set(self.camera.position, self.mouse.sub( self.camera.position ).normalize());
@@ -42,18 +43,18 @@ define([
       return self.map.data[y * self.map.width + x];
     }
 
-    function setControls(cameraType, canvas) {
+    function setControls(canvas) {
       addCamera(canvas);
 
       if (self.interfaceOptions.cameraType === 'orbit') {
-        self.controls = new THREE.OrbitControls(self.camera);
+        self.controls = new THREE.OrbitControls(self.camera, canvas);
       } else if (self.interfaceOptions.cameraType === 'fps') {
-        self.controls = new THREE.FirstPersonControls(self.camera);
+        self.controls = new THREE.FirstPersonControls(self.camera, canvas);
         self.controls.movementSpeed = config.MOVESPEED;
         self.controls.lookSpeed = config.LOOKSPEED;
         self.controls.lookVertical = true;
         self.controls.noFly = true;
-        self.canvas.on('mousedown', onMouseDown);
+        $(self.canvas).on('mousedown', onMouseDown);
       }
     }
 
@@ -217,8 +218,8 @@ define([
 
       self.scene.add(mesh);
 
-      addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      //addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      //addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
     function addRack() {
@@ -284,7 +285,7 @@ define([
       var y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
       var z = 0;
 
-      self.camera = new THREE.PerspectiveCamera(45, self.canvas.width() / self.canvas.height(), 0.1, 10000);
+      self.camera = new THREE.PerspectiveCamera(45, self.canvas.width / self.canvas.height, 0.1, 10000);
       self.camera.position.set(x, y, z);
       self.scene.add(self.camera);
     }
@@ -311,23 +312,23 @@ define([
       this.clock = new THREE.Clock();
       this.mouse = new THREE.Vector3();
       this.raycaster = new THREE.Raycaster();
-      this.renderer = new THREE.WebGLRenderer({ canvas: canvas[0], antialiasing: true });
+      this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialiasing: true });
       this.scene = new THREE.Scene();
 
       this.canvasRectangle = this.renderer.domElement.getBoundingClientRect();
 
-      setControls(canvas);
+      setControls(this.canvas);
 
       $(document).on('camera-change', function (e, options) {
         self.interfaceOptions.cameraType = options.cameraType;
 
-        setControls(canvas);
+        setControls(self.canvas);
       });
 
       $(document).on('screen-change', function (e, options) {
         self.interfaceOptions.screenType = options.screenType;
 
-        setControls(canvas);
+        setControls(self.canvas);
       });
 
       $(document).on('fullscreen-enter', function (e) {
@@ -338,10 +339,10 @@ define([
       });
 
       $(document).on('fullscreen-exit', function (e) {
-        self.camera.aspect = self.canvas.width() / self.canvas.height();
+        self.camera.aspect = self.canvas.width / self.canvas.height;
         self.camera.updateProjectionMatrix();
 
-        self.renderer.setSize(self.canvas.width(), self.canvas.height());
+        self.renderer.setSize(self.canvas.width, self.canvas.height);
       });
 
       $(document).one('three-destroy', function() {
@@ -363,7 +364,7 @@ define([
           $(document).off('keydown');
           $(document).off('keyup');
 
-          self.canvas.off('mousedown');
+          $(self.canvas).off('mousedown');
         }
       });
 

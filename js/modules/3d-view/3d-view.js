@@ -94,7 +94,7 @@ define([
                   });
 
                   var draw = new d3Draw(map, racksList, nodesInfos, jobs);
-                  draw.init($('canvas'));
+                  draw.init(canvas.element);
                 });
             })
         });

@@ -155,6 +155,14 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
         case 82: this.moveUp = true; break;
         case 70: this.moveDown = true; break;
 
+        case d3config.CONTROLS.FREEZE:
+          if (!this.enabled) {
+            this.enabled = true;
+            break;
+          }
+          
+          this.enabled = false;
+          break;
       }
 
     };
@@ -186,6 +194,13 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
 
       if (this.enabled === false) return;
 
+      if (this.mouseX < (this.domElement.width * 0.1) &&
+          this.mouseX > -(this.domElement.width * 0.1) && 
+          this.mouseY < (this.domElement.height * 0.1) &&
+          this.mouseY > -(this.domElement.height * 0.1)) {
+        return;
+      }
+
       if (this.heightSpeed) {
 
         var y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
@@ -194,9 +209,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
         this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
 
       } else {
-
         this.autoSpeedFactor = 0.0;
-
       }
 
       var actualMoveSpeed = delta * this.movementSpeed;
@@ -213,9 +226,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
       var actualLookSpeed = delta * this.lookSpeed;
 
       if (!this.activeLook) {
-
         actualLookSpeed = 0;
-
       }
 
       var verticalLookRatio = 1;
@@ -227,6 +238,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
       }
 
       this.lon += this.mouseX * actualLookSpeed;
+
       if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
 
       this.lat = Math.max(-85, Math.min(85, this.lat));
@@ -235,9 +247,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
       this.theta = THREE.Math.degToRad(this.lon);
 
       if (this.constrainVertical) {
-
         this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
-
       }
 
       var targetPosition = this.target,
