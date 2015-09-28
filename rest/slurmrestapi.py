@@ -267,6 +267,42 @@ def get_jobs_by_node_id(node_id):
     return returned_jobs
 
 
+# returns a dict composed with all jobs running on the given nodes
+# with their ID as key
+@app.route('/jobs-by-node-ids', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_jobs_by_node_ids():
+    if mocking:
+        jobs = mock('jobs.json')
+    else:
+        jobs = pyslurm.job().get()
+
+    print "Post datas : %s" % request.data
+    nodes = json.loads(request.data).get('nodes', [])
+    print "Nodelist : %s" % nodes
+
+    returned_jobs = {}
+
+    # filter jobs by node
+    for jobid, job in jobs.iteritems():
+        nodes_list = job['cpus_allocated'].keys()
+        print "Nodelist for %s : %s" % (jobid, nodes_list)
+
+        for node_id in nodes:
+            if node_id in nodes_list:
+                returned_jobs[jobid] = job
+                print "Node %s added to jobs : %s" % (node_id, returned_jobs)
+
+    if not mocking:
+        for jobid, job in returned_jobs.iteritems():
+            fill_job_user(job)
+
+    return returned_jobs
+
+
 # returns a dict composed with all nodes ID as key associated to a dict
 # composed by all jobs running on the concerned node
 @app.route('/jobs-by-nodes', methods=['POST', 'OPTIONS'])

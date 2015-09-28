@@ -5,13 +5,13 @@ define([
   'topology-utils',
   'text!../../js/modules/jobs-map/modal-node.hbs',
   'token-utils'
-], function ($, Handlebars, template, Topology, modalNodeTemplate, token) {
+], function ($, Handlebars, template, Topology, modalTemplate, token) {
   template = Handlebars.compile(template);
-  modalNodeTemplate = Handlebars.compile(modalNodeTemplate);
+  modalTemplate = Handlebars.compile(modalTemplate);
 
   return function(config) {
 
-    function closeModalNode(e) {
+    function closeModal(e) {
       e.stopPropagation();
 
       $('#modal-node').remove();
@@ -32,14 +32,19 @@ define([
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
         .success(function (jobs) {
+          // expand the first job's informations
+          if (Object.keys(jobs).length) {
+            jobs[Object.keys(jobs)[0]].expanded = 'in';
+          }
+
           var context = {
             count: Object.keys(jobs).length,
             nodeId: nodeId,
             jobs: jobs
           };
 
-          $('body').append(modalNodeTemplate(context));
-          $('#modal-node').on('hidden.bs.modal', closeModalNode);
+          $('body').append(modalTemplate(context));
+          $('#modal-node').on('hidden.bs.modal', closeModal);
           $('#modal-node').modal('show');
         });
     }
@@ -48,6 +53,45 @@ define([
       e.stopPropagation();
 
       toggleModalNode(options.nodeId);
+    });
+
+    function toggleModalSwitch(switchId, nodeIds) {
+      var options = {
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+          token: token.getToken(config.cluster),
+          nodes: nodeIds
+        })
+      };
+
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node-ids', options)
+        .success(function (jobs) {
+          // expand the first job's informations
+          if (Object.keys(jobs).length) {
+            jobs[Object.keys(jobs)[0]].expanded = 'in';
+          }
+
+          var context = {
+            count: Object.keys(jobs).length,
+            switchId: switchId,
+            jobs: jobs
+          };
+
+          $('body').append(modalTemplate(context));
+          $('#modal-node').on('hidden.bs.modal', closeModal);
+          $('#modal-node').modal('show');
+        });
+    }
+
+    $(document).on('modal-switch', function (e, options) {
+      e.stopPropagation();
+
+      toggleModalSwitch(options.switchId, options.nodeIds);
     });
 
 
@@ -79,6 +123,7 @@ define([
           }
 
           var topology = new Topology(topologyDatas);
+
           $('#main .wrapper').append(topology.graph.html);
 
           $('#topology .wrapper').height($(window).height() - (
@@ -91,6 +136,16 @@ define([
           $('.node').on('click', function(e) {
             e.stopPropagation();
             $(document).trigger('modal-node', { nodeId: $(this).data('id') });
+          });
+
+          // bind modal-switch
+          $('.switch').on('click', 'rect, text', function(e) {
+            var id = $(this).parent('.switch').data('id');
+            e.stopPropagation();
+            $(document).trigger('modal-switch', {
+              switchId: id,
+              nodeIds: Object.keys(topology.rawDatas[id].nodes)
+            });
           });
         });
     }
