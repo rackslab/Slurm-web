@@ -28,6 +28,7 @@ define([
     this.interval = null;
     this.tablesorterOptions = {};
     this.tagsinputOptions = [];
+    this.onModal = null;
 
     function filterTableJobs(jobs) {
       var context = {
@@ -54,13 +55,16 @@ define([
       });
     }
 
-    function closeModal(e) {
-      e.stopPropagation();
-
+    function closeModal() {
       $('#modal-job').remove();
+      $('.modal-backdrop').remove();
+      self.onModal = null;
     }
 
     function toggleModal(jobId) {
+      closeModal();
+      self.onModal = jobId;
+
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -86,12 +90,6 @@ define([
         });
     }
 
-    $(document).on('modal-job', function (e, options) {
-      e.stopPropagation();
-
-      toggleModal(options.jobId);
-    });
-
     this.init = function () {
       var options = {
         type: 'POST',
@@ -104,6 +102,12 @@ define([
           token: tokenUtils.getToken(config.cluster)
         })
       };
+
+      $(document).on('modal-job', function (e, options) {
+        e.stopPropagation();
+
+        toggleModal(options.jobId);
+      });
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
         .success(function (jobs) {
@@ -120,6 +124,10 @@ define([
           };
 
           $('#main').append(template(context));
+
+          if (self.onModal) {
+            $(document).trigger('modal-job', { jobId: self.onModal });
+          }
 
           var labels = [];
           var labelsPartitions = [];
@@ -267,13 +275,13 @@ define([
         clearInterval(this.interval);
       }
 
+      $('#modal-job').remove();
+      $('.modal-backdrop').remove();
+      $(document).off('modal-job');
       $("tr[id^='tr-job-']").off('click');
       $("td[data-partition^='partition-'], td[data-qos^='qos-']").off('click');
       $('#apply-tags').off('click');
-      $('#modal-job').off('hidden.bs.modal');
       $('#jobs').remove();
-      $('#modal-job').remove();
-      $(document).off('modal-job');
     };
 
     return this;
