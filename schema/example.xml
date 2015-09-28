@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rackmap SYSTEM "/usr/share/slurm-web/restapi/schema/dtd/racks.dtd">
+<rackmap>
+
+  <nodetypes>
+    <nodetype id="m32x4321" model="Vendor A 32 x4321" height="1" width="0.5" />
+    <nodetype id="b43" model="Vendor B 43" height="2" width="1" />
+  </nodetypes>
+
+  <racks>
+    <racksrow>
+      <rack id="rack1-1" posx="0" posy="0">
+        <nodes>
+          <node id="cn001" type="m32x4321" posx="0" posy="3" />
+          <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
+          <node id="cn003" type="m32x4321" posx="0" posy="4" />
+
+          <nodeset id="cn[004-072]" type="m32x4321" />
+        </nodes>
+      </rack>
+
+      <rack id="rack1-2" posx="1">
+        <nodes>
+          <node id="cn101" type="m32x4321" posx="0" posy="3" />
+          <nodeset id="cn[102-121]" type="m32x4321" posy="5" />
+        </nodes>
+      </rack>
+    </racksrow>
+
+    <racksrow>
+      <rack id="rack2-1" posx="0" posy="0">
+        <nodes>
+          <node id="cn201" type="m32x4321" posx="0" posy="3" />
+          <node id="cn202" type="m32x4321" posx="0.5" posy="3" />
+          <node id="cn203" type="m32x4321" posx="0" posy="4" />
+
+          <nodeset id="cn[204-272]" type="m32x4321" />
+        </nodes>
+      </rack>
+
+      <rack id="rack2-2" posx="1">
+        <nodes>
+          <node id="cn301" type="m32x4321" posx="0" posy="3" />
+          <nodeset id="cn[302-321]" type="m32x4321" posy="5" />
+        </nodes>
+      </rack>
+    </racksrow>
+  </racks>
+</rackmap>

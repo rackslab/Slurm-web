@@ -29,62 +29,63 @@
               />
   </nodetypes>
 
+
   <racks>
+    <racksrow posx="0">
+      <!-- Rack A1 -->
+      <rack id="A1" posy="0">
+        <nodes>
+          <nodeset id="cn[001-036]"
+                   type="m32x4321"
+                   posx="0"
+                   posy="3" />
 
-    <!-- Rack A1 -->
-    <rack id="A1">
-      <nodes>
-        <nodeset id="cn[001-036]"
-                 type="m32x4321"
-                 posx="0"
-                 posy="3" />
+          <nodeset id="cn[037-072]"
+                   type="m32x4321"
+                   posx="0"
+                   posy="23" />
+        </nodes>
+      </rack>
 
-        <nodeset id="cn[037-072]"
-                 type="m32x4321"
-                 posx="0"
-                 posy="23" />
-      </nodes>
-    </rack>
+      <!-- Rack A2 -->
+      <rack id="A2" posy="1">
+        <nodes>
+          <nodeset id="cn[500-506],cn900"
+                   type="m32x4321"
+                   posx="0"
+                   posy="42"
+                   draw="down" />
+          <node id="cn800"
+                type="m32x4321"
+                posx="0"
+                posy="1" />
+          <node id="cn801"
+                type="b43"
+                posx="0"
+                posy="3" />
+        </nodes>
+      </rack>
 
-    <!-- Rack A2 -->
-    <rack id="A2">
-      <nodes>
-        <nodeset id="cn[500-506],cn900"
-                 type="m32x4321"
-                 posx="0"
-                 posy="42"
-                 draw="down" />
-        <node id="cn800"
-              type="m32x4321"
-              posx="0"
-              posy="1" />
-        <node id="cn801"
-              type="b43"
-              posx="0"
-              posy="3" />
-      </nodes>
-    </rack>
+      <!-- Rack A3 -->
+      <rack id="A3" posy="2">
+        <nodes>
+          <nodeset id="cn[505-518]"
+                   type="m32x4321"
+                   posx="0"
+                   posy="2" />
 
-    <!-- Rack A3 -->
-    <rack id="A3" posx="1" posy="0">
-      <nodes>
-        <nodeset id="cn[505-518]"
-                 type="m32x4321"
-                 posx="0"
-                 posy="2" />
+          <nodeset id="cn[519-536]"
+                   type="m32x4321"
+                   posx="0"
+                   posy="10" />
 
-        <nodeset id="cn[519-536]"
-                 type="m32x4321"
-                 posx="0"
-                 posy="10" />
-
-        <nodeset id="cn[537-572]"
-                 type="m32x4321"
-                 posx="0"
-                 posy="23" />
-      </nodes>
-    </rack>
-
+          <nodeset id="cn[537-572]"
+                   type="m32x4321"
+                   posx="0"
+                   posy="23" />
+        </nodes>
+      </rack>
+    </racksrow>
   </racks>
 
 </rackmap>
