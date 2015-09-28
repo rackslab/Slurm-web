@@ -487,6 +487,10 @@ border: none;
   fill: khaki;
 }
 
+#topology svg.graph .switch rect, #topology svg.graph .switch text {
+  cursor: pointer;
+}
+
 #topology svg.graph .switch line {
   stroke: grey;
   stroke-width: 1;
