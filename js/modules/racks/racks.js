@@ -1,6 +1,14 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils'], function ($, Handlebars, template, token, Draw, drawLegend, nodes) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/racks/racks.hbs',
+  'token-utils',
+  'draw-utils',
+  'draw-legend-utils',
+  'nodes-utils'
+], function ($, Handlebars, template, tokenUtils, DrawUtils, drawLegendUtils, nodesUtils) {
   template = Handlebars.compile(template);
-  draw = new Draw();
+  draw = new DrawUtils();
 
   return function(config) {
     this.slurmNodes = null;
@@ -17,11 +25,11 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          token: token.getToken(config.cluster)
+          token: tokenUtils.getToken(config.cluster)
         })
       };
 
-      this.slurmNodes = nodes.getNodes(config);
+      this.slurmNodes = nodesUtils.getNodes(config);
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
@@ -50,7 +58,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/racks/racks.hbs', 'token-
             });
           });
 
-          drawLegend.drawLegend('racks');
+          drawLegendUtils.drawLegend('racks');
         });
     };
 
