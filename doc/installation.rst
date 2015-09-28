@@ -115,8 +115,8 @@ format. Here is an example of file:
       </nodetypes>
 
       <racks>
-        <racksrow>
-          <rack id="rack1-1" posx="0" posy="0">
+        <racksrow posx="0">
+          <rack id="rack1-1" posy="0">
             <nodes>
               <node id="cn001" type="m32x4321" posx="0" posy="3" />
               <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
@@ -126,7 +126,7 @@ format. Here is an example of file:
             </nodes>
           </rack>
 
-          <rack id="rack1-2" posx="1">
+          <rack id="rack1-2" posy="1">
             <nodes>
               <node id="cn101" type="m32x4321" posx="0" posy="3" />
               <nodeset id="cn[102-121]" type="m32x4321" posy="5" />
@@ -134,8 +134,8 @@ format. Here is an example of file:
           </rack>
         </racksrow>
 
-        <racksrow>
-          <rack id="rack2-1" posx="0" posy="0">
+        <racksrow posx="1">
+          <rack id="rack2-1" posy="0">
             <nodes>
               <node id="cn201" type="m32x4321" posx="0" posy="3" />
               <node id="cn202" type="m32x4321" posx="0.5" posy="3" />
@@ -145,7 +145,7 @@ format. Here is an example of file:
             </nodes>
           </rack>
 
-          <rack id="rack2-2" posx="1">
+          <rack id="rack2-2" posy="1">
             <nodes>
               <node id="cn301" type="m32x4321" posx="0" posy="3" />
               <nodeset id="cn[302-321]" type="m32x4321" posy="5" />
@@ -171,11 +171,12 @@ The organization of the different racks is designed by rows of racks, in order
 to generate a 3D view of the room containing the racks composing the supercomputer.
 
 The ``<racks>`` element contains the list of the rows of racks, corresponding to
-the ``<racksrow>`` elements. Each ``<racksrow>`` element contains a list of
-racks, each one being described in a distinct ``<rack>`` element. Each
-rack element must have a unique ID which will be then used as rack name. A rack
-must have a position, within ``posx`` and ``posy`` elements. These elements
-must be integer, they represent the rack position within a grid with all racks.
+the ``<racksrow>`` elements. Each ``<racksrow>`` element has a ``posx`` attribute
+to define its position, and contains a list of racks, each one being described in
+a distinct ``<rack>`` element. Each rack element must have a unique ID which will
+be then used as rack name. A rack must have a position in its ``<racksrow>``,
+within ``posy`` attribute. These attributes about position must be integer, they
+represent the rack position within a grid with all racks.
 If ``posx`` and ``posy`` attributes are skipped, then we assume they are equal
 to ``0``. Two racks should not have the same positions.
 

@@ -14,7 +14,8 @@ class NodeType(object):
 
 class Racksrow(object):
 
-    def __init__(self, racks={}):
+    def __init__(self, posx, racks={}):
+        self.posx = posx
         self.racks = racks
 
     @staticmethod
@@ -118,22 +119,26 @@ def parse_racks():
     # parse racks with nodes
     racksrows_e = root.find('racks').findall('racksrow')
     for racksrow_e in racksrows_e:
+        racks_posx = int(racksrow_e.get('posx')) \
+            if racksrow_e.get('posx') else 0
         racksrow = {}
         racks_e = racksrow_e.findall('rack')
 
         for rack_e in racks_e:
-            posx = int(rack_e.get('posx')) if rack_e.get('posx') else 0
-            posy = int(rack_e.get('posy')) if rack_e.get('posy') else 0
-            rack = Rack(rack_e.get('id'), posx, posy)
+            rack_posy = int(rack_e.get('posy')) if rack_e.get('posy') else 0
+            rack = Rack(rack_e.get('id'), racks_posx, rack_posy)
             racksrow[rack.name] = rack
 
             # parse nodes
             nodes_e = rack_e.find('nodes').findall('node')
             for node_e in nodes_e:
                 nodetype = nodetypes[node_e.get('type')]
-                posx = float(node_e.get('posx')) if node_e.get('posx') else 0
-                posy = float(node_e.get('posy')) if node_e.get('posy') else 0
-                node = Node(node_e.get('id'), rack, nodetype, posx, posy)
+                node_posx = float(node_e.get('posx')) \
+                    if node_e.get('posx') else 0
+                node_posy = float(node_e.get('posy')) \
+                    if node_e.get('posy') else 0
+                node = Node(node_e.get('id'), rack, nodetype, node_posx,
+                            node_posy)
                 # add node to rack
                 rack.nodes.append(node)
 
@@ -144,12 +149,10 @@ def parse_racks():
                 draw_dir = 1 if (not nodeset_e.get('draw') or
                                  nodeset_e.get('draw') == "up") else -1
                 nodetype = nodetypes[nodeset_e.get('type')]
-                cur_x = float(
-                    nodeset_e.get('posx')
-                    ) if nodeset_e.get('posx') else 0
-                cur_y = float(
-                    nodeset_e.get('posy')
-                    ) if nodeset_e.get('posy') else 0
+                cur_x = float(nodeset_e.get('posx')) \
+                    if nodeset_e.get('posx') else 0
+                cur_y = float(nodeset_e.get('posy')) \
+                    if nodeset_e.get('posy') else 0
                 for xnode in nodeset:
                     node = Node(xnode, rack, nodetype, cur_x, cur_y)
                     rack.nodes.append(node)
@@ -158,6 +161,6 @@ def parse_racks():
                         cur_x = float(0)
                         cur_y += nodetype.height * draw_dir
 
-        racks.append(Racksrow(racksrow))
+        racks.append(Racksrow(racks_posx, racksrow))
 
     return Racksrow.racksrow_array2dict_array(racks)

@@ -172,10 +172,10 @@ def get_cluster():
 @authentication_verify()
 @cache()
 def get_racks():
-    if mocking:
-        return mock('racks.json')
-
-    racks = parse_racks()
+    try:
+        racks = parse_racks()
+    except Exception as e:
+        racks = {'error': str(e)}
     return racks
 
 
