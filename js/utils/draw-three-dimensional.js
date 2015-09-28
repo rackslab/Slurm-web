@@ -208,7 +208,7 @@ define([
       var material = new THREE.MeshBasicMaterial({ color: colors.NODE });
       var mesh = new THREE.Mesh(geometry, material);
 
-      var positionX = x - (config.RACKWIDTH * config.UNITSIZE / 2) + nodeX + (nodeWidth / 2);
+      var positionX = x - -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2);
       var positionY = y + (config.RACKHEIGHT * config.UNITSIZE / 2) + nodeY + (nodeHeight / 2);
       var positionZ = z;
 
