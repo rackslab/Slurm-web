@@ -162,6 +162,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
 
     function writeNodeName(ctx, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth) {
       ctx.fillStyle = 'black';
+
       if (rackABSX == 0) {
         ctx.fillText(nodeName, nodeABSX - 55, nodeABSY + nodeHeight - 3);
       } else {
@@ -239,7 +240,7 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
         drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);
       }
 
-      writeNodeName(ctx, rackNode.name, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
+      writeNodeName(ctx, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
     }
 
     this.drawNodeCores = function (rack, rackNode, slurmNode, allocatedCPUs) {
@@ -291,6 +292,13 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
       var coreCoords = null;
       var coreColor = null;
 
+      for (coreId = 0; coreId < coresNumber; coreId++) {
+        coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
+        coreABX = coreCoords.x;
+        coreABSY = coreCoords.y;
+        drawRectangleBorder(ctx, coreABX, coreABSY, coreSize, coreSize, 1, colors.colorIdle, colors.colorCoreBorder);
+      }
+
       for (var job in allocatedCPUs) {
         if (allocatedCPUs.hasOwnProperty(job)) {
           coresJobNumber = allocatedCPUs[job];
@@ -307,20 +315,13 @@ define(['jquery', 'text!config.json', 'text!colors.config.json', 'draw-intersect
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.colorCoreBorder);
           }
 
-          return;
-
           coresDrawn += coresJobNumber;
         }
       }
 
-      for (coreId= 0; coreId < coresNumber; coreId++) {
-        coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
-        coreABX = coreCoords.x;
-        coreABSY = coreCoords.y;
-        drawRectangleBorder(ctx, coreABX, coreABSY, coreSize, coreSize, 1, colors.colorIdle, colors.colorCoreBorder);
-      }
-      
-      writeNodeName(ctx, rackNode.name, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
+      writeNodeName(ctx, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
     }
+
+
   };
 });
