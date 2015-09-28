@@ -35,47 +35,7 @@
     </div>
   </div>
   <div class="row filter">
-    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-      <input id="filter" type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" value="{{tagsinputOptions}}">
-    </div>
-    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-      <button id="apply-tags" class="btn btn-default" type="submit">Go</button>
-    </div>
+    <input id="filter" type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" value="{{tagsinputOptions}}">
   </div>
-  <div class="row">
-    <div class='table-responsive'>
-      {{#if count}}
-        <table class='table table-striped tablesorter'>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>User</th>
-              <th>Nodes</th>
-              <th>State</th>
-              <th>Reason</th>
-              <th>Start</th>
-              <th>QOS</th>
-              <th>Partition</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each jobs}}
-              <tr class="job-row" id="tr-job-{{@key}}">
-                <td>{{@key}}</td>
-                <td>{{login}} ({{username}})</td>
-                <td>{{printNodes nodes}}</td>
-                <td>{{job_state}}</td>
-                <td>{{printReason job_state state_reason}}</td>
-                <td>{{printStartTime start_time eligible_time job_state}}</td>
-                <td>{{qos}}</td>
-                <td>{{partition}}</td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-        {{else}}
-          <p>There is no data to display.</p>
-      {{/if}}
-    </div>
-  </div>
+  <div id="table-jobs" class="row"></div>
 </div>
