@@ -143,7 +143,7 @@ require([
   $(document).on('show', function (e, options) {
     e.stopPropagation();
 
-    page.destroy();
+    page.destroy(true);
     $('#flash').hide();
 
     switch (options.page) {

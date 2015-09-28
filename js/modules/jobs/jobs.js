@@ -3,6 +3,7 @@ define([
   'handlebars',
   'text!../../js/modules/jobs/jobs.hbs',
   'text!../../js/modules/jobs/modal-job.hbs',
+  'text!../../js/modules/jobs/table-jobs.hbs',
   'token-utils',
   'tablesorter-utils',
   'flot-utils',
@@ -17,15 +18,41 @@ define([
   'helpers-utils',
   'bootstrap',
   'bootstrap-tagsinput'
-], function ($, Handlebars, template, modalTemplate, tokenUtils, tablesorterUtils, flotUtils, clusterUtils, tagsinputUtils) {
+], function ($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, clusterUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
+  tableJobsTemplate = Handlebars.compile(tableJobsTemplate);
 
   return function (config) {
+    var self = this;
     this.interval = null;
     this.tablesorterOptions = {};
     this.tagsinputOptions = [];
-    this.tagsinputOtionsApplyed = [];
+
+    function filterTableJobs(jobs) {
+      var context = {
+        count: Object.keys(jobs).length,
+        jobs: jobs
+      };
+
+      context.jobs = tagsinputUtils.filterJobs(jobs, self.tagsinputOptions);
+      $('#table-jobs').html(tableJobsTemplate(context));
+      $('.tt-input').css('width', '100%');
+
+      $("tr[id^='tr-job-']").on('click', function (e) {
+        e.preventDefault();
+
+        var jobId = $(e.target).parent('tr').attr('id').split('-')[2];
+        $(document).trigger('modal-job', { jobId: jobId });
+      });
+
+      $("td[data-partition^='partition-'], td[data-qos^='qos-']").on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $('input.typeahead').tagsinput('add', $(e.target).attr('data-qos') || $(e.target).attr('data-partition'));
+      });
+    }
 
     function closeModal(e) {
       e.stopPropagation();
@@ -65,7 +92,6 @@ define([
     });
 
     this.init = function () {
-      var self = this;
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -81,10 +107,9 @@ define([
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
         .success(function (jobs) {
           var context = {
-            count: Object.keys(jobs).length,
-            jobs: jobs,
             tagsinputOptions: self.tagsinputOptions.toString()
           };
+
           var plotParams = {
             series: {
               pie: {
@@ -93,29 +118,7 @@ define([
             }
           };
 
-          context.jobs = tagsinputUtils.filterJobs(jobs, self.tagsinputOtionsApplyed);
-
           $('#main').append(template(context));
-
-          $('#apply-tags').on('click', function (e) {
-            e.preventDefault();
-
-            self.tagsinputOtionsApplyed = tagsinputUtils.getTagsinputOptions('.typeahead');
-            self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
-            self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
-            $('#jobs').parent('.container-fluid').remove();
-            self.init();
-          });
-
-          $("tr[id^='tr-job-']").on('click', function (e) {
-            e.preventDefault();
-
-            var jobId = $(e.target).parent('tr').attr('id').split('-')[2];
-            $(document).trigger('modal-job', { jobId: jobId });
-          });
-
-          tablesorterUtils.eraseEmptyColumn('.tablesorter');
-          $('.tablesorter').tablesorter(self.tablesorterOptions);
 
           var labels = [];
           var labelsPartitions = [];
@@ -157,10 +160,15 @@ define([
             }
           });
 
-          $('.tt-input').css('width', '100%');
-          $('input.typeahead').on('itemAdded', function(event) {
-            $('.tt-input').css('width', '100%');
+          $('input.typeahead').on('itemAdded itemRemoved', function(event) {
+            self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
+            filterTableJobs(jobs);
           });
+
+          filterTableJobs(jobs);
+
+          tablesorterUtils.eraseEmptyColumn('.tablesorter');
+          $('.tablesorter').tablesorter(self.tablesorterOptions);
 
           var dataAllocatedCores = [
             {
@@ -248,17 +256,18 @@ define([
       this.interval = setInterval(function () {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
-        $('#jobs').remove();
+        self.destroy(false);
         self.init();
       }, config.apiRefresh);
     };
 
-    this.destroy = function () {
-      if (this.interval) {
+    this.destroy = function (destroyInterval) {
+      if (this.interval && destroyInterval) {
         clearInterval(this.interval);
       }
 
       $("tr[id^='tr-job-']").off('click');
+      $("td[data-partition^='partition-'], td[data-qos^='qos-']").off('click');
       $('#apply-tags').off('click');
       $('#modal-job').off('hidden.bs.modal');
       $('#jobs').remove();

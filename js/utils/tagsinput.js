@@ -26,9 +26,7 @@ define([
       var index;
       for (index in jobs) {
         if (jobs.hasOwnProperty(index)) {
-          if (partitions.indexOf(jobs[index].partition) !== -1) {
-            jobsFiltered[index] = jobs[index];
-          } else if (qos.indexOf(jobs[index].qos) !== -1) {
+          if (partitions.indexOf(jobs[index].partition) === -1 && qos.indexOf(jobs[index].qos) === -1) {
             jobsFiltered[index] = jobs[index];
           }
         }
