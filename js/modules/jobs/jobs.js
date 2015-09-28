@@ -75,6 +75,7 @@ define([
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
         .success(function (job) {
+          job.id = jobId;
           var context = {
             job: job
           };

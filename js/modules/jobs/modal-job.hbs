@@ -1,9 +1,9 @@
 <div class="modal fade" id="modal-job" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color: {{pickJobColor job.id}};">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modal-job-title">Job {{job_id}}</h4>
+        <h4 class="modal-title" id="modal-job-title">Job {{job.id}}</h4>
       </div>
       <div class="modal-body" id="modal-job-body">
         <ul>
