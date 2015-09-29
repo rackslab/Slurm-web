@@ -169,7 +169,9 @@ define([
         material = new THREE.MeshBasicMaterial({ color: color });
         mesh = new THREE.Mesh(geometry, material);
 
-        positionX = x - (factorWidth / 2) + ledDimensions * -1 * temperatureCoefficient + (Math.floor(cpu % column) * cpuDimensions) + (cpuDimensions / 2);
+        //positionX = x - (factorWidth / 2) + ledDimensions * -1 * temperatureCoefficient + (Math.floor(cpu % column) * cpuDimensions) + (cpuDimensions / 2);
+        positionX = x - -temperatureCoefficient * (factorWidth / 2) + ledDimensions * -temperatureCoefficient + -temperatureCoefficient * (cpuDimensions / 2) + -temperatureCoefficient * (Math.floor(cpu % column) * cpuDimensions);
+
         positionY = y + (factorHeight / 2) - (Math.floor(cpu / column) * cpuDimensions) - (cpuDimensions / 2);
         positionZ = z - (rackDepth / 2) * temperatureCoefficient;
 
