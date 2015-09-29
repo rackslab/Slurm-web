@@ -582,18 +582,7 @@ define(['jquery', 'three'], function ($, THREE) {
     $(document).on('touchstart', touchstart);
     $(document).on('touchend', touchend);
     $(document).on('touchmove', touchmove);
-/*
-    this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
-    this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-    this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-    this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
 
-    this.domElement.addEventListener( 'keydown', onKeyDown, false );
-
-    this.domElement.addEventListener( 'touchstart', touchstart, false );
-    this.domElement.addEventListener( 'touchend', touchend, false );
-    this.domElement.addEventListener( 'touchmove', touchmove, false );
-*/
   };
 
   THREE.OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );

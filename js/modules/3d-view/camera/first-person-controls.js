@@ -16,8 +16,8 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
 
     this.enabled = true;
 
-    this.movementSpeed = 1.0;
-    this.lookSpeed = 0.005;
+    this.movementSpeed = 10.0;
+    this.lookSpeed = 0.1;
 
     this.lookVertical = true;
     this.autoForward = false;
