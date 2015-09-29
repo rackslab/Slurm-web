@@ -1,6 +1,49 @@
 define(['text!../config/3d.config.json'], function (config) {
   config = JSON.parse(config);
 
+  function findRangeNumber(racks) {
+    var number = 0;
+
+    var indexRange;
+    var indexRack;
+    for (indexRange in racks) {
+      if (racks.hasOwnProperty(indexRange)) {
+        for (indexRack in racks[indexRange]) {
+          if (racks[indexRange].hasOwnProperty(indexRack)) {
+            if (racks[indexRange][indexRack].hasOwnProperty('posx') && number < racks[indexRange][indexRack].posx) {
+              number = racks[indexRange][indexRack].posx;
+            }
+          }
+        }
+      }
+    }
+
+    if (number < racks.length) {
+      number = racks.length;
+    }
+
+    if (number % 2) {
+      number++;
+    }
+
+    return number;
+  }
+
+  function printMap(map) {
+    var tab = [];
+    var i;
+    for (i = 0; i < map.data.length; i++) {
+      if (i % map.width === 0) {
+        console.log(tab.toString());
+        console.log('\n');
+        tab = [];
+      }
+      tab.push(map.data[i]);
+    }
+
+    console.log(tab.toString());
+  }
+
   function findRangeMaxRacksNumber(racks) {
     var number = 0;
 
@@ -67,7 +110,26 @@ define(['text!../config/3d.config.json'], function (config) {
     return paths;
   }
 
-  function getMapRangeX(racks, max) {
+  function getRacksFromPosX(posx, racks) {
+    var indexRange;
+    var indexRack;
+    for (indexRange in racks) {
+      if (racks.hasOwnProperty(indexRange)) {
+        for (indexRack in racks[indexRange]) {
+          if (racks[indexRange].hasOwnProperty(indexRack)) {
+            if (racks[indexRange][indexRack].hasOwnProperty('posx') && racks[indexRange][indexRack].posx === posx) {
+              return racks[indexRange];
+            }
+          }
+        }
+      }
+    }
+
+    return {};
+  }
+
+  function getMapRangeX(posx, max, env) {
+    var racks = getRacksFromPosX(posx, env);
     var rangeMap = [];
     var range = [];
 
@@ -130,18 +192,18 @@ define(['text!../config/3d.config.json'], function (config) {
         altitude: 0
       };
 
-      var rangeNumber = racks.length;
+      var rangeNumber = findRangeNumber(racks);
       var rangeMaxRacksNumber = findRangeMaxRacksNumber(racks);
 
-      var index;
       var i;
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));
       for (i = 0; i < config.PATHSIZE; i++) {
         map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
       var hotRange = true;
-      for (index in racks) {
-        map.data = map.data.concat(getMapRangeX(racks[index], rangeMaxRacksNumber));
+      var k;
+      for (k = 0; k < rangeNumber; k++) {
+        map.data = map.data.concat(getMapRangeX(k, rangeMaxRacksNumber, racks));
         if (hotRange) {
           for (i = 0; i < config.PATHSIZE; i++) {
             map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
@@ -161,6 +223,8 @@ define(['text!../config/3d.config.json'], function (config) {
       map.width = rangeMaxRacksNumber + 2 + (config.PATHSIZE * 2);
       map.height = map.data.length / map.width;
       map.altitude = findMapAltitude(racks);
+
+      printMap(map);
 
       return map;
     }
