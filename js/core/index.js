@@ -47,6 +47,7 @@ require.config({
     '3d-view': '../../js/modules/3d-view/3d-view',
     'three-first-person-controls': '../../js/modules/3d-view/camera/first-person-controls',
     'three-orbit-controls': '../../js/modules/3d-view/camera/orbit-controls',
+    'three-pacman-auto': '../../js/modules/3d-view/camera/pacman-auto',
     gantt: '../../js/modules/gantt/gantt',
     topology: '../../js/modules/topology/topology',
     'topology-utils': '../../js/utils/topology'

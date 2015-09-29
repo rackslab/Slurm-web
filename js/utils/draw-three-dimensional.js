@@ -6,7 +6,8 @@ define([
   'factor-utils',
   'draw-colors-utils',
   'three-orbit-controls',
-  'three-first-person-controls'
+  'three-first-person-controls',
+  'three-pacman-auto'
 ], function ($, config, colors, THREE, factor, drawColors) {
   config = JSON.parse(config);
   colors = JSON.parse(colors);
@@ -46,16 +47,22 @@ define([
     function setControls(canvas) {
       addCamera(canvas);
 
-      if (self.interfaceOptions.cameraType === 'orbit') {
-        self.controls = new THREE.OrbitControls(self.camera, canvas);
-      } else if (self.interfaceOptions.cameraType === 'fps') {
-        self.controls = new THREE.FirstPersonControls(self.camera, canvas);
-        self.controls.movementSpeed = config.MOVESPEED;
-        self.controls.lookSpeed = config.LOOKSPEED;
-        self.controls.lookVertical = true;
-        self.controls.noFly = true;
-        $(self.canvas).on('mousedown', onMouseDown);
+      switch (self.interfaceOptions.cameraType) {
+        case 'fps':
+          self.controls = new THREE.FirstPersonControls(self.camera, canvas);
+          self.controls.movementSpeed = config.MOVESPEED;
+          self.controls.lookSpeed = config.LOOKSPEED;
+          self.controls.lookVertical = true;
+          self.controls.noFly = true;
+          $(self.canvas).on('mousedown', onMouseDown);
+        break;
+        case 'pacman':
+          self.controls = new THREE.PacmanAuto(self.camera, canvas, self.map);
+        break;
+        default:
+          self.controls = new THREE.OrbitControls(self.camera, canvas);
       }
+
     }
 
     function addLight() {
@@ -169,9 +176,7 @@ define([
         material = new THREE.MeshBasicMaterial({ color: color });
         mesh = new THREE.Mesh(geometry, material);
 
-        //positionX = x - (factorWidth / 2) + ledDimensions * -1 * temperatureCoefficient + (Math.floor(cpu % column) * cpuDimensions) + (cpuDimensions / 2);
         positionX = x - -temperatureCoefficient * (factorWidth / 2) + ledDimensions * -temperatureCoefficient + -temperatureCoefficient * (cpuDimensions / 2) + -temperatureCoefficient * (Math.floor(cpu % column) * cpuDimensions);
-
         positionY = y + (factorHeight / 2) - (Math.floor(cpu / column) * cpuDimensions) - (cpuDimensions / 2);
         positionZ = z - (rackDepth / 2) * temperatureCoefficient;
 
@@ -287,16 +292,21 @@ define([
       var y = 0;
       var z = 0;
 
-      if (self.interfaceOptions.cameraType === 'orbit') {
-        x = -(self.map.width * config.UNITSIZE);
-        y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
-        z = 0;
-      }
-
-      if (self.interfaceOptions.cameraType === 'fps') {
-        x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
-        y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
-        z = 0;
+      switch (self.interfaceOptions.cameraType) {
+        case 'fps':
+          x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
+          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+          z = 0;
+        break;
+        case 'pacman':
+          x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
+          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+          z = 0;
+        break;
+        default:
+          x = -(self.map.width * config.UNITSIZE);
+          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+          z = 0;
       }
 
       self.camera = new THREE.PerspectiveCamera(45, self.canvas.width / self.canvas.height, 0.1, 10000);
