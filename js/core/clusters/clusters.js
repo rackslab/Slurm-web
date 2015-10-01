@@ -13,23 +13,28 @@ define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], fun
       e.stopPropagation();
       var cluster = clusters[options.clusterId];
 
+      var loadSelectedCluster = function() {
+        if (options.$cluster) {
+          $('.cluster').parent('li').removeClass('active');
+          options.$cluster.parent('li').addClass('active');
+        }
+
+        config.cluster = cluster;
+        $(document).trigger('loadPage', { config: config });
+      }
+
       // retrieve informations about authentication on the selected cluster
       if (!cluster.authentication) {
         $.ajax(cluster.api.url + cluster.api.path + '/authentication', { async: false })
           .success(function (response) {
             cluster.authentication = response;
-
-            if (options.$cluster) {
-              $('.cluster').parent('li').removeClass('active');
-              options.$cluster.parent('li').addClass('active');
-            }
-
-            config.cluster = cluster;
-            $(document).trigger('loadPage', { config: config });
+            loadSelectedCluster();
           })
           .error(function (error) {
             console.log(error);
           });
+      } else {
+        loadSelectedCluster();
       }
     });
 
