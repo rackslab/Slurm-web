@@ -88,7 +88,7 @@ define(['text!../config/3d.config.json'], function (config) {
     var walls = [];
 
     var i;
-    for (i = 0; i < max + 2 + (config.PATHSIZE * 2); i++) {
+    for (i = 0; i < max + 2 + (config.PATHSIZE * 2) * 2; i++) {
       walls.push(1);
     }
 
@@ -101,7 +101,7 @@ define(['text!../config/3d.config.json'], function (config) {
     paths.push(1);
 
     var i;
-    for (i = 0; i < max + (config.PATHSIZE * 2); i++) {
+    for (i = 0; i < max + (config.PATHSIZE * 2) * 2; i++) {
       paths.push(0);
     }
 
@@ -135,7 +135,7 @@ define(['text!../config/3d.config.json'], function (config) {
 
     rangeMap.push(1);
     var i;
-    for (i = 0; i < config.PATHSIZE; i++) {
+    for (i = 0; i < config.PATHSIZE * 2; i++) {
       rangeMap.push(0);
     }
 
@@ -175,7 +175,7 @@ define(['text!../config/3d.config.json'], function (config) {
       }
     }
 
-    for (i = 0; i < config.PATHSIZE; i++) {
+    for (i = 0; i < config.PATHSIZE * 2; i++) {
       rangeMap.push(0);
     }
     rangeMap.push(1);
@@ -197,9 +197,10 @@ define(['text!../config/3d.config.json'], function (config) {
 
       var i;
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));
-      for (i = 0; i < config.PATHSIZE; i++) {
+      for (i = 0; i < config.PATHSIZE * 2; i++) {
         map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
+
       var hotRange = true;
       var k;
       for (k = 0; k < rangeNumber; k++) {
@@ -214,17 +215,17 @@ define(['text!../config/3d.config.json'], function (config) {
         } 
       }
 
-      for (i = 0; i < config.PATHSIZE; i++) {
+      for (i = 0; i < config.PATHSIZE * 2; i++) {
         map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
 
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));
 
-      map.width = rangeMaxRacksNumber + 2 + (config.PATHSIZE * 2);
+      map.width = rangeMaxRacksNumber + 2 + (config.PATHSIZE * 2) * 2;
       map.height = map.data.length / map.width;
       map.altitude = findMapAltitude(racks);
-
-      printMap(map);
+      map.rangeMaxRacksNumber = rangeMaxRacksNumber;
+      map.rangeNumber = rangeNumber;
 
       return map;
     }
