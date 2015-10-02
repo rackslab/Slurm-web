@@ -8,8 +8,7 @@
   "RACKHEIGHT": 0.1,
   "RACKDEPTH": 1,
   "RACKMARGIN": 0.5,
-  "RACKPADDING": 0.05,
-  "RACKCLOSURE": 0.4,
+  "RACKPADDING": 0.01,
   "NODEPADDINGTOP": 0.1,
   "LEDDIMENSIONS": 0.025,
   "LEDDEPTH": 0.001,
@@ -22,5 +21,9 @@
     "LEFT": 81,
     "RIGHT": 68,
     "FREEZE": 32
+  },
+  "PACMAN": {
+    "MOVESPEED": 16,
+    "LOOKSPEED": 4
   }
 }

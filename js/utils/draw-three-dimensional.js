@@ -23,6 +23,17 @@ define([
     this.camera;
     this.clock;
 
+    this.pacmanDebug = new (function () {
+      this.update = function () {
+
+      }
+    });
+
+    function calculateEnv() {
+      self.map.unitWidth = self.map.width * config.UNITSIZE + self.map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
+      self.map.unitHeight = self.map.height * config.UNITSIZE + self.map.rangeNumber * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
+    }
+
     function onMouseDown(event) {
       event.preventDefault();
 
@@ -73,28 +84,28 @@ define([
     function addWalls() {
       var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xA9A9A9 });
 
-      var topWallGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var bottomWallGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var leftWallGeometry = new THREE.PlaneGeometry(self.map.height * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var rightWallGeometry = new THREE.PlaneGeometry(self.map.height * config.UNITSIZE, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var topWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var bottomWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var leftWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitHeight, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var rightWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitHeight, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
 
       var topWall = new THREE.Mesh(topWallGeometry, wallMaterial);
       var bottomWall = new THREE.Mesh(bottomWallGeometry, wallMaterial);
       var leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
       var rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
 
-      topWall.position.z = -(self.map.height * config.UNITSIZE / 2);
+      topWall.position.z = -(self.map.unitHeight / 2);
       topWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
 
-      bottomWall.position.z = (self.map.height * config.UNITSIZE / 2);
+      bottomWall.position.z = (self.map.unitHeight / 2);
       bottomWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       bottomWall.rotation.x = 180 * Math.PI / 180;
 
-      leftWall.position.x = -(self.map.width * config.UNITSIZE / 2);
+      leftWall.position.x = -(self.map.unitWidth / 2);
       leftWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       leftWall.rotation.y = 90 * Math.PI / 180;
 
-      rightWall.position.x = self.map.width * config.UNITSIZE / 2;
+      rightWall.position.x = self.map.unitWidth / 2;
       rightWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       rightWall.rotation.y = -90 * Math.PI / 180;
 
@@ -108,9 +119,9 @@ define([
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(8, 8);
+      texture.repeat.set(self.map.unitWidth / config.UNITSIZE, self.map.unitHeight / config.UNITSIZE);
       var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-      var floorGeometry = new THREE.PlaneGeometry(self.map.width * config.UNITSIZE, self.map.height * config.UNITSIZE, 1, 1);
+      var floorGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, self.map.unitHeight, 1, 1);
       var floor = new THREE.Mesh(floorGeometry, floorMaterial);
       floor.rotation.x = 90 * Math.PI / 180;
       self.scene.add(floor);
@@ -166,6 +177,7 @@ define([
       var cpuPadding = cpuDimensions * config.CPUPADDING;
       for (cpu = 0; cpu < cpus; cpu++) {
         geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth);
+        geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
         if (!jobs[cpu]) {
           color = colors.NOJOB;
@@ -193,6 +205,7 @@ define([
       var ledDepth = nodeWidth * config.LEDDEPTH;
 
       var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth);
+      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
       var material = new THREE.MeshBasicMaterial({ color: drawColors.findLEDColor(self.nodes[node.name]).state });
       var mesh = new THREE.Mesh(geometry, material);
@@ -205,19 +218,20 @@ define([
     }
 
     function addNode(node, x, y, z, temperatureCoefficient) {
-      var nodeWidth = node.width * config.RACKWIDTH * config.UNITSIZE;
+      var nodeWidth = node.width * config.RACKWIDTH * config.UNITSIZE - 2 * config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING;
       var nodeX = node.posx * config.RACKWIDTH * config.UNITSIZE;
       var nodeHeight = node.height * config.RACKHEIGHT * config.UNITSIZE;
       nodeHeight -= nodeHeight * config.NODEPADDINGTOP;
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
 
       var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE);
+      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
       var material = new THREE.MeshBasicMaterial({ color: colors.NODE });
       var mesh = new THREE.Mesh(geometry, material);
 
-      var positionX = x - -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2);
+      var positionX = x - -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2) + -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING);
       var positionY = y + (config.RACKHEIGHT * config.UNITSIZE / 2) + nodeY + (nodeHeight / 2);
-      var positionZ = z;
+      var positionZ = z + -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING);
 
       mesh.position.x = positionX;
       mesh.position.y = positionY;
@@ -236,7 +250,11 @@ define([
       var positionZ;
 
       var geometry;
-      var material;
+      var texture = THREE.ImageUtils.loadTexture('static/rack.jpg');
+      texture.repeat.set(1, 1, 1);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      var material = new THREE.MeshBasicMaterial({ map: texture });
       var mesh;
 
       var x;
@@ -250,7 +268,7 @@ define([
           if (getMapValue(x, y) !== 1 && getMapValue(x, y) !== 0 && self.racks.hasOwnProperty(getMapValue(x, y))) {
             rack = self.racks[getMapValue(x, y)];
 
-            if (x === 1 + config.PATHSIZE) {
+            if (x === 1 + config.PATHSIZE * 2) {
               range++;
             }
 
@@ -259,7 +277,7 @@ define([
               currentRange = range;
             }
 
-            positionX = (x - (self.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN + 2 * config.RACKCLOSURE * config.RACKWIDTH);
+            positionX = (x - (self.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN);
             positionY = (config.UNITSIZE * config.RACKHEIGHT / 2);
             positionZ = (y - (self.map.height - 1) / 2) * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
 
@@ -270,16 +288,16 @@ define([
             }
 
             geometry = new THREE.BoxGeometry(
-              config.UNITSIZE * config.RACKWIDTH - config.UNITSIZE * config.RACKPADDING + 2 * config.RACKCLOSURE * config.RACKWIDTH,
+              config.UNITSIZE * config.RACKWIDTH,
               (self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
-              config.UNITSIZE * config.RACKDEPTH - config.UNITSIZE * config.RACKPADDING + config.RACKCLOSURE * config.RACKDEPTH
+              config.UNITSIZE * config.RACKDEPTH
             );
-            material = new THREE.MeshBasicMaterial({ color: colors.RACK });
+
             mesh = new THREE.Mesh(geometry, material);
 
             mesh.position.x = positionX;
             mesh.position.y = ((self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT / 2);
-            mesh.position.z = positionZ + temperatureCoefficient * config.RACKCLOSURE * config.RACKDEPTH;
+            mesh.position.z = positionZ;
 
             self.scene.add(mesh);
           }
@@ -294,11 +312,6 @@ define([
 
       switch (self.interfaceOptions.cameraType) {
         case 'fps':
-          x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
-          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
-          z = 0;
-        break;
-        case 'pacman':
           x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
           y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
           z = 0;
@@ -320,6 +333,8 @@ define([
         self.controls.update(delta);
         self.idFrame = requestAnimationFrame(render);
         self.renderer.render(self.scene, self.camera);
+
+        self.pacmanDebug.update();
       } else {
         cancelAnimationFrame(self.idFrame);
       }
@@ -336,7 +351,7 @@ define([
       this.clock = new THREE.Clock();
       this.mouse = new THREE.Vector3();
       this.raycaster = new THREE.Raycaster();
-      this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialiasing: true });
+      this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
       this.scene = new THREE.Scene();
 
       this.canvasRectangle = this.renderer.domElement.getBoundingClientRect();
@@ -392,6 +407,7 @@ define([
         }
       });
 
+      calculateEnv();
       addFloor();
       addWalls();
       addRack();
