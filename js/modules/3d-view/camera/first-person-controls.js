@@ -269,16 +269,6 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
     $(document).on('keydown', bind(this, this.onKeyDown));
     $(document).on('keyup', bind(this, this.onKeyUp));
 
-/*
-    this.domElement.addEventListener('contextmenu', function (event) { event.preventDefault(); }, false);
-
-    this.domElement.addEventListener('mousemove', bind(this, this.onMouseMove), false);
-    this.domElement.addEventListener('mousedown', bind(this, this.onMouseDown), false);
-    this.domElement.addEventListener('mouseup', bind(this, this.onMouseUp), false);
-
-    window.addEventListener('keydown', bind(this, this.onKeyDown), false);
-    window.addEventListener('keyup', bind(this, this.onKeyUp), false );
-*/
     function bind(scope, fn) {
 
       return function () {
