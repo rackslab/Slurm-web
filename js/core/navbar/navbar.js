@@ -1,4 +1,11 @@
-define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs', 'user-utils', 'boolean-utils', 'string-utils'], function ($, Handlebars, template, user, token) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/core/navbar/navbar.hbs',
+  'user-utils',
+  'boolean-helpers',
+  'string-helpers'
+], function ($, Handlebars, template, userUtils) {
   template = Handlebars.compile(template);
 
   return function (config) {
@@ -28,7 +35,7 @@ define(['jquery', 'handlebars', 'text!../../js/core/navbar/navbar.hbs', 'user-ut
         clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
         authEnabled: config.cluster.authentication.enabled,
         userLogged: this.userLogged,
-        user: $.extend({ username: '' }, user.getUser(config.cluster)),
+        user: $.extend({ username: '' }, userUtils.getUser(config.cluster)),
         notIE: !(/*@cc_on!@*/false || !!document.documentMode)
       };
 

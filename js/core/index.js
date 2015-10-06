@@ -11,30 +11,32 @@ require.config({
     'bootstrap-typeahead': '../../js/libraries/typeahead/typeahead.jquery',
     three: '../../js/libraries/three.min',
     'bootstrap-tagsinput': '../../js/libraries/bootstrap-tagsinput/bootstrap-tagsinput.min',
-    'helpers-utils': '../../js/utils/helpers',
     'cluster-utils': '../../js/utils/cluster',
-    'string-utils': '../../js/utils/string',
     'token-utils': '../../js/utils/token',
     'user-utils': '../../js/utils/user',
     'date-utils': '../../js/utils/date',
-    'number-utils': '../../js/utils/number',
-    'array-utils': '../../js/utils/array',
-    'boolean-utils': '../../js/utils/boolean',
     'tablesorter-utils': '../../js/utils/tablesorter',
     'jobs-utils': '../../js/utils/jobs',
-    'racks-utils': '../../js/utils/racks',
-    'draw-utils': '../../js/utils/draw',
     'nodes-utils': '../../js/utils/node',
     'page-utils': '../../js/utils/page',
     'ajax-utils': '../../js/utils/ajax',
-    'factor-utils': '../../js/utils/factor',
     'flot-utils': '../../js/utils/flot',
-    'keycode-utils': '../../js/utils/keycode',
     'tagsinput-utils': '../../js/utils/tagsinput',
-    'draw-colors-utils': '../../js/utils/draw-colors',
-    'draw-intersections-utils': '../../js/utils/draw-intersections',
-    'draw-legend-utils': '../../js/utils/draw-legend',
-    'draw-three-dimensional-utils': '../../js/utils/draw-three-dimensional',
+    'string-helpers': '../../js/helpers/string',
+    'array-helpers': '../../js/helpers/array',
+    'jobs-helpers': '../../js/helpers/jobs',
+    'number-helpers': '../../js/helpers/number',
+    'boolean-helpers': '../../js/helpers/boolean',
+    'date-helpers': '../../js/helpers/date',
+    'different-helpers': '../../js/helpers/different',
+    'keycode-helpers': '../../js/helpers/keycode',
+    '2d-draw': '../../js/draw/2d-draw',
+    'colors-draw': '../../js/draw/colors',
+    '2d-intersections-draw': '../../js/draw/2d-intersections',
+    '2d-legend-draw': '../../js/draw/2d-legend',
+    '3d-draw': '../../js/draw/3d-draw',
+    '3d-map-draw': '../../js/draw/3d-map',
+    'factor-draw': '../../js/draw/factor',
     login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
     clusters: '../../js/core/clusters/clusters',
@@ -86,7 +88,7 @@ require.config({
   }
 });
 
-var isIE = /*@cc_on!@*/false || !!document.documentMode;
+var isIE = false || !!document.documentMode;
 
 if (isIE) {
   require(['xdomain'], function(xdomain){
@@ -100,7 +102,7 @@ if (isIE) {
 
 require([
   'page-utils',
-  'text!config.json',
+  'text!../config/config.json',
   'token-utils',
   'user-utils',
   'login',
@@ -117,7 +119,6 @@ require([
   'topology',
   'ajax-utils'
 ], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt, Topology) {
-
   config = JSON.parse(config);
   var page = new Page();
   var clusters = new Clusters(config);
@@ -132,13 +133,13 @@ require([
 
     $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
 
-    $(document).trigger('show', { page: options.config.firstPage });
+    $(document).trigger('show', { page: options.config.STARTPAGE });
   })
 
   $(document).on('logout', function (e) {
     e.preventDefault();
 
-    $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.firstPage });
+    $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });
   });
 
   $(document).on('show', function (e, options) {

@@ -1,14 +1,20 @@
-define(['jquery', 'handlebars', 'text!../../js/core/login/login.hbs', 'token-utils', 'user-utils'], function ($, Handlebars, template, token, user) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/core/login/login.hbs',
+  'token-utils',
+  'user-utils'
+], function ($, Handlebars, template, tokenUtils, userUtils) {
   template = Handlebars.compile(template);
 
   return function (config) {
     function login(options) {
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/login', options)
         .success(function (credentials) {
-          token.setToken(config.cluster, credentials.id_token);
-          user.setUser(config.cluster, credentials.username, credentials.role);
+          tokenUtils.setToken(config.cluster, credentials.id_token);
+          userUtils.setUser(config.cluster, credentials.username, credentials.role);
           $(document).trigger('logged');
-          $(document).trigger('show', { page: config.firstPage });
+          $(document).trigger('show', { page: config.STARTPAGE });
         })
         .error(function () {
           $('#login #error').show();
