@@ -70,17 +70,19 @@ define([
                   }
 
                   $('#tabs a[href="#fullscreen"]').on('click', function (e) {
-                    if (canvas.element.webkitRequestFullScreen) {
-                      canvas.element.webkitRequestFullscreen();
+                    var element = document.getElementsByTagName('canvas')[0];
+
+                    if (element.requestFullscreen) {
+                      element.requestFullscreen();
                       $(document).trigger('fullscreen-enter');
-                    } else if (canvas.element.mozRequestFullScreen) {
-                      canvas.element.mozRequestFullscreen();
+                    } else if (element.msRequestFullscreen) {
+                      element.msRequestFullscreen();
                       $(document).trigger('fullscreen-enter');
-                    } else if (canvas.element.msRequestFullscreen) {
-                      canvas.element.msRequestFullscreen();
+                    } else if (element.mozRequestFullScreen) {
+                      element.mozRequestFullScreen();
                       $(document).trigger('fullscreen-enter');
-                    } else if (canvas.element.requestFullScreen) {
-                      canvas.element.requestFullscreen();
+                    } else if (element.webkitRequestFullscreen) {
+                      element.webkitRequestFullscreen();
                       $(document).trigger('fullscreen-enter');
                     }
                   });
