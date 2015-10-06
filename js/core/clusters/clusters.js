@@ -1,6 +1,11 @@
-define(['jquery', 'handlebars', 'text!../../js/core/clusters/clusters.hbs'], function ($, Handlebars, template) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/core/clusters/clusters.hbs'
+], function ($, Handlebars, template) {
   template = Handlebars.compile(template);
   clusters = window.clusters;
+
   for (var index in clusters) {
     clusters[index].id = clusters[index].name + '-' + index;
   }
