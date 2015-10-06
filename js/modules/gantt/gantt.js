@@ -247,6 +247,7 @@ define([
   function toggleModal(jobId, options, config) {
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
       .success(function (job) {
+        job.id = jobId;
         var context = {
           job: job
         };
