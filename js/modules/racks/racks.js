@@ -3,17 +3,17 @@ define([
   'handlebars',
   'text!../../js/modules/racks/racks.hbs',
   'token-utils',
-  'draw-utils',
-  'draw-legend-utils',
+  '2d-draw',
+  '2d-legend-draw',
   'nodes-utils'
-], function ($, Handlebars, template, tokenUtils, DrawUtils, drawLegendUtils, nodesUtils) {
+], function ($, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw, nodesUtils) {
   template = Handlebars.compile(template);
-  draw = new DrawUtils();
+  var draw = new D2Draw();
 
-  return function(config) {
+  return function (config) {
     this.slurmNodes = null;
     this.interval = null;
-    this.canvasConfig = draw.getConfig();
+    this.config = draw.getConfig();
 
     this.init = function () {
       var self = this;
@@ -34,18 +34,23 @@ define([
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
           if (racks instanceof Array) {
-            result = {};
-            for (var i in racks) {
-              for (var rack in racks[i]) {
-                result[rack] = racks[i][rack];
+            var result = {};
+            var i;
+            var rack;
+            for (i in racks) {
+              if (racks.hasOwnProperty(i)) {
+                for (rack in racks[i]) {
+                  if (racks[i].hasOwnProperty(rack)) {
+                    result[rack] = racks[i][rack];
+                  }
+                }
               }
             }
             racks = result;
           }
 
           var context = {
-            canvas: self.canvasConfig,
-            canvasLegend: config.display.canvasLegend,
+            config: self.config,
             racks: racks
           };
 
@@ -58,7 +63,7 @@ define([
             });
           });
 
-          drawLegendUtils.drawLegend('racks');
+          d2LegendDraw.drawLegend('racks');
         });
     };
 
@@ -68,7 +73,7 @@ define([
       this.interval = setInterval(function () {
         $('#racks').remove();
         self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function () {

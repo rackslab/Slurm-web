@@ -10,11 +10,11 @@ define([
   'handlebars',
   'text!../../js/modules/3d-view/3d-view.hbs',
   'token-utils',
-  'draw-three-dimensional-utils',
-  'racks-utils',
+  '3d-draw',
+  '3d-map-draw',
   'jobs-utils',
-  'keycode-utils'
-], function ($, Handlebars, template, token, d3Draw, racksUtils, jobsUtils) {
+  'keycode-helpers'
+], function ($, Handlebars, template, token, d3Draw, d3MapDraw, jobsUtils) {
   template = Handlebars.compile(template);
 
   return function (config) {
@@ -55,7 +55,7 @@ define([
                 .success(function (jobs) {
                   jobs = jobsUtils.buildAllocatedCPUs(jobs);
 
-                  var map = racksUtils.racksToMap(racks);
+                  var map = d3MapDraw.racksToMap(racks);
 
                   var racksList = {};
 

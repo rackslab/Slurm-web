@@ -1,13 +1,24 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', 'text!../../js/modules/jobs-map/modal-core.hbs', 'text!../../js/modules/jobs-map/modal-node.hbs', 'token-utils', 'draw-utils', 'draw-legend-utils', 'nodes-utils', 'jobs-utils'], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, draw, drawLegend, nodes, jobs) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/jobs-map/jobs-map.hbs',
+  'text!../../js/modules/jobs-map/modal-core.hbs',
+  'text!../../js/modules/jobs-map/modal-node.hbs',
+  'token-utils',
+  '2d-draw',
+  '2d-legend-draw',
+  'nodes-utils',
+  'jobs-utils'
+], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, D2Draw, d2LegendDraw, nodes, jobs) {
   template = Handlebars.compile(template);
   modalCoreTemplate = Handlebars.compile(modalCoreTemplate);
   modalNodeTemplate = Handlebars.compile(modalNodeTemplate);
-  draw = new draw();
+  var draw = new D2Draw();
 
   return function (config) {
     this.slurmNodes = null;
     this.interval = null;
-    this.canvasConfig = draw.getConfig();
+    this.config = draw.getConfig();
 
     function closeModalCore(e) {
       e.stopPropagation();
@@ -112,17 +123,23 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
         .success(function (racks) {
           if (racks instanceof Array) {
-            result = {};
-            for (var i in racks) {
-              for (var rack in racks[i]) {
-                result[rack] = racks[i][rack];
+            var result = {};
+            var i;
+            var rack;
+            for (i in racks) {
+              if (racks.hasOwnProperty(i)) {
+                for (rack in racks[i]) {
+                  if (racks[i].hasOwnProperty(rack)) {
+                    result[rack] = racks[i][rack];
+                  }
+                }
               }
             }
             racks = result;
           }
+
           var context = {
-            canvas: self.canvasConfig,
-            canvasLegend: config.display.canvasLegend,
+            config: self.config,
             racks: racks
           };
 
@@ -141,7 +158,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
             });
           });
 
-          drawLegend.drawLegend('jobs-map');
+          d2LegendDraw.drawLegend('jobs-map');
         });
     };
 
@@ -151,7 +168,7 @@ define(['jquery', 'handlebars', 'text!../../js/modules/jobs-map/jobs-map.hbs', '
       this.interval = setInterval(function () {
         $('#jobsmap').remove();
         self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function () {

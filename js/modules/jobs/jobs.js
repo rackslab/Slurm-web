@@ -10,14 +10,15 @@ define([
   'cluster-utils',
   'tagsinput-utils',
   'jobs-utils',
-  'date-utils',
   'jquery-tablesorter',
   'jquery-flot',
   'jquery-flot-pie',
-  'boolean-utils',
-  'helpers-utils',
   'bootstrap',
-  'bootstrap-tagsinput'
+  'bootstrap-tagsinput',
+  'jobs-helpers',
+  'boolean-helpers',
+  'date-helpers',
+  'different-helpers',
 ], function ($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, clusterUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
@@ -267,7 +268,7 @@ define([
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
         self.destroy(false);
         self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function (destroyInterval) {
