@@ -28,8 +28,10 @@ define([
 
       var canvas = {
         element: $('canvas')[0],
-        width: $(window).width() - $('canvas').offset().left * 2,
-        height: $(window).height() - $('canvas').offset().top
+        width: $('canvas').parent('div').width(),
+        height: $(window).innerHeight() - 
+          $('canvas').parent('div').offset().top - 
+          (parseInt($('#main').css('paddingTop').replace(/[^-\d\.]/g, '')) + parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')))
       };
 
       $('canvas').attr('width', canvas.width);
