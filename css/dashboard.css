@@ -60,6 +60,7 @@ body {
 #navbar>.nav>li>a {
   font-size: 1em;
   padding: 15px 10px;
+  outline: none;
 }
 
 /*
