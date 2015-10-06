@@ -4,7 +4,7 @@ define([
   'text!../../js/modules/qos/qos.hbs',
   'token-utils',
   'tablesorter-utils',
-  'number-utils',
+  'number-helpers',
   'jquery-tablesorter'
 ], function ($, Handlebars, template, tokenUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
@@ -58,7 +58,7 @@ define([
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#qos').remove();
           self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function () {

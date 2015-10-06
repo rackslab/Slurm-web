@@ -1,4 +1,14 @@
-define(['jquery', 'handlebars', 'text!../../js/modules/gantt/gantt.hbs', 'text!../../js/modules/gantt/gantt-nodes.hbs', 'text!../../js/modules/gantt/gantt-qos.hbs', 'text!../../js/modules/jobs/modal-job.hbs', 'token-utils', 'jobs-utils', 'nodes-utils'], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs, nodes) {
+define([
+  'jquery',
+  'handlebars',
+  'text!../../js/modules/gantt/gantt.hbs',
+  'text!../../js/modules/gantt/gantt-nodes.hbs',
+  'text!../../js/modules/gantt/gantt-qos.hbs',
+  'text!../../js/modules/jobs/modal-job.hbs',
+  'token-utils',
+  'jobs-utils',
+  'nodes-utils'
+], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs, nodes) {
   template = Handlebars.compile(template);
   nodesTemplate = Handlebars.compile(nodesTemplate);
   qosTemplate = Handlebars.compile(qosTemplate);

@@ -4,9 +4,9 @@ define([
   'text!../../js/modules/partitions/partitions.hbs',
   'token-utils',
   'tablesorter-utils',
-  'array-utils',
-  'boolean-utils',
-  'jquery-tablesorter'
+  'array-helpers',
+  'jquery-tablesorter',
+  'boolean-helpers'
 ], function ($, Handlebars, template, tokenUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
@@ -48,7 +48,7 @@ define([
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#partitions').remove();
         self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function () {

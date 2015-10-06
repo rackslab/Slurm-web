@@ -47,7 +47,7 @@ define([
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#reservations').remove();
         self.init();
-      }, config.apiRefresh);
+      }, config.REFRESH);
     };
 
     this.destroy = function () {
