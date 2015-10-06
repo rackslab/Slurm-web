@@ -223,19 +223,22 @@ define([
       var nodeHeight = node.height * config.RACKHEIGHT * config.UNITSIZE;
       nodeHeight -= nodeHeight * config.NODEPADDINGTOP;
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
+      nodeDepth = config.RACKDEPTH * config.UNITSIZE - 2 * config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING;
 
-      var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE);
+      var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth);
       geometry = new THREE.BufferGeometry().fromGeometry(geometry);
       var material = new THREE.MeshBasicMaterial({ color: colors.NODE });
       var mesh = new THREE.Mesh(geometry, material);
 
       var positionX = x - -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2) + -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING);
       var positionY = y + (config.RACKHEIGHT * config.UNITSIZE / 2) + nodeY + (nodeHeight / 2);
-      var positionZ = z + -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING);
+      var positionZ = z + -temperatureCoefficient * (config.RACKDEPTH * config.UNITSIZE * 0.006 + config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING);
 
       mesh.position.x = positionX;
       mesh.position.y = positionY;
       mesh.position.z = positionZ;
+
+      positionZ = z + -temperatureCoefficient * (config.RACKDEPTH * config.UNITSIZE * 0.006);
 
       self.scene.add(mesh);
 
