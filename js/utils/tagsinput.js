@@ -17,9 +17,9 @@ define([
         tags = options[i].split('-');
 
         if (tags[0] === 'partition') {
-          partitions.push(tags[1])
+          partitions.push(tags[1]);
         } else if (tags[0] === 'qos') {
-          qos.push(tags[1])
+          qos.push(tags[1]);
         }
       }
 
@@ -39,10 +39,10 @@ define([
         var matches;
         var substringRegex;
         matches = [];
-        substrRegex = new RegExp('^' + q, 'i');
+        substringRegex = new RegExp('^' + q, 'i');
 
-        $.each(strs, function(i, str) {
-          if (substrRegex.test(str.text)) {
+        $.each(strs, function (i, str) {
+          if (substringRegex.test(str.text)) {
             matches.push(str.text);
           }
         });

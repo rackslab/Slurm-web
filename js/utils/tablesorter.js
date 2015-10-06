@@ -2,7 +2,7 @@ define([
   'jquery'
 ], function ($) {
   return {
-    eraseEmptyColumn: function(selector) {
+    eraseEmptyColumn: function (selector) {
       var totalRow = $(selector + ' tbody tr').length;
       var tabInfos = {};
       var removable = [];

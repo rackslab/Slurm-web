@@ -1,17 +1,19 @@
-define(['jquery'], function ($) {
+define([
+  'jquery'
+], function ($) {
   var user = {
-    setUser: function(cluster, username, role) {
-      var user = JSON.stringify({
+    setUser: function (cluster, username, role) {
+      var userStored = JSON.stringify({
         username: username,
         role: role
       });
 
-      localStorage.setItem('user-' + cluster.id, user);
+      localStorage.setItem('user-' + cluster.id, userStored);
     },
-    getUser: function(cluster) {
+    getUser: function (cluster) {
       return JSON.parse(localStorage.getItem('user-' + cluster.id));
     },
-    removeUser: function(cluster) {
+    removeUser: function (cluster) {
       localStorage.removeItem('user-' + cluster.id);
     }
   };
