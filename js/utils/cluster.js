@@ -19,7 +19,6 @@ define([
         })
       };
 
-      var self = this;
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
         .success(function (data) {
           cluster = data;

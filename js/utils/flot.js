@@ -18,5 +18,5 @@ define([], function () {
 
       return tab;
     }
-  };  
+  };
 });

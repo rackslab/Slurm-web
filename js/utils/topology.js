@@ -1,4 +1,6 @@
-define(['text!../config/topology.config.json'], function (config) {
+define([
+  'text!../config/topology.config.json'
+], function (config) {
   function Graph(topology) {
     this.config = JSON.parse(config);
 
