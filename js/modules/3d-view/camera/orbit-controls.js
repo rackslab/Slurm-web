@@ -402,10 +402,8 @@ define(['jquery', 'three'], function ($, THREE) {
 
         delta = event.wheelDelta;
 
-      } else if ( event.detail ) { // Firefox
-
-        delta = - event.detail;
-
+      } else if (event.originalEvent.detail) {
+        delta = - event.originalEvent.detail;
       }
 
       if ( delta > 0 ) {
