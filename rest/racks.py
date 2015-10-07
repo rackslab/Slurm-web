@@ -117,7 +117,24 @@ def parse_racks():
 
     racks = []
     # parse racks with nodes
-    racksrows_e = root.find('racks').findall('racksrow')
+    racks_root_e = root.find('racks')
+
+    posx = racks_root_e.get('posx') if racks_root_e.get('posx') else 0
+    posy = racks_root_e.get('posy') if racks_root_e.get('posy') else 0
+    width = racks_root_e.get('width') if racks_root_e.get('width') else 0
+    depth = racks_root_e.get('depth') if racks_root_e.get('depth') else 0
+    rackwidth = racks_root_e.get('rackwidth') if racks_root_e.get('rackwidth')\
+        else 1
+
+    room = {
+        'posx': posx,
+        'posy': posy,
+        'width': width,
+        'depth': depth,
+        'rackwidth': rackwidth
+    }
+
+    racksrows_e = racks_root_e.findall('racksrow')
     for racksrow_e in racksrows_e:
         racks_posx = int(racksrow_e.get('posx')) \
             if racksrow_e.get('posx') else 0
@@ -163,4 +180,7 @@ def parse_racks():
 
         racks.append(Racksrow(racks_posx, racksrow))
 
-    return Racksrow.racksrow_array2dict_array(racks)
+    return {
+        'racks': Racksrow.racksrow_array2dict_array(racks),
+        'room': room
+    }

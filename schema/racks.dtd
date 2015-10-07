@@ -9,6 +9,11 @@
 <!ATTLIST nodetype width CDATA #REQUIRED>
 
 <!ELEMENT racks (racksrow+)>
+<!ATTLIST racks posx CDATA #IMPLIED>
+<!ATTLIST racks posy CDATA #IMPLIED>
+<!ATTLIST racks width CDATA #IMPLIED>
+<!ATTLIST racks depth CDATA #IMPLIED>
+<!ATTLIST racks rackwidth CDATA #IMPLIED>
 
 <!ELEMENT racksrow (rack+)>
 <!ATTLIST racksrow posx CDATA #IMPLIED>

@@ -30,7 +30,7 @@
   </nodetypes>
 
 
-  <racks>
+  <racks posx="0" posy="0" width="500" depth="300" rackwidth="1">
     <racksrow posx="0">
       <!-- Rack A1 -->
       <rack id="A1" posy="0">
