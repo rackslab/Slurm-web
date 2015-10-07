@@ -121,7 +121,8 @@ define([
       allocatedCPUs = jobs.buildAllocatedCPUs(jobs.getJobs(config));
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-        .success(function (racks) {
+        .success(function (data) {
+          var racks = data.racks;
           if (racks instanceof Array) {
             var result = {};
             var i;
