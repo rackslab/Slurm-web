@@ -14,19 +14,29 @@ define([
       var i;
       var tags;
       for (i = 0; i < options.length; i++) {
-        tags = options[i].split('-');
+        tags = options[i].split(' ');
 
-        if (tags[0] === 'partition') {
-          partitions.push(tags[1]);
-        } else if (tags[0] === 'qos') {
-          qos.push(tags[1]);
+        if (tags[1] === '(partition)') {
+          partitions.push(tags[0]);
+        } else if (tags[1] === '(qos)') {
+          qos.push(tags[0]);
         }
+      }
+
+      if (partitions.length > 1 || qos.length > 1) {
+        return [];
       }
 
       var index;
       for (index in jobs) {
         if (jobs.hasOwnProperty(index)) {
-          if (partitions.indexOf(jobs[index].partition) === -1 && qos.indexOf(jobs[index].qos) === -1) {
+          if (partitions.length === 1 && qos.length === 1) {
+            if (partitions.indexOf(jobs[index].partition) >= 0 && qos.indexOf(jobs[index].qos) >= 0) {
+              jobsFiltered[index] = jobs[index];
+            }
+          } else if (partitions.length === 1 && partitions.indexOf(jobs[index].partition) >= 0) {
+            jobsFiltered[index] = jobs[index];
+          } else if (qos.length === 1 && qos.indexOf(jobs[index].qos) >= 0) {
             jobsFiltered[index] = jobs[index];
           }
         }
@@ -39,11 +49,15 @@ define([
         var matches;
         var substringRegex;
         matches = [];
-        substringRegex = new RegExp('^' + q, 'i');
+        try {
+          substringRegex = new RegExp('^' + q, 'i');
+        } catch (error) {
+          return
+        }
 
         $.each(strs, function (i, str) {
-          if (substringRegex.test(str.text)) {
-            matches.push(str.text);
+          if (substringRegex.test(str)) {
+            matches.push(str);
           }
         });
 

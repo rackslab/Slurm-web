@@ -148,17 +148,17 @@ define([
 
           for (index in labelsPartitions) {
             if (labelsPartitions.hasOwnProperty(index)) {
-              labelsPartitions[index] = { text: 'partition-' + labelsPartitions[index], type: 'partition' }
+              labelsPartitions[index] = labelsPartitions[index] + ' (partition)'
             }
           }
 
           for (index in labelsQOS) {
             if (labelsQOS.hasOwnProperty(index)) {
-              labelsQOS[index] = { text: 'qos-' + labelsQOS[index], type: 'qos' }
+              labelsQOS[index] = labelsQOS[index] + ' (qos)'
             }
           }
 
-          labels = labelsPartitions.concat(labelsQOS)
+          labels = labelsPartitions.concat(labelsQOS);
           $('.typeahead').tagsinput({
             allowDuplicates: false,
             freeInput: false,
