@@ -6,6 +6,9 @@ body {
   background-color: #f5f5f5;
 }
 
+canvas {
+  outline: none;
+}
 
 /*
  * Global add-ons
