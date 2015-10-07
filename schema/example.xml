@@ -7,7 +7,7 @@
     <nodetype id="b43" model="Vendor B 43" height="2" width="1" />
   </nodetypes>
 
-  <racks>
+  <racks posx="0" posy="0" width="500" depth="300">
     <racksrow>
       <rack id="rack1-1" posx="0" posy="0">
         <nodes>
