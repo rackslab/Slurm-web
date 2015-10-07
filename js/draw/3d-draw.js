@@ -397,11 +397,18 @@ define([
         self.renderer.setSize($(window).width(), $(window).height());
       });
 
-      $(document).on('fullscreen-exit', function (e) {
-        self.camera.aspect = self.canvas.width / self.canvas.height;
+      $(document).on('fullscreen-exit', function (e, options) {
+        self.camera.aspect = options.canvas.width / options.canvas.height;
         self.camera.updateProjectionMatrix();
 
-        self.renderer.setSize(self.canvas.width, self.canvas.height);
+        self.renderer.setSize(options.canvas.width, options.canvas.height);
+      });
+
+      $(document).on('canvas-size-change', function (e, options) {
+        self.camera.aspect = options.canvas.width / options.canvas.height;
+        self.camera.updateProjectionMatrix();
+
+        self.renderer.setSize(options.canvas.width, options.canvas.height);
       });
 
       $(document).one('three-destroy', function() {

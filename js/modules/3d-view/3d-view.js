@@ -17,7 +17,26 @@ define([
 ], function ($, Handlebars, template, token, d3Draw, d3MapDraw, jobsUtils) {
   template = Handlebars.compile(template);
 
+  function setCanvasSize(canvas) {
+    $('canvas').removeAttr('style');
+    $('canvas').attr('width', canvas.width);
+    $('canvas').attr('height', canvas.height);
+  }
+
+  function getCanvas() {
+    return {
+      element: $('canvas')[0],
+      width: $(window).innerWidth() - 
+        $('canvas').parent('div').offset().left - 
+        parseInt($('#main').css('paddingRight').replace(/[^-\d\.]/g, '')),
+      height: $(window).innerHeight() - 
+        $('canvas').parent('div').offset().top - 
+        (parseInt($('#main').css('paddingTop').replace(/[^-\d\.]/g, '')) + parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')))
+    };
+  }
+
   return function (config) {
+    var self = this;
 
     this.init = function () {
       $('#main').append(template());
@@ -26,16 +45,10 @@ define([
         $(document).trigger('camera-change', { cameraType: $(this).attr('aria-controls')});
       });
 
-      var canvas = {
-        element: $('canvas')[0],
-        width: $('canvas').parent('div').width(),
-        height: $(window).innerHeight() - 
-          $('canvas').parent('div').offset().top - 
-          (parseInt($('#main').css('paddingTop').replace(/[^-\d\.]/g, '')) + parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')))
-      };
+      self.canvas = getCanvas();
 
-      $('canvas').attr('width', canvas.width);
-      $('canvas').attr('height', canvas.height);
+      $('canvas').attr('width', self.canvas.width);
+      $('canvas').attr('height', self.canvas.height);
 
       var options = {
         type: 'POST',
@@ -94,15 +107,23 @@ define([
 
                   $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function (e) {
                     if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
-                      $('canvas').removeAttr('style');
-                      $('canvas').attr('width', canvas.width);
-                      $('canvas').attr('height', canvas.height);
-                      $(document).trigger('fullscreen-exit');
+                      setTimeout(function () {
+                        self.canvas = setCanvasSize(self.canvas);
+                        $(document).trigger('fullscreen-exit', { canvas: self.canvas });
+                      }, 1000);
                     }
                   });
 
+                  $('[data-toggle=offcanvas]').on('click', function () {
+                    setTimeout(function () {
+                      self.canvas = getCanvas();
+                      setCanvasSize(self.canvas);
+                      $(document).trigger('canvas-size-change', { canvas: self.canvas });
+                    }, 1000);
+                  });
+
                   var draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
-                  draw.init(canvas.element);
+                  draw.init(self.canvas.element);
                 });
             })
         });
@@ -111,9 +132,11 @@ define([
     this.destroy = function () {
       $('#tabs a[href="#fullscreen"]').off('click');
       $('#tabs a[href="#camera"]').off('show.bs.tab');
+      $('[data-toggle=offcanvas]').off('click');
       $(document).off('fullscreen-enter fullscreen-exit');
       $(document).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
       $(document).off('camera-change screen-change');
+      $(document).off('cluster-change-state');
       $(document).trigger('three-destroy');
       $('#3d-view').remove();
     };
