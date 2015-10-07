@@ -50,11 +50,14 @@ define([
       };
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-        .success(function (racks) {
+        .success(function (data) {
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
             .success(function (nodesInfos) {
               $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
                 .success(function (jobs) {
+                  var racks = data.racks;
+                  var room = data.room;
+
                   jobs = jobsUtils.buildAllocatedCPUs(jobs);
 
                   var map = d3MapDraw.racksToMap(racks);
@@ -98,7 +101,7 @@ define([
                     }
                   });
 
-                  var draw = new d3Draw(map, racksList, nodesInfos, jobs);
+                  var draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
                   draw.init(canvas.element);
                 });
             })

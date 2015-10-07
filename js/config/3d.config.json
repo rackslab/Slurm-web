@@ -1,5 +1,6 @@
 {
   "UNITSIZE": 8.0,
+  "UNITSIZEMETER": 4.0,
   "WALLHEIGHT": 5.0,
   "PATHSIZE": 3,
   "MOVESPEED": 10.0,

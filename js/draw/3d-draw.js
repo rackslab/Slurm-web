@@ -12,9 +12,10 @@ define([
   var config = JSON.parse(d3Config);
   var colors = JSON.parse(d3Colors);
 
-  return function (map, racks, nodes, jobs) {
+  return function (map, racks, nodes, jobs, room) {
     var self = this;
 
+    this.room = room;
     this.map = map;
     this.racks = racks;
     this.nodes = nodes;
@@ -22,12 +23,6 @@ define([
 
     this.camera;
     this.clock;
-
-    this.pacmanDebug = new (function () {
-      this.update = function () {
-
-      }
-    });
 
     function calculateEnv() {
       self.map.unitWidth = self.map.width * config.UNITSIZE + self.map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
@@ -43,7 +38,7 @@ define([
       self.mouse.set((canvasMouseX / self.canvas.width) * 2 - 1, -(canvasMouseY / self.canvas.height) * 2 + 1, 0.5);
       self.mouse.unproject(self.camera);
 
-      self.raycaster.set(self.camera.position, self.mouse.sub( self.camera.position ).normalize());
+      self.raycaster.set(self.camera.position, self.mouse.sub(self.camera.position ).normalize());
 
       var intersects = self.raycaster.intersectObjects( self.scene.children, true );
       for (var i = 0; i < intersects.length; i++) {
@@ -84,28 +79,32 @@ define([
     function addWalls() {
       var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xA9A9A9 });
 
-      var topWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var bottomWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var leftWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitHeight, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var rightWallGeometry = new THREE.PlaneBufferGeometry(self.map.unitHeight, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var topWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var bottomWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var leftWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var rightWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
 
       var topWall = new THREE.Mesh(topWallGeometry, wallMaterial);
       var bottomWall = new THREE.Mesh(bottomWallGeometry, wallMaterial);
       var leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
       var rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
 
-      topWall.position.z = -(self.map.unitHeight / 2);
+      topWall.position.x = self.floorX;
+      topWall.position.z = -(self.floorDepth / 2) + self.floorZ;
       topWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
 
-      bottomWall.position.z = (self.map.unitHeight / 2);
+      bottomWall.position.x = self.floorX;
+      bottomWall.position.z = (self.floorDepth / 2) + self.floorZ;
       bottomWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       bottomWall.rotation.x = 180 * Math.PI / 180;
 
-      leftWall.position.x = -(self.map.unitWidth / 2);
+      leftWall.position.z = self.floorZ;
+      leftWall.position.x = -(self.floorWidth / 2) + self.floorX;
       leftWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       leftWall.rotation.y = 90 * Math.PI / 180;
 
-      rightWall.position.x = self.map.unitWidth / 2;
+      rightWall.position.z = self.floorZ;
+      rightWall.position.x = (self.floorWidth / 2) + self.floorX;
       rightWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       rightWall.rotation.y = -90 * Math.PI / 180;
 
@@ -116,14 +115,34 @@ define([
     }
 
     function addFloor() {
+      self.floorWidth = self.map.unitWidth;
+      self.floorDepth = self.map.unitHeight;
+      self.floorX = 0;
+      self.floorZ = 0;
+
+      if (room.width * room.rackwidth * config.UNITSIZEMETER > self.floorWidth) {
+        self.floorWidth = room.width * room.rackwidth * config.UNITSIZEMETER;
+        self.floorX = room.posx * room.rackwidth;
+      }
+
+      if (room.depth * room.rackwidth * config.UNITSIZEMETER > self.floorDepth) {
+        self.floorDepth = room.depth * room.rackwidth * config.UNITSIZEMETER;
+        self.floorZ = room.posy * room.rackwidth;
+      }
+
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(self.map.unitWidth / config.UNITSIZE, self.map.unitHeight / config.UNITSIZE);
       var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-      var floorGeometry = new THREE.PlaneBufferGeometry(self.map.unitWidth, self.map.unitHeight, 1, 1);
+      var floorGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
+      texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+
       var floor = new THREE.Mesh(floorGeometry, floorMaterial);
       floor.rotation.x = 90 * Math.PI / 180;
+
+      floor.position.x = self.floorX;
+      floor.position.z = self.floorZ;
+
       self.scene.add(floor);
     }
 
@@ -336,8 +355,6 @@ define([
         self.controls.update(delta);
         self.idFrame = requestAnimationFrame(render);
         self.renderer.render(self.scene, self.camera);
-
-        self.pacmanDebug.update();
       } else {
         cancelAnimationFrame(self.idFrame);
       }
