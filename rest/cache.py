@@ -69,7 +69,12 @@ def cache():
 
             resp = f(*args, **kwargs)
             if isinstance(resp, dict):
-                r.set(cache_key, json.dumps(resp), expiration)
+                try:
+                    r.set(cache_key, json.dumps(resp), expiration)
+                except:
+                    if 'job' not in f.__name__:
+                        r.set(cache_key, json.dumps(resp))
+
             return resp
 
         return inner
