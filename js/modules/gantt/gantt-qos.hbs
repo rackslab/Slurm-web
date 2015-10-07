@@ -1,35 +1,37 @@
-<div class="content">
-  <div id="jobs-chart">
-    <div id="qos-list">
-      <div class="wrapper" style="height:{{jobs.height}}px;">
-        {{#each jobs.qos}}
-          <div class="qos" data-id="{{id}}" title="QoS {{id}}" style="height:{{height}}px;line-height:{{height}}px;">
-            {{id}}
+<div>
+  <div class="content">
+    <div id="jobs-chart">
+      <div id="qos-list">
+        <div class="wrapper" style="height:{{jobs.height}}px;">
+          {{#each jobs.qos}}
+            <div class="qos" data-id="{{id}}" title="QoS {{id}}" style="height:{{height}}px;line-height:{{height}}px;">
+              {{id}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+      <div class="wrapper" style="width:{{jobs.width}}px;height:{{jobs.height}}px;">
+        <div class="current" style="height:{{jobs.height}}px;left:{{jobs.currentPosition}}%;"></div>
+        {{#each jobs.jobs}}
+          <div class="job-wrapper">
+            <div class="job-wrapper" style="height:{{height}}px;top:{{positionY}}px;">
+              <div class="job" data-id="{{id}}" title="Job #{{id}}"
+                  style="line-height:{{height}}px;width:{{width}}%;left:{{positionX}}%;background-color:{{color}};">
+                <span data-id="{{id}}">{{id}}</span>
+              </div>
+            </div>
           </div>
         {{/each}}
       </div>
     </div>
-    <div class="wrapper" style="width:{{jobs.width}}px;height:{{jobs.height}}px;">
-      <div class="current" style="height:{{jobs.height}}px;left:{{jobs.currentPosition}}%;"></div>
-      {{#each jobs.jobs}}
-        <div class="job-wrapper">
-          <div class="job-wrapper" style="height:{{height}}px;top:{{positionY}}px;">
-            <div class="job" data-id="{{id}}" title="Job #{{id}}"
-                style="line-height:{{height}}px;width:{{width}}%;left:{{positionX}}%;background-color:{{color}};">
-              <span data-id="{{id}}">{{id}}</span>
-            </div>
-          </div>
+  </div>
+  <div id="time">
+    <div class="wrapper" style="width:{{jobs.width}}px;">
+      {{#each jobs.times}}
+        <div class="time" style="left:{{position}}%;">
+          {{value}}
         </div>
       {{/each}}
     </div>
-  </div>
-</div>
-<div id="time">
-  <div class="wrapper" style="width:{{jobs.width}}px;">
-    {{#each jobs.times}}
-      <div class="time" style="left:{{position}}%;">
-        {{value}}
-      </div>
-    {{/each}}
   </div>
 </div>
