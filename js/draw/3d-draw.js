@@ -134,6 +134,24 @@ define([
       self.scene.add(rightWall);
     }
 
+    function addRoof() {
+      var texture = THREE.ImageUtils.loadTexture('static/roof.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      var roofMaterial = new THREE.MeshBasicMaterial({ map: texture });
+      var roofGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
+      texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+
+      var roof = new THREE.Mesh(roofGeometry, roofMaterial);
+      roof.rotation.x = 90 * Math.PI / 180;
+
+      roof.position.x = self.floorX;
+      roof.position.z = self.floorZ;
+      roof.position.y = config.WALLHEIGHT * config.UNITSIZE;
+
+      self.scene.add(roof);
+    }
+
     function addFloor() {
       self.floorWidth = self.map.unitWidth;
       self.floorDepth = self.map.unitHeight;
@@ -457,6 +475,7 @@ define([
       calculateEnv();
       addFloor();
       addWalls();
+      addRoof();
       addRack();
 
       if (config.DEBUG) {
