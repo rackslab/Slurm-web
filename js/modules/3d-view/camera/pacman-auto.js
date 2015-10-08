@@ -65,7 +65,7 @@ define([
           to: translateTo
         });
 
-        rotationTo = cameraRotation.y + directionY * (90 * Math.PI / 180);
+        rotationTo = cameraRotation.y + directionY * Math.PI;
         self.movements.push({
           type: 'rotateY',
           direction: directionY,
@@ -82,14 +82,6 @@ define([
           });
           cameraPosition.z = translateTo;
         }
-
-        rotationTo = cameraRotation.y + directionY * (90 * Math.PI / 180);
-        self.movements.push({
-          type: 'rotateY',
-          direction: directionY,
-          to: rotationTo
-        });
-        cameraRotation.y = rotationTo;
 
         directionX *= -1;
         directionY *= -1;
@@ -107,7 +99,7 @@ define([
           to: translateTo
         });
 
-        rotationTo = cameraRotation.y + directionY * (90 * Math.PI / 180);
+        rotationTo = cameraRotation.y + directionY * Math.PI;
         self.movements.push({
           type: 'rotateY',
           direction: directionY,
@@ -124,14 +116,6 @@ define([
           });
           cameraPosition.z = translateTo;
         }
-
-        rotationTo = cameraRotation.y + directionY * (90 * Math.PI / 180);
-        self.movements.push({
-          type: 'rotateY',
-          direction: directionY,
-          to: rotationTo
-        });
-        cameraRotation.y = rotationTo;
 
         directionX *= -1;
         directionY *= -1;
