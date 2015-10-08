@@ -257,8 +257,8 @@ define([
     }
 
     function addNode(node, x, y, z, temperatureCoefficient) {
-      var nodeWidth = node.width * config.RACKWIDTH * config.UNITSIZE - 2 * config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING;
-      var nodeX = node.posx * config.RACKWIDTH * config.UNITSIZE;
+      var nodeWidth = node.width * (config.RACKWIDTH - 2 * config.RACKPADDING - 2 * config.NODEPADDINGLEFTRIGHT) * config.UNITSIZE;
+      var nodeX = node.posx * (config.RACKWIDTH - 2 * config.RACKPADDING + config.NODEPADDINGLEFTRIGHT) * config.UNITSIZE;
       var nodeHeight = node.height * config.RACKHEIGHT * config.UNITSIZE;
       nodeHeight -= nodeHeight * config.NODEPADDINGTOP;
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
@@ -269,7 +269,7 @@ define([
       var material = new THREE.MeshBasicMaterial({ color: colors.NODE });
       var mesh = new THREE.Mesh(geometry, material);
 
-      var positionX = x - -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2) + -temperatureCoefficient * (config.RACKWIDTH * config.UNITSIZE * config.RACKPADDING);
+      var positionX = x - -temperatureCoefficient * ((config.RACKWIDTH - 2 * config.RACKPADDING) * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2);
       var positionY = y + (config.RACKHEIGHT * config.UNITSIZE / 2) + nodeY + (nodeHeight / 2);
       var positionZ = z + -temperatureCoefficient * (config.RACKDEPTH * config.UNITSIZE * 0.006 + config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING);
 
@@ -282,7 +282,7 @@ define([
       self.scene.add(mesh);
 
       addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      //addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
     function addRack() {

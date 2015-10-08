@@ -1,4 +1,5 @@
 {
   "STARTPAGE": "jobs",
-  "REFRESH": 30000
+  "REFRESH": 30000,
+  "MAXNODESLENGTH": 25
 }
