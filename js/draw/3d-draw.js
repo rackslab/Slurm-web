@@ -97,9 +97,21 @@ define([
     }
 
     function addWalls() {
-      var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xA9A9A9 });
+      var texture = THREE.ImageUtils.loadTexture('static/wall.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+
+      var wallMaterial = new THREE.MeshBasicMaterial({ map: texture });
 
       var topWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      var repeatX = self.floorWidth / (room.rackwidth * config.UNITSIZE);
+
+      if (!self.defaultXSize) {
+        repeatX = self.floorWidth / (room.rackwidth * config.UNITSIZEMETER);
+      }
+
+      texture.repeat.set(repeatX, config.WALLHEIGHT);
+
       var bottomWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
       var leftWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
       var rightWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
@@ -140,7 +152,12 @@ define([
       texture.wrapT = THREE.RepeatWrapping;
       var roofMaterial = new THREE.MeshBasicMaterial({ map: texture });
       var roofGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
+
       texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+
+      if (!self.defaultXSize) {
+        texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZE), self.floorDepth / (room.rackwidth * config.UNITSIZE));
+      }
 
       var roof = new THREE.Mesh(roofGeometry, roofMaterial);
       roof.rotation.x = 90 * Math.PI / 180;
@@ -155,17 +172,21 @@ define([
     function addFloor() {
       self.floorWidth = self.map.unitWidth;
       self.floorDepth = self.map.unitHeight;
+      self.defaultXSize = true;
+      self.defaultZSize = false;
       self.floorX = 0;
       self.floorZ = 0;
 
       if (room.width * room.rackwidth * config.UNITSIZEMETER > self.floorWidth) {
         self.floorWidth = room.width * room.rackwidth * config.UNITSIZEMETER;
         self.floorX = room.posx * room.rackwidth;
+        self.defaultXSize = false;
       }
 
       if (room.depth * room.rackwidth * config.UNITSIZEMETER > self.floorDepth) {
         self.floorDepth = room.depth * room.rackwidth * config.UNITSIZEMETER;
         self.floorZ = room.posy * room.rackwidth;
+        self.defaultZSize = false;
       }
 
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
@@ -173,7 +194,12 @@ define([
       texture.wrapT = THREE.RepeatWrapping;
       var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
       var floorGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
+
       texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+
+      if (!self.defaultXSize) {
+        texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZE), self.floorDepth / (room.rackwidth * config.UNITSIZE));
+      }
 
       var floor = new THREE.Mesh(floorGeometry, floorMaterial);
       floor.rotation.x = 90 * Math.PI / 180;
