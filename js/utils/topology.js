@@ -31,94 +31,142 @@ define([
           text = document.createElementNS("http://www.w3.org/2000/svg", 'text'),
           tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
 
-
-      for (var attribute in options.g.attributes) {
-        g.setAttribute(attribute, options.g.attributes[attribute]);
+      for (var attribute in options.G.ATTRIBUTES) {
+        g.setAttribute(attribute, options.G.ATTRIBUTES[attribute]);
       }
       g.setAttribute('data-id', data.name);
 
-      for (var attribute in options.box.attributes) {
-        box.setAttribute(attribute, options.box.attributes[attribute]);
+      for (var attribute in options.BOX.ATTRIBUTES) {
+        box.setAttribute(attribute, options.BOX.ATTRIBUTES[attribute]);
       }
-      box.setAttribute('x', data.x - options.box.attributes.width / 2);
+      box.setAttribute('x', data.x - options.BOX.ATTRIBUTES.width / 2);
       box.setAttribute('y', data.y);
 
-      for (var attribute in options.text.attributes) {
-        text.setAttribute(attribute, options.text.attributes[attribute]);
+      for (var attribute in options.TEXT.ATTRIBUTES) {
+        text.setAttribute(attribute, options.TEXT.ATTRIBUTES[attribute]);
       }
       text.setAttribute('x', data.x);
-      text.setAttribute('y', data.y + options.box.attributes.height / 2);
+      text.setAttribute('y', data.y + options.BOX.ATTRIBUTES.height / 2);
       text.appendChild(document.createTextNode(data.name));
 
       g.appendChild(box);
       g.appendChild(text);
+      data.html = g;
 
-      return {
-        html: g,
-        x: data.x,
-        y: data.y
-      }
+      return data;
     };
 
     this.createNode = function(data) {
-      return this.createSVGElement(data, this.config.nodes);
+      return this.createSVGElement(data, this.config.NODES);
     };
 
     this.createSwitch = function(data) {
-      var element = this.createSVGElement(data, this.config.switches),
-          linkedElements = data.level ? data.switches : data.nodes;
+      var linkedElements = data.level ? data.switches : data.nodes,
+          params = this.config.GRAPH,
+          nodeParams = this.config.NODES,
+          nodesLength = Object.keys(topology.nodes).length,
+          minChildX = 0,
+          maxChildX = nodesLength * (nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX) + 2 * params.PADDINGX;
+
 
       for (var id in linkedElements) {
-        var line = document.createElementNS("http://www.w3.org/2000/svg", 'line'),
-            linkedElement = data.level ? topology.switches['level-' + (data.level - 1)][id] : topology.nodes[id];
+        var linkedElement = data.level ? topology.switches['level-' + (data.level - 1)][id] : topology.nodes[id];
 
-        line.setAttribute('x1', data.x);
-        line.setAttribute('y1', data.y + this.config.switches.box.attributes.height);
-        line.setAttribute('x2', linkedElement.x);
-        line.setAttribute('y2', linkedElement.y);
-        line.setAttribute('class', 'link');
-        element.html.appendChild(line);
+        minChildX = Math.max(minChildX, linkedElement.x);
+        maxChildX = Math.min(maxChildX, linkedElement.x);
       }
 
-      return element;
+      data.x = (minChildX + maxChildX) / 2;
+      this.preventClash(data);
+      data = this.createSVGElement(data, this.config.SWITCHES);
+
+      return data;
     };
 
+    this.preventClash = function(data) {
+      var switches = topology.switches['level-' + data.level],
+          params = this.config.SWITCHES,
+          width = params.BOX.ATTRIBUTES.width,
+          marginX = params.BOX.MARGINX,
+          spacing = width + marginX;
+
+      for (var id in switches) {
+        var s = switches[id];
+        if (s.name == data.name || !s.x) {
+          break;
+        }
+
+        if (data.x > s.x - spacing && data.x < s.x + spacing) {
+          var difference = (data.x - s.x);
+
+          if (difference >= 0) {
+            data.x = data.x + spacing - difference;
+          } else {
+            data.x = data.x - spacing + difference;
+          }
+        }
+      }
+    }
+
+    this.createEdges = function() {
+      for (var i = 0; i < topology.levels; i++) {
+        var switches = topology.switches['level-' + i];
+
+        for (var id in switches) {
+          var s = switches[id],
+              linkedElements = s.level ? s.switches : s.nodes;
+
+          for (var id in linkedElements) {
+            var line = document.createElementNS("http://www.w3.org/2000/svg", 'line'),
+                linkedElement = s.level ? topology.switches['level-' + (s.level - 1)][id] : topology.nodes[id];
+
+            line.setAttribute('x1', s.x);
+            line.setAttribute('y1', s.y + this.config.SWITCHES.BOX.ATTRIBUTES.height);
+            line.setAttribute('x2', linkedElement.x);
+            line.setAttribute('y2', linkedElement.y);
+            line.setAttribute('class', 'link');
+
+            s.html.appendChild(line);
+          }
+        }
+      }
+    }
+
     this.createGraph = function() {
-      var params = this.config.graph,
-          nodeParams = this.config.nodes,
-          switchParams = this.config.nodes,
+      var params = this.config.GRAPH,
+          nodeParams = this.config.NODES,
+          switchParams = this.config.SWITCHES,
           levels = topology.levels,
           nodes = topology.nodes,
           nodesLength = Object.keys(nodes).length,
           switches = topology.switches,
-          width = nodesLength * (nodeParams.box.attributes.width + 2 * nodeParams.box.paddingX) + 2 * params.paddingX,
-          height = levels * (switchParams.box.attributes.height + params.rowSpacing) + nodeParams.box.attributes.height + 2 * params.paddingY,
-          currentX = params.paddingX,
-          currentY = height - params.paddingY,
+          width = nodesLength * (nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX) + 2 * params.PADDINGX,
+          height = levels * (switchParams.BOX.ATTRIBUTES.height + params.ROWSPACING) + nodeParams.BOX.ATTRIBUTES.height + 2 * params.PADDINGY,
+          currentX = params.PADDINGX,
+          currentY = height - params.PADDINGY,
           graph = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 
       // generate nodes
-      currentY -= nodeParams.box.attributes.height;
+      currentY -= nodeParams.BOX.ATTRIBUTES.height;
       for (var id in nodes) {
         nodes[id].text = nodes[id].name;
-        nodes[id].x = currentX + nodeParams.box.attributes.width / 2 + nodeParams.box.paddingX;
+        nodes[id].x = currentX + nodeParams.BOX.ATTRIBUTES.width / 2 + nodeParams.BOX.MARGINX;
         nodes[id].y = currentY;
         nodes[id].html = this.createNode(nodes[id]).html;
         graph.appendChild(nodes[id].html)
-        currentX += nodeParams.box.attributes.width + 2 * nodeParams.box.paddingX;
+        currentX += nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX;
       }
 
       // generate switches
       for (var i = 0; i < levels; i++) {
         var curSwitches = switches['level-' + i],
             switchesLength = Object.keys(curSwitches).length,
-            switchesInterval = (width - 2 * params.paddingX) / switchesLength;
-        currentY -= params.rowSpacing + switchParams.box.attributes.height;
-        currentX = params.paddingX + switchesInterval / 2;
+            switchesInterval = (width - 2 * params.PADDINGX) / switchesLength;
+        currentY -= params.ROWSPACING + switchParams.BOX.ATTRIBUTES.height;
+        currentX = params.PADDINGX + switchesInterval / 2;
 
         for (var id in curSwitches) {
           curSwitches[id].text = curSwitches[id].name;
-          curSwitches[id].x = currentX + nodeParams.box.attributes.width / 2 + nodeParams.box.paddingX;
           curSwitches[id].y = currentY;
           curSwitches[id].html = this.createSwitch(curSwitches[id]).html;
           graph.appendChild(curSwitches[id].html)
@@ -126,8 +174,10 @@ define([
         }
       }
 
-      for (var attribute in params.attributes) {
-        graph.setAttribute(attribute, params.attributes[attribute]);
+      this.createEdges();
+
+      for (var attribute in params.ATTRIBUTES) {
+        graph.setAttribute(attribute, params.ATTRIBUTES[attribute]);
       }
       graph.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
       graph.setAttribute('width', width);
