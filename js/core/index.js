@@ -72,7 +72,8 @@ require.config({
     'three-pacman-auto': '../../js/modules/3d-view/camera/pacman-auto',
     gantt: '../../js/modules/gantt/gantt',
     topology: '../../js/modules/topology/topology',
-    'topology-utils': '../../js/utils/topology'
+    'topology-utils': '../../js/utils/topology',
+    'fake-placeholder': '../../js/utils/fakePlaceholder'
   },
   shim: {
     jquery: {
