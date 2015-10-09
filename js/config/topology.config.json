@@ -1,46 +1,47 @@
 {
-  "graph": {
-    "attributes": {
+  "GRAPH": {
+    "ATTRIBUTES": {
       "class": "graph",
-      "preserveAspectRatio": "xMidYMid meet"
+      "preserveaspectratio": "xMidYMid meet"
     },
-    "paddingX": 5,
-    "paddingY": 5,
-    "rowSpacing": 400
+    "PADDINGX": 5,
+    "PADDINGY": 5,
+    "ROWSPACING": 400
   },
-  "switches": {
-    "g": {
-      "attributes": {
+  "SWITCHES": {
+    "G": {
+      "ATTRIBUTES": {
         "class": "switch"
       }
     },
-    "box": {
-      "attributes": {
+    "BOX": {
+      "ATTRIBUTES": {
         "width": 80,
         "height": 40
-      }
+      },
+      "MARGINX": 10
     },
-    "text": {
-      "attributes": {
+    "TEXT": {
+      "ATTRIBUTES": {
         "dy": ".3em"
       }
     }
   },
-  "nodes": {
-    "g": {
-      "attributes": {
+  "NODES": {
+    "G": {
+      "ATTRIBUTES": {
         "class": "node"
       }
     },
-    "box": {
-      "attributes": {
+    "BOX": {
+      "ATTRIBUTES": {
         "width": 60,
         "height": 40
       },
-      "paddingX": 2
+      "MARGINX": 2
     },
-    "text": {
-      "attributes": {
+    "TEXT": {
+      "ATTRIBUTES": {
         "dy": ".3em"
       }
     }
