@@ -23,8 +23,9 @@ define([
   'handlebars',
   'text!../../js/core/login/login.hbs',
   'token-utils',
-  'user-utils'
-], function ($, Handlebars, template, tokenUtils, userUtils) {
+  'user-utils',
+  'fake-placeholder'
+], function ($, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
 
   return function (config) {
@@ -43,6 +44,11 @@ define([
 
     this.init = function () {
       $('#main').append(template());
+
+      // hack for placeholder in IE
+      if ($.browser.msie) {
+        fakePlaceholder();
+      }
 
       if (config.cluster.authentication.guest)
         $('#login #guest').show();
