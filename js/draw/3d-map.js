@@ -19,7 +19,7 @@
  */
 
 define([
-  'text!../config/3d.config.json'
+  'text!/slurm-web-conf/3d.config.json'
 ], function (config) {
   config = JSON.parse(config);
 
@@ -96,7 +96,7 @@ define([
               rackAltitude = racks[rackIndex][nodeIndex].nodes[i].posy + racks[rackIndex][nodeIndex].nodes[i].height;
               if (rackAltitude > altitude) {
                 altitude = rackAltitude;
-              } 
+              }
             }
           }
         }
@@ -234,7 +234,7 @@ define([
           hotRange = false;
         } else {
           hotRange = true;
-        } 
+        }
       }
 
       for (i = 0; i < config.PATHSIZE * 2; i++) {

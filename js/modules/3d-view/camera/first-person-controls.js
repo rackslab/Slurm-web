@@ -20,19 +20,19 @@
 
 /*
  * The MIT License
- * 
+ *
  * Copyright © 2010-2015 three.js authors
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,7 +48,7 @@
  * @author paulirish / http://paulirish.com/
  */
 
-define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE, d3config) {
+define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, THREE, d3config) {
   d3config = JSON.parse(d3config);
 
   THREE.FirstPersonControls = function (object, domElement) {
@@ -204,7 +204,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
             this.enabled = true;
             break;
           }
-          
+
           this.enabled = false;
           break;
       }
@@ -239,7 +239,7 @@ define(['jquery', 'three', 'text!../config/3d.config.json'], function ($, THREE,
       if (this.enabled === false) return;
 
       if (this.mouseX < (this.domElement.width * 0.1) &&
-          this.mouseX > -(this.domElement.width * 0.1) && 
+          this.mouseX > -(this.domElement.width * 0.1) &&
           this.mouseY < (this.domElement.height * 0.1) &&
           this.mouseY > -(this.domElement.height * 0.1)) {
         this.mouseX = 0;

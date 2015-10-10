@@ -20,8 +20,8 @@
 
 define([
   'jquery',
-  'text!../config/2d.config.json',
-  'text!../config/2d.colors.config.json',
+  'text!/slurm-web-conf/2d.config.json',
+  'text!/slurm-web-conf/2d.colors.config.json',
   '2d-intersections-draw',
   'colors-draw'
 ], function ($, d2Config, d2ColorsConfig, IntersectionsDraw, colorsDraw) {

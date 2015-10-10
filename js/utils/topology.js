@@ -19,7 +19,7 @@
  */
 
 define([
-  'text!../config/topology.config.json'
+  'text!/slurm-web-conf/topology.config.json'
 ], function (config) {
   function Graph(topology) {
     this.config = JSON.parse(config);

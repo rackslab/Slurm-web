@@ -21,7 +21,7 @@
 define([
   'jquery',
   'three',
-  'text!../config/3d.config.json'
+  'text!/slurm-web-conf/3d.config.json'
 ], function ($, THREE, d3config) {
   d3config = JSON.parse(d3config);
 

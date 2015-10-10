@@ -123,7 +123,7 @@ if (isIE) {
 
 require([
   'page-utils',
-  'text!../config/config.json',
+  'text!/slurm-web-conf/config.json',
   'token-utils',
   'user-utils',
   'login',
