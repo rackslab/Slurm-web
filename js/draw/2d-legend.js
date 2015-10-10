@@ -20,7 +20,7 @@
 
 define([
   'jquery',
-  'text!../config/2d.colors.config.json'
+  'text!/slurm-web-conf/2d.colors.config.json'
 ], function ($, colorsConfig) {
   var colors = JSON.parse(colorsConfig);
 
@@ -101,5 +101,5 @@ define([
         ctx.fillText('partly allocated', legendX + 10, legendY + 10);
       }
     }
-  }  
+  }
 });

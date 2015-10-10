@@ -12,6 +12,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsg
 Description: Slurm Web Python REST API
  Slurm Web backend  REST API developed in Python using Flask web framework.
 
+Package: slurm-web-confdashboard
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask
+Description: Slurm Web conf dashboard
+ Static Flask server to supply config files for the dashboard
+
 Package: slurm-web-dashboard
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot, libjs-jquery-tablesorter

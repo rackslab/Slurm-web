@@ -19,8 +19,8 @@
  */
 
 define([
-  'text!../config/2d.colors.config.json',
-  'text!../config/3d.colors.config.json'
+  'text!/slurm-web-conf/2d.colors.config.json',
+  'text!/slurm-web-conf/3d.colors.config.json'
 ], function (d2ColorsConfig, d3ColorsConfig) {
   var d2Colors = JSON.parse(d2ColorsConfig);
   var d3Colors = JSON.parse(d3ColorsConfig);

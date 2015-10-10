@@ -20,8 +20,8 @@
 
 define([
   'handlebars',
-  'text!../config/config.json',
-  'text!../config/2d.colors.config.json',
+  'text!/slurm-web-conf/config.json',
+  'text!/slurm-web-conf/2d.colors.config.json',
   'date-utils'
 ], function (Handlebars, config, colorsConfig, dateUtils) {
   config = JSON.parse(config);

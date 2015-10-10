@@ -20,8 +20,8 @@
 
 define([
   'jquery',
-  'text!../config/3d.config.json',
-  'text!../config/3d.colors.config.json',
+  'text!/slurm-web-conf/3d.config.json',
+  'text!/slurm-web-conf/3d.colors.config.json',
   'three',
   'factor-draw',
   'colors-draw',
@@ -52,7 +52,7 @@ define([
     function onMouseDown(event) {
       event.preventDefault();
 
-      var canvasMouseX = event.clientX - self.canvasRectangle.left; 
+      var canvasMouseX = event.clientX - self.canvasRectangle.left;
       var canvasMouseY = event.clientY - self.canvasRectangle.top;
 
       self.mouse.set((canvasMouseX / self.canvas.width) * 2 - 1, -(canvasMouseY / self.canvas.height) * 2 + 1, 0.5);
