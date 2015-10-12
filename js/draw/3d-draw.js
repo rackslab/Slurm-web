@@ -33,8 +33,6 @@ define([
   var colors = JSON.parse(d3Colors);
 
   return function (map, racks, nodes, jobs, room) {
-    var self = this;
-
     this.room = room;
     this.map = map;
     this.racks = racks;
@@ -44,176 +42,208 @@ define([
     this.camera;
     this.clock;
 
-    function calculateEnv() {
-      self.map.unitWidth = self.map.width * config.UNITSIZE + self.map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
-      self.map.unitHeight = self.map.height * config.UNITSIZE + self.map.rangeNumber * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
+    this.objects = {};
+    this.objects.material = [];
+    this.objects.geometry = [];
+    this.objects.mesh = [];
+
+    this.calculateEnv = function () {
+      this.map.unitWidth = this.map.width * config.UNITSIZE + this.map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
+      this.map.unitHeight = this.map.height * config.UNITSIZE + this.map.rangeNumber * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
     }
 
-    function onMouseDown(event) {
+    this.onMouseDown = function (event) {
       event.preventDefault();
 
-      var canvasMouseX = event.clientX - self.canvasRectangle.left;
-      var canvasMouseY = event.clientY - self.canvasRectangle.top;
+      var canvasMouseX = event.clientX - this.canvasRectangle.left;
+      var canvasMouseY = event.clientY - this.canvasRectangle.top;
 
-      self.mouse.set((canvasMouseX / self.canvas.width) * 2 - 1, -(canvasMouseY / self.canvas.height) * 2 + 1, 0.5);
-      self.mouse.unproject(self.camera);
+      this.mouse.set((canvasMouseX / this.canvas.width) * 2 - 1, -(canvasMouseY / this.canvas.height) * 2 + 1, 0.5);
+      this.mouse.unproject(this.camera);
 
-      self.raycaster.set(self.camera.position, self.mouse.sub(self.camera.position ).normalize());
+      this.raycaster.set(this.camera.position, this.mouse.sub(this.camera.position ).normalize());
 
-      var intersects = self.raycaster.intersectObjects( self.scene.children, true );
+      var intersects = this.raycaster.intersectObjects( this.scene.children, true );
       for (var i = 0; i < intersects.length; i++) {
         //console.log(intersects[i].object);
       }
     }
 
-    function getMapValue(x, y) {
-      return self.map.data[y * self.map.width + x];
+    this.getMapValue = function (x, y) {
+      return this.map.data[y * this.map.width + x];
     }
 
-    function setControls(canvas) {
-      addCamera(canvas);
+    this.setControls = function (canvas) {
+      this.addCamera(canvas);
 
-      switch (self.interfaceOptions.cameraType) {
+      switch (this.interfaceOptions.cameraType) {
         case 'fps':
-          self.controls = new THREE.FirstPersonControls(self.camera, canvas);
-          self.controls.movementSpeed = config.MOVESPEED;
-          self.controls.lookSpeed = config.LOOKSPEED;
-          self.controls.lookVertical = true;
-          self.controls.noFly = true;
-          $(self.canvas).on('mousedown', onMouseDown);
+          this.controls = new THREE.FirstPersonControls(this.camera, canvas);
+          this.controls.movementSpeed = config.MOVESPEED;
+          this.controls.lookSpeed = config.LOOKSPEED;
+          this.controls.lookVertical = true;
+          this.controls.noFly = true;
+          $(this.canvas).on('mousedown', onMouseDown);
         break;
         case 'pacman':
-          self.controls = new THREE.PacmanAuto(self.camera, canvas, self.map);
+          this.controls = new THREE.PacmanAuto(this.camera, canvas, this.map);
         break;
         default:
-          self.controls = new THREE.OrbitControls(self.camera, canvas);
+          this.controls = new THREE.OrbitControls(this.camera, canvas);
       }
 
     }
 
-    function addLight() {
+    this.addLight = function () {
       var light = new THREE.AmbientLight(0x404040);
-      self.scene.add(light);
+      this.scene.add(light);
     }
 
-    function addWalls() {
+    this.addWalls = function () {
       var texture = THREE.ImageUtils.loadTexture('static/wall.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
 
-      var wallMaterial = new THREE.MeshBasicMaterial({ map: texture });
+      this.objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
+      var wallMaterial = this.objects.material[this.objects.material.length - 1];
 
-      var topWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var repeatX = self.floorWidth / (room.rackwidth * config.UNITSIZE);
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      var topWallGeometry = this.objects.geometry[this.objects.geometry.length - 1];
+      var repeatX = this.floorWidth / (room.rackwidth * config.UNITSIZE);
 
-      if (!self.defaultXSize) {
-        repeatX = self.floorWidth / (room.rackwidth * config.UNITSIZEMETER);
+      if (!this.defaultXSize) {
+        repeatX = this.floorWidth / (room.rackwidth * config.UNITSIZEMETER);
       }
 
       texture.repeat.set(repeatX, config.WALLHEIGHT);
 
-      var bottomWallGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var leftWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
-      var rightWallGeometry = new THREE.PlaneBufferGeometry(self.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1);
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      var bottomWallGeometry = this.objects.geometry[this.objects.geometry.length - 1];
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      var leftWallGeometry = this.objects.geometry[this.objects.geometry.length - 1];
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      var rightWallGeometry = this.objects.geometry[this.objects.geometry.length - 1];
 
-      var topWall = new THREE.Mesh(topWallGeometry, wallMaterial);
-      var bottomWall = new THREE.Mesh(bottomWallGeometry, wallMaterial);
-      var leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial);
-      var rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
+      this.objects.mesh.push(new THREE.Mesh(topWallGeometry, wallMaterial));
+      var topWall = this.objects.mesh[this.objects.mesh.length - 1];
+      this.objects.mesh.push(new THREE.Mesh(bottomWallGeometry, wallMaterial));
+      var bottomWall = this.objects.mesh[this.objects.mesh.length - 1];
+      this.objects.mesh.push(new THREE.Mesh(leftWallGeometry, wallMaterial));
+      var leftWall = this.objects.mesh[this.objects.mesh.length - 1];
+      this.objects.mesh.push(new THREE.Mesh(rightWallGeometry, wallMaterial));
+      var rightWall = this.objects.mesh[this.objects.mesh.length - 1];
 
-      topWall.position.x = self.floorX;
-      topWall.position.z = -(self.floorDepth / 2) + self.floorZ;
+      topWall.position.x = this.floorX;
+      topWall.position.z = -(this.floorDepth / 2) + this.floorZ;
       topWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
 
-      bottomWall.position.x = self.floorX;
-      bottomWall.position.z = (self.floorDepth / 2) + self.floorZ;
+      bottomWall.position.x = this.floorX;
+      bottomWall.position.z = (this.floorDepth / 2) + this.floorZ;
       bottomWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       bottomWall.rotation.x = 180 * Math.PI / 180;
 
-      leftWall.position.z = self.floorZ;
-      leftWall.position.x = -(self.floorWidth / 2) + self.floorX;
+      leftWall.position.z = this.floorZ;
+      leftWall.position.x = -(this.floorWidth / 2) + this.floorX;
       leftWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       leftWall.rotation.y = 90 * Math.PI / 180;
 
-      rightWall.position.z = self.floorZ;
-      rightWall.position.x = (self.floorWidth / 2) + self.floorX;
+      rightWall.position.z = this.floorZ;
+      rightWall.position.x = (this.floorWidth / 2) + this.floorX;
       rightWall.position.y = config.WALLHEIGHT * config.UNITSIZE / 2;
       rightWall.rotation.y = -90 * Math.PI / 180;
 
-      self.scene.add(topWall);
-      self.scene.add(bottomWall);
-      self.scene.add(leftWall);
-      self.scene.add(rightWall);
+      this.scene.add(topWall);
+      this.scene.add(bottomWall);
+      this.scene.add(leftWall);
+      this.scene.add(rightWall);
+
+      wallMaterial.dispose();
+      topWallGeometry.dispose();
+      bottomWallGeometry.dispose();
+      leftWallGeometry.dispose();
+      rightWallGeometry.dispose();
     }
 
-    function addRoof() {
+    this.addRoof = function () {
       var texture = THREE.ImageUtils.loadTexture('static/roof.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      var roofMaterial = new THREE.MeshBasicMaterial({ map: texture });
-      var roofGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
+      this.objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
+      var roofMaterial = this.objects.material[this.objects.material.length - 1];
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorWidth, this.floorDepth, 1, 1));
+      var roofGeometry = this.objects.geometry[this.objects.geometry.length - 1];
 
-      texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+      texture.repeat.set(this.floorWidth / (room.rackwidth * config.UNITSIZEMETER), this.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
 
-      if (!self.defaultXSize) {
-        texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZE), self.floorDepth / (room.rackwidth * config.UNITSIZE));
+      if (!this.defaultXSize) {
+        texture.repeat.set(this.floorWidth / (room.rackwidth * config.UNITSIZE), this.floorDepth / (room.rackwidth * config.UNITSIZE));
       }
 
-      var roof = new THREE.Mesh(roofGeometry, roofMaterial);
+      this.objects.mesh.push(new THREE.Mesh(roofGeometry, roofMaterial));
+      var roof = this.objects.mesh[this.objects.mesh.length - 1];
       roof.rotation.x = 90 * Math.PI / 180;
 
-      roof.position.x = self.floorX;
-      roof.position.z = self.floorZ;
+      roof.position.x = this.floorX;
+      roof.position.z = this.floorZ;
       roof.position.y = config.WALLHEIGHT * config.UNITSIZE;
 
-      self.scene.add(roof);
+      this.scene.add(roof);
+
+      roofMaterial.dispose();
+      roofGeometry.dispose();
     }
 
-    function addFloor() {
-      self.floorWidth = self.map.unitWidth;
-      self.floorDepth = self.map.unitHeight;
-      self.defaultXSize = true;
-      self.defaultZSize = false;
-      self.floorX = 0;
-      self.floorZ = 0;
+    this.addFloor = function () {
+      this.floorWidth = this.map.unitWidth;
+      this.floorDepth = this.map.unitHeight;
+      this.defaultXSize = true;
+      this.defaultZSize = false;
+      this.floorX = 0;
+      this.floorZ = 0;
 
-      if (room.width * room.rackwidth * config.UNITSIZEMETER > self.floorWidth) {
-        self.floorWidth = room.width * room.rackwidth * config.UNITSIZEMETER;
-        self.floorX = room.posx * room.rackwidth;
-        self.defaultXSize = false;
+      if (room.width * room.rackwidth * config.UNITSIZEMETER > this.floorWidth) {
+        this.floorWidth = room.width * room.rackwidth * config.UNITSIZEMETER;
+        this.floorX = room.posx * room.rackwidth;
+        this.defaultXSize = false;
       }
 
-      if (room.depth * room.rackwidth * config.UNITSIZEMETER > self.floorDepth) {
-        self.floorDepth = room.depth * room.rackwidth * config.UNITSIZEMETER;
-        self.floorZ = room.posy * room.rackwidth;
-        self.defaultZSize = false;
+      if (room.depth * room.rackwidth * config.UNITSIZEMETER > this.floorDepth) {
+        this.floorDepth = room.depth * room.rackwidth * config.UNITSIZEMETER;
+        this.floorZ = room.posy * room.rackwidth;
+        this.defaultZSize = false;
       }
 
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      var floorMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-      var floorGeometry = new THREE.PlaneBufferGeometry(self.floorWidth, self.floorDepth, 1, 1);
 
-      texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZEMETER), self.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+      this.objects.material.push(new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }));
+      var floorMaterial = this.objects.material[this.objects.material.length - 1];
+      this.objects.geometry.push(new THREE.PlaneGeometry(this.floorWidth, this.floorDepth, 1, 1));
+      var floorGeometry = this.objects.geometry[this.objects.geometry.length - 1];
 
-      if (!self.defaultXSize) {
-        texture.repeat.set(self.floorWidth / (room.rackwidth * config.UNITSIZE), self.floorDepth / (room.rackwidth * config.UNITSIZE));
+      texture.repeat.set(this.floorWidth / (room.rackwidth * config.UNITSIZEMETER), this.floorDepth / (room.rackwidth * config.UNITSIZEMETER));
+
+      if (!this.defaultXSize) {
+        texture.repeat.set(this.floorWidth / (room.rackwidth * config.UNITSIZE), this.floorDepth / (room.rackwidth * config.UNITSIZE));
       }
 
-      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      this.objects.mesh.push(new THREE.Mesh(floorGeometry, floorMaterial));
+      var floor = this.objects.mesh[this.objects.mesh.length - 1];
       floor.rotation.x = 90 * Math.PI / 180;
 
-      floor.position.x = self.floorX;
-      floor.position.z = self.floorZ;
+      floor.position.x = this.floorX;
+      floor.position.z = this.floorZ;
 
-      self.scene.add(floor);
+      this.scene.add(floor);
+      floorMaterial.dispose();
+      floorGeometry.dispose();
     }
 
-    function addCores(node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
+    this.addCores = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
 
-      var cpus = self.nodes[node.name].cpus;
+      var cpus = this.nodes[node.name].cpus;
 
       if (!cpus) {
         return
@@ -230,10 +260,10 @@ define([
 
       var jobs = [];
       var i;
-      if (self.jobs.hasOwnProperty(node.name)) {
-        for (jobId in self.jobs[node.name]){
-          if (self.jobs[node.name].hasOwnProperty(jobId)) {
-            for (i = 0; i < self.jobs[node.name][jobId]; i++) {
+      if (this.jobs.hasOwnProperty(node.name)) {
+        for (jobId in this.jobs[node.name]){
+          if (this.jobs[node.name].hasOwnProperty(jobId)) {
+            for (i = 0; i < this.jobs[node.name][jobId]; i++) {
               jobs.push(jobId)
             }
           }
@@ -258,18 +288,22 @@ define([
       var factorHeight = row * cpuDimensions;
 
       var cpuPadding = cpuDimensions * config.CPUPADDING;
-      for (cpu = 0; cpu < cpus; cpu++) {
-        geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth);
-        geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+      this.objects.geometry.push(new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth));
+      geometry = this.objects.geometry[this.objects.geometry.length - 1];
+      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
+      for (cpu = 0; cpu < cpus; cpu++) {
         if (!jobs[cpu]) {
           color = colors.NOJOB;
         } else {
           color = colorsDraw.findJobColor(jobs[cpu], '3D');
         }
 
-        material = new THREE.MeshBasicMaterial({ color: color });
-        mesh = new THREE.Mesh(geometry, material);
+        this.objects.material.push(new THREE.MeshBasicMaterial({ color: color }));
+        material = this.objects.material[this.objects.material.length - 1];
+        
+        this.objects.mesh.push(new THREE.Mesh(geometry, material));
+        mesh = this.objects.mesh[this.objects.mesh.length - 1];
 
         positionX = x - -temperatureCoefficient * (factorWidth / 2) + ledDimensions * -temperatureCoefficient + -temperatureCoefficient * (cpuDimensions / 2) + -temperatureCoefficient * (Math.floor(cpu % column) * cpuDimensions);
         positionY = y + (factorHeight / 2) - (Math.floor(cpu / column) * cpuDimensions) - (cpuDimensions / 2);
@@ -279,28 +313,36 @@ define([
         mesh.position.y = positionY;
         mesh.position.z = positionZ;
 
-        self.scene.add(mesh);
+        this.scene.add(mesh);
+        material.dispose();
       }
+      geometry.dispose();
     }
 
-    function addLed(node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
+    this.addLed = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
       var ledDepth = nodeWidth * config.LEDDEPTH;
 
-      var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth);
-      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+      this.objects.geometry.push(new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth));
+      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+      var geometry = this.objects.geometry[this.objects.geometry.length - 1];
 
-      var material = new THREE.MeshBasicMaterial({ color: colorsDraw.findLedColor(self.nodes[node.name], '3D').state });
-      var mesh = new THREE.Mesh(geometry, material);
+      this.objects.material.push(new THREE.MeshBasicMaterial({ color: colorsDraw.findLedColor(this.nodes[node.name], '3D').state }));
+      var material = this.objects.material[this.objects.material.length - 1];
+
+      this.objects.mesh.push(new THREE.Mesh(geometry, material));
+      var mesh = this.objects.mesh[this.objects.mesh.length - 1];
 
       mesh.position.x = x - ((nodeWidth / 2) - (ledDimensions + 0.5 * ledDimensions)) * -1 * temperatureCoefficient;
       mesh.position.y = y;
       mesh.position.z = z - (rackDepth / 2) * temperatureCoefficient;
 
-      self.scene.add(mesh);
+      this.scene.add(mesh);
+      geometry.dispose();
+      material.dispose();
     }
 
-    function addNode(node, x, y, z, temperatureCoefficient) {
+    this.addNode = function (node, x, y, z, temperatureCoefficient) {
       var nodeWidth = node.width * (config.RACKWIDTH - 2 * config.RACKPADDING - 2 * config.NODEPADDINGLEFTRIGHT) * config.UNITSIZE;
       var nodeX = node.posx * (config.RACKWIDTH - 2 * config.RACKPADDING + config.NODEPADDINGLEFTRIGHT) * config.UNITSIZE;
       var nodeHeight = node.height * config.RACKHEIGHT * config.UNITSIZE;
@@ -308,10 +350,14 @@ define([
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
       nodeDepth = config.RACKDEPTH * config.UNITSIZE - 2 * config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING;
 
-      var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth);
-      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
-      var material = new THREE.MeshBasicMaterial({ color: colors.NODE });
-      var mesh = new THREE.Mesh(geometry, material);
+      this.objects.geometry.push(new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth));
+      var geometry = this.objects.geometry[this.objects.geometry.length - 1];
+      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+      this.objects.material.push(new THREE.MeshBasicMaterial({ color: colors.NODE }));
+      var material = this.objects.material[this.objects.material.length - 1];
+
+      this.objects.mesh.push(new THREE.Mesh(geometry, material));
+      var mesh = this.objects.mesh[this.objects.mesh.length - 1];
 
       var positionX = x - -temperatureCoefficient * ((config.RACKWIDTH - 2 * config.RACKPADDING) * config.UNITSIZE / 2) + -temperatureCoefficient * nodeX + -temperatureCoefficient * (nodeWidth / 2);
       var positionY = y + (config.RACKHEIGHT * config.UNITSIZE / 2) + nodeY + (nodeHeight / 2);
@@ -323,13 +369,15 @@ define([
 
       positionZ = z + -temperatureCoefficient * (config.RACKDEPTH * config.UNITSIZE * 0.006);
 
-      self.scene.add(mesh);
+      this.scene.add(mesh);
+      geometry.dispose();
+      material.dispose();
 
-      addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
-      addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      this.addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+      this.addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
     }
 
-    function addRack() {
+    this.addRack = function () {
       var rack;
       var positionX;
       var positionY;
@@ -340,7 +388,8 @@ define([
       texture.repeat.set(1, 1, 1);
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      var material = new THREE.MeshBasicMaterial({ map: texture });
+      this.objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
+      var material = this.objects.material[this.objects.material.length - 1];
       var mesh;
 
       var x;
@@ -349,10 +398,10 @@ define([
       var currentRange = 1;
       var temperatureCoefficient = 1;
       var index;
-      for (y = 0; y < self.map.height; y++) {
-        for (x = 0; x < self.map.width; x++) {
-          if (getMapValue(x, y) !== 1 && getMapValue(x, y) !== 0 && self.racks.hasOwnProperty(getMapValue(x, y))) {
-            rack = self.racks[getMapValue(x, y)];
+      for (y = 0; y < this.map.height; y++) {
+        for (x = 0; x < this.map.width; x++) {
+          if (this.getMapValue(x, y) !== 1 && this.getMapValue(x, y) !== 0 && this.racks.hasOwnProperty(this.getMapValue(x, y))) {
+            rack = this.racks[this.getMapValue(x, y)];
 
             if (x === 1 + config.PATHSIZE * 2) {
               range++;
@@ -363,69 +412,74 @@ define([
               currentRange = range;
             }
 
-            positionX = (x - (self.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN);
+            positionX = (x - (this.map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN);
             positionY = (config.UNITSIZE * config.RACKHEIGHT / 2);
-            positionZ = (y - (self.map.height - 1) / 2) * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
+            positionZ = (y - (this.map.height - 1) / 2) * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
 
             for (index in rack.nodes) {
               if (rack.nodes.hasOwnProperty(index)) {
-                addNode(rack.nodes[index], positionX, positionY, positionZ, temperatureCoefficient);
+                this.addNode(rack.nodes[index], positionX, positionY, positionZ, temperatureCoefficient);
               }
             }
 
-            geometry = new THREE.BoxGeometry(
+            this.objects.geometry.push(new THREE.BoxGeometry(
               config.UNITSIZE * config.RACKWIDTH,
-              (self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
+              (this.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
               config.UNITSIZE * config.RACKDEPTH
-            );
+            ));
+            geometry = this.objects.geometry[this.objects.geometry.length - 1];
 
-            mesh = new THREE.Mesh(geometry, material);
+            this.objects.mesh.push(new THREE.Mesh(geometry, material));
+            mesh = this.objects.mesh[this.objects.mesh.length - 1];
 
             mesh.position.x = positionX;
-            mesh.position.y = ((self.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT / 2);
+            mesh.position.y = ((this.map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT / 2);
             mesh.position.z = positionZ;
 
-            self.scene.add(mesh);
+            this.scene.add(mesh);
+            geometry.dispose();
           }
         }
       }
+      material.dispose();
     }
 
-    function addCamera() {
+    this.addCamera = function () {
       var x = 0;
       var y = 0;
       var z = 0;
 
-      switch (self.interfaceOptions.cameraType) {
+      switch (this.interfaceOptions.cameraType) {
         case 'fps':
-          x = -((self.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
-          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+          x = -((this.map.width * config.UNITSIZE) / 2) + ((config.PATHSIZE / 2) * config.UNITSIZE);
+          y = this.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
           z = 0;
         break;
         default:
-          x = -(self.map.width * config.UNITSIZE);
-          y = self.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
+          x = -(this.map.width * config.UNITSIZE);
+          y = this.map.altitude * config.RACKHEIGHT * config.UNITSIZE / 2;
           z = 0;
       }
 
-      self.camera = new THREE.PerspectiveCamera(45, self.canvas.width / self.canvas.height, 0.1, 10000);
-      self.camera.position.set(x, y, z);
-      self.scene.add(self.camera);
-    }
-
-    function render() {
-      if (self.idFrame !== false) {
-        var delta = self.clock.getDelta();
-        self.controls.update(delta);
-        self.idFrame = requestAnimationFrame(render);
-        self.renderer.render(self.scene, self.camera);
-      } else {
-        cancelAnimationFrame(self.idFrame);
-      }
+      this.camera = new THREE.PerspectiveCamera(45, this.canvas.width / this.canvas.height, 0.1, 10000);
+      this.camera.position.set(x, y, z);
+      this.scene.add(this.camera);
     }
 
     this.init = function (canvas) {
+      var self = this;
+
+      function render() {
+        if (!self.cancelAnimation) {
+          var delta = self.clock.getDelta();
+          self.controls.update(delta);
+          self.idFrame = requestAnimationFrame(render);
+          self.renderer.render(self.scene, self.camera);
+        }
+      }
+
       this.idFrame = null;
+      this.cancelAnimation = false;
       this.canvas = canvas;
       this.interfaceOptions = {
         cameraType: 'orbit',
@@ -440,18 +494,18 @@ define([
 
       this.canvasRectangle = this.renderer.domElement.getBoundingClientRect();
 
-      setControls(this.canvas);
+      this.setControls(this.canvas);
 
       $(document).on('camera-change', function (e, options) {
         self.interfaceOptions.cameraType = options.cameraType;
 
-        setControls(self.canvas);
+        self.setControls(self.canvas);
       });
 
       $(document).on('screen-change', function (e, options) {
         self.interfaceOptions.screenType = options.screenType;
 
-        setControls(self.canvas);
+        self.setControls(self.canvas);
       });
 
       $(document).on('fullscreen-enter', function (e) {
@@ -475,40 +529,119 @@ define([
         self.renderer.setSize(options.canvas.width, options.canvas.height);
       });
 
-      $(document).one('three-destroy', function() {
-        if (self.idFrame) {
-          self.idFrame = false;
-
-          $(document).off('contextmenu');
-          $(document).off('mousedown');
-          $(document).off('mousewheel');
-          $(document).off('DOMMouseScroll');
-          $(document).off('keydown');
-          $(document).off('touchstart');
-          $(document).off('touchend');
-          $(document).off('touchmove');
-
-          $(document).on('mousemove');
-          $(document).on('mouseup');
-
-          $(document).off('keydown');
-          $(document).off('keyup');
-
-          $(self.canvas).off('mousedown');
-        }
-      });
-
-      calculateEnv();
-      addFloor();
-      addWalls();
-      addRoof();
-      addRack();
+      this.calculateEnv();
+      this.addFloor();
+      this.addWalls();
+      this.addRoof();
+      this.addRack();
 
       if (config.DEBUG) {
         this.scene.add(new THREE.AxisHelper(100));
       }
 
       render();
+    }
+
+    this.clean = function () {
+      this.cancelAnimation = true;
+      cancelAnimationFrame(this.idFrame);
+      this.idFrame = null;
+
+      var i;
+      for (i = this.objects.geometry.length - 1; i >= 0 ; i--) {
+        this.objects.geometry[i].dispose();
+        delete this.objects.geometry[i];
+      }
+
+      for (i = this.objects.material.length - 1; i >= 0 ; i--) {
+        this.objects.material[i].dispose();
+        delete this.objects.material[i];
+      }
+
+      for (i = this.objects.mesh.length - 1; i >= 0 ; i--) {
+        if (this.objects.mesh[i].hasOwnProperty('geometry')) {
+          this.objects.mesh[i].geometry.dispose();
+          delete this.objects.mesh[i].geometry;
+        }
+
+        if (this.objects.mesh[i].hasOwnProperty('material')) {
+          this.objects.mesh[i].material.dispose();
+          delete this.objects.mesh[i].material;
+        }
+
+        this.scene.remove(this.objects.mesh[i]);
+        delete this.objects.mesh[i];
+      }
+
+      for (i = this.scene.children.length - 1; i >= 0 ; i--) {
+        if (this.scene.children[i].hasOwnProperty('geometry')) {
+          this.scene.children[i].geometry.dispose();
+          delete this.scene.children[i].geometry;
+        }
+
+        if (this.scene.children[i].hasOwnProperty('material')) {
+          this.scene.children[i].material.dispose();
+          delete this.scene.children[i].material;
+        }
+
+        this.scene.remove(this.scene.children[i]);
+        delete this.scene.children[i];
+      }
+
+      $(document).off('contextmenu');
+      $(document).off('mousedown');
+      $(document).off('mousewheel');
+      $(document).off('DOMMouseScroll');
+      $(document).off('keydown');
+      $(document).off('touchstart');
+      $(document).off('touchend');
+      $(document).off('touchmove');
+
+      $(document).on('mousemove');
+      $(document).on('mouseup');
+
+      $(document).off('keydown');
+      $(document).off('keyup');
+
+      $(this.canvas).off('mousedown');
+
+      this.room = null;
+      this.map = null;
+      this.racks = null;
+      this.nodes = null;
+      this.jobs = null;
+
+      this.camera = null;
+      this.clock = null;
+
+      this.objects = null;
+      this.renderer = null;
+      this.scene = null;
+      this.canvas = null;
+      this.clock = null;
+      this.raycaster = null;
+      this.canvasRectangle = null;
+      this.controls = null;
+
+      this.init = null;
+      this.destroy = null;
+      this.mouse = null;
+      this.interfaceOptions = null;
+      this.clean = null;
+      this.addCores = null;
+      this.addLed = null;
+      this.addLight = null;
+      this.addNode = null;
+      this.addRack = null;
+      this.addRoof = null;
+      this.addWalls = null;
+      this.calculateEnv = null;
+      this.getMapValue = null;
+      this.addCamera = null;
+      this.addFloor = null;
+      this.onMouseDown = null;
+      this.render = null;
+      this.setControls = null;
     }
 
     return this;

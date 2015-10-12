@@ -144,6 +144,7 @@ require([
   var page = new Page();
   var clusters = new Clusters(config);
   clusters.init();
+  var firstLoad = true;
 
   $(document).on('loadPage', function(e, options) {
     e.stopPropagation();
@@ -168,6 +169,12 @@ require([
 
     page.destroy(true);
     $('#flash').hide();
+
+    if (firstLoad) {
+      firstLoad = false;
+    } else {
+      page = new Page();
+    }
 
     switch (options.page) {
     case 'login':
