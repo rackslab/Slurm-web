@@ -277,6 +277,13 @@ define([
           $.plot('#plot-part-cores', dataPartCores, plotParams);
           $.plot('#plot-qos-nodes', dataQOSNodes, plotParams);
           $.plot('#plot-qos-cores', dataQOSCores, plotParams);
+
+          // set min-height for plots area
+          var maxLegendHeight = 0;
+          $('.legend>div').each(function() {
+            maxLegendHeight = Math.max(maxLegendHeight, $(this).height());
+          });
+          $('.plots').css({'min-height': maxLegendHeight + 'px'})
         });
     };
 
