@@ -27,7 +27,6 @@ canvas {
   background-image: url(../static/logo.png);
   background-repeat: no-repeat;
   border: 0;
-  position: static;
 }
 
 .navbar {
