@@ -207,4 +207,8 @@ require([
   });
 
   $(document).trigger('loadPage', { config: config });
+
+  $(window).resize(function() {
+    $('body>.container-fluid').css({'margin-top': $('nav').height()+'px'});
+  });
 });

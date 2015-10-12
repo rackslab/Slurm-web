@@ -74,6 +74,8 @@ define([
       });
 
       $(document).trigger('navbarLoaded', { height: $('#navbar').height() });
+
+      $('body>.container-fluid').css({'margin-top': $('nav').height()+'px'});
     };
 
     this.destroy = function () {
