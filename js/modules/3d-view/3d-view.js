@@ -37,35 +37,34 @@ define([
 ], function ($, Handlebars, template, token, d3Draw, d3MapDraw, jobsUtils) {
   template = Handlebars.compile(template);
 
-  function setCanvasSize(canvas) {
-    $('canvas').removeAttr('style');
-    $('canvas').attr('width', canvas.width);
-    $('canvas').attr('height', canvas.height);
-  }
-
-  function getCanvas() {
-    return {
-      element: $('canvas')[0],
-      width: $(window).innerWidth() - 
-        $('canvas').parent('div').offset().left - 
-        parseInt($('#main').css('paddingRight').replace(/[^-\d\.]/g, '')),
-      height: $(window).innerHeight() - 
-        $('canvas').parent('div').offset().top - 
-        (parseInt($('#main').css('paddingTop').replace(/[^-\d\.]/g, '')) + parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')))
-    };
-  }
-
   return function (config) {
-    var self = this;
+    this.setCanvasSize = function (canvas) {
+      $('canvas').removeAttr('style');
+      $('canvas').attr('width', canvas.width);
+      $('canvas').attr('height', canvas.height);
+    }
+
+    this.getCanvas = function () {
+      return {
+        element: $('canvas')[0],
+        width: $(window).innerWidth() - 
+          $('canvas').parent('div').offset().left - 
+          parseInt($('#main').css('paddingRight').replace(/[^-\d\.]/g, '')),
+        height: $(window).innerHeight() - 
+          $('canvas').parent('div').offset().top - 
+          (parseInt($('#main').css('paddingTop').replace(/[^-\d\.]/g, '')) + parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')))
+      };
+    }
 
     this.init = function () {
+      var self = this;
       $('#main').append(template());
 
       $('#tabs a[href="#camera"]').on('show.bs.tab', function (e) {
         $(document).trigger('camera-change', { cameraType: $(this).attr('aria-controls')});
       });
 
-      self.canvas = getCanvas();
+      this.canvas = self.getCanvas();
 
       $('canvas').attr('width', self.canvas.width);
       $('canvas').attr('height', self.canvas.height);
@@ -128,7 +127,7 @@ define([
                   $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function (e) {
                     if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
                       setTimeout(function () {
-                        self.canvas = setCanvasSize(self.canvas);
+                        self.canvas = self.setCanvasSize(self.canvas);
                         $(document).trigger('fullscreen-exit', { canvas: self.canvas });
                       }, 1000);
                     }
@@ -136,14 +135,14 @@ define([
 
                   $('[data-toggle=offcanvas]').on('click', function () {
                     setTimeout(function () {
-                      self.canvas = getCanvas();
-                      setCanvasSize(self.canvas);
+                      self.canvas = self.getCanvas();
+                      self.setCanvasSize(self.canvas);
                       $(document).trigger('canvas-size-change', { canvas: self.canvas });
                     }, 1000);
                   });
 
-                  var draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
-                  draw.init(self.canvas.element);
+                  self.draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
+                  self.draw.init(self.canvas.element);
                 });
             })
         });
@@ -157,11 +156,16 @@ define([
       $(document).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
       $(document).off('camera-change screen-change');
       $(document).off('cluster-change-state');
-      $(document).trigger('three-destroy');
       $('#3d-view').remove();
+
+      if (this.draw) {
+        this.draw.clean();
+        this.draw = null;
+      }
     };
 
     return this;
   };
 });
+
 }
