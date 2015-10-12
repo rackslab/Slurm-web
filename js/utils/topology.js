@@ -208,7 +208,7 @@ define([
 
       for (var i in groups) {
         var matchOne = groups[i].match(regexOne),
-            matchGroup =groups[i].match(regexGroup);
+            matchGroup = groups[i].match(regexGroup);
         if (!matchOne && !matchGroup) {
           throw ('Bad format with : ' + groups[i]);
         }
@@ -224,6 +224,38 @@ define([
           }
         } else {
           result.push(groups[i]);
+        }
+      }
+
+      return result;
+    }
+
+    function normalizeSwitchesSyntax(switches) {
+      var regexGroup = /(\w+)\[(\d+)\-(\d+)\]/,
+          regexBeginOfGroup = /(\w+)\[(\d+)\-(\d+)/,
+          regexMiddleOfGroup = /(\d+)\-(\d+)/,
+          regexEndOfGroup = /(\d+)\-(\d+)\]/,
+          currentGroup = null,
+          result = [];
+
+      for (var i in switches) {
+        var matchGroup = switches[i].match(regexGroup),
+            matchBeginOfGroup = switches[i].match(regexBeginOfGroup),
+            matchMiddleOfGroup = switches[i].match(regexMiddleOfGroup),
+            matchEndOfGroup = switches[i].match(regexEndOfGroup);
+
+        if (matchGroup) {
+          result.push(switches[i]);
+        } else if (matchBeginOfGroup) {
+          result.push(switches[i] + ']');
+          currentGroup = matchBeginOfGroup[1];
+        } else if (matchMiddleOfGroup && currentGroup) {
+          result.push(currentGroup + '[' + switches[i] + ']');
+        } else if (matchEndOfGroup && currentGroup) {
+          result.push(currentGroup + '[' + switches[i]);
+          currentGroup = null;
+        } else {
+          throw ('Bad format for switches with : ' + groups[i]);
         }
       }
 
@@ -246,7 +278,7 @@ define([
         switches[level][id].type = "switch";
 
         var nodesChildren = groupsToElements(datas[id].nodes),
-            switchesChildren = groupsToElements(datas[id].switches);
+            switchesChildren = groupsToElements(normalizeSwitchesSyntax(datas[id].switches));
 
         switches[level][id].nodes = {};
         for (var i in nodesChildren) {
