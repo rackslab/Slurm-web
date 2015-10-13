@@ -45,6 +45,10 @@ define([
       var stateColor = colors.LED.IDLE;
       var nodeColor = colors.LED.UNKNOWN;
 
+      if (!node || !node.hasOwnProperty('node_state')) {
+        return { node: nodeColor, state: stateColor };
+      }
+
       if (node === null) {
         return { node: nodeColor, state: null };
       }
