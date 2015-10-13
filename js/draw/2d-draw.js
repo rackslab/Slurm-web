@@ -44,11 +44,8 @@ define([
     });
 
     function getRackABSCoordinates() {
-      var X = 0;
-      var Y = 0;
-
-      var ABSX = self.config.LEFTMARGIN + (X * (self.config.RACKWIDTH + self.config.RACKHORIZONTALMARGIN));
-      var ABSY = self.config.TOPMARGIN + (Y * (self.config.RACKHEIGHT + self.config.RACKVERTICALMARGIN));
+      var ABSX = self.config.LEFTMARGIN;
+      var ABSY = self.config.TOPMARGIN;
 
       return {
         X: ABSX,
