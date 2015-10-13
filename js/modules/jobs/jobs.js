@@ -132,6 +132,11 @@ define([
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
         .success(function (jobs) {
+          if (Object.keys(jobs).length === 0) {
+            $('#main').append(template());
+            return ;
+          }
+
           var context = {
             tagsinputOptions: self.tagsinputOptions.toString()
           };
