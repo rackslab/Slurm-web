@@ -160,18 +160,21 @@ define([
 
       drawRectangle(ctx, rackABSX, rackABSY, config.RACKWIDTH, config.RACKHEIGHT, 'rgba(89,89,89,1)');
 
+
       drawRectangleBorder(ctx, rackABSX, rackABSY, config.RACKBORDERWIDTH, config.RACKHEIGHT, 1, 'rgba(141,141,141,1)', 'rgba(85,85,85,1)');
+
       X = rackABSX + config.RACKWIDTH - config.RACKBORDERWIDTH;
       drawRectangleBorder(ctx, X, rackABSY, config.RACKBORDERWIDTH, config.RACKHEIGHT, 1, 'rgba(141,141,141,1)', 'rgba(85,85,85,1)');
 
       X = rackABSX + config.RACKBORDERWIDTH;
       Y = rackABSY;
-      width = config.rackWidth - (2 * config.RACKBORDERWIDTH);
+
+      width = config.RACKWIDTH - (2 * config.RACKBORDERWIDTH);
       drawRectangleBorder(ctx, X, Y, width, config.RACKBORDERWIDTH, 1, 'rgba(141,141,141,1)', 'rgba(85,85,85,1)');
 
       X = rackABSX + config.RACKBORDERWIDTH;
       Y = rackABSY + config.RACKHEIGHT - config.RACKBORDERWIDTH;
-      width = config.rackWidth - (2 * config.RACKBORDERWIDTH);
+      width = config.RACKWIDTH - (2 * config.RACKBORDERWIDTH);
       drawRectangleBorder(ctx, X, Y, width, config.RACKBORDERWIDTH, 1, 'rgba(141,141,141,1)', 'rgba(85,85,85,1)');
 
       Y = rackABSY + config.RACKHEIGHT;
@@ -183,6 +186,7 @@ define([
       X = rackABSX + config.RACKWIDTH - config.FOOTWIDTH;
       Y = rackABSY + config.RACKHEIGHT + config.FLOORWIDTH;
       drawRectangleBorder(ctx, X, Y, config.FOOTWIDTH, config.FOOTHEIGHT, 1, "rgba(49,49,49,1)", "rgba(39,39,39,1)");
+
 
       ctx.font = '14px sans-serif';
       ctx.fillText('rack ' + rack.name, rackABSX + 60, rackABSY - 3);
@@ -259,37 +263,32 @@ define([
       var coreWidth = Math.round((nodeWidth - 20) / coresColumns);
       var coreSize = Math.min(coreHeight, coreWidth);
 
-      var coreId;
+      var coreId = 0;
       var coresJobNumber = 0;
       var coresDrawn = 0;
       var coreCoords = null;
       var coreColor = null;
-
-      for (coreId = 0; coreId < coresNumber; coreId++) {
-        coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
-        coreABX = coreCoords.x;
-        coreABSY = coreCoords.y;
-        drawRectangleBorder(ctx, coreABX, coreABSY, coreSize, coreSize, 1, colors.LED.IDLE, colors.LED.COREBORDER);
-      }
 
       for (var job in allocatedCPUs) {
         if (allocatedCPUs.hasOwnProperty(job)) {
           coresJobNumber = allocatedCPUs[job];
           coreColor = pickJobColor(parseInt(job));
 
-          for (coreId = 0; coreId < coresDrawn + coresJobNumber; coreId++) {
+          for (; coreId < coresDrawn + coresJobNumber; coreId++) {
             coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
-
             coreABSX = coreCoords.x;
             coreABSY = coreCoords.y;
-
-            this.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, coreABSX, (coreABSX + coreSize), coreABSY, (coreABSY + coreSize));
-
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.COREBORDER);
           }
-
           coresDrawn += coresJobNumber;
         }
+      }
+
+      for (; coreId < coresNumber; coreId++) {
+        coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
+        coreABSX = coreCoords.x;
+        coreABSY = coreCoords.y;
+        drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, colors.LED.IDLE, colors.COREBORDER);
       }
 
       writeNodeName(ctx, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
