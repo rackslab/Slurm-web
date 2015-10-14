@@ -1,49 +1,9 @@
 {
-  "GRAPH": {
-    "ATTRIBUTES": {
-      "class": "graph",
-      "preserveaspectratio": "xMidYMid meet"
-    },
-    "PADDINGX": 5,
-    "PADDINGY": 5,
-    "ROWSPACING": 400
-  },
-  "SWITCHES": {
-    "G": {
-      "ATTRIBUTES": {
-        "class": "switch"
-      }
-    },
-    "BOX": {
-      "ATTRIBUTES": {
-        "width": 80,
-        "height": 40
-      },
-      "MARGINX": 10
-    },
-    "TEXT": {
-      "ATTRIBUTES": {
-        "dy": ".3em"
-      }
-    }
-  },
-  "NODES": {
-    "G": {
-      "ATTRIBUTES": {
-        "class": "node"
-      }
-    },
-    "BOX": {
-      "ATTRIBUTES": {
-        "width": 60,
-        "height": 40
-      },
-      "MARGINX": 2
-    },
-    "TEXT": {
-      "ATTRIBUTES": {
-        "dy": ".3em"
-      }
-    }
-  }
+  "SWITCHRADIUS": 10,
+  "NODESETRADIUS": 7,
+  "NODERADIUS": 4,
+  "SWITCHCHARGE": 20,
+  "NODECHARGE": 30,
+  "SWITCHDISTANCE": 5,
+  "NODEDISTANCE": 50
 }

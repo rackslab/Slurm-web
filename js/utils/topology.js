@@ -21,92 +21,53 @@
 define([
   'text!/slurm-web-conf/topology.config.json'
 ], function (config) {
+  var config = JSON.parse(config);
+
   function Graph(topology) {
-    this.config = JSON.parse(config);
-
-    // data: { text, x, y }
-    this.createSVGElement = function(data, options) {
-      var g = document.createElementNS("http://www.w3.org/2000/svg", 'g'),
-          box = document.createElementNS("http://www.w3.org/2000/svg", 'rect'),
-          text = document.createElementNS("http://www.w3.org/2000/svg", 'text'),
-          tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-
-      for (var attribute in options.G.ATTRIBUTES) {
-        g.setAttribute(attribute, options.G.ATTRIBUTES[attribute]);
-      }
-      g.setAttribute('data-id', data.name);
-
-      for (var attribute in options.BOX.ATTRIBUTES) {
-        box.setAttribute(attribute, options.BOX.ATTRIBUTES[attribute]);
-      }
-      box.setAttribute('x', data.x - options.BOX.ATTRIBUTES.width / 2);
-      box.setAttribute('y', data.y);
-
-      for (var attribute in options.TEXT.ATTRIBUTES) {
-        text.setAttribute(attribute, options.TEXT.ATTRIBUTES[attribute]);
-      }
-      text.setAttribute('x', data.x);
-      text.setAttribute('y', data.y + options.BOX.ATTRIBUTES.height / 2);
-      text.appendChild(document.createTextNode(data.name));
-
-      g.appendChild(box);
-      g.appendChild(text);
-      data.html = g;
-
-      return data;
-    };
-
-    this.createNode = function(data) {
-      return this.createSVGElement(data, this.config.NODES);
-    };
+    this.nodes = [];
+    this.links = [];
 
     this.createSwitch = function(data) {
-      var linkedElements = data.level ? data.switches : data.nodes,
-          params = this.config.GRAPH,
-          nodeParams = this.config.NODES,
-          nodesLength = Object.keys(topology.nodes).length,
-          minChildX = 0,
-          maxChildX = nodesLength * (nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX) + 2 * params.PADDINGX;
+      data.group = data.level + 3;
+      data.index = this.nodes.length;
+      this.nodes.push({
+        name: data.name,
+        group: data.group,
+        nodeClass: 'switch',
+        size: config.SWITCHRADIUS
+      });
 
+      if (data.level === 0) {
+        this.nodes[data.index].nodeset = data.nodeset;
+        this.nodes[data.index].nodes = data.nodes;
 
-      for (var id in linkedElements) {
-        var linkedElement = data.level ? topology.switches['level-' + (data.level - 1)][id] : topology.nodes[id];
+        data.d3nodes = [];
+        for (var id in this.nodes[data.index].nodes) {
+          var node = {
+            name: this.nodes[data.index].nodes[id].name,
+            group: 1,
+            nodeClass: 'slurmnode',
+            index: this.nodes.length,
+            size: config.NODERADIUS
+          }
+          data.d3nodes.push(node);
+          this.nodes.push(node);
+        }
 
-        minChildX = Math.max(minChildX, linkedElement.x);
-        maxChildX = Math.min(maxChildX, linkedElement.x);
+        var nodeset = {
+          name: data.nodeset.join(),
+          group: 2,
+          nodeClass: 'nodeset',
+          nodes: data.d3nodes,
+          size: config.NODESETRADIUS
+        };
+        this.nodes[data.index].nodesetIndex = data.nodesetIndex = this.nodes.length;
+        this.nodes.push(nodeset);
+        data.d3nodeset = nodeset;
       }
-
-      data.x = (minChildX + maxChildX) / 2;
-      this.preventClash(data);
-      data = this.createSVGElement(data, this.config.SWITCHES);
 
       return data;
     };
-
-    this.preventClash = function(data) {
-      var switches = topology.switches['level-' + data.level],
-          params = this.config.SWITCHES,
-          width = params.BOX.ATTRIBUTES.width,
-          marginX = params.BOX.MARGINX,
-          spacing = width + marginX;
-
-      for (var id in switches) {
-        var s = switches[id];
-        if (s.name == data.name || !s.x) {
-          break;
-        }
-
-        if (data.x > s.x - spacing && data.x < s.x + spacing) {
-          var difference = (data.x - s.x);
-
-          if (difference >= 0) {
-            data.x = data.x + spacing - difference;
-          } else {
-            data.x = data.x - spacing + difference;
-          }
-        }
-      }
-    }
 
     this.createEdges = function() {
       for (var i = 0; i < topology.levels; i++) {
@@ -114,90 +75,76 @@ define([
 
         for (var id in switches) {
           var s = switches[id],
-              linkedElements = s.level ? s.switches : s.nodes;
+              linkedElements = s.level ? s.switches : {};
+
+          // if (s.computed) break;
 
           for (var id in linkedElements) {
-            var line = document.createElementNS("http://www.w3.org/2000/svg", 'line'),
-                linkedElement = s.level ? topology.switches['level-' + (s.level - 1)][id] : topology.nodes[id];
+            var linkedElement = s.level ? topology.switches['level-' + (s.level - 1)][id] : topology.nodes[id];
 
-            line.setAttribute('x1', s.x);
-            line.setAttribute('y1', s.y + this.config.SWITCHES.BOX.ATTRIBUTES.height);
-            line.setAttribute('x2', linkedElement.x);
-            line.setAttribute('y2', linkedElement.y);
-            line.setAttribute('class', 'link');
-
-            s.html.appendChild(line);
+            if (s.index != undefined && linkedElement.index != undefined) {
+              this.links.push({
+                source: s.index,
+                target: linkedElement.index,
+                value: 1,
+                linkClass: 'link-switch-' + s.name
+              });
+            }
           }
+
+          if (s.index != undefined && s.nodesetIndex) {
+            this.nodes[s.nodesetIndex].links = [];
+            this.links.push({
+              source: s.index,
+              target: s.nodesetIndex,
+              value: 1,
+              linkClass: 'link-nodeset-' + s.name
+            });
+
+            for (var index = 0; index < s.d3nodes.length; index++) {
+              var link = {
+                source: s.nodesetIndex,
+                target: s.d3nodes[index].index,
+                value: 1,
+                linkClass: 'link-node link-nodes-' + s.name
+              };
+              this.links.push(link);
+              this.nodes[s.nodesetIndex].links.push(link);
+            }
+          }
+
+          s.computed = true;
         }
       }
     }
 
     this.createGraph = function() {
-      var params = this.config.GRAPH,
-          nodeParams = this.config.NODES,
-          switchParams = this.config.SWITCHES,
-          levels = topology.levels,
-          nodes = topology.nodes,
-          nodesLength = Object.keys(nodes).length,
-          switches = topology.switches,
-          width = nodesLength * (nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX) + 2 * params.PADDINGX,
-          height = levels * (switchParams.BOX.ATTRIBUTES.height + params.ROWSPACING) + nodeParams.BOX.ATTRIBUTES.height + 2 * params.PADDINGY,
-          currentX = params.PADDINGX,
-          currentY = height - params.PADDINGY,
-          graph = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-
-      // generate nodes
-      currentY -= nodeParams.BOX.ATTRIBUTES.height;
-      for (var id in nodes) {
-        nodes[id].text = nodes[id].name;
-        nodes[id].x = currentX + nodeParams.BOX.ATTRIBUTES.width / 2 + nodeParams.BOX.MARGINX;
-        nodes[id].y = currentY;
-        nodes[id].html = this.createNode(nodes[id]).html;
-        graph.appendChild(nodes[id].html)
-        currentX += nodeParams.BOX.ATTRIBUTES.width + 2 * nodeParams.BOX.MARGINX;
-      }
+      var levels = topology.levels,
+          switches = topology.switches;
 
       // generate switches
       for (var i = 0; i < levels; i++) {
-        var curSwitches = switches['level-' + i],
-            switchesLength = Object.keys(curSwitches).length,
-            switchesInterval = (width - 2 * params.PADDINGX) / switchesLength;
-        currentY -= params.ROWSPACING + switchParams.BOX.ATTRIBUTES.height;
-        currentX = params.PADDINGX + switchesInterval / 2;
+        var curSwitches = switches['level-' + i];
 
         for (var id in curSwitches) {
-          curSwitches[id].text = curSwitches[id].name;
-          curSwitches[id].y = currentY;
-          curSwitches[id].html = this.createSwitch(curSwitches[id]).html;
-          graph.appendChild(curSwitches[id].html)
-          currentX += switchesInterval;
+          this.createSwitch(curSwitches[id]);
         }
       }
 
       this.createEdges();
 
-      for (var attribute in params.ATTRIBUTES) {
-        graph.setAttribute(attribute, params.ATTRIBUTES[attribute]);
-      }
-      graph.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-      graph.setAttribute('width', width);
-      graph.setAttribute('height', height);
-
-
-      return {
-        html: graph
-      }
+      return this;
     };
   }
 
   function Topology(topology) {
-    var self = this;
+    this.config = config;
     this.rawDatas = topology;
     this.nodes = {};
 
     function pad(num, size) {
-      var s = num + "";
-      while (s.length < size) s = "0" + s;
+      var s = num + '';
+      while (s.length < size) s = '0' + s;
       return s;
     }
 
@@ -275,11 +222,12 @@ define([
 
         switches[level][id] = datas[id];
         switches[level][id].name = id;
-        switches[level][id].type = "switch";
+        switches[level][id].type = 'switch';
 
         var nodesChildren = groupsToElements(datas[id].nodes),
             switchesChildren = groupsToElements(normalizeSwitchesSyntax(datas[id].switches));
 
+        datas[id].nodeset = datas[id].nodes;
         switches[level][id].nodes = {};
         for (var i in nodesChildren) {
           switches[level][id].nodes[nodesChildren[i]] = {
@@ -303,8 +251,7 @@ define([
 
     this.switches = this.topologyToSwitches();
     this.levels = Object.keys(this.switches).length;
-    this.Graph = new Graph(this);
-    this.graph = this.Graph.createGraph();
+    this.graph = (new Graph(this)).createGraph();
   }
 
   return Topology;
