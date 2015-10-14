@@ -31,6 +31,7 @@ require.config({
     'bootstrap-typeahead': '/javascript/bootstrap/js/typeahead.jquery',
     three: '/javascript/three/three.min',
     'bootstrap-tagsinput': '/javascript/bootstrap/js/bootstrap-tagsinput.min',
+    d3: '/javascript/d3/d3.min',
     'cluster-utils': '../../js/utils/cluster',
     'token-utils': '../../js/utils/token',
     'user-utils': '../../js/utils/user',

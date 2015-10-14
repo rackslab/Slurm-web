@@ -489,39 +489,14 @@ border: none;
   overflow: auto;
 }
 
-#topology svg.graph {
+#topology text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 1;
 }
 
-#topology svg.graph .switch {
-  stroke: black;
-  stroke-width: 1;
-  fill: khaki;
-}
-
-#topology svg.graph .switch rect, #topology svg.graph .switch text {
-  cursor: pointer;
-}
-
-#topology svg.graph .switch line {
-  stroke: grey;
-  stroke-width: 1;
-  fill: transparent;
-}
-
-#topology svg.graph .node {
-  stroke: black;
-  stroke-width: 1;
-  fill: royalblue;
-  cursor: pointer;
-}
-
-#topology svg.graph text {
-  fill: black;
-  stroke: black;
-  text-anchor: middle;
-  font-size: 12px;
-}
-
-.row-menu {
-  padding-right: 15px;
+#topology circle {
+  z-index: 100;
 }
