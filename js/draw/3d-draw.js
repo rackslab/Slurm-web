@@ -272,24 +272,18 @@ define([
 
       var width = nodeWidth - (3 * ledDimensions);
       var height = nodeHeight;
-      //console.log(width, height, cpus)
       var tab = factorDraw.bestFactor(width, height, cpus);
-      //console.log(tab)
 
       var row = tab[0];
       var column = tab[1];
 
       if (row / column === 1) {
-        //var cpuDimensions = Math.min(width, height);
         var cpuDimensions = Math.min(width, height);
         var cpuDepth = nodeWidth * config.CPUDEPTH;
       } else {
-        //var cpuDimensions = width / column;
         var cpuDimensions = Math.min(height / row, width / column);
         var cpuDepth = nodeWidth * config.CPUDEPTH;
       }
-
-      //console.log(cpuDimensions)
 
       var factorWidth = column * cpuDimensions;
       var factorHeight = row * cpuDimensions;
