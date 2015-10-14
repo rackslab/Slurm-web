@@ -39,7 +39,7 @@ define([], function () {
   return {
     bestFactor: function (nodeWidth, nodeHeight, cpus) {
       var allFactors = factors(cpus);
-      var goalRatio = (nodeWidth - 20) / (nodeHeight - 4);
+      var goalRatio = nodeWidth / nodeHeight;
       var ratio = -1;
       var bestRatio = -1;
       var bestFactorId = 0;
