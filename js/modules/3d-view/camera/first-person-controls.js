@@ -58,6 +58,8 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
 
     this.domElement = (domElement !== undefined) ? domElement : document;
 
+    console.log(this.domElement)
+
     this.enabled = true;
 
     this.movementSpeed = 10.0;
@@ -110,8 +112,8 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
 
       } else {
 
-        this.viewHalfX = this.domElement.offsetWidth / 2;
-        this.viewHalfY = this.domElement.offsetHeight / 2;
+        this.viewHalfX = this.domElement.width / 2;
+        this.viewHalfY = this.domElement.height / 2;
 
       }
 
@@ -165,17 +167,12 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
       event.preventDefault();
 
       if (this.domElement === document) {
-
         this.mouseX = event.pageX - this.viewHalfX;
         this.mouseY = event.pageY - this.viewHalfY;
-
       } else {
-
-        this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-        this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
-
+        this.mouseX = event.pageX - parseInt($('#main').css('paddingLeft').replace(/[^-\d\.]/g, '')) - this.viewHalfX;
+        this.mouseY = event.pageY - $('canvas').parent('div').offset().top - this.viewHalfY;
       }
-
     };
 
     this.onKeyDown = function (event) {
@@ -306,9 +303,9 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
     };
 
     $(document).on('contextmenu', function (event) { event.preventDefault(); });
-    $(document).on('mousemove', bind(this, this.onMouseMove));
-    $(document).on('mousedown', bind(this, this.onMouseDown));
-    $(document).on('mouseup', bind(this, this.onMouseUp));
+    $(this.domElement).on('mousemove', bind(this, this.onMouseMove));
+    $(this.domElement).on('mousedown', bind(this, this.onMouseDown));
+    $(this.domElement).on('mouseup', bind(this, this.onMouseUp));
 
     $(document).on('keydown', bind(this, this.onKeyDown));
     $(document).on('keyup', bind(this, this.onKeyUp));
