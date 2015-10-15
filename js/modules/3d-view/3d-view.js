@@ -34,10 +34,10 @@ define([
   '3d-map-draw',
   'jobs-utils',
   'keycode-helpers'
-], function ($, Handlebars, template, token, d3Draw, d3MapDraw, jobsUtils) {
-  template = Handlebars.compile(template);
-
+], function ($, Handlebars, template1, token, d3Draw, d3MapDraw, jobsUtils) {
   return function (config) {
+    template = Handlebars.compile(template1);
+
     this.setCanvasSize = function (canvas) {
       $('canvas').removeAttr('style');
       $('canvas').attr('width', canvas.width);
@@ -127,7 +127,7 @@ define([
                   $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function (e) {
                     if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
                       setTimeout(function () {
-                        self.canvas = self.setCanvasSize(self.canvas);
+                        self.setCanvasSize(self.canvas);
                         $(document).trigger('fullscreen-exit', { canvas: self.canvas });
                       }, 1000);
                     }
@@ -160,7 +160,6 @@ define([
 
       if (this.draw) {
         this.draw.clean();
-        this.draw = null;
       }
     };
 

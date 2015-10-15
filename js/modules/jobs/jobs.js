@@ -293,8 +293,6 @@ define([
     };
 
     this.refresh = function () {
-      var self = this;
-
       this.interval = setInterval(function () {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');

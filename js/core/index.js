@@ -142,10 +142,10 @@ require([
   'ajax-utils'
 ], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt, Topology) {
   config = JSON.parse(config);
-  var page = new Page();
   var clusters = new Clusters(config);
   clusters.init();
   var firstLoad = true;
+  var page = new Page();
 
   $(document).on('loadPage', function(e, options) {
     e.stopPropagation();
@@ -169,49 +169,49 @@ require([
     e.stopPropagation();
 
     page.destroy(true);
+    page = new Page();
     $('#flash').hide();
-
-    if (firstLoad) {
-      firstLoad = false;
-    } else {
-      page = new Page();
-    }
 
     switch (options.page) {
     case 'login':
-      $.extend(page,  new Page('login'), new Login(config));
+      page = new Login(config);
       break;
     case 'jobs':
-      $.extend(page,  new Page('jobs'), new Jobs(config));
+      page = new Jobs(config);
       break;
     case 'jobsmap':
-      $.extend(page,  new Page('jobsmap'), new JobsMap(config));
+      page = new JobsMap(config);
       break;
     case 'partitions':
-      $.extend(page,  new Page('partitions'), new Partitions(config));
+      page = new Partitions(config);
       break;
     case 'qos':
-      $.extend(page,  new Page('qos'), new QOS(config));
+      page = new QOS(config);
       break;
     case 'racks':
-      $.extend(page,  new Page('racks'), new Racks(config));
+      page = new Racks(config);
       break;
     case 'reservations':
-      $.extend(page,  new Page('reservations'), new Reservations(config));
+      page = new Reservations(config);
       break;
     case '3dview':
-      $.extend(page, new Page('3dview'), new d3View(config));
+      page = new d3View(config);
       break;
     case 'gantt':
-      $.extend(page,  new Page('gantt'), new Gantt(config));
+      page = new Gantt(config);
       break;
     case 'topology':
-      $.extend(page,  new Page('topology'), new Topology(config));
+      page = new Topology(config);
       break;
     }
 
-    page.init();
-    page.refresh();
+    if (page.hasOwnProperty('init')) {
+      page.init();
+    }
+
+    if (page.hasOwnProperty('refresh')) {
+      page.refresh();
+    }
   });
 
   $(document).trigger('loadPage', { config: config });
