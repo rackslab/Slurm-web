@@ -56,10 +56,6 @@ define([
     var floorDepth = null;
     var renderer = null;
 
-    objects.material = [];
-    objects.geometry = [];
-    objects.mesh = [];
-
     this.calculateEnv = function () {
       map.unitWidth = map.width * config.UNITSIZE + map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
       map.unitHeight = map.height * config.UNITSIZE + map.rangeNumber * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
@@ -488,6 +484,11 @@ define([
     this.init = function (canvasElem) {
       var self = this;
       canvas = canvasElem;
+      objects = {};
+      objects.material = [];
+      objects.geometry = [];
+      objects.mesh = [];
+
       function render() {
         if (!cancelAnimation) {
           var delta = clock.getDelta();
@@ -582,7 +583,7 @@ define([
         delete scene.children[i];
       }
 
-      renderer.dispose();
+      //renderer.dispose();
 
       room = null;
       map = null;
