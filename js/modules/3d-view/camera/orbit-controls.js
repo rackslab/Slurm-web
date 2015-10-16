@@ -65,7 +65,10 @@
 //      controls.target.z = 150;
 // Simple substitute "OrbitControls" and the control should work as-is.
 
-define(['jquery', 'three'], function ($, THREE) {
+define([
+  'jquery',
+  'three'
+], function ($, THREE) {
 
   THREE.OrbitControls = function ( object, domElement ) {
 

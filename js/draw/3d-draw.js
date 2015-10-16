@@ -28,12 +28,11 @@ define([
   'three-orbit-controls',
   'three-first-person-controls',
   'three-pacman-auto'
-], function ($, d3Config, d3Colors, THREE1, factorDraw, colorsDraw) {
+], function ($, d3Config, d3Colors, THREE, factorDraw, colorsDraw) {
   var config = JSON.parse(d3Config);
   var colors = JSON.parse(d3Colors);
 
   return function (map, racks, nodes, jobs, room) {
-    var THREE = $.extend(true, {}, THREE1);
     var room = room;
     var map = map;
     var racks = racks;
@@ -56,6 +55,7 @@ define([
     var floorWidth = null;
     var floorDepth = null;
     var renderer = null;
+
     objects.material = [];
     objects.geometry = [];
     objects.mesh = [];
@@ -86,7 +86,11 @@ define([
       return map.data[y * map.width + x];
     }
 
-    this.setControls = function () {
+    this.setControls = function (type) {
+      if (type) {
+        interfaceOptions.cameraType = type;
+      }
+      
       this.addCamera();
 
       switch (interfaceOptions.cameraType) {
@@ -120,7 +124,7 @@ define([
       objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
       var wallMaterial = objects.material[objects.material.length - 1];
 
-      objects.geometry.push(new THREE.PlaneGeometry(floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
       var topWallGeometry = objects.geometry[objects.geometry.length - 1];
       var repeatX = floorWidth / (room.rackwidth * config.UNITSIZE);
 
@@ -130,11 +134,11 @@ define([
 
       texture.repeat.set(repeatX, config.WALLHEIGHT);
 
-      objects.geometry.push(new THREE.PlaneGeometry(floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
       var bottomWallGeometry = objects.geometry[objects.geometry.length - 1];
-      objects.geometry.push(new THREE.PlaneGeometry(floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
       var leftWallGeometry = objects.geometry[objects.geometry.length - 1];
-      objects.geometry.push(new THREE.PlaneGeometry(floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorDepth, config.WALLHEIGHT * config.UNITSIZE, 1, 1));
       var rightWallGeometry = objects.geometry[objects.geometry.length - 1];
 
       objects.mesh.push(new THREE.Mesh(topWallGeometry, wallMaterial));
@@ -183,7 +187,7 @@ define([
       texture.wrapT = THREE.RepeatWrapping;
       objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
       var roofMaterial = objects.material[objects.material.length - 1];
-      objects.geometry.push(new THREE.PlaneGeometry(floorWidth, floorDepth, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, floorDepth, 1, 1));
       var roofGeometry = objects.geometry[objects.geometry.length - 1];
 
       texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZEMETER), floorDepth / (room.rackwidth * config.UNITSIZEMETER));
@@ -232,7 +236,7 @@ define([
 
       objects.material.push(new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }));
       var floorMaterial = objects.material[objects.material.length - 1];
-      objects.geometry.push(new THREE.PlaneGeometry(floorWidth, floorDepth, 1, 1));
+      objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, floorDepth, 1, 1));
       var floorGeometry = objects.geometry[objects.geometry.length - 1];
 
       texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZEMETER), floorDepth / (room.rackwidth * config.UNITSIZEMETER));
@@ -302,9 +306,9 @@ define([
       var factorHeight = row * cpuDimensions;
 
       var cpuPadding = cpuDimensions * config.CPUPADDING;
-      objects.geometry.push(new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth));
+      geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth)
+      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
       geometry = objects.geometry[objects.geometry.length - 1];
-      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
       for (cpu = 0; cpu < cpus; cpu++) {
         if (!nodeJobs[cpu]) {
@@ -337,9 +341,9 @@ define([
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
       var ledDepth = nodeWidth * config.LEDDEPTH;
 
-      objects.geometry.push(new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth));
-      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
-      var geometry = objects.geometry[objects.geometry.length - 1];
+      var geometry = new THREE.BoxGeometry(ledDimensions, ledDimensions, ledDepth);
+      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
+      geometry = objects.geometry[objects.geometry.length - 1];
 
       objects.material.push(new THREE.MeshBasicMaterial({ color: colorsDraw.findLedColor(nodes[node.name], '3D').state }));
       var material = objects.material[objects.material.length - 1];
@@ -364,9 +368,9 @@ define([
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
       nodeDepth = config.RACKDEPTH * config.UNITSIZE - 2 * config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING;
 
-      objects.geometry.push(new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth));
-      var geometry = objects.geometry[objects.geometry.length - 1];
-      //geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+      var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth);
+      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
+      geometry = objects.geometry[objects.geometry.length - 1];
       objects.material.push(new THREE.MeshBasicMaterial({ color: colors.NODE }));
       var material = objects.material[objects.material.length - 1];
 
@@ -436,11 +440,12 @@ define([
               }
             }
 
-            objects.geometry.push(new THREE.BoxGeometry(
+            geometry = new THREE.BoxGeometry(
               config.UNITSIZE * config.RACKWIDTH,
               (map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
               config.UNITSIZE * config.RACKDEPTH
-            ));
+            );
+            objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
             geometry = objects.geometry[objects.geometry.length - 1];
 
             objects.mesh.push(new THREE.Mesh(geometry, material));
@@ -510,39 +515,6 @@ define([
 
       this.setControls(canvas);
 
-      $(document).on('camera-change', function (e, options) {
-        interfaceOptions.cameraType = options.cameraType;
-
-        self.setControls(canvas);
-      });
-
-      $(document).on('screen-change', function (e, options) {
-        interfaceOptions.screenType = options.screenType;
-
-        self.setControls(canvas);
-      });
-
-      $(document).on('fullscreen-enter', function (e) {
-        camera.aspect = $(window).width() / $(window).height();
-        camera.updateProjectionMatrix();
-
-        renderer.setSize($(window).width(), $(window).height());
-      });
-
-      $(document).on('fullscreen-exit', function (e, options) {
-        camera.aspect = options.canvas.width / options.canvas.height;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(options.canvas.width, options.canvas.height);
-      });
-
-      $(document).on('canvas-size-change', function (e, options) {
-        camera.aspect = options.canvas.width / options.canvas.height;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(options.canvas.width, options.canvas.height);
-      });
-
       this.calculateEnv();
       this.addLight();
       this.addFloor();
@@ -557,7 +529,18 @@ define([
       render();
     }
 
+    this.resize = function (canvas) {
+      camera.aspect = canvas.width / canvas.height;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(canvas.width, canvas.height);
+    };
+
     this.clean = function () {
+      cancelAnimation = true;
+
+      cancelAnimationFrame(idFrame);
+
       var i;
       for (i = objects.geometry.length - 1; i >= 0 ; i--) {
         objects.geometry[i].dispose();
@@ -598,6 +581,31 @@ define([
         scene.remove(scene.children[i]);
         delete scene.children[i];
       }
+
+      renderer.dispose();
+
+      room = null;
+      map = null;
+      racks = null;
+      nodes = null;
+      jobs = null;
+      scene = null;
+      light = null;
+      canvas = null;
+      mouse = null;
+      raycaster = null;
+      canvasRectangle = null;
+      camera = null;
+      clock = null;
+      interfaceOptions = null;
+      controls = null;
+      objects = null;
+      idFrame = null;
+      cancelAnimation = null;
+      interfaceOptions = null;
+      floorWidth = null;
+      floorDepth = null;
+      renderer = null;
 
       $(document).off('contextmenu');
       $(document).off('mousedown');

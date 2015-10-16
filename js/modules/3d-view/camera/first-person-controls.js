@@ -48,7 +48,11 @@
  * @author paulirish / http://paulirish.com/
  */
 
-define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, THREE, d3config) {
+define([
+  'jquery',
+  'three',
+  'text!/slurm-web-conf/3d.config.json'
+], function ($, THREE, d3config) {
   d3config = JSON.parse(d3config);
 
   THREE.FirstPersonControls = function (object, domElement) {
@@ -57,8 +61,6 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
     this.target = new THREE.Vector3(0, 0, 0);
 
     this.domElement = (domElement !== undefined) ? domElement : document;
-
-    console.log(this.domElement)
 
     this.enabled = true;
 
@@ -170,8 +172,8 @@ define(['jquery', 'three', 'text!/slurm-web-conf/3d.config.json'], function ($, 
         this.mouseX = event.pageX - this.viewHalfX;
         this.mouseY = event.pageY - this.viewHalfY;
       } else {
-        this.mouseX = event.pageX - parseInt($('#main').css('paddingLeft').replace(/[^-\d\.]/g, '')) - this.viewHalfX;
-        this.mouseY = event.pageY - $('canvas').parent('div').offset().top - this.viewHalfY;
+        this.mouseX = event.pageX - this.viewHalfX;
+        this.mouseY = event.pageY - $('canvas').offset().top - this.viewHalfY;
       }
     };
 

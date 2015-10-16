@@ -23,7 +23,7 @@ require.config({
     text: '/javascript/requirejs/text.min',
     jquery: '/javascript/jquery/jquery.min',
     xdomain: '../../../js/libraries/xdomain.min',
-    three: '../../../js/libraries/three.min',
+    three: '/javascript/three/three.min',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
     'token-utils': '../../../js/utils/token',
     '3d-draw': '../../../js/draw/3d-draw',
@@ -185,6 +185,7 @@ function init() {
 
                 window.parent.$(window.parent.document).on('destroy', function () {
                   draw.clean();
+                  draw = null;
                 });
               })
           })
