@@ -29,7 +29,6 @@ require.config({
     handlebars: '/javascript/handlebars/handlebars',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
     'bootstrap-typeahead': '/javascript/bootstrap/js/typeahead.jquery',
-    three: '/javascript/three/three.min',
     'bootstrap-tagsinput': '/javascript/bootstrap/js/bootstrap-tagsinput.min',
     d3: '/javascript/d3/d3.min',
     'cluster-utils': '../../js/utils/cluster',
@@ -55,8 +54,6 @@ require.config({
     'colors-draw': '../../js/draw/colors',
     '2d-intersections-draw': '../../js/draw/2d-intersections',
     '2d-legend-draw': '../../js/draw/2d-legend',
-    '3d-draw': '../../js/draw/3d-draw',
-    '3d-map-draw': '../../js/draw/3d-map',
     'factor-draw': '../../js/draw/factor',
     login: '../../js/core/login/login',
     navbar: '../../js/core/navbar/navbar',
@@ -68,9 +65,6 @@ require.config({
     qos: '../../js/modules/qos/qos',
     reservations: '../../js/modules/reservations/reservations',
     '3d-view': '../../js/modules/3d-view/3d-view',
-    'three-first-person-controls': '../../js/modules/3d-view/camera/first-person-controls',
-    'three-orbit-controls': '../../js/modules/3d-view/camera/orbit-controls',
-    'three-pacman-auto': '../../js/modules/3d-view/camera/pacman-auto',
     gantt: '../../js/modules/gantt/gantt',
     topology: '../../js/modules/topology/topology',
     'topology-utils': '../../js/utils/topology',
@@ -91,9 +85,6 @@ require.config({
     },
     handlebars: {
       exports: 'Handlebars'
-    },
-    three: {
-      exports: 'THREE'
     },
     bootstrap: {
       deps: [ 'jquery' ]

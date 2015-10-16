@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Slurm HPC Dashboard - 3D View</title>
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Slurm HPC dashboard">
+    <meta name="author" content="CCN-HPC">
+    <link href="/javascript/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/javascript/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+  </head>
+  <body style="background-color: #fff;">
+    <script type="text/javascript" data-main="js/modules/3d-view/iframe" src="/javascript/requirejs/require.min.js"></script>
+    <div class="container-fluid">
+      <div id="3d-view">
+        <div class="row row-menu">
+          <ul class="nav nav-tabs" role="tablist" id="tabs">
+            <li role="presentation" class="active">
+              <a href="#camera" aria-controls="orbit" role="tab" data-toggle="tab">Camera Orbit</a>
+            </li>
+            <li role="presentation">
+              <a href="#camera" aria-controls="fps" role="tab" data-toggle="tab">Camera First Person</a>
+            </li>
+            <li role="presentation">
+              <a href="#camera" aria-controls="pacman" role="tab" data-toggle="tab">Pacman</a>
+            </li>
+          </ul>
+          <ul class="nav nav-tabs" role="tablist" id="tabs">
+            <li role="presentation">
+              <a href="#fullscreen">Fullscreen</a>
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <canvas width="0" height="0" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
