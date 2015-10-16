@@ -185,7 +185,7 @@ function init() {
 
                 window.parent.$(window.parent.document).on('destroy', function () {
                   draw.clean();
-                  draw = null;
+                  window.parent.$(window.parent.document).off('fullscreen-exit destroy');
                 });
               })
           })
