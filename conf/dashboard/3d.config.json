@@ -16,7 +16,7 @@
   "LEDDEPTH": 0.001,
   "CPUPADDING": 0.3,
   "CPUDEPTH": 0.001,
-  "DEBUG": true,
+  "DEBUG": false,
   "CONTROLS": {
     "FORWARD": 90,
     "BACKWARD": 83,
