@@ -230,7 +230,7 @@ define([
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
 
-      objects.material.push(new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }));
+      objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
       var floorMaterial = objects.material[objects.material.length - 1];
       objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, floorDepth, 1, 1));
       var floorGeometry = objects.geometry[objects.geometry.length - 1];
@@ -249,8 +249,8 @@ define([
       floor.position.z = this.floorZ;
 
       scene.add(floor);
-      floorMaterial.dispose();
       floorGeometry.dispose();
+      floorMaterial.dispose();
     }
 
     this.addCores = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
@@ -583,7 +583,7 @@ define([
         delete scene.children[i];
       }
 
-      //renderer.dispose();
+      renderer.dispose();
 
       room = null;
       map = null;
