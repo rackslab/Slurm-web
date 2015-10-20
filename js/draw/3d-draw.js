@@ -55,6 +55,8 @@ define([
     var floorWidth = null;
     var floorDepth = null;
     var renderer = null;
+    var defaultXSize = null;
+    var defaultZSize = null;
 
     this.calculateEnv = function () {
       map.unitWidth = map.width * config.UNITSIZE + map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
@@ -181,16 +183,23 @@ define([
       var texture = THREE.ImageUtils.loadTexture('static/roof.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
+
+      var repeatXSize = floorWidth / config.UNITSIZE;
+      if (!defaultXSize) {
+        repeatXSize = floorWidth / (room.rackwidth * config.UNITSIZEMETER);
+      }
+
+      var repeatZSize = floorDepth / config.UNITSIZE;
+      if (!defaultZSize) {
+        repeatXSize = floorDepth / (room.rackwidth * config.UNITSIZEMETER);
+      }
+
+      texture.repeat.set(repeatXSize, repeatZSize);
+
       objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
       var roofMaterial = objects.material[objects.material.length - 1];
       objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, floorDepth, 1, 1));
       var roofGeometry = objects.geometry[objects.geometry.length - 1];
-
-      texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZEMETER), floorDepth / (room.rackwidth * config.UNITSIZEMETER));
-
-      if (!this.defaultXSize) {
-        texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZE), floorDepth / (room.rackwidth * config.UNITSIZE));
-      }
 
       objects.mesh.push(new THREE.Mesh(roofGeometry, roofMaterial));
       var roof = objects.mesh[objects.mesh.length - 1];
@@ -201,7 +210,6 @@ define([
       roof.position.y = config.WALLHEIGHT * config.UNITSIZE;
 
       scene.add(roof);
-
       roofMaterial.dispose();
       roofGeometry.dispose();
     }
@@ -210,43 +218,49 @@ define([
       floorWidth = map.unitWidth;
       floorDepth = map.unitHeight;
       defaultXSize = true;
-      defaultZSize = false;
+      defaultZSize = true;
       floorX = 0;
       floorZ = 0;
 
       if (room.width * room.rackwidth * config.UNITSIZEMETER > floorWidth) {
         floorWidth = room.width * room.rackwidth * config.UNITSIZEMETER;
-        this.floorX = room.posx * room.rackwidth;
-        this.defaultXSize = false;
+        floorX = room.posx * room.rackwidth;
+        defaultXSize = false;
       }
 
       if (room.depth * room.rackwidth * config.UNITSIZEMETER > floorDepth) {
         floorDepth = room.depth * room.rackwidth * config.UNITSIZEMETER;
-        this.floorZ = room.posy * room.rackwidth;
-        this.defaultZSize = false;
+        floorZ = room.posy * room.rackwidth;
+        defaultZSize = false;
       }
 
       var texture = THREE.ImageUtils.loadTexture('static/floor.jpg');
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
 
-      objects.material.push(new THREE.MeshBasicMaterial({ map: texture }));
-      var floorMaterial = objects.material[objects.material.length - 1];
-      objects.geometry.push(new THREE.PlaneBufferGeometry(floorWidth, floorDepth, 1, 1));
-      var floorGeometry = objects.geometry[objects.geometry.length - 1];
-
-      texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZEMETER), floorDepth / (room.rackwidth * config.UNITSIZEMETER));
-
-      if (!this.defaultXSize) {
-        texture.repeat.set(floorWidth / (room.rackwidth * config.UNITSIZE), floorDepth / (room.rackwidth * config.UNITSIZE));
+      var repeatXSize = floorWidth / config.UNITSIZE;
+      if (!defaultXSize) {
+        repeatXSize = floorWidth / (room.rackwidth * config.UNITSIZEMETER);
       }
+
+      var repeatZSize = floorDepth / config.UNITSIZE;
+      if (!defaultZSize) {
+        repeatXSize = floorDepth / (room.rackwidth * config.UNITSIZEMETER);
+      }
+
+      texture.repeat.set(repeatXSize, repeatZSize);
+
+      objects.material.push(new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }));
+      var floorMaterial = objects.material[objects.material.length - 1];
+      objects.geometry.push(new THREE.PlaneGeometry(floorWidth, floorDepth, 1, 1));
+      var floorGeometry = objects.geometry[objects.geometry.length - 1];
 
       objects.mesh.push(new THREE.Mesh(floorGeometry, floorMaterial));
       var floor = objects.mesh[objects.mesh.length - 1];
       floor.rotation.x = 90 * Math.PI / 180;
 
-      floor.position.x = this.floorX;
-      floor.position.z = this.floorZ;
+      floor.position.x = floorX;
+      floor.position.z = floorZ;
 
       scene.add(floor);
       floorGeometry.dispose();
@@ -607,6 +621,8 @@ define([
       floorWidth = null;
       floorDepth = null;
       renderer = null;
+      defaultXSize = null;
+      defaultZSize = null;
 
       $(document).off('contextmenu');
       $(document).off('mousedown');
