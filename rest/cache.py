@@ -21,12 +21,20 @@
 #
 # Decorator for cache mechanism
 
-import redis
+try:
+    import redis
+    redis_available = True
+except ImportError:
+    redis_available = False
+
 import json
 from functools import wraps
 from settings import settings
 
+
+enabled = redis_available and settings.get('config', 'cache') == 'enable'
 redis_host = settings.get('cache', 'redis_host')
+
 try:
     redis_port = int(settings.get('cache', 'redis_port'))
 except ValueError as e:
@@ -45,7 +53,8 @@ except ValueError as e:
            (" check restapi.conf : %s" % str(e)))
     global_expiration = 86400
 
-r = redis.Redis(redis_host, redis_port)
+if redis_available:
+    r = redis.Redis(redis_host, redis_port)
 
 
 def cache():
@@ -58,7 +67,7 @@ def cache():
                                                   val) in kwargs.iteritems())
                 )
 
-            if r.exists(cache_key):
+            if enabled and r.exists(cache_key):
                 print "get %s from cache" % cache_key
                 return json.loads(r.get(cache_key))
 
@@ -68,7 +77,7 @@ def cache():
                 expiration = global_expiration
 
             resp = f(*args, **kwargs)
-            if isinstance(resp, dict):
+            if enabled and isinstance(resp, dict):
                 try:
                     r.set(cache_key, json.dumps(resp), expiration)
                 except:
