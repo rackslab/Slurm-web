@@ -52,7 +52,7 @@ origins = settings.get('cors', 'authorized_origins')
 @app.route('/version', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def version():
-    return "Slurm-web REST API v%s" % settings.get('infos', 'version')
+    return "Slurm-web REST API v2.0"
 
 
 @app.route('/static/<path:path>')
