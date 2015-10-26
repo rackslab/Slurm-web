@@ -238,6 +238,7 @@ define([
       var stateColor = colorsDraw.findLedColor(slurmNode, '2D').state;
 
       this.intersections.addNodeIntersections({ rack: rack.name, node: rackNode.name }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
+      
       drawRectangle(ctx, nodeABSX, nodeABSY, nodeWidth, nodeHeight, colors.LED.IDLE);
 
       if (stateColor) {
@@ -275,6 +276,7 @@ define([
             coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
             coreABSX = coreCoords.x;
             coreABSY = coreCoords.y;
+            this.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, coreABSX, coreABSX + coreSize, coreABSY, coreABSY + coreSize);
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.COREBORDER);
           }
           coresDrawn += coresJobNumber;
