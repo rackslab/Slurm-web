@@ -623,7 +623,6 @@ define([
     $(document).on('mousedown', onMouseDown);
     $(document).on('mousewheel', onMouseWheel);
     $(document).on('DOMMouseScroll', onMouseWheel);
-    $(document).on('keydown', onKeyDown);
     $(document).on('touchstart', touchstart);
     $(document).on('touchend', touchend);
     $(document).on('touchmove', touchmove);
