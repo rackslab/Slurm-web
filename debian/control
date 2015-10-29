@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 8), apache2-dev
 
 Package: slurm-web-restapi
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm, clustershell
+Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm, clustershell, python-ldap, python-itsdangerous, python-redis
 Description: Slurm Web Python REST API
  Slurm Web backend  REST API developed in Python using Flask web framework.
 
@@ -20,7 +20,7 @@ Description: Slurm Web conf dashboard
 
 Package: slurm-web-dashboard
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot, libjs-jquery-tablesorter
+Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot, libjs-jquery-tablesorter, libjs-requirejs, libjs-requirejs-text, libjs-three, libjs-bootstrap-typeahead, libjs-bootstrap-tagsinput, libjs-d3
 Description: Slurm Web HTML+JS dashboard
  The dashboard in HTML and Javascript that runs in a browser.
 
