@@ -1,3 +1,9 @@
+slurm-web (1.9.0+c9+1) calibre7; urgency=medium
+
+  * Backport to Calibre9
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 29 Oct 2015 17:36:39 +0100
+
 slurm-web (1.9.0) unstable; urgency=medium
 
   * new major v2.0 pre-release
