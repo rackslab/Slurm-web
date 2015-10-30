@@ -1,3 +1,9 @@
+slurm-web (1.9.1+c7+2) calibre7; urgency=medium
+
+  * Remove apache2-dev Build-dep and fix layout
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 10:03:31 +0100
+
 slurm-web (1.9.1+c7+1) calibre7; urgency=medium
 
   * Backport to Calibre7
