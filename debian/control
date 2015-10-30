@@ -8,24 +8,57 @@ Build-Depends: debhelper (>= 8)
 
 Package: slurm-web-restapi
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask, python-pyslurm, clustershell, python-ldap, python-itsdangerous, python-redis
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ apache2 | httpd,
+ libapache2-mod-wsgi,
+ python-flask,
+ python-pyslurm,
+ clustershell,
+ python-ldap,
+ python-itsdangerous,
+ python-redis
 Description: Slurm Web Python REST API
  Slurm Web backend  REST API developed in Python using Flask web framework.
 
 Package: slurm-web-confdashboard
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, apache2 | httpd, libapache2-mod-wsgi, python-flask
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ apache2 | httpd,
+ libapache2-mod-wsgi,
+ python-flask
 Description: Slurm Web conf dashboard
  Static Flask server to supply config files for the dashboard
 
 Package: slurm-web-dashboard
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, javascript-common, libjs-bootstrap, libjs-jquery, libjs-jquery-flot, libjs-jquery-tablesorter, libjs-requirejs, libjs-requirejs-text, libjs-three, libjs-bootstrap-typeahead, libjs-bootstrap-tagsinput, libjs-d3
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ slurm-web-confdashboard (= ${binary:Version}),
+ javascript-common,
+ libjs-bootstrap,
+ libjs-jquery,
+ libjs-jquery-flot,
+ libjs-jquery-tablesorter,
+ libjs-requirejs,
+ libjs-requirejs-text,
+ libjs-three,
+ libjs-bootstrap-typeahead,
+ libjs-bootstrap-tagsinput,
+ libjs-d3
 Description: Slurm Web HTML+JS dashboard
  The dashboard in HTML and Javascript that runs in a browser.
 
 Package: slurm-web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, slurm-web-restapi (= ${binary:Version}), slurm-web-dashboard (= ${binary:Version})
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ slurm-web-restapi (= ${binary:Version}),
+ slurm-web-dashboard (= ${binary:Version})
 Description: Slurm Web meta-package with all components
  This meta-package installs both the REST API and the dashboard.

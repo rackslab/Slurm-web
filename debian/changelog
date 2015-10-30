@@ -1,3 +1,10 @@
+slurm-web (1.9.2) unstable; urgency=medium
+
+  * Split dependencies over multiple lines
+  * The dashboard depends on the confdashboard
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 11:48:02 +0100
+
 slurm-web (1.9.1+c7+2) calibre7; urgency=medium
 
   * Remove apache2-dev Build-dep and fix layout
