@@ -1,3 +1,10 @@
+slurm-web (1.9.1+c7+1) calibre7; urgency=medium
+
+  * Backport to Calibre7
+  * Remove JS minify since uglifyjs not available on C7
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 09:48:26 +0100
+
 slurm-web (1.9.1) unstable; urgency=medium
 
   * Remove redundant xdomain.min.js
