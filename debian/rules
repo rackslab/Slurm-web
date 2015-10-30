@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with apache2
+	dh $@
 
 override_dh_auto_build:
 	cp js/libraries/xdomain.js js/libraries/xdomain.min.js
