@@ -41,6 +41,7 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ slurm-web-confdashboard (= ${binary:Version}),
  javascript-common,
  libjs-bootstrap,
  libjs-jquery,
