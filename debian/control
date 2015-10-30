@@ -4,7 +4,7 @@ Uploaders: Rémi Palancher <remi-externe.palancher@edf.fr>, Mehdi Dogguy <mehdi.
 Section: web
 Priority: extra
 Standards-Version: 3.9.6
-Build-Depends: debhelper (>= 8), apache2-dev
+Build-Depends: debhelper (>= 8), apache2-dev, node-uglify
 
 Package: slurm-web-restapi
 Architecture: any
