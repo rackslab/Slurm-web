@@ -1,3 +1,12 @@
+slurm-web (1.9.1) unstable; urgency=medium
+
+  * Remove redundant xdomain.min.js
+  * Replace minified xdomain with original source
+  * Add missing dh depends on slurm-web pkg
+  * Remove -x bits on REST API WSGI file
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 09:37:09 +0100
+
 slurm-web (1.9.0) unstable; urgency=medium
 
   * new major v2.0 pre-release
