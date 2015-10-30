@@ -2,3 +2,9 @@
 
 %:
 	dh $@ --with apache2
+
+override_dh_auto_build:
+	uglifyjs -o js/libraries/xdomain.min.js js/libraries/xdomain.js
+
+override_dh_auto_clean:
+	rm -f js/libraries/xdomain.min.js
