@@ -1,8 +1,11 @@
-slurm-web (1.9.0+c9+1) calibre7; urgency=medium
+slurm-web (1.9.1) unstable; urgency=medium
 
-  * Backport to Calibre9
+  * Remove redundant xdomain.min.js
+  * Replace minified xdomain with original source
+  * Add missing dh depends on slurm-web pkg
+  * Remove -x bits on REST API WSGI file
 
- -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 29 Oct 2015 17:36:39 +0100
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 09:37:09 +0100
 
 slurm-web (1.9.0) unstable; urgency=medium
 
