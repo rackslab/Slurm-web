@@ -9,15 +9,21 @@ Slurm-web:
    Global software architecture
 
 The web dashboard is accessible to users through a web brower. This dashboard
-is based on 2 files:
-
-* an HTML file with the main menu and references to external dependencies like
-  Javascript libraries, CSS files, and so on.
-* a main Javascript script.
+is built with RequireJS, jQuery and Handlebars.
 
 The HTML file only contains a few empty elements. The content of these elements
-is entirely controlled by the JS script. This script makes the browser download
-additional data through the API.
+is entirely controlled by the JS scripts. These scripts makes the browser
+download additional data through the API.
+
+Please refer to :doc:`how to contribute or add a page </contribute>` section
+for more informations about how is built the dashboard.
+
+The configuration files of the dashboard are supplied by a tiny WSGI Flask app.
+This one sends files from the directory ``/etc/slurm-web/dashboard/`` to the
+dashboard.
+
+Please refer to :doc:`installation guide </installation>` section to know how
+to configure the dashboard.
 
 The backend REST API actually get all live data from Slurm workload manager
 through PySLURM, a Python library and a binding of Slurm libraries. These

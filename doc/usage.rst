@@ -10,20 +10,26 @@ which looks like the following screenshot:
 
 .. figure:: img/screenshot_jobs_view.*
 
-In the top right corner of this web page, there is a menu with 4 entries:
+In the top right corner of this web page, there is a menu with 10 entries:
 
 .. figure:: img/screenshot_menu.*
 
-With these links, you can navigate to 4 differents views:
+With these links, you can navigate to 9 differents views:
 
 * the Jobs view
 * the Racks view
 * the JobsMap view
+* the 3D view (not available in IE)
 * the Partitions view
 * the QOS view
 * the Reservations view
+* the Gantt view
+* the Topology view
 
 All these views are described in details in the following sections.
+
+The last entry concerns the user's authentication. It is not displayed if this
+feature is disabled.
 
 Jobs view
 ---------
@@ -151,6 +157,35 @@ same color.
 Again, a small legendary in a frame at the top right corner gives a recap of
 these information.
 
+To get more details about the activity on one specific node or core, you can
+click on it.
+
+Once clicked, an information box shows up with the same details about jobs, as
+in the box about job of the Jobs view.
+
+3D View
+_______
+
+This view shows a representation in three dimensions of the HPC, according to
+how it is defined in the ``racks.xml`` file.
+
+As on the JobsMap view, it gives the activity on each core, showing the color
+of the current processed job.
+
+You can choose between 3 ways of visualization:
+
+* *Camera orbit*:
+  Change its angle by clicking and moving the mouse. Zoom in with a scroll up,
+  out with a scroll down.
+
+* *Camera first person*:
+  Move the camera with the arrow keys. Change its angle by pointing the wished
+  direction with the mouse.
+
+* *Pacman*:
+  A view with an automatically moving between racks.
+
+
 Partitions view
 ---------------
 
@@ -196,6 +231,8 @@ The table has the following columns:
 #. Preemption Mode
 #. Preemption Grace Time
 
+Empty columns are hidden.
+
 Reservations view
 -----------------
 
@@ -211,3 +248,27 @@ The table is composed of one row per reservation and 5 columns:
 #. The list of nodes allocated to this reservation
 #. The start time of this reservation
 #. The end time of this reservation
+
+Gantt view
+----------
+
+The Gantt view aims to show jobs running, completed or pending, divided up
+according to either nodes or qos. These jobs are represented according to an
+horizontal axis of time. Running jobs are drawn in blue, completed ones in
+yellow, and pending ones in green. By clicking on a job you can display its
+informations in a modal.
+
+.. figure:: img/screenshot_ganntt_view_nodes.*
+
+.. figure:: img/screenshot_ganntt_view_qos.*
+
+Topology view
+-------------
+
+The Topology view shows the organization of slurm nodes according to how it is
+defined in the configuration file ```topology.conf``` from Slurm. This
+representation use a force graph. Nodes are grouped by nodesets. You can click
+on a nodeset to see the connected nodes. When you click on a node, a modal is
+opened and shows details about the current job running on the selected node.
+
+.. figure:: img/screenshot_topology_view.*
