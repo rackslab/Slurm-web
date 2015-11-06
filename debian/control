@@ -52,7 +52,8 @@ Depends:
  libjs-three,
  libjs-bootstrap-typeahead,
  libjs-bootstrap-tagsinput,
- libjs-d3
+ libjs-d3,
+ libjs-handlebars
 Description: Slurm Web HTML+JS dashboard
  The dashboard in HTML and Javascript that runs in a browser.
 
