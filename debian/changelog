@@ -1,3 +1,10 @@
+slurm-web (1.9.3) unstable; urgency=medium
+
+  * Add missing dep on libjs-handlebars
+  * update documentation: dashboard usage & architecture
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 06 Nov 2015 12:03:13 +0100
+
 slurm-web (1.9.2) unstable; urgency=medium
 
   * Split dependencies over multiple lines
