@@ -72,6 +72,11 @@ There are 8 columns:
 #. The QOS of the job
 #. The partition of the job
 
+You can filter the displayed jobs by using the input above the table, either
+by partition or by QoS. All the shown jobs then satisfy all the filters given
+in the input. There is an autocompletion mechanism on all partitions and QoS
+existing in the table.
+
 To get more details about one specific job, you can click anywhere on the job
 row:
 

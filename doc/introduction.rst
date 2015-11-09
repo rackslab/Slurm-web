@@ -44,6 +44,11 @@ JobsMap view:
 .. image:: img/screenshot_jobsmap.*
    :width: 800px
 
+3D view:
+
+.. image:: img/screenshot_3D_view.*
+   :width: 800px
+
 Partitions view:
 
 .. image:: img/screenshot_partitions.*
