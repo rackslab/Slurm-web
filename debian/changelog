@@ -1,3 +1,9 @@
+slurm-web (1.9.3+c9+3) calibre9; urgency=medium
+
+  * Turn quilt patch into native patch
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Mon, 23 Nov 2015 17:41:21 +0100
+
 slurm-web (1.9.3+c9+2) calibre9; urgency=medium
 
   * New patch to add metrics column in job table
