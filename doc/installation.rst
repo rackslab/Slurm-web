@@ -116,7 +116,7 @@ format. Here is an example of file:
         <nodetype id="b43" model="Vendor B 43" height="2" width="1" />
       </nodetypes>
 
-      <racks posx="0" posy="0" width="500" depth="300" rackwidth="1">
+      <racks posx="0" posy="0" width="10" depth="10">
         <racksrow posx="0">
           <rack id="rack1-1" posy="0">
             <nodes>
@@ -173,18 +173,18 @@ The organization of the different racks is designed by rows of racks, in order
 to generate a 3D view of the room containing the racks composing the supercomputer.
 
 The ``<racks>`` element contains the list of the rows of racks, corresponding to
-the ``<racksrow>`` elements. It has, with an arbitrary unit:
+the ``<racksrow>`` elements. It has these attributes:
 
 - a ``posx`` attribute and  a ``posy`` attribute to set the position of the racks
-  inside the room (the origin is corresponding to the corner left bottom of the
-  3D view)
+  inside the room (the origin is corresponding to the center of the 3D view)
 - a ``width`` attribute and  a ``depth`` attribute to set the size of the room
 - and finally  a ``rackwidth`` attribute to set the width of a rack.
 
 Each ``<racksrow>`` element has a ``posx`` attribute to define the position of
 the corresponding row of racks, starting from the left of the screen, and
 contains a list of racks, each one being described in a distinct ``<rack>``
-element.
+element. Each attribute for either ``<racks>`` or ``<racksrow>`` or ``<rack>``
+elements use the width of a rack as unit.
 
 Each rack element must have a unique ID which will be then used as rack name. A
 rack must have a position in its ``<racksrow>``, within ``posy`` attribute.
@@ -192,6 +192,14 @@ These attributes about position must be integer, they represent the rack
 position within a grid with all racks. If ``posx`` and ``posy`` attributes are
 skipped, then we assume they are equal to ``0``. Two racks should not have the
 same positions.
+
+See in the schema below the relation between the parameters and the
+corresponding representation of the racks in the 3D view. Parameters for
+``<racks>`` element are shown in blue, those for ``<racksrow>`` or ``<rack>``
+elements in red.
+
+.. image:: img/racks_positioning_slurm-web.png
+   :width: 800px
 
 A rack contains a set of nodes within ``<nodes>`` element as shown in
 the previous example. As usual, ``posx`` and ``posy`` attributes are assumed
