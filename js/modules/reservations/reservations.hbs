@@ -1,0 +1,33 @@
+<div id="reservations">
+  <h1 class="page-header">
+    Reservations
+  </h1>
+  <div class='table-responsive'>
+    {{#if count}}
+      <table class='table table-striped tablesorter'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Users</th>
+            <th>Nodes</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each reservations}}
+            <tr>
+              <td>{{@key}}</td>
+              <td>{{users}}</td>
+              <td>{{node_list}}</td>
+              <td>{{printDateFromTimestamp start_time}}</td>
+              <td>{{printDateFromTimestamp end_time}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}
+        <p>There is no data to display.</p>
+    {{/if}}
+  </div>
+</div>

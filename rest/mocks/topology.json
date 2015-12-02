@@ -1,0 +1,16 @@
+{
+  "switch2": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": ["pocg[001-042]"],
+    "name": "switch2",
+    "level": 0
+  },
+  "switch1": {
+    "link_speed": 1,
+    "switches": [],
+    "nodes": ["pocn[001-585]"],
+    "name": "switch1",
+    "level": 0
+  }
+}

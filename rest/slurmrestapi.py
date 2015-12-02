@@ -18,39 +18,147 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, jsonify
+from flask import (Flask, jsonify, request, abort, send_from_directory,
+                   render_template)
 import pyslurm
-import xml.etree.ElementTree as ET
 import pwd
-from ClusterShell.NodeSet import NodeSet
+import json
+
+# for racks description
+from racks import parse_racks
+
+# for mocking json
+from mocks import mock, mock_job, mocking
+
+# for CORS
+from cors import crossdomain
+from settings import settings
+
+# for authentication
+from auth import (User, authentication_verify, AuthenticationError,
+                  all_restricted, enabled)
+
+from cache import cache
 
 app = Flask(__name__)
 
-uids = {} # cache of user login/names to avoid duplicate NSS resolutions
+try:
+    app.secret_key = settings.get('config', 'secret_key') or 'secret_key'
+except Exception:
+    app.secret_key = 'secret_key'
 
-@app.route('/jobs', methods=['GET'])
+uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
+
+origins = settings.get('cors', 'authorized_origins')
+
+
+@app.route('/version', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins)
+def version():
+    return "Slurm-web REST API v2.0"
+
+
+@app.route('/static/<path:path>')
+def send_js(path):
+    return send_from_directory('static', path)
+
+
+@app.route('/proxy')
+def proxy():
+    masters = ", ".join(map(lambda s: "\"%s\": \"*\"" % s, origins.split(',')))
+    return render_template('proxy.html',
+                           url_root=request.url_root,
+                           masters=masters)
+
+
+@app.route('/login', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+def login():
+    data = json.loads(request.data)
+    if data.get('guest', None) == True:
+        user = User.guest()
+    else:
+        try:
+            user = User.user(data['username'],
+                             data['password'])
+        except AuthenticationError:
+            abort(403)
+
+    token = user.generate_auth_token()
+    resp = {
+        'id_token': token,
+        'username': user.username,
+        'role':     user.role
+    }
+    return jsonify(resp)
+
+
+@app.route('/authentication', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['GET'],
+             headers=['Accept', 'Content-Type'])
+def authentication():
+    return jsonify({
+        'enabled': enabled,
+        'guest': not all_restricted
+        })
+
+
+@app.route('/jobs', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
 def get_jobs():
+    if mocking:
+        return mock('jobs.json')
+
     jobs = pyslurm.job().get()
 
     # add login and username (additionally to UID) for each job
     for jobid, job in jobs.iteritems():
         fill_job_user(job)
 
-    return jsonify(jobs)
+    return jobs
 
-@app.route('/job/<int:job_id>')
+
+@app.route('/job/<int:job_id>', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
 def show_job(job_id):
+    if mocking:
+        return mock_job(job_id)
+
     job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
-    return jsonify(job)
 
-@app.route('/nodes', methods=['GET'])
+    return job
+
+
+@app.route('/nodes', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
 def get_nodes():
-    nodes = pyslurm.node().get()
-    return jsonify(nodes)
+    if mocking:
+        return mock('nodes.json')
 
-@app.route('/cluster', methods=['GET'])
+    nodes = pyslurm.node().get()
+    return nodes
+
+
+@app.route('/cluster', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
 def get_cluster():
+    if mocking:
+        return mock('cluster.json')
+
     nodes = pyslurm.node().get()
     cluster = {}
     cluster['name'] = pyslurm.config().get()['cluster_name']
@@ -58,164 +166,214 @@ def get_cluster():
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
         cluster['cores'] += node['cpus']
-    return jsonify(cluster)
+    return cluster
 
-@app.route('/racks', methods=['GET'])
+
+@app.route('/racks', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
 def get_racks():
-    racks = parse_racks()
-    return jsonify(racks)
-
-@app.route('/reservations', methods=['GET'])
-def get_reservations():
-    reservations = pyslurm.reservation().get()
-    return jsonify(reservations)
-
-@app.route('/partitions', methods=['GET'])
-def get_partitions():
-    partitions = pyslurm.partition().get()
-    return jsonify(partitions)
-
-@app.route('/qos', methods=['GET'])
-def get_qos():
-    qos = pyslurm.qos().get()
-    return jsonify(qos)
-
-class NodeType(object):
-
-    def __init__(self, name, model, height, width):
-        self.name = name
-        self.model = model
-        self.height = height
-        self.width = width
-
-class Rack(object):
-
-    def __init__(self, name, posx, posy):
-        self.name = name
-        self.posx = posx
-        self.posy = posy
-        self.nodes = [] # list of nodes in the rack
-
-    def __repr__(self):
-
-        rackrepr = "rack %s (posx: %d, posy: %d):\n" % (self.name, self.posx, self.posy)
-        for node in self.nodes:
-            rackrepr += " - %s\n" % (str(node))
-        return rackrepr
-
-    def _sort_nodes(self):
-        self.nodes.sort(key=lambda node: node.name)
-
-    @staticmethod
-    def rack2dict(rack):
-        xrack = {}
-        xrack['name'] = rack.name
-        xrack['posx'] = rack.posx
-        xrack['posy'] = rack.posy
-        xrack['nodes'] = []
-
-        for node in rack.nodes:
-            xrack['nodes'].append(Node.node2dict(node))
-        return xrack
-
-    @staticmethod
-    def racks2dict(racks):
-        xracks = {}
-        for name, rack in racks.iteritems():
-            xracks[rack.name] = Rack.rack2dict(rack)
-        return xracks
-
-class Node(object):
-
-    def __init__(self, name, rack, nodetype, posx, posy):
-
-        self.name = name
-        self.rack = rack
-        self.nodetype = nodetype
-        self.posx = posx
-        self.posy = posy
-
-    def __repr__(self):
-        noderepr = "%s (model: %s, posx: %f, posy %f)" % (self.name, self.nodetype.model, self.posx, self.posy)
-        return str(noderepr)
-
-    @staticmethod
-    def node2dict(node):
-        xnode = {}
-        xnode['name'] = node.name
-        xnode['type'] = node.nodetype.model
-        xnode['posx'] = node.posx
-        xnode['posy'] = node.posy
-        xnode['height'] = node.nodetype.height
-        xnode['width'] = node.nodetype.width
-        return xnode
-
-def parse_racks():
-
-    FILE = '/etc/slurm-web/racks.xml'
     try:
-        tree = ET.parse(FILE)
-    except ET.ParseError as error:
-        return None
+        racks = parse_racks()
+    except Exception as e:
+        racks = {'error': str(e)}
+    return racks
 
-    root = tree.getroot()
 
-    # parse nodetypes and fill nodetypes dict with
-    # NodeType objects
-    nodetypes = {}
-    nodetypes_e = root.find('nodetypes').findall('nodetype')
-    for nodetype_e in nodetypes_e:
-        nodetype = NodeType(nodetype_e.get('id'),
-                            nodetype_e.get('model'),
-                            float(nodetype_e.get('height')),
-                            float(nodetype_e.get('width')))
-        nodetypes[nodetype.name] = nodetype
+@app.route('/reservations', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_reservations():
+    if mocking:
+        return mock('reservations.json')
 
-    racks = {}
-    # parse racks with nodes
-    racks_e = root.find('racks').findall('rack')
-    for rack_e in racks_e:
-        posx = int(rack_e.get('posx')) if rack_e.get('posx') else 0
-        posy = int(rack_e.get('posy')) if rack_e.get('posy') else 0
-        rack = Rack(rack_e.get('id'), posx, posy)
-        racks[rack.name] = rack
+    reservations = pyslurm.reservation().get()
+    return reservations
 
-        # parse nodes
-        nodes_e = rack_e.find('nodes').findall('node')
-        for node_e in nodes_e:
-            nodetype = nodetypes[node_e.get('type')]
-            posx = float(node_e.get('posx')) if node_e.get('posx') else 0
-            posy = float(node_e.get('posy')) if node_e.get('posy') else 0
-            node = Node(node_e.get('id'), rack, nodetype, posx, posy)
-            # add node to rack
-            rack.nodes.append(node)
 
-        # parse nodesets
-        nodesets_e = rack_e.find('nodes').findall('nodeset')
-        for nodeset_e in nodesets_e:
-            nodeset = NodeSet(nodeset_e.get('id'))
-            draw_dir = 1 if not nodeset_e.get('draw') or nodeset_e.get('draw') == "up" else -1
-            nodetype = nodetypes[nodeset_e.get('type')]
-            cur_x = float(nodeset_e.get('posx')) if nodeset_e.get('posx') else 0
-            cur_y = float(nodeset_e.get('posy')) if nodeset_e.get('posy') else 0
-            for xnode in nodeset:
-                node = Node(xnode, rack, nodetype, cur_x, cur_y)
-                rack.nodes.append(node)
-                cur_x += nodetype.width
-                if cur_x == 1:
-                    cur_x = float(0)
-                    cur_y += nodetype.height * draw_dir
+@app.route('/partitions', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_partitions():
+    if mocking:
+        return mock('partitions.json')
 
-    return Rack.racks2dict(racks)
+    partitions = pyslurm.partition().get()
+    return partitions
+
+
+@app.route('/qos', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_qos():
+    if mocking:
+        return mock('qos.json')
+
+    try:
+        qos = pyslurm.qos().get()
+    except Exception as e:
+        qos = {'error': str(e)}
+    return qos
+
+
+@app.route('/topology', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_topology():
+    if mocking:
+        return mock('topology.json')
+
+    try:
+        topology = pyslurm.topology().get()
+    except Exception as e:
+        topology = {'error': str(e)}
+    return topology
+
+
+# returns a dict composed with all jobs running on the given node
+# with their ID as key
+@app.route('/jobs-by-node/<node_id>', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_jobs_by_node_id(node_id):
+    if mocking:
+        jobs = mock('jobs.json')
+    else:
+        jobs = pyslurm.job().get()
+
+    returned_jobs = {}
+
+    # filter jobs by node
+    for jobid, job in jobs.iteritems():
+        nodes_list = job['cpus_allocated'].keys()
+        print "Nodelist for %s : %s" % (node_id, nodes_list)
+        if node_id in nodes_list:
+            returned_jobs[jobid] = job
+            print "Node %s added to jobs : %s" % (node_id, returned_jobs)
+
+    if not mocking:
+        for jobid, job in returned_jobs.iteritems():
+            fill_job_user(job)
+
+    return returned_jobs
+
+
+# returns a dict composed with all jobs running on the given nodes
+# with their ID as key
+@app.route('/jobs-by-node-ids', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_jobs_by_node_ids():
+    if mocking:
+        jobs = mock('jobs.json')
+    else:
+        jobs = pyslurm.job().get()
+
+    print "Post datas : %s" % request.data
+    nodes = json.loads(request.data).get('nodes', [])
+    print "Nodelist : %s" % nodes
+
+    returned_jobs = {}
+
+    # filter jobs by node
+    for jobid, job in jobs.iteritems():
+        nodes_list = job['cpus_allocated'].keys()
+        print "Nodelist for %s : %s" % (jobid, nodes_list)
+
+        for node_id in nodes:
+            if node_id in nodes_list:
+                returned_jobs[jobid] = job
+                print "Node %s added to jobs : %s" % (node_id, returned_jobs)
+
+    if not mocking:
+        for jobid, job in returned_jobs.iteritems():
+            fill_job_user(job)
+
+    return returned_jobs
+
+
+# returns a dict composed with all nodes ID as key associated to a dict
+# composed by all jobs running on the concerned node
+@app.route('/jobs-by-nodes', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_jobs_by_nodes():
+    if mocking:
+        jobs = mock('jobs.json')
+        nodes = mock('nodes.json')
+    else:
+        jobs = pyslurm.job().get()
+        nodes = pyslurm.node().get()
+
+    returned_nodes = {}
+
+    for node_id, node in nodes.iteritems():
+        returned_jobs = {}
+        # filter jobs by node
+        for jobid, job in jobs.iteritems():
+            nodes_list = job['cpus_allocated'].keys()
+            if node_id in nodes_list:
+                returned_jobs[jobid] = job
+
+        returned_nodes[node_id] = returned_jobs
+
+    return returned_nodes
+
+
+# returns a dict composed with all qos ID as key associated to a dict
+# composed by all jobs on the concerned node
+@app.route('/jobs-by-qos', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@authentication_verify()
+@cache()
+def get_jobs_by_qos():
+    if mocking:
+        jobs = mock('jobs.json')
+        qos = mock('qos.json')
+    else:
+        jobs = pyslurm.job().get()
+        qos = pyslurm.qos().get()
+
+    returned_qos = {}
+
+    for qos_id, q in qos.iteritems():
+        returned_jobs = {}
+        # filter jobs by node
+        for jobid, job in jobs.iteritems():
+            if qos_id == job['qos']:
+                returned_jobs[jobid] = job
+
+        returned_qos[qos_id] = returned_jobs
+
+    return returned_qos
+
 
 def fill_job_user(job):
     uid = job['user_id']
     uid_s = str(uid)
-    if not uids.has_key(uid_s):
+    if uid_s not in uids:
         pw = pwd.getpwuid(uid)
         uids[uid_s] = {}
         uids[uid_s]['login'] = pw[0]
-        uids[uid_s]['username'] = pw[4].split(',')[0] # user name is the first part of gecos
+        # user name is the first part of gecos
+        uids[uid_s]['username'] = pw[4].split(',')[0]
     job['login'] = uids[uid_s]['login']
     job['username'] = uids[uid_s]['username']
 

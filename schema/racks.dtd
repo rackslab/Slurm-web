@@ -8,11 +8,18 @@
 <!ATTLIST nodetype height CDATA #REQUIRED>
 <!ATTLIST nodetype width CDATA #REQUIRED>
 
-<!ELEMENT racks (rack+)>
+<!ELEMENT racks (racksrow+)>
+<!ATTLIST racks posx CDATA #IMPLIED>
+<!ATTLIST racks posy CDATA #IMPLIED>
+<!ATTLIST racks width CDATA #IMPLIED>
+<!ATTLIST racks depth CDATA #IMPLIED>
+<!ATTLIST racks rackwidth CDATA #IMPLIED>
+
+<!ELEMENT racksrow (rack+)>
+<!ATTLIST racksrow posx CDATA #IMPLIED>
 
 <!ELEMENT rack (nodes)>
 <!ATTLIST rack id ID #REQUIRED>
-<!ATTLIST rack posx CDATA #IMPLIED>
 <!ATTLIST rack posy CDATA #IMPLIED>
 
 <!ELEMENT nodes (node|nodeset)*>

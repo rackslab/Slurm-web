@@ -1,4 +1,33 @@
-slurm-web (1.1.3) UNRELEASED; urgency=low
+slurm-web (1.9.3) unstable; urgency=medium
+
+  * Add missing dep on libjs-handlebars
+  * update documentation: dashboard usage & architecture
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 06 Nov 2015 12:03:13 +0100
+
+slurm-web (1.9.2) unstable; urgency=medium
+
+  * Split dependencies over multiple lines
+  * The dashboard depends on the confdashboard
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 11:48:02 +0100
+
+slurm-web (1.9.1) unstable; urgency=medium
+
+  * Remove redundant xdomain.min.js
+  * Replace minified xdomain with original source
+  * Add missing dh depends on slurm-web pkg
+  * Remove -x bits on REST API WSGI file
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 30 Oct 2015 09:37:09 +0100
+
+slurm-web (1.9.0) unstable; urgency=medium
+
+  * new major v2.0 pre-release
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 29 Oct 2015 17:28:10 +0100
+
+slurm-web (1.1.3) unstable; urgency=low
 
   * Add missing qos/partitions calls in reference API doc 
 

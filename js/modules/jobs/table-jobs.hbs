@@ -1,0 +1,34 @@
+<div class='table-responsive'>
+  {{#if count}}
+    <table class='table table-striped tablesorter'>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Nodes</th>
+          <th>State</th>
+          <th>Reason</th>
+          <th>Start</th>
+          <th>QOS</th>
+          <th>Partition</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each jobs}}
+          <tr class="job-row" id="tr-job-{{@key}}">
+            <td>{{@key}}</td>
+            <td>{{login}} ({{username}})</td>
+            <td>{{printNodes nodes}}</td>
+            <td>{{job_state}}</td>
+            <td>{{printReason job_state state_reason}}</td>
+            <td>{{printStartTime start_time eligible_time job_state}}</td>
+            <td data-qos="qos-{{qos}}">{{qos}}</td>
+            <td data-partition="partition-{{partition}}">{{partition}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+      <p>There is no data to display.</p>
+  {{/if}}
+</div>

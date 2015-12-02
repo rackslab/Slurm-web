@@ -1,0 +1,9 @@
+<div id="racks">
+  <h1 class="page-header">
+    Racks
+  </h1>
+  <canvas id="cv_rackmap_legend" class="canvas-legend" width="{{config.LEGEND.WIDTH}}" height="{{canvas.LEGEND.HEIGHT}}" />
+  {{#each racks}}
+    <canvas id="cv_rackmap_{{@key}}" width="{{../config.CANVASWIDTH}}" height="{{../config.CANVASHEIGHT}}" />
+  {{/each}}
+</div>

@@ -1,0 +1,47 @@
+{
+  "test_resa1": {
+    "accounts": [],
+    "core_cnt": 2,
+    "end_time": 1438092000,
+    "features": [],
+    "flags": "SPEC_NODES",
+    "licenses": {},
+    "node_cnt": 1,
+    "node_list": "cn1",
+    "partition": null,
+    "start_time": 1438088400,
+    "users": [
+      "pierre"
+    ]
+  },
+  "test_resa2": {
+    "accounts": [],
+    "core_cnt": 2,
+    "end_time": 1438092000,
+    "features": [],
+    "flags": "SPEC_NODES",
+    "licenses": {},
+    "node_cnt": 1,
+    "node_list": "cn2",
+    "partition": null,
+    "start_time": 1438088400,
+    "users": [
+      "marie"
+    ]
+  },
+  "test_resa3": {
+    "accounts": [],
+    "core_cnt": 2,
+    "end_time": 1438092000,
+    "features": [],
+    "flags": "SPEC_NODES",
+    "licenses": {},
+    "node_cnt": 1,
+    "node_list": "cn3",
+    "partition": null,
+    "start_time": 1438088400,
+    "users": [
+      "pierre", "marie"
+    ]
+  }
+}

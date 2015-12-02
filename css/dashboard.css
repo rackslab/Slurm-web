@@ -2,11 +2,13 @@
  * Base structure
  */
 
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+  background-color: #f5f5f5;
 }
 
+canvas {
+  outline: none;
+}
 
 /*
  * Global add-ons
@@ -27,48 +29,40 @@ body {
   border: 0;
 }
 
+.navbar {
+  margin-bottom: 0;
+}
+
 #brand-name {
   margin-left: 220px;
 }
-/*
- * Sidebar
- */
 
-/* Hide for mobile, show later */
-.sidebar {
-  display: none;
-}
-@media (min-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 51px;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    display: block;
-    padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #f5f5f5;
-    border-right: 1px solid #eee;
-  }
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:visited,
+.navbar-inverse .navbar-nav > .open > a:active {
+  background-color: #222;
 }
 
-/* Sidebar navigation */
-.nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
-  margin-bottom: 20px;
-  margin-left: -20px;
+.dropdown-menu {
+  background-color: #222;
+  border: none;
+  border-radius: 0;
 }
-.nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
+
+.dropdown-menu > li > a, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-color: #222;
+  color: #FFFFFF;
 }
-.nav-sidebar > .active > a,
-.nav-sidebar > .active > a:hover,
-.nav-sidebar > .active > a:focus {
-  color: #fff;
-  background-color: #428bca;
+
+.dropdown-toggle, .dropdown-toggle:hover {
+  background-color: #222;
+}
+
+#navbar>.nav>li>a {
+  font-size: 1em;
+  padding: 15px 10px;
+  outline: none;
 }
 
 /*
@@ -81,11 +75,67 @@ body {
 }
 
 /*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -33%;
+  }
+
+  .row-offcanvas-left.active {
+    left: 33%;
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 33%;
+    margin-left: 10px;
+  }
+}
+
+
+/* Sidebar navigation */
+.nav-sidebar {
+  background-color: #f5f5f5;
+  margin-right: -15px;
+  margin-bottom: 20px;
+  margin-left: -15px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a, .nav > .active > a:hover, .nav > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+@media screen and (min-width: 768px) {
+  #main p.visible-xs {
+    display: block !important;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+}
+
+/*
  * Main content
  */
 
 .main {
   padding: 20px;
+  background-color: white;
 }
 @media (min-width: 768px) {
   .main {
@@ -97,6 +147,32 @@ body {
   margin-top: 0;
 }
 
+/*
+ * Login content
+ */
+
+#login {
+  padding:20px 40px;
+}
+
+#login .align {
+  margin:0 auto;
+  width: 200px;
+}
+
+#login .align-error {
+  display: none;
+  margin:0 auto;
+  width: 400px;
+}
+
+/*
+ * Login content
+ */
+
+ .modal-header {
+   border-radius: 4px 4px 0 0;
+ }
 
 /*
  * Placeholder dashboard ideas
@@ -130,22 +206,21 @@ tr.job-row {
  */
 
 .plot-sub-div {
-  width: 230px;
-  /* trick to center fixed width element within responsive sized block */
+  width: 100%;
   position: relative;
   right: 0;
   left: 0;
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .plot-div {
-  width: 230px; /* must be identical to .plot-sub-div width */
+  width: 230px;
   height: 160px;
 }
 
 .plot-div-small {
-  width: 230px; /* must be identical to .plot-sub-div width */
+  width: 100%;
   height: 130px;
 }
 
@@ -159,4 +234,269 @@ tr.job-row {
 
 td.legendLabel {
   padding-left: 3px;
+}
+
+/*
+  * table sorter
+  */
+table.tablesorter thead tr th {
+  padding-right: 20px;
+}
+
+table.tablesorter thead tr .header {
+  background-image: url(../static/bg.gif);
+  background-repeat: no-repeat;
+  background-position: center right;
+  cursor: pointer;
+}
+
+table.tablesorter thead tr .headerSortUp {
+  background-image: url(../static/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+  background-image: url(../static/desc.gif);
+}
+
+/*
+ * Canvas legend
+ */
+
+.canvas-legend {
+  float: left;
+}
+
+/*
+ * Utils
+ */
+
+.text-center {
+  text-align: center;
+}
+
+/*
+ * Gantt
+ */
+#gantt .content {
+  position: relative;
+  overflow: hidden;
+}
+
+#tabs {
+ float: right;
+}
+
+#tabs li {
+border: 1px solid #ddd;
+}
+
+#tabs li.active {
+background-color: #ddd;
+}
+
+#tabs li a {
+background-color: transparent;
+border: none;
+}
+
+#nodes-list, #qos-list {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#nodes-list .node {
+  font-size: 0.6em;
+  height: 20px;
+  width: 70px;
+  line-height: 25px;
+  vertical-align: middle;
+}
+
+#qos-list .qos {
+  font-size: 0.6em;
+  width: 70px;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-bottom: 1px solid lightgrey;
+}
+
+#jobs-chart {
+  overflow-x: scroll;
+  margin-left: 70px;
+  height: 100%;
+}
+
+#jobs-chart>.wrapper {
+  position: relative;
+}
+
+#jobs-chart .job-wrapper {
+  position: absolute;
+  border: 1px solid transparent;
+  width: 100%;
+}
+
+#jobs-chart .job-wrapper:hover {
+  background-color: rgba(230,230,230,1);
+}
+
+#jobs-chart .job {
+  position: absolute;
+  text-align: center;
+  cursor: pointer;
+  min-width: 4px;
+  height: 100%;
+  opacity: 1;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px #888888;
+}
+
+#jobs-chart .job:hover {
+  opacity: 0.9;
+}
+
+#jobs-chart .current {
+  width: 1px;
+  background-color: red;
+  position: absolute;
+  z-index: 1;
+}
+
+#jobs-chart .job span {
+  position: absolute;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+#jobs .filter {
+  margin-top: 20px;
+}
+
+.bootstrap-tagsinput {
+  width: 100% !important;
+}
+
+#time {
+  bottom: -20px;
+  bottom: 0;
+  width: 100%;
+  overflow-x: hidden;
+  margin-left: 70px;
+}
+
+#time .wrapper {
+  position: relative;
+  height: 50px;
+}
+
+#time .time {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.8em;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.bs-example{
+  font-family: sans-serif;
+  position: relative;
+  margin: 100px;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 100%;
+  height: 30px;
+  font-size: 14px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  outline: none;
+}
+
+.tt-input {
+  width: 100% !important;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  display: none;
+}
+
+.tt-menu {
+  width: 422px;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+/*
+ * Topology
+ */
+#topology .wrapper {
+  overflow: auto;
+}
+
+#topology text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 1;
+}
+
+#topology circle {
+  z-index: 100;
 }

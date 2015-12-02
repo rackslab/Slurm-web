@@ -16,6 +16,7 @@ Contents:
    usage
    architecture
    api
+   contribute
 
 Indices and tables
 ==================
@@ -23,4 +24,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

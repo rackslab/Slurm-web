@@ -1,0 +1,61 @@
+<div class="modal fade" id="modal-node" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">
+            &#215;
+          </span>
+        </button>
+        {{#if nodeId}}
+          <h4 class="modal-title" id="modal-job-title">Node {{nodeId}}</h4>
+        {{/if}}
+        {{#if switchId}}
+          <h4 class="modal-title" id="modal-job-title">Switch {{switchId}}</h4>
+        {{/if}}
+      </div>
+      <div class="modal-body" id="modal-job-body">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          {{#if count}}
+            {{#each jobs}}
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne" style="background-color: {{pickJobColor @key}};">
+                  <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne-{{@key}}" aria-expanded="false" aria-controls="collapseOne-{{@key}}">
+                      Job {{@key}}
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne-{{@key}}" class="panel-collapse collapse {{expanded}}" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="panel-body">
+                    <ul>
+                      <li>user: {{login}} ({{username}})</li>
+                      <li>state: {{job_state}}</li>
+                      <li>reason: {{printStateReason state_reason}}</li>
+                      <li>nodes: {{nodes}} ({{num_nodes}})</li>
+                      <li>cores: {{num_cpus}}</li>
+                      <li>account: {{account}}</li>
+                      <li>QOS: {{qos}}</li>
+                      <li>partition: {{partition}}</li>
+                      <li>exclusive: {{yesOrNo (different exclusive)}}</li>
+                      <li>command: {{printCommand command}}</li>
+                      <li>start time: {{printDateFromTimestamp start_time}}</li>
+                      <li>eligible time: {{printDateFromTimestamp eligible_time}}</li>
+                      <li>end time: {{printDateFromTimestamp end_time}}</li>
+                      <li>time limit: {{time_limit}} mins</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{else}}
+            <p>There is no data to display.</p>
+          {{/if}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

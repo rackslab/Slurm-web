@@ -1,0 +1,35 @@
+<div class="modal fade" id="modal-core" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: {{pickJobColor jobId}};">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">
+            &#215;
+          </span>
+        </button>
+        <h4 class="modal-title" id="modal-job-title">Job {{jobId}}</h4>
+      </div>
+      <div class="modal-body" id="modal-job-body">
+        <ul>
+          <li>user: {{job.login}} ({{job.username}})</li>
+          <li>state: {{job.job_state}}</li>
+          <li>reason: {{printStateReason job.state_reason}}</li>
+          <li>nodes: {{job.nodes}} ({{job.num_nodes}})</li>
+          <li>cores: {{job.num_cpus}}</li>
+          <li>account: {{job.account}}</li>
+          <li>QOS: {{job.qos}}</li>
+          <li>partition: {{job.partition}}</li>
+          <li>exclusive: {{yesOrNo (different job.exclusive)}}</li>
+          <li>command: {{printCommand job.command}}</li>
+          <li>start time: {{printDateFromTimestamp job.start_time}}</li>
+          <li>eligible time: {{printDateFromTimestamp job.eligible_time}}</li>
+          <li>end time: {{printDateFromTimestamp job.end_time}}</li>
+          <li>time limit: {{job.time_limit}} mins</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
