@@ -29,16 +29,20 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 import os
 import platform
 
-secret_key = settings.get('config', 'secret_key') + platform.node()
+
+all_restricted = False
 enabled = settings.get('config', 'authentication') == 'enable'
-filtered_keys_by_role = {
-    'all': settings.get('roles', 'restricted_fields_for_all').split(','),
-    'user': settings.get('roles', 'restricted_fields_for_user').split(','),
-    'admin': settings.get('roles', 'restricted_fields_for_admin').split(',')
-}
-all_restricted = not(settings.get('roles', 'all') == 'all')
-users = settings.get('roles', 'user').split(',')
-admins = settings.get('roles', 'admin').split(',')
+
+if enabled:
+    secret_key = settings.get('config', 'secret_key') + platform.node()
+    filtered_keys_by_role = {
+        'all': settings.get('roles', 'restricted_fields_for_all').split(','),
+        'user': settings.get('roles', 'restricted_fields_for_user').split(','),
+        'admin': settings.get('roles', 'restricted_fields_for_admin').split(',')
+    }
+    all_restricted = not(settings.get('roles', 'all') == 'all')
+    users = settings.get('roles', 'user').split(',')
+    admins = settings.get('roles', 'admin').split(',')
 
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
