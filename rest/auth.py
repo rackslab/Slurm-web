@@ -32,9 +32,9 @@ import platform
 secret_key = settings.get('config', 'secret_key') + platform.node()
 enabled = settings.get('config', 'authentication') == 'enable'
 filtered_keys_by_role = {
-    'all': settings.get('roles', 'resticted_fields_for_all').split(','),
-    'user': settings.get('roles', 'resticted_fields_for_user').split(','),
-    'admin': settings.get('roles', 'resticted_fields_for_admin').split(',')
+    'all': settings.get('roles', 'restricted_fields_for_all').split(','),
+    'user': settings.get('roles', 'restricted_fields_for_user').split(','),
+    'admin': settings.get('roles', 'restricted_fields_for_admin').split(',')
 }
 all_restricted = not(settings.get('roles', 'all') == 'all')
 users = settings.get('roles', 'user').split(',')

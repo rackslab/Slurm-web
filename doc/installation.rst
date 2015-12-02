@@ -278,9 +278,9 @@ Here is an example of a valid configuration file:
   admin = @admingroup,adminuser
 
   # Give here restricted fields about jobs for each role, separated by commas
-  resticted_fields_for_all = command,account
-  resticted_fields_for_user = command
-  resticted_fields_for_admin =
+  restricted_fields_for_all = command,account
+  restricted_fields_for_user = command
+  restricted_fields_for_admin =
 
   [ldap]
   uri = ldap://admin:389
