@@ -115,7 +115,9 @@ class Node(object):
 
 def parse_racks():
 
-    FILE = settings.get('racks', 'path')
+    FILE = settings.get('config', 'racksxml')
+    if not FILE:
+        FILE = '/etc/slurm-web/racks.xml'
     try:
         tree = ET.parse(FILE)
     except ET.ParseError as error:
