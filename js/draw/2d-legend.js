@@ -89,7 +89,7 @@ define([
       ctx.fillStyle = 'black';
       ctx.fillText('reserved', legendX + 10, legendY + 3);
 
-      if (type === 'jobs-map') {
+      if (type === 'racks') {
         legendY += 10;
         drawRectangle(ctx, legendX - 2, legendY, 9, 9, colors.LED.FULLYALLOCATED);
         ctx.fillStyle = 'black';
