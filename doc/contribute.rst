@@ -59,7 +59,8 @@ Work with current page or add new:
 ----------------------------------
 
 To add a new page in slurm-web :
-* Create a module object (see below) and save it in /js/modules/(pagename)/(pagename).js
+
+* Create a module object (see above) and save it in /js/modules/(pagename)/(pagename).js
 * Require the module files (.js and .hbs) in /js/core/index.js
 * Add a navigation element in /js/core/navbar/navbar.js
 * Add a navigation event in the `$(document).on('show')` in /js/core/index.js

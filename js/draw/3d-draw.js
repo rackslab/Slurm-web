@@ -33,30 +33,31 @@ define([
   var colors = JSON.parse(d3Colors);
 
   return function (map, racks, nodes, jobs, room) {
-    var room = room;
-    var map = map;
-    var racks = racks;
-    var nodes = nodes;
-    var jobs = jobs;
-    var scene = null;
-    var light = null;
-    var canvas = null;
-    var mouse = null;
-    var raycaster = null;
-    var canvasRectangle = null;
-    var camera = null;
-    var clock = null;
-    var interfaceOptions = null;
-    var controls = null;
-    var objects = {};
-    var idFrame = null;
-    var cancelAnimation = null;
-    var interfaceOptions = null;
-    var floorWidth = null;
-    var floorDepth = null;
-    var renderer = null;
-    var defaultXSize = null;
-    var defaultZSize = null;
+    var room = room,
+        map = map,
+        racks = racks,
+        nodes = nodes,
+        jobs = jobs,
+        scene = null,
+        light = null,
+        canvas = null,
+        mouse = null,
+        raycaster = null,
+        canvasRectangle = null,
+        camera = null,
+        clock = null,
+        interfaceOptions = null,
+        controls = null,
+        objects = {},
+        idFrame = null,
+        cancelAnimation = null,
+        interfaceOptions = null,
+        floorWidth = null,
+        floorDepth = null,
+        renderer = null,
+        defaultXSize = null,
+        defaultZSize = null,
+        warned = false;
 
     this.calculateEnv = function () {
       map.unitWidth = map.width * config.UNITSIZE + map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
@@ -270,8 +271,17 @@ define([
     this.addCores = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
       var ledDimensions = nodeWidth * config.LEDDIMENSIONS;
 
+      if (!nodes[node.name]) {
+        console.log('Unable to find ' + node.name + ' in given nodes.');
+        if (!warned) {
+          alert('Oops, your racks.xml file seems to be wrong written. Check it');
+          warned = true;
+        }
+        return;
+      }
+
       if (!nodes[node.name].hasOwnProperty('cpus')) {
-        return
+        return;
       }
 
       var cpus = nodes[node.name].cpus;
