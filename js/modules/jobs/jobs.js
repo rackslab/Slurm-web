@@ -68,7 +68,7 @@ define([
         $(document).trigger('modal-job', { jobId: jobId });
       });
 
-      $("td[data-partition^='partition-'], td[data-qos^='qos-']").on('click', function (e) {
+      $("td[data-partition$='(partition)'], td[data-qos$='(qos)']").on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -310,7 +310,7 @@ define([
       $('.modal-backdrop').remove();
       $(document).off('modal-job');
       $("tr[id^='tr-job-']").off('click');
-      $("td[data-partition^='partition-'], td[data-qos^='qos-']").off('click');
+      $("td[data-partition$='(partition)'], td[data-qos$='(qos)']").off('click');
       $('#apply-tags').off('click');
       $('#jobs').remove();
     };

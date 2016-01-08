@@ -116,21 +116,21 @@ format. Here is an example of file:
         <nodetype id="b43" model="Vendor B 43" height="2" width="1" />
       </nodetypes>
 
-      <racks posx="0" posy="0" width="500" depth="300" rackwidth="1">
+      <racks posx="0" posy="0" width="10" depth="10">
         <racksrow posx="0">
           <rack id="rack1-1" posy="0">
             <nodes>
-              <node id="cn001" type="m32x4321" posx="0" posy="3" />
-              <node id="cn002" type="m32x4321" posx="0.5" posy="3" />
+              <node id="cn001" type="m32x4321" posx="0" posy="2" />
+              <node id="cn002" type="m32x4321" posx="0.5" posy="2" />
               <node id="cn003" type="m32x4321" posx="0" posy="4" />
 
-              <nodeset id="cn[004-072]" type="m32x4321" />
+              <nodeset id="cn[004-072]" type="m32x4321" posy="5" />
             </nodes>
           </rack>
 
           <rack id="rack1-2" posy="1">
             <nodes>
-              <node id="cn101" type="m32x4321" posx="0" posy="3" />
+              <node id="cn101" type="m32x4321" posx="0" posy="1" />
               <nodeset id="cn[102-121]" type="m32x4321" posy="5" />
             </nodes>
           </rack>
@@ -143,14 +143,14 @@ format. Here is an example of file:
               <node id="cn202" type="m32x4321" posx="0.5" posy="3" />
               <node id="cn203" type="m32x4321" posx="0" posy="4" />
 
-              <nodeset id="cn[204-272]" type="m32x4321" />
+              <nodeset id="cn[204-272]" type="m32x4321" posy="6" />
             </nodes>
           </rack>
 
           <rack id="rack2-2" posy="1">
             <nodes>
-              <node id="cn301" type="m32x4321" posx="0" posy="3" />
-              <nodeset id="cn[302-321]" type="m32x4321" posy="5" />
+              <node id="cn301" type="b43" posx="0" posy="0" />
+              <nodeset id="cn[302-319]" type="b43" posy="5" />
             </nodes>
           </rack>
         </racksrow>
@@ -173,14 +173,18 @@ The organization of the different racks is designed by rows of racks, in order
 to generate a 3D view of the room containing the racks composing the supercomputer.
 
 The ``<racks>`` element contains the list of the rows of racks, corresponding to
-the ``<racksrow>`` elements. It has  a ``posx`` attribute and  a ``posy``
-attribute to set the position of the racks inside the room,  a ``width``
-attribute and  a ``depth`` attribute to set the size of the room, and finally  a
-``rackwidth`` attribute to set the width of a rack.
+the ``<racksrow>`` elements. It has these attributes:
 
-Each ``<racksrow>`` element has a ``posx`` attribute to define its position, and
+- a ``posx`` attribute and  a ``posy`` attribute to set the position of the racks
+  inside the room (the origin is corresponding to the center of the 3D view)
+- a ``width`` attribute and  a ``depth`` attribute to set the size of the room
+- and finally  a ``rackwidth`` attribute to set the width of a rack.
+
+Each ``<racksrow>`` element has a ``posx`` attribute to define the position of
+the corresponding row of racks, starting from the left of the screen, and
 contains a list of racks, each one being described in a distinct ``<rack>``
-element.
+element. Each attribute for either ``<racks>`` or ``<racksrow>`` or ``<rack>``
+elements use the width of a rack as unit.
 
 Each rack element must have a unique ID which will be then used as rack name. A
 rack must have a position in its ``<racksrow>``, within ``posy`` attribute.
@@ -189,12 +193,38 @@ position within a grid with all racks. If ``posx`` and ``posy`` attributes are
 skipped, then we assume they are equal to ``0``. Two racks should not have the
 same positions.
 
+See in the schema below the relation between the parameters and the
+corresponding representation of the racks in the 3D view. Parameters for
+``<racks>`` element are shown in blue, those for ``<racksrow>`` or ``<rack>``
+elements in red.
+
+.. image:: img/racks_positioning_slurm-web.png
+   :width: 800px
+
 A rack contains a set of nodes within ``<nodes>`` element as shown in
 the previous example. As usual, ``posx`` and ``posy`` attributes are assumed
 to be equal to ``0`` if missing. Besides, ``<nodeset>`` elements can have
 an attribute ``draw`` which will tell in which direction Slurm-Web
 will draw the nodes in the rack (``up`` or ``down``). When missing, it is
 set to ``up``.
+
+Here is the rendering of the 2D view according to this example of
+``racks.xml``:
+
+.. image:: img/screenshot_racks-2D_rendering_example.*
+   :width: 800px
+
+Here is the rendering of the jobsmap view according to this example of
+``racks.xml``:
+
+.. image:: img/screenshot_jobsmap_rendering_example.*
+   :width: 800px
+
+Here is the rendering of the 3D view according to this example of
+``racks.xml``:
+
+.. image:: img/screenshot_racks-3D_rendering_example.*
+   :width: 800px
 
 Once you have completely described all the racks and nodes composing your
 supercomputer, you can check the file format by validating it against the
@@ -248,9 +278,9 @@ Here is an example of a valid configuration file:
   admin = @admingroup,adminuser
 
   # Give here restricted fields about jobs for each role, separated by commas
-  resticted_fields_for_all = command,account
-  resticted_fields_for_user = command
-  resticted_fields_for_admin =
+  restricted_fields_for_all = command,account
+  restricted_fields_for_user = command
+  restricted_fields_for_admin =
 
   [ldap]
   uri = ldap://admin:389

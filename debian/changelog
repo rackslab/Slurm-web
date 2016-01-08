@@ -1,8 +1,17 @@
-slurm-web (1.9.3+c7+1) calibre7; urgency=medium
+slurm-web (1.9.4) unstable; urgency=medium
 
-  * Backport to Calibre7
+  * fix typo in resticted_fields_* parameters
+  * make secret_key and roles parameters optional when auth is disable
+  * warn in logs on wrong configuration of racks.xml on 3D view
+  * remove racks section and make path /etc/slurm-web/racks.xml real default in
+    REST conf
+  * fix captions inverted between Jobmaps and Racks views
+  * fix bug on 2D racks rendering and posy below 2
+  * fix clic on partition or QOS dans jobs' list that did not work
+  * fix old views are not hidden when switching to a new view
+  * update documentation
 
- -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 06 Nov 2015 12:10:21 +0100
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 08 Jan 2016 10:42:02 +0100
 
 slurm-web (1.9.3) unstable; urgency=medium
 

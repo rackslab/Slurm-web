@@ -199,7 +199,7 @@ define([
       var rackABSY = rackABS.Y;
 
       var nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + (rackNode.posx * this.config.RACKINSIDEWIDTH);
-      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy * this.config.RACKUNITHEIGHT);
+      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (((rackNode.posy) + 2) * this.config.RACKUNITHEIGHT);
 
       var nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       var nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
@@ -229,7 +229,7 @@ define([
       var rackABSY = rackABS.Y;
 
       var nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + (rackNode.posx * this.config.RACKINSIDEWIDTH);
-      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy * this.config.RACKUNITHEIGHT);
+      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - ((rackNode.posy + 2) * this.config.RACKUNITHEIGHT);
 
       var nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       var nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;

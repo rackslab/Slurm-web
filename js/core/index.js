@@ -160,6 +160,7 @@ require([
     e.stopPropagation();
 
     page.destroy(true);
+    $('#main').empty();
     page = new Page();
     $('#flash').hide();
 

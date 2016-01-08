@@ -42,7 +42,10 @@ from cache import cache
 
 app = Flask(__name__)
 
-app.secret_key = settings.get('config', 'secret_key')
+try:
+    app.secret_key = settings.get('config', 'secret_key') or 'secret_key'
+except Exception:
+    app.secret_key = 'secret_key'
 
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
