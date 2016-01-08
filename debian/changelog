@@ -1,3 +1,10 @@
+slurm-web (1.9.5) unstable; urgency=medium
+
+  * Revert "fix bug on 2D racks rendering and posy below 2" cause
+    that was actually a regression
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 08 Jan 2016 15:57:27 +0100
+
 slurm-web (1.9.4) unstable; urgency=medium
 
   * fix typo in resticted_fields_* parameters
