@@ -23,8 +23,8 @@
             <td>{{job_state}}</td>
             <td>{{printReason job_state state_reason}}</td>
             <td>{{printStartTime start_time eligible_time job_state}}</td>
-            <td data-qos="qos {{qos}}">{{qos}}</td>
-            <td data-partition="partition {{partition}}">{{partition}}</td>
+            <td data-qos="{{qos}} (qos)">{{qos}}</td>
+            <td data-partition="{{partition}} (partition)">{{partition}}</td>
             <td>
               <a href="http://clay01tes.cla.edfgdf.fr/jobmetrics/?cluster=porthos&job={{@key}}">
                 <img src="static/graph.png">
