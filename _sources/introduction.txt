@@ -2,10 +2,12 @@ Introduction
 ============
 
 Slurm-web is web application that serves as web frontend to `Slurm`_
-workload manager. It is based on 2 components:
+workload manager. It is based on 3 components:
 
 * a backend REST API
 * a dashboard web GUI
+* a small server for dashboard's configuration files
+
 
 .. _Slurm: http://slurm.schedmd.com/
 
@@ -42,6 +44,11 @@ JobsMap view:
 .. image:: img/screenshot_jobsmap.*
    :width: 800px
 
+3D view:
+
+.. image:: img/screenshot_3D_view.*
+   :width: 800px
+
 Partitions view:
 
 .. image:: img/screenshot_partitions.*
@@ -59,3 +66,9 @@ Reservation view:
 
 Please refer to :doc:`software architecture </architecture>` section for more
 detailed description of components inner working and integration.
+
+A small HTTP server implemented with Flask has been added to serve files used
+for dashboard configuration from the directory ``/etc/slurm-web/dashboard``
+
+Please refer to the dedicated section in :doc:`installation </installation>` to
+know more about how to configure your dashboard.

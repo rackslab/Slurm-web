@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dashboard usage &mdash; Slurm-web 1.1 documentation</title>
+  <title>Dashboard usage &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
         <link rel="next" title="Software architecture" href="architecture.html"/>
         <link rel="prev" title="Installation Guide" href="installation.html"/> 
 
@@ -73,10 +73,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
@@ -84,6 +91,17 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -130,20 +148,25 @@ which looks like the following screenshot:</p>
 <div class="figure">
 <img alt="_images/screenshot_jobs_view.png" src="_images/screenshot_jobs_view.png" />
 </div>
-<p>In the top right corner of this web page, there is a menu with 4 entries:</p>
+<p>In the top right corner of this web page, there is a menu with 10 entries:</p>
 <div class="figure">
 <img alt="_images/screenshot_menu.png" src="_images/screenshot_menu.png" />
 </div>
-<p>With these links, you can navigate to 4 differents views:</p>
+<p>With these links, you can navigate to 9 differents views:</p>
 <ul class="simple">
 <li>the Jobs view</li>
 <li>the Racks view</li>
 <li>the JobsMap view</li>
+<li>the 3D view (not available in IE)</li>
 <li>the Partitions view</li>
 <li>the QOS view</li>
 <li>the Reservations view</li>
+<li>the Gantt view</li>
+<li>the Topology view</li>
 </ul>
 <p>All these views are described in details in the following sections.</p>
+<p>The last entry concerns the user&#8217;s authentication. It is not displayed if this
+feature is disabled.</p>
 <div class="section" id="jobs-view">
 <h2>Jobs view<a class="headerlink" href="#jobs-view" title="Permalink to this headline">¶</a></h2>
 <p>The Jobs view gives an overview of all Slurm jobs currently running or pending
@@ -180,6 +203,10 @@ its start time in the future.</li>
 <li>The QOS of the job</li>
 <li>The partition of the job</li>
 </ol>
+<p>You can filter the displayed jobs by using the input above the table, either
+by partition or by QoS. All the shown jobs then satisfy all the filters given
+in the input. There is an autocompletion mechanism on all partitions and QoS
+existing in the table.</p>
 <p>To get more details about one specific job, you can click anywhere on the job
 row:</p>
 <div class="figure">
@@ -259,6 +286,28 @@ running jobs, 2 cores allocated to 2 different jobs could potentially have the
 same color.</p>
 <p>Again, a small legendary in a frame at the top right corner gives a recap of
 these information.</p>
+<p>To get more details about the activity on one specific node or core, you can
+click on it.</p>
+<p>Once clicked, an information box shows up with the same details about jobs, as
+in the box about job of the Jobs view.</p>
+<div class="section" id="d-view">
+<h3>3D View<a class="headerlink" href="#d-view" title="Permalink to this headline">¶</a></h3>
+<p>This view shows a representation in three dimensions of the HPC, according to
+how it is defined in the <tt class="docutils literal"><span class="pre">racks.xml</span></tt> file.</p>
+<p>As on the JobsMap view, it gives the activity on each core, showing the color
+of the current processed job.</p>
+<p>You can choose between 3 ways of visualization:</p>
+<ul class="simple">
+<li><em>Camera orbit</em>:
+Change its angle by clicking and moving the mouse. Zoom in with a scroll up,
+out with a scroll down.</li>
+<li><em>Camera first person</em>:
+Move the camera with the arrow keys. Change its angle by pointing the wished
+direction with the mouse.</li>
+<li><em>Pacman</em>:
+A view with an automatically moving between racks.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="partitions-view">
 <h2>Partitions view<a class="headerlink" href="#partitions-view" title="Permalink to this headline">¶</a></h2>
@@ -304,6 +353,7 @@ these information.</p>
 <li>Preemption Mode</li>
 <li>Preemption Grace Time</li>
 </ol>
+<p>Empty columns are hidden.</p>
 </div>
 <div class="section" id="reservations-view">
 <h2>Reservations view<a class="headerlink" href="#reservations-view" title="Permalink to this headline">¶</a></h2>
@@ -320,6 +370,31 @@ on the supercomputer:</p>
 <li>The start time of this reservation</li>
 <li>The end time of this reservation</li>
 </ol>
+</div>
+<div class="section" id="gantt-view">
+<h2>Gantt view<a class="headerlink" href="#gantt-view" title="Permalink to this headline">¶</a></h2>
+<p>The Gantt view aims to show jobs running, completed or pending, divided up
+according to either nodes or qos. These jobs are represented according to an
+horizontal axis of time. Running jobs are drawn in blue, completed ones in
+yellow, and pending ones in green. By clicking on a job you can display its
+informations in a modal.</p>
+<div class="figure">
+<img alt="_images/screenshot_ganntt_view_nodes.png" src="_images/screenshot_ganntt_view_nodes.png" />
+</div>
+<div class="figure">
+<img alt="_images/screenshot_ganntt_view_qos.png" src="_images/screenshot_ganntt_view_qos.png" />
+</div>
+</div>
+<div class="section" id="topology-view">
+<h2>Topology view<a class="headerlink" href="#topology-view" title="Permalink to this headline">¶</a></h2>
+<p>The Topology view shows the organization of slurm nodes according to how it is
+defined in the configuration file <tt class="docutils literal"><span class="pre">`topology.conf`</span></tt> from Slurm. This
+representation use a force graph. Nodes are grouped by nodesets. You can click
+on a nodeset to see the connected nodes. When you click on a node, a modal is
+opened and shows details about the current job running on the selected node.</p>
+<div class="figure">
+<img alt="_images/screenshot_topology_view.png" src="_images/screenshot_topology_view.png" />
+</div>
 </div>
 </div>
 
@@ -361,7 +436,7 @@ on the supercomputer:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

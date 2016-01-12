@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; Slurm-web 1.1 documentation</title>
+  <title>Introduction &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
         <link rel="next" title="Installation Guide" href="installation.html"/>
         <link rel="prev" title="Welcome to Slurm-web’s documentation!" href="index.html"/> 
 
@@ -73,10 +73,17 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
@@ -84,6 +91,17 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -123,10 +141,11 @@
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>Slurm-web is web application that serves as web frontend to <a class="reference external" href="http://slurm.schedmd.com/">Slurm</a>
-workload manager. It is based on 2 components:</p>
+workload manager. It is based on 3 components:</p>
 <ul class="simple">
 <li>a backend REST API</li>
 <li>a dashboard web GUI</li>
+<li>a small server for dashboard&#8217;s configuration files</li>
 </ul>
 <p>The role of the API is to serve raw runtime data about a system (typically a
 supercomputer) running Slurm. All data are delivered in common and standard JSON
@@ -147,6 +166,8 @@ for users.</p>
 <a class="reference internal image-reference" href="_images/screenshot_racks.png"><img alt="_images/screenshot_racks.png" src="_images/screenshot_racks.png" style="width: 800px;" /></a>
 <p>JobsMap view:</p>
 <a class="reference internal image-reference" href="_images/screenshot_jobsmap.png"><img alt="_images/screenshot_jobsmap.png" src="_images/screenshot_jobsmap.png" style="width: 800px;" /></a>
+<p>3D view:</p>
+<a class="reference internal image-reference" href="_images/screenshot_3D_view.png"><img alt="_images/screenshot_3D_view.png" src="_images/screenshot_3D_view.png" style="width: 800px;" /></a>
 <p>Partitions view:</p>
 <a class="reference internal image-reference" href="_images/screenshot_partitions.png"><img alt="_images/screenshot_partitions.png" src="_images/screenshot_partitions.png" style="width: 800px;" /></a>
 <p>QOS view:</p>
@@ -155,6 +176,10 @@ for users.</p>
 <a class="reference internal image-reference" href="_images/screenshot_resv_view.png"><img alt="_images/screenshot_resv_view.png" src="_images/screenshot_resv_view.png" style="width: 800px;" /></a>
 <p>Please refer to <a class="reference internal" href="architecture.html"><em>software architecture</em></a> section for more
 detailed description of components inner working and integration.</p>
+<p>A small HTTP server implemented with Flask has been added to serve files used
+for dashboard configuration from the directory <tt class="docutils literal"><span class="pre">/etc/slurm-web/dashboard</span></tt></p>
+<p>Please refer to the dedicated section in <a class="reference internal" href="installation.html"><em>installation</em></a> to
+know more about how to configure your dashboard.</p>
 </div>
 
 
@@ -195,7 +220,7 @@ detailed description of components inner working and integration.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

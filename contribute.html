@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Slurm-web 2.O documentation</title>
+  <title>How to contribute or add page &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,8 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/> 
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+        <link rel="prev" title="REST API reference" href="api.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -44,7 +45,7 @@
       <div class="wy-side-nav-search">
         <a href="index.html" class="fa fa-home"> Slurm-web</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -55,7 +56,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#download">Download</a></li>
@@ -96,10 +97,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -125,8 +126,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>How to contribute or add page</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/contribute.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -134,22 +137,77 @@
 </div>
           <div role="main">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="how-to-contribute-or-add-page">
+<h1>How to contribute or add page<a class="headerlink" href="#how-to-contribute-or-add-page" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="architecture-front">
+<h2>Architecture Front<a class="headerlink" href="#architecture-front" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="design">
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
+<p>The entire front, a single page app, is designed with RequireJS, Handlebars and JQuery.</p>
+<p>RequireJS handle the dependencies and modules loading. See RequireJS documentation
+Handlebars manage the template rendering. See Handlebars documentation
+JQuery help to select and perform actions on the DOM. See JQuery documentation</p>
+</div>
+<div class="section" id="directory-structure">
+<h3>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/js/core</span></tt> : Application core methods, app entry point, navigation and multi-cluster mode methods
+Note : /js/core/index.js : Application entry point</li>
+<li><tt class="docutils literal"><span class="pre">/js/draw</span></tt> : Draw methods for 2D and 3D canvas</li>
+<li><tt class="docutils literal"><span class="pre">/js/helpers</span></tt> : Handlebars helpers used to format data</li>
+<li><tt class="docutils literal"><span class="pre">/js/modules</span></tt> : Applications page</li>
+<li><tt class="docutils literal"><span class="pre">/js/utils</span></tt> : Applications utils</li>
+</ul>
+</div>
+</div>
+<div class="section" id="page-api">
+<h2>Page API<a class="headerlink" href="#page-api" title="Permalink to this headline">¶</a></h2>
+<p>Typical module object :</p>
+<div class="highlight-json"><div class="highlight"><pre>define([
+  /*
+   * Require dependencies/libraries for the module
+   */
+], function (/* get the dependencies here */) {
 
-  
-  <div id="search-results">
-  
-  </div>
+  return function() {
+    this.init = function () {
+      /* perform init action like data fetching, template rendering, events binding etc... */
+    }
+
+    this.refresh = function () {
+      /* set and perfom actions at refresh */
+    }
+
+    this.destroy = function () {
+      /* Destroy DOM content, free memory or unbind events at destroy */
+    }
+  }
+})
+</pre></div>
+</div>
+</div>
+<div class="section" id="work-with-current-page-or-add-new">
+<h2>Work with current page or add new:<a class="headerlink" href="#work-with-current-page-or-add-new" title="Permalink to this headline">¶</a></h2>
+<p>To add a new page in slurm-web :</p>
+<ul class="simple">
+<li>Create a module object (see above) and save it in /js/modules/(pagename)/(pagename).js</li>
+<li>Require the module files (.js and .hbs) in /js/core/index.js</li>
+<li>Add a navigation element in /js/core/navbar/navbar.js</li>
+<li>Add a navigation event in the <cite>$(document).on(&#8216;show&#8217;)</cite> in /js/core/index.js</li>
+</ul>
+</div>
+</div>
+
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="api.html" class="btn btn-neutral" title="REST API reference"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -185,7 +243,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -201,14 +258,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

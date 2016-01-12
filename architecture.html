@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Software architecture &mdash; Slurm-web 1.1 documentation</title>
+  <title>Software architecture &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
         <link rel="next" title="REST API reference" href="api.html"/>
         <link rel="prev" title="Dashboard usage" href="usage.html"/> 
 
@@ -73,10 +73,17 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Software architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
@@ -84,6 +91,17 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -128,15 +146,17 @@ Slurm-web:</p>
 <img src="_images/architecture_slurm-web.svg" /><p class="caption">Global software architecture</p>
 </div>
 <p>The web dashboard is accessible to users through a web brower. This dashboard
-is based on 2 files:</p>
-<ul class="simple">
-<li>an HTML file with the main menu and references to external dependencies like
-Javascript libraries, CSS files, and so on.</li>
-<li>a main Javascript script.</li>
-</ul>
+is built with RequireJS, jQuery and Handlebars.</p>
 <p>The HTML file only contains a few empty elements. The content of these elements
-is entirely controlled by the JS script. This script makes the browser download
-additional data through the API.</p>
+is entirely controlled by the JS scripts. These scripts makes the browser
+download additional data through the API.</p>
+<p>Please refer to <a class="reference internal" href="contribute.html"><em>how to contribute or add a page</em></a> section
+for more informations about how is built the dashboard.</p>
+<p>The configuration files of the dashboard are supplied by a tiny WSGI Flask app.
+This one sends files from the directory <tt class="docutils literal"><span class="pre">/etc/slurm-web/dashboard/</span></tt> to the
+dashboard.</p>
+<p>Please refer to <a class="reference internal" href="installation.html"><em>installation guide</em></a> section to know how
+to configure the dashboard.</p>
 <p>The backend REST API actually get all live data from Slurm workload manager
 through PySLURM, a Python library and a binding of Slurm libraries. These
 libraries connect to <tt class="docutils literal"><span class="pre">slurmctld</span></tt> daemon of Slurm, generally running on a
@@ -153,6 +173,44 @@ for users.</p>
 <p>The dashboard relies on the backend API, but the reverse is not true. The
 backend API can be used standalone to serve data for other external
 applications.</p>
+<div class="section" id="authentication-mechanism">
+<h2>Authentication mechanism<a class="headerlink" href="#authentication-mechanism" title="Permalink to this headline">¶</a></h2>
+<p>Slurm-web owns its authentication system based on an LDAP server. This feature
+can be enabled by turning the value of the parameter <tt class="docutils literal"><span class="pre">authentication</span></tt> in the
+<tt class="docutils literal"><span class="pre">config</span></tt> section of the file <tt class="docutils literal"><span class="pre">restapi.conf</span></tt> to <tt class="docutils literal"><span class="pre">enable</span></tt>.</p>
+<p>The authentication is performed on the LDAP server from the login page of the
+dashboard through the Rest API backend.</p>
+<div class="figure">
+<img src="_images/authentication_slurm-web.svg" /><p class="caption">Communication with LDAP server</p>
+</div>
+<p>The user gives his credentials on the login page. They are passed to the Rest
+API. The backend retrieves user&#8217;s information on the LDAP server and
+determinates his role according to his login or his group and the settings
+about roles in the file <tt class="docutils literal"><span class="pre">restapi.conf</span></tt>. These informations are serialized
+in a token passed to the dashboard.</p>
+<p>This generated token is stored in the dashboard and sent each time the
+dashboard requests the Rest API.</p>
+<p>The <tt class="docutils literal"><span class="pre">ldap</span></tt> section of the file <tt class="docutils literal"><span class="pre">restapi.conf</span></tt> allow you to configure your
+LDAP server to be used with Slurm-web:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+
+<span class="p">[</span><span class="n">ldap</span><span class="p">]</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="n">ldap</span><span class="p">:</span><span class="o">//</span><span class="n">admin</span><span class="p">:</span><span class="mi">389</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">dc</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">local</span>
+<span class="n">ugroup</span> <span class="o">=</span> <span class="n">people</span>
+<span class="n">expiration</span> <span class="o">=</span> <span class="mi">1296000</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>You can set in this section:</p>
+<ul class="simple">
+<li><em>uri</em> : the protocol, the host and the port of your LDAP server</li>
+<li><em>base</em> : the database where users have to be searched</li>
+<li><em>ugroup</em> : the LDAP group which the users are members</li>
+<li><em>expiration</em> : the TTL of the generated token</li>
+</ul>
+</div>
 </div>
 
 
@@ -193,7 +251,7 @@ applications.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

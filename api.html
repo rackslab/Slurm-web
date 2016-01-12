@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>REST API reference &mdash; Slurm-web 1.1 documentation</title>
+  <title>REST API reference &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,8 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+        <link rel="next" title="How to contribute or add page" href="contribute.html"/>
         <link rel="prev" title="Software architecture" href="architecture.html"/> 
 
   
@@ -72,10 +73,17 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nodes">Nodes</a></li>
@@ -83,6 +91,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +140,21 @@
             
   <div class="section" id="rest-api-reference">
 <h1>REST API reference<a class="headerlink" href="#rest-api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version">
+<h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
+<p>GET method to return the name and the version of the API.
+Useful to test if the API is up and running.</p>
+</div>
+<div class="section" id="login">
+<h2>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h2>
+<p>POST method to authenticate users on the REST API.
+Used when the authentication feature is enabled.
+Give the <tt class="docutils literal"><span class="pre">username</span></tt> and the <tt class="docutils literal"><span class="pre">password</span></tt> as JSON parameters.
+It returns an authentication token.</p>
+<p>Each method below is a POST method with JSON datas.
+In case when authentication is enabled, it must contain a <tt class="docutils literal"><span class="pre">token</span></tt> parameter
+where the token sent by the login must be set.</p>
+</div>
 <div class="section" id="cluster">
 <h2>Cluster<a class="headerlink" href="#cluster" title="Permalink to this headline">¶</a></h2>
 <p>Global settings about the supercomputer:</p>
@@ -158,6 +192,32 @@
 <p>List of all reservations:</p>
 <p><tt class="docutils literal"><span class="pre">/reservations</span></tt></p>
 </div>
+<div class="section" id="topology">
+<h2>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h2>
+<p>Topology defined on this cluster:</p>
+<p><tt class="docutils literal"><span class="pre">/topology</span></tt></p>
+</div>
+<div class="section" id="jobs-by-node">
+<h2>Jobs by node<a class="headerlink" href="#jobs-by-node" title="Permalink to this headline">¶</a></h2>
+<p>Jobs running on the given node:</p>
+<p><tt class="docutils literal"><span class="pre">/jobs-by-node/&lt;node_id&gt;</span></tt></p>
+</div>
+<div class="section" id="jobs-by-node-ids">
+<h2>Jobs by node ids<a class="headerlink" href="#jobs-by-node-ids" title="Permalink to this headline">¶</a></h2>
+<p>Jobs running on the given nodes, ordered by nodes:</p>
+<p><tt class="docutils literal"><span class="pre">/jobs-by-node-ids</span></tt></p>
+<p>Give the list of node ids as a JSON array in the <tt class="docutils literal"><span class="pre">nodes</span></tt> parameter.</p>
+</div>
+<div class="section" id="jobs-by-nodes">
+<h2>Jobs by nodes<a class="headerlink" href="#jobs-by-nodes" title="Permalink to this headline">¶</a></h2>
+<p>Jobs running, ordered by nodes :</p>
+<p><tt class="docutils literal"><span class="pre">/jobs-by-nodes</span></tt></p>
+</div>
+<div class="section" id="jobs-by-qos">
+<h2>Jobs by QOS<a class="headerlink" href="#jobs-by-qos" title="Permalink to this headline">¶</a></h2>
+<p>Jobs running, ordered by qos :</p>
+<p><tt class="docutils literal"><span class="pre">/jobs-by-qos</span></tt></p>
+</div>
 </div>
 
 
@@ -165,6 +225,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="contribute.html" class="btn btn-neutral float-right" title="How to contribute or add page"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="architecture.html" class="btn btn-neutral" title="Software architecture"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -196,7 +258,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

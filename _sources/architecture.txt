@@ -9,15 +9,21 @@ Slurm-web:
    Global software architecture
 
 The web dashboard is accessible to users through a web brower. This dashboard
-is based on 2 files:
-
-* an HTML file with the main menu and references to external dependencies like
-  Javascript libraries, CSS files, and so on.
-* a main Javascript script.
+is built with RequireJS, jQuery and Handlebars.
 
 The HTML file only contains a few empty elements. The content of these elements
-is entirely controlled by the JS script. This script makes the browser download
-additional data through the API.
+is entirely controlled by the JS scripts. These scripts makes the browser
+download additional data through the API.
+
+Please refer to :doc:`how to contribute or add a page </contribute>` section
+for more informations about how is built the dashboard.
+
+The configuration files of the dashboard are supplied by a tiny WSGI Flask app.
+This one sends files from the directory ``/etc/slurm-web/dashboard/`` to the
+dashboard.
+
+Please refer to :doc:`installation guide </installation>` section to know how
+to configure the dashboard.
 
 The backend REST API actually get all live data from Slurm workload manager
 through PySLURM, a Python library and a binding of Slurm libraries. These
@@ -39,3 +45,49 @@ for users.
 The dashboard relies on the backend API, but the reverse is not true. The
 backend API can be used standalone to serve data for other external
 applications.
+
+
+Authentication mechanism
+------------------------
+
+Slurm-web owns its authentication system based on an LDAP server. This feature
+can be enabled by turning the value of the parameter ``authentication`` in the
+``config`` section of the file ``restapi.conf`` to ``enable``.
+
+The authentication is performed on the LDAP server from the login page of the
+dashboard through the Rest API backend.
+
+.. figure:: img/authentication_slurm-web.*
+
+   Communication with LDAP server
+
+The user gives his credentials on the login page. They are passed to the Rest
+API. The backend retrieves user's information on the LDAP server and
+determinates his role according to his login or his group and the settings
+about roles in the file ``restapi.conf``. These informations are serialized
+in a token passed to the dashboard.
+
+This generated token is stored in the dashboard and sent each time the
+dashboard requests the Rest API.
+
+The ``ldap`` section of the file ``restapi.conf`` allow you to configure your
+LDAP server to be used with Slurm-web:
+
+.. code-block:: python
+
+  ...
+
+  [ldap]
+  uri = ldap://admin:389
+  base = dc=cluster,dc=local
+  ugroup = people
+  expiration = 1296000
+
+  ...
+
+You can set in this section:
+
+- *uri* : the protocol, the host and the port of your LDAP server
+- *base* : the database where users have to be searched
+- *ugroup* : the LDAP group which the users are members
+- *expiration* : the TTL of the generated token

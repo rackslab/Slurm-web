@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; Slurm-web 1.1 documentation</title>
+  <title>Installation Guide &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
         <link rel="next" title="Dashboard usage" href="usage.html"/>
         <link rel="prev" title="Introduction" href="introduction.html"/> 
 
@@ -73,10 +73,17 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
@@ -84,6 +91,17 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -192,15 +210,17 @@ install these packages with the following command:</p>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The configuration of Slurm-web is composed of only one file, an XML description
-of your racks and nodes. The content and format of this file is explained in the
-following sub-section.</p>
+<p>The configuration of Slurm-web is composed of a few files, an XML description
+of your racks and nodes, a file for the REST API configuration, and some files
+for the dashboard configuration.
+The content and format of these files is explained in the following
+sub-sections.</p>
 <div class="section" id="xml-racks-and-nodes-description">
 <h3>XML racks and nodes description<a class="headerlink" href="#xml-racks-and-nodes-description" title="Permalink to this headline">¶</a></h3>
 <p>Slurm does not provide sufficient information about the nodes and the racks
 composing a supercomputer for representing it accurately with correct node sizes
 and distribution over the racks. For this purpose, Slurm-web backend API relies
-on an additional file located under the poath <tt class="docutils literal"><span class="pre">/etc/slurm-web/racks.xml</span></tt>.</p>
+on an additional file located under the path <tt class="docutils literal"><span class="pre">/etc/slurm-web/racks.xml</span></tt>.</p>
 <p>This file must contain the complete description of your racks and nodes in XML
 format. Here is an example of file:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
@@ -212,30 +232,49 @@ format. Here is an example of file:</p>
     <span class="nt">&lt;nodetype</span> <span class="na">id=</span><span class="s">&quot;b43&quot;</span> <span class="na">model=</span><span class="s">&quot;Vendor B 43&quot;</span> <span class="na">height=</span><span class="s">&quot;2&quot;</span> <span class="na">width=</span><span class="s">&quot;1&quot;</span> <span class="nt">/&gt;</span>
   <span class="nt">&lt;/nodetypes&gt;</span>
 
-  <span class="nt">&lt;racks&gt;</span>
+  <span class="nt">&lt;racks</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;0&quot;</span> <span class="na">width=</span><span class="s">&quot;10&quot;</span> <span class="na">depth=</span><span class="s">&quot;10&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;racksrow</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack1-1&quot;</span> <span class="na">posy=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nodes&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn001&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;2&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn002&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0.5&quot;</span> <span class="na">posy=</span><span class="s">&quot;2&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn003&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;4&quot;</span> <span class="nt">/&gt;</span>
 
-    <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack1&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;nodes&gt;</span>
-        <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn001&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn002&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0.5&quot;</span> <span class="na">posy=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn003&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;4&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[004-072]&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posy=</span><span class="s">&quot;5&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/nodes&gt;</span>
+      <span class="nt">&lt;/rack&gt;</span>
 
-        <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[004-072]&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="nt">/&gt;</span>
-      <span class="nt">&lt;/nodes&gt;</span>
-    <span class="nt">&lt;/rack&gt;</span>
+      <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack1-2&quot;</span> <span class="na">posy=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nodes&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn101&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;1&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[102-121]&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posy=</span><span class="s">&quot;5&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/nodes&gt;</span>
+      <span class="nt">&lt;/rack&gt;</span>
+    <span class="nt">&lt;/racksrow&gt;</span>
 
-    <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack2&quot;</span> <span class="na">posx=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;nodes&gt;</span>
-        <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn101&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[102-021]&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posy=</span><span class="s">&quot;5&quot;</span> <span class="nt">/&gt;</span>
-      <span class="nt">&lt;/nodes&gt;</span>
-    <span class="nt">&lt;/rack&gt;</span>
+    <span class="nt">&lt;racksrow</span> <span class="na">posx=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack2-1&quot;</span> <span class="na">posy=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nodes&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn201&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn202&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0.5&quot;</span> <span class="na">posy=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn203&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;4&quot;</span> <span class="nt">/&gt;</span>
 
+          <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[204-272]&quot;</span> <span class="na">type=</span><span class="s">&quot;m32x4321&quot;</span> <span class="na">posy=</span><span class="s">&quot;6&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/nodes&gt;</span>
+      <span class="nt">&lt;/rack&gt;</span>
+
+      <span class="nt">&lt;rack</span> <span class="na">id=</span><span class="s">&quot;rack2-2&quot;</span> <span class="na">posy=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nodes&gt;</span>
+          <span class="nt">&lt;node</span> <span class="na">id=</span><span class="s">&quot;cn301&quot;</span> <span class="na">type=</span><span class="s">&quot;b43&quot;</span> <span class="na">posx=</span><span class="s">&quot;0&quot;</span> <span class="na">posy=</span><span class="s">&quot;0&quot;</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;nodeset</span> <span class="na">id=</span><span class="s">&quot;cn[302-319]&quot;</span> <span class="na">type=</span><span class="s">&quot;b43&quot;</span> <span class="na">posy=</span><span class="s">&quot;5&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/nodes&gt;</span>
+      <span class="nt">&lt;/rack&gt;</span>
+    <span class="nt">&lt;/racksrow&gt;</span>
   <span class="nt">&lt;/racks&gt;</span>
 <span class="nt">&lt;/rackmap&gt;</span>
 </pre></div>
 </div>
-<p>The root element of the XML file <tt class="docutils literal"><span class="pre">&lt;rackmap&gt;</span></tt>. This root element must contain
+<p>The root element of the XML file is <tt class="docutils literal"><span class="pre">&lt;rackmap&gt;</span></tt>. This root element must contain
 2 elements: <tt class="docutils literal"><span class="pre">&lt;nodetypes&gt;</span></tt> and <tt class="docutils literal"><span class="pre">&lt;racks&gt;</span></tt>.</p>
 <p>The <tt class="docutils literal"><span class="pre">&lt;nodetypes&gt;</span></tt> element contains the description of all types of nodes with
 their models and sizes. Each type of node is described within a distinct
@@ -244,19 +283,47 @@ used as a reference of type for nodes. Each node type must have a
 <tt class="docutils literal"><span class="pre">model</span></tt> attribute whose content is free text, a <tt class="docutils literal"><span class="pre">height</span></tt> and a <tt class="docutils literal"><span class="pre">width</span></tt>
 whose values must be floats in U unit. For example, a node with a width of 0.5
 uses half of rack width. With a height of 2, a node will uses 2 U in rack height.</p>
-<p>The <tt class="docutils literal"><span class="pre">&lt;racks&gt;</span></tt> element contains the list of all racks composing the
-supercomputer, each one being described in a distinct <tt class="docutils literal"><span class="pre">&lt;rack&gt;</span></tt> element. Each
-rack element must have a unique ID which will be then used as rack name. A rack
-must have a position, within <tt class="docutils literal"><span class="pre">posx</span></tt> and <tt class="docutils literal"><span class="pre">posy</span></tt> elements. These elements
-must be integer, they represent the rack position within a grid with all racks.
-If <tt class="docutils literal"><span class="pre">posx</span></tt> and <tt class="docutils literal"><span class="pre">posy</span></tt> attributes are skipped, then we assume they are equal
-to <tt class="docutils literal"><span class="pre">0</span></tt>. Two racks should not have the same positions.</p>
+<p>The organization of the different racks is designed by rows of racks, in order
+to generate a 3D view of the room containing the racks composing the supercomputer.</p>
+<p>The <tt class="docutils literal"><span class="pre">&lt;racks&gt;</span></tt> element contains the list of the rows of racks, corresponding to
+the <tt class="docutils literal"><span class="pre">&lt;racksrow&gt;</span></tt> elements. It has these attributes:</p>
+<ul class="simple">
+<li>a <tt class="docutils literal"><span class="pre">posx</span></tt> attribute and  a <tt class="docutils literal"><span class="pre">posy</span></tt> attribute to set the position of the racks
+inside the room (the origin is corresponding to the center of the 3D view)</li>
+<li>a <tt class="docutils literal"><span class="pre">width</span></tt> attribute and  a <tt class="docutils literal"><span class="pre">depth</span></tt> attribute to set the size of the room</li>
+<li>and finally  a <tt class="docutils literal"><span class="pre">rackwidth</span></tt> attribute to set the width of a rack.</li>
+</ul>
+<p>Each <tt class="docutils literal"><span class="pre">&lt;racksrow&gt;</span></tt> element has a <tt class="docutils literal"><span class="pre">posx</span></tt> attribute to define the position of
+the corresponding row of racks, starting from the left of the screen, and
+contains a list of racks, each one being described in a distinct <tt class="docutils literal"><span class="pre">&lt;rack&gt;</span></tt>
+element. Each attribute for either <tt class="docutils literal"><span class="pre">&lt;racks&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;racksrow&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;rack&gt;</span></tt>
+elements use the width of a rack as unit.</p>
+<p>Each rack element must have a unique ID which will be then used as rack name. A
+rack must have a position in its <tt class="docutils literal"><span class="pre">&lt;racksrow&gt;</span></tt>, within <tt class="docutils literal"><span class="pre">posy</span></tt> attribute.
+These attributes about position must be integer, they represent the rack
+position within a grid with all racks. If <tt class="docutils literal"><span class="pre">posx</span></tt> and <tt class="docutils literal"><span class="pre">posy</span></tt> attributes are
+skipped, then we assume they are equal to <tt class="docutils literal"><span class="pre">0</span></tt>. Two racks should not have the
+same positions.</p>
+<p>See in the schema below the relation between the parameters and the
+corresponding representation of the racks in the 3D view. Parameters for
+<tt class="docutils literal"><span class="pre">&lt;racks&gt;</span></tt> element are shown in blue, those for <tt class="docutils literal"><span class="pre">&lt;racksrow&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;rack&gt;</span></tt>
+elements in red.</p>
+<a class="reference internal image-reference" href="_images/racks_positioning_slurm-web.png"><img alt="_images/racks_positioning_slurm-web.png" src="_images/racks_positioning_slurm-web.png" style="width: 800px;" /></a>
 <p>A rack contains a set of nodes within <tt class="docutils literal"><span class="pre">&lt;nodes&gt;</span></tt> element as shown in
 the previous example. As usual, <tt class="docutils literal"><span class="pre">posx</span></tt> and <tt class="docutils literal"><span class="pre">posy</span></tt> attributes are assumed
 to be equal to <tt class="docutils literal"><span class="pre">0</span></tt> if missing. Besides, <tt class="docutils literal"><span class="pre">&lt;nodeset&gt;</span></tt> elements can have
 an attribute <tt class="docutils literal"><span class="pre">draw</span></tt> which will tell in which direction Slurm-Web
 will draw the nodes in the rack (<tt class="docutils literal"><span class="pre">up</span></tt> or <tt class="docutils literal"><span class="pre">down</span></tt>). When missing, it is
 set to <tt class="docutils literal"><span class="pre">up</span></tt>.</p>
+<p>Here is the rendering of the 2D view according to this example of
+<tt class="docutils literal"><span class="pre">racks.xml</span></tt>:</p>
+<a class="reference internal image-reference" href="_images/screenshot_racks-2D_rendering_example.png"><img alt="_images/screenshot_racks-2D_rendering_example.png" src="_images/screenshot_racks-2D_rendering_example.png" style="width: 800px;" /></a>
+<p>Here is the rendering of the jobsmap view according to this example of
+<tt class="docutils literal"><span class="pre">racks.xml</span></tt>:</p>
+<a class="reference internal image-reference" href="_images/screenshot_jobsmap_rendering_example.png"><img alt="_images/screenshot_jobsmap_rendering_example.png" src="_images/screenshot_jobsmap_rendering_example.png" style="width: 800px;" /></a>
+<p>Here is the rendering of the 3D view according to this example of
+<tt class="docutils literal"><span class="pre">racks.xml</span></tt>:</p>
+<a class="reference internal image-reference" href="_images/screenshot_racks-3D_rendering_example.png"><img alt="_images/screenshot_racks-3D_rendering_example.png" src="_images/screenshot_racks-3D_rendering_example.png" style="width: 800px;" /></a>
 <p>Once you have completely described all the racks and nodes composing your
 supercomputer, you can check the file format by validating it against the
 provided DTD file with the following command:</p>
@@ -272,6 +339,394 @@ resources in your Slurm cluster are accessible to only some of your
 users, then Slurm-Web won&#8217;t show them. Using a user with enough
 credentials will fix the problem. Usually, setting the user to <tt class="docutils literal"><span class="pre">slurm</span></tt>
 (see <em>slurm.conf</em>) is enough.</p>
+</div>
+<div class="section" id="rest-api-configuration">
+<h3>REST API configuration<a class="headerlink" href="#rest-api-configuration" title="Permalink to this headline">¶</a></h3>
+<p>All the configuration of the REST API is handled in <tt class="docutils literal"><span class="pre">conf/restapi.conf</span></tt>.
+Here is an example of a valid configuration file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># configure here all parameters for the Slurm-web REST API</span>
+
+<span class="p">[</span><span class="n">cors</span><span class="p">]</span>
+<span class="c"># give here the list of the domains from where the origin is authorized,</span>
+<span class="c"># separated by commas</span>
+<span class="c">#</span>
+<span class="c"># example : authorized_origins = http://example1.com,http://example2.com</span>
+<span class="n">authorized_origins</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">dashboard</span><span class="o">.</span><span class="n">myslurmhpc</span><span class="o">.</span><span class="n">com</span>
+
+<span class="p">[</span><span class="n">config</span><span class="p">]</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">my_awesome_secret_key</span>
+<span class="c"># set to &#39;enable&#39; to activate authentication</span>
+<span class="n">authentication</span> <span class="o">=</span> <span class="n">enable</span>
+<span class="c"># set to &#39;enable&#39; to activate cache</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">enable</span>
+
+<span class="p">[</span><span class="n">roles</span><span class="p">]</span>
+<span class="c"># The `all` role can have 2 values:</span>
+<span class="c"># - none, restrict access to authenticated users only</span>
+<span class="c"># - all, free access to non-sensible data</span>
+<span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span>
+<span class="c"># The roles members can be defined with a list of groups (whose names</span>
+<span class="c"># are prefixed by @) and logins.</span>
+<span class="n">user</span> <span class="o">=</span> <span class="nd">@usergroup</span><span class="p">,</span><span class="n">user</span>
+<span class="n">admin</span> <span class="o">=</span> <span class="nd">@admingroup</span><span class="p">,</span><span class="n">adminuser</span>
+
+<span class="c"># Give here restricted fields about jobs for each role, separated by commas</span>
+<span class="n">restricted_fields_for_all</span> <span class="o">=</span> <span class="n">command</span><span class="p">,</span><span class="n">account</span>
+<span class="n">restricted_fields_for_user</span> <span class="o">=</span> <span class="n">command</span>
+<span class="n">restricted_fields_for_admin</span> <span class="o">=</span>
+
+<span class="p">[</span><span class="n">ldap</span><span class="p">]</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="n">ldap</span><span class="p">:</span><span class="o">//</span><span class="n">admin</span><span class="p">:</span><span class="mi">389</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">dc</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">local</span>
+<span class="n">ugroup</span> <span class="o">=</span> <span class="n">people</span>
+<span class="n">expiration</span> <span class="o">=</span> <span class="mi">1296000</span>
+
+<span class="p">[</span><span class="n">racks</span><span class="p">]</span>
+<span class="c"># path for racks description (default to /etc/slurm-web/racks.xml)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">slurm</span><span class="o">-</span><span class="n">web</span><span class="o">/</span><span class="n">racks</span><span class="o">.</span><span class="n">xml</span>
+
+<span class="p">[</span><span class="n">cache</span><span class="p">]</span>
+<span class="c"># address for Redis server (default to host=localhost, port=6379)</span>
+<span class="n">redis_host</span> <span class="o">=</span> <span class="n">localhost</span>
+<span class="n">redis_port</span> <span class="o">=</span> <span class="mi">6379</span>
+<span class="c"># TTL for jobs (default to 10 seconds)</span>
+<span class="n">jobs_expiration</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c"># TTL for other informations (default to 86400 seconds = 24 hours)</span>
+<span class="n">global_expiration</span> <span class="o">=</span> <span class="mi">86400</span>
+</pre></div>
+</div>
+<div class="section" id="cors">
+<h4>CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h4>
+<p>To allow a Slurm-web dashboard to retrieve informations from a Slurm cluster on
+a different server than the one where the dashboard is, you can configure the
+domain where your dashboard is hosted. The REST API is even able to be polled
+from several crossdomain dashboards: just set origins of each dashboard in the
+<tt class="docutils literal"><span class="pre">authorized_origins</span></tt> parameter, separated by commas.</p>
+</div>
+<div class="section" id="authentication">
+<h4>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h4>
+<p>The REST API has an authentication mechanism, based on an LDAP server. If the
+parameter <tt class="docutils literal"><span class="pre">authentication</span></tt> is set to <tt class="docutils literal"><span class="pre">enable</span></tt>, the dashboard will ask to the
+user his credentials. This feature requires the configuration of the LDAP server
+in the <tt class="docutils literal"><span class="pre">[ldap]</span></tt> section.</p>
+<p>When enabled, the authentication feature handles different roles for the users:</p>
+<ul class="simple">
+<li>&#8220;all&#8221;: the role for unauthenticated users. When the parameter <tt class="docutils literal"><span class="pre">all</span></tt> is set
+to <tt class="docutils literal"><span class="pre">none</span></tt>, users have to be authenticated to access the datas from the
+REST API on a Slurm-web dashboard. When it is set to <tt class="docutils literal"><span class="pre">all</span></tt>, users can access
+datas as guests: a &#8220;Guest&#8221; button is then added on the login page of the
+dashboard for this REST API.</li>
+<li>&#8220;user&#8221;: this role is for authenticated users. The parameter <tt class="docutils literal"><span class="pre">user</span></tt> accepts a
+list of values to define authorized users either by the group he belongs to,
+or by their login.</li>
+<li>&#8220;admin&#8221;: this role is for administrators. The parameter <tt class="docutils literal"><span class="pre">admin</span></tt> works as the
+<tt class="docutils literal"><span class="pre">user</span></tt> one.</li>
+</ul>
+<p>For each role, a corresponding &#8220;restricted field&#8221; parameter exists to set some
+fields about jobs which have to be hidden to the defined users. Just set a list
+of the field&#8217;s name separated by commas.</p>
+</div>
+<div class="section" id="cache">
+<h4>Cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h4>
+<p>The cache mechanism is used to prevent overloading of slurmctld. It requires the
+<tt class="docutils literal"><span class="pre">python-redis</span></tt> package and a running instance of Redis. It is disabled if
+<tt class="docutils literal"><span class="pre">python-redis</span></tt> is not available. You can set two different TTL : one for
+informations about jobs, the second one for all other informations retrieved on
+slurmctld.</p>
+</div>
+</div>
+<div class="section" id="dashboard-configuration-settings">
+<h3>Dashboard configuration settings<a class="headerlink" href="#dashboard-configuration-settings" title="Permalink to this headline">¶</a></h3>
+<p>All configuration files for dashboard are in the directory <tt class="docutils literal"><span class="pre">conf/dashboard</span></tt>.</p>
+<div class="section" id="app-conf-dashboard-config-json">
+<h4>App <tt class="docutils literal"><span class="pre">conf/dashboard/config.json</span></tt><a class="headerlink" href="#app-conf-dashboard-config-json" title="Permalink to this headline">¶</a></h4>
+<p>Used for general purpose.</p>
+<p>Basic configuration file :</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;STARTPAGE&quot;</span><span class="p">:</span> <span class="s2">&quot;jobs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;REFRESH&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+  <span class="nt">&quot;MAXNODESLENGTH&quot;</span><span class="p">:</span> <span class="mi">25</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first"><em>STARTPAGE</em> (String) : Name of the page loaded at the application startup.</p>
+<dl class="docutils">
+<dt>Default pages available :</dt>
+<dd><ul class="first last simple">
+<li>3d-view</li>
+<li>gantt</li>
+<li>jobs</li>
+<li>jobs-maps</li>
+<li>partitions</li>
+<li>qos</li>
+<li>racks</li>
+<li>reservations</li>
+<li>topology</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>REFRESH</em> (Number) : Time in milliseconds between two api call, used for module refresh.</p>
+</li>
+<li><p class="first"><em>MAXNODESLENGTH</em> (Number) : Maximum characters show for the nodes name in &#8220;Nodes&#8221; column in module Jobs.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="d-draw-conf-dashboard-2d-config-json">
+<h4>2D Draw <tt class="docutils literal"><span class="pre">conf/dashboard/2d.config.json</span></tt><a class="headerlink" href="#d-draw-conf-dashboard-2d-config-json" title="Permalink to this headline">¶</a></h4>
+<p>2D draw configuration, used in module racks and jobsmap.</p>
+<p>Basic configuration file :</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;CANVASWIDTH&quot;</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
+  <span class="nt">&quot;LEFTMARGIN&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+  <span class="nt">&quot;TOPMARGIN&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="nt">&quot;RACKBORDERWIDTH&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nt">&quot;RACKUNITNUMBER&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+  <span class="nt">&quot;RACKUNITHEIGHT&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  <span class="nt">&quot;FLOORWIDTH&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="nt">&quot;FOOTWIDTH&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+  <span class="nt">&quot;FOOTHEIGHT&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nt">&quot;RACKINSIDEWIDTH&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+  <span class="nt">&quot;CANVASMARGINTOP&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+  <span class="nt">&quot;NODESPERRACK&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+  <span class="nt">&quot;NODESPERROW&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;NODEMARGIN&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;NODESTATEWIDTH&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nt">&quot;LEGEND&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;WIDTH&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nt">&quot;HEIGHT&quot;</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>CANVASWIDTH</em> (Number) : Canvas width in pixel</li>
+<li><em>CANVASMARGINTOP</em> (Number) : Canvas internal margin top in pixel.</li>
+<li><em>LEFTMARGIN</em> (Number) : Rack margin left in pixel</li>
+<li><em>TOPMARGIN</em> (Number) : Rack margin top in pixel</li>
+<li><em>RACKBORDERWIDTH</em> (Number) : Rack border/closure size in pixel</li>
+<li><em>RACKUNITNUMBER</em> (Number) : Number of unit in one rack</li>
+<li><em>RACKUNITHEIGHT</em> (Number) : Height of one rack unit in pixel</li>
+<li><em>FLOORWIDTH</em> (Number) : Width of the floor element drawn at rack bottom, in pixel</li>
+<li><em>FOOTWIDTH</em> (Number) : Rack foot width in pixel</li>
+<li><em>FOOTHEIGHT</em> (Number) : Rack foot height in pixel</li>
+<li><em>RACKINSIDEWIDTH</em> (Number) : Size</li>
+<li><em>NODESPERRACK</em> (Number) : Number of nodes in one rack</li>
+<li><em>NODESMARGIN</em> (Number) : Space between two nodes in pixel</li>
+<li><em>NODESTATEWIDTH</em>: Core size in pixel</li>
+<li><em>LEGEND</em> (Object) : Legend property
+- <em>WIDTH</em> (Number) : Legend canvas width in pixel
+- <em>HEIGHT</em> (Number) : Legend canvas height in pixel</li>
+</ul>
+</div>
+<div class="section" id="d-colors-conf-dashboard-2d-colors-config-json">
+<h4>2D Colors <tt class="docutils literal"><span class="pre">conf/dashboard/2d.colors.config.json</span></tt><a class="headerlink" href="#d-colors-conf-dashboard-2d-colors-config-json" title="Permalink to this headline">¶</a></h4>
+<p>2D colors used in module racks and jobsmap.</p>
+<p>Basic configuration file :</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;COREBORDER&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(100,100,100,1)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;LED&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;IDLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(150,150,150,1)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;FULLYALLOCATED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(0,91,154,1)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;PARTALLOCATED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(86,128,184,1)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;UNAVAILABLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(150,150,150,0.5)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;UNKNOWN&quot;</span><span class="p">:</span> <span class="s2">&quot;rgba(39,39,39,1)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;AVAILABLE&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DRAINED&quot;</span><span class="p">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DOWN&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;RESERVED&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;JOB&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;rgba(237,212,0,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(245,121,0,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(193,125,17,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(115,210,22,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(52,101,164,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(117,80,123,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(204,0,0,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(196,160,0,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(206,92,0,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(143,89,2,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(78,154,6,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(32,74,135,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(92,53,102,1)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgba(164,0,0,1)&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>COREBORDER</em> (rgba()) : Core grid color.</li>
+<li><em>LED</em> (Object) : Colors of the led status, based on the node state
+- <em>IDLE</em> (rgba()) : Node state is idle
+- <em>FULLYALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and all cpus allocated
+- <em>PARTALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and not all cpus allocated
+- <em>UNAVAILABLE</em> (rgba()) : Node state is down
+- <em>UNKNOWN</em> (rgba()) : Node state is down
+- <em>AVAILABLE</em> (rgba()) : Node state is idle
+- <em>DRAINED</em> (rgba()) : Node state is draining or drained
+- <em>DOWN</em> (rgba()) : Node state is down
+- <em>RESERVED</em> (rgba()) : Node state is reserved</li>
+<li><em>JOB</em> (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]</li>
+</ul>
+</div>
+<div class="section" id="d-draw-conf-dashboard-3d-config-json">
+<h4>3D Draw <tt class="docutils literal"><span class="pre">conf/dashboard/3d.config.json</span></tt><a class="headerlink" href="#d-draw-conf-dashboard-3d-config-json" title="Permalink to this headline">¶</a></h4>
+<p>3D draw configuration, used in module 3D view.</p>
+<p>Basic configuration file :</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;UNITSIZE&quot;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">,</span>
+  <span class="nt">&quot;UNITSIZEMETER&quot;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+  <span class="nt">&quot;WALLHEIGHT&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+  <span class="nt">&quot;PATHSIZE&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nt">&quot;MOVESPEED&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+  <span class="nt">&quot;LOOKSPEED&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="nt">&quot;RACKWIDTH&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;RACKHEIGHT&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="nt">&quot;RACKDEPTH&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;RACKMARGIN&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+  <span class="nt">&quot;RACKPADDING&quot;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span>
+  <span class="nt">&quot;NODEPADDINGLEFTRIGHT&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+  <span class="nt">&quot;NODEPADDINGTOP&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+  <span class="nt">&quot;LEDDIMENSIONS&quot;</span><span class="p">:</span> <span class="mf">0.025</span><span class="p">,</span>
+  <span class="nt">&quot;LEDDEPTH&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+  <span class="nt">&quot;CPUPADDING&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+  <span class="nt">&quot;CPUDEPTH&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+  <span class="nt">&quot;DEBUG&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;CONTROLS&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;FORWARD&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="nt">&quot;BACKWARD&quot;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span>
+    <span class="nt">&quot;LEFT&quot;</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span>
+    <span class="nt">&quot;RIGHT&quot;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span>
+    <span class="nt">&quot;FREEZE&quot;</span><span class="p">:</span> <span class="mi">32</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;PACMAN&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;MOVESPEED&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="nt">&quot;LOOKSPEED&quot;</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>UNITSIZE</em> (Number) : 3D environment unit</li>
+<li><em>UNITSIZEMETER</em> (Number) : Ratio between metric unit and 3D environment unit, used only in the room dimensions</li>
+<li><em>WALLHEIGHT</em> (Number) : Room wall height in UNITSIZE</li>
+<li><em>PATHSIZE</em> (Number) : Number of path between two racks range (One path is equal to UNITSIZE)</li>
+<li><em>MOVESPEED</em> (Number) : X, Y, Z camera translation speed in UNITSIZE</li>
+<li><em>LOOKSPEED</em> (Number) : X, Y, Z camera rotation speed in UNITSIZE</li>
+<li><em>RACKWIDTH</em> (Number) : Rack width in UNITSIZE (axe: x)</li>
+<li><em>RACKHEIGHT</em> (Number): Rack height in UNITSIZE (axe: y)</li>
+<li><em>RACKDEPTH</em> (Number) : Rack depth in UNITSIZE (axe: z)</li>
+<li><em>RACKMARGIN</em> (Number) : Space between two racks in UNITSIZE</li>
+<li><em>RACKPADDING</em> (Number) : Space inside one rack in UNITSIZE</li>
+<li><em>NODEPADDINGLEFTRIGHT</em> (Number) : Left and right space inside one node, proportionnal to the node width in UNITSIZE</li>
+<li><em>NODEPADDINGTOP</em> (Number) : Top space inside one node, proportionnal to the node width in UNITSIZE</li>
+<li><em>LEDDIMENSIONS</em> (Number) : Width and height of the node led, proportional to the node parent element in UNITSIZE</li>
+<li><em>LEDDEPTH</em> (Number) : Depth of the node led, proportional to the node parent element in UNITSIZE</li>
+<li><em>CPUPADDING</em> (Number) : Space around one cpu, proportional to the node parent element in UNITSIZE</li>
+<li><em>CPUDEPTH</em> (Number): Depth of cpus, proportional to the node parent element in UNITSIZE</li>
+<li><em>DEBUG</em> (Boolean) : Show the x (red), y (green), z (blue) axes for debug.</li>
+<li><em>CONTROLS</em> (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (<a class="reference external" href="http://www.javascripter.net/faq/keycodes.htm">http://www.javascripter.net/faq/keycodes.htm</a>)
+- <em>FORWARD</em> (Keycode) : Move forward
+- <em>BACKWARD</em> (Keycode) : Move backward
+- <em>LEFT</em> (Keycode) : Move left
+- <em>RIGHT</em> (Keycode) : Move righ
+- <em>FREEZE</em> (Keycode) : Stop/Start movement</li>
+<li><em>PACMAN</em> (Object) : Specific pacman mode configuration
+- <em>MOVESPEED</em> (Number) : X, Y, Z camera translation speed in UNITSIZE
+- <em>LOOKSPEED</em> (Number) : X, Y, Z camera rotation speed in UNITSIZE</li>
+</ul>
+</div>
+<div class="section" id="d-colors-3d-colors-config-json">
+<h4>3D Colors <tt class="docutils literal"><span class="pre">3d.colors.config.json</span></tt><a class="headerlink" href="#d-colors-3d-colors-config-json" title="Permalink to this headline">¶</a></h4>
+<p>3D colors used in module 3d view.</p>
+<p>Basic configuration file :</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;RACK&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(89, 89, 89)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;NODE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(49, 49, 49)&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;LED&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;IDLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(150, 150, 150)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;FULLYALLOCATED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0, 91, 154)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;PARTALLOCATED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(86, 128, 184)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;UNAVAILABLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(150, 150, 150)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;UNKNOWN&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(39, 39, 39)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;AVAILABLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0, 255, 0)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DRAINED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(255, 255, 0)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DOWN&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(255, 0, 0)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;RESERVED&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0, 0, 255)&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;NOTVISIBLE&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0, 0, 0)&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;JOB&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;rgb(237, 212, 0)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(245, 121, 0)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(193, 125, 17)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(115, 210, 22)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(52, 101, 164)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(117, 80, 123)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(204, 0, 0)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(196, 160, 0)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(206, 92, 0)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(143, 89, 2)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(78, 154, 6)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(32, 74, 135)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(92, 53, 102)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rgb(164, 0, 0)&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;NOJOB&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(74, 74, 74)&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>RACK</em> (rgb()): Rack color</li>
+<li><em>NODE</em> (rgb()): Node color</li>
+<li><em>LED</em> (Object): Colors of the led status, based on the node state
+- <em>IDLE</em> (rgb()) : Node state is idle
+- <em>FULLYALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and all cpus allocated
+- <em>PARTALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and not all cpus allocated
+- <em>UNAVAILABLE</em> (rgb()) : Node state is down
+- <em>UNKNOWN</em> (rgb()) : Node state is down
+- <em>AVAILABLE</em> (rgb()) : Node state is idle
+- <em>DRAINED</em> (rgb()) : Node state is draining or drained
+- <em>DOWN</em> (rgb()) : Node state is down
+- <em>RESERVED</em> (rgb()) : Node state is reserved
+- <em>NOTVISIBLE</em>: Default color for empty core</li>
+<li><em>JOB</em> (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]</li>
+<li><em>NOJOB</em> (rgb()): Default color for empty core</li>
+</ul>
+</div>
+<div class="section" id="clusters-clusters-config-js">
+<h4>Clusters <tt class="docutils literal"><span class="pre">clusters.config.js</span></tt><a class="headerlink" href="#clusters-clusters-config-js" title="Permalink to this headline">¶</a></h4>
+<p>The Slurm-web Dashboard can retrieve informations from several REST APIs hosted
+on different servers. Simply set the address of each one to reach them, like
+in the example below :</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">clusters</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;My first cluster&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;api&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://myfirstrestapi.myslurmhpc.com&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/slurm-restapi&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;My second cluster&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;api&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://mysecondrestapi.myslurmhpc.com&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">path</span></tt> attribute defines the route to the REST API on the server (by
+default the REST API is configured to be reached on the route <tt class="docutils literal"><span class="pre">/slurm-restapi</span></tt>
+).</p>
+<p>If you have only one cluster hosted on the same server than the dashboard, use
+an empty array to set <tt class="docutils literal"><span class="pre">window.clusters</span></tt>:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -314,7 +769,7 @@ credentials will fix the problem. Usually, setting the user to <tt class="docuti
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

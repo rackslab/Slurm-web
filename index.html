@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview &mdash; Slurm-web 1.1 documentation</title>
+  <title>Overview &mdash; Slurm-web 2.O documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 1.1 documentation" href="#"/> 
+    <link rel="top" title="Slurm-web 2.O documentation" href="#"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,10 +71,17 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#login">Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#cluster">Cluster</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#racks">Racks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#nodes">Nodes</a></li>
@@ -82,6 +89,17 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#partitions">Partitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
 </ul>
 </li>
 </ul>
@@ -141,6 +159,8 @@
          <span class="linkdescr">Software components integration</span></p>
       <p class="biglink"><a class="biglink" href="api.html">Reference API</a><br/>
          <span class="linkdescr">Backend REST API reference documentation</span></p>
+      <p class="biglink"><a class="biglink" href="contribute.html">How to contribute</a><br/>
+         <span class="linkdescr">Explanations on how the dashboard is built</span></p>
     </td></tr>
   </table>
 
@@ -195,7 +215,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'2.O',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
