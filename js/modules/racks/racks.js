@@ -20,13 +20,13 @@
 
 define([
   'jquery',
+  'async',
   'handlebars',
   'text!../../js/modules/racks/racks.hbs',
   'token-utils',
   '2d-draw',
-  '2d-legend-draw',
-  'nodes-utils'
-], function ($, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw, nodesUtils) {
+  '2d-legend-draw'
+], function ($, async, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw) {
   template = Handlebars.compile(template);
   var draw = new D2Draw();
 
@@ -49,43 +49,65 @@ define([
         })
       };
 
-      this.slurmNodes = nodesUtils.getNodes(config);
+      async.parallel({
+        nodes: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
+            .success(function (data) {
+              callback(null, data)
+            })
+            .error(function (callback) {
+              callback(true, null);
+            });
+        },
+        racks: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
+            .success(function (data) {
+              callback(null, data);
+            })
+            .error(function () {
+              callback(true, null);
+            });
+        }
+      }, function (err, result) {
+        if (err) {
+          return;
+        }
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-        .success(function (data) {
-          var racks = data.racks;
-          if (racks instanceof Array) {
-            var result = {};
-            var i;
-            var rack;
-            for (i in racks) {
-              if (racks.hasOwnProperty(i)) {
-                for (rack in racks[i]) {
-                  if (racks[i].hasOwnProperty(rack)) {
-                    result[rack] = racks[i][rack];
-                  }
+        self.slurmNodes = result.nodes;
+
+        var racks = result.racks.racks;
+        if (racks instanceof Array) {
+          var result = {};
+          var i;
+          var rack;
+          for (i in racks) {
+            if (racks.hasOwnProperty(i)) {
+              for (rack in racks[i]) {
+                if (racks[i].hasOwnProperty(rack)) {
+                  result[rack] = racks[i][rack];
                 }
               }
             }
-            racks = result;
           }
+          racks = result;
+        }
 
-          var context = {
-            config: self.config,
-            racks: racks
-          };
+        var context = {
+          config: self.config,
+          racks: racks
+        };
 
-          $('#main').append(template(context));
+        $('#main').append(template(context));
 
-          $.each(racks, function (idRack, rack) {
-            draw.drawRack(rack);
-            $.each(rack.nodes, function (idRackNode, rackNode) {
-              draw.drawNode(rack, rackNode, self.slurmNodes[rackNode.name]);
-            });
+        $.each(racks, function (idRack, rack) {
+          draw.drawRack(rack);
+          $.each(rack.nodes, function (idRackNode, rackNode) {
+            draw.drawNode(rack, rackNode, self.slurmNodes[rackNode.name]);
           });
-
-          d2LegendDraw.drawLegend('racks');
         });
+
+        d2LegendDraw.drawLegend('racks');
+      });
     };
 
     this.refresh = function () {

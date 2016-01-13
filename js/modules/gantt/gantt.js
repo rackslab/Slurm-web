@@ -27,8 +27,7 @@ define([
   'text!../../js/modules/jobs/modal-job.hbs',
   'token-utils',
   'jobs-utils',
-  'nodes-utils'
-], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs, nodes) {
+], function ($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs) {
   template = Handlebars.compile(template);
   nodesTemplate = Handlebars.compile(nodesTemplate);
   qosTemplate = Handlebars.compile(qosTemplate);

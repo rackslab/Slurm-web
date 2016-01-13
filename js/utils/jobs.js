@@ -23,31 +23,6 @@ define([
   'token-utils'
 ], function ($, tokenUtils) {
   return {
-    getJobs: function (config) {
-      var slurmJobs = null;
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        async: false,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: tokenUtils.getToken(config.cluster)
-        })
-      };
-
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
-        .success(function (jobs) {
-          slurmJobs = jobs;
-        })
-        .error(function () {
-          $(document).trigger('show', { page: 'login' });
-        });
-
-      return slurmJobs;
-    },
     buildAllocatedCPUs: function (jobs) {
       var allocatedCPUs = {};
       var nodesCPUs = null;
