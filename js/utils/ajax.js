@@ -27,7 +27,7 @@ define([
       $('#flash .alert').text("Error : " + JSON.stringify(error));
       $('#flash').show();
     }
-    if ((jqueryXHR.status === 403) && (error.url !== '/slurm-restapi/login')) {
+    if ((jqueryXHR.status === 403) && !(error.url.indexOf('/login') > -1)) {
       $(document).trigger('logout');
     }
   });
