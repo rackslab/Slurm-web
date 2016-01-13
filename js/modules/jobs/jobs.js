@@ -27,7 +27,6 @@ define([
   'token-utils',
   'tablesorter-utils',
   'flot-utils',
-  'cluster-utils',
   'tagsinput-utils',
   'jobs-utils',
   'jquery-tablesorter',
@@ -39,7 +38,7 @@ define([
   'boolean-helpers',
   'date-helpers',
   'different-helpers',
-], function ($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, clusterUtils, tagsinputUtils) {
+], function ($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
   tableJobsTemplate = Handlebars.compile(tableJobsTemplate);
@@ -247,7 +246,7 @@ define([
             }
           }
 
-          dataAllocatedCores[1].data += clusterUtils.getClusterSync(config).cores - dataAllocatedCores[0].data;
+          dataAllocatedCores[1].data += config.cluster.infos.cores - dataAllocatedCores[0].data;
 
           var dataQOSNodes = [];
           var dataQOSCores = [];

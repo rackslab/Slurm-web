@@ -20,6 +20,7 @@
 
 define([
   'jquery',
+  'async',
   'handlebars',
   'text!../../js/modules/jobs-map/jobs-map.hbs',
   'text!../../js/modules/jobs-map/modal-core.hbs',
@@ -27,9 +28,8 @@ define([
   'token-utils',
   '2d-draw',
   '2d-legend-draw',
-  'nodes-utils',
   'jobs-utils'
-], function ($, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, D2Draw, d2LegendDraw, nodes, jobs) {
+], function ($, async, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, D2Draw, d2LegendDraw, jobs) {
   template = Handlebars.compile(template);
   modalCoreTemplate = Handlebars.compile(modalCoreTemplate);
   modalNodeTemplate = Handlebars.compile(modalNodeTemplate);
@@ -125,6 +125,7 @@ define([
     this.init = function () {
       var self = this;
       var allocatedCPUs = null;
+
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -137,50 +138,81 @@ define([
         })
       };
 
-      this.slurmNodes = nodes.getNodes(config);
-      allocatedCPUs = jobs.buildAllocatedCPUs(jobs.getJobs(config));
+      async.parallel({
+        jobs: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
+            .success(function (data) {
+              callback(null, data);
+            })
+            .error(function () {
+              callback(true, null);
+            })
+        },
+        nodes: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
+            .success(function (data) {
+              callback(null, data)
+            })
+            .error(function (callback) {
+              callback(true, null);
+            });
+        },
+        racks: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
+            .success(function (data) {
+              callback(null, data);
+            })
+            .error(function () {
+              callback(true, null);
+            });
+        }
+      }, function (err, result) {
+        if (err) {
+          return;
+        }
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-        .success(function (data) {
-          var racks = data.racks;
-          if (racks instanceof Array) {
-            var result = {};
-            var i;
-            var rack;
-            for (i in racks) {
-              if (racks.hasOwnProperty(i)) {
-                for (rack in racks[i]) {
-                  if (racks[i].hasOwnProperty(rack)) {
-                    result[rack] = racks[i][rack];
-                  }
+        self.slurmNodes = result.nodes;
+        allocatedCPUs = jobs.buildAllocatedCPUs(result.jobs);
+
+        var racks = result.racks.racks;
+        if (racks instanceof Array) {
+          var result = {};
+          var i;
+          var rack;
+          for (i in racks) {
+            if (racks.hasOwnProperty(i)) {
+              for (rack in racks[i]) {
+                if (racks[i].hasOwnProperty(rack)) {
+                  result[rack] = racks[i][rack];
                 }
               }
             }
-            racks = result;
           }
+          racks = result;
+        }
 
-          var context = {
-            config: self.config,
-            racks: racks
-          };
+        var context = {
+          config: self.config,
+          racks: racks
+        };
 
-          $('#main').append(template(context));
-          $.each(racks, function (idRack, rack) {
-            $('#cv_rackmap_' + idRack).on('click', function (e) {
-              e.stopPropagation();
-              var offset = $(this).offset();
+        $('#main').append(template(context));
+        $.each(racks, function (idRack, rack) {
+          $('#cv_rackmap_' + idRack).on('click', function (e) {
+            e.stopPropagation();
+            var offset = $(this).offset();
 
-              $(document).trigger('canvas-click', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
-            });
-
-            draw.drawRack(rack);
-            $.each(rack.nodes, function (idRacknode, rackNode) {
-              draw.drawNodeCores(rack, rackNode, self.slurmNodes[rackNode.name], allocatedCPUs[rackNode.name]);
-            });
+            $(document).trigger('canvas-click', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
           });
 
-          d2LegendDraw.drawLegend('jobs-map');
+          draw.drawRack(rack);
+          $.each(rack.nodes, function (idRacknode, rackNode) {
+            draw.drawNodeCores(rack, rackNode, self.slurmNodes[rackNode.name], allocatedCPUs[rackNode.name]);
+          });
         });
+
+        d2LegendDraw.drawLegend('jobs-map');
+      });
     };
 
     this.refresh = function () {

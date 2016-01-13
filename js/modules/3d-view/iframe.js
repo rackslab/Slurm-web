@@ -22,6 +22,7 @@ require.config({
   paths: {
     text: '/javascript/requirejs/text.min',
     jquery: '/javascript/jquery/jquery.min',
+    async: '/javascript/async/async.min',
     xdomain: '../../../js/libraries/xdomain.min',
     three: '/javascript/three/three.min',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
@@ -63,13 +64,14 @@ if (isIE) {
 function init() {
   require([
     'jquery',
+    'async',
     'token-utils',
     'text!/slurm-web-conf/config.json',
     '3d-draw',
     '3d-map-draw',
     'jobs-utils',
     'bootstrap'
-  ], function ($, token, config, d3Draw, d3MapDraw, jobsUtils) {
+  ], function ($, async, token, config, d3Draw, d3MapDraw, jobsUtils) {
     var url = window.location.toString();
     var draw;
     config = JSON.parse(config);
@@ -129,67 +131,94 @@ function init() {
     var canvas = getCanvas();
     setCanvasSize(canvas);
 
-    $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-      .success(function (data) {
-        $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
-          .success(function (nodesInfos) {
-            $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
-              .success(function (jobs) {
-                var racks = data.racks;
-                var room = data.room;
-
-                jobs = jobsUtils.buildAllocatedCPUs(jobs);
-
-                var map = d3MapDraw.racksToMap(racks);
-
-                var racksList = {};
-
-                var range;
-                var rack;
-                for (var range in racks) {
-                  if (racks.hasOwnProperty(range)) {
-                    for (var rack in racks[range]) {
-                      racksList[racks[range][rack].name] = racks[range][rack];
-                    }
-                  }
-                }
-
-                draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
-                draw.init(canvas.element);
-
-                $('#tabs a[href="#camera"]').on('click', function (e) {
-                  draw.setControls($(this).attr('aria-controls'));
-                  $('canvas').focus();
-                });
-
-                $('canvas').on('mousemove', function () {
-                  $('canvas').focus();
-                });
-
-                $('#tabs a[href="#fullscreen"]').on('click', function (e) {
-                  $('.row-menu').hide();
-                  window.parent.$(window.parent.document).trigger('fullscreen-enter');
-                  setTimeout(function () {
-                    canvas = getCanvas();
-                    setCanvasSize(canvas);
-                    draw.resize(canvas);
-                  }, 1000);
-                });
-
-                window.parent.$(window.parent.document).on('fullscreen-exit', function () {
-                  $('.row-menu').show();
-                  canvas = getCanvas();
-                  setCanvasSize(canvas);
-                  draw.resize(canvas);
-                });
-
-                window.parent.$(window.parent.document).on('destroy', function () {
-                  draw.clean();
-                  window.parent.$(window.parent.document).off('fullscreen-exit destroy');
-                });
-              })
+    async.parallel({
+      racks: function (callback) {
+        $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
+          .success(function (data) {
+            callback(null, data);
           })
-      })
+          .error(function () {
+            callback(1, null);
+          });
+      },
+      nodes: function (callback) {
+        $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
+          .success(function (data) {
+            callback(null, data);
+          })
+          .error(function () {
+            callback(1, null);
+          });
+      },
+      jobs: function (callback) {
+        $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
+          .success(function (data) {
+            callback(null, data);
+          })
+          .error(function () {
+            callback(1, null);
+          });
+      }
+    }, function (err, result) {
+      if (err) {
+        return;
+      }
+
+      var racks = result.racks.racks;
+      var room = result.racks.room;
+      var nodesInfos = result.nodes;
+      var jobs = result.jobs;
+
+      jobs = jobsUtils.buildAllocatedCPUs(jobs);
+
+      var map = d3MapDraw.racksToMap(racks);
+
+      var racksList = {};
+
+      var range;
+      var rack;
+      for (var range in racks) {
+        if (racks.hasOwnProperty(range)) {
+          for (var rack in racks[range]) {
+            racksList[racks[range][rack].name] = racks[range][rack];
+          }
+        }
+      }
+
+      draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
+      draw.init(canvas.element);
+
+      $('#tabs a[href="#camera"]').on('click', function (e) {
+        draw.setControls($(this).attr('aria-controls'));
+        $('canvas').focus();
+      });
+
+      $('canvas').on('mousemove', function () {
+        $('canvas').focus();
+      });
+
+      $('#tabs a[href="#fullscreen"]').on('click', function (e) {
+        $('.row-menu').hide();
+        window.parent.$(window.parent.document).trigger('fullscreen-enter');
+        setTimeout(function () {
+          canvas = getCanvas();
+          setCanvasSize(canvas);
+          draw.resize(canvas);
+        }, 1000);
+      });
+
+      window.parent.$(window.parent.document).on('fullscreen-exit', function () {
+        $('.row-menu').show();
+        canvas = getCanvas();
+        setCanvasSize(canvas);
+        draw.resize(canvas);
+      });
+
+      window.parent.$(window.parent.document).on('destroy', function () {
+        draw.clean();
+        window.parent.$(window.parent.document).off('fullscreen-exit destroy');
+      });
+    });
   });
 }
 

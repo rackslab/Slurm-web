@@ -50,7 +50,7 @@ define([
 
       // retrieve informations about authentication on the selected cluster
       if (!cluster.authentication) {
-        $.ajax(cluster.api.url + cluster.api.path + '/authentication', { async: false })
+        $.ajax(cluster.api.url + cluster.api.path + '/authentication')
           .success(function (response) {
             cluster.authentication = response;
             loadSelectedCluster();

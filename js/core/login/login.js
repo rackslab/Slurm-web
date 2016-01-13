@@ -20,26 +20,60 @@
 
 define([
   'jquery',
+  'async',
   'handlebars',
   'text!../../js/core/login/login.hbs',
   'token-utils',
   'user-utils',
   'fake-placeholder'
-], function ($, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
+], function ($, async, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
 
   return function (config) {
     function login(options) {
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/login', options)
-        .success(function (credentials) {
-          tokenUtils.setToken(config.cluster, credentials.id_token);
-          userUtils.setUser(config.cluster, credentials.username, credentials.role);
-          $(document).trigger('logged');
-          $(document).trigger('show', { page: config.STARTPAGE });
-        })
-        .error(function () {
+      async.series({
+        login: function (callback) {
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/login', options)
+            .success(function (credentials) {
+              tokenUtils.setToken(config.cluster, credentials.id_token);
+              userUtils.setUser(config.cluster, credentials.username, credentials.role);
+              callback(null, null);
+            })
+            .error(function () {
+              callback(true, null);
+            });
+        },
+        cluster: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: tokenUtils.getToken(config.cluster)
+            })
+          };
+
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
+            .success(function (data) {
+              config.cluster.infos = data
+              callback(null, null);
+            })
+            .error(function () {
+              callback(true, null);
+            });
+        }
+      }, function (err, result) {
+        if (err) {
           $('#login #error').show();
-        });
+          return ;
+        }
+
+        $(document).trigger('logged');
+        $(document).trigger('show', { page: config.STARTPAGE });
+      });
     };
 
     this.init = function () {

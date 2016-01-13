@@ -26,18 +26,17 @@ require.config({
     'jquery-flot': '/javascript/jquery-flot/jquery.flot.min',
     'jquery-flot-pie': '/javascript/jquery-flot/jquery.flot.pie.min',
     xdomain: '../../js/libraries/xdomain.min',
+    async: '/javascript/async/async.min',
     handlebars: '/javascript/handlebars/handlebars',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
     'bootstrap-typeahead': '/javascript/bootstrap/js/typeahead.jquery',
     'bootstrap-tagsinput': '/javascript/bootstrap/js/bootstrap-tagsinput.min',
     d3: '/javascript/d3/d3.min',
-    'cluster-utils': '../../js/utils/cluster',
     'token-utils': '../../js/utils/token',
     'user-utils': '../../js/utils/user',
     'date-utils': '../../js/utils/date',
     'tablesorter-utils': '../../js/utils/tablesorter',
     'jobs-utils': '../../js/utils/jobs',
-    'nodes-utils': '../../js/utils/node',
     'page-utils': '../../js/utils/page',
     'ajax-utils': '../../js/utils/ajax',
     'flot-utils': '../../js/utils/flot',
@@ -62,8 +61,8 @@ require.config({
     racks: '../../js/modules/racks/racks',
     'jobs-map': '../../js/modules/jobs-map/jobs-map',
     partitions: '../../js/modules/partitions/partitions',
-    qos: '../../js/modules/qos/qos',
     reservations: '../../js/modules/reservations/reservations',
+    qos: '../../js/modules/qos/qos',
     '3d-view': '../../js/modules/3d-view/3d-view',
     gantt: '../../js/modules/gantt/gantt',
     topology: '../../js/modules/topology/topology',
@@ -135,6 +134,7 @@ require([
   config = JSON.parse(config);
   var clusters = new Clusters(config);
   clusters.init();
+
   var firstLoad = true;
   var page = new Page();
 
@@ -147,7 +147,23 @@ require([
 
     $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
 
-    $(document).trigger('show', { page: options.config.STARTPAGE });
+    var options = {
+      type: 'POST',
+      dataType: 'json',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
+        token: token.getToken(config.cluster)
+      })
+    };
+
+    $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
+      .success(function (data) {
+        config.cluster.infos = data
+        $(document).trigger('show', { page: config.STARTPAGE });
+      });
   })
 
   $(document).on('logout', function (e) {
@@ -169,7 +185,11 @@ require([
       page = new Login(config);
       break;
     case 'jobs':
-      page = new Jobs(config);
+      if (options.filter) {
+        page = new Jobs(config, options.filter);
+      } else {
+        page = new Jobs(config, null);
+      }
       break;
     case 'jobsmap':
       page = new JobsMap(config);
@@ -177,14 +197,14 @@ require([
     case 'partitions':
       page = new Partitions(config);
       break;
+    case 'reservations':
+      page = new Reservations(config);
+      break;
     case 'qos':
       page = new QOS(config);
       break;
     case 'racks':
       page = new Racks(config);
-      break;
-    case 'reservations':
-      page = new Reservations(config);
       break;
     case '3dview':
       page = new d3View(config);
@@ -205,8 +225,6 @@ require([
       page.refresh();
     }
   });
-
-  $(document).trigger('loadPage', { config: config });
 
   $(window).resize(function() {
     $('body>.container-fluid').css({'margin-top': $('nav').height()+'px'});
