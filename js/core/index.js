@@ -169,6 +169,10 @@ require([
   $(document).on('logout', function (e) {
     e.preventDefault();
 
+    // clear authentication on current cluster
+    token.removeToken(config.cluster);
+    user.removeUser(config.cluster);
+
     $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });
   });
 

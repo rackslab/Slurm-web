@@ -30,99 +30,35 @@ define([
   template = Handlebars.compile(template);
 
   return function (config) {
-    function login(options) {
-      async.series({
-        login: function (callback) {
-          $.ajax(config.cluster.api.url + config.cluster.api.path + '/login', options)
-            .success(function (credentials) {
-              tokenUtils.setToken(config.cluster, credentials.id_token);
-              userUtils.setUser(config.cluster, credentials.username, credentials.role);
+    function loginAction(options) {
+      function loginOnCluster(cluster, callback) {
+        async.series([
+          function(callback) {
+            // login on cluster, call route /login
+            if (userUtils.getUser(cluster)) {
+              // don't do anything if user already authenticated on cluster
               callback(null, null);
-            })
-            .error(function () {
-              callback(true, null);
-            });
-        },
-        cluster: function (callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: tokenUtils.getToken(config.cluster)
-            })
-          };
+              return;
+            }
 
-          $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
-            .success(function (data) {
-              config.cluster.infos = data
+            $.ajax(cluster.api.url + cluster.api.path + '/login', options)
+              .success(function(credentials) {
+                tokenUtils.setToken(cluster, credentials.id_token);
+                userUtils.setUser(cluster, credentials.username, credentials.role);
+                callback(null, null);
+              })
+              .error(function(error) {
+                callback(true, error);
+              });
+          },
+          function(callback) {
+            // get infos on cluster, call route /cluster
+            if (cluster.infos) {
+              // don't do anything if infos are already retrieved
               callback(null, null);
-            })
-            .error(function () {
-              callback(true, null);
-            });
-        }
-      }, function (err, result) {
-        if (err) {
-          $('#login #error').show();
-          return ;
-        }
+              return;
+            }
 
-        $(document).trigger('logged');
-        $(document).trigger('show', { page: config.STARTPAGE });
-      });
-    };
-
-    this.init = function () {
-      $('#main').append(template());
-
-      // hack for placeholder in IE
-      if ($.browser.msie) {
-        fakePlaceholder();
-      }
-
-      if (config.cluster.authentication.guest)
-        $('#login #guest').show();
-
-      $('#login #user').on('click', function () {
-        var form = {
-          username: $('#login #username').val(),
-          password: $('#login #password').val()
-        };
-
-        if (!form.username || !form.password) {
-          $('#login #error').show();
-        } else {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              username: form.username,
-              password: form.password
-            })
-          };
-
-          login(options);
-        }
-      })
-
-      $('#login input').on('keypress', function (e) {
-        if (e.which === 13) {
-          var form = {
-            username: $('#login #username').val(),
-            password: $('#login #password').val()
-          };
-
-          if (!form.username || !form.password) {
-            $('#login #error').show();
-          } else {
             var options = {
               type: 'POST',
               dataType: 'json',
@@ -131,31 +67,92 @@ define([
                 'Content-Type': 'application/json'
               },
               data: JSON.stringify({
-                username: form.username,
-                password: form.password
+                token: tokenUtils.getToken(cluster)
               })
             };
 
-            login(options);
+            $.ajax(cluster.api.url + cluster.api.path + '/cluster', options)
+              .success(function(data) {
+                cluster.infos = data;
+                callback(null, null);
+              })
+              .error(function(error) {
+                callback(true, error);
+              });
           }
-        }
-      });
+        ], function(err, result) {
+          if (err) {
+            callback(true, result);
+            return;
+          }
+          callback(null, null);
+        });
+      }
 
-      $('#login #guest').on('click', function () {
-        var options = {
-          type: 'POST',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-            guest: true
-          })
+      async.map(window.clusters, loginOnCluster, function (err, result) {
+        if (err && !userUtils.getUser(config.cluster)) {
+          $('#login #error').show();
+          return;
+        }
+
+        $(document).trigger('logged');
+        $(document).trigger('show', { page: config.STARTPAGE });
+      });
+    };
+
+    this.init = function () {
+      var options = {
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+
+      function submitLogin(e) {
+        if (e.type === "keypress" && e.which !== 13) {
+          return;
+        }
+
+        var form = {
+          username: $('#login #username').val(),
+          password: $('#login #password').val()
         };
 
-        login(options)
-      })
+        if (!form.username || !form.password) {
+          $('#login #error').show();
+        } else {
+          options.data = JSON.stringify({
+            username: form.username,
+            password: form.password
+          });
+          loginAction(options);
+        }
+      }
+
+      function submitGuest() {
+        options.data = JSON.stringify({
+          guest: true
+        });
+        loginAction(options)
+      }
+
+      $('#main').append(template());
+
+      // hack for placeholder in IE
+      if ($.browser.msie) {
+        fakePlaceholder();
+      }
+
+      if (config.cluster.authentication.guest) {
+        $('#login #guest').show();
+      }
+
+      // bind login form events
+      $('#login #user').on('click', submitLogin);
+      $('#login input').on('keypress', submitLogin);
+      $('#login #guest').on('click', submitGuest)
     };
 
     this.destroy = function () {
