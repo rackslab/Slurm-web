@@ -68,6 +68,11 @@ define([
           $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
+
+          $('tr').on('click', function (e) {
+            var qos = $($($(this).children('td'))[0]).html();
+            $(document).trigger('show', { page: 'jobs', filter: { type: 'qos', value: qos } });
+          });
         });
     };
 
@@ -86,6 +91,7 @@ define([
         clearInterval(this.interval);
       }
 
+      $('tr').off('click');
       $('#qos').remove();
     };
 

@@ -201,6 +201,13 @@ tr.job-row {
 }
 
 /*
+ * Change cursor (to hand/pointer) when over a qos row in qos view
+ */
+#qos tr {
+  cursor: pointer;
+}
+
+/*
 
  * Plot containers
  */
