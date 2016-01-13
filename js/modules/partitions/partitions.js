@@ -58,6 +58,12 @@ define([
           $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
+
+          $('tr').on('click', function (e) {
+            var partition = $($($(this).children('td'))[0]).html();
+            $(document).trigger('show', { page: 'jobs', filter: { type: 'partition', value: partition } });
+          });
+
         });
     };
 
@@ -76,6 +82,7 @@ define([
         clearInterval(this.interval);
       }
 
+      $('tr').off('click');
       $('#partitions').remove();
     };
 

@@ -49,6 +49,7 @@ define([
     this.tablesorterOptions = {};
     this.tagsinputOptions = [];
     this.onModal = null;
+    this.initialLoad = true;
 
     function filterTableJobs(jobs) {
       var context = {
@@ -111,6 +112,7 @@ define([
     }
 
     this.init = function () {
+      var self = this;
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -199,8 +201,10 @@ define([
             filterTableJobs(jobs);
           });
 
-          if (filter) {
+          if (filter && self.initialLoad) {
             $('.typeahead').tagsinput('add', filter.value + ' (' + filter.type + ')');
+
+            self.initialLoad = false;
           }
 
           filterTableJobs(jobs);

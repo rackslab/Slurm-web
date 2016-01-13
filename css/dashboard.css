@@ -208,6 +208,14 @@ tr.job-row {
 }
 
 /*
+ * Change cursor (to hand/pointer) when over a partition row in partitions view
+ */
+
+#partitions tr {
+   cursor: pointer;
+}
+
+/*
 
  * Plot containers
  */
