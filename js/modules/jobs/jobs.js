@@ -43,7 +43,7 @@ define([
   modalTemplate = Handlebars.compile(modalTemplate);
   tableJobsTemplate = Handlebars.compile(tableJobsTemplate);
 
-  return function (config) {
+  return function (config, filter) {
     var self = this;
     this.interval = null;
     this.tablesorterOptions = {};
@@ -198,6 +198,10 @@ define([
             self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
             filterTableJobs(jobs);
           });
+
+          if (filter) {
+            $('.typeahead').tagsinput('add', filter.value + ' (' + filter.type + ')');
+          }
 
           filterTableJobs(jobs);
 
