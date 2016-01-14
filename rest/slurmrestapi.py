@@ -115,13 +115,22 @@ def authentication():
 @cache()
 def get_jobs():
     if mocking:
-        return mock('jobs.json')
+        jobs = mock('jobs.json')
+    else:
+        jobs = pyslurm.job().get()
 
-    jobs = pyslurm.job().get()
-
-    # add login and username (additionally to UID) for each job
     for jobid, job in jobs.iteritems():
-        fill_job_user(job)
+        # add login and username (additionally to UID) for each job
+        try:
+            fill_job_user(job)
+        except (KeyError):
+            pass
+
+        # convert nodeset in array of nodes
+        if job["nodes"] is not None:
+            jobs[jobid]["nodeset"] = list(
+                NodeSet(job["nodes"].encode('ascii','ignore'))
+            )
 
 
     return jobs
