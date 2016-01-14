@@ -40,6 +40,10 @@ from auth import (User, authentication_verify, AuthenticationError,
 
 from cache import cache
 
+# for nodeset conversion
+from ClusterShell.NodeSet import NodeSet
+import unicodedata
+
 app = Flask(__name__)
 
 try:
@@ -118,6 +122,7 @@ def get_jobs():
     # add login and username (additionally to UID) for each job
     for jobid, job in jobs.iteritems():
         fill_job_user(job)
+
 
     return jobs
 
@@ -363,6 +368,15 @@ def get_jobs_by_qos():
         returned_qos[qos_id] = returned_jobs
 
     return returned_qos
+
+
+@app.route('/nodeset', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type'])
+@cache()
+def convert_nodeset():
+    data = json.loads(request.data)
+    return json.dumps(list(NodeSet(data['nodeset'].encode('ascii','ignore'))))
 
 
 def fill_job_user(job):
