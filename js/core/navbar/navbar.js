@@ -24,9 +24,26 @@ define([
   'text!../../js/core/navbar/navbar.hbs',
   'user-utils',
   'boolean-helpers',
-  'string-helpers'
+  'string-helpers',
+  'view-helpers'
 ], function ($, Handlebars, template, userUtils) {
   template = Handlebars.compile(template);
+
+  var VIEWS = [
+    {id: 'jobs', name: 'Jobs'},
+    {id: 'racks', name: 'Racks'},
+    {id: 'jobsmap', name: 'JobsMap'},
+    {
+      id: '3dview',
+      name: '3D View',
+      condition: !(/*@cc_on!@*/false || !!document.documentMode),
+    },
+    {id: 'partitions', name: 'Partitions'},
+    {id: 'qos', name: 'QOS'},
+    {id: 'reservations', name: 'Reservations'},
+    {id: 'gantt', name: 'Gantt'},
+    {id: 'topology', name: 'Topology'}
+  ];
 
   return function (config) {
     var self = this;
@@ -51,9 +68,15 @@ define([
     });
 
     this.init = function () {
+      this.availableViews = VIEWS.filter(function(view) {
+        var restrictedViews = config.cluster.restrictedViews || [];
+        return restrictedViews.indexOf(view.id) === -1;
+      });
+
       var context = {
         clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
         authEnabled: config.cluster.authentication.enabled,
+        views: this.availableViews,
         userLogged: this.userLogged,
         user: $.extend({ username: '' }, userUtils.getUser(config.cluster)),
         notIE: !(/*@cc_on!@*/false || !!document.documentMode)

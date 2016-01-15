@@ -91,9 +91,10 @@ def login():
 
     token = user.generate_auth_token()
     resp = {
-        'id_token': token,
-        'username': user.username,
-        'role':     user.role
+        'id_token':         token,
+        'username':         user.username,
+        'role':             user.role,
+        'restricted_views': user.restricted_views()
     }
     return jsonify(resp)
 
@@ -129,9 +130,8 @@ def get_jobs():
         # convert nodeset in array of nodes
         if job["nodes"] is not None:
             jobs[jobid]["nodeset"] = list(
-                NodeSet(job["nodes"].encode('ascii','ignore'))
+                NodeSet(job["nodes"].encode('ascii', 'ignore'))
             )
-
 
     return jobs
 
@@ -385,7 +385,7 @@ def get_jobs_by_qos():
 @cache()
 def convert_nodeset():
     data = json.loads(request.data)
-    return json.dumps(list(NodeSet(data['nodeset'].encode('ascii','ignore'))))
+    return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
 
 def fill_job_user(job):

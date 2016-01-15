@@ -49,6 +49,7 @@ require.config({
     'date-helpers': '../../js/helpers/date',
     'different-helpers': '../../js/helpers/different',
     'keycode-helpers': '../../js/helpers/keycode',
+    'view-helpers': '../../js/helpers/view',
     '2d-draw': '../../js/draw/2d-draw',
     'colors-draw': '../../js/draw/colors',
     '2d-intersections-draw': '../../js/draw/2d-intersections',
@@ -133,16 +134,17 @@ require([
 ], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt, Topology) {
   config = JSON.parse(config);
   var clusters = new Clusters(config);
-  clusters.init();
-
   var firstLoad = true;
   var page = new Page();
+  var navbar = null;
+
+  clusters.init();
 
   $(document).on('loadPage', function(e, options) {
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
 
-    var navbar = new Navbar(options.config);
+    navbar = new Navbar(options.config);
     navbar.init();
 
     $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
@@ -160,8 +162,8 @@ require([
     };
 
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
-      .success(function (data) {
-        config.cluster.infos = data
+      .success(function(data) {
+        config.cluster.infos = data;
         $(document).trigger('show', { page: config.STARTPAGE });
       });
   })
@@ -177,6 +179,12 @@ require([
   });
 
   $(document).on('show', function (e, options) {
+    // check if the wanted page is accessible for the current user
+    var nextPage = options.page !== 'login' &&
+      navbar.availableViews.filter(function(view) {
+        return view.id === options.page;
+      }).length === 0 ?
+      navbar.availableViews[0].id : options.page;
     e.stopPropagation();
 
     page.destroy(true);
@@ -184,7 +192,7 @@ require([
     page = new Page();
     $('#flash').hide();
 
-    switch (options.page) {
+    switch (nextPage) {
     case 'login':
       page = new Login(config);
       break;

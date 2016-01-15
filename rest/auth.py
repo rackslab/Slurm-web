@@ -26,6 +26,7 @@ from functools import wraps
 from werkzeug.exceptions import Forbidden
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
+from ConfigParser import NoSectionError
 import os
 import platform
 
@@ -38,11 +39,19 @@ if enabled:
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
         'user': settings.get('roles', 'restricted_fields_for_user').split(','),
-        'admin': settings.get('roles', 'restricted_fields_for_admin').split(',')
+        'admin': settings.get('roles', 'restricted_fields_for_admin')
+        .split(',')
     }
     all_restricted = not(settings.get('roles', 'all') == 'all')
     users = settings.get('roles', 'user').split(',')
     admins = settings.get('roles', 'admin').split(',')
+
+
+# retrieve ACLs for views if exist in configuration
+try:
+    views_acl = settings.items('views_acl')
+except NoSectionError:
+    views_acl = []
 
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -79,16 +88,18 @@ abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
-    def __init__(self, username, password, role):
+    def __init__(self, username, password, role, groupname=None):
         self.username = username
         self.password = password
         self.role = role
+        self.groupname = groupname
 
     # create authenticated user
     @staticmethod
     def user(username, password):
-        role = User.get_role_from_ldap(username, password)
-        return User(username, password, role)
+        groupname = User.get_groupname_from_ldap(username, password)
+        role = User.get_role(username, groupname)
+        return User(username, password, role, groupname)
 
     # create a guest user
     @staticmethod
@@ -96,21 +107,16 @@ class User(object):
         return User('guest', 'guest', 'all')
 
     @staticmethod
-    def get_role_from_ldap(username, password):
+    def get_groupname_from_ldap(username, password):
         # mock LDAP in development
         if os.environ.get('LDAP_ENV') == 'development':
             print "LDAP authentication mocked"
             if username == 'marie' or username == 'pierre':
                 if password == 'secret':
-                    groupname = 'chimistes'
-                    if username in admins or ("@" + groupname) in admins:
-                        return 'admin'
-                    if username in users or ("@" + groupname) in users:
-                        return 'user'
-                    return 'all'
+                    return 'chimistes'
             raise AuthenticationError
 
-        # here deal with ldap to get user role
+        # here deal with ldap to get user groupname
         conn = get_ldap_connection()
 
         try:
@@ -152,11 +158,7 @@ class User(object):
 
             print "User's group name: %s" % groupname
 
-            if username in admins or ("@" + groupname) in admins:
-                return 'admin'
-            if username in users or ("@" + groupname) in users:
-                return 'user'
-            return 'all'
+            return groupname
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
@@ -164,6 +166,14 @@ class User(object):
 
         finally:
             conn.unbind_s()
+
+    @staticmethod
+    def get_role(username, groupname):
+        if username in admins or ("@" + groupname) in admins:
+            return 'admin'
+        if username in users or ("@" + groupname) in users:
+            return 'user'
+        return 'all'
 
     def generate_auth_token(
         self, expiration=int(settings.get('ldap', 'expiration'))
@@ -198,6 +208,12 @@ class User(object):
 
         user = User.user(data['username'], data['password'])
         return user
+
+    def restricted_views(self):
+        group = "@" + self.groupname if self.groupname is not None else None
+        views = filter(lambda acl: self.username not in acl[1] and
+                       (group is None or group not in acl[1]), views_acl)
+        return map(lambda view: view[0], views)
 
 
 def authentication_verify():
