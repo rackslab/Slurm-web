@@ -561,7 +561,7 @@ Basic configuration file :
 - *PACMAN* (Object) : Specific pacman mode configuration
   - *MOVESPEED* (Number) : X, Y, Z camera translation speed in UNITSIZE
   - *LOOKSPEED* (Number) : X, Y, Z camera rotation speed in UNITSIZE
-
+- *COLLISONMARGIN* (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls
 
 3D Colors ``3d.colors.config.json``
 """""""""""""""""""""""""""""""""""

@@ -55,7 +55,7 @@ define([
 ], function ($, THREE, d3config) {
   d3config = JSON.parse(d3config);
 
-  THREE.FirstPersonControls = function (object, domElement) {
+  THREE.FirstPersonControls = function (object, domElement, forbiddenZone, forbiddenVoid) {
     var self = this;
     this.object = object;
     this.target = new THREE.Vector3(0, 0, 0);
@@ -233,6 +233,34 @@ define([
 
     };
 
+    this.isForbiddenZone = function() {
+      var x = this.object.position.x,
+          y = this.object.position.y,
+          z = this.object.position.z;
+
+      var i,
+          zone
+      for (i = 0; i < forbiddenZone.length; i++) {
+        zone = forbiddenZone[i];
+        if (x >= zone.minX && x <= zone.maxX &&
+            y >= zone.minY && y <= zone.maxY &&
+            z >= zone.minZ && z <= zone.maxZ) {
+          return true;
+        }
+      }
+
+      if (y <= forbiddenVoid.floor ||
+          y >= (forbiddenVoid.roof) ||
+          z <= forbiddenVoid.topWall ||
+          z >= forbiddenVoid.bottomWall ||
+          x <= forbiddenVoid.leftWall ||
+          x >= forbiddenVoid.rightWall) {
+        return true;
+      }
+
+      return false;
+    }
+
     this.update = function(delta) {
 
       if (this.enabled === false) return;
@@ -258,14 +286,46 @@ define([
 
       var actualMoveSpeed = delta * this.movementSpeed;
 
-      if (this.moveForward || (this.autoForward && !this.moveBackward)) this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
-      if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
+      if ((this.moveForward || (this.autoForward && !this.moveBackward)) && !this.isForbiddenZone()) {
+        this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+        if (this.isForbiddenZone()) {
+          this.object.translateZ(+(actualMoveSpeed + this.autoSpeedFactor))
+        }
+      }
 
-      if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
-      if (this.moveRight) this.object.translateX(actualMoveSpeed);
+      if (this.moveBackward && !this.isForbiddenZone()) {
+        this.object.translateZ(+actualMoveSpeed);
+        if (this.isForbiddenZone()) {
+          this.object.translateZ(-actualMoveSpeed);
+        }
+      }
 
-      if (this.moveUp) this.object.translateY(actualMoveSpeed);
-      if (this.moveDown) this.object.translateY(-actualMoveSpeed);
+      if (this.moveLeft && !this.isForbiddenZone()) {
+        this.object.translateX(-actualMoveSpeed);
+        if (this.isForbiddenZone()) {
+          this.object.translateX(+actualMoveSpeed);
+        }
+      }
+
+      if (this.moveRight && !this.isForbiddenZone()) {
+        this.object.translateX(+actualMoveSpeed);
+        if (this.isForbiddenZone()) {
+          this.object.translateX(-actualMoveSpeed);
+        }
+      }
+
+      if (this.moveUp && !this.isForbiddenZone()) {
+        this.object.translateY(+actualMoveSpeed);
+        if (this.isForbiddenZone()) {
+          this.object.translateY(-actualMoveSpeed);
+        }
+      }
+      if (this.moveDown && !this.isForbiddenZone()) {
+        this.object.translateY(-actualMoveSpeed);
+        if (this.isForbiddenZone()) {
+          this.object.translateY(+actualMoveSpeed);
+        }
+      }
 
       var actualLookSpeed = delta * this.lookSpeed;
 
