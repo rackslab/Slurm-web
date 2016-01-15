@@ -57,7 +57,16 @@ define([
         renderer = null,
         defaultXSize = null,
         defaultZSize = null,
-        warned = false;
+        warned = false,
+        forbiddenZone = [],
+        forbiddenVoid = {
+          roof: 0,
+          floor: 0,
+          topWall: 0,
+          bottomWall: 0,
+          leftWall: 0,
+          rightWall: 0
+        };
 
     this.calculateEnv = function () {
       map.unitWidth = map.width * config.UNITSIZE + map.rangeMaxRacksNumber * config.UNITSIZE * config.RACKMARGIN;
@@ -89,12 +98,12 @@ define([
       if (type) {
         interfaceOptions.cameraType = type;
       }
-      
+
       this.addCamera();
 
       switch (interfaceOptions.cameraType) {
         case 'fps':
-          controls = new THREE.FirstPersonControls(camera, canvas);
+          controls = new THREE.FirstPersonControls(camera, canvas, forbiddenZone, forbiddenVoid);
           controls.movementSpeed = config.MOVESPEED;
           controls.lookSpeed = config.LOOKSPEED;
           controls.lookVertical = true;
@@ -178,6 +187,11 @@ define([
       bottomWallGeometry.dispose();
       leftWallGeometry.dispose();
       rightWallGeometry.dispose();
+
+      forbiddenVoid.topWall = topWall.position.z + (config.UNITSIZE * config.COLLISONMARGIN);
+      forbiddenVoid.bottomWall = bottomWall.position.z - (config.UNITSIZE * config.COLLISONMARGIN);
+      forbiddenVoid.leftWall = leftWall.position.x + (config.UNITSIZE * config.COLLISONMARGIN);
+      forbiddenVoid.rightWall = rightWall.position.x - (config.UNITSIZE * config.COLLISONMARGIN);
     }
 
     this.addRoof = function () {
@@ -213,6 +227,8 @@ define([
       scene.add(roof);
       roofMaterial.dispose();
       roofGeometry.dispose();
+
+      forbiddenVoid.roof = roof.position.y - config.UNITSIZE * config.COLLISONMARGIN;
     }
 
     this.addFloor = function () {
@@ -266,6 +282,8 @@ define([
       scene.add(floor);
       floorGeometry.dispose();
       floorMaterial.dispose();
+
+      forbiddenVoid.floor = config.UNITSIZE * config.COLLISONMARGIN;
     }
 
     this.addCores = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
@@ -339,7 +357,7 @@ define([
 
         objects.material.push(new THREE.MeshBasicMaterial({ color: color }));
         material = objects.material[objects.material.length - 1];
-        
+
         objects.mesh.push(new THREE.Mesh(geometry, material));
         mesh = objects.mesh[objects.mesh.length - 1];
 
@@ -453,6 +471,15 @@ define([
             positionX = (x - (map.width - 1) / 2) * (config.UNITSIZE * config.RACKWIDTH + config.UNITSIZE * config.RACKMARGIN);
             positionY = (config.UNITSIZE * config.RACKHEIGHT / 2);
             positionZ = (y - (map.height - 1) / 2) * (config.UNITSIZE * config.RACKDEPTH + config.UNITSIZE * config.RACKMARGIN);
+
+            forbiddenZone.push({
+              minX: positionX - (config.UNITSIZE * config.RACKWIDTH) / 2 - (config.UNITSIZE * config.COLLISONMARGIN),
+              maxX: positionX + (config.UNITSIZE * config.RACKWIDTH) / 2 + (config.UNITSIZE * config.COLLISONMARGIN),
+              minY: -(config.UNITSIZE * config.COLLISONMARGIN),
+              maxY: (map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT + (config.UNITSIZE * config.COLLISONMARGIN),
+              minZ: positionZ - (config.UNITSIZE * config.RACKDEPTH) / 2 - (config.UNITSIZE * config.COLLISONMARGIN),
+              maxZ: positionZ + (config.UNITSIZE * config.RACKDEPTH) / 2 + (config.UNITSIZE * config.COLLISONMARGIN)
+            });
 
             for (index in rack.nodes) {
               if (rack.nodes.hasOwnProperty(index)) {
@@ -633,6 +660,8 @@ define([
       renderer = null;
       defaultXSize = null;
       defaultZSize = null;
+      forbiddenZone = null;
+      forbiddenVoid = null;
 
       $(document).off('contextmenu');
       $(document).off('mousedown');
