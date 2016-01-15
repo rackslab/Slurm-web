@@ -21,6 +21,7 @@
 import xml.etree.ElementTree as ET
 from ClusterShell.NodeSet import NodeSet
 from settings import settings
+from ConfigParser import NoOptionError
 
 
 class NodeType(object):
@@ -115,7 +116,10 @@ class Node(object):
 
 def parse_racks():
 
-    FILE = settings.get('config', 'racksxml')
+    try:
+        FILE = settings.get('config', 'racksxml')
+    except NoOptionError:
+        FILE = None
     if not FILE:
         FILE = '/etc/slurm-web/racks.xml'
     try:
