@@ -24,35 +24,13 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a id="menu-jobs" href="#">Jobs</a>
-        </li>
-        <li>
-          <a id="menu-racks" href="#">Racks</a>
-        </li>
-        <li>
-          <a id="menu-jobsmap" href="#">JobsMap</a>
-        </li>
-        {{#if notIE}}
-          <li>
-            <a id="menu-3dview" href="#">3D View</a>
-          </li>
-        {{/if}}
-        <li>
-          <a id="menu-partitions" href="#">Partitions</a>
-        </li>
-        <li>
-          <a id="menu-qos" href="#">QOS</a>
-        </li>
-        <li>
-          <a id="menu-reservations" href="#">Reservations</a>
-        </li>
-        <li>
-          <a id="menu-gantt" href="#">Gantt</a>
-        </li>
-        <li>
-          <a id="menu-topology" href="#">Topology</a>
-        </li>
+        {{#each views}}
+          {{#if (isDisplayable this)}}
+            <li>
+              <a id="menu-{{id}}" href="#">{{name}}</a>
+            </li>
+          {{/if}}
+        {{/each}}
         {{#if authEnabled}}
           {{#if userLogged}}
             <li class="dropdown">

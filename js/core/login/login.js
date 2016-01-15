@@ -42,9 +42,10 @@ define([
             }
 
             $.ajax(cluster.api.url + cluster.api.path + '/login', options)
-              .success(function(credentials) {
-                tokenUtils.setToken(cluster, credentials.id_token);
-                userUtils.setUser(cluster, credentials.username, credentials.role);
+              .success(function(response) {
+                tokenUtils.setToken(cluster, response.id_token);
+                userUtils.setUser(cluster, response.username, response.role);
+                cluster.restrictedViews = response.restricted_views;
                 callback(null, null);
               })
               .error(function(error) {

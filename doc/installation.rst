@@ -262,10 +262,14 @@ Here is an example of a valid configuration file:
 
   [config]
   secret_key = my_awesome_secret_key
-  # set to 'enable' to activate authentication
+  # Set to 'enable' to activate authentication.
+  # Authentication is based on LDAP, so an LDAP server and the good configuration
+  # for it, below in this file, are required.
   authentication = enable
-  # set to 'enable' to activate cache
+  # Set to 'enable' to activate cache.
   cache = enable
+  # Path for racks description (default to /etc/slurm-web/racks.xml).
+  racksxml =
 
   [roles]
   # The `all` role can have 2 values:
@@ -282,7 +286,30 @@ Here is an example of a valid configuration file:
   restricted_fields_for_user = command
   restricted_fields_for_admin =
 
+  [views_acl]
+  # You can set here an access control list for each view of the dashboard for
+  # this cluster.
+  # This feature requires authentication to be enabled.
+  # For each view, you can give a list of groups (whose names are prefixed by @)
+  # and logins, to define who can access to this view.
+  # If no ACL is provided for a view, so every authenticated user can access to
+  # this view.
+  # i.e. ``jobs = @admin,pierre`` implies that the jobs view will be available
+  # only for every user from the group 'admin', and the user with 'pierre' as
+  # login.
+  # If you give an empty value for an entry (i.e. ``jobs =``), the corresponding
+  # view will not be accessible for anybody.
+  #
+  # Available views are : [
+  #   'jobs', 'jobsmap', 'partitions', 'reservations', 'qos', 'racks', '3dview',
+  #   'gantt', 'topology'
+  # ]
+  jobs = @users,@admin
+  gantt = @admin,pierre
+  3dview =
+
   [ldap]
+  # Configure here settings to connect to your LDAP server.
   uri = ldap://admin:389
   base = dc=cluster,dc=local
   ugroup = people
