@@ -124,6 +124,17 @@ define([
       scene.add(light);
     }
 
+    this.mergeMeshes = function (meshes) {
+      var combined = new THREE.Geometry();
+
+      for (var i = 0; i < meshes.length; i++) {
+        meshes[i].updateMatrix();
+        combined.merge(meshes[i].geometry, meshes[i].matrix);
+      }
+
+      return combined;
+    }
+
     this.addWalls = function () {
       var texture = THREE.ImageUtils.loadTexture('static/wall.jpg');
       texture.wrapS = THREE.RepeatWrapping;
@@ -344,10 +355,16 @@ define([
       var factorHeight = row * cpuDimensions;
 
       var cpuPadding = cpuDimensions * config.CPUPADDING;
-      geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth)
-      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
+
+      geometry = new THREE.BoxGeometry(cpuDimensions - cpuPadding, cpuDimensions - cpuPadding, cpuDepth);
+      objects.geometry.push(geometry);
+
       geometry = objects.geometry[objects.geometry.length - 1];
 
+      objects.material.push(new THREE.MeshBasicMaterial({ color: colors.NOJOB }));
+      material = objects.material[objects.material.length - 1];
+
+      var coresMeshes = {};
       for (cpu = 0; cpu < cpus; cpu++) {
         if (!nodeJobs[cpu]) {
           color = colors.NOJOB;
@@ -355,8 +372,9 @@ define([
           color = colorsDraw.findJobColor(nodeJobs[cpu], '3D');
         }
 
-        objects.material.push(new THREE.MeshBasicMaterial({ color: color }));
-        material = objects.material[objects.material.length - 1];
+        if (!coresMeshes.hasOwnProperty(color)) {
+          coresMeshes[color] = [];
+        }
 
         objects.mesh.push(new THREE.Mesh(geometry, material));
         mesh = objects.mesh[objects.mesh.length - 1];
@@ -369,10 +387,31 @@ define([
         mesh.position.y = positionY;
         mesh.position.z = positionZ;
 
-        scene.add(mesh);
-        material.dispose();
+        coresMeshes[color].push(mesh);
       }
       geometry.dispose();
+      material.dispose();
+
+      var coreMaterial;
+      var coreGeometry;
+      var coreMesh;
+      var color;
+        for (color in coresMeshes) {
+          if (coresMeshes.hasOwnProperty(color)) {
+            coreGeometry = this.mergeMeshes(coresMeshes[color]);
+            objects.material.push(new THREE.MeshBasicMaterial({ color: color }));
+            coreMaterial = objects.material[objects.material.length - 1];
+
+            objects.mesh.push(new THREE.Mesh(coreGeometry, coreMaterial));
+            coreMesh = objects.mesh[objects.mesh.length - 1];
+
+            scene.add(coreMesh);
+
+            coreGeometry.dispose();
+            coreMaterial.dispose();
+          }
+        }
+
     }
 
     this.addLed = function (node, x, y, z, nodeWidth, nodeHeight, rackDepth, temperatureCoefficient) {
@@ -406,9 +445,9 @@ define([
       var nodeY = node.posy * config.RACKHEIGHT * config.UNITSIZE;
       nodeDepth = config.RACKDEPTH * config.UNITSIZE - 2 * config.RACKDEPTH * config.UNITSIZE * config.RACKPADDING;
 
-      var geometry = new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth);
-      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
-      geometry = objects.geometry[objects.geometry.length - 1];
+      objects.geometry.push(new THREE.BoxGeometry(nodeWidth, nodeHeight, nodeDepth));
+      var geometry = objects.geometry[objects.geometry.length - 1];
+
       objects.material.push(new THREE.MeshBasicMaterial({ color: colors.NODE }));
       var material = objects.material[objects.material.length - 1];
 
@@ -425,12 +464,13 @@ define([
 
       positionZ = z + -temperatureCoefficient * (config.RACKDEPTH * config.UNITSIZE * 0.006);
 
-      scene.add(mesh);
       geometry.dispose();
       material.dispose();
 
       this.addLed(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
       this.addCores(node, positionX, positionY, positionZ, nodeWidth, nodeHeight, config.RACKDEPTH * config.UNITSIZE, temperatureCoefficient);
+
+      return mesh;
     }
 
     this.addRack = function () {
@@ -481,11 +521,21 @@ define([
               maxZ: positionZ + (config.UNITSIZE * config.RACKDEPTH) / 2 + (config.UNITSIZE * config.COLLISONMARGIN)
             });
 
+            var nodeMeshes = [];
             for (index in rack.nodes) {
               if (rack.nodes.hasOwnProperty(index)) {
-                this.addNode(rack.nodes[index], positionX, positionY, positionZ, temperatureCoefficient);
+                nodeMeshes.push(this.addNode(rack.nodes[index], positionX, positionY, positionZ, temperatureCoefficient));
               }
             }
+
+            objects.material.push(new THREE.MeshBasicMaterial({ color: colors.NODE }));
+            var nodeMaterial = objects.material[objects.material.length - 1];
+
+            var nodeGeometry = this.mergeMeshes(nodeMeshes);
+            objects.mesh.push(new THREE.Mesh(nodeGeometry, nodeMaterial));
+            var nodeMesh = objects.mesh[objects.mesh.length - 1];
+
+            scene.add(nodeMesh);
 
             geometry = new THREE.BoxGeometry(
               config.UNITSIZE * config.RACKWIDTH,
@@ -503,7 +553,11 @@ define([
             mesh.position.z = positionZ;
 
             scene.add(mesh);
+
             geometry.dispose();
+            material.dispose();
+            nodeGeometry.dispose();
+            nodeMaterial.dispose();
           }
         }
       }
