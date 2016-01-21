@@ -212,6 +212,37 @@ define([
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
 
+          var dataJobsState = [
+            {
+              label: 'Running',
+              data: 0
+            },
+            {
+              label: 'Pending',
+              data: 0
+            },
+            {
+              label: 'Completed',
+              data: 0
+            },
+          ];
+
+          var index;
+          var job;
+          for (index in jobs) {
+            if (jobs.hasOwnProperty(index)) {
+              job = jobs[index];
+
+              if (job.job_state === 'RUNNING') {
+                dataJobsState[0].data += 1;
+              } else if (job.job_state === 'PENDING') {
+                dataJobsState[1].data += 1;
+              } else if (job.job_state === 'COMPLETED') {
+                dataJobsState[2].data += 1;
+              }
+            }
+          }
+
           var dataAllocatedCores = [
             {
               label: 'allocated',
@@ -256,39 +287,33 @@ define([
 
           dataAllocatedCores[1].data += config.cluster.infos.cores - dataAllocatedCores[0].data;
 
-          var dataQOSNodes = [];
           var dataQOSCores = [];
 
           var QOS;
           for (QOS in QOSStats) {
             if (QOSStats.hasOwnProperty(QOS)) {
-              dataQOSNodes.push({ label: QOS, data: QOSStats[QOS].nodes });
               dataQOSCores.push({ label: QOS, data: QOSStats[QOS].cores });
             }
           }
 
-          var dataPartNodes = [];
           var dataPartCores = [];
 
           var part;
           for (part in partStats) {
             if (partStats.hasOwnProperty(part)) {
-              dataPartNodes.push({ label: part, data: partStats[part].nodes });
               dataPartCores.push({ label: part, data: partStats[part].cores });
             }
           }
 
           dataAllocatedCores = flotUtils.addPercentInLegend(dataAllocatedCores);
-          dataPartNodes = flotUtils.addPercentInLegend(dataPartNodes);
           dataPartCores = flotUtils.addPercentInLegend(dataPartCores);
-          dataQOSNodes = flotUtils.addPercentInLegend(dataQOSNodes);
           dataQOSCores = flotUtils.addPercentInLegend(dataQOSCores);
+          dataJobsState = flotUtils.addPercentInLegend(dataJobsState);
 
           $.plot('#plot-alloc-cores', dataAllocatedCores, plotParams);
-          $.plot('#plot-part-nodes', dataPartNodes, plotParams);
           $.plot('#plot-part-cores', dataPartCores, plotParams);
-          $.plot('#plot-qos-nodes', dataQOSNodes, plotParams);
           $.plot('#plot-qos-cores', dataQOSCores, plotParams);
+          $.plot('#plot-jobs-states', dataJobsState, plotParams);
 
           // set min-height for plots area
           var maxLegendHeight = 0;
