@@ -21,6 +21,7 @@
 require.config({
   paths: {
     text: '/javascript/requirejs/text.min',
+    helvetiker: '../../../js/fonts/helvetiker_regular.typeface',
     jquery: '/javascript/jquery/jquery.min',
     async: '/javascript/async/async.min',
     xdomain: '../../../js/libraries/xdomain.min',
@@ -45,6 +46,10 @@ require.config({
     },
     bootstrap: {
       deps: [ 'jquery' ]
+    },
+    helvetiker: {
+      exports: 'helvetiker',
+      deps: [ 'three' ]
     }
   }
 });

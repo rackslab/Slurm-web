@@ -27,7 +27,8 @@ define([
   'colors-draw',
   'three-orbit-controls',
   'three-first-person-controls',
-  'three-pacman-auto'
+  'three-pacman-auto',
+  'helvetiker'
 ], function ($, d3Config, d3Colors, THREE, factorDraw, colorsDraw) {
   var config = JSON.parse(d3Config);
   var colors = JSON.parse(d3Colors);
@@ -473,6 +474,40 @@ define([
       return mesh;
     }
 
+    this.addRackName = function (rack, x, y, z, width, height, depth, temperatureCoefficient) {
+      var geometry = new THREE.TextGeometry(rack.name, {
+        size: config.UNITSIZE * config.RACKNAME.SIZE,
+        height: config.UNITSIZE * config.RACKNAME.DEPTH,
+        font: 'helvetiker',
+        weight: 'normal',
+        style: 'normal'
+      });
+
+      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
+      geometry = objects.geometry[objects.geometry.length - 1]
+
+      geometry.computeBoundingBox();
+
+      objects.material.push(new THREE.MeshBasicMaterial({ color: colors.RACKNAME.FONT }));
+      var material = objects.material[objects.material.length - 1];
+
+      objects.mesh.push(new THREE.Mesh(geometry, material));
+      var mesh = objects.mesh[objects.mesh.length - 1];
+
+      if (temperatureCoefficient > 0) {
+        mesh.rotation.y = Math.PI;
+      }
+
+      mesh.position.x = x + temperatureCoefficient * (geometry.boundingBox.max.x - geometry.boundingBox.min.x) / 2;
+      mesh.position.y = height;
+      mesh.position.z = z - temperatureCoefficient * (depth / 2);
+
+      scene.add(mesh);
+
+      geometry.dispose();
+      material.dispose();
+    }
+
     this.addRack = function () {
       var rack;
       var positionX;
@@ -558,6 +593,17 @@ define([
             material.dispose();
             nodeGeometry.dispose();
             nodeMaterial.dispose();
+
+            this.addRackName(
+              rack,
+              mesh.position.x,
+              mesh.position.y,
+              mesh.position.z,
+              config.UNITSIZE * config.RACKWIDTH,
+              (map.altitude + 1) * config.UNITSIZE * config.RACKHEIGHT,
+              config.UNITSIZE * config.RACKDEPTH,
+              temperatureCoefficient
+            );
           }
         }
       }

@@ -588,6 +588,9 @@ Basic configuration file :
 - *PACMAN* (Object) : Specific pacman mode configuration
   - *MOVESPEED* (Number) : X, Y, Z camera translation speed in UNITSIZE
   - *LOOKSPEED* (Number) : X, Y, Z camera rotation speed in UNITSIZE
+- *RACKNAME* (Object) :
+  - *SIZE* (Number) : Font height for the rack name banner in UNITSIZE (axe: y)
+  - *DEPTH* (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)
 - *COLLISONMARGIN* (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls
 
 3D Colors ``3d.colors.config.json``
@@ -648,7 +651,8 @@ Basic configuration file :
   - *NOTVISIBLE*: Default color for empty core
 - *JOB* (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]
 - *NOJOB* (rgb()): Default color for empty core
-
+- *RACKNAME* (Object):
+  - *FONT* (rgb()): Font color for the rack name banner
 
 Clusters ``clusters.config.js``
 """""""""""""""""""""""""""""""""""

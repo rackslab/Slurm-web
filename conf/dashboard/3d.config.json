@@ -18,6 +18,10 @@
   "CPUDEPTH": 0.001,
   "COLLISONMARGIN": 0.2,
   "DEBUG": false,
+  "RACKNAME": {
+    "SIZE": 0.2,
+    "DEPTH": 0.001
+  },
   "CONTROLS": {
     "FORWARD": 90,
     "BACKWARD": 83,
