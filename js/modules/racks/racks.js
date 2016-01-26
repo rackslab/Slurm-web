@@ -37,20 +37,21 @@ define([
 
     this.init = function () {
       var self = this;
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: tokenUtils.getToken(config.cluster)
-        })
-      };
 
       async.parallel({
         nodes: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: tokenUtils.getToken(config.cluster)
+            })
+          };
+
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
             .success(function (data) {
               callback(null, data)
@@ -60,6 +61,18 @@ define([
             });
         },
         racks: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: tokenUtils.getToken(config.cluster)
+            })
+          };
+
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
             .success(function (data) {
               callback(null, data);
@@ -69,27 +82,23 @@ define([
             });
         }
       }, function (err, result) {
-        if (err) {
-          return;
-        }
-
         self.slurmNodes = result.nodes;
 
         var racks = result.racks.racks;
         if (racks instanceof Array) {
-          var result = {};
+          var parsed = {};
           var i;
           var rack;
           for (i in racks) {
             if (racks.hasOwnProperty(i)) {
               for (rack in racks[i]) {
                 if (racks[i].hasOwnProperty(rack)) {
-                  result[rack] = racks[i][rack];
+                  parsed[rack] = racks[i][rack];
                 }
               }
             }
           }
-          racks = result;
+          racks = parsed;
         }
 
         var context = {
@@ -98,8 +107,16 @@ define([
         };
 
         $('#main').append(template(context));
+        $("canvas[id^='cv_rackmap_']").parent('.canvas-container').css('width', self.config.CANVASWIDTH);
 
         $.each(racks, function (idRack, rack) {
+          $('#cv_rackmap_' + idRack).on('mousemove', function (e) {
+            e.stopPropagation();
+            var offset = $(this).offset();
+
+            $(document).trigger('canvas-mousemove', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
+          });
+
           draw.drawRack(rack);
           $.each(rack.nodes, function (idRackNode, rackNode) {
             draw.drawNode(rack, rackNode, self.slurmNodes[rackNode.name]);
@@ -124,6 +141,9 @@ define([
         clearInterval(this.interval);
       }
 
+      draw.clearNodesHoverIntersections();
+
+      $("canvas[id^='cv_rackmap_']").off('mousemove');
       $('#racks').remove();
     };
 

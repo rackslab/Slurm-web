@@ -196,6 +196,7 @@ define([
       var textHeight = getTextHeight(ctx.font);
 
       if (textWidth >= nodeHeight) {
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName}, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
         var newText = cutTextHorizontal(ctx, nodeName, nodeHeight);
         textWidth = newText.width;
         nodeName = newText.text;
@@ -220,6 +221,7 @@ define([
       var textHeight = getTextHeight(ctx.font);
 
       if (textWidth >= nodeWidth - 10) {
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
         var newText = cutTextHorizontal(ctx, nodeName, nodeWidth - 24);
         textWidth = newText.width;
         nodeName = newText.text;
@@ -326,6 +328,10 @@ define([
       writeNodeName(ctx, rack.name, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth, nodeColor);
     }
 
+    this.clearNodesHoverIntersections = function () {
+      this.intersections = null;
+    }
+
     this.drawNodeCores = function (rack, rackNode, slurmNode, allocatedCPUs) {
       if (!this.intersections) {
         this.intersections = new IntersectionsDraw();
@@ -346,7 +352,11 @@ define([
       var nodeColors = colorsDraw.findLedColor(slurmNode, '2D').node;
       var stateColor = colorsDraw.findLedColor(slurmNode, '2D').state;
 
+      this.intersections.addNodeIntersections({ rack: rack.name, node: rackNode.name }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
+
       drawRectangle(ctx, nodeABSX, nodeABSY, nodeWidth, nodeHeight, colors.LED.IDLE);
+
+      this.intersections.addNodeHoverIntersections({ nodeName: rackNode.name, rackName: rack.name }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
 
       if (stateColor) {
         drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);

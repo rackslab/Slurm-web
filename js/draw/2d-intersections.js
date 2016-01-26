@@ -25,6 +25,7 @@ define([
     var self = this;
     this.coresIntersections = {};
     this.nodesIntersections = {};
+    this.nodesHoverIntersections = {};
 
     $(document).on('canvas-click', function (e, options) {
       e.stopPropagation();
@@ -58,6 +59,43 @@ define([
         }
       }
     });
+
+    $(document).on('canvas-mousemove', function (e, options) {
+      e.stopPropagation();
+      $('.canvas-tooltip').hide();
+
+      var X = options.x;
+      var Y = options.y;
+
+      var node;
+      for (index in self.nodesHoverIntersections[options.rack]) {
+        if (self.nodesHoverIntersections[options.rack].hasOwnProperty(index)) {
+          node = self.nodesHoverIntersections[options.rack][index];
+          if (X >= node.XMIN && X <= node.XMAX &&
+              Y >= node.YMIN && Y <= node.YMAX) {
+            $('#cv_rackmap_' + options.rack)
+              .siblings('.canvas-tooltip')
+              .html(index)
+              .css('top', node.YMAX)
+              .css('left', node.XMIN)
+              .show();
+          }
+        }
+      }
+    });
+
+    this.addNodeHoverIntersections = function (infos, XMIN, XMAX, YMIN, YMAX) {
+      if (!this.nodesHoverIntersections.hasOwnProperty(infos.rackName)) {
+        this.nodesHoverIntersections[infos.rackName] = {};
+      }
+
+      this.nodesHoverIntersections[infos.rackName][infos.nodeName] =  {
+        XMIN: XMIN,
+        XMAX: XMAX,
+        YMIN: YMIN,
+        YMAX: YMAX
+      };
+    };
 
     this.addCoreIntersections = function (infos, XMIN, XMAX, YMIN, YMAX) {
       if (!this.coresIntersections.hasOwnProperty(infos.rack)) {

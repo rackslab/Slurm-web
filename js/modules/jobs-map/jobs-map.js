@@ -126,20 +126,20 @@ define([
       var self = this;
       var allocatedCPUs = null;
 
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
-
       async.parallel({
         jobs: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: token.getToken(config.cluster)
+            })
+          };
+
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
             .success(function (data) {
               callback(null, data);
@@ -149,6 +149,18 @@ define([
             })
         },
         nodes: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: token.getToken(config.cluster)
+            })
+          };
+
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
             .success(function (data) {
               callback(null, data)
@@ -158,6 +170,18 @@ define([
             });
         },
         racks: function (callback) {
+          var options = {
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+              token: token.getToken(config.cluster)
+            })
+          };
+
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
             .success(function (data) {
               callback(null, data);
@@ -172,6 +196,7 @@ define([
         }
 
         self.slurmNodes = result.nodes;
+
         allocatedCPUs = jobs.buildAllocatedCPUs(result.jobs);
 
         var racks = result.racks.racks;
@@ -197,12 +222,21 @@ define([
         };
 
         $('#main').append(template(context));
+
+        $("canvas[id^='cv_rackmap_']").parent('.canvas-container').css('width', self.config.CANVASWIDTH);
         $.each(racks, function (idRack, rack) {
           $('#cv_rackmap_' + idRack).on('click', function (e) {
             e.stopPropagation();
             var offset = $(this).offset();
 
             $(document).trigger('canvas-click', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
+          });
+
+          $('#cv_rackmap_' + idRack).on('mousemove', function (e) {
+            e.stopPropagation();
+            var offset = $(this).offset();
+
+            $(document).trigger('canvas-mousemove', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
           });
 
           draw.drawRack(rack);
@@ -212,7 +246,7 @@ define([
         });
 
         d2LegendDraw.drawLegend('jobs-map');
-      });
+      })
     };
 
     this.refresh = function () {
@@ -229,7 +263,8 @@ define([
         clearInterval(this.interval);
       }
 
-      $("canvas[id^='cv_rackmap_']").off('click');
+      draw.clearNodesHoverIntersections();
+
       $('#modal-core').off('hidden.bs.modal');
       $('#modal-core').remove();
       $('#modal-node').off('hidden.bs.modal');
@@ -237,6 +272,8 @@ define([
       $('#jobsmap').remove();
       $(document).off('modal-core');
       $(document).off('modal-node');
+      $("canvas[id^='cv_rackmap_']").off('click');
+      $("canvas[id^='cv_rackmap_']").off('mousemove');
     };
 
     return this;
