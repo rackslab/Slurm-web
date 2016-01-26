@@ -210,9 +210,8 @@ tr.job-row {
 /*
  * Change cursor (to hand/pointer) when over a partition row in partitions view
  */
-
-#partitions tr {
-   cursor: pointer;
+#table-partitions tr {
+  cursor: pointer;
 }
 
 /*
@@ -278,6 +277,32 @@ table.tablesorter thead tr .headerSortDown {
 
 .canvas-legend {
   float: left;
+}
+
+/*
+ * Canvas Container
+ */
+
+.canvas-container {
+  position: relative;
+  float: left;
+}
+
+/*
+ * Canvas Tooltip
+ */
+
+.canvas-tooltip {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #FFF;
+  border: 1px solid black;
+  font-family: 'sans-serif';
+  padding: 2px 5px;
+  font-size: 10px;
+  z-index: 1;
 }
 
 /*
