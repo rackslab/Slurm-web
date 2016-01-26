@@ -130,13 +130,117 @@ define([
       return { x: coreABSX, y: coreABSY };
     }
 
-    function writeNodeName(ctx, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth) {
-      ctx.fillStyle = 'black';
+    function getTextWidth(ctx, text) {
+      return ctx.measureText(text).width;
+    }
+
+    function getTextHeight(font) {
+      var text = $('<span>Hg</span>').css({ fontFamily: font });
+      var block = $('<div style="display: inline-block; width: 1px; height: 0px;"></div>');
+
+      var div = $('<div></div>');
+      div.append(text, block);
+
+      var body = $('body');
+      body.append(div);
+
+      try {
+
+        var result = {};
+
+        block.css({ verticalAlign: 'baseline' });
+        result.ascent = block.offset().top - text.offset().top;
+
+        block.css({ verticalAlign: 'bottom' });
+        result.height = block.offset().top - text.offset().top;
+
+        result.descent = result.height - result.ascent;
+
+      } finally {
+        div.remove();
+      }
+
+      return result;
+    }
+
+    function getTextColor(color) {
+      color = color.replace('rgba(', '')
+      color = color.split(',')
+
+      var brightness = (color[0] * 299) + (color[1] * 587) + (color[2] * 114);
+      brightness = brightness / 255000;
+
+      if (brightness >= 0.5) {
+        return 'black';
+      } else {
+        return 'white';
+      }
+    }
+
+    function cutTextHorizontal(ctx, text, maxSize) {
+      var width = getTextWidth(ctx, text);
+
+      while (width >= maxSize) {
+        text = text.slice(0, -1);
+        width = getTextWidth(ctx, text);
+      }
+
+      text = text.slice(0, -3) + '...';
+      width = getTextWidth(ctx, text);
+
+      return { text: text, width: width };
+    }
+
+    function writeNodeNameVertical(ctx, rackName, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth) {
+      var textWidth = getTextWidth(ctx, nodeName);
+      var textHeight = getTextHeight(ctx.font);
+
+      if (textWidth >= nodeHeight) {
+        var newText = cutTextHorizontal(ctx, nodeName, nodeHeight);
+        textWidth = newText.width;
+        nodeName = newText.text;
+      }
+
+      var posX = (nodeWidth - textHeight.descent) / 2;
+      var posY = (nodeHeight - textWidth) / 2;
+
+      ctx.save();
+      ctx.translate(nodeABSX - posX + nodeWidth, nodeABSY - posY + nodeHeight);
+      ctx.rotate(-Math.PI / 2);
+      if (rackABSX == 0) {
+        ctx.fillText(nodeName, 0, 0);
+      } else {
+        ctx.fillText(nodeName, 0, 0);
+      }
+      ctx.restore();
+    }
+
+    function writeNodeNameHorizontal(ctx, rackName, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth) {
+      var textWidth = getTextWidth(ctx, nodeName);
+      var textHeight = getTextHeight(ctx.font);
+
+      if (textWidth >= nodeWidth - 10) {
+        var newText = cutTextHorizontal(ctx, nodeName, nodeWidth - 24);
+        textWidth = newText.width;
+        nodeName = newText.text;
+      }
+
+      var posX = (textWidth - nodeWidth) / 2;
 
       if (rackABSX == 0) {
-        ctx.fillText(nodeName, nodeABSX - 55, nodeABSY + nodeHeight - 3);
+        ctx.fillText(nodeName, nodeABSX - posX, nodeABSY + textHeight.ascent);
       } else {
-        ctx.fillText(nodeName, nodeABSX + nodeWidth + self.config.RACKBORDERWIDTH + 3, nodeABSY + nodeHeight - 3);
+        ctx.fillText(nodeName, nodeABSX - posX, nodeABSY + textHeight.ascent);
+      }
+    }
+
+    function writeNodeName(ctx, rackName, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth, nodeColor) {
+      ctx.fillStyle = getTextColor(nodeColor);
+
+      if (nodeWidth >= nodeHeight) {
+        writeNodeNameHorizontal(ctx, rackName, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
+      } else if (nodeWidth <= nodeHeight) {
+        writeNodeNameVertical(ctx, rackName, nodeName, rackABSX, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
       }
     }
 
@@ -156,7 +260,6 @@ define([
       var rackABSY = rackABS.Y;
 
       drawRectangle(ctx, rackABSX, rackABSY, config.RACKWIDTH, config.RACKHEIGHT, 'rgba(89,89,89,1)');
-
 
       drawRectangleBorder(ctx, rackABSX, rackABSY, config.RACKBORDERWIDTH, config.RACKHEIGHT, 1, 'rgba(141,141,141,1)', 'rgba(85,85,85,1)');
 
@@ -184,13 +287,19 @@ define([
       Y = rackABSY + config.RACKHEIGHT + config.FLOORWIDTH;
       drawRectangleBorder(ctx, X, Y, config.FOOTWIDTH, config.FOOTHEIGHT, 1, "rgba(49,49,49,1)", "rgba(39,39,39,1)");
 
+      ctx.font = config.RACKFONTSIZE + 'px ' + config.RACKFONTFAMILY;
 
-      ctx.font = '14px sans-serif';
-      ctx.fillText('rack ' + rack.name, rackABSX + 60, rackABSY - 3);
-      ctx.font = '10px sans-serif';
+      var rackNameABSX = (config.CANVASWIDTH - ctx.measureText('rack ' + rack.name).width) / 2;
+
+      ctx.fillText('rack ' + rack.name, rackNameABSX, rackABSY - 3);
+      ctx.font = config.NODEFONTSIZE + 'px ' + config.NODEFONTFAMILY;
     };
 
     this.drawNode = function (rack, rackNode, slurmNode) {
+      if (!this.intersections) {
+        this.intersections = new IntersectionsDraw();
+      }
+
       var ctx = ($('#cv_rackmap_' + rack.name)[0]).getContext('2d');
 
       var rackABS = getRackABSCoordinates(rack);
@@ -199,7 +308,7 @@ define([
       var rackABSY = rackABS.Y;
 
       var nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + (rackNode.posx * this.config.RACKINSIDEWIDTH);
-      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy * this.config.RACKUNITHEIGHT);
+      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (((rackNode.posy) + 2) * this.config.RACKUNITHEIGHT);
 
       var nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       var nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
@@ -214,7 +323,7 @@ define([
         drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);
       }
 
-      writeNodeName(ctx, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
+      writeNodeName(ctx, rack.name, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth, nodeColor);
     }
 
     this.drawNodeCores = function (rack, rackNode, slurmNode, allocatedCPUs) {
@@ -229,7 +338,7 @@ define([
       var rackABSY = rackABS.Y;
 
       var nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + (rackNode.posx * this.config.RACKINSIDEWIDTH);
-      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy * this.config.RACKUNITHEIGHT);
+      var nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - ((rackNode.posy + 2) * this.config.RACKUNITHEIGHT);
 
       var nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       var nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
@@ -237,8 +346,6 @@ define([
       var nodeColors = colorsDraw.findLedColor(slurmNode, '2D').node;
       var stateColor = colorsDraw.findLedColor(slurmNode, '2D').state;
 
-      this.intersections.addNodeIntersections({ rack: rack.name, node: rackNode.name }, nodeABSX, (nodeABSX + nodeWidth), nodeABSY, (nodeABSY + nodeHeight));
-      
       drawRectangle(ctx, nodeABSX, nodeABSY, nodeWidth, nodeHeight, colors.LED.IDLE);
 
       if (stateColor) {
@@ -289,10 +396,6 @@ define([
         coreABSY = coreCoords.y;
         drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, colors.LED.IDLE, colors.COREBORDER);
       }
-
-      writeNodeName(ctx, rackNode.name, rackNode.posx, nodeABSX, nodeABSY, nodeHeight, nodeWidth);
     }
-
-
   };
 });
