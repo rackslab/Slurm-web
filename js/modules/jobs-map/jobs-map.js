@@ -165,7 +165,7 @@ define([
             .success(function (data) {
               callback(null, data)
             })
-            .error(function (callback) {
+            .error(function () {
               callback(true, null);
             });
         },

@@ -56,7 +56,7 @@ define([
             .success(function (data) {
               callback(null, data)
             })
-            .error(function (callback) {
+            .error(function () {
               callback(true, null);
             });
         },
@@ -82,6 +82,9 @@ define([
             });
         }
       }, function (err, result) {
+        if (err) {
+          return;
+        }
         self.slurmNodes = result.nodes;
 
         var racks = result.racks.racks;
