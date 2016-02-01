@@ -159,6 +159,8 @@ define([
           var labels = [];
           var labelsPartitions = [];
           var labelsQOS = [];
+          var labelsUsername = [];
+          var labelsStates = [];
 
           var index;
           for (index in jobs) {
@@ -169,22 +171,44 @@ define([
               if (labelsQOS.indexOf(jobs[index].qos) === -1) {
                 labelsQOS.push(jobs[index].qos);
               }
+              if (labelsUsername.indexOf(jobs[index].username) === -1) {
+                labelsUsername.push(jobs[index].username);
+              }
+              if (labelsStates.indexOf(jobs[index].job_state) === -1) {
+                labelsStates.push(jobs[index].job_state);
+              }
             }
           }
 
           for (index in labelsPartitions) {
             if (labelsPartitions.hasOwnProperty(index)) {
-              labelsPartitions[index] = labelsPartitions[index] + ' (partition)'
+              labelsPartitions[index] = labelsPartitions[index] + ' (partition)';
             }
           }
 
           for (index in labelsQOS) {
             if (labelsQOS.hasOwnProperty(index)) {
-              labelsQOS[index] = labelsQOS[index] + ' (qos)'
+              labelsQOS[index] = labelsQOS[index] + ' (qos)';
             }
           }
 
-          labels = labelsPartitions.concat(labelsQOS);
+          for (index in labelsUsername) {
+            if (labelsUsername.hasOwnProperty(index)) {
+              labelsUsername[index] = labelsUsername[index] + ' (user)';
+            }
+          }
+
+          for (index in labelsStates) {
+            if (labelsStates.hasOwnProperty(index)) {
+              labelsStates[index] = labelsStates[index] + ' (state)';
+            }
+          }
+
+          labels = labelsPartitions
+            .concat(labelsQOS)
+            .concat(labelsUsername)
+            .concat(labelsStates);
+
           $('.typeahead').tagsinput({
             allowDuplicates: false,
             freeInput: false,
