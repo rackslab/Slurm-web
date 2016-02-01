@@ -39,6 +39,29 @@ define([], function () {
       prettyDate += seconds === 0 ? "" : seconds + "s";
 
       return prettyDate;
+    },
+    dateTagToTimestamp: function (format) {
+      var units = format.split(':')
+      var timestamp = Math.floor(new Date().getTime() / 1000);
+
+      if (format === 'now') {
+        return timestamp;
+      }
+
+      var i;
+      for (i = 0; i < units.length; i++) {
+        if (units[i].slice(-1) === 'd') {
+          timestamp += 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+        } else if (units[i].slice(-1) === 'h') {
+          timestamp += 60 * 60 * parseInt(units[i].slice(0, -1));
+        } else if (units[i].slice(-1) === 'm') {
+          timestamp += 60 * parseInt(units[i].slice(0, -1));
+        } else if (units[i].slice(-1) === 's') {
+          timestamp += parseInt(units[i].slice(0, -1));
+        }
+      }
+
+      return timestamp;
     }
   };
 });

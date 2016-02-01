@@ -19,13 +19,18 @@
  */
 
 define([
-  'jquery'
-], function ($) {
+  'jquery',
+  'date-utils'
+], function ($, dateUtils) {
   return {
     filterJobs: function (jobs, options) {
       var jobsFiltered = {};
       var partitions = [];
-      var qos = [];
+      var qoss = [];
+      var users = [];
+      var states = [];
+      var startTimes = [];
+      var endTimes = [];
 
       if (!options.length) {
         return jobs;
@@ -33,34 +38,78 @@ define([
 
       var i;
       var tags;
+      var lastTagCount;
       for (i = 0; i < options.length; i++) {
         tags = options[i].split(' ');
+        lastTagCount = tags.length - 1;
 
-        if (tags[1] === '(partition)') {
+        if (tags[lastTagCount] === '(partition)') {
           partitions.push(tags[0]);
-        } else if (tags[1] === '(qos)') {
-          qos.push(tags[0]);
+        } else if (tags[lastTagCount] === '(qos)') {
+          qoss.push(tags[0]);
+        } else if (tags[lastTagCount] === '(user)') {
+          users.push(tags[0] + ' ' + tags[1]);
+        } else if (tags[lastTagCount] === '(state)') {
+          states.push(tags[0]);
+        } else if (tags[lastTagCount] === '(start-time)') {
+          startTimes.push({ checker: tags[1], timestamp: dateUtils.dateTagToTimestamp(tags[2]) });
+        } else if (tags[lastTagCount] === '(end-time)') {
+          endTimes.push({ checker: tags[1], timestamp: dateUtils.dateTagToTimestamp(tags[2]) });
         }
       }
 
-      if (partitions.length > 1 || qos.length > 1) {
+      if (partitions.length > 1 ||
+          qoss.length > 1 ||
+          users.length > 1 ||
+          states.length > 1 ||
+          startTimes.length > 1 ||
+          endTimes.length > 1) {
         return [];
       }
 
-      var index;
-      for (index in jobs) {
-        if (jobs.hasOwnProperty(index)) {
-          if (partitions.length === 1 && qos.length === 1) {
-            if (partitions.indexOf(jobs[index].partition) >= 0 && qos.indexOf(jobs[index].qos) >= 0) {
-              jobsFiltered[index] = jobs[index];
-            }
-          } else if (partitions.length === 1 && partitions.indexOf(jobs[index].partition) >= 0) {
-            jobsFiltered[index] = jobs[index];
-          } else if (qos.length === 1 && qos.indexOf(jobs[index].qos) >= 0) {
-            jobsFiltered[index] = jobs[index];
+      var arrayJobs = Object.keys(jobs).map(function (key) {
+        jobs[key].key = key;
+        return jobs[key]
+      });
+
+      var filter = {
+        qos: qoss[0] || null,
+        partition: partitions[0] || null,
+        username: users[0] || null,
+        job_state: states[0] || null,
+        start_time: startTimes[0] || null,
+        end_time: endTimes[0] || null
+      };
+
+      jobsFiltered = arrayJobs.filter(function(item) {
+        for (var key in filter) {
+          if (filter[key] !== null &&
+              item[key] &&
+              filter[key].checker === '<' &&
+              item[key] > filter[key].timestamp
+            ) {
+            return false;
+          } else if (filter[key] !== null &&
+              item[key] &&
+              filter[key].checker === '>' &&
+              item[key] < filter[key].timestamp
+            ) {
+            return false;
           }
         }
-      }
+
+        return true;
+      });
+
+      jobsFiltered = jobsFiltered.filter(function (item) {
+        for (var key in filter) {
+          if (key !== 'start_time' && key !== 'end_time' && filter[key] !== null && item[key] != filter[key]) {
+            return false;
+          }
+        }
+
+        return true;
+      });
 
       return jobsFiltered;
     },
@@ -69,6 +118,7 @@ define([
         var matches;
         var substringRegex;
         matches = [];
+
         try {
           substringRegex = new RegExp('^' + q, 'i');
         } catch (error) {
@@ -80,6 +130,32 @@ define([
             matches.push(str);
           }
         });
+
+        startTimeRegex = new RegExp('^(start) (<|>) ', 'i');
+        if (startTimeRegex.test(q)) {
+          if (q.length <= 8) {
+            q += 'now';
+          }
+
+          if (q.search('(start-time)') === -1) {
+            q += ' (start-time)';
+          }
+
+          matches.push(q);
+        }
+
+        endTimeRegex = new RegExp('^(end) (<|>) ', 'i');
+        if (endTimeRegex.test(q)) {
+          if (q.length <= 6) {
+            q += 'now';
+          }
+
+          if (q.search('(end-time)') === -1) {
+            q += ' (end-time)';
+          }
+
+          matches.push(q);
+        }
 
         cb(matches);
       };
