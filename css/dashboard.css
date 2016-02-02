@@ -203,14 +203,14 @@ tr.job-row {
 /*
  * Change cursor (to hand/pointer) when over a qos row in qos view
  */
-#qos tr {
+#qos tr:hover {
   cursor: pointer;
 }
 
 /*
  * Change cursor (to hand/pointer) when over a partition row in partitions view
  */
-#table-partitions tr {
+#partitions tr:hover {
   cursor: pointer;
 }
 
