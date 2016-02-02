@@ -57,6 +57,11 @@ define([
           $('#main').append(template(context));
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
+
+          $('tr').on('click', function (e) {
+            var reservation = $($($(this).children('td'))[0]).html();
+            $(document).trigger('show', { page: 'jobs', filter: { type: 'reservation', value: reservation } });
+          });
         });
     };
 
@@ -76,6 +81,7 @@ define([
       }
 
       $('#reservations').remove();
+      $('tr').off('click');
     };
 
     return this;
