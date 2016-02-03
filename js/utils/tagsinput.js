@@ -32,6 +32,7 @@ define([
       var states = [];
       var startTimes = [];
       var endTimes = [];
+      var result = {};
 
       if (!options.length) {
         return jobs;
@@ -116,7 +117,11 @@ define([
         return true;
       });
 
-      return jobsFiltered;
+      for (i = 0; i < jobsFiltered.length; i++) {
+        result[jobsFiltered[i].key] = jobsFiltered[i];
+      }
+
+      return result;
     },
     jobsSubstringMatcher: function (strs) {
       return function findMatches(q, cb) {
