@@ -1,8 +1,9 @@
-slurm-web (1.9.5+c9+1) calibre9; urgency=medium
+slurm-web (2.0.0) unstable; urgency=medium
 
-  * Backport to Calibre9 
+  * Make use of cache mechanism optional #73
+  * fix: Time displayed for running jobs in "Start" column is 1hour too old #54
 
- -- Rémi Palancher <remi-externe.palancher@edf.fr>  Fri, 08 Jan 2016 16:17:12 +0100
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Tue, 12 Jan 2016 16:41:06 +0100
 
 slurm-web (1.9.5) unstable; urgency=medium
 
