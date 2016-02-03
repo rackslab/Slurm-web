@@ -1,3 +1,9 @@
+slurm-web (2.0.0+c7+1) calibre7; urgency=medium
+
+  * Backport to Calibre7
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 03 Feb 2016 10:49:16 +0100
+
 slurm-web (2.0.0) unstable; urgency=medium
 
   * Make use of cache mechanism optional #73
