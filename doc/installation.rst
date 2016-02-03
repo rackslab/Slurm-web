@@ -286,7 +286,7 @@ Here is an example of a valid configuration file:
   restricted_fields_for_user = command
   restricted_fields_for_admin =
 
-  [views_acl]
+  [acl]
   # You can set here an access control list for each view of the dashboard for
   # this cluster.
   # This feature requires authentication to be enabled.
