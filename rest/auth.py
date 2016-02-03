@@ -49,9 +49,9 @@ if enabled:
 
 # retrieve ACLs for views if exist in configuration
 try:
-    views_acl = settings.items('views_acl')
+    acl = settings.items('acl')
 except NoSectionError:
-    views_acl = []
+    acl = []
 
 ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
 
@@ -212,7 +212,7 @@ class User(object):
     def restricted_views(self):
         group = "@" + self.groupname if self.groupname is not None else None
         views = filter(lambda acl: self.username not in acl[1] and
-                       (group is None or group not in acl[1]), views_acl)
+                       (group is None or group not in acl[1]), acl)
         return map(lambda view: view[0], views)
 
 
