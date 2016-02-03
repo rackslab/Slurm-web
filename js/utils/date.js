@@ -20,29 +20,25 @@
 
 define([], function () {
   return {
-    isDST: function () {
-      var date = new Date();
-      var jan = new Date(date.getFullYear(), 0, 1);
-      var jul = new Date(date.getFullYear(), 6, 1);
-      return (Math.min(jan.getTimezoneOffset(), jul.getTimezoneOffset()) === date.getTimezoneOffset());
-    },
-
     getTimeDiff: function (datetime) {
-      var date = new Date().getTime();
-
       if (isNaN(datetime)) {
         return "";
       }
 
-      var diff = Math.abs(datetime - date) - (this.isDST() ? 60 * 60 * 1000 : 0);
+      var now = new Date().getTime(),
+          diff = Math.abs(datetime - now) / 1000, // compute diff in seconds
+          days = Math.floor(diff  / (24 * 60 * 60)),
+          hours = Math.floor((diff % (24 * 60 * 60)) / (60 * 60)),
+          minutes = Math.floor((diff % (60 * 60)) / 60),
+          seconds = Math.floor(diff % 60),
+          prettyDate = "";
 
-      var days = Math.floor(diff / 1000 / 60 / (60 * 24));
-      var dateDiff = new Date(diff);
+      prettyDate += days === 0 ? "" : days + "d ";
+      prettyDate += hours === 0 ? "" : hours + "h ";
+      prettyDate += minutes === 0 ? "" : minutes + "min ";
+      prettyDate += seconds === 0 ? "" : seconds + "s";
 
-      return ((days <= 0 ? "" : days + "d ")
-          + (dateDiff.getHours() === 0 ? "" : dateDiff.getHours() + "h ")
-          + (dateDiff.getMinutes() === 0 ? "" : dateDiff.getMinutes() + "min ")
-          + (dateDiff.getSeconds() === 0 ? "" : dateDiff.getSeconds() + "s"));
+      return prettyDate;
     }
   };
 });
