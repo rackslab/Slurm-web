@@ -32,55 +32,42 @@ from functools import wraps
 from settings import settings
 from ConfigParser import NoOptionError, NoSectionError
 
+
+def get_int_setting(param, default):
+    try:
+        port = settings.get('cache', param)
+        return not port and default or int(port)
+    except ValueError as e:
+        print "Error while parsing %s, check restapi.conf : %s" % \
+            (param, str(e))
+    except (NoOptionError, NoSectionError):
+        return default
+
+
 try:
     if settings.get('config', 'cache') == 'enable':
         if redis_available:
             enabled = True
-            redis_host = settings.get('cache', 'redis_host')
-        else:
-            enabled = False
-            print ("Package python-redis unavailable, cache mechanism won't" +
-                   "be enabled")
-    try:
-        redis_port = int(settings.get('cache', 'redis_port'))
-    except ValueError as e:
-        print "Error while parsing redis_port, check restapi.conf : %s" % str(e)
-        redis_port = 6379
-    except NoOptionError as e:
-        print ("Error while retrieving redis_port parameter, not found," +
-               (" check restapi.conf : %s" % str(e)))
+            try:
+                redis_host = settings.get('cache', 'redis_host') or 'localhost'
+            except (NoOptionError, NoSectionError):
+                redis_host = 'localhost'
 
-    try:
-        jobs_expiration = int(settings.get('cache', 'jobs_expiration'))
-    except ValueError as e:
-        print ("Error while parsing jobs_expiration," +
-               (" check restapi.conf : %s" % (str(e))))
-        jobs_expiration = 10
-    except NoOptionError as e:
-        print ("Error while retrieving jobs_expiration parameter, not found," +
-               (" check restapi.conf : %s" % str(e)))
+            redis_port = get_int_setting('redis_port', 6379)
+            jobs_expiration = get_int_setting('jobs_expiration', 10)
+            global_expiration = get_int_setting('global_expiration', 86400)
 
-    try:
-        global_expiration = int(settings.get('cache', 'global_expiration'))
-    except ValueError as e:
-        print ("Error while parsing global_expiration," +
-               (" check restapi.conf : %s" % str(e)))
-        global_expiration = 86400
-    except NoOptionError as e:
-        print ("Error while retrieving global_expiration parameter, not" +
-               (" found, check restapi.conf : %s" % str(e)))
+            if redis_available:
+                r = redis.Redis(redis_host, redis_port)
 
-    if redis_available:
-        r = redis.Redis(redis_host, redis_port)
+    else:
+        enabled = False
+        print ("Package python-redis unavailable, cache mechanism won't" +
+               "be enabled")
 
-except NoOptionError as e:
+except (NoOptionError, NoSectionError):
     enabled = False
-    print ("Error while retrieving cache parameters, not found," +
-           (" check restapi.conf : %s" % str(e)))
-except NoSectionError as e:
-    enabled = False
-    print ("Error while retrieving parameter, section not found," +
-           (" check restapi.conf : %s" % str(e)))
+
 
 def cache():
     def decorator(f):
