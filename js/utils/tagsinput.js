@@ -87,24 +87,34 @@ define([
         end_time: endTimes[0] || null
       };
 
+      var startTimeFlag;
+      var endTimeFlag;
       jobsFiltered = arrayJobs.filter(function(item) {
-        for (var key in filter) {
-          if (filter[key] !== null &&
-              item[key] &&
-              filter[key].checker === '<' &&
-              item[key] > filter[key].timestamp
-            ) {
-            return false;
-          } else if (filter[key] !== null &&
-              item[key] &&
-              filter[key].checker === '>' &&
-              item[key] < filter[key].timestamp
-            ) {
-            return false;
-          }
+        startTimeFlag = false;
+        endTimeFlag = false;
+
+        if (filter.start_time && item.start_time && filter.start_time.checker === '<' && item.start_time < filter.start_time.timestamp) {
+          startTimeFlag = true;
+        } else if (filter.start_time && item.start_time && filter.start_time.checker === '>' && item.start_time > filter.start_time.timestamp) {
+          startTimeFlag = true;
         }
 
-        return true;
+        if (filter.end_time && item.end_time && filter.end_time.checker === '<' && item.end_time < filter.end_time.timestamp) {
+          endTimeFlag = true;
+        } else if (filter.end_time && item.end_time && filter.end_time.checker === '>' && item.end_time > filter.end_time.timestamp) {
+          endTimeFlag = true;
+        }
+
+        if (filter.start_time !== null && filter.end_time !== null &&
+            startTimeFlag === true && endTimeFlag === true) {
+          return true;
+        } else if (filter.start_time !== null && filter.end_time === null && startTimeFlag === true) {
+          return true;
+        } else if (filter.start_time === null && filter.end_time !== null && endTimeFlag === true) {
+          return true;
+        } else {
+          return false;
+        }
       });
 
       jobsFiltered = jobsFiltered.filter(function (item) {
@@ -147,6 +157,10 @@ define([
             q += 'now';
           }
 
+          if (q.search('(end-time)') !== -1) {
+            q = q.slice(0, q.search('(end-time)') - 1);
+          }
+
           if (q.search('(start-time)') === -1) {
             q += ' (start-time)';
           }
@@ -158,6 +172,10 @@ define([
         if (endTimeRegex.test(q)) {
           if (q.length <= 6) {
             q += 'now';
+          }
+
+          if (q.search('(start-time)') !== -1) {
+            q = q.slice(0, q.search('(start-time)') - 1);
           }
 
           if (q.search('(end-time)') === -1) {
