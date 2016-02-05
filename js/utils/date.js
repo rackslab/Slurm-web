@@ -60,7 +60,13 @@ define([], function () {
       if (formatType === '-') {
         var i;
         for (i = 0; i < units.length; i++) {
-          if (units[i].slice(-1) === 'd') {
+          if (units[i].slice(-1) === 'y') {
+            timestamp -= 365 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'M') {
+            timestamp -= 31 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'w') {
+            timestamp -= 7 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'd') {
             timestamp -= 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
           } else if (units[i].slice(-1) === 'h') {
             timestamp -= 60 * 60 * parseInt(units[i].slice(0, -1));
@@ -73,7 +79,13 @@ define([], function () {
       } else {
         var i;
         for (i = 0; i < units.length; i++) {
-          if (units[i].slice(-1) === 'd') {
+          if (units[i].slice(-1) === 'y') {
+            timestamp += 365 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'M') {
+            timestamp += 31 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'w') {
+            timestamp += 7 * 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
+          } else if (units[i].slice(-1) === 'd') {
             timestamp += 24 * 60 * 60 * parseInt(units[i].slice(0, -1));
           } else if (units[i].slice(-1) === 'h') {
             timestamp += 60 * 60 * parseInt(units[i].slice(0, -1));
