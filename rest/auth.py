@@ -32,9 +32,9 @@ import platform
 
 
 all_restricted = False
-enabled = settings.get('config', 'authentication') == 'enable'
+auth_enabled = settings.get('config', 'authentication') == 'enable'
 
-if enabled:
+if auth_enabled:
     secret_key = settings.get('config', 'secret_key') + platform.node()
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
@@ -221,7 +221,7 @@ def authentication_verify():
         @wraps(f)
         def inner(*args, **kwargs):
             resp = f(*args, **kwargs)
-            if not enabled:
+            if not auth_enabled:
                 return json.dumps(resp)
 
             token = json.loads(request.data)['token']

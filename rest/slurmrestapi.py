@@ -36,7 +36,7 @@ from settings import settings
 
 # for authentication
 from auth import (User, authentication_verify, AuthenticationError,
-                  all_restricted, enabled)
+                  all_restricted, auth_enabled)
 
 from cache import cache
 
@@ -79,6 +79,9 @@ def proxy():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
 def login():
+    if not auth_enabled:
+        abort(404)
+
     data = json.loads(request.data)
     if data.get('guest', None) == True:
         user = User.guest()
@@ -104,7 +107,7 @@ def login():
              headers=['Accept', 'Content-Type'])
 def authentication():
     return jsonify({
-        'enabled': enabled,
+        'enabled': auth_enabled,
         'guest': not all_restricted
         })
 
