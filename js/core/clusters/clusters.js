@@ -20,9 +20,10 @@
 
 define([
   'jquery',
+  'async',
   'handlebars',
-  'text!../../js/core/clusters/clusters.hbs'
-], function ($, Handlebars, template) {
+  'text!../../js/core/clusters/clusters.hbs',
+], function($, async, Handlebars, template) {
   template = Handlebars.compile(template);
   clusters = window.clusters;
 
@@ -30,8 +31,19 @@ define([
     clusters[index].id = clusters[index].name + '-' + index;
   }
 
-  return function (config) {
-    var self = this;
+  function retrieveClusterInformations(cluster, callback) {
+    $.ajax(cluster.api.url + cluster.api.path + '/authentication')
+      .success(function(response) {
+        cluster.authentication = response;
+        callback(null, null);
+      })
+      .error(function(error) {
+        console.log('error on retrieveClusterInformations for cluster', cluster, error);
+        callback(true, error);
+      });
+  }
+
+  return function(config) {
     var context = {};
 
     $(document).on('selectCluster', function(e, options) {
@@ -48,19 +60,7 @@ define([
         $(document).trigger('loadPage', { config: config });
       }
 
-      // retrieve informations about authentication on the selected cluster
-      if (!cluster.authentication) {
-        $.ajax(cluster.api.url + cluster.api.path + '/authentication')
-          .success(function (response) {
-            cluster.authentication = response;
-            loadSelectedCluster();
-          })
-          .error(function (error) {
-            console.log(error);
-          });
-      } else {
-        loadSelectedCluster();
-      }
+      loadSelectedCluster();
     });
 
     this.init = function () {
@@ -70,6 +70,7 @@ define([
       }
 
       if (!clusters.length) {
+        // init default cluster if none defined
         var loc = window.location;
         clusters.push({
           name: 'local',
@@ -80,7 +81,15 @@ define([
         })
       }
 
-      $(document).trigger('selectCluster', { clusterId: 0 });
+      // retrieve informations about authentication on each cluster
+      async.map(clusters, retrieveClusterInformations, function(err, result) {
+        if (err) {
+          console.log('error on retrieve cluster informations', err, result);
+        }
+
+        // select first cluster once clusters informations have been retrieved
+        $(document).trigger('selectCluster', { clusterId: 0 });
+      });
 
       if (clusters.length <= 1) {
         $(document).ready(function() {
@@ -100,7 +109,7 @@ define([
 
         // abort if the selected cluster is yet the current one
         if (config.cluster === clusters[$(this).data('id')]) {
-            return false;
+          return false;
         }
 
         $(document).trigger('selectCluster', { clusterId: $(this).data('id'), $cluster: $(this) });
@@ -114,6 +123,7 @@ define([
             .toggleClass('glyphicon-chevron-left', $('.row-offcanvas').hasClass('active'))
             .toggleClass('glyphicon-chevron-right', !$('.row-offcanvas').hasClass('active'));
         }
+
         $('[data-toggle=offcanvas]').click(function() {
           $('.row-offcanvas').toggleClass('active');
           $(this).find('i')
@@ -125,6 +135,7 @@ define([
             $('#clusters').toggleClass('hidden');
           }
         });
+
         $('.cluster').parent('li').first().addClass('active');
       });
 

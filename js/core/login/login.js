@@ -32,6 +32,12 @@ define([
   return function (config) {
     function loginAction(options) {
       function loginOnCluster(cluster, callback) {
+        // skip authentication if not enabled on cluster
+        if (!cluster.authentication.enabled) {
+          callback(null, null);
+          return;
+        }
+
         async.series([
           function(callback) {
             // login on cluster, call route /login
@@ -49,7 +55,13 @@ define([
                 callback(null, null);
               })
               .error(function(error) {
-                callback(true, error);
+                if (config.cluster.id === cluster.id) {
+                  // error if cluster is the current one
+                  callback(true, error);
+                } else {
+                  // nothing unless
+                  callback(null, null);
+                }
               });
           },
           function(callback) {
