@@ -394,7 +394,8 @@ Basic configuration file :
   {
     "STARTPAGE": "jobs",
     "REFRESH": 30000,
-    "MAXNODESLENGTH": 25
+    "MAXNODESLENGTH": 25,
+    "AUTOLOGIN": false
   }
 
 - *STARTPAGE* (String) : Name of the page loaded at the application startup.
@@ -414,6 +415,8 @@ Basic configuration file :
 - *REFRESH* (Number) : Time in milliseconds between two api call, used for module refresh.
 
 - *MAXNODESLENGTH* (Number) : Maximum characters show for the nodes name in "Nodes" column in module Jobs.
+
+- *AUTOLOGIN* (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).
 
 
 2D Draw ``conf/dashboard/2d.config.json``

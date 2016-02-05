@@ -33,7 +33,8 @@ define([
     function loginAction(options) {
       function loginOnCluster(cluster, callback) {
         // skip authentication if not enabled on cluster
-        if (!cluster.authentication.enabled) {
+        // or automatic login disabled and not current cluster
+        if (!cluster.authentication.enabled || !config.AUTOLOGIN && config.cluster.id !== cluster.id) {
           callback(null, null);
           return;
         }
