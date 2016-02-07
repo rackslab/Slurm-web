@@ -1,6 +1,28 @@
 How to contribute or add page
 =============================
 
+Code style and coding rules
+---------------------------
+
+RESTAPI
+^^^^^^^
+
+The backend, developed with the Flask framework in Python, respects the PEP 8
+rules.
+
+Dashboard
+^^^^^^^^^
+
+The dashboad is built with HTML, Javascript and CSS. All the Javascript code
+have been linted with ESLint. Used rules are defined in the ``.eslintrc`` file.
+
+Code Climate
+^^^^^^^^^^^^
+
+The quality of the codebase is overseen by Code Climate. You can refer to its
+summary at https://codeclimate.com/github/edf-hpc/slurm-web
+
+
 Architecture Front
 ------------------
 

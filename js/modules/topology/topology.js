@@ -26,12 +26,11 @@ define([
   'text!../../js/modules/jobs-map/modal-node.hbs',
   'token-utils',
   'd3'
-], function ($, Handlebars, template, Topology, modalTemplate, token, d3) {
+], function($, Handlebars, template, Topology, modalTemplate, token, d3) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
   return function(config) {
-
     function closeModal(e) {
       e.stopPropagation();
       $('#modal-node').remove();
@@ -51,13 +50,15 @@ define([
       };
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
-        .success(function (jobs) {
+        .success(function(jobs) {
+          var context;
+
           // expand the first job's informations
           if (Object.keys(jobs).length) {
             jobs[Object.keys(jobs)[0]].expanded = 'in';
           }
 
-          var context = {
+          context = {
             count: Object.keys(jobs).length,
             nodeId: nodeId,
             jobs: jobs
@@ -69,13 +70,12 @@ define([
         });
     }
 
-    $(document).on('modal-node', function (e, options) {
+    $(document).on('modal-node', function(e, options) {
       e.stopPropagation();
       toggleModalNode(options.nodeId);
     });
 
-    this.init = function () {
-      var self = this;
+    this.init = function() {
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -85,15 +85,17 @@ define([
         },
         data: JSON.stringify({
           token: token.getToken(config.cluster)
-        }),
+        })
       };
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/topology', options)
-        .success(function (topologyDatas) {
-          var context = {
-            noData: !Object.keys(topologyDatas).length,
-            error: topologyDatas.error
-          };
+        .success(function(topologyDatas) {
+          var topology, width, height, color, force, svg, links, gnodes, nodes,
+            slurmnodes, linknodes, nodesets,
+            context = {
+              noData: !Object.keys(topologyDatas).length,
+              error: topologyDatas.error
+            };
 
           $('#main').append(template(context));
 
@@ -101,116 +103,152 @@ define([
             return;
           }
 
-          var topology = new Topology(topologyDatas);
+          topology = new Topology(topologyDatas);
 
           // d3
-          var width = $('#main .wrapper').width(),
-              height = $(window).height() - 160;
+          width = $('#main .wrapper').width();
+          height = $(window).height() - 160;
 
-          var color = d3.scale.category20();
+          color = d3.scale.category20();
 
-          var force = d3.layout.force()
-              .charge(function(d) { return d.group == 1 ? -topology.config.NODECHARGE : -topology.config.SWITCHCHARGE; })
-              .linkDistance(function(d) { return d.target.group == 1 ? topology.config.NODEDISTANCE : topology.config.SWITCHDISTANCE; })
-              .size([width, height]);
+          force = d3.layout.force()
+            .charge(function(d) {
+              return d.group === 1 ? -topology.config.NODECHARGE : -topology.config.SWITCHCHARGE;
+            })
+            .linkDistance(function(d) {
+              return d.target.group === 1 ? topology.config.NODEDISTANCE : topology.config.SWITCHDISTANCE;
+            })
+            .size([ width, height ]);
 
-          var svg = d3.select('#main .wrapper').append('svg')
-              .attr('width', width)
-              .attr('height', height);
+          svg = d3.select('#main .wrapper').append('svg')
+            .attr('width', width)
+            .attr('height', height);
 
           force
-              .nodes(topology.graph.nodes)
-              .links(topology.graph.links)
-              .start();
+          .nodes(topology.graph.nodes)
+          .links(topology.graph.links)
+          .start();
 
-          var links = svg.selectAll('.link')
+          links = svg.selectAll('.link')
               .data(topology.graph.links)
             .enter().append('line')
-              .attr('class', function(d) { return d.linkClass + ' link'; })
+              .attr('class', function(d) {
+                return d.linkClass + ' link';
+              })
               .style('stroke', 'grey')
-              .style('stroke-width', function(d) { return Math.sqrt(d.value); })
-              .style('visibility', function(d) { return d.target.group == 1 ? 'hidden' : 'visible'; });
+              .style('stroke-width', function(d) {
+                return Math.sqrt(d.value);
+              })
+              .style('visibility', function(d) {
+                return d.target.group === 1 ? 'hidden' : 'visible';
+              });
 
-          var gnodes = svg.selectAll('g.gnode')
+          gnodes = svg.selectAll('g.gnode')
               .data(topology.graph.nodes)
             .enter()
               .append('g')
               .classed('gnode', true);
 
-          var nodes = gnodes.append('circle')
-              .attr('class', function(d) { return d.nodeClass + ' node'; })
-              .attr('r', function(d) { return d.size; })
-              .style('fill', function(d) { return color(d.group); })
-              .style('visibility', function(d) { return d.group == 1 ? 'hidden' : 'visible'; })
-              .call(force.drag);
+          nodes = gnodes.append('circle')
+            .attr('class', function(d) {
+              return d.nodeClass + ' node';
+            })
+            .attr('r', function(d) {
+              return d.size;
+            })
+            .style('fill', function(d) {
+              return color(d.group);
+            })
+            .style('visibility', function(d) {
+              return d.group === 1 ? 'hidden' : 'visible';
+            })
+            .call(force.drag);
 
-          gnodes.filter(function(d) { return ['switch', 'nodeset'].indexOf(d.nodeClass) >= 0 })
-              .append('text')
-              .attr('transform', function(d) {
-                return 'translate(' + [-d.name.length*3.5, -d.size-5] + ')';
-              })
-              .text(function(d) { return d.name; });
+          gnodes.filter(function(d) {
+            return [ 'switch', 'nodeset' ].indexOf(d.nodeClass) >= 0;
+          })
+          .append('text')
+          .attr('transform', function(d) {
+            return 'translate(' + [ -d.name.length * 3.5, -d.size - 5 ] + ')';
+          })
+          .text(function(d) {
+            return d.name;
+          });
 
           nodes.append('title')
-              .text(function(d) { return d.name; });
+          .text(function(d) {
+            return d.name;
+          });
 
           force.on('tick', function() {
-            links.attr('x1', function(d) { return d.source.x; })
-                 .attr('y1', function(d) { return d.source.y; })
-                 .attr('x2', function(d) { return d.target.x; })
-                 .attr('y2', function(d) { return d.target.y; });
+            links.attr('x1', function(d) {
+              return d.source.x;
+            })
+           .attr('y1', function(d) {
+             return d.source.y;
+           })
+           .attr('x2', function(d) {
+             return d.target.x;
+           })
+           .attr('y2', function(d) {
+             return d.target.y;
+           });
 
             gnodes.attr('transform', function(d) {
-              return 'translate(' + [d.x, d.y] + ')';
+              return 'translate(' + [ d.x, d.y ] + ')';
             });
           });
 
-          var slurmnodes = svg.selectAll('.slurmnode'),
-              linknodes = svg.selectAll('.link-node');
+          slurmnodes = svg.selectAll('.slurmnode');
+          linknodes = svg.selectAll('.link-node');
 
-          var nodesets = svg.selectAll('.nodeset')
-          .on('mousedown', function(target) {
-            target.dragging = false;
-          })
-          .on('mousemove', function(target) {
-            target.dragging = true;
-          })
-          .on('mouseup', function(target) {
-            if (target.dragging) return false;
+          nodesets = svg.selectAll('.nodeset')
+            .on('mousedown', function(target) {
+              target.dragging = false;
+            })
+            .on('mousemove', function(target) {
+              target.dragging = true;
+            })
+            .on('mouseup', function(target) {
+              var displayed = target.displayed;
 
-            var displayed = target.displayed;
+              if (target.dragging) {
+                return false;
+              }
 
-            slurmnodes.style('visibility', 'hidden');
-            linknodes.style('visibility', 'hidden');
-            nodesets.each(function(d) { d.displayed = false; });
+              slurmnodes.style('visibility', 'hidden');
+              linknodes.style('visibility', 'hidden');
+              nodesets.each(function(d) {
+                d.displayed = false;
+              });
 
-            if (!displayed) {
-              nodes.filter(function(d) {
-                return target.nodes.indexOf(d) >= 0;
-              }).style('visibility', 'visible');
+              if (!displayed) {
+                nodes.filter(function(d) {
+                  return target.nodes.indexOf(d) >= 0;
+                }).style('visibility', 'visible');
 
-              links.filter(function(d) {
-                return target.nodes.indexOf(d.target) >= 0;
-              }).style('visibility', 'visible');
+                links.filter(function(d) {
+                  return target.nodes.indexOf(d.target) >= 0;
+                }).style('visibility', 'visible');
 
-              target.displayed = true;
-            }
-          });
+                target.displayed = true;
+              }
+            });
 
           // bind modal-node
           slurmnodes.on('click', function(target) {
             $(document).trigger('modal-node', { nodeId: target.name });
           });
         });
-    }
+    };
 
-    this.destroy = function () {
+    this.destroy = function() {
       $('.node').off('click');
       $('#modal-node').off('hidden.bs.modal');
       $('#modal-node').remove();
       $('#topology').remove();
       $(document).off('modal-node');
-    }
+    };
 
     return this;
   };

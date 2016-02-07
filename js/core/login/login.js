@@ -26,10 +26,10 @@ define([
   'token-utils',
   'user-utils',
   'fake-placeholder'
-], function ($, async, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
+], function($, async, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
 
-  return function (config) {
+  return function(config) {
     function loginAction(options) {
       function loginOnCluster(cluster, callback) {
         // skip authentication if not enabled on cluster
@@ -58,21 +58,14 @@ define([
               .error(function(error) {
                 if (config.cluster.id === cluster.id) {
                   // error if cluster is the current one
-                  callback(true, error);
-                } else {
-                  // nothing unless
-                  callback(null, null);
+                  return callback(true, error);
                 }
+
+                // nothing unless
+                return callback(null, null);
               });
           },
           function(callback) {
-            // get infos on cluster, call route /cluster
-            if (cluster.infos) {
-              // don't do anything if infos are already retrieved
-              callback(null, null);
-              return;
-            }
-
             var options = {
               type: 'POST',
               dataType: 'json',
@@ -84,6 +77,13 @@ define([
                 token: tokenUtils.getToken(cluster)
               })
             };
+
+            // get infos on cluster, call route /cluster
+            if (cluster.infos) {
+              // don't do anything if infos are already retrieved
+              callback(null, null);
+              return;
+            }
 
             $.ajax(cluster.api.url + cluster.api.path + '/cluster', options)
               .success(function(data) {
@@ -103,7 +103,7 @@ define([
         });
       }
 
-      async.map(window.clusters, loginOnCluster, function (err, result) {
+      async.map(window.clusters, loginOnCluster, function(err, result) {
         if (err && !userUtils.getUser(config.cluster)) {
           $('#login #error').show();
           return;
@@ -112,9 +112,9 @@ define([
         $(document).trigger('logged');
         $(document).trigger('show', { page: config.STARTPAGE });
       });
-    };
+    }
 
-    this.init = function () {
+    this.init = function() {
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -125,14 +125,14 @@ define([
       };
 
       function submitLogin(e) {
-        if (e.type === "keypress" && e.which !== 13) {
-          return;
-        }
-
         var form = {
           username: $('#login #username').val(),
           password: $('#login #password').val()
         };
+
+        if (e.type === 'keypress' && e.which !== 13) {
+          return;
+        }
 
         if (!form.username || !form.password) {
           $('#login #error').show();
@@ -149,7 +149,7 @@ define([
         options.data = JSON.stringify({
           guest: true
         });
-        loginAction(options)
+        loginAction(options);
       }
 
       $('#main').append(template());
@@ -166,10 +166,10 @@ define([
       // bind login form events
       $('#login #user').on('click', submitLogin);
       $('#login input').on('keypress', submitLogin);
-      $('#login #guest').on('click', submitGuest)
+      $('#login #guest').on('click', submitGuest);
     };
 
-    this.destroy = function () {
+    this.destroy = function() {
       $('#login input').off('keypress');
       $('#login #user').off('click');
       $('#login #guest').off('click');
@@ -177,5 +177,5 @@ define([
     };
 
     return this;
-  }
+  };
 });

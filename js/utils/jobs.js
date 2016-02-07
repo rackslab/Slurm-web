@@ -21,13 +21,13 @@
 define([
   'jquery',
   'token-utils'
-], function ($, tokenUtils) {
+], function($, tokenUtils) {
   return {
-    buildAllocatedCPUs: function (jobs) {
-      var allocatedCPUs = {};
-      var nodesCPUs = null;
-      var job;
-      var node;
+    buildAllocatedCPUs: function(jobs) {
+      var allocatedCPUs = {},
+        nodesCPUs = null,
+        job,
+        node;
 
       for (job in jobs) {
         if (jobs.hasOwnProperty(job) && jobs[job].job_state === 'RUNNING') {

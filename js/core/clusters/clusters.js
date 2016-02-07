@@ -22,13 +22,17 @@ define([
   'jquery',
   'async',
   'handlebars',
-  'text!../../js/core/clusters/clusters.hbs',
+  'text!../../js/core/clusters/clusters.hbs'
 ], function($, async, Handlebars, template) {
-  template = Handlebars.compile(template);
-  clusters = window.clusters;
+  var clusters = window.clusters,
+    index;
 
-  for (var index in clusters) {
-    clusters[index].id = clusters[index].name + '-' + index;
+  template = Handlebars.compile(template);
+
+  for (index in clusters) {
+    if (clusters[index]) {
+      clusters[index].id = clusters[index].name + '-' + index;
+    }
   }
 
   function retrieveClusterInformations(cluster, callback) {
@@ -38,19 +42,19 @@ define([
         callback(null, null);
       })
       .error(function(error) {
-        console.log('error on retrieveClusterInformations for cluster', cluster, error);
+        console.log('error on retrieveClusterInformations for cluster', cluster, error); // eslint-disable-line no-console
         callback(true, error);
       });
   }
 
   return function(config) {
-    var context = {};
-
     $(document).on('selectCluster', function(e, options) {
-      e.stopPropagation();
-      var cluster = clusters[options.clusterId];
+      var cluster = clusters[options.clusterId],
+        loadSelectedCluster;
 
-      var loadSelectedCluster = function() {
+      e.stopPropagation();
+
+      loadSelectedCluster = function() {
         if (options.$cluster) {
           $('.cluster').parent('li').removeClass('active');
           options.$cluster.parent('li').addClass('active');
@@ -58,33 +62,35 @@ define([
 
         config.cluster = cluster;
         $(document).trigger('loadPage', { config: config });
-      }
+      };
 
       loadSelectedCluster();
     });
 
-    this.init = function () {
-      var context = {
+    this.init = function() {
+      var loc, context;
+
+      context = {
         clusters: clusters,
         paddingTop: $('nav').height()
-      }
+      };
 
       if (!clusters.length) {
         // init default cluster if none defined
-        var loc = window.location;
+        loc = window.location;
         clusters.push({
           name: 'local',
           api: {
             url: loc.origin || loc.protocol + '//' + loc.host,
             path: '/slurm-restapi'
           }
-        })
+        });
       }
 
       // retrieve informations about authentication on each cluster
       async.map(clusters, retrieveClusterInformations, function(err, result) {
         if (err) {
-          console.log('error on retrieve cluster informations', err, result);
+          console.log('error on retrieve cluster informations', err, result); // eslint-disable-line no-console
         }
 
         // select first cluster once clusters informations have been retrieved
@@ -144,22 +150,20 @@ define([
           $('#main').addClass('col-md-10');
           $('#main').removeClass('col-md-12');
           $('#clusters').removeClass('hidden');
-        } else {
-          if (!$('.row-offcanvas').hasClass('active')) {
-            $('#main').removeClass('col-md-10');
-            $('#main').addClass('col-md-12');
-            $('#clusters').addClass('hidden');
-          }
+        } else if (!$('.row-offcanvas').hasClass('active')) {
+          $('#main').removeClass('col-md-10');
+          $('#main').addClass('col-md-12');
+          $('#clusters').addClass('hidden');
         }
       });
     };
 
-    this.destroy = function () {
+    this.destroy = function() {
       if (clusters.length <= 1) {
         $('#clusters').empty();
       }
     };
 
     return this;
-  }
+  };
 });

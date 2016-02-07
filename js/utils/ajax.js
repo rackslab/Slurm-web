@@ -19,15 +19,15 @@
  */
 
 define([
-  'jquery',
-], function ($) {
-  $(document).ajaxError(function (event, jqueryXHR, error, errorThrown) {
+  'jquery'
+], function($) {
+  $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
     if (!jqueryXHR.status) {
-      console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));
-      $('#flash .alert').text("Error : " + JSON.stringify(error));
+      console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
+      $('#flash .alert').text('Error : ' + JSON.stringify(error));
       $('#flash').show();
     }
-    if ((jqueryXHR.status === 403) && !(error.url.indexOf('/login') > -1)) {
+    if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
       $(document).trigger('logout');
     }
   });

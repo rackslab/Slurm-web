@@ -20,14 +20,13 @@
 
 define([
   'text!/slurm-web-conf/3d.config.json'
-], function (config) {
+], function(config) {
   config = JSON.parse(config);
 
   function findRangeNumber(racks) {
-    var number = 0;
+    var indexRange, indexRack,
+      number = 0;
 
-    var indexRange;
-    var indexRack;
     for (indexRange in racks) {
       if (racks.hasOwnProperty(indexRange)) {
         for (indexRack in racks[indexRange]) {
@@ -107,10 +106,10 @@ define([
   }
 
   function getMapWallX(max) {
-    var walls = [];
+    var i,
+      walls = [];
 
-    var i;
-    for (i = 0; i < max + 2 + (config.PATHSIZE * 2) * 2; i++) {
+    for (i = 0; i < max + 2 + config.PATHSIZE * 2 * 2; i++) {
       walls.push(1);
     }
 
@@ -118,23 +117,22 @@ define([
   }
 
   function getMapPathX(max) {
-    var paths = [];
+    var i,
+      paths = [];
 
     paths.push(1);
 
-    var i;
-    for (i = 0; i < max + (config.PATHSIZE * 2) * 2; i++) {
+    for (i = 0; i < max + config.PATHSIZE * 4; i++) {
       paths.push(0);
     }
 
     paths.push(1);
-
     return paths;
   }
 
   function getRacksFromPosX(posx, racks) {
-    var indexRange;
-    var indexRack;
+    var indexRange, indexRack;
+
     for (indexRange in racks) {
       if (racks.hasOwnProperty(indexRange)) {
         for (indexRack in racks[indexRange]) {
@@ -151,19 +149,19 @@ define([
   }
 
   function getMapRangeX(posx, max, env) {
-    var racks = getRacksFromPosX(posx, env);
-    var rangeMap = [];
-    var range = [];
+    var i, k, index, pos,
+      racks = getRacksFromPosX(posx, env),
+      rangeMap = [],
+      range = [];
 
     rangeMap.push(1);
-    var i;
+
     for (i = 0; i < config.PATHSIZE * 2; i++) {
       rangeMap.push(0);
     }
 
     i = 0;
-    var index;
-    var pos;
+
     for (index in racks) {
       if (racks.hasOwnProperty(index) && racks[index].hasOwnProperty('name')) {
         pos = racks.length;
@@ -176,7 +174,7 @@ define([
       }
     }
 
-    range.sort(function (a, b) {
+    range.sort(function(a, b) {
       if (a.position < b.position) {
         return -1;
       }
@@ -186,8 +184,7 @@ define([
       return 0;
     });
 
-    var k;
-    for (var k = 0; k < range.length; k++) {
+    for (k = 0; k < range.length; k++) {
       rangeMap.push(range[k].name);
     }
 
@@ -206,25 +203,23 @@ define([
   }
 
   return {
-    racksToMap: function (racks) {
-      var map = {
-        data: [],
-        width: 0,
-        height: 0,
-        altitude: 0
-      };
+    racksToMap: function(racks) {
+      var i, k,
+        rangeNumber = findRangeNumber(racks),
+        rangeMaxRacksNumber = findRangeMaxRacksNumber(racks),
+        hotRange = true,
+        map = {
+          data: [],
+          width: 0,
+          height: 0,
+          altitude: 0
+        };
 
-      var rangeNumber = findRangeNumber(racks);
-      var rangeMaxRacksNumber = findRangeMaxRacksNumber(racks);
-
-      var i;
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));
       for (i = 0; i < config.PATHSIZE * 2; i++) {
         map.data = map.data.concat(getMapPathX(rangeMaxRacksNumber));
       }
 
-      var hotRange = true;
-      var k;
       for (k = 0; k < rangeNumber; k++) {
         map.data = map.data.concat(getMapRangeX(k, rangeMaxRacksNumber, racks));
         if (hotRange) {
@@ -243,7 +238,7 @@ define([
 
       map.data = map.data.concat(getMapWallX(rangeMaxRacksNumber));
 
-      map.width = rangeMaxRacksNumber + 2 + (config.PATHSIZE * 2) * 2;
+      map.width = rangeMaxRacksNumber + 2 + config.PATHSIZE * 4;
       map.height = map.data.length / map.width;
       map.altitude = findMapAltitude(racks);
       map.rangeMaxRacksNumber = rangeMaxRacksNumber;
@@ -251,5 +246,5 @@ define([
 
       return map;
     }
-  }
+  };
 });

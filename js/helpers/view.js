@@ -18,7 +18,9 @@
  *
  */
 
-define(['handlebars'], function(Handlebars) {
+define([
+  'handlebars'
+], function(Handlebars) {
   Handlebars.registerHelper('isDisplayable', function(view) {
     if (typeof view.condition === 'undefined') {
       return true;

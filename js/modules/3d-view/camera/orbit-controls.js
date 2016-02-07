@@ -18,21 +18,23 @@
  *
  */
 
+ /*eslint-disable */
+
 /*
  * The MIT License
- * 
+ *
  * Copyright © 2010-2015 three.js authors
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -181,7 +183,7 @@ define([
       // get X column of matrix
       panOffset.set( te[0], te[1], te[2] );
       panOffset.multiplyScalar(-distance);
-      
+
       pan.add( panOffset );
 
     };
@@ -194,10 +196,10 @@ define([
       // get Y column of matrix
       panOffset.set( te[4], te[5], te[6] );
       panOffset.multiplyScalar(distance);
-      
+
       pan.add( panOffset );
     };
-    
+
     // main entry point; pass in Vector2 of change desired in pixel space,
     // right and down are positive
     this.pan = function ( delta ) {
@@ -288,7 +290,7 @@ define([
 
       // restrict radius to be between desired limits
       radius = Math.max( this.minDistance, Math.min( this.maxDistance, radius ) );
-      
+
       // move target to panned location
       this.target.add( pan );
 
@@ -410,7 +412,7 @@ define([
 
         panEnd.set( event.clientX, event.clientY );
         panDelta.subVectors( panEnd, panStart );
-        
+
         scope.pan( panDelta );
 
         panStart.copy( panEnd );
@@ -474,7 +476,7 @@ define([
       // pan a pixel - I guess for precise positioning?
       // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
       var needUpdate = false;
-      
+
       switch ( event.keyCode ) {
 
         case scope.keys.UP:
@@ -503,7 +505,7 @@ define([
       }
 
     }
-    
+
     function touchstart( event ) {
 
       if ( scope.enabled === false ) { return; }
@@ -599,7 +601,7 @@ define([
 
           panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
           panDelta.subVectors( panEnd, panStart );
-          
+
           scope.pan( panDelta );
 
           panStart.copy( panEnd );

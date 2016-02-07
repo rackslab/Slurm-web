@@ -26,29 +26,29 @@ define([
   'tablesorter-utils',
   'date-utils',
   'jquery-tablesorter'
-], function ($, Handlebars, template, tokenUtils, tablesorterUtils) {
+], function($, Handlebars, template, tokenUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
     this.interval = null;
     this.tablesorterOptions = {};
 
-    this.init = function () {
-      var self = this;
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: tokenUtils.getToken(config.cluster)
-        })
-      };
+    this.init = function() {
+      var self = this,
+        options = {
+          type: 'POST',
+          dataType: 'json',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            token: tokenUtils.getToken(config.cluster)
+          })
+        };
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/reservations', options)
-        .success(function (reservations) {
+        .success(function(reservations) {
           var context = {
             count: Object.keys(reservations).length,
             reservations: reservations
@@ -58,24 +58,25 @@ define([
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
 
-          $('tr').on('click', function (e) {
+          $('tr').on('click', function(e) {
             var reservation = $($($(this).children('td'))[0]).html();
+
             $(document).trigger('show', { page: 'jobs', filter: { type: 'reservation', value: reservation } });
           });
         });
     };
 
-    this.refresh = function () {
+    this.refresh = function() {
       var self = this;
 
-      this.interval = setInterval(function () {
+      this.interval = setInterval(function() {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#reservations').remove();
         self.init();
       }, config.REFRESH);
     };
 
-    this.destroy = function () {
+    this.destroy = function() {
       if (this.interval) {
         clearInterval(this.interval);
       }

@@ -18,6 +18,8 @@
  *
  */
 
+var isIE = false || !!document.documentMode;
+
 require.config({
   paths: {
     text: '/javascript/requirejs/text.min',
@@ -91,7 +93,7 @@ require.config({
     },
     'bootstrap-typeahead': {
       deps: [ 'jquery' ],
-      init: function ($) {
+      init: function($) {
         return require.s.contexts._.registry['typeahead.js'].factory($);
       }
     },
@@ -101,19 +103,20 @@ require.config({
   }
 });
 
-var isIE = false || !!document.documentMode;
-
 if (isIE) {
-  require(['xdomain'], function(xdomain){
-    var slaves = {};
-    for (var index in window.clusters) {
-      slaves[window.clusters[index].api.url] = window.clusters[index].api.path + "/proxy";
+  require([ 'xdomain' ], function(xdomain) { // eslint-disable-line global-require
+    var index, slaves = {};
+
+    for (index in window.clusters) {
+      slaves[window.clusters[index].api.url] = window.clusters[index].api.path + '/proxy';
+      console.log(index);
     }
     xdomain.slaves(slaves);
-  })
+  });
 }
 
 require([
+  'jquery',
   'page-utils',
   'text!/slurm-web-conf/config.json',
   'token-utils',
@@ -131,16 +134,28 @@ require([
   'gantt',
   'topology',
   'ajax-utils'
-], function (Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, d3View, Gantt, Topology) {
-  config = JSON.parse(config);
-  var clusters = new Clusters(config);
-  var firstLoad = true;
-  var page = new Page();
-  var navbar = null;
+], function($, Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, D3View, Gantt, Topology) {
+  var clusters = null,
+    page = new Page(),
+    navbar = null;
 
+  config = JSON.parse(config);
+  clusters = new Clusters(config);
   clusters.init();
 
   $(document).on('loadPage', function(e, options) {
+    var ajaxOptions = {
+      type: 'POST',
+      dataType: 'json',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
+        token: token.getToken(options.config.cluster)
+      })
+    };
+
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
 
@@ -149,26 +164,14 @@ require([
 
     $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
 
-    var options = {
-      type: 'POST',
-      dataType: 'json',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify({
-        token: token.getToken(config.cluster)
-      })
-    };
-
-    $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', options)
+    $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', ajaxOptions)
       .success(function(data) {
         config.cluster.infos = data;
         $(document).trigger('show', { page: config.STARTPAGE });
       });
-  })
+  });
 
-  $(document).on('logout', function (e) {
+  $(document).on('logout', function(e) {
     e.preventDefault();
 
     // clear authentication on current cluster
@@ -178,13 +181,13 @@ require([
     $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });
   });
 
-  $(document).on('show', function (e, options) {
+  $(document).on('show', function(e, options) {
     // check if the wanted page is accessible for the current user
     var nextPage = options.page !== 'login' &&
       navbar.availableViews.filter(function(view) {
         return view.id === options.page;
-      }).length === 0 ?
-      navbar.availableViews[0].id : options.page;
+      }).length === 0 ? navbar.availableViews[0].id : options.page;
+
     e.stopPropagation();
 
     page.destroy(true);
@@ -219,7 +222,7 @@ require([
       page = new Racks(config);
       break;
     case '3dview':
-      page = new d3View(config);
+      page = new D3View(config);
       break;
     case 'gantt':
       page = new Gantt(config);
@@ -239,6 +242,6 @@ require([
   });
 
   $(window).resize(function() {
-    $('body>.container-fluid').css({'margin-top': $('nav').height()+'px'});
+    $('body>.container-fluid').css({ 'margin-top': $('nav').height() + 'px' });
   });
 });
