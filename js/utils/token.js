@@ -20,20 +20,20 @@
 
 define([
   'jquery'
-], function ($) {
+], function($) {
   var token = {
-    getToken: function (cluster) {
+    getToken: function(cluster) {
       return localStorage.getItem('jwt-' + cluster.id);
     },
-    setToken: function (cluster, token) {
+    setToken: function(cluster, token) {
       localStorage.setItem('jwt-' + cluster.id, token);
     },
-    removeToken: function (cluster) {
+    removeToken: function(cluster) {
       localStorage.removeItem('jwt-' + cluster.id);
     }
   };
 
-  $(document).on('logout', function (e, options) {
+  $(document).on('logout', function(e, options) {
     e.preventDefault();
     if (options && options.cluster) {
       token.removeToken(options.cluster);

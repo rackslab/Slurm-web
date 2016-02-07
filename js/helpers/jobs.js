@@ -23,15 +23,16 @@ define([
   'text!/slurm-web-conf/config.json',
   'text!/slurm-web-conf/2d.colors.config.json',
   'date-utils'
-], function (Handlebars, config, colorsConfig, dateUtils) {
-  config = JSON.parse(config);
+], function(Handlebars, config, colorsConfig, dateUtils) {
   var colors = JSON.parse(colorsConfig);
 
-  Handlebars.registerHelper('pickJobColor', function (jobId) {
-    return colors.JOB[(jobId % colors.JOB.length)];
-  })
+  config = JSON.parse(config);
 
-  Handlebars.registerHelper('printCommand', function (command) {
+  Handlebars.registerHelper('pickJobColor', function(jobId) {
+    return colors.JOB[jobId % colors.JOB.length];
+  });
+
+  Handlebars.registerHelper('printCommand', function(command) {
     if (command === null) {
       return '-';
     }
@@ -39,7 +40,7 @@ define([
     return command;
   });
 
-  Handlebars.registerHelper('printStateReason', function (state) {
+  Handlebars.registerHelper('printStateReason', function(state) {
     if (state === 'None') {
       return '-';
     }
@@ -47,19 +48,19 @@ define([
     return state;
   });
 
-  Handlebars.registerHelper('printNodes', function (nodes) {
+  Handlebars.registerHelper('printNodes', function(nodes) {
     if (nodes === null) {
       return '-';
     }
 
     if (nodes.length > config.MAXNODESLENGTH) {
-      return (nodes.substring(0, config.MAXNODESLENGTH) + '...');
+      return nodes.substring(0, config.MAXNODESLENGTH) + '...';
     }
 
     return nodes;
   });
 
-  Handlebars.registerHelper('printReason', function (state, reason) {
+  Handlebars.registerHelper('printReason', function(state, reason) {
     if (state === 'RUNNING' || state === 'COMPLETED') {
       return '-';
     }
@@ -67,12 +68,12 @@ define([
     return reason;
   });
 
-  Handlebars.registerHelper('printStartTime', function (timestamp, eligibleTimestamp, state) {
+  Handlebars.registerHelper('printStartTime', function(timestamp, eligibleTimestamp, state) {
     if (state === 'PENDING' && timestamp > 0) {
       return 'within ' + dateUtils.getTimeDiff(timestamp * 1000);
     }
 
-    if (state === 'PENDING' && !(new Date(eligibleTimestamp * 1000) < (new Date()))) {
+    if (state === 'PENDING' && !(new Date(eligibleTimestamp * 1000) < new Date())) {
       return 'within ' + dateUtils.getTimeDiff(eligibleTimestamp * 1000);
     }
 

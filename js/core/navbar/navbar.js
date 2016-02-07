@@ -26,30 +26,31 @@ define([
   'boolean-helpers',
   'string-helpers',
   'view-helpers'
-], function ($, Handlebars, template, userUtils) {
-  template = Handlebars.compile(template);
-
+], function($, Handlebars, template, userUtils) {
   var VIEWS = [
-    {id: 'jobs', name: 'Jobs'},
-    {id: 'racks', name: 'Racks'},
-    {id: 'jobsmap', name: 'JobsMap'},
+    { id: 'jobs', name: 'Jobs' },
+    { id: 'racks', name: 'Racks' },
+    { id: 'jobsmap', name: 'JobsMap' },
     {
       id: '3dview',
       name: '3D View',
-      condition: !(/*@cc_on!@*/false || !!document.documentMode),
+      condition: !(/*@cc_on!@*/false || !!document.documentMode)
     },
-    {id: 'partitions', name: 'Partitions'},
-    {id: 'qos', name: 'QOS'},
-    {id: 'reservations', name: 'Reservations'},
-    {id: 'gantt', name: 'Gantt'},
-    {id: 'topology', name: 'Topology'}
+    { id: 'partitions', name: 'Partitions' },
+    { id: 'qos', name: 'QOS' },
+    { id: 'reservations', name: 'Reservations' },
+    { id: 'gantt', name: 'Gantt' },
+    { id: 'topology', name: 'Topology' }
   ];
 
-  return function (config) {
+  template = Handlebars.compile(template);
+
+  return function(config) {
     var self = this;
+
     this.userLogged = true;
 
-    $(document).on('logout', function (e) {
+    $(document).on('logout', function(e) {
       e.preventDefault();
 
       self.userLogged = false;
@@ -57,23 +58,26 @@ define([
       self.init();
     });
 
-    $(document).on('logged', function (e) {
+    $(document).on('logged', function(e) {
       self.userLogged = true;
       self.destroy();
       self.init();
     });
 
-    $(document).on('destroyNavbar', function (e) {
+    $(document).on('destroyNavbar', function(e) {
       self.destroy();
     });
 
-    this.init = function () {
+    this.init = function() {
+      var context;
+
       this.availableViews = VIEWS.filter(function(view) {
         var restrictedViews = config.cluster.restrictedViews || [];
+
         return restrictedViews.indexOf(view.id) === -1;
       });
 
-      var context = {
+      context = {
         clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
         authEnabled: config.cluster.authentication.enabled,
         views: this.availableViews,
@@ -84,12 +88,12 @@ define([
 
       $('body').prepend(template(context));
 
-      $("#navbar > ul > li > a[id^='menu-']").on('click', function (e) {
+      $('#navbar > ul > li > a[id^="menu-"]').on('click', function(e) {
         e.preventDefault();
         $(document).trigger('show', { page: e.target.id.split('-')[1] });
       });
 
-      $('#menu-logout').on('click', function (e) {
+      $('#menu-logout').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -98,11 +102,11 @@ define([
 
       $(document).trigger('navbarLoaded', { height: $('#navbar').height() });
 
-      $('body>.container-fluid').css({'margin-top': $('nav').height()+'px'});
+      $('body>.container-fluid').css({ 'margin-top': $('nav').height() + 'px' });
     };
 
-    this.destroy = function () {
-      $("#navbar > ul > li > a[id^='menu-']").off('click');
+    this.destroy = function() {
+      $('#navbar > ul > li > a[id^="menu-"]').off('click');
       $('#menu-logout').off('click');
       $('nav:first-child').remove();
     };

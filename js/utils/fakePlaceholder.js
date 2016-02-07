@@ -18,18 +18,23 @@
  *
  */
 
-define([], function () {
+define([
+  'jquery'
+], function($) {
   function elementSupportAttribute(elm, attr) {
     var test = document.createElement(elm);
+
     return attr in test;
   }
 
   return function() {
     if (!elementSupportAttribute('input', 'placeholder')) {
-      $("input[placeholder]").each(function() {
-        var $input = $(this);
+      $('input[placeholder]').each(function() {
+        var $fake,
+          $input = $(this);
+
         $input.after('<input id="' + $input.attr('id') + '-fake" style="display:none;" type="text" value="' + $input.attr('placeholder') + '" />');
-        var $fake = $('#' + $input.attr('id') + '-fake');
+        $fake = $('#' + $input.attr('id') + '-fake');
 
         $fake.show().attr('class', $input.attr('class')).attr('style', $input.attr('style'));
         $input.hide();
@@ -40,12 +45,12 @@ define([], function () {
         });
 
         $input.blur(function() {
-          if($input.val() === '') {
+          if ($input.val() === '') {
             $input.hide();
             $fake.show();
           }
         });
       });
     }
-  }
+  };
 });

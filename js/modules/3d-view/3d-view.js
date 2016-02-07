@@ -21,64 +21,67 @@
 var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
 if (isIE) {
-  console.log('IE detected, 3D-view not loaded');
+  console.log('IE detected, 3D-view not loaded'); // eslint-disable-line no-console
 } else {
-  console.log('IE not detected, 3D-view loaded');
+  console.log('IE not detected, 3D-view loaded'); // eslint-disable-line no-console
 
-define([
-  'jquery',
-  'handlebars',
-  'text!../../js/modules/3d-view/3d-view.hbs',
-  'token-utils',
-  'jobs-utils',
-  'keycode-helpers'
-], function ($, Handlebars, template, token, jobsUtils) {
-  template = Handlebars.compile(template);
+  define([
+    'jquery',
+    'handlebars',
+    'text!../../js/modules/3d-view/3d-view.hbs',
+    'token-utils',
+    'jobs-utils',
+    'keycode-helpers'
+  ], function($, Handlebars, template, token, jobsUtils) {
+    template = Handlebars.compile(template);
 
-  return function (config) {
-    this.init = function () {
-      var context = {
-        cluster: encodeURIComponent(JSON.stringify(config.cluster))
-      }
+    return function(config) {
+      this.init = function() {
+        var iframeHeight,
+          context = {
+            cluster: encodeURIComponent(JSON.stringify(config.cluster))
+          };
 
-      $('#main').append(template(context));
+        $('#main').append(template(context));
 
-      var iframeHeight = $(window).innerHeight() - $('iframe').offset().top - parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, '')) - 5;
+        iframeHeight = $(window).innerHeight() -
+          $('iframe').offset().top -
+          parseInt($('#main').css('paddingBottom').replace(/[^-\d\.]/g, ''), 10) -
+          5;
 
-      $('#main iframe').attr('height', iframeHeight);
+        $('#main iframe').attr('height', iframeHeight);
 
-      $(document).on('fullscreen-enter', function () {
-        var element = document.getElementsByTagName('iframe')[0];
+        $(document).on('fullscreen-enter', function() {
+          var element = document.getElementsByTagName('iframe')[0];
 
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.msRequestFullscreen) {
-          element.msRequestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-          element.webkitRequestFullscreen();
-        }
-      });
+          if (element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+          }
+        });
 
-      $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function (e) {
-        if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
-          setTimeout(function () {
-            $(document).trigger('fullscreen-exit');
-          }, 1000);
-        }
-      })
-    }
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(e) {
+          if (!document.fullscreen && !document.mozFullScreen && !document.webkitIsFullScreen && !document.msFullscreenElement) {
+            setTimeout(function() {
+              $(document).trigger('fullscreen-exit');
+            }, 1000);
+          }
+        });
+      };
 
-    this.destroy = function () {
-      $(document).trigger('destroy');
-      $(document).off('fullscreen-enter webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
-      $('iframe').remove();
-      $('#3d-view').remove();
-    }
+      this.destroy = function() {
+        $(document).trigger('destroy');
+        $(document).off('fullscreen-enter webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
+        $('iframe').remove();
+        $('#3d-view').remove();
+      };
 
-    return this;
-  };
-});
-
+      return this;
+    };
+  });
 }

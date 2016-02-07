@@ -21,7 +21,7 @@
 define([
   'jquery',
   'text!/slurm-web-conf/2d.colors.config.json'
-], function ($, colorsConfig) {
+], function($, colorsConfig) {
   var colors = JSON.parse(colorsConfig);
 
   function drawRectangleBorder(ctx, X, Y, width, height, borderWidth, colorFill, colorBorder) {
@@ -47,12 +47,13 @@ define([
   }
 
   return {
-    drawLegend: function (type) {
-      var ctx = ($('#cv_rackmap_legend')[0]).getContext("2d");
-      var legendX = 10;
-      var legendY = 15;
-      var legendWidth;
-      var legendHeight;
+    // TODO : refacto in several smaller functions
+    drawLegend: function(type) {
+      var ctx = $('#cv_rackmap_legend')[0].getContext('2d'),
+        legendX = 10,
+        legendY = 15,
+        legendWidth,
+        legendHeight;
 
       if (type === 'jobs-map') {
         legendHeight = 65;
@@ -101,5 +102,5 @@ define([
         ctx.fillText('partly allocated', legendX + 10, legendY + 10);
       }
     }
-  }
+  };
 });

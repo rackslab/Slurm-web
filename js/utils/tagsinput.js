@@ -21,26 +21,25 @@
 define([
   'jquery',
   'date-utils'
-], function ($, dateUtils) {
+], function($, dateUtils) {
   return {
-    filterJobs: function (jobs, options) {
-      var jobsFiltered = {};
-      var partitions = [];
-      var qoss = [];
-      var users = [];
-      var reservations = [];
-      var states = [];
-      var startTimes = [];
-      var endTimes = [];
-      var result = {};
+    filterJobs: function(jobs, options) {
+      var i, tags, lastTagCount, arrayJobs, filter, key,
+        startTimeFlag, endTimeFlag,
+        jobsFiltered = {},
+        partitions = [],
+        qoss = [],
+        users = [],
+        reservations = [],
+        states = [],
+        startTimes = [],
+        endTimes = [],
+        result = {};
 
       if (!options.length) {
         return jobs;
       }
 
-      var i;
-      var tags;
-      var lastTagCount;
       for (i = 0; i < options.length; i++) {
         tags = options[i].split(' ');
         lastTagCount = tags.length - 1;
@@ -72,23 +71,21 @@ define([
         return [];
       }
 
-      var arrayJobs = Object.keys(jobs).map(function (key) {
+      arrayJobs = Object.keys(jobs).map(function(key) {
         jobs[key].key = key;
-        return jobs[key]
+        return jobs[key];
       });
 
-      var filter = {
+      filter = {
         qos: qoss[0] || null,
         partition: partitions[0] || null,
         username: users[0] || null,
-        job_state: states[0] || null,
-        resv_name: reservations[0] || null,
-        start_time: startTimes[0] || null,
-        end_time: endTimes[0] || null
+        job_state: states[0] || null, // eslint-disable-line camelcase
+        resv_name: reservations[0] || null, // eslint-disable-line camelcase
+        start_time: startTimes[0] || null, // eslint-disable-line camelcase
+        end_time: endTimes[0] || null // eslint-disable-line camelcase
       };
 
-      var startTimeFlag;
-      var endTimeFlag;
       jobsFiltered = arrayJobs.filter(function(item) {
         startTimeFlag = false;
         endTimeFlag = false;
@@ -112,14 +109,14 @@ define([
           return true;
         } else if (filter.start_time === null && filter.end_time !== null && endTimeFlag === true) {
           return true;
-        } else {
-          return false;
         }
+
+        return false;
       });
 
-      jobsFiltered = jobsFiltered.filter(function (item) {
-        for (var key in filter) {
-          if (key !== 'start_time' && key !== 'end_time' && filter[key] !== null && item[key] != filter[key]) {
+      jobsFiltered = jobsFiltered.filter(function(item) {
+        for (key in filter) {
+          if (key !== 'start_time' && key !== 'end_time' && filter[key] !== null && item[key] !== filter[key]) {
             return false;
           }
         }
@@ -133,19 +130,19 @@ define([
 
       return result;
     },
-    jobsSubstringMatcher: function (strs) {
+    jobsSubstringMatcher: function(strs) {
       return function findMatches(q, cb) {
-        var matches;
-        var substringRegex;
+        var matches, substringRegex, startTimeRegex, endTimeRegex;
+
         matches = [];
 
         try {
           substringRegex = new RegExp('^' + q, 'i');
         } catch (error) {
-          return
+          return;
         }
 
-        $.each(strs, function (i, str) {
+        $.each(strs, function(i, str) {
           if (substringRegex.test(str)) {
             matches.push(str);
           }
@@ -188,7 +185,7 @@ define([
         cb(matches);
       };
     },
-    getTagsinputOptions: function (selector) {
+    getTagsinputOptions: function(selector) {
       if (!$(selector).length) {
         return [];
       }

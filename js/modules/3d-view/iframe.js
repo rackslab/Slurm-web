@@ -18,6 +18,8 @@
  *
  */
 
+var isIE = false || !!document.documentMode;
+
 require.config({
   paths: {
     text: '/javascript/requirejs/text.min',
@@ -35,7 +37,7 @@ require.config({
     'three-first-person-controls': '../../../js/modules/3d-view/camera/first-person-controls',
     'three-orbit-controls': '../../../js/modules/3d-view/camera/orbit-controls',
     'three-pacman-auto': '../../../js/modules/3d-view/camera/pacman-auto',
-    'jobs-utils': '../../../js/utils/jobs',
+    'jobs-utils': '../../../js/utils/jobs'
   },
   shim: {
     jquery: {
@@ -54,20 +56,19 @@ require.config({
   }
 });
 
-var isIE = false || !!document.documentMode;
-
 if (isIE) {
-  require(['xdomain'], function(xdomain){
-    var slaves = {};
-    for (var index in window.clusters) {
-      slaves[window.clusters[index].api.url] = window.clusters[index].api.path + "/proxy";
+  require([ 'xdomain' ], function(xdomain) { // eslint-disable-line global-require
+    var index, slaves = {};
+
+    for (index in window.clusters) {
+      slaves[window.clusters[index].api.url] = window.clusters[index].api.path + '/proxy';
     }
     xdomain.slaves(slaves);
-  })
+  });
 }
 
 function init() {
-  require([
+  require([ // eslint-disable-line global-require
     'jquery',
     'async',
     'token-utils',
@@ -76,11 +77,10 @@ function init() {
     '3d-map-draw',
     'jobs-utils',
     'bootstrap'
-  ], function ($, async, token, config, d3Draw, d3MapDraw, jobsUtils) {
-    var url = window.location.toString();
-    var draw;
+  ], function($, async, token, config, D3Draw, d3MapDraw, jobsUtils) {
+    var options, canvas, draw, url = window.location.toString();
+
     config = JSON.parse(config);
-    config.cluster = JSON.parse(decodeURIComponent(parseURL(url).searchObject.cluster))
 
     function setCanvasSize(canvas) {
       $('canvas').removeAttr('style');
@@ -98,30 +98,32 @@ function init() {
 
     function parseURL(url) {
       var parser = document.createElement('a'),
-          searchObject = {},
-          queries, split, i;
+        searchObject = {},
+        queries, split, i;
 
       parser.href = url;
 
       queries = parser.search.replace(/^\?/, '').split('&');
-      for( i = 0; i < queries.length; i++ ) {
-          split = queries[i].split('=');
-          searchObject[split[0]] = split[1];
+      for (i = 0; i < queries.length; i++) {
+        split = queries[i].split('=');
+        searchObject[split[0]] = split[1];
       }
 
       return {
-          protocol: parser.protocol,
-          host: parser.host,
-          hostname: parser.hostname,
-          port: parser.port,
-          pathname: parser.pathname,
-          search: parser.search,
-          searchObject: searchObject,
-          hash: parser.hash
+        protocol: parser.protocol,
+        host: parser.host,
+        hostname: parser.hostname,
+        port: parser.port,
+        pathname: parser.pathname,
+        search: parser.search,
+        searchObject: searchObject,
+        hash: parser.hash
       };
     }
 
-    var options = {
+    config.cluster = JSON.parse(decodeURIComponent(parseURL(url).searchObject.cluster));
+
+    options = {
       type: 'POST',
       dataType: 'json',
       headers: {
@@ -133,93 +135,93 @@ function init() {
       })
     };
 
-    var canvas = getCanvas();
+    canvas = getCanvas();
     setCanvasSize(canvas);
 
     async.parallel({
-      racks: function (callback) {
+      racks: function(callback) {
         $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-          .success(function (data) {
+          .success(function(data) {
             callback(null, data);
           })
-          .error(function () {
+          .error(function() {
             callback(1, null);
           });
       },
-      nodes: function (callback) {
+      nodes: function(callback) {
         $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
-          .success(function (data) {
+          .success(function(data) {
             callback(null, data);
           })
-          .error(function () {
+          .error(function() {
             callback(1, null);
           });
       },
-      jobs: function (callback) {
+      jobs: function(callback) {
         $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
-          .success(function (data) {
+          .success(function(data) {
             callback(null, data);
           })
-          .error(function () {
+          .error(function() {
             callback(1, null);
           });
       }
-    }, function (err, result) {
+    }, function(err, result) {
+      var racks, room, nodesInfos, jobs, map, racksList, range, rack;
+
       if (err) {
         return;
       }
 
-      var racks = result.racks.racks;
-      var room = result.racks.room;
-      var nodesInfos = result.nodes;
-      var jobs = result.jobs;
+      racks = result.racks.racks;
+      room = result.racks.room;
+      nodesInfos = result.nodes;
+      jobs = result.jobs;
 
       jobs = jobsUtils.buildAllocatedCPUs(jobs);
 
-      var map = d3MapDraw.racksToMap(racks);
+      map = d3MapDraw.racksToMap(racks);
 
-      var racksList = {};
+      racksList = {};
 
-      var range;
-      var rack;
-      for (var range in racks) {
+      for (range in racks) {
         if (racks.hasOwnProperty(range)) {
-          for (var rack in racks[range]) {
+          for (rack in racks[range]) {
             racksList[racks[range][rack].name] = racks[range][rack];
           }
         }
       }
 
-      draw = new d3Draw(map, racksList, nodesInfos, jobs, room);
+      draw = new D3Draw(map, racksList, nodesInfos, jobs, room);
       draw.init(canvas.element);
 
-      $('#tabs a[href="#camera"]').on('click', function (e) {
+      $('#tabs a[href="#camera"]').on('click', function(e) {
         draw.setControls($(this).attr('aria-controls'));
         $('canvas').focus();
       });
 
-      $('canvas').on('mousemove', function () {
+      $('canvas').on('mousemove', function() {
         $('canvas').focus();
       });
 
-      $('#tabs a[href="#fullscreen"]').on('click', function (e) {
+      $('#tabs a[href="#fullscreen"]').on('click', function(e) {
         $('.row-menu').hide();
         window.parent.$(window.parent.document).trigger('fullscreen-enter');
-        setTimeout(function () {
+        setTimeout(function() {
           canvas = getCanvas();
           setCanvasSize(canvas);
           draw.resize(canvas);
         }, 1000);
       });
 
-      window.parent.$(window.parent.document).on('fullscreen-exit', function () {
+      window.parent.$(window.parent.document).on('fullscreen-exit', function() {
         $('.row-menu').show();
         canvas = getCanvas();
         setCanvasSize(canvas);
         draw.resize(canvas);
       });
 
-      window.parent.$(window.parent.document).on('destroy', function () {
+      window.parent.$(window.parent.document).on('destroy', function() {
         draw.clean();
         window.parent.$(window.parent.document).off('fullscreen-exit destroy');
       });

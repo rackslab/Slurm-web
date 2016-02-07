@@ -18,6 +18,8 @@
  *
  */
 
+ /*eslint-disable */
+
 /*
  * The MIT License
  *

@@ -26,20 +26,20 @@ define([
   'token-utils',
   '2d-draw',
   '2d-legend-draw'
-], function ($, async, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw) {
-  template = Handlebars.compile(template);
+], function($, async, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw) {
   var draw = new D2Draw();
 
-  return function (config) {
+  template = Handlebars.compile(template);
+  return function(config) {
     this.slurmNodes = null;
     this.interval = null;
     this.config = draw.getConfig();
 
-    this.init = function () {
+    this.init = function() {
       var self = this;
 
       async.parallel({
-        nodes: function (callback) {
+        nodes: function(callback) {
           var options = {
             type: 'POST',
             dataType: 'json',
@@ -53,14 +53,14 @@ define([
           };
 
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
-            .success(function (data) {
-              callback(null, data)
+            .success(function(data) {
+              callback(null, data);
             })
-            .error(function () {
+            .error(function() {
               callback(true, null);
             });
         },
-        racks: function (callback) {
+        racks: function(callback) {
           var options = {
             type: 'POST',
             dataType: 'json',
@@ -74,24 +74,24 @@ define([
           };
 
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
-            .success(function (data) {
+            .success(function(data) {
               callback(null, data);
             })
-            .error(function () {
+            .error(function() {
               callback(true, null);
             });
         }
-      }, function (err, result) {
+      }, function(err, result) {
+        var i, racks, rack, parsed, context;
+
         if (err) {
           return;
         }
         self.slurmNodes = result.nodes;
 
-        var racks = result.racks.racks;
+        racks = result.racks.racks;
         if (racks instanceof Array) {
-          var parsed = {};
-          var i;
-          var rack;
+          parsed = {};
           for (i in racks) {
             if (racks.hasOwnProperty(i)) {
               for (rack in racks[i]) {
@@ -104,24 +104,24 @@ define([
           racks = parsed;
         }
 
-        var context = {
+        context = {
           config: self.config,
           racks: racks
         };
 
         $('#main').append(template(context));
-        $("canvas[id^='cv_rackmap_']").parent('.canvas-container').css('width', self.config.CANVASWIDTH);
+        $('canvas[id^="cv_rackmap_"]').parent('.canvas-container').css('width', self.config.CANVASWIDTH);
 
-        $.each(racks, function (idRack, rack) {
-          $('#cv_rackmap_' + idRack).on('mousemove', function (e) {
-            e.stopPropagation();
+        $.each(racks, function(idRack, rack) {
+          $('#cv_rackmap_' + idRack).on('mousemove', function(e) {
             var offset = $(this).offset();
 
-            $(document).trigger('canvas-mousemove', { rack: idRack, x: (e.pageX - offset.left), y: (e.pageY - offset.top) });
+            e.stopPropagation();
+            $(document).trigger('canvas-mousemove', { rack: idRack, x: e.pageX - offset.left, y: e.pageY - offset.top });
           });
 
           draw.drawRack(rack);
-          $.each(rack.nodes, function (idRackNode, rackNode) {
+          $.each(rack.nodes, function(idRackNode, rackNode) {
             draw.drawNode(rack, rackNode, self.slurmNodes[rackNode.name]);
           });
         });
@@ -130,23 +130,23 @@ define([
       });
     };
 
-    this.refresh = function () {
+    this.refresh = function() {
       var self = this;
 
-      this.interval = setInterval(function () {
+      this.interval = setInterval(function() {
         $('#racks').remove();
         self.init();
       }, config.REFRESH);
     };
 
-    this.destroy = function () {
+    this.destroy = function() {
       if (this.interval) {
         clearInterval(this.interval);
       }
 
       draw.clearNodesHoverIntersections();
 
-      $("canvas[id^='cv_rackmap_']").off('mousemove');
+      $('canvas[id^="cv_rackmap_"]').off('mousemove');
       $('#racks').remove();
     };
 
