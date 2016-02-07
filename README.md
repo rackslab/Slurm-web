@@ -1,6 +1,9 @@
 Slurm-web
 =========
 
+[![Code Climate](https://codeclimate.com/github/edf-hpc/slurm-web/badges/gpa.svg)](https://codeclimate.com/github/edf-hpc/slurm-web)
+[![Issue Count](https://codeclimate.com/github/edf-hpc/slurm-web/badges/issue_count.svg)](https://codeclimate.com/github/edf-hpc/slurm-web)
+
 Overview
 --------
 
