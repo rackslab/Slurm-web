@@ -86,33 +86,37 @@ define([
         end_time: endTimes[0] || null // eslint-disable-line camelcase
       };
 
-      jobsFiltered = arrayJobs.filter(function(item) {
-        startTimeFlag = false;
-        endTimeFlag = false;
+      jobsFiltered = arrayJobs;
 
-        if (filter.start_time && item.start_time && filter.start_time.checker === '<' && item.start_time < filter.start_time.timestamp) {
-          startTimeFlag = true;
-        } else if (filter.start_time && item.start_time && filter.start_time.checker === '>' && item.start_time > filter.start_time.timestamp) {
-          startTimeFlag = true;
-        }
+      if (filter.start_time || filter.end_time) {
+        jobsFiltered = arrayJobs.filter(function(item) {
+          startTimeFlag = false;
+          endTimeFlag = false;
 
-        if (filter.end_time && item.end_time && filter.end_time.checker === '<' && item.end_time < filter.end_time.timestamp) {
-          endTimeFlag = true;
-        } else if (filter.end_time && item.end_time && filter.end_time.checker === '>' && item.end_time > filter.end_time.timestamp) {
-          endTimeFlag = true;
-        }
+          if (filter.start_time && item.start_time && filter.start_time.checker === '<' && item.start_time < filter.start_time.timestamp) {
+            startTimeFlag = true;
+          } else if (filter.start_time && item.start_time && filter.start_time.checker === '>' && item.start_time > filter.start_time.timestamp) {
+            startTimeFlag = true;
+          }
 
-        if (filter.start_time !== null && filter.end_time !== null &&
-            startTimeFlag === true && endTimeFlag === true) {
-          return true;
-        } else if (filter.start_time !== null && filter.end_time === null && startTimeFlag === true) {
-          return true;
-        } else if (filter.start_time === null && filter.end_time !== null && endTimeFlag === true) {
-          return true;
-        }
+          if (filter.end_time && item.end_time && filter.end_time.checker === '<' && item.end_time < filter.end_time.timestamp) {
+            endTimeFlag = true;
+          } else if (filter.end_time && item.end_time && filter.end_time.checker === '>' && item.end_time > filter.end_time.timestamp) {
+            endTimeFlag = true;
+          }
 
-        return false;
-      });
+          if (filter.start_time !== null && filter.end_time !== null &&
+              startTimeFlag === true && endTimeFlag === true) {
+            return true;
+          } else if (filter.start_time !== null && filter.end_time === null && startTimeFlag === true) {
+            return true;
+          } else if (filter.start_time === null && filter.end_time !== null && endTimeFlag === true) {
+            return true;
+          }
+
+          return false;
+        });
+      }
 
       jobsFiltered = jobsFiltered.filter(function(item) {
         for (key in filter) {
