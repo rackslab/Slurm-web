@@ -42,12 +42,28 @@ define([
         callback(null, null);
       })
       .error(function(error) {
+        // remove unreachable cluster from list
+        clusters.splice(clusters.indexOf(cluster), 1);
+
         console.log('error on retrieveClusterInformations for cluster', cluster, error); // eslint-disable-line no-console
-        callback(true, error);
+        callback(null, cluster);
       });
   }
 
   return function(config) {
+    function bindClusterButtons() {
+      $('.cluster').on('click', function(e) {
+        e.stopPropagation();
+
+        // abort if the selected cluster is yet the current one
+        if (config.cluster === clusters[$(this).data('id')]) {
+          return false;
+        }
+
+        $(document).trigger('selectCluster', { clusterId: $(this).data('id'), $cluster: $(this) });
+      });
+    }
+
     $(document).on('selectCluster', function(e, options) {
       var cluster = clusters[options.clusterId],
         loadSelectedCluster;
@@ -70,11 +86,6 @@ define([
     this.init = function() {
       var loc, context;
 
-      context = {
-        clusters: clusters,
-        paddingTop: $('nav').height()
-      };
-
       if (!clusters.length) {
         // init default cluster if none defined
         loc = window.location;
@@ -89,9 +100,36 @@ define([
 
       // retrieve informations about authentication on each cluster
       async.map(clusters, retrieveClusterInformations, function(err, result) {
+        var index, $message, failingClusters;
+
         if (err) {
-          console.log('error on retrieve cluster informations', err, result); // eslint-disable-line no-console
+          console.error('error on retrieve cluster informations', result); // eslint-disable-line no-console
         }
+
+        failingClusters = result.filter(function(cluster) {
+          return cluster;
+        });
+
+        if (failingClusters.length) {
+          for (index in failingClusters) {
+            $message = $('<p>').text('Error while fetching cluster ' + failingClusters[index].name + ' : it seems to be unreachable');
+            $('#flash .alert').append($message);
+          }
+
+          $('#flash').addClass('display');
+        }
+
+        if (!clusters.length) {
+          return false;
+        }
+
+        context = {
+          clusters: clusters,
+          paddingTop: $('nav').height()
+        };
+
+        $('#clusters').append(template(context));
+        bindClusterButtons();
 
         // select first cluster once clusters informations have been retrieved
         $(document).trigger('selectCluster', { clusterId: 0 });
@@ -107,19 +145,6 @@ define([
 
         return;
       }
-
-      $('#clusters').append(template(context));
-
-      $('.cluster').on('click', function(e) {
-        e.stopPropagation();
-
-        // abort if the selected cluster is yet the current one
-        if (config.cluster === clusters[$(this).data('id')]) {
-          return false;
-        }
-
-        $(document).trigger('selectCluster', { clusterId: $(this).data('id'), $cluster: $(this) });
-      });
 
       $(document).ready(function() {
         if ($('body').width() > 768) {
