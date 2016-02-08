@@ -18,7 +18,7 @@
  *
  */
 
-var isIE = false || !!document.documentMode;
+var isIE = Boolean(document.documentMode);
 
 require.config({
   paths: {
@@ -109,7 +109,6 @@ if (isIE) {
 
     for (index in window.clusters) {
       slaves[window.clusters[index].api.url] = window.clusters[index].api.path + '/proxy';
-      console.log(index);
     }
     xdomain.slaves(slaves);
   });
@@ -191,9 +190,14 @@ require([
     e.stopPropagation();
 
     page.destroy(true);
-    $('#main').empty();
+    $('#main > div').not('#flash').remove();
     page = new Page();
-    $('#flash').hide();
+
+    if ($('#flash.display').length) {
+      $('#flash').show().removeClass('display');
+    } else {
+      $('#flash').hide().find('.alert').empty();
+    }
 
     switch (nextPage) {
     case 'login':

@@ -34,7 +34,7 @@ define([
     {
       id: '3dview',
       name: '3D View',
-      condition: !(/*@cc_on!@*/false || !!document.documentMode)
+      condition: !Boolean(document.documentMode)
     },
     { id: 'partitions', name: 'Partitions' },
     { id: 'qos', name: 'QOS' },
@@ -83,7 +83,7 @@ define([
         views: this.availableViews,
         userLogged: this.userLogged,
         user: $.extend({ username: '' }, userUtils.getUser(config.cluster)),
-        notIE: !(/*@cc_on!@*/false || !!document.documentMode)
+        notIE: !Boolean(document.documentMode)
       };
 
       $('body').prepend(template(context));

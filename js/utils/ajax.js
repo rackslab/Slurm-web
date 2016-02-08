@@ -22,9 +22,9 @@ define([
   'jquery'
 ], function($) {
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
-    if (!jqueryXHR.status) {
+    if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
       console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
-      $('#flash .alert').text('Error : ' + JSON.stringify(error));
+      $('#flash .alert').append($('<p>').text('Error : ' + JSON.stringify(error)));
       $('#flash').show();
     }
     if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
