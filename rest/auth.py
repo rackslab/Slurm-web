@@ -192,7 +192,8 @@ class User(object):
         s = Serializer(secret_key)
         try:
             data = s.loads(token)
-            print "verify_auth_token : data -> %s" % data
+            print "verify_auth_token : data -> username: %s role: %s" \
+                    % (data['username'], data['role'])
         except SignatureExpired:
             print "verify_auth_token : SignatureExpired "
             return None  # valid token, but expired
