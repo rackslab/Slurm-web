@@ -88,8 +88,8 @@ define([
 
       jobsFiltered = arrayJobs;
 
-      if (filter.start_time || filter.end_time) {
-        jobsFiltered = arrayJobs.filter(function(item) {
+      if (filter.start_time !== null || filter.end_time !== null) {
+        jobsFiltered = jobsFiltered.filter(function(item) {
           startTimeFlag = false;
           endTimeFlag = false;
 
