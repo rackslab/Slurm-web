@@ -319,10 +319,12 @@ define([
       rackABSY = rackABS.Y;
 
       nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + rackNode.posx * this.config.RACKINSIDEWIDTH;
-      nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy + 2) * this.config.RACKUNITHEIGHT;
+      nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - rackNode.posy * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
 
       nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
+
+      nodeABSY -= nodeHeight;
 
       nodeColors = colorsDraw.findLedColor(slurmNode, '2D');
       nodeColor = nodeColors.node;
@@ -359,10 +361,12 @@ define([
       rackABSY = rackABS.Y;
 
       nodeABSX = rackABSX + this.config.RACKBORDERWIDTH + rackNode.posx * this.config.RACKINSIDEWIDTH;
-      nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - (rackNode.posy + 2) * this.config.RACKUNITHEIGHT;
+      nodeABSY = rackABSY + this.config.RACKHEIGHT - this.config.RACKBORDERWIDTH - rackNode.posy * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
 
       nodeWidth = rackNode.width * this.config.RACKINSIDEWIDTH - this.config.NODEMARGIN;
       nodeHeight = rackNode.height * this.config.RACKUNITHEIGHT - this.config.NODEMARGIN;
+
+      nodeABSY -= nodeHeight;
 
       stateColor = colorsDraw.findLedColor(slurmNode, '2D').state;
 
