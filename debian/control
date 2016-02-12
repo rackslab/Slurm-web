@@ -49,7 +49,7 @@ Depends:
  libjs-jquery-tablesorter,
  libjs-requirejs,
  libjs-requirejs-text,
- libjs-three,
+ libjs-three (>= 72),
  libjs-bootstrap-typeahead,
  libjs-bootstrap-tagsinput,
  libjs-d3,
