@@ -162,6 +162,7 @@ define([
           var labelsUsername = [];
           var labelsStates = [];
           var labelsReservations = [];
+          var labelsCpus = [];
 
           var index;
           for (index in jobs) {
@@ -181,6 +182,7 @@ define([
               if (labelsReservations.indexOf(jobs[index].resv_name) === -1) {
                 labelsReservations.push(jobs[index].resv_name);
               }
+              labelsCpus = labelsCpus.concat(Object.keys(jobs[index].cpus_allocated));
             }
           }
 
@@ -214,11 +216,18 @@ define([
             }
           }
 
+          for (index in labelsCpus) {
+            if (labelsCpus.hasOwnProperty(index)) {
+              labelsCpus[index] = labelsCpus[index] + ' (cpu)';
+            }
+          }
+
           labels = labelsPartitions
             .concat(labelsQOS)
             .concat(labelsUsername)
             .concat(labelsStates)
-            .concat(labelsReservations);
+            .concat(labelsReservations)
+            .concat(labelsCpus);
 
           $('.typeahead').tagsinput({
             allowDuplicates: false,
@@ -227,6 +236,7 @@ define([
               hint: true,
               highlight: true,
               minLength: 1,
+              confirmKeys: [ 13 ],
               source: tagsinputUtils.jobsSubstringMatcher(labels)
             }
           });

@@ -20,8 +20,37 @@
 
 define([
   'jquery',
-  'date-utils'
-], function($, dateUtils) {
+  'date-utils',
+  'token-utils'
+], function($, dateUtils, tokenUtils) {
+  function convertNodeset(nodeset) {
+    var node = nodeset.split('[')[0],
+      attributs = nodeset.split('[')[1].split(']')[0],
+      cpusAttributs = attributs.split('|'),
+      result = [],
+      i,
+      j,
+      start,
+      end
+
+    for (i = 0; i < cpusAttributs.length; i++) {
+      if (cpusAttributs[i].indexOf('-') >= 0) {
+        start = parseInt(cpusAttributs[i].split('-')[0]);
+        end = parseInt(cpusAttributs[i].split('-')[1]);
+
+        if (typeof start === 'number' && typeof end === 'number' && start < end) {
+          for (j = start; j <= end; j++) {
+            result.push(node + j);
+          }
+        }
+      } else {
+        result.push(node + cpusAttributs[i]);
+      }
+    }
+
+    return result;
+  }
+
   return {
     filterJobs: function(jobs, options) {
       var i, tags, lastTagCount, arrayJobs, filter, key,
@@ -34,6 +63,9 @@ define([
         states = [],
         startTimes = [],
         endTimes = [],
+        nodes = [],
+        cpu = [],
+        nodesItems,
         result = {};
 
       if (!options.length) {
@@ -58,6 +90,10 @@ define([
           startTimes.push({ checker: tags[1], timestamp: dateUtils.dateTagToTimestamp(tags[2]) });
         } else if (tags[lastTagCount] === '(end-time)') {
           endTimes.push({ checker: tags[1], timestamp: dateUtils.dateTagToTimestamp(tags[2]) });
+        } else if (tags[lastTagCount] === '(cpu)') {
+          cpu.push(tags[0]);
+        } else if (tags[lastTagCount] === '(nodes)') {
+          nodes.push(tags[0]);
         }
       }
 
@@ -67,7 +103,9 @@ define([
           states.length > 1 ||
           reservations.length > 1 ||
           startTimes.length > 1 ||
-          endTimes.length > 1) {
+          endTimes.length > 1 ||
+          cpu.length > 1 ||
+          nodes.length > 1) {
         return [];
       }
 
@@ -83,7 +121,9 @@ define([
         job_state: states[0] || null, // eslint-disable-line camelcase
         resv_name: reservations[0] || null, // eslint-disable-line camelcase
         start_time: startTimes[0] || null, // eslint-disable-line camelcase
-        end_time: endTimes[0] || null // eslint-disable-line camelcase
+        end_time: endTimes[0] || null, // eslint-disable-line camelcase
+        nodes: nodes[0] || null,
+        cpu: cpu[0] || null
       };
 
       jobsFiltered = arrayJobs;
@@ -120,13 +160,44 @@ define([
 
       jobsFiltered = jobsFiltered.filter(function(item) {
         for (key in filter) {
-          if (key !== 'start_time' && key !== 'end_time' && filter[key] !== null && item[key] !== filter[key]) {
+          if (key !== 'start_time' &&
+              key !== 'end_time' &&
+              key !== 'cpu' &&
+              key !== 'nodes' &&
+              filter[key] !== null &&
+              item[key] !== filter[key]) {
             return false;
           }
         }
 
         return true;
       });
+
+      if (filter.cpu !== null) {
+        jobsFiltered = jobsFiltered.filter(function(item) {
+          if (Object.keys(item.cpus_allocated).indexOf(filter.cpu) >= 0) {
+            return true;
+          }
+
+          return false;
+        });
+      }
+
+      if (filter.nodes !== null) {
+        nodesItems = convertNodeset(filter.nodes);
+
+        jobsFiltered = jobsFiltered.filter(function(item) {
+          for (key in item.cpus_allocated) {
+            for (i = 0; i < nodesItems.length; i++) {
+              if (key === nodesItems[i]) {
+                return true;
+              }
+            }
+          }
+
+          return false;
+        });
+      }
 
       for (i = 0; i < jobsFiltered.length; i++) {
         result[jobsFiltered[i].key] = jobsFiltered[i];
@@ -136,7 +207,7 @@ define([
     },
     jobsSubstringMatcher: function(strs) {
       return function findMatches(q, cb) {
-        var matches, substringRegex, startTimeRegex, endTimeRegex;
+        var matches, substringRegex, startTimeRegex, endTimeRegex, nodeRegex;
 
         matches = [];
 
@@ -184,6 +255,17 @@ define([
           }
 
           matches.push(q);
+        }
+
+        nodeRegex = new RegExp('^.+[\\[].+[\\]]', 'i');
+        if (nodeRegex.test(q)) {
+          if (q.search('(nodes)') === -1) {
+            q += ' (nodes)';
+          }
+
+          q = q.split(',').join('|');
+
+          matches.unshift(q);
         }
 
         cb(matches);
