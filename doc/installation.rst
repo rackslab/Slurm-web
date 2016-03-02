@@ -463,7 +463,10 @@ Basic configuration file :
 - *RACKINSIDEWIDTH* (Number) : Size
 - *NODESPERRACK* (Number) : Number of nodes in one rack
 - *NODESMARGIN* (Number) : Space between two nodes in pixel
-- *NODESTATEWIDTH*: Core size in pixel
+- *NODEHORIZONTALPADDING* (Number) : Horizontal padding on node,
+- *NODEVERTICALPADDING* (Number) : Vertical padding on node,
+- *NODELEDRADIUS* (Number) : Radius of the LED on node,
+- *NODELEDPADDING* (Number) : Padding on the LED on node,
 - *LEGEND* (Object) : Legend property
   - *WIDTH* (Number) : Legend canvas width in pixel
   - *HEIGHT* (Number) : Legend canvas height in pixel

@@ -37,11 +37,7 @@ define([
       RACKINSIDEHEIGHT: canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT,
       RACKHEIGHT: canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT + 2 * canvasConfig.RACKBORDERWIDTH,
       RACKWIDTH: canvasConfig.RACKINSIDEWIDTH + 2 * canvasConfig.RACKBORDERWIDTH,
-      CANVASHEIGHT: canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT + 2 * canvasConfig.RACKBORDERWIDTH + canvasConfig.CANVASMARGINTOP,
-      NODESPERCOL: Math.floor(canvasConfig.NODESPERRACK / canvasConfig.NODESPERROW),
-      NODEWIDTH: Math.floor((canvasConfig.RACKINSIDEWIDTH + 2 * canvasConfig.RACKBORDERWIDTH - 2 * canvasConfig.RACKBORDERWIDTH - (canvasConfig.NODESPERROW * canvasConfig.NODEMARGIN + canvasConfig.NODEMARGIN)) / canvasConfig.NODESPERROW),
-      NODEHEIGHT: Math.floor((canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT + 2 * canvasConfig.RACKBORDERWIDTH - 2 * canvasConfig.RACKBORDERWIDTH - (canvasConfig.NODESPERCOL * canvasConfig.NODEMARGIN + canvasConfig.NODEMARGIN)) / canvasConfig.NODESPERCOL),
-      NODESTATEHEIGHT: Math.floor((canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT + 2 * canvasConfig.RACKBORDERWIDTH - 2 * canvasConfig.RACKBORDERWIDTH - (canvasConfig.NODESPERCOL * canvasConfig.NODEMARGIN + canvasConfig.NODEMARGIN)) / canvasConfig.NODESPERCOL)
+      CANVASHEIGHT: canvasConfig.RACKUNITNUMBER * canvasConfig.RACKUNITHEIGHT + 2 * canvasConfig.RACKBORDERWIDTH + canvasConfig.CANVASMARGINTOP
     });
 
     function getRackABSCoordinates() {
@@ -84,7 +80,7 @@ define([
       y = Math.round(y);
 
       ctx.beginPath();
-      ctx.arc(x, y, 2, 0, 2 * Math.PI, false);
+      ctx.arc(x, y, self.config.NODELEDRADIUS, 0, 2 * Math.PI, false);
       ctx.fillStyle = color;
       ctx.fill();
     }
@@ -114,7 +110,7 @@ define([
       }
 
       allFactors = factors(coresNumber);
-      goalRatio = (self.config.NODEWIDTH - 20) / (self.config.NODEHEIGHT - 4);
+      goalRatio = nodeWidth / nodeHeight;
       ratio = -1;
       bestRatio = -1;
       bestFactorId = 0;
@@ -128,7 +124,9 @@ define([
         }
       }
 
-      return allFactors[bestFactorId];
+      return goalRatio < 1
+        ? allFactors[bestFactorId].reverse()
+        : allFactors[bestFactorId];
     }
 
     function pickJobColor(jobId) {
@@ -138,8 +136,12 @@ define([
     function getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize) {
       var coreX = Math.floor(coreId / coresRows),
         coreY = Math.floor(coreId % coresRows),
-        coreXOrigin = nodeABSX + nodeWidth - coresColumns * coreSize - 2,
-        coreYorigin = nodeABSY + Math.round((nodeHeight - coresRows * coreSize) / 2),
+        coreXOrigin = nodeABSX + nodeWidth -
+          coresColumns * coreSize -
+          self.config.NODEHORIZONTALPADDING,
+        coreYorigin = nodeABSY + nodeHeight -
+          coresRows * coreSize -
+          self.config.NODEVERTICALPADDING,
         coreABSX = coreXOrigin + coreX * coreSize,
         coreABSY = coreYorigin + coreY * coreSize;
 
@@ -363,7 +365,8 @@ define([
       var ctx, rackABS, rackABSX, rackABSY, nodeABSX, nodeABSY, nodeWidth,
         nodeHeight, stateColor, coresNumber, coresTableInfos, coresColumns,
         coresRows, coreABSX, coreABSY, coreHeight, coreWidth, coreSize, coreId,
-        coresJobNumber, coresDrawn, coreCoords, coreColor, job;
+        coresJobNumber, coresDrawn, coreCoords, coreColor, job, innerNodeWidth,
+        innerNodeHeight, ledABSX, ledABSY;
 
       if (!this.intersections) {
         this.intersections = new IntersectionsDraw();
@@ -394,7 +397,11 @@ define([
       this.intersections.addNodeHoverIntersections({ nodeName: rackNode.name, rackName: rack.name }, nodeABSX, nodeABSX + nodeWidth, nodeABSY, nodeABSY + nodeHeight);
 
       if (stateColor) {
-        drawLed(ctx, nodeABSX + 4, nodeABSY + 4, stateColor);
+        ledABSX = nodeABSX + this.config.NODEHORIZONTALPADDING +
+          this.config.NODELEDRADIUS + this.config.NODELEDPADDING;
+        ledABSY = nodeABSY + this.config.NODEVERTICALPADDING +
+          this.config.NODELEDRADIUS + this.config.NODELEDPADDING;
+        drawLed(ctx, ledABSX, ledABSY, stateColor);
       }
 
       coresNumber = 0;
@@ -402,15 +409,24 @@ define([
         coresNumber = slurmNode.cpus;
       }
 
-      coresTableInfos = bestFactor(this.config.NODEWIDTH, this.config.NODEHEIGHT, coresNumber);
+      innerNodeHeight = nodeHeight - this.config.NODEVERTICALPADDING * 2;
+      innerNodeWidth = nodeWidth - this.config.NODEHORIZONTALPADDING * 2;
+
+      if (innerNodeWidth > innerNodeHeight) {
+        innerNodeWidth -= (this.config.NODELEDRADIUS + this.config.NODELEDPADDING) * 2;
+      } else {
+        innerNodeHeight -= (this.config.NODELEDRADIUS + this.config.NODELEDPADDING) * 2;
+      }
+
+      coresTableInfos = bestFactor(innerNodeWidth, innerNodeHeight, coresNumber);
       coresColumns = coresTableInfos[1];
       coresRows = coresTableInfos[0];
 
       coreABSX = 0;
       coreABSY = 0;
 
-      coreHeight = Math.round((nodeHeight - 4) / coresRows);
-      coreWidth = Math.round((nodeWidth - 20) / coresColumns);
+      coreHeight = Math.floor(innerNodeHeight / coresRows);
+      coreWidth = Math.floor(innerNodeWidth / coresColumns);
       coreSize = Math.min(coreHeight, coreWidth);
 
       coreId = 0;
