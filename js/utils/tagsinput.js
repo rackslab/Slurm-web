@@ -31,12 +31,12 @@ define([
       i,
       j,
       start,
-      end
+      end;
 
     for (i = 0; i < cpusAttributs.length; i++) {
       if (cpusAttributs[i].indexOf('-') >= 0) {
-        start = parseInt(cpusAttributs[i].split('-')[0]);
-        end = parseInt(cpusAttributs[i].split('-')[1]);
+        start = parseInt(cpusAttributs[i].split('-')[0], 10);
+        end = parseInt(cpusAttributs[i].split('-')[1], 10);
 
         if (typeof start === 'number' && typeof end === 'number' && start < end) {
           for (j = start; j <= end; j++) {

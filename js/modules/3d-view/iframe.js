@@ -18,7 +18,7 @@
  *
  */
 
-var isIE = false || !!document.documentMode;
+var isIE = false || Boolean(document.documentMode);
 
 require.config({
   paths: {

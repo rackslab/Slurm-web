@@ -37,14 +37,15 @@ define([
   'jobs-helpers',
   'boolean-helpers',
   'date-helpers',
-  'different-helpers',
-], function ($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, tagsinputUtils) {
+  'different-helpers'
+], function($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
   tableJobsTemplate = Handlebars.compile(tableJobsTemplate);
 
-  return function (config, filter) {
+  return function(config, filter) {
     var self = this;
+
     this.interval = null;
     this.tablesorterOptions = {};
     this.tagsinputOptions = [];
@@ -61,14 +62,14 @@ define([
       $('#table-jobs').html(tableJobsTemplate(context));
       $('.tt-input').css('width', '100%');
 
-      $("tr[id^='tr-job-']").on('click', function (e) {
-        e.preventDefault();
-
+      $('tr[id^="tr-job-"]').on('click', function(e) {
         var jobId = $(e.target).parent('tr').attr('id').split('-')[2];
+
+        e.preventDefault();
         $(document).trigger('modal-job', { jobId: jobId });
       });
 
-      $("td[data-partition$='(partition)'], td[data-qos$='(qos)']").on('click', function (e) {
+      $('td[data-partition$="(partition)"], td[data-qos$="(qos)"]').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -83,9 +84,6 @@ define([
     }
 
     function toggleModal(jobId) {
-      closeModal();
-      self.onModal = jobId;
-
       var options = {
         type: 'POST',
         dataType: 'json',
@@ -98,12 +96,16 @@ define([
         })
       };
 
+      closeModal();
+      self.onModal = jobId;
+
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
-        .success(function (job) {
-          job.id = jobId;
+        .success(function(job) {
           var context = {
             job: job
           };
+
+          job.id = jobId;
 
           $('body').append(modalTemplate(context));
           $('#modal-job').on('hidden.bs.modal', closeModal);
@@ -111,41 +113,56 @@ define([
         });
     }
 
-    this.init = function () {
-      var self = this;
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: tokenUtils.getToken(config.cluster)
-        })
-      };
+    this.init = function() {
+      var self = this,
+        options = {
+          type: 'POST',
+          dataType: 'json',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            token: tokenUtils.getToken(config.cluster)
+          })
+        };
 
-      $(document).on('modal-job', function (e, options) {
+      $(document).on('modal-job', function(e, options) {
         e.stopPropagation();
 
         toggleModal(options.jobId);
       });
 
       $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
-        .success(function (jobs) {
+        .success(function(jobs) {
+          var context, plotParams, index, dataJobsState, job, qos, part,
+            dataAllocatedCores,
+            labels = [],
+            labelsPartitions = [],
+            labelsQOS = [],
+            labelsUsername = [],
+            labelsStates = [],
+            labelsReservations = [],
+            labelsCpus = [],
+            QOSStats = {},
+            partStats = {},
+            dataQOSCores = [],
+            dataPartCores = [],
+            maxLegendHeight = 0;
+
           if (Object.keys(jobs).length === 0) {
             $('#main').append(template());
-            return ;
+            return;
           }
 
-          var context = {
+          context = {
             tagsinputOptions: self.tagsinputOptions.toString()
           };
 
-          var plotParams = {
+          plotParams = {
             series: {
               pie: {
-                show: true,
+                show: true
               }
             }
           };
@@ -156,15 +173,6 @@ define([
             $(document).trigger('modal-job', { jobId: self.onModal });
           }
 
-          var labels = [];
-          var labelsPartitions = [];
-          var labelsQOS = [];
-          var labelsUsername = [];
-          var labelsStates = [];
-          var labelsReservations = [];
-          var labelsCpus = [];
-
-          var index;
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {
               if (labelsPartitions.indexOf(jobs[index].partition) === -1) {
@@ -188,37 +196,37 @@ define([
 
           for (index in labelsPartitions) {
             if (labelsPartitions.hasOwnProperty(index)) {
-              labelsPartitions[index] = labelsPartitions[index] + ' (partition)';
+              labelsPartitions[index] += ' (partition)';
             }
           }
 
           for (index in labelsQOS) {
             if (labelsQOS.hasOwnProperty(index)) {
-              labelsQOS[index] = labelsQOS[index] + ' (qos)';
+              labelsQOS[index] += ' (qos)';
             }
           }
 
           for (index in labelsUsername) {
             if (labelsUsername.hasOwnProperty(index)) {
-              labelsUsername[index] = labelsUsername[index] + ' (user)';
+              labelsUsername[index] += ' (user)';
             }
           }
 
           for (index in labelsStates) {
             if (labelsStates.hasOwnProperty(index)) {
-              labelsStates[index] = labelsStates[index] + ' (state)';
+              labelsStates[index] += ' (state)';
             }
           }
 
           for (index in labelsReservations) {
             if (labelsReservations.hasOwnProperty(index)) {
-              labelsReservations[index] = labelsReservations[index] + ' (reservation)';
+              labelsReservations[index] += ' (reservation)';
             }
           }
 
           for (index in labelsCpus) {
             if (labelsCpus.hasOwnProperty(index)) {
-              labelsCpus[index] = labelsCpus[index] + ' (cpu)';
+              labelsCpus[index] += ' (cpu)';
             }
           }
 
@@ -257,7 +265,7 @@ define([
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
 
-          var dataJobsState = [
+          dataJobsState = [
             {
               label: 'Running',
               data: 0
@@ -269,11 +277,9 @@ define([
             {
               label: 'Completed',
               data: 0
-            },
+            }
           ];
 
-          var index;
-          var job;
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {
               job = jobs[index];
@@ -288,7 +294,7 @@ define([
             }
           }
 
-          var dataAllocatedCores = [
+          dataAllocatedCores = [
             {
               label: 'allocated',
               data: 0
@@ -298,11 +304,6 @@ define([
             }
           ];
 
-          var QOSStats = {};
-          var partStats = {};
-
-          var index;
-          var job;
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {
               job = jobs[index];
@@ -332,18 +333,12 @@ define([
 
           dataAllocatedCores[1].data += config.cluster.infos.cores - dataAllocatedCores[0].data;
 
-          var dataQOSCores = [];
-
-          var QOS;
-          for (QOS in QOSStats) {
-            if (QOSStats.hasOwnProperty(QOS)) {
-              dataQOSCores.push({ label: QOS, data: QOSStats[QOS].cores });
+          for (qos in QOSStats) {
+            if (QOSStats.hasOwnProperty(qos)) {
+              dataQOSCores.push({ label: qos, data: QOSStats[qos].cores });
             }
           }
 
-          var dataPartCores = [];
-
-          var part;
           for (part in partStats) {
             if (partStats.hasOwnProperty(part)) {
               dataPartCores.push({ label: part, data: partStats[part].cores });
@@ -361,16 +356,15 @@ define([
           $.plot('#plot-jobs-states', dataJobsState, plotParams);
 
           // set min-height for plots area
-          var maxLegendHeight = 0;
           $('.legend>div').each(function() {
             maxLegendHeight = Math.max(maxLegendHeight, $(this).height());
           });
-          $('.plots').css({'min-height': maxLegendHeight + 'px'})
+          $('.plots').css({ 'min-height': maxLegendHeight + 'px' });
         });
     };
 
-    this.refresh = function () {
-      this.interval = setInterval(function () {
+    this.refresh = function() {
+      this.interval = setInterval(function() {
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
         self.destroy(false);
@@ -378,7 +372,7 @@ define([
       }, config.REFRESH);
     };
 
-    this.destroy = function (destroyInterval) {
+    this.destroy = function(destroyInterval) {
       if (this.interval && destroyInterval) {
         clearInterval(this.interval);
       }
@@ -386,8 +380,8 @@ define([
       $('#modal-job').remove();
       $('.modal-backdrop').remove();
       $(document).off('modal-job');
-      $("tr[id^='tr-job-']").off('click');
-      $("td[data-partition$='(partition)'], td[data-qos$='(qos)']").off('click');
+      $('tr[id^="tr-job-"]').off('click');
+      $('td[data-partition$="(partition)"], td[data-qos$="(qos)"]').off('click');
       $('#apply-tags').off('click');
       $('#jobs').remove();
     };

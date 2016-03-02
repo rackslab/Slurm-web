@@ -178,6 +178,7 @@ define([
         job.positionY = positionY;
         positionY += lineHeight;
 
+        /* eslint-disable camelcase */
         // if end_time < start_time OR end_time = 0, set to start_time + time_limit
         if (job.end_time < job.start_time || !job.end_time) {
           job.end_time = job.start_time + job.time_limit * 60;

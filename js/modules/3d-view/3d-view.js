@@ -18,7 +18,7 @@
  *
  */
 
-var isIE = /*@cc_on!@*/false || !!document.documentMode;
+var isIE = /*@cc_on!@*/false || Boolean(document.documentMode);
 
 if (isIE) {
   console.log('IE detected, 3D-view not loaded'); // eslint-disable-line no-console
