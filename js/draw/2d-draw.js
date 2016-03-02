@@ -55,11 +55,21 @@ define([
     }
 
     function drawRectangle(ctx, x, y, width, height, color) {
+      x = Math.round(x);
+      y = Math.round(y);
+      width = Math.round(width);
+      height = Math.round(height);
+
       ctx.fillStyle = color;
       ctx.fillRect(x, y, width, height);
     }
 
     function drawRectangleBorder(ctx, X, Y, width, height, borderWidth, colorFill, colorBorder) {
+      X = Math.round(X);
+      Y = Math.round(Y);
+      width = Math.round(width);
+      height = Math.round(height);
+
       ctx.beginPath();
       ctx.rect(X - 0.5, Y - 0.5, width, height);
       ctx.fillStyle = colorFill;
@@ -70,6 +80,9 @@ define([
     }
 
     function drawLed(ctx, x, y, color) {
+      x = Math.round(x);
+      y = Math.round(y);
+
       ctx.beginPath();
       ctx.arc(x, y, 2, 0, 2 * Math.PI, false);
       ctx.fillStyle = color;
@@ -313,6 +326,8 @@ define([
 
       ctx = $('#cv_rackmap_' + rack.name)[0].getContext('2d');
 
+      ctx.imageSmoothingEnabled = true;
+
       rackABS = getRackABSCoordinates(rack);
 
       rackABSX = rackABS.X;
@@ -355,6 +370,8 @@ define([
       }
 
       ctx = $('#cv_rackmap_' + rack.name)[0].getContext('2d');
+
+      ctx.imageSmoothingEnabled = true;
 
       rackABS = getRackABSCoordinates(rack);
       rackABSX = rackABS.X;
@@ -409,8 +426,8 @@ define([
 
           for (; coreId < coresDrawn + coresJobNumber; coreId++) {
             coreCoords = getCoreABSCoordinates(nodeWidth, nodeHeight, nodeABSX, nodeABSY, coreId, coresRows, coresColumns, coreSize);
-            coreABSX = coreCoords.x;
-            coreABSY = coreCoords.y;
+            coreABSX = Math.floor(coreCoords.x);
+            coreABSY = Math.floor(coreCoords.y);
             this.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, coreABSX, coreABSX + coreSize, coreABSY, coreABSY + coreSize);
             drawRectangleBorder(ctx, coreABSX, coreABSY, coreSize, coreSize, 1, coreColor, colors.COREBORDER);
           }
