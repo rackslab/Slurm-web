@@ -1,0 +1,9 @@
+exclude_paths:
+- conf/**/*
+- debian/**/*
+- doc/**/*
+- js/fonts/*
+- js/libraries/*
+- rest/mocks/*
+- schema/*
+- static/*
