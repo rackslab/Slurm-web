@@ -171,11 +171,24 @@ require([
   });
 
   $(document).on('logout', function(e) {
+    var cluster;
+
     e.preventDefault();
 
-    // clear authentication on current cluster
-    token.removeToken(config.cluster);
-    user.removeUser(config.cluster);
+    function logout(cluster) {
+      token.removeToken(cluster);
+      user.removeUser(cluster);
+    }
+
+    if (config.AUTOLOGIN) {
+      // clear authentication on all clusters
+      for (cluster in window.clusters) {
+        logout(window.clusters[cluster]);
+      }
+    } else {
+      // clear authentication on current cluster
+      logout(config.cluster);
+    }
 
     $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });
   });
