@@ -72,7 +72,8 @@ define([
       var context;
 
       this.availableViews = VIEWS.filter(function(view) {
-        var restrictedViews = config.cluster.restrictedViews || [];
+        var user = userUtils.getUser(config.cluster),
+          restrictedViews = user && user.restrictedViews || [];
 
         return restrictedViews.indexOf(view.id) === -1;
       });

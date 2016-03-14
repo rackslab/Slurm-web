@@ -22,10 +22,11 @@ define([
   'jquery'
 ], function($) {
   var user = {
-    setUser: function(cluster, username, role) {
+    setUser: function(cluster, user) {
       var userStored = JSON.stringify({
-        username: username,
-        role: role
+        username: user.username,
+        role: user.role,
+        restrictedViews: user.restricted_views // eslint-disable-line no-trailing-spaces
       });
 
       localStorage.setItem('user-' + cluster.id, userStored);
