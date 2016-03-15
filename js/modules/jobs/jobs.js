@@ -52,13 +52,14 @@ define([
     this.onModal = null;
     this.initialLoad = true;
 
-    function filterTableJobs(jobs) {
+    function filteredJobs(jobs, result) {
       var context = {
         count: Object.keys(jobs).length,
         jobs: jobs
       };
 
-      context.jobs = tagsinputUtils.filterJobs(jobs, self.tagsinputOptions);
+      context.jobs = result;
+
       $('#table-jobs').html(tableJobsTemplate(context));
       $('.tt-input').css('width', '100%');
 
@@ -75,6 +76,14 @@ define([
 
         $('input.typeahead').tagsinput('add', $(e.target).attr('data-qos') || $(e.target).attr('data-partition'));
       });
+    }
+
+    function filterTableJobs(jobs) {
+      if (self.tagsinputOptions.length > 0) {
+        tagsinputUtils.filterJobs(jobs, self.tagsinputOptions, config, filteredJobs);
+      } else {
+        filteredJobs(jobs, jobs);
+      }
     }
 
     function closeModal() {
