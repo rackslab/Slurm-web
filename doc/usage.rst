@@ -74,7 +74,7 @@ There are 8 columns:
 
 You can filter the displayed jobs by using the input above the table. All the
 shown jobs then satisfy all the filters given in the input. There is an
-autocompletion mechanism on all partitions, QoS, Name, User, State, Start Time
+autocompletion mechanism on all partitions, QoS, Name, User, Nodes, State, Start Time
 and End Time existing in the table. The filters field work in a substractive
 way.
 
@@ -103,6 +103,17 @@ Examples :
 "start < +1h:10m"
 
 The example show all the jobs who started 1 hour and 10 minutes ago from now.
+
+Another special use case is the Nodes filter. You can filter by a single node or a complete nodeset.
+
+The single node filter show the job who use this node. A complete nodeset show the jobs who use
+one of the node in common.
+
+Examples :
+
+  pocn240 show the job who use the node 240
+
+  pocn[240-242, 260] show all the jobs who use the node 240, 241, 242 or 260
 
 To get more details about one specific job, you can click anywhere on the job
 row:
