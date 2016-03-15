@@ -23,36 +23,8 @@ define([
   'date-utils',
   'token-utils'
 ], function($, dateUtils, tokenUtils) {
-  function convertNodeset(nodeset) {
-    var node = nodeset.split('[')[0],
-      attributs = nodeset.split('[')[1].split(']')[0],
-      cpusAttributs = attributs.split('|'),
-      result = [],
-      i,
-      j,
-      start,
-      end;
-
-    for (i = 0; i < cpusAttributs.length; i++) {
-      if (cpusAttributs[i].indexOf('-') >= 0) {
-        start = parseInt(cpusAttributs[i].split('-')[0], 10);
-        end = parseInt(cpusAttributs[i].split('-')[1], 10);
-
-        if (typeof start === 'number' && typeof end === 'number' && start < end) {
-          for (j = start; j <= end; j++) {
-            result.push(node + j);
-          }
-        }
-      } else {
-        result.push(node + cpusAttributs[i]);
-      }
-    }
-
-    return result;
-  }
-
   return {
-    filterJobs: function(jobs, options) {
+    filterJobs: function(jobs, options, config, callback) {
       var i, tags, lastTagCount, arrayJobs, filter, key,
         startTimeFlag, endTimeFlag,
         jobsFiltered = {},
@@ -66,6 +38,7 @@ define([
         nodes = [],
         cpu = [],
         nodesItems,
+        ajaxOptions,
         result = {};
 
       if (!options.length) {
@@ -184,26 +157,47 @@ define([
       }
 
       if (filter.nodes !== null) {
-        nodesItems = convertNodeset(filter.nodes);
+        ajaxOptions = {
+          type: 'POST',
+          dataType: 'json',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            nodeset: filter.nodes.replace('|', ',')
+          })
+        };
 
-        jobsFiltered = jobsFiltered.filter(function(item) {
-          for (key in item.cpus_allocated) {
-            for (i = 0; i < nodesItems.length; i++) {
-              if (key === nodesItems[i]) {
-                return true;
+        $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodeset', ajaxOptions)
+          .success(function(data) {
+            nodesItems = data;
+
+            jobsFiltered = jobsFiltered.filter(function(item) {
+              for (key in item.cpus_allocated) {
+                for (i = 0; i < nodesItems.length; i++) {
+                  if (key === nodesItems[i]) {
+                    return true;
+                  }
+                }
               }
+
+              return false;
+            });
+
+            for (i = 0; i < jobsFiltered.length; i++) {
+              result[jobsFiltered[i].key] = jobsFiltered[i];
             }
-          }
 
-          return false;
-        });
+            return callback(jobs, result);
+          });
+      } else {
+        for (i = 0; i < jobsFiltered.length; i++) {
+          result[jobsFiltered[i].key] = jobsFiltered[i];
+        }
+
+        return callback(jobs, result);
       }
-
-      for (i = 0; i < jobsFiltered.length; i++) {
-        result[jobsFiltered[i].key] = jobsFiltered[i];
-      }
-
-      return result;
     },
     jobsSubstringMatcher: function(strs) {
       return function findMatches(q, cb) {
