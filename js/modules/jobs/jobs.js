@@ -249,11 +249,11 @@ define([
           $('.typeahead').tagsinput({
             allowDuplicates: false,
             freeInput: false,
+            delimiter: ';',
             typeaheadjs: {
               hint: true,
               highlight: true,
               minLength: 1,
-              confirmKeys: [ 13 ],
               source: tagsinputUtils.jobsSubstringMatcher(labels)
             }
           });

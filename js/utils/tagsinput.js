@@ -165,7 +165,7 @@ define([
             'Content-Type': 'application/json'
           },
           data: JSON.stringify({
-            nodeset: filter.nodes.replace('|', ',')
+            nodeset: filter.nodes
           })
         };
 
@@ -256,8 +256,6 @@ define([
           if (q.search('(nodes)') === -1) {
             q += ' (nodes)';
           }
-
-          q = q.split(',').join('|');
 
           matches.unshift(q);
         }
