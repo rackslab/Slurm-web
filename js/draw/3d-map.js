@@ -30,10 +30,12 @@ define([
     for (indexRange in racks) {
       if (racks.hasOwnProperty(indexRange)) {
         for (indexRack in racks[indexRange]) {
-          if (racks[indexRange].hasOwnProperty(indexRack)) {
-            if (racks[indexRange][indexRack].hasOwnProperty('posx') && number < racks[indexRange][indexRack].posx) {
-              number = racks[indexRange][indexRack].posx;
-            }
+          if (
+            racks[indexRange].hasOwnProperty(indexRack) &&
+            racks[indexRange][indexRack].hasOwnProperty('posx') &&
+            number < racks[indexRange][indexRack].posx
+          ) {
+            number = racks[indexRange][indexRack].posx;
           }
         }
       }
@@ -50,9 +52,11 @@ define([
     return number;
   }
 
+  // useful for debug
+  /* eslint-disable no-console, no-unused-vars */
   function printMap(map) {
-    var tab = [];
-    var i;
+    var tab = [], i;
+
     for (i = 0; i < map.data.length; i++) {
       if (i % map.width === 0) {
         console.log(tab.toString());
@@ -64,11 +68,11 @@ define([
 
     console.log(tab.toString());
   }
+  /* eslint-enable no-console */
 
   function findRangeMaxRacksNumber(racks) {
-    var number = 0;
+    var number = 0, index;
 
-    var index;
     for (index in racks) {
       if (racks.hasOwnProperty(index)) {
         if (Object.keys(racks[index]).length > number) {
@@ -81,12 +85,8 @@ define([
   }
 
   function findMapAltitude(racks) {
-    var altitude = 0;
-    var rackAltitude;
+    var altitude = 0, rackAltitude, rackIndex, nodeIndex, i;
 
-    var rackIndex;
-    var nodeIndex;
-    var i;
     for (rackIndex in racks) {
       if (racks.hasOwnProperty(rackIndex)) {
         for (nodeIndex in racks[rackIndex]) {
@@ -136,10 +136,12 @@ define([
     for (indexRange in racks) {
       if (racks.hasOwnProperty(indexRange)) {
         for (indexRack in racks[indexRange]) {
-          if (racks[indexRange].hasOwnProperty(indexRack)) {
-            if (racks[indexRange][indexRack].hasOwnProperty('posx') && racks[indexRange][indexRack].posx === posx) {
-              return racks[indexRange];
-            }
+          if (
+            racks[indexRange].hasOwnProperty(indexRack) &&
+            racks[indexRange][indexRack].hasOwnProperty('posx') &&
+            racks[indexRange][indexRack].posx === posx
+          ) {
+            return racks[indexRange];
           }
         }
       }
