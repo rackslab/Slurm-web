@@ -38,7 +38,10 @@ define([
     findLedColor: function(node, type) {
       var colors = type === '3D' ? d3Colors : d2Colors,
         stateColor = colors.LED.IDLE,
-        nodeColor = colors.LED.UNKNOWN;
+        nodeColor = colors.LED.UNKNOWN,
+        allocatedColor = node.total_cpus === -node.cpus
+          ? colors.LED.FULLYALLOCATED
+          : colors.LED.PARTALLOCATED;
 
       if (!node || !node.hasOwnProperty('node_state')) {
         return { node: nodeColor, state: stateColor };
@@ -58,19 +61,11 @@ define([
       case 'ALLOCATED*':
       case 'COMPLETING':
       case 'COMPLETING*':
-        if (node.total_cpus === -node.cpus) {
-          nodeColor = colors.LED.FULLYALLOCATED;
-        } else {
-          nodeColor = colors.LED.PARTALLOCATED;
-        }
+        nodeColor = allocatedColor;
         stateColor = colors.LED.AVAILABLE;
         break;
       case 'RESERVED':
-        if (node.total_cpus === -node.cpus) {
-          nodeColor = colors.LED.FULLYALLOCATED;
-        } else {
-          nodeColor = colors.LED.PARTALLOCATED;
-        }
+        nodeColor = allocatedColor;
         stateColor = colors.LED.RESERVED;
         break;
       case 'DRAINING':

@@ -58,7 +58,7 @@ define([
       ctx.fillStyle = 'black';
       ctx.font = '12px sans-serif';
       ctx.fillText(title, this.legend.x - 3, this.legend.y);
-      this.legend.width = Math.max(this.legend.width, ctx.measureText(title).width + 3);
+      this.updateLegendWidth(ctx, title, 3);
 
       ctx.font = '10px sans-serif';
       this.drawStateText(ctx, 'available', colors.LED.AVAILABLE);
@@ -83,14 +83,14 @@ define([
       this.legend.y += 10;
       drawRectangle(ctx, this.legend.x - 2, this.legend.y - 8, 9, 9, color);
       this.drawText(ctx, text, { shiftX: 10 });
-      this.legend.width = Math.max(this.legend.width, ctx.measureText(text).width + 12);
+      this.updateLegendWidth(ctx, text, 12);
     },
 
     drawStateText: function(ctx, text, color) {
       this.legend.y += 10;
       drawLed(ctx, this.legend.x + 1, this.legend.y, color);
       this.drawText(ctx, text, { shiftX: 10, shiftY: 3 });
-      this.legend.width = Math.max(this.legend.width, ctx.measureText(text).width + 9);
+      this.updateLegendWidth(ctx, text, 9);
     },
 
     drawText: function(ctx, text, opts) {
@@ -101,6 +101,10 @@ define([
 
       ctx.fillStyle = color;
       ctx.fillText(text, this.legend.x + shiftX, this.legend.y + shiftY);
+    },
+
+    updateLegendWidth: function(ctx, text, shift) {
+      this.legend.width = Math.max(this.legend.width, ctx.measureText(text).width + (shift || 0));
     }
   };
 });
