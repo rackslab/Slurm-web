@@ -47,60 +47,59 @@ define([
   }
 
   return {
-    // TODO : refacto in several smaller functions
+    legend: { x: 0, y: 0, width: 0, height: 0 },
+
     drawLegend: function(type) {
       var ctx = $('#cv_rackmap_legend')[0].getContext('2d'),
-        legendX = 10,
-        legendY = 15,
-        legendWidth,
-        legendHeight;
+        title = 'node state:';
 
-      if (type === 'jobs-map') {
-        legendHeight = 65;
-        legendWidth = 90;
-      } else {
-        legendHeight = 90;
-        legendWidth = 98;
-      }
-
-      drawRectangleBorder(ctx, 1, 1, legendWidth, legendHeight, 1, 'rgba(255,255,255,1)', 'rgba(200,200,200,1)');
+      this.legend = { x: 10, y: 15, width: 0, height: 0 };
 
       ctx.fillStyle = 'black';
       ctx.font = '12px sans-serif';
-      ctx.fillText('node state:', legendX - 3, legendY);
+      ctx.fillText(title, this.legend.x - 3, this.legend.y);
+      this.legend.width = Math.max(this.legend.width, ctx.measureText(title).width + 3);
+
       ctx.font = '10px sans-serif';
-
-      legendY += 10;
-      drawLed(ctx, legendX + 1, legendY, colors.LED.AVAILABLE);
-      ctx.fillStyle = 'black';
-      ctx.fillText('available', legendX + 10, legendY + 3);
-
-      legendY += 10;
-      drawLed(ctx, legendX + 1, legendY, colors.LED.DRAINED);
-      ctx.fillStyle = 'black';
-      ctx.fillText('drained', legendX + 10, legendY + 3);
-
-      legendY += 10;
-      drawLed(ctx, legendX + 1, legendY, colors.LED.DOWN);
-      ctx.fillStyle = 'black';
-      ctx.fillText('down', legendX + 10, legendY + 3);
-
-      legendY += 10;
-      drawLed(ctx, legendX + 1, legendY, colors.LED.RESERVED);
-      ctx.fillStyle = 'black';
-      ctx.fillText('reserved', legendX + 10, legendY + 3);
+      this.drawStateText(ctx, 'available', colors.LED.AVAILABLE);
+      this.drawStateText(ctx, 'drained', colors.LED.DRAINED);
+      this.drawStateText(ctx, 'down', colors.LED.DOWN);
+      this.drawStateText(ctx, 'reserved', colors.LED.RESERVED);
 
       if (type === 'racks') {
-        legendY += 10;
-        drawRectangle(ctx, legendX - 2, legendY, 9, 9, colors.LED.FULLYALLOCATED);
-        ctx.fillStyle = 'black';
-        ctx.fillText('fully allocated', legendX + 10, legendY + 10);
-
-        legendY += 10;
-        drawRectangle(ctx, legendX - 2, legendY, 9, 9, colors.LED.PARTALLOCATED);
-        ctx.fillStyle = 'black';
-        ctx.fillText('partly allocated', legendX + 10, legendY + 10);
+        this.legend.y += 10;
+        this.drawNodeText(ctx, 'fully allocated', colors.LED.FULLYALLOCATED);
+        this.drawNodeText(ctx, 'partly allocated', colors.LED.PARTALLOCATED);
       }
+
+      this.legend.height = this.legend.y + 10;
+      this.legend.width += 15;
+
+      drawRectangleBorder(ctx, 1, 1, this.legend.width, this.legend.height, 1, 'transparent', 'rgba(200,200,200,1)');
+    },
+
+    drawNodeText: function(ctx, text, color) {
+      this.legend.y += 10;
+      drawRectangle(ctx, this.legend.x - 2, this.legend.y - 8, 9, 9, color);
+      this.drawText(ctx, text, { shiftX: 10 });
+      this.legend.width = Math.max(this.legend.width, ctx.measureText(text).width + 12);
+    },
+
+    drawStateText: function(ctx, text, color) {
+      this.legend.y += 10;
+      drawLed(ctx, this.legend.x + 1, this.legend.y, color);
+      this.drawText(ctx, text, { shiftX: 10, shiftY: 3 });
+      this.legend.width = Math.max(this.legend.width, ctx.measureText(text).width + 9);
+    },
+
+    drawText: function(ctx, text, opts) {
+      var options = opts || {},
+        shiftX = options.shiftX || 0,
+        shiftY = options.shiftY || 0,
+        color = options.color || 'black';
+
+      ctx.fillStyle = color;
+      ctx.fillText(text, this.legend.x + shiftX, this.legend.y + shiftY);
     }
   };
 });
