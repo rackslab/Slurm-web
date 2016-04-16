@@ -45,6 +45,10 @@ define([], function() {
         bestRatio = -1,
         bestFactorId = 0;
 
+      if (cpus === 0) {
+        return [ null, null ];
+      }
+
       for (i = 0; i < allFactors.length; i++) {
         ratio = allFactors[i][1] / allFactors[i][0];
 
@@ -54,7 +58,9 @@ define([], function() {
         }
       }
 
-      return allFactors[bestFactorId];
+      return goalRatio < 1
+        ? allFactors[bestFactorId].reverse()
+        : allFactors[bestFactorId];
     }
   };
 });

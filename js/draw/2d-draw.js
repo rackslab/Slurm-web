@@ -23,8 +23,9 @@ define([
   'text!/slurm-web-conf/2d.config.json',
   'text!/slurm-web-conf/2d.colors.config.json',
   '2d-intersections-draw',
-  'colors-draw'
-], function($, d2Config, d2ColorsConfig, IntersectionsDraw, colorsDraw) {
+  'colors-draw',
+  'factor-draw'
+], function($, d2Config, d2ColorsConfig, IntersectionsDraw, colorsDraw, factorDraw) {
   var config = JSON.parse(d2Config),
     colors = JSON.parse(d2ColorsConfig),
     canvasConfig = config.CANVAS;
@@ -83,50 +84,6 @@ define([
       ctx.arc(x, y, self.config.NODELEDRADIUS, 0, 2 * Math.PI, false);
       ctx.fillStyle = color;
       ctx.fill();
-    }
-
-    function factors(number) {
-      var nFactors = [],
-        i = 0;
-
-      for (i = 1; i <= Math.floor(Math.sqrt(number)); i++) {
-        if (number % i === 0) {
-          nFactors.push([ i, number / i ]);
-        }
-      }
-
-      nFactors.sort(function(a, b) {
-        return a[0] - b[0];
-      });
-
-      return nFactors;
-    }
-
-    function bestFactor(nodeWidth, nodeHeight, coresNumber) {
-      var i, allFactors, goalRatio, ratio, bestRatio, bestFactorId;
-
-      if (coresNumber === 0) {
-        return [ null, null ];
-      }
-
-      allFactors = factors(coresNumber);
-      goalRatio = nodeWidth / nodeHeight;
-      ratio = -1;
-      bestRatio = -1;
-      bestFactorId = 0;
-
-      for (i = 0; i < allFactors.length; i++) {
-        ratio = allFactors[i][1] / allFactors[i][0];
-
-        if (Math.abs(ratio - goalRatio) < Math.abs(bestRatio - goalRatio)) {
-          bestRatio = ratio;
-          bestFactorId = i;
-        }
-      }
-
-      return goalRatio < 1
-        ? allFactors[bestFactorId].reverse()
-        : allFactors[bestFactorId];
     }
 
     function pickJobColor(jobId) {
@@ -418,7 +375,7 @@ define([
         innerNodeHeight -= (this.config.NODELEDRADIUS + this.config.NODELEDPADDING) * 2;
       }
 
-      coresTableInfos = bestFactor(innerNodeWidth, innerNodeHeight, coresNumber);
+      coresTableInfos = factorDraw.bestFactor(innerNodeWidth, innerNodeHeight, coresNumber);
       coresColumns = coresTableInfos[1];
       coresRows = coresTableInfos[0];
 
