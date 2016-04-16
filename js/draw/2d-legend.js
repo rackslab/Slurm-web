@@ -65,6 +65,7 @@ define([
       this.drawStateText(ctx, 'drained', colors.LED.DRAINED);
       this.drawStateText(ctx, 'down', colors.LED.DOWN);
       this.drawStateText(ctx, 'reserved', colors.LED.RESERVED);
+      this.drawStateText(ctx, 'maint', colors.LED.MAINT);
 
       if (type === 'racks') {
         this.legend.y += 10;

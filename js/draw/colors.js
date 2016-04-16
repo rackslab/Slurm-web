@@ -85,9 +85,15 @@ define([
         stateColor = colors.LED.DOWN;
         nodeColor = colors.LED.UNAVAILABLE;
         break;
+      case 'MAINT':
+      case 'MAINT*':
+        stateColor = colors.LED.MAINT;
+        nodeColor = colors.LED.UNAVAILABLE;
+        break;
       default:
         stateColor = colors.LED.NOTVISIBLE;
         nodeColor = colors.LED.UNKNOWN;
+        console.warn('Color not handled for node state:', node.node_state); // eslint-disable-line no-console
       }
 
       return { node: nodeColor, state: stateColor };
