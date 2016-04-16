@@ -11,7 +11,8 @@
     "DRAINED": "rgb(255, 255, 0)",
     "DOWN": "rgb(255, 0, 0)",
     "RESERVED": "rgb(0, 0, 255)",
-    "NOTVISIBLE": "rgb(0, 0, 0)"
+    "NOTVISIBLE": "rgb(0, 0, 0)",
+    "MAINT": "rgb(255, 0, 0)"
   },
   "JOB": [
     "rgb(237, 212, 0)",

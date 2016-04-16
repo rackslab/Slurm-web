@@ -9,7 +9,8 @@
     "AVAILABLE": "green",
     "DRAINED": "yellow",
     "DOWN": "red",
-    "RESERVED": "blue"
+    "RESERVED": "blue",
+    "MAINT": "red"
   },
   "JOB": [
     "rgba(237,212,0,1)",
