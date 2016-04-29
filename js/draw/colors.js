@@ -59,6 +59,8 @@ define([
         break;
       case 'ALLOCATED':
       case 'ALLOCATED*':
+      case 'MIXED':
+      case 'MIXED*':
       case 'COMPLETING':
       case 'COMPLETING*':
         nodeColor = allocatedColor;
