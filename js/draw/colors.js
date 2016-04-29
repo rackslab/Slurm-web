@@ -43,7 +43,7 @@ define([
           ? colors.LED.FULLYALLOCATED
           : colors.LED.PARTALLOCATED;
 
-      if (!node || !node.hasOwnProperty('node_state')) {
+      if (!node || !node.hasOwnProperty('state')) {
         return { node: nodeColor, state: stateColor };
       }
 
@@ -51,7 +51,7 @@ define([
         return { node: nodeColor, state: null };
       }
 
-      switch (node.node_state) {
+      switch (node.state) {
       case 'IDLE':
       case 'IDLE*':
         stateColor = colors.LED.AVAILABLE;
@@ -88,7 +88,7 @@ define([
       default:
         stateColor = colors.LED.NOTVISIBLE;
         nodeColor = colors.LED.UNKNOWN;
-        console.warn('Color not handled for node state:', node.node_state); // eslint-disable-line no-console
+        console.warn('Color not handled for node state:', node.state); // eslint-disable-line no-console
       }
 
       return { node: nodeColor, state: stateColor };
