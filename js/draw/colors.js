@@ -39,7 +39,7 @@ define([
       var colors = type === '3D' ? d3Colors : d2Colors,
         stateColor = colors.LED.IDLE,
         nodeColor = colors.LED.UNKNOWN,
-        allocatedColor = node.total_cpus === -node.cpus
+        allocatedColor = node.total_cpus === 0
           ? colors.LED.FULLYALLOCATED
           : colors.LED.PARTALLOCATED;
 
