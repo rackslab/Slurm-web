@@ -17,7 +17,7 @@ Depends:
  apache2 | httpd,
  libapache2-mod-wsgi,
  python-flask,
- python-pyslurm (>= 15.08.0),
+ python-pyslurm (>= 15.08),
  clustershell,
  python-ldap,
  python-itsdangerous,
