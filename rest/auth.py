@@ -88,18 +88,18 @@ abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
-    def __init__(self, username, password, role, groupname=None):
+    def __init__(self, username, password, role, groups=None):
         self.username = username
         self.password = password
         self.role = role
-        self.groupname = groupname
+        self.groups = groups
 
     # create authenticated user
     @staticmethod
     def user(username, password):
-        groupname = User.get_groupname_from_ldap(username, password)
-        role = User.get_role(username, groupname)
-        return User(username, password, role, groupname)
+        groups = User.get_groups_from_ldap(username, password)
+        role = User.get_role(username, groups)
+        return User(username, password, role, groups)
 
     # create a guest user
     @staticmethod
@@ -107,7 +107,7 @@ class User(object):
         return User('guest', 'guest', 'all')
 
     @staticmethod
-    def get_groupname_from_ldap(username, password):
+    def get_groups_from_ldap(username, password):
         # mock LDAP in development
         if os.environ.get('LDAP_ENV') == 'development':
             print "LDAP authentication mocked"
@@ -116,7 +116,7 @@ class User(object):
                     return 'chimistes'
             raise AuthenticationError
 
-        # here deal with ldap to get user groupname
+        # here deal with ldap to get user groups
         conn = get_ldap_connection()
 
         try:
@@ -132,47 +132,37 @@ class User(object):
 
             print "User %s authenticated" % username
 
-            # retrieve user's group id
-            results = conn.search_s(
-                'uid=%s,ou=%s,%s' % (
-                    username,
-                    settings.get('ldap', 'ugroup'),
-                    settings.get('ldap', 'base')
-                ),
-                ldap.SCOPE_SUBTREE
-            )
-            print results
-            gidNumber = results[0][1]['gidNumber'][0]
-
-            print "User's group number: %s" % gidNumber
-
-            # retrieve user's group name
-            filter = 'gidNumber=%s' % gidNumber
-            results = conn.search_s(
-                'ou=groups,%s' % settings.get('ldap', 'base'),
-                ldap.SCOPE_SUBTREE,
-                filter
-            )
-            print results
-            groupname = results[0][1]['cn'][0]
-
-            print "User's group name: %s" % groupname
-
-            return groupname
+            search_filter = "(|(&(objectClass=*)(member=uid=%s,ou=people,%s)))" \
+                            % (username, settings.get('ldap', 'base'))
+            results = conn.search_s(settings.get('ldap', 'base'),
+                                    ldap.SCOPE_SUBTREE,
+                                    search_filter, ['cn',])
+            groups = [ result[1]['cn'][0] for result in results ]
+            return groups
 
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: username or password is incorrect."
+            raise AuthenticationError
+
+        except ldap.NO_SUCH_OBJECT as e:
+            print "No result found: %s " + str(e)
             raise AuthenticationError
 
         finally:
             conn.unbind_s()
 
     @staticmethod
-    def get_role(username, groupname):
-        if username in admins or ("@" + groupname) in admins:
+    def get_role(username, groups):
+        if username in admins:
             return 'admin'
-        if username in users or ("@" + groupname) in users:
+        for group in groups:
+            if ("@" + group) in admins:
+                return 'admin'
+        if username in users:
             return 'user'
+        for group in groups:
+            if ("@" + groupname) in users:
+                return 'user'
         return 'all'
 
     def generate_auth_token(
@@ -211,10 +201,23 @@ class User(object):
         return user
 
     def restricted_views(self):
-        group = "@" + self.groupname if self.groupname is not None else None
-        views = filter(lambda acl: self.username not in acl[1] and
-                       (group is None or group not in acl[1]), acl)
-        return map(lambda view: view[0], views)
+        first_group = True
+        views = None
+        for groupname in self.groups:
+            group = "@" + groupname
+
+            if first_group:
+                xviews = filter(lambda acl: self.username not in acl[1] and
+                               groupname not in acl[1], acl)
+                views = set(map(lambda view: view[0], xviews))
+                first_group = False
+            else:
+                # starting from the 2nd group, check which views the group
+                # has access to, then remove them from the set
+                xviews = filter(lambda acl: groupname in acl[1], acl)
+                views.difference(set(map(lambda view: view[0], xviews)))
+        # convert it to list to be JSON serializable
+        return list(views)
 
 
 def authentication_verify():
