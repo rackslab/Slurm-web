@@ -201,6 +201,12 @@ class User(object):
         return user
 
     def restricted_views(self):
+
+        # if the user has not any group (typically guest), restrict all
+        # declared views in the ACLs.
+        if self.groups is None:
+            return [ xacl[0] for xacl in acl ]
+
         first_group = True
         views = None
         for groupname in self.groups:
