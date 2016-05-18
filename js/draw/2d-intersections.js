@@ -82,43 +82,43 @@ define([
       }
     });
 
-    this.addNodeHoverIntersections = function(infos, XMIN, XMAX, YMIN, YMAX) {
+    this.addNodeHoverIntersections = function(infos, node) {
       if (!this.nodesHoverIntersections.hasOwnProperty(infos.rackName)) {
         this.nodesHoverIntersections[infos.rackName] = {};
       }
 
       this.nodesHoverIntersections[infos.rackName][infos.nodeName] = {
-        XMIN: XMIN,
-        XMAX: XMAX,
-        YMIN: YMIN,
-        YMAX: YMAX
+        XMIN: node.x,
+        XMAX: node.x + node.width,
+        YMIN: node.y,
+        YMAX: node.y + node.height
       };
     };
 
-    this.addCoreIntersections = function(infos, XMIN, XMAX, YMIN, YMAX) {
+    this.addCoreIntersections = function(infos, core) {
       if (!this.coresIntersections.hasOwnProperty(infos.rack)) {
         this.coresIntersections[infos.rack] = {};
       }
 
       this.coresIntersections[infos.rack][infos.node + '-' + infos.core] = {
         job: infos.job,
-        XMIN: XMIN,
-        XMAX: XMAX,
-        YMIN: YMIN,
-        YMAX: YMAX
+        XMIN: core.x,
+        XMAX: core.x + core.size,
+        YMIN: core.y,
+        YMAX: core.y + core.size
       };
     };
 
-    this.addNodeIntersections = function(infos, XMIN, XMAX, YMIN, YMAX) {
+    this.addNodeIntersections = function(infos, node) {
       if (!this.nodesIntersections.hasOwnProperty(infos.rack)) {
         this.nodesIntersections[infos.rack] = {};
       }
 
       this.nodesIntersections[infos.rack][infos.node] = {
-        XMIN: XMIN,
-        XMAX: XMAX,
-        YMIN: YMIN,
-        YMAX: YMAX
+        XMIN: node.x,
+        XMAX: node.x + node.width,
+        YMIN: node.y,
+        YMAX: node.y + node.height
       };
     };
 
