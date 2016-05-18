@@ -553,7 +553,15 @@ Basic configuration file :
     "LEDDEPTH": 0.001,
     "CPUPADDING": 0.3,
     "CPUDEPTH": 0.001,
-    "DEBUG": true,
+    "DEBUG": false,
+    "RACKNAME": {
+      "SIZE": 0.2,
+      "DEPTH": 0.001,
+      "FONT": {
+        "NAME": "DejaVu Sans Mono",
+        "PATH": "../../../js/fonts/DejaVu_Sans_Mono_Book.js"
+      }
+    },
     "CONTROLS": {
       "FORWARD": 90,
       "BACKWARD": 83,
@@ -585,6 +593,12 @@ Basic configuration file :
 - *CPUPADDING* (Number) : Space around one cpu, proportional to the node parent element in UNITSIZE
 - *CPUDEPTH* (Number): Depth of cpus, proportional to the node parent element in UNITSIZE
 - *DEBUG* (Boolean) : Show the x (red), y (green), z (blue) axes for debug.
+- *RACKNAME* (Object) :
+  - *SIZE* (Number) : Font height for the rack name banner in UNITSIZE (axe: y)
+  - *DEPTH* (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)
+  - *FONT* (Object) :
+    - *NAME* (String) : Font name
+    - *PATH* (String) : Path of the font file converted in Javascript format for Typeface.JS. [Typeface converter](https://github.com/derniercri/font4three)
 - *CONTROLS* (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (http://www.javascripter.net/faq/keycodes.htm)
   - *FORWARD* (Keycode) : Move forward
   - *BACKWARD* (Keycode) : Move backward
@@ -594,9 +608,6 @@ Basic configuration file :
 - *PACMAN* (Object) : Specific pacman mode configuration
   - *MOVESPEED* (Number) : X, Y, Z camera translation speed in UNITSIZE
   - *LOOKSPEED* (Number) : X, Y, Z camera rotation speed in UNITSIZE
-- *RACKNAME* (Object) :
-  - *SIZE* (Number) : Font height for the rack name banner in UNITSIZE (axe: y)
-  - *DEPTH* (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)
 - *COLLISONMARGIN* (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls
 
 3D Colors ``3d.colors.config.json``
