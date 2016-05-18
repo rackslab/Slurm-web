@@ -20,7 +20,11 @@
   "DEBUG": false,
   "RACKNAME": {
     "SIZE": 0.2,
-    "DEPTH": 0.001
+    "DEPTH": 0.001,
+    "FONT": {
+      "NAME": null,
+      "PATH": null
+    }
   },
   "CONTROLS": {
     "FORWARD": 90,

@@ -27,8 +27,7 @@ define([
   'colors-draw',
   'three-orbit-controls',
   'three-first-person-controls',
-  'three-pacman-auto',
-  'helvetiker'
+  'three-pacman-auto'
 ], function($, d3Config, d3Colors, THREE, factorDraw, colorsDraw) {
   var config = JSON.parse(d3Config),
     colors = JSON.parse(d3Colors);
@@ -476,38 +475,49 @@ define([
     };
 
     this.addRackName = function(rack, x, y, z, width, height, depth, temperatureCoefficient) {
-      var material, mesh,
-        geometry = new THREE.TextGeometry(rack.name, {
-          size: config.UNITSIZE * config.RACKNAME.SIZE,
-          height: config.UNITSIZE * config.RACKNAME.DEPTH,
-          font: 'helvetiker',
-          weight: 'normal',
-          style: 'normal'
-        });
-
-      objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
-      geometry = objects.geometry[objects.geometry.length - 1];
-
-      geometry.computeBoundingBox();
-
-      objects.material.push(new THREE.MeshBasicMaterial({ color: colors.RACKNAME.FONT }));
-      material = objects.material[objects.material.length - 1];
-
-      objects.mesh.push(new THREE.Mesh(geometry, material));
-      mesh = objects.mesh[objects.mesh.length - 1];
-
-      if (temperatureCoefficient > 0) {
-        mesh.rotation.y = Math.PI;
+      if (!(config.RACKNAME.FONT && config.RACKNAME.FONT.NAME && config.RACKNAME.FONT.PATH)) {
+        console.error( // eslint-disable-line no-console
+          'A typeface font have to be fully configured in file 3d.config.json to display racks names.',
+          'FONT:',
+          config.RACKNAME.FONT
+        );
+        return false;
       }
 
-      mesh.position.x = x + temperatureCoefficient * (geometry.boundingBox.max.x - geometry.boundingBox.min.x) / 2;
-      mesh.position.y = height;
-      mesh.position.z = z - temperatureCoefficient * (depth / 2);
+      require([ config.RACKNAME.FONT.PATH.replace(/\.js$/g, '') ], function() { // eslint-disable-line global-require
+        var material, mesh,
+          geometry = new THREE.TextGeometry(rack.name, {
+            size: config.UNITSIZE * config.RACKNAME.SIZE,
+            height: config.UNITSIZE * config.RACKNAME.DEPTH,
+            font: config.RACKNAME.FONT.NAME,
+            weight: 'normal',
+            style: 'normal'
+          });
 
-      scene.add(mesh);
+        objects.geometry.push(new THREE.BufferGeometry().fromGeometry(geometry));
+        geometry = objects.geometry[objects.geometry.length - 1];
 
-      geometry.dispose();
-      material.dispose();
+        geometry.computeBoundingBox();
+
+        objects.material.push(new THREE.MeshBasicMaterial({ color: colors.RACKNAME.FONT }));
+        material = objects.material[objects.material.length - 1];
+
+        objects.mesh.push(new THREE.Mesh(geometry, material));
+        mesh = objects.mesh[objects.mesh.length - 1];
+
+        if (temperatureCoefficient > 0) {
+          mesh.rotation.y = Math.PI;
+        }
+
+        mesh.position.x = x + temperatureCoefficient * (geometry.boundingBox.max.x - geometry.boundingBox.min.x) / 2;
+        mesh.position.y = height;
+        mesh.position.z = z - temperatureCoefficient * (depth / 2);
+
+        scene.add(mesh);
+
+        geometry.dispose();
+        material.dispose();
+      });
     };
 
     this.addRack = function() {
