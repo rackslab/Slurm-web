@@ -484,7 +484,7 @@ define([
         return false;
       }
 
-      require([ config.RACKNAME.FONT.PATH.replace(/\.js$/g, '') ], function() { // eslint-disable-line global-require
+      require([ '../../../' + config.RACKNAME.FONT.PATH.replace(/\.js$/g, '') ], function() { // eslint-disable-line global-require
         var material, mesh,
           geometry = new THREE.TextGeometry(rack.name, {
             size: config.UNITSIZE * config.RACKNAME.SIZE,

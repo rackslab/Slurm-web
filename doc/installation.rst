@@ -559,7 +559,7 @@ Basic configuration file :
       "DEPTH": 0.001,
       "FONT": {
         "NAME": "DejaVu Sans Mono",
-        "PATH": "../../../js/fonts/DejaVu_Sans_Mono_Book.js"
+        "PATH": "js/fonts/DejaVu_Sans_Mono_Book.js"
       }
     },
     "CONTROLS": {
