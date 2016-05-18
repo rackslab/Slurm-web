@@ -431,7 +431,6 @@ Basic configuration file :
 .. code-block:: json
 
   {
-    "CANVASWIDTH": 280,
     "LEFTMARGIN": 60,
     "TOPMARGIN": 15,
     "RACKBORDERWIDTH": 10,
@@ -452,7 +451,6 @@ Basic configuration file :
     }
   }
 
-- *CANVASWIDTH* (Number) : Canvas width in pixel
 - *CANVASMARGINTOP* (Number) : Canvas internal margin top in pixel.
 - *LEFTMARGIN* (Number) : Rack margin left in pixel
 - *TOPMARGIN* (Number) : Rack margin top in pixel
