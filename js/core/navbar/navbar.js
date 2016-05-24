@@ -68,8 +68,47 @@ define([
       self.destroy();
     });
 
+    function resizeNavbar() {
+      var navbarWidth = 0,
+          navbarLeftWidth = 0,
+          navbarRightWidth = 0,
+          $nav,
+          $elements
+
+      navbarWidth = $('.navbar').width() - parseInt(
+        $('.navbar .container-fluid').css('padding-left').replace('px', '')
+      )
+      navbarLeftWidth = $('.navbar .container-fluid .navbar-header').width()
+      navbarRightWidth = $('.navbar .container-fluid .navbar-right').width()
+
+      $('.minimize').show()
+      if ($('.navbar-header > .navbar-toggle').css('display') !== 'none') {
+        $('.navbar-right > .minimize > ul > li').detach().appendTo('.navbar-right')
+      } else if ((navbarWidth < navbarLeftWidth + navbarRightWidth) &&
+        $('.navbar-right > li').length > 2 &&
+        $('.navbar-toggle').css('display') === 'none') {
+        $nav = $('.navbar-right > li')
+        $element = $($nav[$nav.length - 3])
+
+        $element.detach().prependTo('.navbar-right .minimize ul')
+
+        resizeNavbar()
+      } else if ((navbarWidth > navbarLeftWidth + navbarRightWidth + 120) &&
+        $('.minimize > ul > li').length > 0) {
+        $nav = $('.minimize > ul > li')
+        $element = $($nav[0])
+
+        $element.detach().insertBefore('.minimize')
+        resizeNavbar()
+      }
+
+      if ($('.minimize > ul > li').length === 0) {
+        $('.minimize').hide()
+      }
+    }
+
     this.init = function() {
-      var context;
+      var context
 
       this.availableViews = VIEWS.filter(function(view) {
         var user = userUtils.getUser(config.cluster),
@@ -89,7 +128,11 @@ define([
 
       $('body').prepend(template(context));
 
-      $('#navbar > ul > li > a[id^="menu-"]').on('click', function(e) {
+      resizeNavbar()
+
+      $(window).on('resize', resizeNavbar)
+
+      $('a[id^="menu-"]').on('click', function(e) {
         e.preventDefault();
         $(document).trigger('show', { page: e.target.id.split('-')[1] });
       });

@@ -31,6 +31,11 @@
             </li>
           {{/if}}
         {{/each}}
+        <li class="dropdown minimize">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">... <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          </ul>
+        </li>
         {{#if authEnabled}}
           {{#if userLogged}}
             <li class="dropdown">
