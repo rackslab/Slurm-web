@@ -7,7 +7,9 @@ Standards-Version: 3.9.6
 Build-Depends:
  debhelper (>= 8),
  apache2-dev,
- node-uglify
+ node-uglify,
+ fonts-dejavu-core,
+ node-opentypejs (>> 0.4.3-1)
 
 Package: slurm-web-restapi
 Architecture: any
