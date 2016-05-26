@@ -72,7 +72,6 @@ define([
       var navbarWidth = 0,
           navbarLeftWidth = 0,
           navbarRightWidth = 0,
-          $nav,
           $elements
 
       navbarWidth = $('.navbar').width() - parseInt(
@@ -83,20 +82,19 @@ define([
 
       $('.minimize').show()
       if ($('.navbar-header > .navbar-toggle').css('display') !== 'none') {
-        $('.navbar-right > .minimize > ul > li').detach().appendTo('.navbar-right')
+        $('.navbar-right > .minimize > ul > li').detach().insertBefore('.minimize')
       } else if ((navbarWidth < navbarLeftWidth + navbarRightWidth) &&
         $('.navbar-right > li').length > 2 &&
         $('.navbar-toggle').css('display') === 'none') {
-        $nav = $('.navbar-right > li')
-        $element = $($nav[$nav.length - 3])
+        $element = $('.navbar-right > li').not('.minimize, .auth').last()
 
         $element.detach().prependTo('.navbar-right .minimize ul')
 
         resizeNavbar()
       } else if ((navbarWidth > navbarLeftWidth + navbarRightWidth + 120) &&
-        $('.minimize > ul > li').length > 0) {
-        $nav = $('.minimize > ul > li')
-        $element = $($nav[0])
+        $('.minimize > ul > li').length > 0 &&
+        $('.navbar-toggle').css('display') === 'none') {
+        $element = $('.minimize > ul > li').first()
 
         $element.detach().insertBefore('.minimize')
         resizeNavbar()

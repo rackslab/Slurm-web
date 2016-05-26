@@ -38,7 +38,7 @@
         </li>
         {{#if authEnabled}}
           {{#if userLogged}}
-            <li class="dropdown">
+            <li class="dropdown auth">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Account: {{capitalize user.username}}
                 <span class="caret"></span>
@@ -50,7 +50,7 @@
               </a>
             </li>
           {{else}}
-            <li>
+            <li class="auth">
               <a id="menu-login" href="#">Login</a>
             </li>
           {{/if}}
