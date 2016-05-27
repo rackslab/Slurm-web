@@ -130,7 +130,7 @@ define([
 
       $(window).on('resize', resizeNavbar);
 
-      $('a[id^="menu-"]').on('click', function(e) {
+      $('a[id^="menu-"]').not('#menu-logout').on('click', function(e) {
         e.preventDefault();
         $(document).trigger('show', { page: e.target.id.split('-')[1] });
       });
