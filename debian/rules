@@ -6,7 +6,7 @@
 override_dh_auto_build:
 	uglifyjs -o js/libraries/xdomain.min.js js/libraries/xdomain.js
 	mkdir -p js/fonts
-	nodejs /usr/lib/nodejs/font-converter.js /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf > js/fonts/DejaVuSans.typeface.js
+	nodejs /usr/lib/nodejs/font-converter.js /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf > js/fonts/DejaVuSansMono.typeface.js
 
 override_dh_auto_clean:
 	rm -f js/libraries/xdomain.min.js
