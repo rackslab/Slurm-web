@@ -70,43 +70,43 @@ define([
 
     function resizeNavbar() {
       var navbarWidth = 0,
-          navbarLeftWidth = 0,
-          navbarRightWidth = 0,
-          $elements
+        navbarLeftWidth = 0,
+        navbarRightWidth = 0,
+        $element;
 
       navbarWidth = $('.navbar').width() - parseInt(
         $('.navbar .container-fluid').css('padding-left').replace('px', '')
-      )
-      navbarLeftWidth = $('.navbar .container-fluid .navbar-header').width()
-      navbarRightWidth = $('.navbar .container-fluid .navbar-right').width()
+      , 10);
+      navbarLeftWidth = $('.navbar .container-fluid .navbar-header').width();
+      navbarRightWidth = $('.navbar .container-fluid .navbar-right').width();
 
-      $('.minimize').show()
+      $('.minimize').show();
       if ($('.navbar-header > .navbar-toggle').css('display') !== 'none') {
-        $('.navbar-right > .minimize > ul > li').detach().insertBefore('.minimize')
-      } else if ((navbarWidth < navbarLeftWidth + navbarRightWidth) &&
+        $('.navbar-right > .minimize > ul > li').detach().insertBefore('.minimize');
+      } else if (navbarWidth < navbarLeftWidth + navbarRightWidth &&
         $('.navbar-right > li').length > 2 &&
         $('.navbar-toggle').css('display') === 'none') {
-        $element = $('.navbar-right > li').not('.minimize, .auth').last()
+        $element = $('.navbar-right > li').not('.minimize, .auth').last();
 
-        $element.detach().prependTo('.navbar-right .minimize ul')
+        $element.detach().prependTo('.navbar-right .minimize ul');
 
-        resizeNavbar()
-      } else if ((navbarWidth > navbarLeftWidth + navbarRightWidth + 120) &&
+        resizeNavbar();
+      } else if (navbarWidth > navbarLeftWidth + navbarRightWidth + 120 &&
         $('.minimize > ul > li').length > 0 &&
         $('.navbar-toggle').css('display') === 'none') {
-        $element = $('.minimize > ul > li').first()
+        $element = $('.minimize > ul > li').first();
 
-        $element.detach().insertBefore('.minimize')
-        resizeNavbar()
+        $element.detach().insertBefore('.minimize');
+        resizeNavbar();
       }
 
       if ($('.minimize > ul > li').length === 0) {
-        $('.minimize').hide()
+        $('.minimize').hide();
       }
     }
 
     this.init = function() {
-      var context
+      var context;
 
       this.availableViews = VIEWS.filter(function(view) {
         var user = userUtils.getUser(config.cluster),
@@ -126,9 +126,9 @@ define([
 
       $('body').prepend(template(context));
 
-      resizeNavbar()
+      resizeNavbar();
 
-      $(window).on('resize', resizeNavbar)
+      $(window).on('resize', resizeNavbar);
 
       $('a[id^="menu-"]').on('click', function(e) {
         e.preventDefault();
