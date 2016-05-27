@@ -180,11 +180,7 @@ define([
       ctx.translate(node.x - posX + node.width, node.y - posY + node.height);
       ctx.rotate(-Math.PI / 2);
 
-      if (rackABSX === 0) {
-        ctx.fillText(nodeName, 0, 0);
-      } else {
-        ctx.fillText(nodeName, 0, 0);
-      }
+      ctx.fillText(nodeName, 0, 0);
       ctx.restore();
     }
 
@@ -200,13 +196,10 @@ define([
         nodeName = newText.text;
       }
 
-      posX = (textWidth - node.width) / 2;
+      posX = node.x - (textWidth - node.width) / 2;
+      posY = node.y + (node.height + textHeight.descent) / 2;
 
-      if (rackABSX === 0) {
-        ctx.fillText(nodeName, node.x - posX, node.y + textHeight.ascent);
-      } else {
-        ctx.fillText(nodeName, node.x - posX, node.y + textHeight.ascent);
-      }
+      ctx.fillText(nodeName, posX, posY);
     }
 
     function writeNodeName(ctx, rackName, nodeName, rackABSX, node) {
