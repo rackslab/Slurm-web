@@ -22,8 +22,8 @@
     "SIZE": 0.2,
     "DEPTH": 0.001,
     "FONT": {
-      "NAME": "DejaVu Sans",
-      "PATH": "js/fonts/DejaVuSans.typeface.js"
+      "NAME": "DejaVu Sans Mono",
+      "PATH": "js/fonts/DejaVuSansMono.typeface.js"
     }
   },
   "CONTROLS": {
