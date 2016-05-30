@@ -139,8 +139,8 @@ function init() {
           .success(function(data) {
             callback(null, data);
           })
-          .error(function() {
-            callback(1, null);
+          .error(function(err) {
+            callback(err, null);
           });
       },
       nodes: function(callback) {
@@ -148,8 +148,8 @@ function init() {
           .success(function(data) {
             callback(null, data);
           })
-          .error(function() {
-            callback(1, null);
+          .error(function(err) {
+            callback(err, null);
           });
       },
       jobs: function(callback) {
@@ -157,16 +157,25 @@ function init() {
           .success(function(data) {
             callback(null, data);
           })
-          .error(function() {
-            callback(1, null);
+          .error(function(err) {
+            callback(err, null);
           });
       }
     }, function(err, result) {
       var racks, room, nodesInfos, jobs, map, racksList, range, rack;
 
       if (err) {
+        if (err.status === 403) {
+          window.parent.$(window.parent.document).trigger('logout');
+        } else {
+          window.parent.$('#flash .alert').append($('<p>').text('Error : ' + JSON.stringify(err)));
+          window.parent.$('#flash').show();
+        }
         return;
       }
+
+      // show 3d-view
+      window.parent.$('#3d-view').css('visibility', 'visible');
 
       racks = result.racks.racks;
       room = result.racks.room;
