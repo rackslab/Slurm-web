@@ -173,8 +173,8 @@ define([
         nodeName = newText.text;
       }
 
-      posX = (node.width - textHeight.descent) / 2;
-      posY = (node.height - textWidth) / 2;
+      posX = (node.width - textHeight.descent) / 2 + self.config.NODENAMEHORIZONTALOFFSET;
+      posY = (node.height - textWidth) / 2 + self.config.NODENAMEVERTICALOFFSET;
 
       ctx.save();
       ctx.translate(node.x - posX + node.width, node.y - posY + node.height);
@@ -196,8 +196,8 @@ define([
         nodeName = newText.text;
       }
 
-      posX = node.x - (textWidth - node.width) / 2;
-      posY = node.y + (node.height + textHeight.descent) / 2;
+      posX = node.x - (textWidth - node.width) / 2 + self.config.NODENAMEHORIZONTALOFFSET;
+      posY = node.y + (node.height + textHeight.descent) / 2 + self.config.NODENAMEVERTICALOFFSET;
 
       ctx.fillText(nodeName, posX, posY);
     }
