@@ -202,27 +202,17 @@ class User(object):
 
     def restricted_views(self):
 
-        # if the user has not any group (typically guest), restrict all
-        # declared views in the ACLs.
-        if self.groups is None:
-            return [ xacl[0] for xacl in acl ]
+        views = set([ xacl[0] for xacl in acl ])
 
-        first_group = True
-        views = None
-        for groupname in self.groups:
-            group = "@" + groupname
-
-            if first_group:
-                xviews = filter(lambda acl: self.username not in acl[1] and
-                               groupname not in acl[1], acl)
-                views = set(map(lambda view: view[0], xviews))
-                first_group = False
-            else:
-                # starting from the 2nd group, check which views the group
-                # has access to, then remove them from the set
-                xviews = filter(lambda acl: groupname in acl[1], acl)
-                views.difference(set(map(lambda view: view[0], xviews)))
-        # convert it to list to be JSON serializable
+        for xacl in acl:
+            view = xacl[0]
+            members = xacl[1].split(',')
+            for member in members:
+                if member[0] == '@' and self.groups is not None \
+                and member[1:] in self.groups:
+                    views.remove(view)
+                elif member == self.username:
+                    views.remove(view)
         return list(views)
 
 
