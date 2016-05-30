@@ -132,12 +132,12 @@ class User(object):
 
             print "User %s authenticated" % username
 
-            search_filter = "(|(&(objectClass=*)(member=uid=%s,ou=people,%s)))" \
-                            % (username, settings.get('ldap', 'base'))
+            look_filter = "(|(&(objectClass=*)(member=uid=%s,ou=people,%s)))" \
+                          % (username, settings.get('ldap', 'base'))
             results = conn.search_s(settings.get('ldap', 'base'),
                                     ldap.SCOPE_SUBTREE,
-                                    search_filter, ['cn',])
-            groups = [ result[1]['cn'][0] for result in results ]
+                                    look_filter, ['cn'])
+            groups = [result[1]['cn'][0] for result in results]
             return groups
 
         except ldap.INVALID_CREDENTIALS:
@@ -183,7 +183,7 @@ class User(object):
         try:
             data = s.loads(token)
             print "verify_auth_token : data -> username: %s role: %s" \
-                    % (data['username'], data['role'])
+                  % (data['username'], data['role'])
         except SignatureExpired:
             print "verify_auth_token : SignatureExpired "
             return None  # valid token, but expired
@@ -202,14 +202,14 @@ class User(object):
 
     def restricted_views(self):
 
-        views = set([ xacl[0] for xacl in acl ])
+        views = set([xacl[0] for xacl in acl])
 
         for xacl in acl:
             view = xacl[0]
             members = xacl[1].split(',')
             for member in members:
-                if member[0] == '@' and self.groups is not None \
-                and member[1:] in self.groups:
+                if member and member[0] == '@' and self.groups is not None \
+                   and member[1:] in self.groups:
                     views.remove(view)
                 elif member == self.username:
                     views.remove(view)

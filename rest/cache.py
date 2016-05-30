@@ -96,7 +96,8 @@ def cache():
 
                 resp = f(*args, **kwargs)
                 if isinstance(resp, dict):
-                    print "set %s in cache with expiration %d" % (cache_key, expiration)
+                    print "set %s in cache with expiration %d" % (cache_key,
+                                                                  expiration)
                     r.set(cache_key, json.dumps(resp))
                     r.expire(cache_key, expiration)
 
