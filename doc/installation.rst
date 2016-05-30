@@ -430,43 +430,55 @@ Basic configuration file :
 
 .. code-block:: json
 
-  {
-    "LEFTMARGIN": 60,
-    "TOPMARGIN": 15,
-    "RACKBORDERWIDTH": 10,
-    "RACKUNITNUMBER": 42,
-    "RACKUNITHEIGHT": 12,
-    "FLOORWIDTH": 5,
-    "FOOTWIDTH": 7,
-    "FOOTHEIGHT": 3,
-    "RACKINSIDEWIDTH": 150,
-    "CANVASMARGINTOP": 30,
-    "NODESPERRACK": 72,
-    "NODESPERROW": 2,
-    "NODEMARGIN": 1,
-    "NODESTATEWIDTH": 10,
-    "LEGEND": {
-      "WIDTH": 100,
-      "HEIGHT": 100
-    }
+{
+  "LEFTMARGIN": 60,
+  "TOPMARGIN": 15,
+  "RACKBORDERWIDTH": 10,
+  "RACKUNITNUMBER": 42,
+  "RACKUNITHEIGHT": 12,
+  "RACKFONTFAMILY": "sans-serif",
+  "RACKFONTSIZE": 14,
+  "FLOORWIDTH": 5,
+  "FOOTWIDTH": 7,
+  "FOOTHEIGHT": 3,
+  "RACKINSIDEWIDTH": 150,
+  "CANVASMARGINTOP": 30,
+  "NODESPERRACK": 72,
+  "NODESPERROW": 2,
+  "NODEMARGIN": 1,
+  "NODEHORIZONTALPADDING": 3,
+  "NODEVERTICALPADDING": 1,
+  "NODELEDRADIUS": 2,
+  "NODELEDPADDING": 2,
+  "NODEFONTFAMILY": "sans-serif",
+  "NODEFONTSIZE": 10,
+  "LEGEND": {
+    "WIDTH": 100,
+    "HEIGHT": 100
   }
+}
 
-- *CANVASMARGINTOP* (Number) : Canvas internal margin top in pixel.
 - *LEFTMARGIN* (Number) : Rack margin left in pixel
 - *TOPMARGIN* (Number) : Rack margin top in pixel
 - *RACKBORDERWIDTH* (Number) : Rack border/closure size in pixel
 - *RACKUNITNUMBER* (Number) : Number of unit in one rack
 - *RACKUNITHEIGHT* (Number) : Height of one rack unit in pixel
+- *RACKFONTFAMILY* (String) : Rack name font family
+- *RACKFONTSIZE* (Number): Rack name font size
 - *FLOORWIDTH* (Number) : Width of the floor element drawn at rack bottom, in pixel
 - *FOOTWIDTH* (Number) : Rack foot width in pixel
 - *FOOTHEIGHT* (Number) : Rack foot height in pixel
 - *RACKINSIDEWIDTH* (Number) : Size
+- *CANVASMARGINTOP* (Number) : Canvas internal margin top in pixel.
 - *NODESPERRACK* (Number) : Number of nodes in one rack
+- *NODESPERROW* (Number) : Number of nodes in one row
 - *NODESMARGIN* (Number) : Space between two nodes in pixel
-- *NODEHORIZONTALPADDING* (Number) : Horizontal padding on node,
-- *NODEVERTICALPADDING* (Number) : Vertical padding on node,
-- *NODELEDRADIUS* (Number) : Radius of the LED on node,
-- *NODELEDPADDING* (Number) : Padding on the LED on node,
+- *NODEHORIZONTALPADDING* (Number) : Horizontal padding on node
+- *NODEVERTICALPADDING* (Number) : Vertical padding on node
+- *NODELEDRADIUS* (Number) : Radius of the LED on node
+- *NODELEDPADDING* (Number) : Padding on the LED on node
+- *NODEFONTFAMILY* (String) : Node name font family
+- *NODEFONTSIZE* (Number) : Node name font size
 - *LEGEND* (Object) : Legend property
   - *WIDTH* (Number) : Legend canvas width in pixel
   - *HEIGHT* (Number) : Legend canvas height in pixel
