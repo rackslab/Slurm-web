@@ -55,7 +55,7 @@ try:
 
             redis_port = get_int_setting('redis_port', 6379)
             jobs_expiration = get_int_setting('jobs_expiration', 10)
-            global_expiration = get_int_setting('global_expiration', 86400)
+            global_expiration = get_int_setting('global_expiration', 60)
 
             if redis_available:
                 r = redis.Redis(redis_host, redis_port)
