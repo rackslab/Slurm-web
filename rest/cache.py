@@ -96,11 +96,9 @@ def cache():
 
                 resp = f(*args, **kwargs)
                 if enabled and isinstance(resp, dict):
-                    try:
-                        r.set(cache_key, json.dumps(resp), expiration)
-                    except:
-                        if 'job' not in f.__name__:
-                            r.set(cache_key, json.dumps(resp))
+                    print "set %s in cache with expiration %d" % (cache_key, expiration)
+                    r.set(cache_key, json.dumps(resp))
+                    r.expire(cache_key, expiration)
 
             except redis.ConnectionError:
                 print "WARNING: ConnectionError from Redis, server unreachable"
