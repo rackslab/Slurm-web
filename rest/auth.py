@@ -113,7 +113,7 @@ class User(object):
             print "LDAP authentication mocked"
             if username == 'marie' or username == 'pierre':
                 if password == 'secret':
-                    return 'chimistes'
+                    return ['chimistes']
             raise AuthenticationError
 
         # here deal with ldap to get user groups
@@ -161,7 +161,7 @@ class User(object):
         if username in users:
             return 'user'
         for group in groups:
-            if ("@" + groupname) in users:
+            if ("@" + group) in users:
                 return 'user'
         return 'all'
 
