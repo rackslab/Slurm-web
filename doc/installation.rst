@@ -452,6 +452,8 @@ Basic configuration file :
     "NODELEDPADDING": 2,
     "NODEFONTFAMILY": "sans-serif",
     "NODEFONTSIZE": 10,
+    "NODENAMEVERTICALOFFSET": 1,
+    "NODENAMEHORIZONTALOFFSET": 0,
     "LEGEND": {
       "WIDTH": 100,
       "HEIGHT": 100
@@ -479,6 +481,8 @@ Basic configuration file :
 - *NODELEDPADDING* (Number) : Padding on the LED on node
 - *NODEFONTFAMILY* (String) : Node name font family
 - *NODEFONTSIZE* (Number) : Node name font size
+- *NODENAMEVERTICALOFFSET* (Number) : The vertical offset starting from the middle where the node name is labelled in rack view, in pixel
+- *NODENAMEHORIZONTALOFFSET* (Number) : The horizontal offset starting from the center where the node name is labelled in rack view, in pixel
 - *LEGEND* (Object) : Legend property
 
   - *WIDTH* (Number) : Legend canvas width in pixel
