@@ -430,33 +430,33 @@ Basic configuration file :
 
 .. code-block:: json
 
-{
-  "LEFTMARGIN": 60,
-  "TOPMARGIN": 15,
-  "RACKBORDERWIDTH": 10,
-  "RACKUNITNUMBER": 42,
-  "RACKUNITHEIGHT": 12,
-  "RACKFONTFAMILY": "sans-serif",
-  "RACKFONTSIZE": 14,
-  "FLOORWIDTH": 5,
-  "FOOTWIDTH": 7,
-  "FOOTHEIGHT": 3,
-  "RACKINSIDEWIDTH": 150,
-  "CANVASMARGINTOP": 30,
-  "NODESPERRACK": 72,
-  "NODESPERROW": 2,
-  "NODEMARGIN": 1,
-  "NODEHORIZONTALPADDING": 3,
-  "NODEVERTICALPADDING": 1,
-  "NODELEDRADIUS": 2,
-  "NODELEDPADDING": 2,
-  "NODEFONTFAMILY": "sans-serif",
-  "NODEFONTSIZE": 10,
-  "LEGEND": {
-    "WIDTH": 100,
-    "HEIGHT": 100
+  {
+    "LEFTMARGIN": 60,
+    "TOPMARGIN": 15,
+    "RACKBORDERWIDTH": 10,
+    "RACKUNITNUMBER": 42,
+    "RACKUNITHEIGHT": 12,
+    "RACKFONTFAMILY": "sans-serif",
+    "RACKFONTSIZE": 14,
+    "FLOORWIDTH": 5,
+    "FOOTWIDTH": 7,
+    "FOOTHEIGHT": 3,
+    "RACKINSIDEWIDTH": 150,
+    "CANVASMARGINTOP": 30,
+    "NODESPERRACK": 72,
+    "NODESPERROW": 2,
+    "NODEMARGIN": 1,
+    "NODEHORIZONTALPADDING": 3,
+    "NODEVERTICALPADDING": 1,
+    "NODELEDRADIUS": 2,
+    "NODELEDPADDING": 2,
+    "NODEFONTFAMILY": "sans-serif",
+    "NODEFONTSIZE": 10,
+    "LEGEND": {
+      "WIDTH": 100,
+      "HEIGHT": 100
+    }
   }
-}
 
 - *LEFTMARGIN* (Number) : Rack margin left in pixel
 - *TOPMARGIN* (Number) : Rack margin top in pixel
