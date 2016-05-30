@@ -480,6 +480,7 @@ Basic configuration file :
 - *NODEFONTFAMILY* (String) : Node name font family
 - *NODEFONTSIZE* (Number) : Node name font size
 - *LEGEND* (Object) : Legend property
+
   - *WIDTH* (Number) : Legend canvas width in pixel
   - *HEIGHT* (Number) : Legend canvas height in pixel
 
@@ -526,6 +527,7 @@ Basic configuration file :
 
 - *COREBORDER* (rgba()) : Core grid color.
 - *LED* (Object) : Colors of the led status, based on the node state
+
   - *IDLE* (rgba()) : Node state is idle
   - *FULLYALLOCATED* (rgba()) : Node state is reserved, allocated or completing and all cpus allocated
   - *PARTALLOCATED* (rgba()) : Node state is reserved, allocated or completing and not all cpus allocated
@@ -535,6 +537,7 @@ Basic configuration file :
   - *DRAINED* (rgba()) : Node state is draining or drained
   - *DOWN* (rgba()) : Node state is down
   - *RESERVED* (rgba()) : Node state is reserved
+
 - *JOB* (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]
 
 
@@ -606,20 +609,27 @@ Basic configuration file :
 - *CPUDEPTH* (Number): Depth of cpus, proportional to the node parent element in UNITSIZE
 - *DEBUG* (Boolean) : Show the x (red), y (green), z (blue) axes for debug.
 - *RACKNAME* (Object) :
+
   - *SIZE* (Number) : Font height for the rack name banner in UNITSIZE (axe: y)
   - *DEPTH* (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)
   - *FONT* (Object) :
+
     - *NAME* (String) : Font name
     - *PATH* (String) : Path of the font file converted in Javascript format for Typeface.JS. [Typeface converter](https://github.com/derniercri/font4three)
+
 - *CONTROLS* (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (http://www.javascripter.net/faq/keycodes.htm)
+
   - *FORWARD* (Keycode) : Move forward
   - *BACKWARD* (Keycode) : Move backward
   - *LEFT* (Keycode) : Move left
   - *RIGHT* (Keycode) : Move righ
   - *FREEZE* (Keycode) : Stop/Start movement
+
 - *PACMAN* (Object) : Specific pacman mode configuration
+
   - *MOVESPEED* (Number) : X, Y, Z camera translation speed in UNITSIZE
   - *LOOKSPEED* (Number) : X, Y, Z camera rotation speed in UNITSIZE
+
 - *COLLISONMARGIN* (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls
 
 3D Colors ``3d.colors.config.json``
@@ -668,6 +678,7 @@ Basic configuration file :
 - *RACK* (rgb()): Rack color
 - *NODE* (rgb()): Node color
 - *LED* (Object): Colors of the led status, based on the node state
+
   - *IDLE* (rgb()) : Node state is idle
   - *FULLYALLOCATED* (rgb()) : Node state is reserved, allocated or completing and all cpus allocated
   - *PARTALLOCATED* (rgb()) : Node state is reserved, allocated or completing and not all cpus allocated
@@ -678,9 +689,11 @@ Basic configuration file :
   - *DOWN* (rgb()) : Node state is down
   - *RESERVED* (rgb()) : Node state is reserved
   - *NOTVISIBLE*: Default color for empty core
+
 - *JOB* (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]
 - *NOJOB* (rgb()): Default color for empty core
 - *RACKNAME* (Object):
+
   - *FONT* (rgb()): Font color for the rack name banner
 
 Clusters ``clusters.config.js``
