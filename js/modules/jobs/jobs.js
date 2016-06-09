@@ -51,6 +51,7 @@ define([
     this.tagsinputOptions = [];
     this.onModal = null;
     this.initialLoad = true;
+    this.scrollTop = 0;
 
     function filteredJobs(jobs, result) {
       var context = {
@@ -122,6 +123,18 @@ define([
         });
     }
 
+    this.saveUI = function () {
+      self.scrollTop = $(window).scrollTop();
+    }
+
+    this.loadUI = function () {
+      $(window).scrollTop(self.scrollTop);
+
+      if (self.onModal) {
+        $(document).trigger('modal-job', { jobId: self.onModal });
+      }
+    }
+
     this.init = function() {
       var self = this,
         options = {
@@ -177,10 +190,6 @@ define([
           };
 
           $('#main').append(template(context));
-
-          if (self.onModal) {
-            $(document).trigger('modal-job', { jobId: self.onModal });
-          }
 
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {
@@ -369,11 +378,14 @@ define([
             maxLegendHeight = Math.max(maxLegendHeight, $(this).height());
           });
           $('.plots').css({ 'min-height': maxLegendHeight + 'px' });
+
+          self.loadUI();
         });
     };
 
     this.refresh = function() {
       this.interval = setInterval(function() {
+        self.saveUI();
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         self.tagsinputOptions = tagsinputUtils.getTagsinputOptions('.typeahead');
         self.destroy(false);

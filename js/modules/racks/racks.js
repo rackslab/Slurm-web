@@ -34,6 +34,15 @@ define([
     this.slurmNodes = null;
     this.interval = null;
     this.config = draw.getConfig();
+    this.scrollTop = 0;
+
+    this.saveUI = function () {
+      self.scrollTop = $(window).scrollTop();
+    }
+
+    this.loadUI = function () {
+      $(window).scrollTop(self.scrollTop);
+    }
 
     this.init = function() {
       var self = this;
@@ -127,6 +136,8 @@ define([
         });
 
         d2LegendDraw.drawLegend('racks');
+
+        self.loadUI();
       });
     };
 
@@ -134,6 +145,7 @@ define([
       var self = this;
 
       this.interval = setInterval(function() {
+        self.saveUI();
         $('#racks').remove();
         self.init();
       }, config.REFRESH);

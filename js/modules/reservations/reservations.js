@@ -32,6 +32,15 @@ define([
   return function(config) {
     this.interval = null;
     this.tablesorterOptions = {};
+    this.scrollTop = 0;
+
+    this.saveUI = function () {
+      this.scrollTop = $(window).scrollTop();
+    }
+
+    this.loadUI = function () {
+      $(window).scrollTop(this.scrollTop);
+    }
 
     this.init = function() {
       var self = this,
@@ -63,6 +72,8 @@ define([
 
             $(document).trigger('show', { page: 'jobs', filter: { type: 'reservation', value: reservation } });
           });
+
+          self.loadUI();
         });
     };
 
@@ -70,6 +81,7 @@ define([
       var self = this;
 
       this.interval = setInterval(function() {
+        self.saveUI();
         self.tablesorterOptions = tablesorterUtils.findTablesorterOptions('.tablesorter');
         $('#reservations').remove();
         self.init();

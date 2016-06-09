@@ -40,6 +40,7 @@ define([
     this.slurmNodes = null;
     this.interval = null;
     this.config = draw.getConfig();
+    this.scrollTop = 0;
 
     function closeModalCore(e) {
       e.stopPropagation();
@@ -124,6 +125,14 @@ define([
 
       toggleModalNode(options.nodeId);
     });
+
+    this.saveUI = function () {
+      self.scrollTop = $(window).scrollTop();
+    }
+
+    this.loadUI = function () {
+      $(window).scrollTop(self.scrollTop);
+    }
 
     this.init = function() {
       var self = this,
@@ -249,6 +258,8 @@ define([
         });
 
         d2LegendDraw.drawLegend('jobs-map');
+
+        self.loadUI();
       });
     };
 
@@ -256,6 +267,7 @@ define([
       var self = this;
 
       this.interval = setInterval(function() {
+        self.saveUI();
         $('#jobsmap').remove();
         self.init();
       }, config.REFRESH);
