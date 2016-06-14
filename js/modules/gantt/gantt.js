@@ -29,10 +29,10 @@ define([
   'jobs-utils'
 ], function($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs) {
   var jobStateColors = {
-      'PENDING': 'mediumseagreen',
-      'RUNNING': 'royalblue',
-      'COMPLETED': 'khaki'
-    };
+    'PENDING': 'mediumseagreen',
+    'RUNNING': 'royalblue',
+    'COMPLETED': 'khaki'
+  };
 
   template = Handlebars.compile(template);
   nodesTemplate = Handlebars.compile(nodesTemplate);
@@ -40,7 +40,8 @@ define([
   modalTemplate = Handlebars.compile(modalTemplate);
 
   function computeTimesForJobs(jobsBySt) {
-    var times = [],
+    var stId, jobId, i,
+      times = [],
       currentTime = Date.now() / 1000 | 0, // seconds
       startTime = currentTime - 3600, // seconds
       endTime = currentTime + 3600, // seconds
@@ -251,8 +252,8 @@ define([
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-nodes', options)
       .success(function(jobsByNodes) {
         var context = {
-            jobs: computeJobsForNodes(jobsByNodes)
-          };
+          jobs: computeJobsForNodes(jobsByNodes)
+        };
 
         $('#nodes').append(nodesTemplate(context));
 
@@ -264,8 +265,8 @@ define([
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-qos', options)
       .success(function(jobsByQos) {
         var context = {
-            jobs: computeJobsForQos(jobsByQos)
-          };
+          jobs: computeJobsForQos(jobsByQos)
+        };
 
         $('#qos').append(qosTemplate(context));
 
