@@ -4,18 +4,6 @@
             2,
             2
         ],
-        "quotes": [
-            2,
-            "single"
-        ],
-        "linebreak-style": [
-            2,
-            "unix"
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
         "comma-dangle": 2,
         "no-cond-assign": 2,
         "no-console": 1,
@@ -65,7 +53,6 @@
         "no-case-declarations": 2,
         "no-div-regex": 2,
         "no-else-return": 2,
-        "no-empty-label": 2,
         "no-empty-pattern": 2,
         "no-eq-null": 2,
         "no-eval": 2,
@@ -142,7 +129,6 @@
         "func-style": [ 2, "declaration" ],
         "id-length": 0,
         "id-match": 0,
-        "indent": [ 2, 2 ],
         "jsx-quotes": [ 2, "prefer-single" ],
         "key-spacing": 0,
         "linebreak-style": 2,
@@ -177,7 +163,7 @@
         "semi-spacing": 2,
         "semi": [ 2, "always" ],
         "sort-vars": 0,
-        "space-after-keywords": 2,
+        "keyword-spacing": 2,
         "space-before-blocks": 2,
         "space-before-function-paren": [
           2,
@@ -186,10 +172,8 @@
             "named": "never"
           }
         ],
-        "space-before-keywords": [ 2, "always" ],
         "space-in-parens": 2,
         "space-infix-ops": 2,
-        "space-return-throw-case": 2,
         "space-unary-ops": 2,
         "spaced-comment": 0,
         "wrap-regex": 2,
@@ -198,7 +182,7 @@
         "arrow-spacing": 2,
         "constructor-super": 2,
         "generator-star-spacing": 0,
-        "no-arrow-condition": 1,
+        "no-confusing-arrow": 1,
         "no-class-assign": 2,
         "no-const-assign": 2,
         "no-dupe-class-members": 2,
