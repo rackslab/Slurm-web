@@ -28,9 +28,7 @@ define([
   'token-utils',
   'jobs-utils'
 ], function($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs) {
-  var i, times, currentTime, startTime, endTime, timeScale, stId, jobId,
-    timeRange, currentPosition,
-    jobStateColors = {
+  var jobStateColors = {
       'PENDING': 'mediumseagreen',
       'RUNNING': 'royalblue',
       'COMPLETED': 'khaki'
@@ -42,11 +40,13 @@ define([
   modalTemplate = Handlebars.compile(modalTemplate);
 
   function computeTimesForJobs(jobsBySt) {
-    times = [];
-    currentTime = Date.now() / 1000 | 0; // seconds
-    startTime = currentTime - 3600; // seconds
-    endTime = currentTime + 3600; // seconds
-    timeScale = 1800; // seconds
+    var times = [],
+      currentTime = Date.now() / 1000 | 0, // seconds
+      startTime = currentTime - 3600, // seconds
+      endTime = currentTime + 3600, // seconds
+      timeScale = 1800, // seconds
+      timeRange = 0,
+      currentPosition = 0;
 
     for (stId in jobsBySt) {
       for (jobId in jobsBySt[stId]) {
@@ -250,28 +250,26 @@ define([
   function showJobsByNodes(options, config) {
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-nodes', options)
       .success(function(jobsByNodes) {
-        var jobsDatas = computeJobsForNodes(jobsByNodes),
-          context = {
-            jobs: jobsDatas
+        var context = {
+            jobs: computeJobsForNodes(jobsByNodes)
           };
 
         $('#nodes').append(nodesTemplate(context));
 
-        bindUtils(jobsDatas, options);
+        bindUtils(context.jobs, options);
       });
   }
 
   function showJobsByQos(options, config) {
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-qos', options)
       .success(function(jobsByQos) {
-        var jobsDatas = computeJobsForQos(jobsByQos),
-          context = {
-            jobs: jobsDatas
+        var context = {
+            jobs: computeJobsForQos(jobsByQos)
           };
 
         $('#qos').append(qosTemplate(context));
 
-        bindUtils(jobsDatas, options);
+        bindUtils(context.jobs, options);
       });
   }
 
