@@ -24,7 +24,7 @@ define([
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
     if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
       console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
-      $('#flash .alert').append($('<p>').text('Error : ' + JSON.stringify(error)));
+      $('#flash .alert').append($('<p>').text('Error : unable to perform authentication'));
       $('#flash').show();
     }
     if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
