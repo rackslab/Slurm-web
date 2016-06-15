@@ -129,10 +129,6 @@ define([
 
     this.loadUI = function () {
       $(window).scrollTop(self.scrollTop);
-
-      if (self.onModal) {
-        $(document).trigger('modal-job', { jobId: self.onModal });
-      }
     }
 
     this.init = function() {
@@ -396,10 +392,9 @@ define([
     this.destroy = function(destroyInterval) {
       if (this.interval && destroyInterval) {
         clearInterval(this.interval);
+        $('#modal-job').remove();
+        $('.modal-backdrop').remove();
       }
-
-      $('#modal-job').remove();
-      $('.modal-backdrop').remove();
       $(document).off('modal-job');
       $('tr[id^="tr-job-"]').off('click');
       $('td[data-partition$="(partition)"], td[data-qos$="(qos)"]').off('click');
