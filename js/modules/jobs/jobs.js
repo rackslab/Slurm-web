@@ -186,6 +186,7 @@ define([
           };
 
           $('#main').append(template(context));
+          $(document).trigger('pageLoaded');
 
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {

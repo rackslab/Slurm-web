@@ -75,6 +75,8 @@ define([
           }
 
           $('#main').append(template(context));
+          $(document).trigger('pageLoaded');
+
           tablesorterUtils.eraseEmptyColumn('.tablesorter');
           $('.tablesorter').tablesorter(self.tablesorterOptions);
 

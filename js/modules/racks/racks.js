@@ -119,6 +119,8 @@ define([
         };
 
         $('#main').append(template(context));
+        $(document).trigger('pageLoaded');
+
         $('canvas[id^="cv_rackmap_"]').parent('.canvas-container').css('width', self.config.CANVASWIDTH);
 
         $.each(racks, function(idRack, rack) {

@@ -43,6 +43,7 @@ if (isIE) {
           };
 
         $('#main').append(template(context));
+        $(document).trigger('pageLoaded');
 
         iframeHeight = $(window).innerHeight() -
           $('iframe').offset().top -

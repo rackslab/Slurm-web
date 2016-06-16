@@ -152,6 +152,7 @@ define([
       }
 
       $('#main').append(template());
+      $(document).trigger('pageLoaded');
 
       // hack for placeholder in IE
       if ($.browser.msie) {

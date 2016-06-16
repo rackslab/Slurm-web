@@ -98,6 +98,7 @@ define([
             };
 
           $('#main').append(template(context));
+          $(document).trigger('pageLoaded');
 
           if (topologyDatas.error) {
             return;

@@ -309,6 +309,7 @@ define([
       };
 
       $('#main').append(template());
+      $(document).trigger('pageLoaded');
 
       // bind navbar
       $('#tabs a').click(function(e) {

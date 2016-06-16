@@ -51,18 +51,26 @@ define([
   }
 
   return function(config) {
+    var lock = false;
+
     function bindClusterButtons() {
       $('.cluster').on('click', function(e) {
         e.stopPropagation();
 
         // abort if the selected cluster is yet the current one
-        if (config.cluster === clusters[$(this).data('id')]) {
+        if (config.cluster === clusters[$(this).data('id')] || lock) {
           return false;
         }
+
+        lock = true;
 
         $(document).trigger('selectCluster', { clusterId: $(this).data('id'), $cluster: $(this) });
       });
     }
+
+    $(document).on('pageLoaded', function() {
+      lock = false;
+    });
 
     $(document).on('selectCluster', function(e, options) {
       var cluster = clusters[options.clusterId],
