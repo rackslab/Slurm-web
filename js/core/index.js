@@ -212,6 +212,8 @@ require([
       $('#flash').hide().find('.alert').empty();
     }
 
+    window.page = nextPage;
+
     switch (nextPage) {
     case 'login':
       page = new Login(config);

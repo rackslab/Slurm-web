@@ -36,7 +36,7 @@ from settings import settings
 
 # for authentication
 from auth import (User, authentication_verify, AuthenticationError,
-                  all_restricted, auth_enabled)
+                  all_restricted, auth_enabled, AllUnauthorizedError)
 
 from cache import cache
 
@@ -54,6 +54,14 @@ except Exception:
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
 origins = settings.get('cors', 'authorized_origins')
+
+
+@app.errorhandler(403)
+def custom403(error):
+    response = jsonify({'message': error.description})
+    response.status_code = 403
+    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    return response
 
 
 @app.route('/version', methods=['GET', 'OPTIONS'])
@@ -90,7 +98,9 @@ def login():
             user = User.user(data['username'],
                              data['password'])
         except AuthenticationError:
-            abort(403)
+            abort(403, "Error: your login / password doesn't match.")
+        except AllUnauthorizedError:
+            abort(403, "Error: you have not any role for this cluster")
 
     token = user.generate_auth_token()
     resp = {
