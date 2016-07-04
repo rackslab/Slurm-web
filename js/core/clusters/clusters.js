@@ -85,6 +85,7 @@ define([
         }
 
         config.cluster = cluster;
+        window.cluster = cluster;
         $(document).trigger('loadPage', { config: config });
       };
 

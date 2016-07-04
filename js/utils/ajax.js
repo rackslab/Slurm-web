@@ -19,16 +19,30 @@
  */
 
 define([
-  'jquery'
-], function($) {
+  'jquery',
+  'token-utils',
+  'user-utils'
+], function($, token, user) {
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
-    if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
-      console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
-      $('#flash .alert').append($('<p>').text('Error : unable to perform authentication'));
-      $('#flash').show();
+    var i, cluster,
+      isCurrentCluster = window.cluster && error.url.indexOf(window.cluster.api.url) > -1;
+
+    // find concerned cluster
+    for (i in window.clusters) {
+      cluster = window.clusters[i];
     }
-    if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
+
+    if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
+      // logout for concerned cluster
+      if (cluster.api.url === error.url.split('/').slice(0, 3).join('/')) {
+        token.removeToken(cluster);
+        user.removeUser(cluster);
+      }
+    }
+
+    if (jqueryXHR.status === 403 && window.page !== 'login' && isCurrentCluster) {
       $(document).trigger('logout');
     }
+    $(document).trigger('pageLoaded');
   });
 });
