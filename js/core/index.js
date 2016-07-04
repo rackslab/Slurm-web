@@ -167,6 +167,11 @@ require([
       .success(function(data) {
         config.cluster.infos = data;
         $(document).trigger('show', { page: config.STARTPAGE });
+      })
+      .error(function(err) {
+        if (err.status === 403) {
+          $(document).trigger('show', { page: 'login' });
+        }
       });
   });
 
