@@ -53,6 +53,11 @@ define([
   return function(config) {
     var lock = false;
 
+    // getter for config.cluster
+    window.cluster = function() {
+      return config.cluster;
+    };
+
     function bindClusterButtons() {
       $('.cluster').on('click', function(e) {
         e.stopPropagation();
@@ -85,7 +90,7 @@ define([
         }
 
         config.cluster = cluster;
-        window.cluster = cluster;
+
         $(document).trigger('loadPage', { config: config });
       };
 

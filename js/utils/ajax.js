@@ -25,7 +25,8 @@ define([
 ], function($, token, user) {
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
     var i, cluster,
-      isCurrentCluster = window.cluster && error.url.indexOf(window.cluster.api.url) > -1;
+      currentCluster = window.cluster(),
+      isCurrentCluster = currentCluster && error.url.indexOf(currentCluster.api.url) > -1;
 
     // find concerned cluster
     for (i in window.clusters) {
