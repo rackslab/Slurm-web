@@ -140,7 +140,7 @@ define([
         bindClusterButtons();
 
         // select first cluster once clusters informations have been retrieved
-        $(document).trigger('selectCluster', { clusterId: 0 });
+        $(document).trigger('selectCluster', { clusterId: 0, $cluster: $('.cluster').first() });
       });
 
       if (clusters.length <= 1) {
@@ -174,8 +174,6 @@ define([
             $('#clusters').toggleClass('hidden');
           }
         });
-
-        $('.cluster').parent('li').first().addClass('active');
       });
 
       $(window).on('resize', function() {
