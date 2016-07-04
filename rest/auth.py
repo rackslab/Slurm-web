@@ -78,10 +78,6 @@ class AuthenticationError(Exception):
     pass
 
 
-class AllUnauthorizedError(Exception):
-    pass
-
-
 class CORSForbidden(Forbidden):
     def get_headers(self, environ):
         """Prevent CORS error on Forbidden response."""
@@ -103,8 +99,6 @@ class User(object):
     def user(username, password):
         groups = User.get_groups_from_ldap(username, password)
         role = User.get_role(username, groups)
-        if role == 'all' and all_restricted:
-            raise AllUnauthorizedError
         return User(username, password, role, groups)
 
     # create a guest user
@@ -233,17 +227,18 @@ def authentication_verify():
             token = json.loads(request.data)['token']
 
             if token is None:
-                return abort(403, "No valid token provided")
+                return abort(403)
 
             user = User.verify_auth_token(token)
             if user is not None:
                 if user.role == 'all' and all_restricted:
-                    return abort(403, "role 'all' unauthorized")
+                    print "role 'all' unauthorized"
+                    return abort(403)
 
                 filter_dict(resp, filtered_keys_by_role[user.role])
                 return json.dumps(resp)
 
-            return abort(403, "authentication failed")
+            return abort(403)
 
         return inner
 
