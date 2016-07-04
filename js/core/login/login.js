@@ -29,6 +29,13 @@ define([
 ], function($, async, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
 
+  function errorMessage(message) {
+    var $error = $('#login #error');
+
+    $error.find('.alert').empty().append($('<p>').text(message));
+    $error.show();
+  }
+
   return function(config) {
     function loginAction(options) {
       function loginOnCluster(cluster, callback) {
@@ -103,8 +110,10 @@ define([
       }
 
       async.map(window.clusters, loginOnCluster, function(err, result) {
+        var clusterId = window.clusters.indexOf(config.cluster);
+
         if (err && !userUtils.getUser(config.cluster)) {
-          $('#login #error').show();
+          errorMessage(JSON.parse(result[clusterId][0].responseText).message);
           return;
         }
 
@@ -134,7 +143,7 @@ define([
         }
 
         if (!form.username || !form.password) {
-          $('#login #error').show();
+          errorMessage('You have to provide both your username and your password');
         } else {
           options.data = JSON.stringify({
             username: form.username,
