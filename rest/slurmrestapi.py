@@ -60,6 +60,7 @@ origins = settings.get('cors', 'authorized_origins')
 def custom403(error):
     response = jsonify({'message': error.description})
     response.status_code = 403
+    #FIXME: explain why this header fix is needed:
     response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     return response
 
