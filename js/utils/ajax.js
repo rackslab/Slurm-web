@@ -23,26 +23,38 @@ define([
   'token-utils',
   'user-utils'
 ], function($, token, user) {
+  function extractDomain(url) {
+    return url.split('/').slice(0, 3).join('/');
+  }
+
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
-    var i, cluster,
+    var i, concernedCluster,
       currentCluster = window.cluster(),
       isCurrentCluster = currentCluster && error.url.indexOf(currentCluster.api.url) > -1;
 
-    // find concerned cluster
+    // find cluster concerned by current error
     for (i in window.clusters) {
-      cluster = window.clusters[i];
-    }
-
-    if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
-      // logout for concerned cluster
-      if (cluster.api.url === error.url.split('/').slice(0, 3).join('/')) {
-        token.removeToken(cluster);
-        user.removeUser(cluster);
+      concernedCluster = window.clusters[i];
+      if (concernedCluster.api.url === extractDomain(error.url)) {
+        break;
       }
     }
 
+    if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
+      // case when error status is 0
+      // logout for concerned cluster
+      if (concernedCluster.api.url === extractDomain(error.url)) {
+        token.removeToken(concernedCluster);
+        user.removeUser(concernedCluster);
+      }
+
+      $(document).trigger('displayFailingClusters', { clusters: [ concernedCluster ], show: true });
+    }
+
     if (jqueryXHR.status === 403 && window.page !== 'login' && isCurrentCluster) {
-      $(document).trigger('logout');
+      // case when error status is 403 (FORBIDDEN) and current page not 'login'
+      // logout from current cluster only
+      $(document).trigger('logout', { cluster: concernedCluster });
     }
     $(document).trigger('pageLoaded');
   });

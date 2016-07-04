@@ -170,8 +170,9 @@ require([
       });
   });
 
-  $(document).on('logout', function(e) {
-    var cluster;
+  $(document).on('logout', function(e, options) {
+    var cluster,
+      targetedCluster = options && options.cluster;
 
     e.preventDefault();
 
@@ -180,14 +181,16 @@ require([
       user.removeUser(cluster);
     }
 
-    if (config.AUTOLOGIN) {
+    if (config.AUTOLOGIN && !targetedCluster) {
+      // if autologin is set and no targeted cluster
       // clear authentication on all clusters
       for (cluster in window.clusters) {
         logout(window.clusters[cluster]);
       }
     } else {
-      // clear authentication on current cluster
-      logout(config.cluster);
+      // clear authentication on targeted cluster
+      // or on current cluster unless targeted cluster
+      logout(targetedCluster || config.cluster);
     }
 
     $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });
