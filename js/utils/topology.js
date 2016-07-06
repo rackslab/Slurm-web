@@ -157,9 +157,9 @@ define([
     }
 
     function groupsToElements(groups) {
-      var i, matchOne, matchGroup, name, start, end, size,
+      var i, matchOne, matchGroup, name, start, end, size, number,
         result = [],
-        regexOne = /\w+\d+/,
+        regexOne = /(\w+)\[?(\d+)\]?/,
         regexGroup = /(\w+)\[(\d+)\-(\d+)\]/;
 
       for (i in groups) {
@@ -176,10 +176,13 @@ define([
           size = matchGroup[2].length;
 
           for (i = start; i <= end; i++) {
-            result.push(name + pad(i, size));
+            number = pad(i, size);
+            result.push(name + number);
           }
-        } else {
-          result.push(groups[i]);
+        } else if (matchOne) {
+          name = matchOne[1];
+          number = matchOne[2];
+          result.push(name + number);
         }
       }
 
@@ -189,9 +192,9 @@ define([
     function normalizeSwitchesSyntax(switches) {
       var i, matchGroup, matchBeginOfGroup, matchMiddleOfGroup, matchEndOfGroup,
         regexGroup = /(\w+)\[(\d+)\-(\d+)\]/,
-        regexBeginOfGroup = /(\w+)\[(\d+)\-(\d+)/,
-        regexMiddleOfGroup = /(\d+)\-(\d+)/,
-        regexEndOfGroup = /(\d+)\-(\d+)\]/,
+        regexBeginOfGroup = /(\w+)\[(\d+)(\-(\d+))?/,
+        regexMiddleOfGroup = /(\d+)(\-(\d+))?/,
+        regexEndOfGroup = /((\d+)\-)?(\d+)\]/,
         currentGroup = null,
         result = [];
 

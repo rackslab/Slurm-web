@@ -19,16 +19,43 @@
  */
 
 define([
-  'jquery'
-], function($) {
+  'jquery',
+  'token-utils',
+  'user-utils'
+], function($, token, user) {
+  function extractDomain(url) {
+    return url.split('/').slice(0, 3).join('/');
+  }
+
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
+    var i, concernedCluster,
+      currentCluster = window.cluster(),
+      isCurrentCluster = currentCluster && error.url.indexOf(currentCluster.api.url) > -1;
+
+    // find cluster concerned by current error
+    for (i in window.clusters) {
+      concernedCluster = window.clusters[i];
+      if (concernedCluster.api.url === extractDomain(error.url)) {
+        break;
+      }
+    }
+
     if (!jqueryXHR.status && !(error.url.indexOf('/authentication') > -1)) {
-      console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
-      $('#flash .alert').append($('<p>').text('Error : unable to perform authentication'));
-      $('#flash').show();
+      // case when error status is 0
+      // logout for concerned cluster
+      if (concernedCluster.api.url === extractDomain(error.url)) {
+        token.removeToken(concernedCluster);
+        user.removeUser(concernedCluster);
+      }
+
+      $(document).trigger('displayFailingClusters', { clusters: [ concernedCluster ], show: true });
     }
-    if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
-      $(document).trigger('logout');
+
+    if (jqueryXHR.status === 403 && window.page !== 'login' && isCurrentCluster) {
+      // case when error status is 403 (FORBIDDEN) and current page not 'login'
+      // logout from current cluster only
+      $(document).trigger('logout', { cluster: concernedCluster });
     }
+    $(document).trigger('pageLoaded');
   });
 });

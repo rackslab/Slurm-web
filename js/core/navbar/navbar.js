@@ -139,7 +139,7 @@ define([
         e.preventDefault();
         e.stopPropagation();
 
-        $(document).trigger('logout', { cluster: config.cluster });
+        $(document).trigger('logout');
       });
 
       $(document).trigger('navbarLoaded', { height: $('#navbar').height() });

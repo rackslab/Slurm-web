@@ -53,6 +53,11 @@ define([
   return function(config) {
     var lock = false;
 
+    // getter for config.cluster
+    window.cluster = function() {
+      return config.cluster;
+    };
+
     function bindClusterButtons() {
       $('.cluster').on('click', function(e) {
         e.stopPropagation();
@@ -85,10 +90,33 @@ define([
         }
 
         config.cluster = cluster;
+
         $(document).trigger('loadPage', { config: config });
       };
 
       loadSelectedCluster();
+    });
+
+    $(document).on('displayFailingClusters', function(e, options) {
+      var index, $message,
+        clusters = options && options.clusters;
+
+      if (!clusters || !clusters.length) {
+        return;
+      }
+
+      for (index in clusters) {
+        $message = $('<p>').text('Error while fetching cluster ' + clusters[index].name + ' : it seems to be unreachable');
+        $('#flash .alert').append($message);
+      }
+
+      if (options && options.show) {
+        // display now
+        $('#flash').show();
+      } else {
+        // display later
+        $('#flash').addClass('display');
+      }
     });
 
     this.init = function() {
@@ -108,7 +136,7 @@ define([
 
       // retrieve informations about authentication on each cluster
       async.map(clusters, retrieveClusterInformations, function(err, result) {
-        var index, $message, failingClusters;
+        var failingClusters;
 
         if (err) {
           console.error('error on retrieve cluster informations', result); // eslint-disable-line no-console
@@ -119,12 +147,7 @@ define([
         });
 
         if (failingClusters.length) {
-          for (index in failingClusters) {
-            $message = $('<p>').text('Error while fetching cluster ' + failingClusters[index].name + ' : it seems to be unreachable');
-            $('#flash .alert').append($message);
-          }
-
-          $('#flash').addClass('display');
+          $(document).trigger('displayFailingClusters', { clusters: failingClusters });
         }
 
         if (!clusters.length) {
