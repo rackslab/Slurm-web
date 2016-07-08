@@ -100,7 +100,7 @@ def login():
         abort(404)
 
     data = json.loads(request.data)
-    if data.get('guest', None) == True:
+    if data.get('guest', None) is True:
         user = User.guest()
     else:
         try:
