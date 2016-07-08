@@ -60,10 +60,16 @@ origins = settings.get('cors', 'authorized_origins')
 def custom403(error):
     response = jsonify({'message': error.description})
     response.status_code = 403
-    # accept crossdomain requests on 403 errors because error handler
-    # bypass @crossdomain decorator and results browser-side to "No
-    # 'Access-Control-Allow-Origin' header is present" error otherwise
-    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+
+    # This error handle bypasses the @crossdomain decorator so we must do part
+    # of its job here. If the request is done with CORS, the Origin header is
+    # set and the browser enforces the presence of Access-Control-Allow-Origin
+    # in the response header. Then set the latter with the value of the former
+    # if existing.
+    if 'Origin' in request.headers:
+        response.headers['Access-Control-Allow-Origin'] = \
+            request.headers['Origin']
+
     return response
 
 
