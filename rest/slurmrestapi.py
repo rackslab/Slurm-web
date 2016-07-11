@@ -46,11 +46,6 @@ import unicodedata
 
 app = Flask(__name__)
 
-try:
-    app.secret_key = settings.get('config', 'secret_key') or 'secret_key'
-except Exception:
-    app.secret_key = 'secret_key'
-
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
 origins = settings.get('cors', 'authorized_origins')
