@@ -261,11 +261,12 @@ Here is an example of a valid configuration file:
   authorized_origins = http://dashboard.myslurmhpc.com
 
   [config]
-  secret_key = my_awesome_secret_key
   # Set to 'enable' to activate authentication.
   # Authentication is based on LDAP, so an LDAP server and the good configuration
   # for it, below in this file, are required.
   authentication = enable
+  # Absolute path to the secret key file.
+  secret_key = /etc/slurm-web/secret.key
   # Set to 'enable' to activate cache.
   cache = enable
   # Path for racks description (default to /etc/slurm-web/racks.xml).
@@ -342,10 +343,30 @@ from several crossdomain dashboards: just set origins of each dashboard in the
 Authentication
 """"""""""""""
 
-The REST API has an authentication mechanism, based on an LDAP server. If the
-parameter ``authentication`` is set to ``enable``, the dashboard will ask to the
-user his credentials. This feature requires the configuration of the LDAP server
-in the ``[ldap]`` section.
+The REST API has an optional authentication feature based on an LDAP directory.
+If the parameter ``authentication`` is set to ``enable``, the dashboard will
+ask users to give credentials to access the cluster data.
+
+The authentication feature requires a randomly generated secret key file. The
+content of this file is used to sign the generated tokens on server-side to
+ensure their integrity during network exchanges. The path to the secret key
+file is set with the ``secret_key`` parameter in the ``config`` section. The
+default path is ``/etc/slurm-web/secret.key``. For security reason, please make
+sure only the root and WSGI users have read access to this file and it is not
+world-readable.
+
+To generate a secret key file, you can use Linux pseudorandom number generator
+with this command::
+
+    head -c 64 /dev/urandom > /etc/slurm-web/secret.key
+
+Then set correct mode and ownerships::
+
+    chown www-data: /etc/slurm-web/secret.key
+    chmod 400 /etc/slurm-web/secret.key
+
+The authentication feature also requires the LDAP parameters to be set in the
+``[ldap]`` section of the configuration files.
 
 When enabled, the authentication feature handles different roles for the users:
 

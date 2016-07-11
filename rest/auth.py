@@ -26,7 +26,7 @@ from functools import wraps
 from werkzeug.exceptions import Forbidden
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-from ConfigParser import NoSectionError
+from ConfigParser import NoSectionError, NoOptionError
 import os
 import platform
 
@@ -35,7 +35,25 @@ all_restricted = False
 auth_enabled = settings.get('config', 'authentication') == 'enable'
 
 if auth_enabled:
-    secret_key = settings.get('config', 'secret_key') + platform.node()
+
+    if settings.has_option('config', 'secret_key'):
+        secret_key_file = settings.get('config', 'secret_key')
+    else:
+        secret_key_file = '/etc/slurm-web/secret.key'
+
+    # check secret key file exist or print error otherwise
+    if not os.path.exists(secret_key_file):
+        print "Secret key file %s does not exists" % (secret_key_file)
+
+    try:
+        secret_key = open(secret_key_file, 'rb').read()
+    except IOError:
+        print "IO error with secret key file %s" % (secret_key_file)
+        # fallback to bad secret key
+        secret_key = b"badsecretkey"
+
+    secret_key += platform.node()
+
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
         'user': settings.get('roles', 'restricted_fields_for_user').split(','),
