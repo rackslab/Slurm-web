@@ -319,14 +319,22 @@ define([
             }
           ];
 
+          // compute stats for pie charts
           for (index in jobs) {
             if (jobs.hasOwnProperty(index)) {
               job = jobs[index];
 
+              // Only jobs in RUNNING, COMPLETING (in epilog) and CONFIGURING
+              // (booting allocated nodes) states must be considered in stats.
+              // Jobs in other states do not really have allocated resources
+              // and they can be safely ignored here.
+
               if (job.hasOwnProperty('job_state') &&
                   job.hasOwnProperty('qos') &&
                   job.hasOwnProperty('partition') &&
-                  (job.job_state === 'RUNNING' || job.job_state === 'COMPLETED')) {
+                  (job.job_state === 'RUNNING' ||
+                   job.job_state === 'COMPLETING' ||
+                   job.job_state === 'CONFIGURING')) {
                 if (!QOSStats.hasOwnProperty(job.qos)) {
                   QOSStats[job.qos] = { cores: 0, nodes: 0 };
                 }
