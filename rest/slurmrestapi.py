@@ -79,19 +79,6 @@ def version():
     return "Slurm-web REST API v2.0"
 
 
-@app.route('/static/<path:path>')
-def send_js(path):
-    return send_from_directory('static', path)
-
-
-@app.route('/proxy')
-def proxy():
-    masters = ", ".join(map(lambda s: "\"%s\": \"*\"" % s, origins.split(',')))
-    return render_template('proxy.html',
-                           url_root=request.url_root,
-                           masters=masters)
-
-
 @app.route('/login', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type'])
@@ -408,6 +395,25 @@ def get_jobs_by_qos():
 def convert_nodeset():
     data = json.loads(request.data)
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
+
+
+# The purpose of the /proxy and /static routes is just to make CORS work on IE9
+# with the help of xdomain.js. The dashboard requests /proxy on all clusters
+# API servers when running with this browser. The REST API responds with a very
+# small HTML code (rendered by templates/proxy.html) which simply includes
+# static/xdomain.js and executes one JS function
+
+@app.route('/static/<path:path>')
+def send_js(path):
+    return send_from_directory('static', path)
+
+
+@app.route('/proxy')
+def proxy():
+    masters = ", ".join(map(lambda s: "\"%s\": \"*\"" % s, origins.split(',')))
+    return render_template('proxy.html',
+                           url_root=request.url_root,
+                           masters=masters)
 
 
 def fill_job_user(job):
