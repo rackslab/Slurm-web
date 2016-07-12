@@ -40,12 +40,12 @@ JQuery help to select and perform actions on the DOM. See JQuery documentation
 Directory structure
 ^^^^^^^^^^^^^^^^^^^
 
-* ``/js/core`` : Application core methods, app entry point, navigation and multi-cluster mode methods
+* ``dashboard/js/core`` : Application core methods, app entry point, navigation and multi-cluster mode methods
   Note : /js/core/index.js : Application entry point
-* ``/js/draw`` : Draw methods for 2D and 3D canvas
-* ``/js/helpers`` : Handlebars helpers used to format data
-* ``/js/modules`` : Applications page
-* ``/js/utils`` : Applications utils
+* ``dashboard/js/draw`` : Draw methods for 2D and 3D canvas
+* ``dashboard/js/helpers`` : Handlebars helpers used to format data
+* ``dashboard/js/modules`` : Applications page
+* ``dashboard/js/utils`` : Applications utils
 
 
 Page API
@@ -82,7 +82,7 @@ Work with current page or add new:
 
 To add a new page in slurm-web :
 
-* Create a module object (see above) and save it in /js/modules/(pagename)/(pagename).js
-* Require the module files (.js and .hbs) in /js/core/index.js
-* Add a navigation element in /js/core/navbar/navbar.js
-* Add a navigation event in the `$(document).on('show')` in /js/core/index.js
+* Create a module object (see above) and save it in dashboard/js/modules/(pagename)/(pagename).js
+* Require the module files (.js and .hbs) in dashboard/js/core/index.js
+* Add a navigation element in dashboard/js/core/navbar/navbar.js
+* Add a navigation event in the `$(document).on('show')` in dashboard/js/core/index.js
