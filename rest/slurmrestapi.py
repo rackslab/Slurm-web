@@ -27,9 +27,6 @@ import json
 # for racks description
 from racks import parse_racks
 
-# for mocking json
-from mocks import mock, mock_job, mocking
-
 # for CORS
 from cors import crossdomain
 from settings import settings
@@ -119,10 +116,7 @@ def authentication():
 @authentication_verify()
 @cache()
 def get_jobs():
-    if mocking:
-        jobs = mock('jobs.json')
-    else:
-        jobs = pyslurm.job().get()
+    jobs = pyslurm.job().get()
 
     for jobid, job in jobs.iteritems():
         # add login and username (additionally to UID) for each job
@@ -145,8 +139,6 @@ def get_jobs():
 @authentication_verify()
 @cache()
 def show_job(job_id):
-    if mocking:
-        return mock_job(job_id)
 
     job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
@@ -160,8 +152,6 @@ def show_job(job_id):
 @authentication_verify()
 @cache()
 def get_nodes():
-    if mocking:
-        return mock('nodes.json')
 
     nodes = pyslurm.node().get()
     return nodes
@@ -173,8 +163,6 @@ def get_nodes():
 @authentication_verify()
 @cache()
 def get_cluster():
-    if mocking:
-        return mock('cluster.json')
 
     nodes = pyslurm.node().get()
     cluster = {}
@@ -205,8 +193,6 @@ def get_racks():
 @authentication_verify()
 @cache()
 def get_reservations():
-    if mocking:
-        return mock('reservations.json')
 
     reservations = pyslurm.reservation().get()
     return reservations
@@ -218,8 +204,6 @@ def get_reservations():
 @authentication_verify()
 @cache()
 def get_partitions():
-    if mocking:
-        return mock('partitions.json')
 
     partitions = pyslurm.partition().get()
     return partitions
@@ -231,8 +215,6 @@ def get_partitions():
 @authentication_verify()
 @cache()
 def get_qos():
-    if mocking:
-        return mock('qos.json')
 
     try:
         qos = pyslurm.qos().get()
@@ -247,8 +229,6 @@ def get_qos():
 @authentication_verify()
 @cache()
 def get_topology():
-    if mocking:
-        return mock('topology.json')
 
     try:
         topology = pyslurm.topology().get()
@@ -265,10 +245,8 @@ def get_topology():
 @authentication_verify()
 @cache()
 def get_jobs_by_node_id(node_id):
-    if mocking:
-        jobs = mock('jobs.json')
-    else:
-        jobs = pyslurm.job().get()
+
+    jobs = pyslurm.job().get()
 
     returned_jobs = {}
 
@@ -280,9 +258,8 @@ def get_jobs_by_node_id(node_id):
             returned_jobs[jobid] = job
             print "Node %s added to jobs : %s" % (node_id, returned_jobs)
 
-    if not mocking:
-        for jobid, job in returned_jobs.iteritems():
-            fill_job_user(job)
+    for jobid, job in returned_jobs.iteritems():
+        fill_job_user(job)
 
     return returned_jobs
 
@@ -295,10 +272,8 @@ def get_jobs_by_node_id(node_id):
 @authentication_verify()
 @cache()
 def get_jobs_by_node_ids():
-    if mocking:
-        jobs = mock('jobs.json')
-    else:
-        jobs = pyslurm.job().get()
+
+    jobs = pyslurm.job().get()
 
     print "Post datas : %s" % request.data
     nodes = json.loads(request.data).get('nodes', [])
@@ -316,9 +291,8 @@ def get_jobs_by_node_ids():
                 returned_jobs[jobid] = job
                 print "Node %s added to jobs : %s" % (node_id, returned_jobs)
 
-    if not mocking:
-        for jobid, job in returned_jobs.iteritems():
-            fill_job_user(job)
+    for jobid, job in returned_jobs.iteritems():
+        fill_job_user(job)
 
     return returned_jobs
 
@@ -331,12 +305,9 @@ def get_jobs_by_node_ids():
 @authentication_verify()
 @cache()
 def get_jobs_by_nodes():
-    if mocking:
-        jobs = mock('jobs.json')
-        nodes = mock('nodes.json')
-    else:
-        jobs = pyslurm.job().get()
-        nodes = pyslurm.node().get()
+
+    jobs = pyslurm.job().get()
+    nodes = pyslurm.node().get()
 
     returned_nodes = {}
 
@@ -361,12 +332,9 @@ def get_jobs_by_nodes():
 @authentication_verify()
 @cache()
 def get_jobs_by_qos():
-    if mocking:
-        jobs = mock('jobs.json')
-        qos = mock('qos.json')
-    else:
-        jobs = pyslurm.job().get()
-        qos = pyslurm.qos().get()
+
+    jobs = pyslurm.job().get()
+    qos = pyslurm.qos().get()
 
     returned_qos = {}
 

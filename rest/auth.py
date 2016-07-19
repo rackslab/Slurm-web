@@ -132,13 +132,6 @@ class User(object):
 
     @staticmethod
     def get_groups_from_ldap(username, password):
-        # mock LDAP in development
-        if os.environ.get('LDAP_ENV') == 'development':
-            print "LDAP authentication mocked"
-            if username == 'marie' or username == 'pierre':
-                if password == 'secret':
-                    return ['chimistes']
-            raise AuthenticationError
 
         # here deal with ldap to get user groups
         conn = get_ldap_connection()
