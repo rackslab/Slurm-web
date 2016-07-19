@@ -2,6 +2,3 @@
 *.min.js
 doc/_build
 dashboard/js/fonts
-frontend/node_modules
-frontend/dist
-conf/racks-mock.xml
