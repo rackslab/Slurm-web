@@ -20,7 +20,7 @@
 
 import ldap
 import json
-from flask import request, abort
+from flask import request, abort, jsonify
 from settings import settings
 from functools import wraps
 from werkzeug.exceptions import Forbidden
@@ -246,7 +246,7 @@ def authentication_verify():
         def inner(*args, **kwargs):
             resp = f(*args, **kwargs)
             if not auth_enabled:
-                return json.dumps(resp)
+                return jsonify(resp)
 
             token = json.loads(request.data)['token']
 
@@ -259,7 +259,7 @@ def authentication_verify():
                     return abort(403, "role 'all' unauthorized")
 
                 filter_dict(resp, filtered_keys_by_role[user.role])
-                return json.dumps(resp)
+                return jsonify(resp)
 
             return abort(403, "authentication failed")
 
