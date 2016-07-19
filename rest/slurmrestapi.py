@@ -76,7 +76,7 @@ def version():
 
 @app.route('/login', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 def login():
     if not auth_enabled:
         abort(404)
@@ -105,7 +105,7 @@ def login():
 
 @app.route('/authentication', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 def authentication():
     return jsonify({
         'enabled': auth_enabled,
@@ -115,7 +115,7 @@ def authentication():
 
 @app.route('/jobs', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_jobs():
@@ -136,13 +136,12 @@ def get_jobs():
             jobs[jobid]["nodeset"] = list(
                 NodeSet(job["nodes"].encode('ascii', 'ignore'))
             )
-
     return jobs
 
 
 @app.route('/job/<int:job_id>', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def show_job(job_id):
@@ -157,7 +156,7 @@ def show_job(job_id):
 
 @app.route('/nodes', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_nodes():
@@ -170,7 +169,7 @@ def get_nodes():
 
 @app.route('/cluster', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_cluster():
@@ -189,7 +188,7 @@ def get_cluster():
 
 @app.route('/racks', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_racks():
@@ -202,7 +201,7 @@ def get_racks():
 
 @app.route('/reservations', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_reservations():
@@ -215,7 +214,7 @@ def get_reservations():
 
 @app.route('/partitions', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_partitions():
@@ -228,7 +227,7 @@ def get_partitions():
 
 @app.route('/qos', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_qos():
@@ -244,7 +243,7 @@ def get_qos():
 
 @app.route('/topology', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_topology():
@@ -262,7 +261,7 @@ def get_topology():
 # with their ID as key
 @app.route('/jobs-by-node/<node_id>', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_jobs_by_node_id(node_id):
@@ -292,7 +291,7 @@ def get_jobs_by_node_id(node_id):
 # with their ID as key
 @app.route('/jobs-by-node-ids', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_jobs_by_node_ids():
@@ -328,7 +327,7 @@ def get_jobs_by_node_ids():
 # composed by all jobs running on the concerned node
 @app.route('/jobs-by-nodes', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_jobs_by_nodes():
@@ -358,7 +357,7 @@ def get_jobs_by_nodes():
 # composed by all jobs on the concerned node
 @app.route('/jobs-by-qos', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
 @cache()
 def get_jobs_by_qos():
@@ -385,7 +384,7 @@ def get_jobs_by_qos():
 
 @app.route('/nodeset', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @cache()
 def convert_nodeset():
     data = json.loads(request.data)
