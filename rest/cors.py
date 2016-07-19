@@ -55,9 +55,13 @@ def crossdomain(origin=None, methods=None, headers=None,
             h = resp.headers
 
             # allow CORS for 'Origin' in the list origin given in parameters
-            if (not request.headers.get('Origin') is None and
-               any(request.headers.get('Origin') in o for o in origin)):
-                h['Access-Control-Allow-Origin'] = request.headers['Origin']
+            if 'Origin' in request.headers:
+                if request.headers.get('Origin') in origin:
+                    h['Access-Control-Allow-Origin'] = \
+                        request.headers['Origin']
+                else:
+                    print("unauthorized origin: %s" % \
+                          (request.headers.get('Origin')))
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
             if headers is not None:
