@@ -23,6 +23,7 @@ from flask import (Flask, jsonify, request, abort, send_from_directory,
 import pyslurm
 import pwd
 import json
+import os
 
 # for racks description
 from racks import parse_racks
@@ -42,6 +43,14 @@ from ClusterShell.NodeSet import NodeSet
 import unicodedata
 
 app = Flask(__name__)
+
+@app.before_first_request
+def plug_mocks():
+    # check SLURM_WEB_CLUSTER_MOCK environment variable
+    # if it exists, load the mock context and setup
+    if os.getenv('SLURM_WEB_CLUSTER_MOCK') is not None:
+        from mocks.setup import setup_mock
+        setup_mock(os.environ['SLURM_WEB_CLUSTER_MOCK'])
 
 uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
