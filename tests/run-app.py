@@ -25,6 +25,7 @@ import os
 default_host = '127.0.0.1'
 default_port = 5000
 default_app = 'rest'
+default_setup = 'simple'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-H", "--host",
@@ -36,9 +37,13 @@ parser.add_argument("-P", "--port",
                          "[default %s]" % default_port,
                     default=default_port)
 parser.add_argument("-A", "--app",
-                    help="Application to run (rest or conf)" + \
+                    help="Application to run (rest or conf) " + \
                          "[default %s]" % default_app,
                     default=default_app)
+parser.add_argument("-S", "--setup",
+                    help="REST API setup to load " + \
+                         "[default %s]" % default_setup,
+                    default=default_setup)
 
 parser.add_argument("-d", "--debug",
                     action="store_true")
@@ -56,7 +61,7 @@ if args.app == 'rest':
     sys.modules['pyslurm'] = MockPySlurm
     sys.modules['ldap'] = MockLdap
 
-    os.environ['SLURM_WEB_CLUSTER_MOCK'] = 'simple'
+    os.environ['SLURM_WEB_CLUSTER_MOCK'] = args.setup
     from slurmrestapi import app
 
 elif args.app == 'conf':
