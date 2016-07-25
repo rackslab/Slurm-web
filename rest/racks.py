@@ -123,12 +123,12 @@ def parse_racks():
     if not FILE:
         FILE = '/etc/slurm-web/racks.xml'
     try:
-        tree = ET.parse(FILE)
+        with open(FILE, 'r') as f_xml:
+            xml_s = f_xml.read()
+        root = ET.fromstring(xml_s)
     except ET.ParseError as error:
-        print error
+        print("parse error: %s" % (str(error)))
         return None
-
-    root = tree.getroot()
 
     # parse nodetypes and fill nodetypes dict with
     # NodeType objects
