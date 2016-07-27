@@ -80,11 +80,15 @@ class MockLdap(object):
     """Class to mock ldap module."""
 
     SCOPE_SUBTREE = 'foo'
+    OPT_X_TLS_NEWCTX = 'foo'
     OPT_X_TLS_REQUIRE_CERT = 'foo'
-    OPT_X_TLS_NEVER = 'foo'
+    OPT_X_TLS_DEMAND = 'foo'
+    OPT_X_TLS_CACERTFILE = 'foo'
 
     INVALID_CREDENTIALS = ExceptionInvalidCredentials
     NO_SUCH_OBJECT = ExceptionNoSuchObject
+
+    VERSION3 = 'foo'
 
     @staticmethod
     def set_option(*args):
@@ -105,6 +109,9 @@ class MockLdapConn(object):
         login = match.group(1)
         print "login found in search filter: %s" % (login)
         return login
+
+    def set_option(*args):
+        pass
 
     def simple_bind_s(self, dn, password):
 
