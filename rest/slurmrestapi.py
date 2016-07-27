@@ -39,8 +39,9 @@ from cors import crossdomain
 from settings import settings
 
 # for authentication
-from auth import (User, authentication_verify, AuthenticationError,
-                  all_restricted, auth_enabled, AllUnauthorizedError)
+from auth import (User, authentication_verify,
+                  AuthenticationError, AllUnauthorizedError,
+                  guests_allowed, auth_enabled)
 
 from cache import cache
 
@@ -87,7 +88,12 @@ def login():
 
     data = json.loads(request.data)
     if data.get('guest', None) is True:
-        user = User.guest()
+        try:
+            user = User.guest()
+        except AuthenticationError:
+            abort(403, "Error: guests users are not allowed.")
+        except AllUnauthorizedError:
+            abort(403, "Error: you have not any role for this cluster")
     else:
         try:
             user = User.user(data['username'],
@@ -113,7 +119,7 @@ def login():
 def authentication():
     return jsonify({
         'enabled': auth_enabled,
-        'guest': not all_restricted
+        'guest': guests_allowed
         })
 
 

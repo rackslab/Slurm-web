@@ -31,7 +31,8 @@ import os
 import platform
 
 
-all_restricted = False
+guests_allowed = False
+all_enabled = True
 auth_enabled = settings.get('config', 'authentication') == 'enable'
 
 if auth_enabled:
@@ -54,13 +55,29 @@ if auth_enabled:
 
     secret_key += platform.node()
 
+    if settings.has_option('roles', 'guests'):
+        guests_allowed_s = settings.get('roles', 'guests')
+        if guests_allowed_s == 'enabled':
+            guests_allowed = True
+        elif not guests_allowed_s == 'disabled':
+            print("invalid value '%s' for guests parameter, guests will be "
+                  "disabled." % (guests_allowed_s))
+
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
         'user': settings.get('roles', 'restricted_fields_for_user').split(','),
         'admin': settings.get('roles', 'restricted_fields_for_admin')
         .split(',')
     }
-    all_restricted = not(settings.get('roles', 'all') == 'all')
+
+    if settings.has_option('roles', 'all'):
+        all_s = settings.get('roles', 'all')
+        if all_s == 'disabled':
+            all_enabled = False
+        elif not all_s == 'enabled':
+            print("invalid value '%s' for all parameters, all role will be "
+                  "enabled." % (all_s))
+
     users = settings.get('roles', 'user').split(',')
     admins = settings.get('roles', 'admin').split(',')
 
@@ -121,13 +138,17 @@ class User(object):
     def user(username, password):
         groups = User.get_groups_from_ldap(username, password)
         role = User.get_role(username, groups)
-        if role == 'all' and all_restricted:
+        if role == 'all' and not all_enabled:
             raise AllUnauthorizedError
         return User(username, password, role, groups)
 
     # create a guest user
     @staticmethod
     def guest():
+        if not guests_allowed:
+            raise AuthenticationError
+        if not all_enabled:
+            raise AllUnauthorizedError
         return User('guest', 'guest', 'all')
 
     @staticmethod
@@ -211,10 +232,11 @@ class User(object):
             print "verify_auth_token : TypeError"
             return None
 
-        if data['role'] == 'all':
+        if data['username'] == 'guest':
             return User.guest()
 
         user = User.user(data['username'], data['password'])
+
         return user
 
     def restricted_views(self):

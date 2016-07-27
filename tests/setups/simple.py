@@ -38,7 +38,8 @@ def setup_cluster():
                 'racksxml': '/etc/slurm-web/racks.xml',
             },
             'roles': {
-                'all': 'all',
+                'guest': 'enabled',
+                'all': 'enabled',
                 'user': '@user',
                 'admin': '@admin',
                 'restricted_fields_for_all': 'command',

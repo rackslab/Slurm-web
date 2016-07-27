@@ -273,10 +273,14 @@ Here is an example of a valid configuration file:
   racksxml =
 
   [roles]
-  # The `all` role can have 2 values:
-  # - none, restrict access to authenticated users only
-  # - all, free access to non-sensible data
-  all = all
+  # Allow guests users or not. Guests users have the 'none' role. Disabled by
+  # default.
+  guests = disabled
+
+  # The `all` role if for all users that do not either have the user or admin
+  # role, including guests. Enabled by default.
+  all = enabled
+
   # The roles members can be defined with a list of groups (whose names
   # are prefixed by @) and logins.
   user = @usergroup,user
@@ -370,23 +374,27 @@ The authentication feature also requires the LDAP parameters to be set in the
 
 When enabled, the authentication feature handles different roles for the users:
 
-* "all": the role for unauthenticated users. When the parameter ``all`` is set
-  to ``none``, users have to be authenticated to access the datas from the
-  REST API on a Slurm-web dashboard. When it is set to ``all``, users can access
-  datas as guests: a "Guest" button is then added on the login page of the
-  dashboard for this REST API.
-
-* "user": this role is for authenticated users. The parameter ``user`` accepts a
+* *user*: this role is for users. The parameter ``user`` accepts a
   list of values to define authorized users either by the group he belongs to,
   or by their login.
 
-* "admin": this role is for administrators. The parameter ``admin`` works as the
+* *admin*: this role is for administrators. The parameter ``admin`` works as the
   ``user`` one.
 
-For each role, a corresponding "restricted field" parameter exists to set some
+* *all*: this role for all other users who are neither user or admin. When the
+  parameter ``all`` is set to ``enabled`` (default), all authenticated users
+  can access the REST API. When it is set to ``disabled``, the users without any
+  other role cannot access the REST API.
+
+For each role, a corresponding *restricted field* parameter exists to set some
 fields about jobs which have to be hidden to the defined users. Just set a list
 of the field's name separated by commas.
 
+It is also possible to allow guests users to access the REST API with the
+``guests`` paramter (``disabled`` by default). If set to ``enabled``, a new
+guest button is added under the login form in the dashboard. The guests users
+have the *all* role. Then the *all* role must be enabled as well to allow the
+guests users to access the REST API.
 
 Cache
 """""
