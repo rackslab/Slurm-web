@@ -246,15 +246,18 @@ def authentication_verify():
             if token is None:
                 return abort(403, "No valid token provided")
 
-            user = User.verify_auth_token(token)
-            if user is not None:
-                if user.role == 'all' and all_restricted:
-                    return abort(403, "role 'all' unauthorized")
+            try:
+                user = User.verify_auth_token(token)
+            except AuthenticationError:
+                return abort(403, "authentication failed")
+            except AllUnauthorizedError:
+                return abort(403, "access forbidden to role all")
 
-                filter_dict(resp, filtered_keys_by_role[user.role])
-                return jsonify(resp)
+            if user is None:
+                return abort(403, "authentication failed")
 
-            return abort(403, "authentication failed")
+            filter_dict(resp, filtered_keys_by_role[user.role])
+            return jsonify(resp)
 
         return inner
 
