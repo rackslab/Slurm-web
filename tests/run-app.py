@@ -57,9 +57,11 @@ if args.app == 'rest':
 
     from mocks.pyslurm import MockPySlurm
     from mocks.ldap import MockLdap
+    from mocks.settings import MockConfigParserModule
 
     sys.modules['pyslurm'] = MockPySlurm
     sys.modules['ldap'] = MockLdap
+    sys.modules['ConfigParser'] = MockConfigParserModule
 
     os.environ['SLURM_WEB_CLUSTER_MOCK'] = args.setup
     from slurmrestapi import app

@@ -19,23 +19,14 @@
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
 import importlib
+import mock
 
 def setup_mock(context):
-
-    from mocks.settings import MockConfigParser
-    from mocks.racks import MockRacksXML
-    import mock
-    from StringIO import StringIO
 
     setup_m = importlib.import_module('setups.' + context)
 
     setup = setup_m.setup_cluster()
     setup.feed_mocks()
-
-    m_read = mock.Mock()
-    m_read.return_value = MockConfigParser()
-    p_read = mock.patch("settings.ConfigParser.ConfigParser", m_read, create=True)
-    p_read.start()
 
     xml_s = setup.racks.doc.toprettyxml(indent='  ', encoding='UTF-8').strip()
     m_open = mock.mock_open(read_data=xml_s)

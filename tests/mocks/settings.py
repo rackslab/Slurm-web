@@ -18,15 +18,41 @@
 # You should have received a copy of the GNU General Public License
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
-from ConfigParser import NoSectionError, NoOptionError
 from mocks import context
 
-class MockConfigParser(object):
+
+class MockNoSectionError(Exception):
+    pass
+
+
+class MockNoOptionError(Exception):
+    pass
+
+
+class MockConfigParserClass(object):
+
+    def read(self, path):
+        pass
 
     def get(self, section, option):
 
         if section not in context.CONF.keys():
-            raise NoSectionError(section)
+            raise MockNoSectionError(section)
         if option not in context.CONF[section].keys():
-            raise NoOptionError(section, option)
+            raise MockNoOptionError(section, option)
         return context.CONF[section][option]
+
+    def has_option(self, section, option):
+        if section not in context.CONF:
+            raise MockNoSectionError(section)
+        return option in context.CONF[section]
+
+    def items(self, section):
+        return context.CONF[section].keys()
+
+
+class MockConfigParserModule(object):
+
+    NoSectionError = MockNoSectionError
+    NoOptionError = MockNoOptionError
+    ConfigParser = MockConfigParserClass
