@@ -316,8 +316,8 @@ Here is an example of a valid configuration file:
   [ldap]
   # Configure here settings to connect to your LDAP server.
   uri = ldap://admin:389
-  base = dc=cluster,dc=local
-  ugroup = people
+  people_base = ou=people,dc=cluster,dc=local
+  group_base = ou=group,dc=cluster,dc=local
   expiration = 1296000
 
   [racks]

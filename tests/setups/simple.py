@@ -50,8 +50,8 @@ def setup_cluster():
             },
             'ldap': {
                 'uri': 'ldap://localhost:ldap',
-                'base': 'dc=cluster,dc=local',
-                'ugroup': 'people',
+                'base_people': 'ou=people,dc=cluster,dc=local',
+                'base_group': 'ou=group,dc=cluster,dc=local',
                 'expiration': '1296000',
             },
             'cache': {

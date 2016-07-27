@@ -158,21 +158,18 @@ class User(object):
         conn = get_ldap_connection()
 
         try:
-            # authicate user on ldap
-            conn.simple_bind_s(
-                'uid=%s,ou=%s,%s' % (
-                    username,
-                    settings.get('ldap', 'ugroup'),
-                    settings.get('ldap', 'base')
-                ),
-                password
-            )
+            base_people = settings.get('ldap', 'base_people')
+            base_group = settings.get('ldap', 'base_group')
+
+            # authenticate user on ldap
+            user_dn = "uid=%s,%s" % (username, base_people)
+            conn.simple_bind_s(user_dn, password)
 
             print "User %s authenticated" % username
 
-            look_filter = "(|(&(objectClass=*)(member=uid=%s,ou=people,%s)))" \
-                          % (username, settings.get('ldap', 'base'))
-            results = conn.search_s(settings.get('ldap', 'base'),
+            # search for user's groups
+            look_filter = "(|(&(objectClass=*)(member=%s)))" % (user_dn)
+            results = conn.search_s(base_group,
                                     ldap.SCOPE_SUBTREE,
                                     look_filter, ['cn'])
             groups = [result[1]['cn'][0] for result in results]
