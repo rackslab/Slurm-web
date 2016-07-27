@@ -60,7 +60,7 @@ def crossdomain(origin=None, methods=None, headers=None,
                     h['Access-Control-Allow-Origin'] = \
                         request.headers['Origin']
                 else:
-                    print("unauthorized origin: %s" % \
+                    print("unauthorized origin: %s" %
                           (request.headers.get('Origin')))
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
