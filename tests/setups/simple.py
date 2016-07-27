@@ -31,7 +31,7 @@ def setup_cluster():
     setup = ClusterSetup('simple')
     setup.conf = {
             'cors': {
-                'authorized_origins': '10.5.0.1:8080',
+                'authorized_origins': 'http://10.5.0.1:8080',
             },
             'config': {
                 'authentication': 'enable',
@@ -41,6 +41,9 @@ def setup_cluster():
                 'all': 'all',
                 'user': '@user',
                 'admin': '@admin',
+                'restricted_fields_for_all': 'command',
+                'restricted_fields_for_user': 'command',
+                'restricted_fields_for_admin': '',
             },
             'acl': {
             },
