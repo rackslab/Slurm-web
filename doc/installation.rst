@@ -318,6 +318,7 @@ Here is an example of a valid configuration file:
   uri = ldap://admin:389
   people_base = ou=people,dc=cluster,dc=local
   group_base = ou=group,dc=cluster,dc=local
+  #cacert = /etc/ssl/certs/cacert.pem
   expiration = 1296000
 
   [racks]

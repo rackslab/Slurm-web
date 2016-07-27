@@ -88,12 +88,24 @@ try:
 except NoSectionError:
     acl = []
 
-ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-
 
 def get_ldap_connection():
-    conn = ldap.initialize(settings.get('ldap', 'uri'))
-    return conn
+
+    uri = settings.get('ldap', 'uri')
+    conn = ldap.initialize(uri)
+
+    # LDAP/SSL setup
+    if uri.startswith('ldaps'):
+
+        conn.protocol_version = ldap.VERSION3
+        # Force libldap to create a new SSL context
+        conn.set_option(ldap.OPT_X_TLS_NEWCTX, ldap.OPT_X_TLS_DEMAND)
+        # Force cert validation
+        conn.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_DEMAND)
+        if settings.has_option('ldap', 'cacert'):
+            cacert = settings.get('ldap', 'cacert')
+            # Set path name of file containing all trusted CA certificates
+            conn.set_option(ldap.OPT_X_TLS_CACERTFILE, cacert)
 
 
 def filter_dict(to_filter={}, filtered_keys=[]):
