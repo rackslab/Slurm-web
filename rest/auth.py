@@ -107,6 +107,7 @@ def get_ldap_connection():
             # Set path name of file containing all trusted CA certificates
             conn.set_option(ldap.OPT_X_TLS_CACERTFILE, cacert)
 
+    return conn
 
 def filter_dict(to_filter={}, filtered_keys=[]):
     if isinstance(to_filter, dict):
