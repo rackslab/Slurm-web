@@ -77,7 +77,7 @@ def setup_cluster():
         nodename = u"cn%02d" % (nodeid)
         node = SlurmNode(nodename)
         if nodeid == 3:
-            node.state = 'MIX'
+            node.state = 'MIXED'
         setup.ctld.nodes.add(node)
 
     partition = SlurmPartition('compute')
