@@ -20,6 +20,7 @@
 
 import importlib
 import mock
+from mocks.ldap import mock_getpwuid
 
 def setup_mock(context):
 
@@ -32,3 +33,8 @@ def setup_mock(context):
     m_open = mock.mock_open(read_data=xml_s)
     p_open = mock.patch("racks.open", m_open, create=True)
     p_open.start()
+
+    m_getpwuid = mock.Mock()
+    m_getpwuid.side_effect = mock_getpwuid
+    p_getpwuid = mock.patch("pwd.getpwuid", m_getpwuid, create=True)
+    p_getpwuid.start()

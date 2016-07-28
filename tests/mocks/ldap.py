@@ -64,6 +64,10 @@ class UserBase(object):
     def __getitem__(self, index):
         return list(self._base)[index]
 
+    def __iter__(self):
+        for user in self._base:
+            yield user
+
     def find(self, login):
         for user in self._base:
             if user.login == login:
@@ -99,6 +103,20 @@ class MockLdap(object):
         return MockLdapConn()
 
 ldap = MockLdap  # alias
+
+def mock_getpwuid(uid):
+
+    result = list()
+    for user in context.USERBASE:
+        if user.uid == uid:
+            result.append(user.login)
+            result.append(None)
+            result.append(None)
+            result.append(None)
+            result.append(user.name + ',')
+            break
+    return result
+
 
 class MockLdapConn(object):
 
