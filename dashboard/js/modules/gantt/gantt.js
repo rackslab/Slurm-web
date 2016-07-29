@@ -51,8 +51,11 @@ define([
 
     for (stId in jobsBySt) {
       for (jobId in jobsBySt[stId]) {
-        startTime = Math.min(startTime, jobsBySt[stId][jobId].start_time);
-        endTime = Math.max(endTime, jobsBySt[stId][jobId].end_time);
+        // ignore job that are not yet started for the computation
+        if (jobsBySt[stId][jobId].start_time > 0) {
+          startTime = Math.min(startTime, jobsBySt[stId][jobId].start_time);
+          endTime = Math.max(endTime, jobsBySt[stId][jobId].end_time);
+        }
       }
     }
 
