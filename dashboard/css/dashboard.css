@@ -148,6 +148,14 @@ canvas {
 }
 
 /*
+ * Capitalize cluster name
+ */
+
+.cluster {
+  text-transform: capitalize;
+}
+
+/*
  * Login content
  */
 

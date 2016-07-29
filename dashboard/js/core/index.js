@@ -142,6 +142,10 @@ require([
   clusters = new Clusters(config);
   clusters.init();
 
+  String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  }
+
   $(document).on('loadPage', function(e, options) {
     var ajaxOptions = {
       type: 'POST',
@@ -161,7 +165,7 @@ require([
     navbar = new Navbar(options.config);
     navbar.init();
 
-    $('title').html(options.config.cluster.name + '\'s HPC Dashboard');
+    $('title').html(options.config.cluster.name.capitalizeFirstLetter() + '\'s HPC Dashboard');
 
     $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', ajaxOptions)
       .success(function(data) {

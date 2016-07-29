@@ -116,7 +116,7 @@ define([
       });
 
       context = {
-        clusterName: config.cluster.name + '\'s Slurm HPC Dashboard',
+        clusterName: config.cluster.name,
         authEnabled: config.cluster.authentication.enabled,
         views: this.availableViews,
         userLogged: this.userLogged,
