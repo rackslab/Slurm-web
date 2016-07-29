@@ -15,22 +15,19 @@
               <th>Name</th>
               <th>Priority</th>
               <th>Walltime</th>
-              <th>Grp#CPUmins</th>
-              <th>Grp#CPUminInRunning</th>
-              <th>Grp#CPU</th>
-              <th>Grp#Jobs</th>
-              <th>GrpMemory</th>
-              <th>GrpNodes</th>
-              <th>GrpSubmittedJobs</th>
+              <th>MaxJobs</th>
+              <th>MaxSubmitJobs</th>
+              <th>MaxTRESPerJob</th>
+              <th>MinTRESPerJob</th>
+              <th>MaxTRESMinsPerJob</th>
+              <th>MaxTRESPerNode</th>
+              <th>MaxTRESPerUser</th>
               <th>GrpWalltime</th>
-              <th>MaxCPUmins/Job</th>
-              <th>MaxCPUminsforRunningjobs</th>
-              <th>Max#CPUs/Job</th>
-              <th>Max#CPUs/User</th>
-              <th>Max#Jobs/User</th>
-              <th>Max#Nodes/Job</th>
-              <th>Max#Nodes/User</th>
-              <th>MaxSubmitJobs/User</th>
+              <th>GrpJobs</th>
+              <th>GrpSubmitJobs</th>
+              <th>GrpTRES</th>
+              <th>GrpTRESMins</th>
+              <th>GrpTRESRunMins</th>
               <th>PreemptMode</th>
               <th>PreemptionGraceTime</th>
             </tr>
@@ -41,22 +38,19 @@
                 <td>{{@key}}</td>
                 <td>{{fixInfiniteNumber priority}}</td>
                 <td>{{minutesToDelay (fixInfiniteNumber max_wall_pj)}}</td>
-                <td>{{fixInfiniteNumber grp_cpu_mins}}</td>
-                <td>{{fixInfiniteNumber grp_cpu_run_mins}}</td>
-                <td>{{fixInfiniteNumber grp_cpus}}</td>
-                <td>{{fixInfiniteNumber grp_jobs}}</td>
-                <td>{{fixInfiniteNumber grp_mem}}</td>
-                <td>{{fixInfiniteNumber grp_nodes}}</td>
-                <td>{{fixInfiniteNumber grp_submit_jobs}}</td>
-                <td>{{minutesToDelay (fixInfiniteNumber grp_wall)}}</td>
-                <td>{{fixInfiniteNumber max_cpu_mins_pj}}</td>
-                <td>{{fixInfiniteNumber max_cpu_run_mins_pu}}</td>
-                <td>{{fixInfiniteNumber max_cpus_pj}}</td>
-                <td>{{fixInfiniteNumber max_cpus_pu}}</td>
                 <td>{{fixInfiniteNumber max_jobs_pu}}</td>
-                <td>{{fixInfiniteNumber max_nodes_pj}}</td>
-                <td>{{fixInfiniteNumber max_nodes_pu}}</td>
                 <td>{{fixInfiniteNumber max_submit_jobs_pu}}</td>
+                <td>{{fixInfiniteNumber max_tres_pj}}</td>
+                <td>{{fixInfiniteNumber min_tres_pj}}</td>
+                <td>{{fixInfiniteNumber max_tres_mins_pj}}</td>
+                <td>{{fixInfiniteNumber max_tres_pn}}</td>
+                <td>{{fixInfiniteNumber max_tres_pu}}</td>
+                <td>{{minutesToDelay (fixInfiniteNumber grp_wall)}}</td>
+                <td>{{fixInfiniteNumber grp_jobs}}</td>
+                <td>{{fixInfiniteNumber grp_submit_jobs}}</td>
+                <td>{{fixInfiniteNumber grp_tres}}</td>
+                <td>{{fixInfiniteNumber grp_tres_mins}}</td>
+                <td>{{fixInfiniteNumber grp_tres_run_mins}}</td>
                 <td>{{preempt_mode}}</td>
                 <td>{{minutesToDelay (fixInfiniteNumber grace_time)}}</td>
               </tr>
