@@ -222,6 +222,51 @@ def get_partitions():
     return partitions
 
 
+def convert_tres_ids(qos_param_key, qos_param_value):
+    """
+       If the qos_param_key is a TRES key, concert qos_param_value string by
+       replacing all TRES IDs by their respective textual form. For ex:
+         1=224,4=8 -> cpu=224,node=8
+
+       Here is the TRES constant enum as defined in src/common/slurmdb_defs.h
+       of Slurm source code:
+
+         /* This is used to point out constants that exist in the
+          * TRES records.  This should be the same order as
+          * the enum pointing out the order in the array that is defined in
+          * src/slurmctld/slurmctld.h
+          */
+         typedef enum {
+                 TRES_CPU = 1,
+                 TRES_MEM,
+                 TRES_ENERGY,
+                 TRES_NODE,
+                 TRES_STATIC_CNT
+         } tres_types_t;
+
+    """
+    # if not a TRES key, return value w/o modification
+    if qos_param_key.find('_tres') == -1:
+        return qos_param_value
+
+    # skip if value is None
+    if qos_param_value is None:
+        return None
+
+    # map IDs with text according to enum over
+    tres_map = {
+        '1': 'cpu',
+        '2': 'mem',
+        '3': 'energy',
+        '4': 'node'}
+    tres_l = list()
+    tres_e = qos_param_value.split(',')
+    for tres in tres_e:
+        (tres_type, tres_value) = tres.split('=')
+        tres_l.append(tres_map[tres_type] + '=' + tres_value)
+    return ','.join(tres_l)
+
+
 @app.route('/qos', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
@@ -231,6 +276,13 @@ def get_qos():
 
     try:
         qos = pyslurm.qos().get()
+        # for all TRES limits of all QOS, replace TRES type IDs by their
+        # textual form using tres_convert_ids()
+        for qos_name in qos:
+            xqos = qos[qos_name]
+            qos[qos_name] = {key: convert_tres_ids(key, value)
+                             for key, value in xqos.iteritems()}
+
     except Exception as e:
         qos = {'error': str(e)}
     return qos
