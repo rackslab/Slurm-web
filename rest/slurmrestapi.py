@@ -76,7 +76,7 @@ def custom403(error):
 @app.route('/version', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins)
 def version():
-    return "Slurm-web REST API v2.0"
+    return "Slurm-web REST API v2.1"
 
 
 @app.route('/login', methods=['POST', 'OPTIONS'])

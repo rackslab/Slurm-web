@@ -1,3 +1,42 @@
+slurm-web (2.1.0) unstable; urgency=medium
+
+  * REST API:
+    * Redis caching feature is now optional
+    * New nodeset route to expand hostlist
+    * Control guests access explicitely when authentication is enabled
+    * API secret key moved into separate file
+    * LDAP user/group bases parameters clean-up and hard-coded paths removed
+    * Bug fixes:
+      * LDAPs certificate check was not done properly
+  * Dashboard:
+    * Optional ACL to restrict access on views
+    * New filters (dates, nodes, etc) in Jobs view
+    * More asynchronous/parallel Ajax requests to improve responsitivity
+    * Large performance improvements in 3D view
+    * Racks names displayed in 3D view
+    * Collisions are detected and avoided in 3D view
+    * Node names displayed in tooltip in Jobsmap view
+    * Optional automatic login/logout on multiple clusters
+    * The views are hidden in drop menu on low screen sizes
+    * Filter jobs on click in QOS, partition and reservations views
+    * The "nodes by *" pie charts have been replaces by a new jobs per state
+      chart
+    * Node names are displayed vertically on nodes with height over width
+      (eg. blades)
+    * Show new Slurm 15.08 TRES limits in QOS view
+    * Capitalize cluster name in left and top menu
+    * Bug fixes:
+      * Wrong pie charts with completed jobs
+      * Scrolling and modal lost on data reload
+      * Handle MAINTENANCE node state
+      * Show error when users do not have any role on authentication
+      * Wrong job list displayed with large load in multi-cluster mode
+      * First cluster not high-lighted in left menu on dashboard load
+      * Gantt/QOS broken when a QOS has not started jobs
+      * Graph in topology view broken on complex network hierarchies
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Tue, 23 Aug 2016 11:27:34 +0200
+
 slurm-web (2.0.0) unstable; urgency=medium
 
   * Make use of cache mechanism optional #73
