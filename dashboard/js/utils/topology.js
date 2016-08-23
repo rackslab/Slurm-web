@@ -40,7 +40,6 @@ define([
       });
 
       if (data.level === 0) {
-        this.nodes[data.index].nodeset = data.nodeset;
         this.nodes[data.index].nodes = data.nodes;
 
         data.d3nodes = [];
@@ -57,7 +56,7 @@ define([
         }
 
         nodeset = {
-          name: data.nodeset.join(),
+          name: data.nodeset,
           group: 2,
           nodeClass: 'nodeset',
           nodes: data.d3nodes,
@@ -147,78 +146,6 @@ define([
     this.rawDatas = topology;
     this.nodes = {};
 
-    function pad(num, size) {
-      var s = String(num);
-
-      while (s.length < size) {
-        s = '0' + s;
-      }
-      return s;
-    }
-
-    function groupsToElements(groups) {
-      var i, matchOne, matchGroup, name, start, end, size,
-        result = [],
-        regexOne = /\w+\d+/,
-        regexGroup = /(\w+)\[(\d+)\-(\d+)\]/;
-
-      for (i in groups) {
-        matchOne = groups[i].match(regexOne);
-        matchGroup = groups[i].match(regexGroup);
-        if (!matchOne && !matchGroup) {
-          throw 'Bad format with : ' + groups[i];
-        }
-
-        if (matchGroup) {
-          name = matchGroup[1];
-          start = parseInt(matchGroup[2], 10);
-          end = parseInt(matchGroup[3], 10);
-          size = matchGroup[2].length;
-
-          for (i = start; i <= end; i++) {
-            result.push(name + pad(i, size));
-          }
-        } else {
-          result.push(groups[i]);
-        }
-      }
-
-      return result;
-    }
-
-    function normalizeSwitchesSyntax(switches) {
-      var i, matchGroup, matchBeginOfGroup, matchMiddleOfGroup, matchEndOfGroup,
-        regexGroup = /(\w+)\[(\d+)\-(\d+)\]/,
-        regexBeginOfGroup = /(\w+)\[(\d+)\-(\d+)/,
-        regexMiddleOfGroup = /(\d+)\-(\d+)/,
-        regexEndOfGroup = /(\d+)\-(\d+)\]/,
-        currentGroup = null,
-        result = [];
-
-      for (i in switches) {
-        matchGroup = switches[i].match(regexGroup);
-        matchBeginOfGroup = switches[i].match(regexBeginOfGroup);
-        matchMiddleOfGroup = switches[i].match(regexMiddleOfGroup);
-        matchEndOfGroup = switches[i].match(regexEndOfGroup);
-
-        if (matchGroup) {
-          result.push(switches[i]);
-        } else if (matchBeginOfGroup) {
-          result.push(switches[i] + ']');
-          currentGroup = matchBeginOfGroup[1];
-        } else if (matchMiddleOfGroup && currentGroup) {
-          result.push(currentGroup + '[' + switches[i] + ']');
-        } else if (matchEndOfGroup && currentGroup) {
-          result.push(currentGroup + '[' + switches[i]);
-          currentGroup = null;
-        } else {
-          throw 'Bad format for switches with : ' + switches[i];
-        }
-      }
-
-      return result;
-    }
-
     this.topologyToSwitches = function() {
       var i, id, level, nodesChildren, switchesChildren,
         switches = {},
@@ -234,10 +161,10 @@ define([
         switches[level][id].name = id;
         switches[level][id].type = 'switch';
 
-        nodesChildren = groupsToElements(datas[id].nodes);
-        switchesChildren = groupsToElements(normalizeSwitchesSyntax(datas[id].switches));
+        nodesChildren = datas[id].nodelist;
+        switchesChildren = datas[id].switchlist;
 
-        datas[id].nodeset = datas[id].nodes;
+        switches[level][id].nodeset = datas[id].nodes;
         switches[level][id].nodes = {};
         for (i in nodesChildren) {
           switches[level][id].nodes[nodesChildren[i]] = {

@@ -297,6 +297,16 @@ def get_topology():
 
     try:
         topology = pyslurm.topology().get()
+        # As of pyslurm 15.08.0~git20160229-2, switches and nodes dict members
+        # are strings (or None eventually) representing the hostlist of devices
+        # connected to the switch. These hostlist are expanded in lists using
+        # Clustershell Nodeset() into new corresponding *list members.
+        for switch in topology.itervalues():
+            if switch['switches'] is not None:
+                switch['switchlist'] = list(NodeSet(switch['switches']))
+            if switch['nodes'] is not None:
+                switch['nodelist'] = list(NodeSet(switch['nodes']))
+
     except Exception as e:
         topology = {'error': str(e)}
     return topology
