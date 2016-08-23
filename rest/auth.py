@@ -109,6 +109,7 @@ def get_ldap_connection():
 
     return conn
 
+
 def filter_dict(to_filter={}, filtered_keys=[]):
     if isinstance(to_filter, dict):
         for key in set(to_filter):
