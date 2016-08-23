@@ -34,3 +34,19 @@ Indentation:
 * JS/HTML: 2 spaces.
 
 Python code must respect pep8.
+
+Release
+-------
+
+Here are the steps to follow to publish a new release of Slurm-web:
+
+* Add an entry in debian/changelog with complete changelog
+* Bump documentation version in doc/conf.py
+* Commit all these changes with commit message "New release X.Y.Z"
+* Tag this commit with using git-buildpackage:
+  gbp buildpackage --git-tag-only
+* Push the commit to remote master branch on GitHub
+* Push the tag to GitHub
+* Close the milestone
+* Publish freshly generated HTML documentation to GitHub gh-pages branch
+* Enjoy!
