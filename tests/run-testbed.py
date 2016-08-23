@@ -26,7 +26,6 @@ import SocketServer
 import requests
 
 host = '0.0.0.0'
-port = 2000
 
 tests_dir     = os.path.abspath(os.path.join(
                     os.path.realpath(__file__), '..'))
@@ -39,18 +38,22 @@ rest_dir      = os.path.abspath(os.path.join(
 
 os.environ['PYTHONPATH'] = "%s:%s:%s" % (backend_dir, rest_dir, tests_dir)
 
+port = 2000
 cmd = [ 'python', 'tests/run-app.py', '--debug',
-        '--app', 'rest', '--host', host, '--port', str(port) ]
-
-DEVNULL = open(os.devnull, 'wb')
+        '--app', 'rest', '--setup', 'saturne',
+        '--host', host, '--port', str(port) ]
 p1 = Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
-#p1 = Popen(cmd, stdout=DEVNULL, stderr=DEVNULL)
 
 port = 2001
 cmd = [ 'python', 'tests/run-app.py', '--debug',
+        '--app', 'rest', '--setup', 'jupiter',
+        '--host', host, '--port', str(port) ]
+p1 = Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
+
+port = 2010
+cmd = [ 'python', 'tests/run-app.py', '--debug',
         '--app', 'conf', '--host', host, '--port', str(port) ]
-#p2 = Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
-p2 = Popen(cmd, stdout=DEVNULL, stderr=DEVNULL)
+p2 = Popen(cmd, stdout=sys.stdout, stderr=sys.stderr)
 
 os.chdir(dashboard_dir)
 
@@ -78,7 +81,7 @@ class MyRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             return
         elif self.path.startswith('/slurm-web-conf'):
             filename = self.path.split('/')[-1]
-            r = requests.get('http://localhost:2001/' + filename)
+            r = requests.get('http://localhost:2010/' + filename)
             self.send_response(r.status_code)
             for key, value in r.headers.iteritems():
                 self.send_header(key, value)

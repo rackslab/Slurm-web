@@ -785,17 +785,17 @@ class SlurmTopology(object):
 
     u'switch2': {
       u'link_speed': 1,
-      u'switches': [],
-      u'nodes': ['pocg[001-042]'],
-      u'name': u'switch2',
+      u'switches': u'swib[1-2]',
+      u'nodes': u'pocg[001-042]',
+      u'name': u'switch[1-2]',
       u'level': 0
     }
     """
     def __init__(self, switch):
 
         self.switch = switch
-        self.switches = []
-        self.nodes = []
+        self.switches = None
+        self.nodes = None
         self.level = 0
 
         # settings with sane defaults
@@ -825,6 +825,12 @@ class SlurmCtld(object):
     @property
     def config(self):
         return { 'cluster_name': self.cluster.name }
+
+    def find_node(self, nodename):
+        for node in self.nodes:
+            if node.name == nodename:
+                return node
+        return None
 
 class MockPySlurmConfig(object):
 
