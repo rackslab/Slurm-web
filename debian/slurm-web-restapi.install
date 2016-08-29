@@ -3,4 +3,4 @@ conf/restapi.conf etc/slurm-web
 conf/racks.xml etc/slurm-web
 schema/racks.dtd usr/share/slurm-web/restapi/schema/dtd
 rest/* usr/share/slurm-web/restapi
-js/libraries/xdomain.min.js usr/share/slurm-web/restapi/static
+dashboard/js/libraries/xdomain.min.js usr/share/slurm-web/restapi/static

@@ -1,4 +1,3 @@
 conf/slurm-web-confdashboard.conf etc/apache2/conf-available
 conf/dashboard/* etc/slurm-web/dashboard
-conf/slurm-web-conf.wsgi /usr/share/slurm-web/conf-server
 dashboard/backend/* /usr/share/slurm-web/conf-server
