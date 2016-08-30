@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; Slurm-web 2.O documentation</title>
+  <title>Installation Guide &mdash; Slurm-web 2.1 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
         <link rel="next" title="Dashboard usage" href="usage.html"/>
         <link rel="prev" title="Introduction" href="introduction.html"/> 
 
@@ -96,9 +96,11 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#convert-nodeset">Convert Nodeset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#code-style-and-coding-rules">Code style and coding rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
@@ -354,17 +356,26 @@ Here is an example of a valid configuration file:</p>
 <span class="n">authorized_origins</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">dashboard</span><span class="o">.</span><span class="n">myslurmhpc</span><span class="o">.</span><span class="n">com</span>
 
 <span class="p">[</span><span class="n">config</span><span class="p">]</span>
-<span class="n">secret_key</span> <span class="o">=</span> <span class="n">my_awesome_secret_key</span>
-<span class="c"># set to &#39;enable&#39; to activate authentication</span>
+<span class="c"># Set to &#39;enable&#39; to activate authentication.</span>
+<span class="c"># Authentication is based on LDAP, so an LDAP server and the good configuration</span>
+<span class="c"># for it, below in this file, are required.</span>
 <span class="n">authentication</span> <span class="o">=</span> <span class="n">enable</span>
-<span class="c"># set to &#39;enable&#39; to activate cache</span>
+<span class="c"># Absolute path to the secret key file.</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">slurm</span><span class="o">-</span><span class="n">web</span><span class="o">/</span><span class="n">secret</span><span class="o">.</span><span class="n">key</span>
+<span class="c"># Set to &#39;enable&#39; to activate cache.</span>
 <span class="n">cache</span> <span class="o">=</span> <span class="n">enable</span>
+<span class="c"># Path for racks description (default to /etc/slurm-web/racks.xml).</span>
+<span class="n">racksxml</span> <span class="o">=</span>
 
 <span class="p">[</span><span class="n">roles</span><span class="p">]</span>
-<span class="c"># The `all` role can have 2 values:</span>
-<span class="c"># - none, restrict access to authenticated users only</span>
-<span class="c"># - all, free access to non-sensible data</span>
-<span class="nb">all</span> <span class="o">=</span> <span class="nb">all</span>
+<span class="c"># Allow guests users or not. Guests users have the &#39;none&#39; role. Disabled by</span>
+<span class="c"># default.</span>
+<span class="n">guests</span> <span class="o">=</span> <span class="n">disabled</span>
+
+<span class="c"># The `all` role if for all users that do not either have the user or admin</span>
+<span class="c"># role, including guests. Enabled by default.</span>
+<span class="nb">all</span> <span class="o">=</span> <span class="n">enabled</span>
+
 <span class="c"># The roles members can be defined with a list of groups (whose names</span>
 <span class="c"># are prefixed by @) and logins.</span>
 <span class="n">user</span> <span class="o">=</span> <span class="nd">@usergroup</span><span class="p">,</span><span class="n">user</span>
@@ -375,10 +386,34 @@ Here is an example of a valid configuration file:</p>
 <span class="n">restricted_fields_for_user</span> <span class="o">=</span> <span class="n">command</span>
 <span class="n">restricted_fields_for_admin</span> <span class="o">=</span>
 
+<span class="p">[</span><span class="n">acl</span><span class="p">]</span>
+<span class="c"># You can set here an access control list for each view of the dashboard for</span>
+<span class="c"># this cluster.</span>
+<span class="c"># This feature requires authentication to be enabled.</span>
+<span class="c"># For each view, you can give a list of groups (whose names are prefixed by @)</span>
+<span class="c"># and logins, to define who can access to this view.</span>
+<span class="c"># If no ACL is provided for a view, so every authenticated user can access to</span>
+<span class="c"># this view.</span>
+<span class="c"># i.e. ``jobs = @admin,pierre`` implies that the jobs view will be available</span>
+<span class="c"># only for every user from the group &#39;admin&#39;, and the user with &#39;pierre&#39; as</span>
+<span class="c"># login.</span>
+<span class="c"># If you give an empty value for an entry (i.e. ``jobs =``), the corresponding</span>
+<span class="c"># view will not be accessible for anybody.</span>
+<span class="c">#</span>
+<span class="c"># Available views are : [</span>
+<span class="c">#   &#39;jobs&#39;, &#39;jobsmap&#39;, &#39;partitions&#39;, &#39;reservations&#39;, &#39;qos&#39;, &#39;racks&#39;, &#39;3dview&#39;,</span>
+<span class="c">#   &#39;gantt&#39;, &#39;topology&#39;</span>
+<span class="c"># ]</span>
+<span class="n">jobs</span> <span class="o">=</span> <span class="nd">@users</span><span class="p">,</span><span class="nd">@admin</span>
+<span class="n">gantt</span> <span class="o">=</span> <span class="nd">@admin</span><span class="p">,</span><span class="n">pierre</span>
+<span class="mi">3</span><span class="n">dview</span> <span class="o">=</span>
+
 <span class="p">[</span><span class="n">ldap</span><span class="p">]</span>
+<span class="c"># Configure here settings to connect to your LDAP server.</span>
 <span class="n">uri</span> <span class="o">=</span> <span class="n">ldap</span><span class="p">:</span><span class="o">//</span><span class="n">admin</span><span class="p">:</span><span class="mi">389</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">dc</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">local</span>
-<span class="n">ugroup</span> <span class="o">=</span> <span class="n">people</span>
+<span class="n">people_base</span> <span class="o">=</span> <span class="n">ou</span><span class="o">=</span><span class="n">people</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">local</span>
+<span class="n">group_base</span> <span class="o">=</span> <span class="n">ou</span><span class="o">=</span><span class="n">group</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">local</span>
+<span class="c">#cacert = /etc/ssl/certs/cacert.pem</span>
 <span class="n">expiration</span> <span class="o">=</span> <span class="mi">1296000</span>
 
 <span class="p">[</span><span class="n">racks</span><span class="p">]</span>
@@ -405,26 +440,48 @@ from several crossdomain dashboards: just set origins of each dashboard in the
 </div>
 <div class="section" id="authentication">
 <h4>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h4>
-<p>The REST API has an authentication mechanism, based on an LDAP server. If the
-parameter <tt class="docutils literal"><span class="pre">authentication</span></tt> is set to <tt class="docutils literal"><span class="pre">enable</span></tt>, the dashboard will ask to the
-user his credentials. This feature requires the configuration of the LDAP server
-in the <tt class="docutils literal"><span class="pre">[ldap]</span></tt> section.</p>
+<p>The REST API has an optional authentication feature based on an LDAP directory.
+If the parameter <tt class="docutils literal"><span class="pre">authentication</span></tt> is set to <tt class="docutils literal"><span class="pre">enable</span></tt>, the dashboard will
+ask users to give credentials to access the cluster data.</p>
+<p>The authentication feature requires a randomly generated secret key file. The
+content of this file is used to sign the generated tokens on server-side to
+ensure their integrity during network exchanges. The path to the secret key
+file is set with the <tt class="docutils literal"><span class="pre">secret_key</span></tt> parameter in the <tt class="docutils literal"><span class="pre">config</span></tt> section. The
+default path is <tt class="docutils literal"><span class="pre">/etc/slurm-web/secret.key</span></tt>. For security reason, please make
+sure only the root and WSGI users have read access to this file and it is not
+world-readable.</p>
+<p>To generate a secret key file, you can use Linux pseudorandom number generator
+with this command:</p>
+<div class="highlight-python"><div class="highlight"><pre>head -c 64 /dev/urandom &gt; /etc/slurm-web/secret.key
+</pre></div>
+</div>
+<p>Then set correct mode and ownerships:</p>
+<div class="highlight-python"><div class="highlight"><pre>chown www-data: /etc/slurm-web/secret.key
+chmod 400 /etc/slurm-web/secret.key
+</pre></div>
+</div>
+<p>The authentication feature also requires the LDAP parameters to be set in the
+<tt class="docutils literal"><span class="pre">[ldap]</span></tt> section of the configuration files.</p>
 <p>When enabled, the authentication feature handles different roles for the users:</p>
 <ul class="simple">
-<li>&#8220;all&#8221;: the role for unauthenticated users. When the parameter <tt class="docutils literal"><span class="pre">all</span></tt> is set
-to <tt class="docutils literal"><span class="pre">none</span></tt>, users have to be authenticated to access the datas from the
-REST API on a Slurm-web dashboard. When it is set to <tt class="docutils literal"><span class="pre">all</span></tt>, users can access
-datas as guests: a &#8220;Guest&#8221; button is then added on the login page of the
-dashboard for this REST API.</li>
-<li>&#8220;user&#8221;: this role is for authenticated users. The parameter <tt class="docutils literal"><span class="pre">user</span></tt> accepts a
+<li><em>user</em>: this role is for users. The parameter <tt class="docutils literal"><span class="pre">user</span></tt> accepts a
 list of values to define authorized users either by the group he belongs to,
 or by their login.</li>
-<li>&#8220;admin&#8221;: this role is for administrators. The parameter <tt class="docutils literal"><span class="pre">admin</span></tt> works as the
+<li><em>admin</em>: this role is for administrators. The parameter <tt class="docutils literal"><span class="pre">admin</span></tt> works as the
 <tt class="docutils literal"><span class="pre">user</span></tt> one.</li>
+<li><em>all</em>: this role for all other users who are neither user or admin. When the
+parameter <tt class="docutils literal"><span class="pre">all</span></tt> is set to <tt class="docutils literal"><span class="pre">enabled</span></tt> (default), all authenticated users
+can access the REST API. When it is set to <tt class="docutils literal"><span class="pre">disabled</span></tt>, the users without any
+other role cannot access the REST API.</li>
 </ul>
-<p>For each role, a corresponding &#8220;restricted field&#8221; parameter exists to set some
+<p>For each role, a corresponding <em>restricted field</em> parameter exists to set some
 fields about jobs which have to be hidden to the defined users. Just set a list
 of the field&#8217;s name separated by commas.</p>
+<p>It is also possible to allow guests users to access the REST API with the
+<tt class="docutils literal"><span class="pre">guests</span></tt> paramter (<tt class="docutils literal"><span class="pre">disabled</span></tt> by default). If set to <tt class="docutils literal"><span class="pre">enabled</span></tt>, a new
+guest button is added under the login form in the dashboard. The guests users
+have the <em>all</em> role. Then the <em>all</em> role must be enabled as well to allow the
+guests users to access the REST API.</p>
 </div>
 <div class="section" id="cache">
 <h4>Cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h4>
@@ -437,7 +494,9 @@ slurmctld.</p>
 </div>
 <div class="section" id="dashboard-configuration-settings">
 <h3>Dashboard configuration settings<a class="headerlink" href="#dashboard-configuration-settings" title="Permalink to this headline">¶</a></h3>
-<p>All configuration files for dashboard are in the directory <tt class="docutils literal"><span class="pre">conf/dashboard</span></tt>.</p>
+<p>All configuration files for dashboard are in the directory <tt class="docutils literal"><span class="pre">conf/dashboard</span></tt>.
+Note that Apache keep files in cache when it serves them. If you change one of
+these files, relaunch Apache.</p>
 <div class="section" id="app-conf-dashboard-config-json">
 <h4>App <tt class="docutils literal"><span class="pre">conf/dashboard/config.json</span></tt><a class="headerlink" href="#app-conf-dashboard-config-json" title="Permalink to this headline">¶</a></h4>
 <p>Used for general purpose.</p>
@@ -445,7 +504,8 @@ slurmctld.</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;STARTPAGE&quot;</span><span class="p">:</span> <span class="s2">&quot;jobs&quot;</span><span class="p">,</span>
   <span class="nt">&quot;REFRESH&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
-  <span class="nt">&quot;MAXNODESLENGTH&quot;</span><span class="p">:</span> <span class="mi">25</span>
+  <span class="nt">&quot;MAXNODESLENGTH&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="nt">&quot;AUTOLOGIN&quot;</span><span class="p">:</span> <span class="kc">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -471,6 +531,8 @@ slurmctld.</p>
 </li>
 <li><p class="first"><em>MAXNODESLENGTH</em> (Number) : Maximum characters show for the nodes name in &#8220;Nodes&#8221; column in module Jobs.</p>
 </li>
+<li><p class="first"><em>AUTOLOGIN</em> (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).</p>
+</li>
 </ul>
 </div>
 <div class="section" id="d-draw-conf-dashboard-2d-config-json">
@@ -478,12 +540,13 @@ slurmctld.</p>
 <p>2D draw configuration, used in module racks and jobsmap.</p>
 <p>Basic configuration file :</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
-  <span class="nt">&quot;CANVASWIDTH&quot;</span><span class="p">:</span> <span class="mi">280</span><span class="p">,</span>
   <span class="nt">&quot;LEFTMARGIN&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
   <span class="nt">&quot;TOPMARGIN&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
   <span class="nt">&quot;RACKBORDERWIDTH&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
   <span class="nt">&quot;RACKUNITNUMBER&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
   <span class="nt">&quot;RACKUNITHEIGHT&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  <span class="nt">&quot;RACKFONTFAMILY&quot;</span><span class="p">:</span> <span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;RACKFONTSIZE&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
   <span class="nt">&quot;FLOORWIDTH&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
   <span class="nt">&quot;FOOTWIDTH&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
   <span class="nt">&quot;FOOTHEIGHT&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
@@ -492,7 +555,14 @@ slurmctld.</p>
   <span class="nt">&quot;NODESPERRACK&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
   <span class="nt">&quot;NODESPERROW&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
   <span class="nt">&quot;NODEMARGIN&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;NODESTATEWIDTH&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nt">&quot;NODEHORIZONTALPADDING&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nt">&quot;NODEVERTICALPADDING&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;NODELEDRADIUS&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;NODELEDPADDING&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;NODEFONTFAMILY&quot;</span><span class="p">:</span> <span class="s2">&quot;sans-serif&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;NODEFONTSIZE&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nt">&quot;NODENAMEVERTICALOFFSET&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;NODENAMEHORIZONTALOFFSET&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="nt">&quot;LEGEND&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;WIDTH&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
     <span class="nt">&quot;HEIGHT&quot;</span><span class="p">:</span> <span class="mi">100</span>
@@ -501,23 +571,34 @@ slurmctld.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><em>CANVASWIDTH</em> (Number) : Canvas width in pixel</li>
-<li><em>CANVASMARGINTOP</em> (Number) : Canvas internal margin top in pixel.</li>
 <li><em>LEFTMARGIN</em> (Number) : Rack margin left in pixel</li>
 <li><em>TOPMARGIN</em> (Number) : Rack margin top in pixel</li>
 <li><em>RACKBORDERWIDTH</em> (Number) : Rack border/closure size in pixel</li>
 <li><em>RACKUNITNUMBER</em> (Number) : Number of unit in one rack</li>
 <li><em>RACKUNITHEIGHT</em> (Number) : Height of one rack unit in pixel</li>
+<li><em>RACKFONTFAMILY</em> (String) : Rack name font family</li>
+<li><em>RACKFONTSIZE</em> (Number): Rack name font size</li>
 <li><em>FLOORWIDTH</em> (Number) : Width of the floor element drawn at rack bottom, in pixel</li>
 <li><em>FOOTWIDTH</em> (Number) : Rack foot width in pixel</li>
 <li><em>FOOTHEIGHT</em> (Number) : Rack foot height in pixel</li>
 <li><em>RACKINSIDEWIDTH</em> (Number) : Size</li>
+<li><em>CANVASMARGINTOP</em> (Number) : Canvas internal margin top in pixel.</li>
 <li><em>NODESPERRACK</em> (Number) : Number of nodes in one rack</li>
+<li><em>NODESPERROW</em> (Number) : Number of nodes in one row</li>
 <li><em>NODESMARGIN</em> (Number) : Space between two nodes in pixel</li>
-<li><em>NODESTATEWIDTH</em>: Core size in pixel</li>
-<li><em>LEGEND</em> (Object) : Legend property
-- <em>WIDTH</em> (Number) : Legend canvas width in pixel
-- <em>HEIGHT</em> (Number) : Legend canvas height in pixel</li>
+<li><em>NODEHORIZONTALPADDING</em> (Number) : Horizontal padding on node</li>
+<li><em>NODEVERTICALPADDING</em> (Number) : Vertical padding on node</li>
+<li><em>NODELEDRADIUS</em> (Number) : Radius of the LED on node</li>
+<li><em>NODELEDPADDING</em> (Number) : Padding on the LED on node</li>
+<li><em>NODEFONTFAMILY</em> (String) : Node name font family</li>
+<li><em>NODEFONTSIZE</em> (Number) : Node name font size</li>
+<li><em>NODENAMEVERTICALOFFSET</em> (Number) : The vertical offset starting from the middle where the node name is labelled in rack view, in pixel</li>
+<li><em>NODENAMEHORIZONTALOFFSET</em> (Number) : The horizontal offset starting from the center where the node name is labelled in rack view, in pixel</li>
+<li><em>LEGEND</em> (Object) : Legend property<ul>
+<li><em>WIDTH</em> (Number) : Legend canvas width in pixel</li>
+<li><em>HEIGHT</em> (Number) : Legend canvas height in pixel</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="d-colors-conf-dashboard-2d-colors-config-json">
@@ -558,16 +639,18 @@ slurmctld.</p>
 </div>
 <ul class="simple">
 <li><em>COREBORDER</em> (rgba()) : Core grid color.</li>
-<li><em>LED</em> (Object) : Colors of the led status, based on the node state
-- <em>IDLE</em> (rgba()) : Node state is idle
-- <em>FULLYALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and all cpus allocated
-- <em>PARTALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and not all cpus allocated
-- <em>UNAVAILABLE</em> (rgba()) : Node state is down
-- <em>UNKNOWN</em> (rgba()) : Node state is down
-- <em>AVAILABLE</em> (rgba()) : Node state is idle
-- <em>DRAINED</em> (rgba()) : Node state is draining or drained
-- <em>DOWN</em> (rgba()) : Node state is down
-- <em>RESERVED</em> (rgba()) : Node state is reserved</li>
+<li><em>LED</em> (Object) : Colors of the led status, based on the node state<ul>
+<li><em>IDLE</em> (rgba()) : Node state is idle</li>
+<li><em>FULLYALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and all cpus allocated</li>
+<li><em>PARTALLOCATED</em> (rgba()) : Node state is reserved, allocated or completing and not all cpus allocated</li>
+<li><em>UNAVAILABLE</em> (rgba()) : Node state is down</li>
+<li><em>UNKNOWN</em> (rgba()) : Node state is down</li>
+<li><em>AVAILABLE</em> (rgba()) : Node state is idle</li>
+<li><em>DRAINED</em> (rgba()) : Node state is draining or drained</li>
+<li><em>DOWN</em> (rgba()) : Node state is down</li>
+<li><em>RESERVED</em> (rgba()) : Node state is reserved</li>
+</ul>
+</li>
 <li><em>JOB</em> (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]</li>
 </ul>
 </div>
@@ -593,7 +676,15 @@ slurmctld.</p>
   <span class="nt">&quot;LEDDEPTH&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
   <span class="nt">&quot;CPUPADDING&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
   <span class="nt">&quot;CPUDEPTH&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
-  <span class="nt">&quot;DEBUG&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;DEBUG&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;RACKNAME&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;SIZE&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="nt">&quot;DEPTH&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="nt">&quot;FONT&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;DejaVu Sans Mono&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;PATH&quot;</span><span class="p">:</span> <span class="s2">&quot;js/fonts/DejaVu_Sans_Mono_Book.js&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
   <span class="nt">&quot;CONTROLS&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;FORWARD&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
     <span class="nt">&quot;BACKWARD&quot;</span><span class="p">:</span> <span class="mi">83</span><span class="p">,</span>
@@ -627,15 +718,30 @@ slurmctld.</p>
 <li><em>CPUPADDING</em> (Number) : Space around one cpu, proportional to the node parent element in UNITSIZE</li>
 <li><em>CPUDEPTH</em> (Number): Depth of cpus, proportional to the node parent element in UNITSIZE</li>
 <li><em>DEBUG</em> (Boolean) : Show the x (red), y (green), z (blue) axes for debug.</li>
-<li><em>CONTROLS</em> (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (<a class="reference external" href="http://www.javascripter.net/faq/keycodes.htm">http://www.javascripter.net/faq/keycodes.htm</a>)
-- <em>FORWARD</em> (Keycode) : Move forward
-- <em>BACKWARD</em> (Keycode) : Move backward
-- <em>LEFT</em> (Keycode) : Move left
-- <em>RIGHT</em> (Keycode) : Move righ
-- <em>FREEZE</em> (Keycode) : Stop/Start movement</li>
-<li><em>PACMAN</em> (Object) : Specific pacman mode configuration
-- <em>MOVESPEED</em> (Number) : X, Y, Z camera translation speed in UNITSIZE
-- <em>LOOKSPEED</em> (Number) : X, Y, Z camera rotation speed in UNITSIZE</li>
+<li><em>RACKNAME</em> (Object) :<ul>
+<li><em>SIZE</em> (Number) : Font height for the rack name banner in UNITSIZE (axe: y)</li>
+<li><em>DEPTH</em> (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)</li>
+<li><em>FONT</em> (Object) :<ul>
+<li><em>NAME</em> (String) : Font name</li>
+<li><em>PATH</em> (String) : Path of the font file converted in Javascript format for Typeface.JS. [Typeface converter](<a class="reference external" href="https://github.com/derniercri/font4three">https://github.com/derniercri/font4three</a>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>CONTROLS</em> (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (<a class="reference external" href="http://www.javascripter.net/faq/keycodes.htm">http://www.javascripter.net/faq/keycodes.htm</a>)<ul>
+<li><em>FORWARD</em> (Keycode) : Move forward</li>
+<li><em>BACKWARD</em> (Keycode) : Move backward</li>
+<li><em>LEFT</em> (Keycode) : Move left</li>
+<li><em>RIGHT</em> (Keycode) : Move righ</li>
+<li><em>FREEZE</em> (Keycode) : Stop/Start movement</li>
+</ul>
+</li>
+<li><em>PACMAN</em> (Object) : Specific pacman mode configuration<ul>
+<li><em>MOVESPEED</em> (Number) : X, Y, Z camera translation speed in UNITSIZE</li>
+<li><em>LOOKSPEED</em> (Number) : X, Y, Z camera rotation speed in UNITSIZE</li>
+</ul>
+</li>
+<li><em>COLLISONMARGIN</em> (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls</li>
 </ul>
 </div>
 <div class="section" id="d-colors-3d-colors-config-json">
@@ -680,19 +786,25 @@ slurmctld.</p>
 <ul class="simple">
 <li><em>RACK</em> (rgb()): Rack color</li>
 <li><em>NODE</em> (rgb()): Node color</li>
-<li><em>LED</em> (Object): Colors of the led status, based on the node state
-- <em>IDLE</em> (rgb()) : Node state is idle
-- <em>FULLYALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and all cpus allocated
-- <em>PARTALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and not all cpus allocated
-- <em>UNAVAILABLE</em> (rgb()) : Node state is down
-- <em>UNKNOWN</em> (rgb()) : Node state is down
-- <em>AVAILABLE</em> (rgb()) : Node state is idle
-- <em>DRAINED</em> (rgb()) : Node state is draining or drained
-- <em>DOWN</em> (rgb()) : Node state is down
-- <em>RESERVED</em> (rgb()) : Node state is reserved
-- <em>NOTVISIBLE</em>: Default color for empty core</li>
+<li><em>LED</em> (Object): Colors of the led status, based on the node state<ul>
+<li><em>IDLE</em> (rgb()) : Node state is idle</li>
+<li><em>FULLYALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and all cpus allocated</li>
+<li><em>PARTALLOCATED</em> (rgb()) : Node state is reserved, allocated or completing and not all cpus allocated</li>
+<li><em>UNAVAILABLE</em> (rgb()) : Node state is down</li>
+<li><em>UNKNOWN</em> (rgb()) : Node state is down</li>
+<li><em>AVAILABLE</em> (rgb()) : Node state is idle</li>
+<li><em>DRAINED</em> (rgb()) : Node state is draining or drained</li>
+<li><em>DOWN</em> (rgb()) : Node state is down</li>
+<li><em>RESERVED</em> (rgb()) : Node state is reserved</li>
+<li><em>NOTVISIBLE</em>: Default color for empty core</li>
+</ul>
+</li>
 <li><em>JOB</em> (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]</li>
 <li><em>NOJOB</em> (rgb()): Default color for empty core</li>
+<li><em>RACKNAME</em> (Object):<ul>
+<li><em>FONT</em> (rgb()): Font color for the rack name banner</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="clusters-clusters-config-js">
@@ -769,7 +881,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.O',
+            VERSION:'2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

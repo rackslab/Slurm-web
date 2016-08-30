@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to contribute or add page &mdash; Slurm-web 2.O documentation</title>
+  <title>How to contribute or add page &mdash; Slurm-web 2.1 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
         <link rel="prev" title="REST API reference" href="api.html"/> 
 
   
@@ -95,9 +95,11 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#convert-nodeset">Convert Nodeset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#code-style-and-coding-rules">Code style and coding rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#architecture-front">Architecture Front</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#page-api">Page API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
@@ -139,6 +141,24 @@
             
   <div class="section" id="how-to-contribute-or-add-page">
 <h1>How to contribute or add page<a class="headerlink" href="#how-to-contribute-or-add-page" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="code-style-and-coding-rules">
+<h2>Code style and coding rules<a class="headerlink" href="#code-style-and-coding-rules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="restapi">
+<h3>RESTAPI<a class="headerlink" href="#restapi" title="Permalink to this headline">¶</a></h3>
+<p>The backend, developed with the Flask framework in Python, respects the PEP 8
+rules.</p>
+</div>
+<div class="section" id="dashboard">
+<h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h3>
+<p>The dashboad is built with HTML, Javascript and CSS. All the Javascript code
+have been linted with ESLint. Used rules are defined in the <tt class="docutils literal"><span class="pre">.eslintrc</span></tt> file.</p>
+</div>
+<div class="section" id="code-climate">
+<h3>Code Climate<a class="headerlink" href="#code-climate" title="Permalink to this headline">¶</a></h3>
+<p>The quality of the codebase is overseen by Code Climate. You can refer to its
+summary at <a class="reference external" href="https://codeclimate.com/github/edf-hpc/slurm-web">https://codeclimate.com/github/edf-hpc/slurm-web</a></p>
+</div>
+</div>
 <div class="section" id="architecture-front">
 <h2>Architecture Front<a class="headerlink" href="#architecture-front" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="design">
@@ -151,12 +171,12 @@ JQuery help to select and perform actions on the DOM. See JQuery documentation</
 <div class="section" id="directory-structure">
 <h3>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">/js/core</span></tt> : Application core methods, app entry point, navigation and multi-cluster mode methods
+<li><tt class="docutils literal"><span class="pre">dashboard/js/core</span></tt> : Application core methods, app entry point, navigation and multi-cluster mode methods
 Note : /js/core/index.js : Application entry point</li>
-<li><tt class="docutils literal"><span class="pre">/js/draw</span></tt> : Draw methods for 2D and 3D canvas</li>
-<li><tt class="docutils literal"><span class="pre">/js/helpers</span></tt> : Handlebars helpers used to format data</li>
-<li><tt class="docutils literal"><span class="pre">/js/modules</span></tt> : Applications page</li>
-<li><tt class="docutils literal"><span class="pre">/js/utils</span></tt> : Applications utils</li>
+<li><tt class="docutils literal"><span class="pre">dashboard/js/draw</span></tt> : Draw methods for 2D and 3D canvas</li>
+<li><tt class="docutils literal"><span class="pre">dashboard/js/helpers</span></tt> : Handlebars helpers used to format data</li>
+<li><tt class="docutils literal"><span class="pre">dashboard/js/modules</span></tt> : Applications page</li>
+<li><tt class="docutils literal"><span class="pre">dashboard/js/utils</span></tt> : Applications utils</li>
 </ul>
 </div>
 </div>
@@ -190,10 +210,10 @@ Note : /js/core/index.js : Application entry point</li>
 <h2>Work with current page or add new:<a class="headerlink" href="#work-with-current-page-or-add-new" title="Permalink to this headline">¶</a></h2>
 <p>To add a new page in slurm-web :</p>
 <ul class="simple">
-<li>Create a module object (see above) and save it in /js/modules/(pagename)/(pagename).js</li>
-<li>Require the module files (.js and .hbs) in /js/core/index.js</li>
-<li>Add a navigation element in /js/core/navbar/navbar.js</li>
-<li>Add a navigation event in the <cite>$(document).on(&#8216;show&#8217;)</cite> in /js/core/index.js</li>
+<li>Create a module object (see above) and save it in dashboard/js/modules/(pagename)/(pagename).js</li>
+<li>Require the module files (.js and .hbs) in dashboard/js/core/index.js</li>
+<li>Add a navigation element in dashboard/js/core/navbar/navbar.js</li>
+<li>Add a navigation event in the <cite>$(document).on(&#8216;show&#8217;)</cite> in dashboard/js/core/index.js</li>
 </ul>
 </div>
 </div>
@@ -234,7 +254,7 @@ Note : /js/core/index.js : Application entry point</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.O',
+            VERSION:'2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

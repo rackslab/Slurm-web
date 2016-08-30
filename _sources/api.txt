@@ -109,3 +109,15 @@ Jobs by QOS
 Jobs running, ordered by qos :
 
 ``/jobs-by-qos``
+
+Convert Nodeset
+---------------
+
+Convert a set of node formatted in host list to an array of nodes :
+
+``/nodeset``
+
+Give the nodeset by post method with a stringify JSON where the nodeset is
+passed to the key ``nodeset`` as a string
+(i.e. ``"{"nodeset":"pocn[234-240,257]"}"``).
+No authentication needed for this route.

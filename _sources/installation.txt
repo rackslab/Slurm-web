@@ -261,17 +261,26 @@ Here is an example of a valid configuration file:
   authorized_origins = http://dashboard.myslurmhpc.com
 
   [config]
-  secret_key = my_awesome_secret_key
-  # set to 'enable' to activate authentication
+  # Set to 'enable' to activate authentication.
+  # Authentication is based on LDAP, so an LDAP server and the good configuration
+  # for it, below in this file, are required.
   authentication = enable
-  # set to 'enable' to activate cache
+  # Absolute path to the secret key file.
+  secret_key = /etc/slurm-web/secret.key
+  # Set to 'enable' to activate cache.
   cache = enable
+  # Path for racks description (default to /etc/slurm-web/racks.xml).
+  racksxml =
 
   [roles]
-  # The `all` role can have 2 values:
-  # - none, restrict access to authenticated users only
-  # - all, free access to non-sensible data
-  all = all
+  # Allow guests users or not. Guests users have the 'none' role. Disabled by
+  # default.
+  guests = disabled
+
+  # The `all` role if for all users that do not either have the user or admin
+  # role, including guests. Enabled by default.
+  all = enabled
+
   # The roles members can be defined with a list of groups (whose names
   # are prefixed by @) and logins.
   user = @usergroup,user
@@ -282,10 +291,34 @@ Here is an example of a valid configuration file:
   restricted_fields_for_user = command
   restricted_fields_for_admin =
 
+  [acl]
+  # You can set here an access control list for each view of the dashboard for
+  # this cluster.
+  # This feature requires authentication to be enabled.
+  # For each view, you can give a list of groups (whose names are prefixed by @)
+  # and logins, to define who can access to this view.
+  # If no ACL is provided for a view, so every authenticated user can access to
+  # this view.
+  # i.e. ``jobs = @admin,pierre`` implies that the jobs view will be available
+  # only for every user from the group 'admin', and the user with 'pierre' as
+  # login.
+  # If you give an empty value for an entry (i.e. ``jobs =``), the corresponding
+  # view will not be accessible for anybody.
+  #
+  # Available views are : [
+  #   'jobs', 'jobsmap', 'partitions', 'reservations', 'qos', 'racks', '3dview',
+  #   'gantt', 'topology'
+  # ]
+  jobs = @users,@admin
+  gantt = @admin,pierre
+  3dview =
+
   [ldap]
+  # Configure here settings to connect to your LDAP server.
   uri = ldap://admin:389
-  base = dc=cluster,dc=local
-  ugroup = people
+  people_base = ou=people,dc=cluster,dc=local
+  group_base = ou=group,dc=cluster,dc=local
+  #cacert = /etc/ssl/certs/cacert.pem
   expiration = 1296000
 
   [racks]
@@ -315,30 +348,54 @@ from several crossdomain dashboards: just set origins of each dashboard in the
 Authentication
 """"""""""""""
 
-The REST API has an authentication mechanism, based on an LDAP server. If the
-parameter ``authentication`` is set to ``enable``, the dashboard will ask to the
-user his credentials. This feature requires the configuration of the LDAP server
-in the ``[ldap]`` section.
+The REST API has an optional authentication feature based on an LDAP directory.
+If the parameter ``authentication`` is set to ``enable``, the dashboard will
+ask users to give credentials to access the cluster data.
+
+The authentication feature requires a randomly generated secret key file. The
+content of this file is used to sign the generated tokens on server-side to
+ensure their integrity during network exchanges. The path to the secret key
+file is set with the ``secret_key`` parameter in the ``config`` section. The
+default path is ``/etc/slurm-web/secret.key``. For security reason, please make
+sure only the root and WSGI users have read access to this file and it is not
+world-readable.
+
+To generate a secret key file, you can use Linux pseudorandom number generator
+with this command::
+
+    head -c 64 /dev/urandom > /etc/slurm-web/secret.key
+
+Then set correct mode and ownerships::
+
+    chown www-data: /etc/slurm-web/secret.key
+    chmod 400 /etc/slurm-web/secret.key
+
+The authentication feature also requires the LDAP parameters to be set in the
+``[ldap]`` section of the configuration files.
 
 When enabled, the authentication feature handles different roles for the users:
 
-* "all": the role for unauthenticated users. When the parameter ``all`` is set
-  to ``none``, users have to be authenticated to access the datas from the
-  REST API on a Slurm-web dashboard. When it is set to ``all``, users can access
-  datas as guests: a "Guest" button is then added on the login page of the
-  dashboard for this REST API.
-
-* "user": this role is for authenticated users. The parameter ``user`` accepts a
+* *user*: this role is for users. The parameter ``user`` accepts a
   list of values to define authorized users either by the group he belongs to,
   or by their login.
 
-* "admin": this role is for administrators. The parameter ``admin`` works as the
+* *admin*: this role is for administrators. The parameter ``admin`` works as the
   ``user`` one.
 
-For each role, a corresponding "restricted field" parameter exists to set some
+* *all*: this role for all other users who are neither user or admin. When the
+  parameter ``all`` is set to ``enabled`` (default), all authenticated users
+  can access the REST API. When it is set to ``disabled``, the users without any
+  other role cannot access the REST API.
+
+For each role, a corresponding *restricted field* parameter exists to set some
 fields about jobs which have to be hidden to the defined users. Just set a list
 of the field's name separated by commas.
 
+It is also possible to allow guests users to access the REST API with the
+``guests`` paramter (``disabled`` by default). If set to ``enabled``, a new
+guest button is added under the login form in the dashboard. The guests users
+have the *all* role. Then the *all* role must be enabled as well to allow the
+guests users to access the REST API.
 
 Cache
 """""
@@ -354,6 +411,8 @@ Dashboard configuration settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All configuration files for dashboard are in the directory ``conf/dashboard``.
+Note that Apache keep files in cache when it serves them. If you change one of
+these files, relaunch Apache.
 
 App ``conf/dashboard/config.json``
 """"""""""""""""""""""""""""""""""
@@ -367,7 +426,8 @@ Basic configuration file :
   {
     "STARTPAGE": "jobs",
     "REFRESH": 30000,
-    "MAXNODESLENGTH": 25
+    "MAXNODESLENGTH": 25,
+    "AUTOLOGIN": false
   }
 
 - *STARTPAGE* (String) : Name of the page loaded at the application startup.
@@ -388,6 +448,8 @@ Basic configuration file :
 
 - *MAXNODESLENGTH* (Number) : Maximum characters show for the nodes name in "Nodes" column in module Jobs.
 
+- *AUTOLOGIN* (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).
+
 
 2D Draw ``conf/dashboard/2d.config.json``
 """""""""""""""""""""""""""""""""""""""""
@@ -399,12 +461,13 @@ Basic configuration file :
 .. code-block:: json
 
   {
-    "CANVASWIDTH": 280,
     "LEFTMARGIN": 60,
     "TOPMARGIN": 15,
     "RACKBORDERWIDTH": 10,
     "RACKUNITNUMBER": 42,
     "RACKUNITHEIGHT": 12,
+    "RACKFONTFAMILY": "sans-serif",
+    "RACKFONTSIZE": 14,
     "FLOORWIDTH": 5,
     "FOOTWIDTH": 7,
     "FOOTHEIGHT": 3,
@@ -413,28 +476,45 @@ Basic configuration file :
     "NODESPERRACK": 72,
     "NODESPERROW": 2,
     "NODEMARGIN": 1,
-    "NODESTATEWIDTH": 10,
+    "NODEHORIZONTALPADDING": 3,
+    "NODEVERTICALPADDING": 1,
+    "NODELEDRADIUS": 2,
+    "NODELEDPADDING": 2,
+    "NODEFONTFAMILY": "sans-serif",
+    "NODEFONTSIZE": 10,
+    "NODENAMEVERTICALOFFSET": 1,
+    "NODENAMEHORIZONTALOFFSET": 0,
     "LEGEND": {
       "WIDTH": 100,
       "HEIGHT": 100
     }
   }
 
-- *CANVASWIDTH* (Number) : Canvas width in pixel
-- *CANVASMARGINTOP* (Number) : Canvas internal margin top in pixel.
 - *LEFTMARGIN* (Number) : Rack margin left in pixel
 - *TOPMARGIN* (Number) : Rack margin top in pixel
 - *RACKBORDERWIDTH* (Number) : Rack border/closure size in pixel
 - *RACKUNITNUMBER* (Number) : Number of unit in one rack
 - *RACKUNITHEIGHT* (Number) : Height of one rack unit in pixel
+- *RACKFONTFAMILY* (String) : Rack name font family
+- *RACKFONTSIZE* (Number): Rack name font size
 - *FLOORWIDTH* (Number) : Width of the floor element drawn at rack bottom, in pixel
 - *FOOTWIDTH* (Number) : Rack foot width in pixel
 - *FOOTHEIGHT* (Number) : Rack foot height in pixel
 - *RACKINSIDEWIDTH* (Number) : Size
+- *CANVASMARGINTOP* (Number) : Canvas internal margin top in pixel.
 - *NODESPERRACK* (Number) : Number of nodes in one rack
+- *NODESPERROW* (Number) : Number of nodes in one row
 - *NODESMARGIN* (Number) : Space between two nodes in pixel
-- *NODESTATEWIDTH*: Core size in pixel
+- *NODEHORIZONTALPADDING* (Number) : Horizontal padding on node
+- *NODEVERTICALPADDING* (Number) : Vertical padding on node
+- *NODELEDRADIUS* (Number) : Radius of the LED on node
+- *NODELEDPADDING* (Number) : Padding on the LED on node
+- *NODEFONTFAMILY* (String) : Node name font family
+- *NODEFONTSIZE* (Number) : Node name font size
+- *NODENAMEVERTICALOFFSET* (Number) : The vertical offset starting from the middle where the node name is labelled in rack view, in pixel
+- *NODENAMEHORIZONTALOFFSET* (Number) : The horizontal offset starting from the center where the node name is labelled in rack view, in pixel
 - *LEGEND* (Object) : Legend property
+
   - *WIDTH* (Number) : Legend canvas width in pixel
   - *HEIGHT* (Number) : Legend canvas height in pixel
 
@@ -481,6 +561,7 @@ Basic configuration file :
 
 - *COREBORDER* (rgba()) : Core grid color.
 - *LED* (Object) : Colors of the led status, based on the node state
+
   - *IDLE* (rgba()) : Node state is idle
   - *FULLYALLOCATED* (rgba()) : Node state is reserved, allocated or completing and all cpus allocated
   - *PARTALLOCATED* (rgba()) : Node state is reserved, allocated or completing and not all cpus allocated
@@ -490,6 +571,7 @@ Basic configuration file :
   - *DRAINED* (rgba()) : Node state is draining or drained
   - *DOWN* (rgba()) : Node state is down
   - *RESERVED* (rgba()) : Node state is reserved
+
 - *JOB* (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]
 
 
@@ -520,7 +602,15 @@ Basic configuration file :
     "LEDDEPTH": 0.001,
     "CPUPADDING": 0.3,
     "CPUDEPTH": 0.001,
-    "DEBUG": true,
+    "DEBUG": false,
+    "RACKNAME": {
+      "SIZE": 0.2,
+      "DEPTH": 0.001,
+      "FONT": {
+        "NAME": "DejaVu Sans Mono",
+        "PATH": "js/fonts/DejaVu_Sans_Mono_Book.js"
+      }
+    },
     "CONTROLS": {
       "FORWARD": 90,
       "BACKWARD": 83,
@@ -552,16 +642,29 @@ Basic configuration file :
 - *CPUPADDING* (Number) : Space around one cpu, proportional to the node parent element in UNITSIZE
 - *CPUDEPTH* (Number): Depth of cpus, proportional to the node parent element in UNITSIZE
 - *DEBUG* (Boolean) : Show the x (red), y (green), z (blue) axes for debug.
+- *RACKNAME* (Object) :
+
+  - *SIZE* (Number) : Font height for the rack name banner in UNITSIZE (axe: y)
+  - *DEPTH* (Number) : Font depth for the rack name banner in UNITSIZE (axe: z)
+  - *FONT* (Object) :
+
+    - *NAME* (String) : Font name
+    - *PATH* (String) : Path of the font file converted in Javascript format for Typeface.JS. [Typeface converter](https://github.com/derniercri/font4three)
+
 - *CONTROLS* (Object) : Keyboard binding for fps and orbital camera controls. [Keycodes list] (http://www.javascripter.net/faq/keycodes.htm)
+
   - *FORWARD* (Keycode) : Move forward
   - *BACKWARD* (Keycode) : Move backward
   - *LEFT* (Keycode) : Move left
   - *RIGHT* (Keycode) : Move righ
   - *FREEZE* (Keycode) : Stop/Start movement
+
 - *PACMAN* (Object) : Specific pacman mode configuration
+
   - *MOVESPEED* (Number) : X, Y, Z camera translation speed in UNITSIZE
   - *LOOKSPEED* (Number) : X, Y, Z camera rotation speed in UNITSIZE
 
+- *COLLISONMARGIN* (Number) : Space before object collision with camera in UNITSIZE, used for FPS controls
 
 3D Colors ``3d.colors.config.json``
 """""""""""""""""""""""""""""""""""
@@ -609,6 +712,7 @@ Basic configuration file :
 - *RACK* (rgb()): Rack color
 - *NODE* (rgb()): Node color
 - *LED* (Object): Colors of the led status, based on the node state
+
   - *IDLE* (rgb()) : Node state is idle
   - *FULLYALLOCATED* (rgb()) : Node state is reserved, allocated or completing and all cpus allocated
   - *PARTALLOCATED* (rgb()) : Node state is reserved, allocated or completing and not all cpus allocated
@@ -619,9 +723,12 @@ Basic configuration file :
   - *DOWN* (rgb()) : Node state is down
   - *RESERVED* (rgb()) : Node state is reserved
   - *NOTVISIBLE*: Default color for empty core
+
 - *JOB* (Array) : Colors used for a job core, the colors is selected like this : JobColorsArray[JobId % JobColorsArray.length]
 - *NOJOB* (rgb()): Default color for empty core
+- *RACKNAME* (Object):
 
+  - *FONT* (rgb()): Font color for the rack name banner
 
 Clusters ``clusters.config.js``
 """""""""""""""""""""""""""""""""""

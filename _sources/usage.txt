@@ -72,10 +72,48 @@ There are 8 columns:
 #. The QOS of the job
 #. The partition of the job
 
-You can filter the displayed jobs by using the input above the table, either
-by partition or by QoS. All the shown jobs then satisfy all the filters given
-in the input. There is an autocompletion mechanism on all partitions and QoS
-existing in the table.
+You can filter the displayed jobs by using the input above the table. All the
+shown jobs then satisfy all the filters given in the input. There is an
+autocompletion mechanism on all partitions, QoS, Name, User, Nodes, State, Start Time
+and End Time existing in the table. The filters field work in a substractive
+way.
+
+There is a special use case to filter by Start and End Time. You must begin the
+filter by choosing the field Start Time with the word "start" or End Time with
+the word "end". Followed by a comparison operator "<" or ">". At the end you
+will add the time format you want.
+
+The options are :
+  - now (the current time), must be used alone
+  - [number]y (years)
+  - [number]M (months)
+  - [number]w (weeks)
+  - [number]d (days)
+  - [number]h (hours)
+  - [number]m (minutes)
+  - [number]s (seconds)
+
+The options must be separated with ":"
+
+The time format can be a positive or negative value "+" (default) or "-"
+
+Examples :
+
+"start < 1h:10m" same as "start < 0y:0M:0w:0d:1h:10m:0s" same as
+"start < +1h:10m"
+
+The example show all the jobs who started 1 hour and 10 minutes ago from now.
+
+Another special use case is the Nodes filter. You can filter by a single node or a complete nodeset.
+
+The single node filter show the job who use this node. A complete nodeset show the jobs who use
+one of the node in common.
+
+Examples :
+
+  pocn240 show the job who use the node 240
+
+  pocn[240-242, 260] show all the jobs who use the node 240, 241, 242 or 260
 
 To get more details about one specific job, you can click anywhere on the job
 row:

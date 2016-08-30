@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dashboard usage &mdash; Slurm-web 2.O documentation</title>
+  <title>Dashboard usage &mdash; Slurm-web 2.1 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
         <link rel="next" title="Software architecture" href="architecture.html"/>
         <link rel="prev" title="Installation Guide" href="installation.html"/> 
 
@@ -96,9 +96,11 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-qos">Jobs by QOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#convert-nodeset">Convert Nodeset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#code-style-and-coding-rules">Code style and coding rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
@@ -203,10 +205,43 @@ its start time in the future.</li>
 <li>The QOS of the job</li>
 <li>The partition of the job</li>
 </ol>
-<p>You can filter the displayed jobs by using the input above the table, either
-by partition or by QoS. All the shown jobs then satisfy all the filters given
-in the input. There is an autocompletion mechanism on all partitions and QoS
-existing in the table.</p>
+<p>You can filter the displayed jobs by using the input above the table. All the
+shown jobs then satisfy all the filters given in the input. There is an
+autocompletion mechanism on all partitions, QoS, Name, User, Nodes, State, Start Time
+and End Time existing in the table. The filters field work in a substractive
+way.</p>
+<p>There is a special use case to filter by Start and End Time. You must begin the
+filter by choosing the field Start Time with the word &#8220;start&#8221; or End Time with
+the word &#8220;end&#8221;. Followed by a comparison operator &#8220;&lt;&#8221; or &#8220;&gt;&#8221;. At the end you
+will add the time format you want.</p>
+<dl class="docutils">
+<dt>The options are :</dt>
+<dd><ul class="first last simple">
+<li>now (the current time), must be used alone</li>
+<li>[number]y (years)</li>
+<li>[number]M (months)</li>
+<li>[number]w (weeks)</li>
+<li>[number]d (days)</li>
+<li>[number]h (hours)</li>
+<li>[number]m (minutes)</li>
+<li>[number]s (seconds)</li>
+</ul>
+</dd>
+</dl>
+<p>The options must be separated with &#8221;:&#8221;</p>
+<p>The time format can be a positive or negative value &#8220;+&#8221; (default) or &#8220;-&#8220;</p>
+<p>Examples :</p>
+<p>&#8220;start &lt; 1h:10m&#8221; same as &#8220;start &lt; 0y:0M:0w:0d:1h:10m:0s&#8221; same as
+&#8220;start &lt; +1h:10m&#8221;</p>
+<p>The example show all the jobs who started 1 hour and 10 minutes ago from now.</p>
+<p>Another special use case is the Nodes filter. You can filter by a single node or a complete nodeset.</p>
+<p>The single node filter show the job who use this node. A complete nodeset show the jobs who use
+one of the node in common.</p>
+<p>Examples :</p>
+<blockquote>
+<div><p>pocn240 show the job who use the node 240</p>
+<p>pocn[240-242, 260] show all the jobs who use the node 240, 241, 242 or 260</p>
+</div></blockquote>
 <p>To get more details about one specific job, you can click anywhere on the job
 row:</p>
 <div class="figure">
@@ -436,7 +471,7 @@ opened and shows details about the current job running on the selected node.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.O',
+            VERSION:'2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>REST API reference &mdash; Slurm-web 2.O documentation</title>
+  <title>REST API reference &mdash; Slurm-web 2.1 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.O documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
         <link rel="next" title="How to contribute or add page" href="contribute.html"/>
         <link rel="prev" title="Software architecture" href="architecture.html"/> 
 
@@ -96,9 +96,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-nodes">Jobs by nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-qos">Jobs by QOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convert-nodeset">Convert Nodeset</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">How to contribute or add page</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contribute.html#code-style-and-coding-rules">Code style and coding rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#architecture-front">Architecture Front</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#page-api">Page API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contribute.html#work-with-current-page-or-add-new">Work with current page or add new:</a></li>
@@ -218,6 +220,15 @@ where the token sent by the login must be set.</p>
 <p>Jobs running, ordered by qos :</p>
 <p><tt class="docutils literal"><span class="pre">/jobs-by-qos</span></tt></p>
 </div>
+<div class="section" id="convert-nodeset">
+<h2>Convert Nodeset<a class="headerlink" href="#convert-nodeset" title="Permalink to this headline">¶</a></h2>
+<p>Convert a set of node formatted in host list to an array of nodes :</p>
+<p><tt class="docutils literal"><span class="pre">/nodeset</span></tt></p>
+<p>Give the nodeset by post method with a stringify JSON where the nodeset is
+passed to the key <tt class="docutils literal"><span class="pre">nodeset</span></tt> as a string
+(i.e. <tt class="docutils literal"><span class="pre">&quot;{&quot;nodeset&quot;:&quot;pocn[234-240,257]&quot;}&quot;</span></tt>).
+No authentication needed for this route.</p>
+</div>
 </div>
 
 
@@ -258,7 +269,7 @@ where the token sent by the login must be set.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.O',
+            VERSION:'2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
