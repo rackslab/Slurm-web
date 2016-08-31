@@ -222,10 +222,10 @@ def get_partitions():
     return partitions
 
 
-def convert_tres_ids(qos_param_key, qos_param_value):
+def convert_tres_ids(numerical_tres):
     """
-       If the qos_param_key is a TRES key, concert qos_param_value string by
-       replacing all TRES IDs by their respective textual form. For ex:
+       Convert numerical_tres string by replacing all TRES IDs by their
+       respective textual form. For ex:
          1=224,4=8 -> cpu=224,node=8
 
        Here is the TRES constant enum as defined in src/common/slurmdb_defs.h
@@ -245,12 +245,8 @@ def convert_tres_ids(qos_param_key, qos_param_value):
          } tres_types_t;
 
     """
-    # if not a TRES key, return value w/o modification
-    if qos_param_key.find('_tres') == -1:
-        return qos_param_value
-
     # skip if value is None
-    if qos_param_value is None:
+    if numerical_tres is None:
         return None
 
     # map IDs with text according to enum over
@@ -260,7 +256,7 @@ def convert_tres_ids(qos_param_key, qos_param_value):
         '3': 'energy',
         '4': 'node'}
     tres_l = list()
-    tres_e = qos_param_value.split(',')
+    tres_e = numerical_tres.split(',')
     for tres in tres_e:
         (tres_type, tres_value) = tres.split('=')
         tres_l.append(tres_map[tres_type] + '=' + tres_value)
@@ -280,8 +276,9 @@ def get_qos():
         # textual form using tres_convert_ids()
         for qos_name in qos:
             xqos = qos[qos_name]
-            qos[qos_name] = {key: convert_tres_ids(key, value)
-                             for key, value in xqos.iteritems()}
+            for key, value in xqos.iteritems():
+                if value is not None and key.find('_tres') > 0:
+                    qos[qos_name][key] = convert_tres_ids(value)
 
     except Exception as e:
         qos = {'error': str(e)}
