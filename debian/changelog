@@ -1,3 +1,9 @@
+slurm-web (2.1.2) unstable; urgency=medium
+
+  * Make TRES conversion compatible with Python 2.6
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 31 Aug 2016 09:22:41 +0200
+
 slurm-web (2.1.1) unstable; urgency=medium
 
   * Fix packaging issues following large dashboard code re-organisation
