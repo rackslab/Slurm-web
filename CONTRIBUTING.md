@@ -33,7 +33,7 @@ Indentation:
 * Python: 4 spaces.
 * JS/HTML: 2 spaces.
 
-Python code must respect pep8.
+Python code must respect pep8 and must be compatible with Python 2.6.
 
 Release
 -------
