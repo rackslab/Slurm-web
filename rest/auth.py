@@ -98,14 +98,14 @@ def get_ldap_connection():
     if uri.startswith('ldaps'):
 
         conn.protocol_version = ldap.VERSION3
-        # Force libldap to create a new SSL context
-        conn.set_option(ldap.OPT_X_TLS_NEWCTX, ldap.OPT_X_TLS_DEMAND)
         # Force cert validation
         conn.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_DEMAND)
         if settings.has_option('ldap', 'cacert'):
             cacert = settings.get('ldap', 'cacert')
             # Set path name of file containing all trusted CA certificates
             conn.set_option(ldap.OPT_X_TLS_CACERTFILE, cacert)
+        # Force libldap to create a new SSL context
+        conn.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
 
     return conn
 
