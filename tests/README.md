@@ -7,7 +7,59 @@ Quickstart
 This directory contains scripts and various modules to run an emulated testing
 environment for Slurm-web.
 
-The environement is creaed using the script:
+First install all slurm-web deps:
+
+* apache2
+* libapache2-mod-wsgi
+* python-flask
+* python-pyslurm (>= 15.08.0~git20160229-2)
+* clustershell
+* python-ldap
+* python-itsdangerous
+* python-redis
+* javascript-common
+* libjs-bootstrap
+* libjs-jquery
+* libjs-jquery-flot
+* libjs-jquery-tablesorter
+* libjs-requirejs
+* libjs-requirejs-text
+* libjs-three (>= 72)
+* libjs-bootstrap-typeahead
+* libjs-bootstrap-tagsinput
+* libjs-d3
+* libjs-handlebars
+* libjs-async
+
+(Please checkout `debian/control` file to get an updated list of slurm-web
+dependencies.)
+
+Then install the slurm-web-confdashboard package because it is not emulated yet
+by the testing scripts.
+
+Then add the following content to
+`/etc/slurm-web/dashboard/clusters.config.js`:
+
+```
+window.clusters = [
+  {
+    "name": "saturne",
+    "api": {
+      "url": "http://10.5.0.1:2000",
+      "path": ""
+    }
+  },
+  {
+    "name": "jupiter",
+    "api": {
+      "url": "http://10.5.0.1:2001",
+      "path": ""
+    }
+  }
+]
+```
+
+Finally, the testing environment is created using the script:
 
     $ python tests/run-testbed.py
 
