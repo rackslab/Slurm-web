@@ -20,7 +20,7 @@
 
 import importlib
 import mock
-from mocks.ldap import mock_getpwuid
+from mocks.ldap import mock_getpwuid, mock_getpwnam
 
 def setup_mock(context):
 
@@ -38,3 +38,8 @@ def setup_mock(context):
     m_getpwuid.side_effect = mock_getpwuid
     p_getpwuid = mock.patch("pwd.getpwuid", m_getpwuid, create=True)
     p_getpwuid.start()
+
+    m_getpwnam = mock.Mock()
+    m_getpwnam.side_effect = mock_getpwnam
+    p_getpwnam = mock.patch("pwd.getpwnam", m_getpwnam, create=True)
+    p_getpwnam.start()

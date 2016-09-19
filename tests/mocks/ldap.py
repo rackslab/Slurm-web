@@ -118,6 +118,20 @@ def mock_getpwuid(uid):
     return result
 
 
+def mock_getpwnam(name):
+
+    result = list()
+    for user in context.USERBASE:
+        if user.name == name:
+            result.append(user.login)
+            result.append(None)
+            result.append(None)
+            result.append(None)
+            result.append(user.name + ',')
+            break
+    return result
+
+
 class MockLdapConn(object):
 
     @staticmethod
