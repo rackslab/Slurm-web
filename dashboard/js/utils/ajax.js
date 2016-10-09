@@ -31,11 +31,11 @@ define([
       $(document).trigger('logout');
     }
 
-    // Ignore error for /authentication here because this route is used to
+    // Ignore error for /cluster here because this route is used to
     // probe cluster availability and API authentication configuration on
     // dashboard load and the errors on this route are directly handled in
     // dashboard/js/core/clusters/clusters.js
-    if (!(error.url.indexOf('/authentication') > -1)) {
+    if (!(error.url.indexOf('/cluster') > -1)) {
 
       // Show error in #flash.
       // When the REST API fails in unexpected way (typically with 500 internal

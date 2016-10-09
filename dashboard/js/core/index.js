@@ -147,17 +147,6 @@ require([
   }
 
   $(document).on('loadPage', function(e, options) {
-    var ajaxOptions = {
-      type: 'POST',
-      dataType: 'json',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify({
-        token: token.getToken(options.config.cluster)
-      })
-    };
 
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
@@ -166,12 +155,7 @@ require([
     navbar.init();
 
     $('title').html(options.config.cluster.name.capitalizeFirstLetter() + '\'s HPC Dashboard');
-
-    $.ajax(config.cluster.api.url + config.cluster.api.path + '/cluster', ajaxOptions)
-      .success(function(data) {
-        config.cluster.infos = data;
-        $(document).trigger('show', { page: config.STARTPAGE });
-      });
+    $(document).trigger('show', { page: config.STARTPAGE });
   });
 
   $(document).on('logout', function(e) {

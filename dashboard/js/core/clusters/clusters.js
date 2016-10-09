@@ -36,9 +36,19 @@ define([
   }
 
   function retrieveClusterInformations(cluster, callback) {
-    $.ajax(cluster.api.url + cluster.api.path + '/authentication')
+    var options= {
+      type: 'GET',
+      dataType: 'json',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    };
+    $.ajax(cluster.api.url + cluster.api.path + '/cluster', options)
       .success(function(response) {
-        cluster.authentication = response;
+        cluster.infos = response.data;
+        cluster.name = response.data.name;
+        cluster.authentication = response.authentication;
         callback(null, null);
       })
       .error(function(error) {

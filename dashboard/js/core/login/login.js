@@ -46,68 +46,29 @@ define([
           return;
         }
 
-        async.series([
-          function(callback) {
-            // login on cluster, call route /login
-            if (userUtils.getUser(cluster)) {
-              // don't do anything if user already authenticated on cluster
-              callback(null, null);
-              return;
-            }
-
-            $.ajax(cluster.api.url + cluster.api.path + '/login', options)
-              .success(function(response) {
-                tokenUtils.setToken(cluster, response.id_token);
-                userUtils.setUser(cluster, response);
-                callback(null, null);
-              })
-              .error(function(error) {
-                if (config.cluster.id === cluster.id) {
-                  // error if cluster is the current one
-                  return callback(true, error);
-                }
-
-                // nothing unless
-                return callback(null, null);
-              });
-          },
-          function(callback) {
-            var options = {
-              type: 'POST',
-              dataType: 'json',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              data: JSON.stringify({
-                token: tokenUtils.getToken(cluster)
-              })
-            };
-
-            // get infos on cluster, call route /cluster
-            if (cluster.infos) {
-              // don't do anything if infos are already retrieved
-              callback(null, null);
-              return;
-            }
-
-            $.ajax(cluster.api.url + cluster.api.path + '/cluster', options)
-              .success(function(data) {
-                cluster.infos = data;
-                callback(null, null);
-              })
-              .error(function(error) {
-                callback(true, error);
-              });
-          }
-        ], function(err, result) {
-          if (err) {
-            callback(true, result);
-            return;
-          }
+        // login on cluster, call route /login
+        if (userUtils.getUser(cluster)) {
+          // don't do anything if user already authenticated on cluster
           callback(null, null);
-        });
-      }
+          return;
+        }
+
+        $.ajax(cluster.api.url + cluster.api.path + '/login', options)
+          .success(function(response) {
+            tokenUtils.setToken(cluster, response.id_token);
+            userUtils.setUser(cluster, response);
+            callback(null, null);
+          })
+          .error(function(error) {
+            if (config.cluster.id === cluster.id) {
+              // error if cluster is the current one
+              return callback(true, error);
+            }
+
+            // nothing unless
+            return callback(null, null);
+          });
+      };
 
       async.map(window.clusters, loginOnCluster, function(err, result) {
         var clusterId = window.clusters.indexOf(config.cluster);

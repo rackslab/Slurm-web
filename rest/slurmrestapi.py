@@ -111,16 +111,6 @@ def login():
     return jsonify(resp)
 
 
-@app.route('/authentication', methods=['GET', 'OPTIONS'])
-@crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With'])
-def authentication():
-    return jsonify({
-        'enabled': auth_enabled,
-        'guest': guests_allowed
-    })
-
-
 @app.route('/jobs', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
@@ -168,11 +158,9 @@ def get_nodes():
     return nodes
 
 
-@app.route('/cluster', methods=['POST', 'OPTIONS'])
-@crossdomain(origin=origins, methods=['POST'],
+@app.route('/cluster', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
-@authentication_verify()
-@cache()
 def get_cluster():
 
     nodes = pyslurm.node().get()
@@ -182,7 +170,14 @@ def get_cluster():
     cluster['cores'] = 0
     for nodename, node in nodes.iteritems():
         cluster['cores'] += node['cpus']
-    return cluster
+    resp = jsonify({
+        'authentication': {
+            'enabled': auth_enabled,
+            'guest': guests_allowed
+        },
+        'data': cluster
+    })
+    return resp
 
 
 @app.route('/racks', methods=['POST', 'OPTIONS'])
