@@ -125,6 +125,7 @@ define([
       };
 
       $('body').prepend(template(context));
+      $('.navbar-fixed-top').css('background-image', 'url('+config.LOGOURL+')'); //define logo path
 
       resizeNavbar();
 

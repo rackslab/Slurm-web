@@ -427,7 +427,8 @@ Basic configuration file :
     "STARTPAGE": "jobs",
     "REFRESH": 30000,
     "MAXNODESLENGTH": 25,
-    "AUTOLOGIN": false
+    "AUTOLOGIN": false,
+    "LOGOURL": "../static/logo.png"
   }
 
 - *STARTPAGE* (String) : Name of the page loaded at the application startup.
@@ -449,6 +450,8 @@ Basic configuration file :
 - *MAXNODESLENGTH* (Number) : Maximum characters show for the nodes name in "Nodes" column in module Jobs.
 
 - *AUTOLOGIN* (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).
+
+- *LOGOURL* (String) : Define the image url in the top left-hand corner.
 
 
 2D Draw ``conf/dashboard/2d.config.json``

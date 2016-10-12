@@ -24,7 +24,6 @@ canvas {
  * Hide default border to remove 1px line.
  */
 .navbar-fixed-top {
-  background-image: url(../static/logo.png);
   background-repeat: no-repeat;
   border: 0;
 }

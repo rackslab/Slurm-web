@@ -2,5 +2,6 @@
   "STARTPAGE": "jobs",
   "REFRESH": 30000,
   "MAXNODESLENGTH": 25,
-  "AUTOLOGIN": false
+  "AUTOLOGIN": false,
+  "LOGOURL": "../static/logo.png"
 }
