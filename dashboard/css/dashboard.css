@@ -158,16 +158,16 @@ canvas {
  * Login content
  */
 
-#login {
+#loginform {
   padding:20px 40px;
 }
 
-#login .align {
+#loginform .align {
   margin:0 auto;
   width: 200px;
 }
 
-#login .align-error {
+#loginform .align-error {
   display: none;
   margin:0 auto;
   width: 400px;

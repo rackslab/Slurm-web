@@ -120,7 +120,7 @@ define([
         authEnabled: config.cluster.authentication.enabled,
         views: this.availableViews,
         userLogged: this.userLogged,
-        user: $.extend({ username: '' }, userUtils.getUser(config.cluster)),
+        user: $.extend({ name: '' }, userUtils.getUser(config.cluster)),
         notIE: !Boolean(document.documentMode)
       };
 

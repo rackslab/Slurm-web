@@ -21,7 +21,6 @@
 from flask import (Flask, jsonify, request, abort, send_from_directory,
                    render_template)
 import pyslurm
-import pwd
 import json
 import os
 
@@ -41,7 +40,7 @@ from settings import settings
 # for authentication
 from auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
-                  guests_allowed, auth_enabled)
+                  guests_allowed, auth_enabled, fill_job_user)
 
 from cache import cache
 
@@ -50,8 +49,6 @@ from ClusterShell.NodeSet import NodeSet
 import unicodedata
 
 app = Flask(__name__)
-
-uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
 origins = settings.get('cors', 'authorized_origins')
 
@@ -96,7 +93,7 @@ def login():
             abort(403, "Error: you have not any role for this cluster")
     else:
         try:
-            user = User.user(data['username'],
+            user = User.user(data['login'],
                              data['password'])
         except AuthenticationError:
             abort(403, "Error: your login / password doesn't match.")
@@ -106,8 +103,9 @@ def login():
     token = user.generate_auth_token()
     resp = {
         'id_token':         token,
-        'username':         user.username,
+        'login':            user.login,
         'role':             user.role,
+        'name':             user.get_user_name(),
         'restricted_views': user.restricted_views()
     }
     return jsonify(resp)
@@ -120,7 +118,7 @@ def authentication():
     return jsonify({
         'enabled': auth_enabled,
         'guest': guests_allowed
-        })
+    })
 
 
 @app.route('/jobs', methods=['POST', 'OPTIONS'])
@@ -132,7 +130,7 @@ def get_jobs():
     jobs = pyslurm.job().get()
 
     for jobid, job in jobs.iteritems():
-        # add login and username (additionally to UID) for each job
+        # add login and user's name (additionally to UID) for each job
         try:
             fill_job_user(job)
         except (KeyError):
@@ -448,19 +446,6 @@ def proxy():
     return render_template('proxy.html',
                            url_root=request.url_root,
                            masters=masters)
-
-
-def fill_job_user(job):
-    uid = job['user_id']
-    uid_s = str(uid)
-    if uid_s not in uids:
-        pw = pwd.getpwuid(uid)
-        uids[uid_s] = {}
-        uids[uid_s]['login'] = pw[0]
-        # user name is the first part of gecos
-        uids[uid_s]['username'] = pw[4].split(',')[0]
-    job['login'] = uids[uid_s]['login']
-    job['username'] = uids[uid_s]['username']
 
 if __name__ == '__main__':
     app.run(debug=True)

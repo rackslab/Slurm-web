@@ -24,8 +24,9 @@ define([
   var user = {
     setUser: function(cluster, user) {
       var userStored = JSON.stringify({
-        username: user.username,
+        login: user.login,
         role: user.role,
+        name: user.name,
         restrictedViews: user.restricted_views // eslint-disable-line no-trailing-spaces
       });
 

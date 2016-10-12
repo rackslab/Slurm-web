@@ -29,11 +29,14 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 from ConfigParser import NoSectionError, NoOptionError
 import os
 import platform
+import pwd
 
 
 guests_allowed = False
 all_enabled = True
 auth_enabled = settings.get('config', 'authentication') == 'enable'
+
+uids = {}  # cache of user login/names to avoid duplicate NSS resolutions
 
 if auth_enabled:
 
@@ -137,24 +140,25 @@ class CORSForbidden(Forbidden):
         return [('Content-Type', 'text/html'),
                 ('Access-Control-Allow-Origin', '*')]
 
+
 abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
-    def __init__(self, username, password, role, groups=None):
-        self.username = username
+    def __init__(self, login, password, role, groups=None):
+        self.login = login
         self.password = password
         self.role = role
         self.groups = groups
 
     # create authenticated user
     @staticmethod
-    def user(username, password):
-        groups = User.get_groups_from_ldap(username, password)
-        role = User.get_role(username, groups)
+    def user(login, password):
+        groups = User.get_groups_from_ldap(login, password)
+        role = User.get_role(login, groups)
         if role == 'all' and not all_enabled:
             raise AllUnauthorizedError
-        return User(username, password, role, groups)
+        return User(login, password, role, groups)
 
     # create a guest user
     @staticmethod
@@ -166,7 +170,7 @@ class User(object):
         return User('guest', 'guest', 'all')
 
     @staticmethod
-    def get_groups_from_ldap(username, password):
+    def get_groups_from_ldap(login, password):
 
         # here deal with ldap to get user groups
         conn = get_ldap_connection()
@@ -176,10 +180,10 @@ class User(object):
             base_group = settings.get('ldap', 'base_group')
 
             # authenticate user on ldap
-            user_dn = "uid=%s,%s" % (username, base_people)
+            user_dn = "uid=%s,%s" % (login, base_people)
             conn.simple_bind_s(user_dn, password)
 
-            print "User %s authenticated" % username
+            print "User %s authenticated" % login
 
             # search for user's groups
             look_filter = "(|(&(objectClass=*)(member=%s)))" % (user_dn)
@@ -190,7 +194,7 @@ class User(object):
             return groups
 
         except ldap.INVALID_CREDENTIALS:
-            print "Authentication failed: username or password is incorrect."
+            print "Authentication failed: login id or password is incorrect."
             raise AuthenticationError
 
         except ldap.NO_SUCH_OBJECT as e:
@@ -201,13 +205,13 @@ class User(object):
             conn.unbind_s()
 
     @staticmethod
-    def get_role(username, groups):
-        if username in admins:
+    def get_role(login, groups):
+        if login in admins:
             return 'admin'
         for group in groups:
             if ("@" + group) in admins:
                 return 'admin'
-        if username in users:
+        if login in users:
             return 'user'
         for group in groups:
             if ("@" + group) in users:
@@ -219,7 +223,7 @@ class User(object):
     ):
         s = Serializer(secret_key, expires_in=expiration)
         token = s.dumps({
-            'username': self.username,
+            'login':    self.login,
             'password': self.password,
             'role':     self.role
         })
@@ -231,8 +235,8 @@ class User(object):
         s = Serializer(secret_key)
         try:
             data = s.loads(token)
-            print "verify_auth_token : data -> username: %s role: %s" \
-                  % (data['username'], data['role'])
+            print "verify_auth_token : data -> login id: %s role: %s" \
+                  % (data['login'], data['role'])
         except SignatureExpired:
             print "verify_auth_token : SignatureExpired "
             return None  # valid token, but expired
@@ -243,10 +247,10 @@ class User(object):
             print "verify_auth_token : TypeError"
             return None
 
-        if data['username'] == 'guest':
+        if data['login'] == 'guest':
             return User.guest()
 
-        user = User.user(data['username'], data['password'])
+        user = User.user(data['login'], data['password'])
 
         return user
 
@@ -261,9 +265,15 @@ class User(object):
                 if member and member[0] == '@' and self.groups is not None \
                    and member[1:] in self.groups:
                     views.remove(view)
-                elif member == self.username:
+                elif member == self.login:
                     views.remove(view)
         return list(views)
+
+    def get_user_name(self):
+        # return user's name from the 1st item of gecos field
+        if self.login == 'guest':
+            return 'guest'
+        return pwd.getpwnam(self.login)[4].split(',')[0]
 
 
 def authentication_verify():

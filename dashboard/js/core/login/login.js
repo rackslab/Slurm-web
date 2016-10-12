@@ -30,7 +30,7 @@ define([
   template = Handlebars.compile(template);
 
   function errorMessage(message) {
-    var $error = $('#login #error');
+    var $error = $('#loginform #error');
 
     $error.find('.alert').empty().append($('<p>').text(message));
     $error.show();
@@ -134,19 +134,19 @@ define([
 
       function submitLogin(e) {
         var form = {
-          username: $('#login #username').val(),
-          password: $('#login #password').val()
+          login: $('#loginform #login').val(),
+          password: $('#loginform #password').val()
         };
 
         if (e.type === 'keypress' && e.which !== 13) {
           return;
         }
 
-        if (!form.username || !form.password) {
-          errorMessage('You have to provide both your username and your password');
+        if (!form.login || !form.password) {
+          errorMessage('You have to provide both your user id and your password');
         } else {
           options.data = JSON.stringify({
-            username: form.username,
+            login: form.login,
             password: form.password
           });
           loginAction(options);
@@ -169,13 +169,13 @@ define([
       }
 
       if (config.cluster.authentication.guest) {
-        $('#login #guest').show();
+        $('#loginform #guest').show();
       }
 
       // bind login form events
-      $('#login #user').on('click', submitLogin);
-      $('#login input').on('keypress', submitLogin);
-      $('#login #guest').on('click', submitGuest);
+      $('#loginform #user').on('click', submitLogin);
+      $('#loginform input').on('keypress', submitLogin);
+      $('#loginform #guest').on('click', submitGuest);
     };
 
     this.destroy = function() {
