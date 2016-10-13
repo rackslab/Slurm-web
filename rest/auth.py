@@ -145,9 +145,8 @@ abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
-    def __init__(self, login, password, role, groups=None):
+    def __init__(self, login, role, groups=None):
         self.login = login
-        self.password = password
         self.role = role
         self.groups = groups
 
@@ -158,7 +157,7 @@ class User(object):
         role = User.get_role(login, groups)
         if role == 'all' and not all_enabled:
             raise AllUnauthorizedError
-        return User(login, password, role, groups)
+        return User(login, role, groups)
 
     # create a guest user
     @staticmethod
@@ -223,9 +222,8 @@ class User(object):
     ):
         s = Serializer(secret_key, expires_in=expiration)
         token = s.dumps({
-            'login':    self.login,
-            'password': self.password,
-            'role':     self.role
+            'login': self.login,
+            'role':  self.role
         })
         print "generate_auth_token : token -> %s" % token
         return token
@@ -250,7 +248,7 @@ class User(object):
         if data['login'] == 'guest':
             return User.guest()
 
-        user = User.user(data['login'], data['password'])
+        user = User(data['login'], data['role'])
 
         return user
 
