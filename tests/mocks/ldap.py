@@ -80,6 +80,10 @@ class ExceptionInvalidCredentials(Exception):
 class ExceptionNoSuchObject(Exception):
     pass
 
+class ExceptionServerDown(Exception):
+    pass
+
+
 class MockLdap(object):
     """Class to mock ldap module."""
 
@@ -91,6 +95,7 @@ class MockLdap(object):
 
     INVALID_CREDENTIALS = ExceptionInvalidCredentials
     NO_SUCH_OBJECT = ExceptionNoSuchObject
+    SERVER_DOWN = ExceptionServerDown
 
     VERSION3 = 'foo'
 

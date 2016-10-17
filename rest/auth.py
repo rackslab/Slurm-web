@@ -192,6 +192,10 @@ class User(object):
             groups = [result[1]['cn'][0] for result in results]
             return groups
 
+        except ldap.SERVER_DOWN:
+            print 'The LDAP server is unreachable.'
+            raise AuthenticationError
+
         except ldap.INVALID_CREDENTIALS:
             print "Authentication failed: login id or password is incorrect."
             raise AuthenticationError
