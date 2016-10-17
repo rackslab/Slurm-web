@@ -118,11 +118,11 @@ def mock_getpwuid(uid):
     return result
 
 
-def mock_getpwnam(name):
+def mock_getpwnam(login):
 
     result = list()
     for user in context.USERBASE:
-        if user.name == name:
+        if user.login == login:
             result.append(user.login)
             result.append(None)
             result.append(None)
