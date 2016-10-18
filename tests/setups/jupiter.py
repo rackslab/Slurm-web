@@ -98,7 +98,7 @@ def setup_cluster():
         setup.ctld.nodes.add(node)
 
     partition = SlurmPartition('compute')
-    partition.nodes = [ str(nodeset) ]
+    partition.nodes = str(nodeset)
     partition.total_nodes = len(nodeset)
     partition.total_cpus = 10 * partition.total_nodes
     partition.total_mem = 1 * partition.total_nodes

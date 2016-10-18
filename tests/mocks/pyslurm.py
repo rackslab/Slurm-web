@@ -519,7 +519,7 @@ class SlurmPartition(object):
       u'cr_type': 0,
       u'alternate': None,
       u'priority': 1,
-      u'nodes': ['cn[1-3]'],
+      u'nodes': 'cn[1-3]',
       u'total_cpus': 24,
       u'tres_fmt_str': u'cpu=24,mem=3,node=3',
       u'default_time': 'no_value',
