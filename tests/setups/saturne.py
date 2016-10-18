@@ -95,7 +95,7 @@ def setup_cluster():
     xqos.priority = 100
     setup.ctld.qos.add(xqos)
 
-    job = SlurmJob(1234)
+    job = SlurmJob('1234')
     job.name = 'test.sh'
     job.qos = xqos.name
     job.job_state = 'RUNNING'

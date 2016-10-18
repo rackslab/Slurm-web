@@ -400,7 +400,7 @@ class SlurmJob(object):
 
     def todict(self):
 
-      return { str(self.jobid): {
+      return { self.jobid: {
           u'qos': self.qos,
           u'sicp_mode': self.sicp_mode,
           u'sockets_per_node': self.sockets_per_node,
@@ -868,7 +868,7 @@ class MockPySlurmJob(object):
     def find_id(self, jobid):
         for job in context.CTLD.jobs:
             if job.jobid == jobid:
-                return job.todict()[str(jobid)]
+                return job.todict()[jobid]
         return None
 
 class MockPySlurmReservation(object):

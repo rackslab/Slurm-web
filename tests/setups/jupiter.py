@@ -155,7 +155,7 @@ def setup_cluster():
         node = setup.ctld.find_node(nodename)
         #cpu = node.alloc_cpus  # pick up the first not allocated cpu
 
-        job = SlurmJob(jobid)
+        job = SlurmJob(str(jobid))
         job.name = 'test.sh'
         job.qos = xqos.name
         job.job_state = 'RUNNING'
