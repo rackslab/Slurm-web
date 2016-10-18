@@ -44,7 +44,6 @@ require.config({
     'flot-utils': '../../js/utils/flot',
     'tagsinput-utils': '../../js/utils/tagsinput',
     'string-helpers': '../../js/helpers/string',
-    'array-helpers': '../../js/helpers/array',
     'jobs-helpers': '../../js/helpers/jobs',
     'number-helpers': '../../js/helpers/number',
     'boolean-helpers': '../../js/helpers/boolean',

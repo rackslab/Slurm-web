@@ -24,7 +24,6 @@ define([
   'text!../../js/modules/partitions/partitions.hbs',
   'token-utils',
   'tablesorter-utils',
-  'array-helpers',
   'jquery-tablesorter',
   'boolean-helpers'
 ], function($, Handlebars, template, tokenUtils, tablesorterUtils) {
