@@ -166,7 +166,7 @@ class User(object):
             raise AuthenticationError
         if not all_enabled:
             raise AllUnauthorizedError
-        return User('guest', 'guest', 'all')
+        return User('guest', 'all')
 
     @staticmethod
     def get_groups_from_ldap(login, password):
