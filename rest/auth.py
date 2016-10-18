@@ -303,3 +303,15 @@ def authentication_verify():
         return inner
 
     return decorator
+
+def fill_job_user(job):
+    uid = job['user_id']
+    uid_s = str(uid)
+    if uid_s not in uids:
+        pw = pwd.getpwuid(uid)
+        uids[uid_s] = {}
+        uids[uid_s]['login'] = pw[0]
+        # user name is the first part of gecos
+        uids[uid_s]['username'] = pw[4].split(',')[0]
+    job['login'] = uids[uid_s]['login']
+    job['username'] = uids[uid_s]['username']
