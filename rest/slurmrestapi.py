@@ -141,7 +141,8 @@ def get_jobs():
 @cache()
 def show_job(job_id):
 
-    job = pyslurm.job().find_id(job_id)
+    # pyslurm >= 16.05 expects a string in parameter of job.find_id()
+    job = pyslurm.job().find_id(str(job_id))
     fill_job_user(job)
 
     return job
