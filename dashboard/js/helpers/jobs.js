@@ -20,13 +20,11 @@
 
 define([
   'handlebars',
-  'text!/slurm-web-conf/config.json',
   'text!/slurm-web-conf/2d.colors.config.json',
   'date-utils'
-], function(Handlebars, config, colorsConfig, dateUtils) {
+], function(Handlebars, colorsConfig, dateUtils) {
   var colors = JSON.parse(colorsConfig);
 
-  config = JSON.parse(config);
 
   Handlebars.registerHelper('pickJobColor', function(jobId) {
     return colors.JOB[jobId % colors.JOB.length];
@@ -46,18 +44,6 @@ define([
     }
 
     return state;
-  });
-
-  Handlebars.registerHelper('printNodes', function(nodes) {
-    if (nodes === null) {
-      return '-';
-    }
-
-    if (nodes.length > config.MAXNODESLENGTH) {
-      return nodes.substring(0, config.MAXNODESLENGTH) + '...';
-    }
-
-    return nodes;
   });
 
   Handlebars.registerHelper('printReason', function(state, reason) {

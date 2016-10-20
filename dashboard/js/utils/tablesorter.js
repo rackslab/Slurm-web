@@ -60,7 +60,9 @@ define([
     },
     findTablesorterOptions: function(selector) {
       var options = {
-        sortList: []
+        sortList: [],
+        // indicate which sorter the 3rd column should apply with
+        headers: { 2: { sorter: 'resources' } }
       };
 
       $(selector + ' thead tr th').each(function(index, item) {
@@ -73,6 +75,17 @@ define([
       });
 
       return options;
+    },
+    initParser: function(){
+      return {
+        id: 'resources',
+        is: function(s) { return false; },
+        format: function(s) {
+          // sort by number of cpu
+          return s.split(',')[0].split('=')[1];
+        },
+        type: 'numeric'
+      }
     }
   };
 });

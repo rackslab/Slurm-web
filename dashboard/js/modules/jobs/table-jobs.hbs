@@ -5,7 +5,7 @@
         <tr>
           <th>#</th>
           <th>User</th>
-          <th>Nodes</th>
+          <th>Resources</th>
           <th>State</th>
           <th>Reason</th>
           <th>Start</th>
@@ -18,7 +18,7 @@
           <tr class="job-row" id="tr-job-{{@key}}">
             <td>{{@key}}</td>
             <td>{{login}} ({{username}})</td>
-            <td>{{printNodes nodes}}</td>
+            <td>{{tres_alloc_str}}</td>
             <td>{{job_state}}</td>
             <td>{{printReason job_state state_reason}}</td>
             <td>{{printStartTime start_time eligible_time job_state}}</td>

@@ -61,9 +61,9 @@ There are 8 columns:
 
 #. The Slurm job ID
 #. The name of the user with his/her login on the system between parenthesis
-#. The list of nodes that are allocated for this job, if any. If the job is
-   pending or blocked for any reason, the field could be empty since Slurm may
-   have not decided yet on which nodes this job will run.
+#. The number of cores and nodes that are allocated for this job, if any. If the
+   job is pending or blocked for any reason, the field could be empty since Slurm
+   may have not decided yet on which nodes this job will run.
 #. The current state of the job
 #. If the job is pending or blocked, the reason which explains why the job is
    in this state. If the job is running or completing, this field is empty.

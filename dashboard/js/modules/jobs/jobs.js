@@ -144,6 +144,8 @@ define([
             token: tokenUtils.getToken(config.cluster)
           })
         };
+      //Add user-defined sorter
+      $.tablesorter.addParser(tablesorterUtils.initParser());
 
       $(document).on('modal-job', function(e, options) {
         e.stopPropagation();
