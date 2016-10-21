@@ -425,6 +425,66 @@ def convert_nodeset():
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
 
+from utils import compact_nodes, expand_nodes
+@app.route('/sinfo', methods=['POST', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['POST'],
+             headers=['Accept', 'Content-Type', 'X-Requested-With'])
+@cache()
+def sinfo():
+
+    # Partition and node lists are required 
+    # to compute sinfo informations
+    partitions = pyslurm.partition().get()
+    nodes = pyslurm.node().get()
+
+    # Retreiving the state of each nodes
+    nodes_state = dict(
+        (node.lower(), attributes['state'].lower())
+        for node, attributes in nodes.iteritems()
+    )
+
+    # For all partitions, retrieving the states of each nodes
+    sinfo_data = {}
+    for name, attr in partitions.iteritems():
+
+        for node in list(NodeSet(attr['nodes'])):
+            key = (name, nodes_state[node])
+            if key not in sinfo_data.keys():
+                sinfo_data[key] = []
+            sinfo_data[key].append(node)
+
+    # Preparing the response
+    resp = []
+    for k, nodes in sinfo_data.iteritems():
+        name, state = k
+        partition = partitions[name]
+        avail = partition['state'].lower()
+        min_nodes = partition['min_nodes']
+        max_nodes = partition['max_nodes']
+        total_nodes = partition['total_nodes']
+        job_size = "{0}-{1}".format(min_nodes, max_nodes)
+        job_size = job_size.replace('UNLIMITED', 'infinite')
+        time_limit = partition['max_time_str'].replace('UNLIMITED', 'infinite')
+
+        # Creating the nodeset
+        nodeset = NodeSet()
+        map(nodeset.update, nodes)
+
+        resp.append({
+          'name': name,
+          'avail': avail,
+          'job_size': job_size,
+          'time_limit': time_limit,
+          'nodes': total_nodes,
+          'state': state,
+          'nodelist': str(nodeset),
+        })
+
+    # Jsonify can not works on list, thus using json.dumps
+    # And making sure headers are properly set
+    return make_response(json.dumps(resp), mimetype='application/json')
+
+
 # The purpose of the /proxy and /static routes is just to make CORS work on IE9
 # with the help of xdomain.js. The dashboard requests /proxy on all clusters
 # API servers when running with this browser. The REST API responds with a very
