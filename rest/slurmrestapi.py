@@ -425,14 +425,14 @@ def convert_nodeset():
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
 
-from utils import compact_nodes, expand_nodes
 @app.route('/sinfo', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
+@authentication_verify()
 @cache()
 def sinfo():
 
-    # Partition and node lists are required 
+    # Partition and node lists are required
     # to compute sinfo informations
     partitions = pyslurm.partition().get()
     nodes = pyslurm.node().get()

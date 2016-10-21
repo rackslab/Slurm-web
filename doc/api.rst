@@ -80,6 +80,13 @@ Topology defined on this cluster:
 
 ``/topology``
 
+Sinfo
+-----
+
+Return an ``sinfo`` style cluster status:
+
+``/sinfo``
+
 Jobs by node
 ------------
 
