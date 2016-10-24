@@ -69,7 +69,8 @@ require.config({
     gantt: '../../js/modules/gantt/gantt',
     topology: '../../js/modules/topology/topology',
     'topology-utils': '../../js/utils/topology',
-    'fake-placeholder': '../../js/utils/fakePlaceholder'
+    'fake-placeholder': '../../js/utils/fakePlaceholder',
+    sinfo: '../../js/modules/sinfo/sinfo'
   },
   shim: {
     jquery: {
@@ -233,6 +234,9 @@ require([
       break;
     case 'topology':
       page = new Topology(config);
+      break;
+    case 'sinfo':
+      page = new Sinfo(config);
       break;
     }
 
