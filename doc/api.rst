@@ -16,9 +16,9 @@ Give the ``username`` and the ``password`` as JSON parameters.
 It returns an authentication token.
 
 
-Each method below is a POST method with JSON datas.
-In case when authentication is enabled, it must contain a ``token`` parameter
-where the token sent by the login must be set.
+Each method below is a GET method with JSON data. In case when
+authentication is enabled, it must contain a token sent as
+``Authorization`` request header.
 
 Cluster
 -------

@@ -25,6 +25,7 @@ define([
   'text!../../js/modules/jobs/modal-job.hbs',
   'text!../../js/modules/jobs/table-jobs.hbs',
   'token-utils',
+  'ajax-utils',
   'tablesorter-utils',
   'flot-utils',
   'tagsinput-utils',
@@ -38,7 +39,7 @@ define([
   'boolean-helpers',
   'date-helpers',
   'different-helpers'
-], function($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, tablesorterUtils, flotUtils, tagsinputUtils) {
+], function($, Handlebars, template, modalTemplate, tableJobsTemplate, tokenUtils, ajaxUtils, tablesorterUtils, flotUtils, tagsinputUtils) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
   tableJobsTemplate = Handlebars.compile(tableJobsTemplate);
@@ -94,22 +95,10 @@ define([
     }
 
     function toggleModal(jobId) {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: tokenUtils.getToken(config.cluster)
-        })
-      };
-
       closeModal();
       self.onModal = jobId;
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(job) {
           var context = {
             job: job
@@ -132,18 +121,8 @@ define([
     }
 
     this.init = function() {
-      var self = this,
-        options = {
-          type: 'POST',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-            token: tokenUtils.getToken(config.cluster)
-          })
-        };
+      var self = this;
+
       //Add user-defined sorter
       $.tablesorter.addParser(tablesorterUtils.initParser());
 
@@ -153,7 +132,7 @@ define([
         toggleModal(options.jobId);
       });
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(jobs) {
           var context, plotParams, index, dataJobsState, job, qos, part,
             dataAllocatedCores,

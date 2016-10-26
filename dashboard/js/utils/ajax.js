@@ -19,8 +19,10 @@
  */
 
 define([
-  'jquery'
-], function($) {
+  'jquery',
+  'text!/slurm-web-conf/config.json',
+  'token-utils'
+], function($, config, tokenUtils) {
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
     console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
 
@@ -52,4 +54,27 @@ define([
       $('#flash').show();
     }
   });
+
+  var helper = {
+    getAjaxOptions: function(cluster) {
+
+      var options = {
+        type: 'GET',
+        dataType: 'json',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+
+      if(cluster){
+        var token = tokenUtils.getToken(cluster);
+        if(token != null) {
+          options.headers.Authorization = 'Bearer ' + token;
+        }
+      }
+      return options;
+    }
+  };
+  return helper;
 });

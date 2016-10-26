@@ -22,8 +22,9 @@ define([
   'jquery',
   'async',
   'handlebars',
-  'text!../../js/core/clusters/clusters.hbs'
-], function($, async, Handlebars, template) {
+  'text!../../js/core/clusters/clusters.hbs',
+  'ajax-utils'
+], function($, async, Handlebars, template, ajaxUtils) {
   var clusters = window.clusters,
     index;
 
@@ -36,15 +37,8 @@ define([
   }
 
   function retrieveClusterInformations(cluster, callback) {
-    var options= {
-      type: 'GET',
-      dataType: 'json',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    };
-    $.ajax(cluster.api.url + cluster.api.path + '/cluster', options)
+
+    $.ajax(cluster.api.url + cluster.api.path + '/cluster', ajaxUtils.getAjaxOptions())
       .success(function(response) {
         cluster.infos = response.data;
         cluster.name = response.data.name;

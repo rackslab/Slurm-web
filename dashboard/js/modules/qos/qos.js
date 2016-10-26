@@ -23,10 +23,11 @@ define([
   'handlebars',
   'text!../../js/modules/qos/qos.hbs',
   'token-utils',
+  'ajax-utils',
   'tablesorter-utils',
   'number-helpers',
   'jquery-tablesorter'
-], function($, Handlebars, template, tokenUtils, tablesorterUtils) {
+], function($, Handlebars, template, tokenUtils, ajaxUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -43,20 +44,9 @@ define([
     }
 
     this.init = function() {
-      var self = this,
-        options = {
-          type: 'POST',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-            token: tokenUtils.getToken(config.cluster)
-          })
-        };
+      var self = this;
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/qos', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/qos', ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(qos) {
           var context;
 

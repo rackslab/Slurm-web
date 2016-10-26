@@ -132,7 +132,7 @@ require([
   'gantt',
   'topology',
   'ajax-utils'
-], function($, Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, D3View, Gantt, Topology) {
+], function($, Page, config, token, user, Login, Navbar, Clusters, Jobs, Racks, JobsMap, QOS, Partitions, Reservations, D3View, Gantt, Topology, ajaxUtils) {
   var clusters = null,
     page = new Page(),
     navbar = null;

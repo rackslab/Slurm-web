@@ -26,10 +26,11 @@ define([
   'text!../../js/modules/jobs-map/modal-core.hbs',
   'text!../../js/modules/jobs-map/modal-node.hbs',
   'token-utils',
+  'ajax-utils',
   '2d-draw',
   '2d-legend-draw',
   'jobs-utils'
-], function($, async, Handlebars, template, modalCoreTemplate, modalNodeTemplate, token, D2Draw, d2LegendDraw, jobs) {
+], function($, async, Handlebars, template, modalCoreTemplate, modalNodeTemplate, tokenUtils, ajaxUtils, D2Draw, d2LegendDraw, jobs) {
   var draw = new D2Draw();
 
   template = Handlebars.compile(template);
@@ -55,19 +56,8 @@ define([
     }
 
     function toggleModalCore(jobId) {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/job/' + jobId, ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(job) {
           var context = {
             jobId: jobId,
@@ -81,19 +71,8 @@ define([
     }
 
     function toggleModalNode(nodeId) {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(jobs) {
           var context;
 
@@ -138,19 +117,9 @@ define([
       var self = this,
         allocatedCPUs = null;
 
+      var options = ajaxUtils.getAjaxOptions(config.cluster);
       async.parallel({
         jobs: function(callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: token.getToken(config.cluster)
-            })
-          };
 
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs', options)
             .success(function(data) {
@@ -161,17 +130,6 @@ define([
             });
         },
         nodes: function(callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: token.getToken(config.cluster)
-            })
-          };
 
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
             .success(function(data) {
@@ -182,17 +140,6 @@ define([
             });
         },
         racks: function(callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: token.getToken(config.cluster)
-            })
-          };
 
           $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
             .success(function(data) {

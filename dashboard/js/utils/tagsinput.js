@@ -21,8 +21,9 @@
 define([
   'jquery',
   'date-utils',
-  'token-utils'
-], function($, dateUtils, tokenUtils) {
+  'token-utils',
+  'ajax-utils'
+], function($, dateUtils, tokenUtils, ajaxUtils) {
   return {
     filterJobs: function(jobs, options, config, callback) {
       var i, tags, lastTagCount, arrayJobs, filter, key,
@@ -157,17 +158,12 @@ define([
       }
 
       if (filter.nodes !== null) {
-        ajaxOptions = {
-          type: 'POST',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
+
+        var ajaxOptions = ajaxUtils.getAjaxOptions(false);
+        ajaxOptions.type = 'POST';
+        ajaxOptions.data = JSON.stringify({
             nodeset: filter.nodes
-          })
-        };
+        });
 
         $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodeset', ajaxOptions)
           .success(function(data) {

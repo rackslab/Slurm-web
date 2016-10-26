@@ -24,9 +24,10 @@ define([
   'handlebars',
   'text!../../js/modules/racks/racks.hbs',
   'token-utils',
+  'ajax-utils',
   '2d-draw',
   '2d-legend-draw'
-], function($, async, Handlebars, template, tokenUtils, D2Draw, d2LegendDraw) {
+], function($, async, Handlebars, template, tokenUtils, ajaxUtils, D2Draw, d2LegendDraw) {
   var draw = new D2Draw();
 
   template = Handlebars.compile(template);
@@ -49,19 +50,8 @@ define([
 
       async.parallel({
         nodes: function(callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: tokenUtils.getToken(config.cluster)
-            })
-          };
 
-          $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', options)
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/nodes', ajaxUtils.getAjaxOptions(config.cluster))
             .success(function(data) {
               callback(null, data);
             })
@@ -70,19 +60,8 @@ define([
             });
         },
         racks: function(callback) {
-          var options = {
-            type: 'POST',
-            dataType: 'json',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            data: JSON.stringify({
-              token: tokenUtils.getToken(config.cluster)
-            })
-          };
 
-          $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', options)
+          $.ajax(config.cluster.api.url + config.cluster.api.path + '/racks', ajaxUtils.getAjaxOptions(config.cluster))
             .success(function(data) {
               callback(null, data);
             })

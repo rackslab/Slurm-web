@@ -23,10 +23,11 @@ define([
   'handlebars',
   'text!../../js/modules/partitions/partitions.hbs',
   'token-utils',
+  'ajax-utils',
   'tablesorter-utils',
   'jquery-tablesorter',
   'boolean-helpers'
-], function($, Handlebars, template, tokenUtils, tablesorterUtils) {
+], function($, Handlebars, template, tokenUtils, ajaxUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -43,20 +44,8 @@ define([
     }
 
     this.init = function() {
-      var self = this,
-        options = {
-          type: 'POST',
-          dataType: 'json',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          data: JSON.stringify({
-            token: tokenUtils.getToken(config.cluster)
-          })
-        };
-
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/partitions', options)
+      var self = this
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/partitions', ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(partitions) {
           var context = {
             count: Object.keys(partitions).length,

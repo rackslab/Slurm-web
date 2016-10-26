@@ -26,8 +26,9 @@ define([
   'text!../../js/modules/gantt/gantt-qos.hbs',
   'text!../../js/modules/jobs/modal-job.hbs',
   'token-utils',
-  'jobs-utils'
-], function($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, token, jobs) {
+  'jobs-utils',
+  'ajax-utils'
+], function($, Handlebars, template, nodesTemplate, qosTemplate, modalTemplate, tokenUtils, jobs, ajaxUtils) {
   var jobStateColors = {
     'PENDING': 'mediumseagreen',
     'RUNNING': 'royalblue',
@@ -299,17 +300,7 @@ define([
 
   return function(config) {
     this.init = function() {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
+      var options = ajaxUtils.getAjaxOptions(config.cluster);
 
       $('#main').append(template());
       $(document).trigger('pageLoaded');

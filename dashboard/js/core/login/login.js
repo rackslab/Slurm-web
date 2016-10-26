@@ -24,9 +24,10 @@ define([
   'handlebars',
   'text!../../js/core/login/login.hbs',
   'token-utils',
+  'ajax-utils',
   'user-utils',
   'fake-placeholder'
-], function($, async, Handlebars, template, tokenUtils, userUtils, fakePlaceholder) {
+], function($, async, Handlebars, template, tokenUtils, ajaxUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
 
   function errorMessage(message) {
@@ -84,14 +85,8 @@ define([
     }
 
     this.init = function() {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      };
+      var options = ajaxUtils.getAjaxOptions(false);
+      options.type = 'POST';
 
       function submitLogin(e) {
         var form = {

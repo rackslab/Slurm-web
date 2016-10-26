@@ -67,12 +67,13 @@ function init() {
     'jquery',
     'async',
     'token-utils',
+    'ajax-utils',
     'text!/slurm-web-conf/config.json',
     '3d-draw',
     '3d-map-draw',
     'jobs-utils',
     'bootstrap'
-  ], function($, async, token, config, D3Draw, d3MapDraw, jobsUtils) {
+  ], function($, async, tokenUtils, ajaxUtils config, D3Draw, d3MapDraw, jobsUtils) {
     var options, canvas, draw, url = window.location.toString();
 
     config = JSON.parse(config);
@@ -118,17 +119,7 @@ function init() {
 
     config.cluster = JSON.parse(decodeURIComponent(parseURL(url).searchObject.cluster));
 
-    options = {
-      type: 'POST',
-      dataType: 'json',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify({
-        token: token.getToken(config.cluster)
-      })
-    };
+    var options =  ajaxUtils.getAjaxOptions(config.cluster);
 
     canvas = getCanvas();
     setCanvasSize(canvas);

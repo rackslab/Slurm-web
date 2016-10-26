@@ -25,8 +25,9 @@ define([
   'topology-utils',
   'text!../../js/modules/jobs-map/modal-node.hbs',
   'token-utils',
+  'ajax-utils',
   'd3'
-], function($, Handlebars, template, Topology, modalTemplate, token, d3) {
+], function($, Handlebars, template, Topology, modalTemplate, tokenUtils, ajaxUtils, d3) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
@@ -37,19 +38,8 @@ define([
     }
 
     function toggleModalNode(nodeId) {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/jobs-by-node/' + nodeId, ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(jobs) {
           var context;
 
@@ -76,19 +66,8 @@ define([
     });
 
     this.init = function() {
-      var options = {
-        type: 'POST',
-        dataType: 'json',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          token: token.getToken(config.cluster)
-        })
-      };
 
-      $.ajax(config.cluster.api.url + config.cluster.api.path + '/topology', options)
+      $.ajax(config.cluster.api.url + config.cluster.api.path + '/topology', ajaxUtils.getAjaxOptions(config.cluster))
         .success(function(topologyDatas) {
           var topology, width, height, color, force, svg, links, gnodes, nodes,
             slurmnodes, linknodes, nodesets,

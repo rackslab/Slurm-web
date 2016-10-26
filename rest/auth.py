@@ -286,7 +286,10 @@ def authentication_verify():
             if not auth_enabled:
                 return jsonify(resp)
 
-            token = json.loads(request.data)['token']
+            if 'Authorization' not in request.headers:
+                return abort(403, "No valid token provided")
+
+            token = request.headers['Authorization'].split()[1]
 
             if token is None:
                 return abort(403, "No valid token provided")
