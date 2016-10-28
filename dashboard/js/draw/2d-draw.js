@@ -161,16 +161,20 @@ define([
       return { text: text, width: width };
     }
 
-    function writeNodeNameVertical(ctx, rackName, nodeName, rackABSX, node) {
+    function writeNodeNameVertical(ctx, rackName, nodeName, reason, rackABSX, node) {
       var newText, posX, posY,
         textWidth = getTextWidth(ctx, nodeName),
         textHeight = getTextHeight(ctx.font);
 
+      // Whether textWidth >= node.heigh or not, as long as the reason is not null,
+      // it will show when mouse hover on the node in Rack view.
       if (textWidth >= node.height) {
-        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName }, node);
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName, reason: reason }, node);
         newText = cutTextHorizontal(ctx, nodeName, node.height);
         textWidth = newText.width;
         nodeName = newText.text;
+      } else if (reason){
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName, reason: reason }, node);
       }
 
       posX = (node.width - textHeight.descent) / 2 + self.config.NODENAMEHORIZONTALOFFSET;
@@ -184,16 +188,20 @@ define([
       ctx.restore();
     }
 
-    function writeNodeNameHorizontal(ctx, rackName, nodeName, rackABSX, node) {
+    function writeNodeNameHorizontal(ctx, rackName, nodeName, reason, rackABSX, node) {
       var newText, posX,
         textWidth = getTextWidth(ctx, nodeName),
         textHeight = getTextHeight(ctx.font);
 
+      // Whether textWidth >= node.heigh or not, as long as the reason is not null,
+      // it will show when mouse hover on the node in Rack view.
       if (textWidth >= node.width - 10) {
-        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName }, node);
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName, reason: reason }, node);
         newText = cutTextHorizontal(ctx, nodeName, node.width - 24);
         textWidth = newText.width;
         nodeName = newText.text;
+      } else if (reason){
+        self.intersections.addNodeHoverIntersections({ nodeName: nodeName, rackName: rackName, reason: reason }, node);
       }
 
       posX = node.x - (textWidth - node.width) / 2 + self.config.NODENAMEHORIZONTALOFFSET;
@@ -202,13 +210,13 @@ define([
       ctx.fillText(nodeName, posX, posY);
     }
 
-    function writeNodeName(ctx, rackName, nodeName, rackABSX, node) {
+    function writeNodeName(ctx, rackName, nodeName, reason, rackABSX, node) {
       ctx.fillStyle = getTextColor(node.color);
 
       if (node.width >= node.height) {
-        writeNodeNameHorizontal(ctx, rackName, nodeName, rackABSX, node);
+        writeNodeNameHorizontal(ctx, rackName, nodeName, reason, rackABSX, node);
       } else if (node.width <= node.height) {
-        writeNodeNameVertical(ctx, rackName, nodeName, rackABSX, node);
+        writeNodeNameVertical(ctx, rackName, nodeName, reason, rackABSX, node);
       }
     }
 
@@ -335,7 +343,7 @@ define([
         drawNodeStateColor(ctx, node);
       }
 
-      writeNodeName(ctx, rack.name, rackNode.name, rackNode.posx, node);
+      writeNodeName(ctx, rack.name, rackNode.name, slurmNode.reason, rackNode.posx, node);
     };
 
     this.clearNodesHoverIntersections = function() {
@@ -370,7 +378,7 @@ define([
 
       drawRectangle(ctx, node.x, node.y, node.width, node.height, colors.LED.IDLE);
 
-      this.intersections.addNodeHoverIntersections({ nodeName: rackNode.name, rackName: rack.name }, node);
+      this.intersections.addNodeHoverIntersections({ nodeName: rackNode.name, rackName: rack.name, reason: slurmNode.reason }, node);
 
       if (node.stateColor) {
         drawNodeStateColor(ctx, node);

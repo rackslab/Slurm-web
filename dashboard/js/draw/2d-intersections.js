@@ -71,9 +71,10 @@ define([
           node = self.nodesHoverIntersections[options.rack][index];
           if (X >= node.XMIN && X <= node.XMAX &&
               Y >= node.YMIN && Y <= node.YMAX) {
+            var tooltipText = node.reason ? index + ' - ' + node.reason : index;  //show reason if there is one.
             $('#cv_rackmap_' + options.rack)
               .siblings('.canvas-tooltip')
-              .html(index)
+              .html(tooltipText)
               .css('top', node.YMAX)
               .css('left', node.XMIN)
               .show();
@@ -91,7 +92,8 @@ define([
         XMIN: node.x,
         XMAX: node.x + node.width,
         YMIN: node.y,
-        YMAX: node.y + node.height
+        YMAX: node.y + node.height,
+        reason: infos.reason
       };
     };
 
