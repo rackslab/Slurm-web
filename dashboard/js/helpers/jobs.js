@@ -69,4 +69,24 @@ define([
 
     return '-';
   });
+
+  // Handlebar helper to access parent context in a partial. This feature will
+  // be included natively in handlebar 2.0.
+  Handlebars.registerHelper('include', function(options) {
+    var context = {},
+    mergeContext = function(obj) {
+      for(var k in obj)context[k]=obj[k];
+      };
+    mergeContext(this);
+    mergeContext(options.hash);
+    return options.fn(context);
+  });
+
+  // handlebar helper to compare 2 objects
+  Handlebars.registerHelper('isEqual', function(v1, v2, options){
+    if(v1 === v2){
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 });

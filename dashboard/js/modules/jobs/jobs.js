@@ -59,6 +59,11 @@ define([
         count: Object.keys(jobs).length,
         jobs: jobs
       };
+      if (config.JOBS_XTRA_COL){
+        context["cluster"]    = config.cluster.name;
+        context["columnname"] = config.JOBS_XTRA_COL.NAME;
+        context["condition"]  = config.JOBS_XTRA_COL.CONDITION;
+      }
 
       context.jobs = result;
 
@@ -125,6 +130,13 @@ define([
 
       //Add user-defined sorter
       $.tablesorter.addParser(tablesorterUtils.initParser());
+
+      if(config.JOBS_XTRA_COL){
+        Handlebars.registerPartial(
+          'xtracol',
+          config.JOBS_XTRA_COL.CONTENT.replace('{{cluster}}', '{{parent.cluster}}')
+                                      .replace('{{jobId}}', '{{@key}}'));
+      };
 
       $(document).on('modal-job', function(e, options) {
         e.stopPropagation();

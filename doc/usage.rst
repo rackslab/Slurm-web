@@ -71,6 +71,8 @@ There are 8 columns:
    its start time in the future.
 #. The QOS of the job
 #. The partition of the job
+#. An optional customizable column if using the :doc:`*JOBS_XTRA_COL* feature
+</installation>`.
 
 You can filter the displayed jobs by using the input above the table. All the
 shown jobs then satisfy all the filters given in the input. There is an

@@ -453,6 +453,38 @@ Basic configuration file :
 
 - *LOGOURL* (String) : Define the image url in the top left-hand corner.
 
+- *JOBS_XTRA_COL* (Hash) : Define an additional optional column if the jobs
+  view. This parameter is optional. When set, it must contain the following 3
+  parameters:
+
+  - *NAME*: The column name
+  - *CONTENT*: The HTML content of the cell for each job.
+  - *CONDITION*: The job state (eg. `RUNNING`) for which the content of the
+    cell is displayed. The cell for jobs in other states in remains empty.
+    There is a special value `ALL` for the cell content to be displayed for
+    all jobs.
+
+  The content can have special placeholders which are substituted based on the
+  context:
+
+  - `{{cluster}}`: the cluster name
+  - `{{jobId}}`: the slurm job ID
+
+Here is a full example of a *JOBS_XTRA_COL*:
+
+.. code-block:: json
+
+  "JOBS_XTRA_COL":
+  {
+   "NAME": "metrics",
+   "CONTENT": "<a target=\"_blank\" href=\"http://metrics.company.tld/{{cluster}}/{{jobId}}\">view</a>",
+   "CONDITION": "RUNNING"
+  }
+
+This example configures a column whose name is metrics. A link named *view*
+appears for all running jobs. This link redirects to an HTTP URL on
+*metrics.company.tld* containing the cluster name and the job ID.
+
 
 2D Draw ``conf/dashboard/2d.config.json``
 """""""""""""""""""""""""""""""""""""""""
