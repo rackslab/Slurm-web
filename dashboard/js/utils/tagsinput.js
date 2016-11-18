@@ -31,6 +31,7 @@ define([
         jobsFiltered = {},
         partitions = [],
         qoss = [],
+        wckeys = [],
         users = [],
         reservations = [],
         states = [],
@@ -54,6 +55,8 @@ define([
           partitions.push(tags[0]);
         } else if (tags[lastTagCount] === '(qos)') {
           qoss.push(tags[0]);
+        } else if (tags[lastTagCount] === '(wckey)') {
+          wckeys.push(tags[0]);
         } else if (tags[lastTagCount] === '(user)') {
           users.push(tags[0] + ' ' + tags[1]);
         } else if (tags[lastTagCount] === '(state)') {
@@ -73,6 +76,7 @@ define([
 
       if (partitions.length > 1 ||
           qoss.length > 1 ||
+          wckeys.length > 1 ||
           users.length > 1 ||
           states.length > 1 ||
           reservations.length > 1 ||
@@ -91,6 +95,7 @@ define([
       filter = {
         qos: qoss[0] || null,
         partition: partitions[0] || null,
+        wckey: wckeys[0] || null,
         username: users[0] || null,
         job_state: states[0] || null, // eslint-disable-line camelcase
         resv_name: reservations[0] || null, // eslint-disable-line camelcase

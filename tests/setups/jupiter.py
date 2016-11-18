@@ -172,6 +172,10 @@ def setup_cluster():
         job.work_dir = u'/home/pierre'
         job.command = u'/home/pierre/test.sh'
         job.partition = partition.name
+        if jobid > 1245:
+            job.wckey = u'Routine'
+        else:
+            job.wckey = u'Confidential'
         setup.ctld.jobs.add(job)
 
         node.alloc_cpus += 1
