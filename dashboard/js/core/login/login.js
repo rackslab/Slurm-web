@@ -61,21 +61,15 @@ define([
             callback(null, null);
           })
           .error(function(error) {
-            if (config.cluster.id === cluster.id) {
-              // error if cluster is the current one
-              return callback(true, error);
-            }
-
-            // nothing unless
-            return callback(null, null);
+            return callback(true, error);
           });
       };
 
-      async.map(window.clusters, loginOnCluster, function(err, result) {
+      async.mapSeries(window.clusters, loginOnCluster, function(err, result) {
         var clusterId = window.clusters.indexOf(config.cluster);
 
         if (err && !userUtils.getUser(config.cluster)) {
-          errorMessage(JSON.parse(result[clusterId][0].responseText).message);
+          errorMessage(JSON.parse(result[clusterId].responseText).message);
           return;
         }
 
