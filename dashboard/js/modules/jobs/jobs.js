@@ -163,6 +163,7 @@ define([
 
           if (Object.keys(jobs).length === 0) {
             $('#main').append(template());
+            $(document).trigger('pageLoaded');
             return;
           }
 
