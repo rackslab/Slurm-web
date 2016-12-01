@@ -21,8 +21,9 @@
 define([
   'jquery',
   'text!/slurm-web-conf/config.json',
-  'token-utils'
-], function($, config, tokenUtils) {
+  'token-utils',
+  'error-utils'
+], function($, config, tokenUtils, errorUtils) {
   $(document).ajaxError(function(event, jqueryXHR, error, errorThrown) {
     console.log(JSON.stringify(event), JSON.stringify(jqueryXHR), JSON.stringify(error), JSON.stringify(errorThrown));  // eslint-disable-line no-console
 
@@ -47,11 +48,10 @@ define([
       // status to jquery XHR. It is the reason why we check for unknown jXHR
       // status here.
       if (!jqueryXHR.status) {
-        $('#flash .alert').append($('<p>').text('Unknown error on request ' + error.type + ' ' + error.url));
+        errorUtils.setError('Unknown error on request ' + error.type + ' ' + error.url);
       } else {
-        $('#flash .alert').append($('<p>').text('Error ' + jqueryXHR.status + ' on request ' + error.type + ' ' + error.url));
+        errorUtils.setError('Error ' + jqueryXHR.status + ' on request ' + error.type + ' ' + error.url);
       }
-      $('#flash').show();
     }
   });
 

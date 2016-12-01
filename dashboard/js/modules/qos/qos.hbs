@@ -3,10 +3,8 @@
     QOS
   </h1>
   <div class='table-responsive'>
-    {{#if error}}
-      <div class="alert alert-danger" role="alert">
-        Error : {{error}}
-      </div>
+    {{#if noData}}
+      <p>There is no data to display.</p>
     {{else}}
       {{#if count}}
         <table class='table table-striped tablesorter'>
@@ -57,8 +55,6 @@
             {{/each}}
           </tbody>
         </table>
-      {{else}}
-        <p>There is no data to display.</p>
       {{/if}}
     {{/if}}
   </div>

@@ -41,6 +41,7 @@ require.config({
     'jobs-utils': '../../js/utils/jobs',
     'page-utils': '../../js/utils/page',
     'ajax-utils': '../../js/utils/ajax',
+    'error-utils': '../../js/utils/error',
     'flot-utils': '../../js/utils/flot',
     'tagsinput-utils': '../../js/utils/tagsinput',
     'string-helpers': '../../js/helpers/string',

@@ -26,8 +26,9 @@ define([
   'text!../../js/modules/jobs-map/modal-node.hbs',
   'token-utils',
   'ajax-utils',
+  'error-utils',
   'd3'
-], function($, Handlebars, template, Topology, modalTemplate, tokenUtils, ajaxUtils, d3) {
+], function($, Handlebars, template, Topology, modalTemplate, tokenUtils, ajaxUtils, errorUtils, d3) {
   template = Handlebars.compile(template);
   modalTemplate = Handlebars.compile(modalTemplate);
 
@@ -80,7 +81,7 @@ define([
           $(document).trigger('pageLoaded');
 
           if (topologyDatas.error) {
-            return;
+            errorUtils.setError(topologyDatas.error);
           }
 
           topology = new Topology(topologyDatas);

@@ -25,17 +25,11 @@ define([
   'text!../../js/core/login/login.hbs',
   'token-utils',
   'ajax-utils',
+  'error-utils',
   'user-utils',
   'fake-placeholder'
-], function($, async, Handlebars, template, tokenUtils, ajaxUtils, userUtils, fakePlaceholder) {
+], function($, async, Handlebars, template, tokenUtils, ajaxUtils, errorUtils, userUtils, fakePlaceholder) {
   template = Handlebars.compile(template);
-
-  function errorMessage(message) {
-    var $error = $('#loginform #error');
-
-    $error.find('.alert').empty().append($('<p>').text(message));
-    $error.show();
-  }
 
   return function(config) {
     function loginAction(options) {
@@ -69,7 +63,7 @@ define([
         var clusterId = window.clusters.indexOf(config.cluster);
 
         if (err && !userUtils.getUser(config.cluster)) {
-          errorMessage(JSON.parse(result[clusterId].responseText).message);
+          errorUtils.setError(JSON.parse(result[clusterId].responseText).message);
           return;
         }
 
@@ -93,7 +87,7 @@ define([
         }
 
         if (!form.login || !form.password) {
-          errorMessage('You have to provide both your user id and your password');
+          errorUtils.setError('You have to provide both your user id and your password');
         } else {
           options.data = JSON.stringify({
             login: form.login,

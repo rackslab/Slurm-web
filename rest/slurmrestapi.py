@@ -88,17 +88,17 @@ def login():
         try:
             user = User.guest()
         except AuthenticationError:
-            abort(403, "Error: guests users are not allowed.")
+            abort(403, "Guests users are not allowed.")
         except AllUnauthorizedError:
-            abort(403, "Error: you have not any role for this cluster")
+            abort(403, "You do not have any role for this cluster")
     else:
         try:
             user = User.user(data['login'],
                              data['password'])
         except AuthenticationError:
-            abort(403, "Error: your login / password doesn't match.")
+            abort(403, "Your login / password doesn't match.")
         except AllUnauthorizedError:
-            abort(403, "Error: you have not any role for this cluster")
+            abort(403, "You do not have any role for this cluster")
 
     token = user.generate_auth_token()
     resp = {

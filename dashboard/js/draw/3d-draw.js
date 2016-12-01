@@ -22,13 +22,14 @@ define([
   'jquery',
   'text!/slurm-web-conf/3d.config.json',
   'text!/slurm-web-conf/3d.colors.config.json',
+  'error-utils',
   'three',
   'factor-draw',
   'colors-draw',
   'three-orbit-controls',
   'three-first-person-controls',
   'three-pacman-auto'
-], function($, d3Config, d3Colors, THREE, factorDraw, colorsDraw) {
+], function($, d3Config, d3Colors, errorUtils, THREE, factorDraw, colorsDraw) {
   var config = JSON.parse(d3Config),
     colors = JSON.parse(d3Colors);
 
@@ -315,9 +316,9 @@ define([
         coresMeshes = {};
 
       if (!nodes[node.name]) {
-        console.log('Unable to find ' + node.name + ' in given nodes.'); // eslint-disable-line no-console
+        errorUtils.setError('Unable to find ' + node.name + ' in given nodes.'); // eslint-disable-line no-console
         if (!warned) {
-          alert('Oops, your racks.xml file seems to be wrong written. Check it'); // eslint-disable-line no-alert
+          errorUtils.setError('Oops, your racks.xml file seems to be wrong written. Check it'); // eslint-disable-line no-alert
           warned = true;
         }
         return;

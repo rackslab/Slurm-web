@@ -23,8 +23,9 @@ define([
   'async',
   'handlebars',
   'text!../../js/core/clusters/clusters.hbs',
-  'ajax-utils'
-], function($, async, Handlebars, template, ajaxUtils) {
+  'ajax-utils',
+  'error-utils'
+], function($, async, Handlebars, template, ajaxUtils, errorUtils) {
   var clusters = window.clusters,
     index;
 
@@ -124,8 +125,7 @@ define([
 
         if (failingClusters.length) {
           for (index in failingClusters) {
-            $message = $('<p>').text('Error while fetching cluster ' + failingClusters[index].name + ' : it seems to be unreachable');
-            $('#flash .alert').append($message);
+            errorUtils.setError('Error while fetching cluster ' + failingClusters[index].name + ' : it seems to be unreachable');
           }
 
           $('#flash').addClass('display');

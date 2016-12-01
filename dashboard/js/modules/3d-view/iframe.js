@@ -68,12 +68,13 @@ function init() {
     'async',
     'token-utils',
     'ajax-utils',
+    'error-utils',
     'text!/slurm-web-conf/config.json',
     '3d-draw',
     '3d-map-draw',
     'jobs-utils',
     'bootstrap'
-  ], function($, async, tokenUtils, ajaxUtils config, D3Draw, d3MapDraw, jobsUtils) {
+  ], function($, async, tokenUtils, ajaxUtils, errorUtils, config, D3Draw, d3MapDraw, jobsUtils) {
     var options, canvas, draw, url = window.location.toString();
 
     config = JSON.parse(config);
@@ -159,8 +160,7 @@ function init() {
         if (err.status === 403) {
           window.parent.$(window.parent.document).trigger('logout');
         } else {
-          window.parent.$('#flash .alert').append($('<p>').text('Error : ' + JSON.stringify(err)));
-          window.parent.$('#flash').show();
+          window.parent.errorUtils.setError(JSON.stringify(err));
         }
         return;
       }

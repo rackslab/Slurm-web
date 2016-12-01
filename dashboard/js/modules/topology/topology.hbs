@@ -2,15 +2,9 @@
   <h1 class="page-header">
     Topology
   </h1>
-  {{#if error}}
-    <div class="alert alert-danger" role="alert">
-      Error : {{error}}
-    </div>
+  {{#if noData}}
+    <p>There is no data to display.</p>
   {{else}}
-    {{#if noData}}
-      <p>There is no data to display.</p>
-    {{else}}
-      <div class="wrapper"></div>
-    {{/if}}
+    <div class="wrapper"></div>
   {{/if}}
 </div>

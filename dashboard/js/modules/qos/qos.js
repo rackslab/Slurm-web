@@ -24,10 +24,11 @@ define([
   'text!../../js/modules/qos/qos.hbs',
   'token-utils',
   'ajax-utils',
+  'error-utils',
   'tablesorter-utils',
   'number-helpers',
   'jquery-tablesorter'
-], function($, Handlebars, template, tokenUtils, ajaxUtils, tablesorterUtils) {
+], function($, Handlebars, template, tokenUtils, ajaxUtils, errorUtils, tablesorterUtils) {
   template = Handlebars.compile(template);
 
   return function(config) {
@@ -51,14 +52,14 @@ define([
           var context;
 
           if (qos.error) {
-            context = {
-              error: qos.error
-            };
+            errorUtils.setError(qos.error);
+
             if (self.interval) {
               clearInterval(self.interval);
             }
           } else {
             context = {
+              noData: !Object.keys(qos).length,
               count: Object.keys(qos).length,
               qos: qos
             };
