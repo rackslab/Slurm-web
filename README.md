@@ -10,7 +10,7 @@ Overview
 Slurm-web provides both a web dashboard and a REST API to a Slurm HPC
 supercomputer with views of current jobs and nodes states.
 
-The backend REST API is developped in Python using the Flash web framework. It
+The backend REST API is developped in Python using the Flask web framework. It
 is designed to run as WSGI application on a HTTP server such as Apache2. It
 relies on PySLURM library to get data from Slurm workload manager. It provides
 data in JSON format through a simple REST API.
