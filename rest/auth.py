@@ -311,6 +311,17 @@ def authentication_verify():
 
     return decorator
 
+
+# Retrive current user role and login
+def get_current_user():
+    if not auth_enabled:
+        return abort(403, "Authentication has \
+            to be enabled to retrieve current user")
+
+    token = request.headers['Authorization'].split()[1]
+    return User.verify_auth_token(token)
+
+
 def fill_job_user(job):
     uid = job['user_id']
     uid_s = str(uid)

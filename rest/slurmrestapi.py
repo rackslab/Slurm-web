@@ -40,7 +40,8 @@ from settings import settings
 # for authentication
 from auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
-                  guests_allowed, auth_enabled, fill_job_user)
+                  guests_allowed, auth_enabled, fill_job_user,
+                  get_current_user)
 
 from cache import cache
 
@@ -113,11 +114,21 @@ def login():
 
 @app.route('/jobs', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type',
+                      'X-Requested-With', 'Authorization'])
 @authentication_verify()
 @cache()
 def get_jobs():
     jobs = pyslurm.job().get()
+    # Fetch the attributs of private_data
+    config = pyslurm.config().get()
+    private_data = config["private_data_list"]
+    # Retrive the role of current user
+    currentUser = get_current_user()
+    result = {}
+    onlyUsersJobs = False
+    if private_data and 'jobs' in private_data and currentUser.role != 'admin':
+        onlyUsersJobs = True
 
     for jobid, job in jobs.iteritems():
         # add login and user's name (additionally to UID) for each job
@@ -125,32 +136,48 @@ def get_jobs():
             fill_job_user(job)
         except (KeyError):
             pass
+        # Add if jobs' owner is the current user
+        if onlyUsersJobs and job['login'] == currentUser.login:
+            result[jobid] = job
 
         # convert nodeset in array of nodes
         if job["nodes"] is not None:
             jobs[jobid]["nodeset"] = list(
                 NodeSet(job["nodes"].encode('ascii', 'ignore'))
             )
-    return jobs
+
+    if onlyUsersJobs:
+        return result
+    else:
+        return jobs
 
 
 @app.route('/job/<int:job_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type',
+                      'X-Requested-With', 'Authorization'])
 @authentication_verify()
 @cache()
 def show_job(job_id):
+    config = pyslurm.config().get()
+    private_data = config["private_data_list"]
 
+    currentUser = get_current_user()
     # pyslurm >= 16.05 expects a string in parameter of job.find_id()
-    job = pyslurm.job().find_id(str(job_id))
+    job = pyslurm.job().find_id(job_id)
     fill_job_user(job)
+    # Protection from non-authorized queries via python
+    if (private_data and 'jobs' in private_data and
+            currentUser.role != 'admin'and job["login"] != currentUser.login):
+        return None
 
     return job
 
 
 @app.route('/nodes', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_nodes():
@@ -183,7 +210,8 @@ def get_cluster():
 
 @app.route('/racks', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_racks():
@@ -196,18 +224,30 @@ def get_racks():
 
 @app.route('/reservations', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_reservations():
+    # Fetch the attributs of private_data
+    config = pyslurm.config().get()
+    private_data = config["private_data_list"]
 
+    currentUser = get_current_user()
     reservations = pyslurm.reservation().get()
+    # Apply private_data protocole if defined
+    if (private_data and 'reservations' in private_data and
+            currentUser.role != 'admin'):
+        return {k: v for k, v in reservations.iteritems()
+                if currentUser.login in v['users']}
+
     return reservations
 
 
 @app.route('/partitions', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_partitions():
@@ -259,7 +299,8 @@ def convert_tres_ids(numerical_tres):
 
 @app.route('/qos', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_qos():
@@ -281,7 +322,8 @@ def get_qos():
 
 @app.route('/topology', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_topology():
@@ -307,7 +349,8 @@ def get_topology():
 # with their ID as key
 @app.route('/jobs-by-node/<node_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_jobs_by_node_id(node_id):
@@ -334,7 +377,8 @@ def get_jobs_by_node_id(node_id):
 # with their ID as key
 @app.route('/jobs-by-node-ids', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_jobs_by_node_ids():
@@ -367,7 +411,8 @@ def get_jobs_by_node_ids():
 # composed by all jobs running on the concerned node
 @app.route('/jobs-by-nodes', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_jobs_by_nodes():
@@ -394,7 +439,8 @@ def get_jobs_by_nodes():
 # composed by all jobs on the concerned node
 @app.route('/jobs-by-qos', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
+             headers=['Accept', 'Content-Type', 'X-Requested-With',
+                      'Authorization'])
 @authentication_verify()
 @cache()
 def get_jobs_by_qos():

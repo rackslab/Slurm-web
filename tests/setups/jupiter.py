@@ -89,6 +89,8 @@ def setup_cluster():
     setup.userbase.add(User('thomas', 'curie', 'toto', []))
 
     setup.ctld = SlurmCtld(name)
+    setup.ctld.private_data = 0
+    setup.ctld.private_data_list = []
     nodeset = NodeSet('cn[001-240]')
 
     for nodename in nodeset:
