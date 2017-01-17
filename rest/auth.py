@@ -286,23 +286,7 @@ def authentication_verify():
             if not auth_enabled:
                 return jsonify(resp)
 
-            if 'Authorization' not in request.headers:
-                return abort(403, "No valid token provided")
-
-            token = request.headers['Authorization'].split()[1]
-
-            if token is None:
-                return abort(403, "No valid token provided")
-
-            try:
-                user = User.verify_auth_token(token)
-            except AuthenticationError:
-                return abort(403, "authentication failed")
-            except AllUnauthorizedError:
-                return abort(403, "access forbidden to role all")
-
-            if user is None:
-                return abort(403, "authentication failed")
+            user = get_current_user()
 
             filter_dict(resp, filtered_keys_by_role[user.role])
             return jsonify(resp)
@@ -310,6 +294,46 @@ def authentication_verify():
         return inner
 
     return decorator
+
+
+def get_current_user():
+    """
+    Retrieve user and user's role from the authenticaton token.
+    Abort when loggin as guest but guest is disactivated or the
+    retrieved user does not have any eligible role.
+    """
+    if not auth_enabled:
+        return abort(403, "Authentication has \
+            to be enabled to retrieve current user")
+
+    token = retrieve_token()
+
+    try:
+        user = User.verify_auth_token(token)
+    except AuthenticationError:
+        return abort(403, "authentication failed")
+    except AllUnauthorizedError:
+        return abort(403, "access forbidden to role all")
+
+    if user is None:
+        return abort(403, "authentication failed")
+    return user
+
+
+def retrieve_token():
+    """
+    Return token from the header content after 'Authorization'
+    if 'Authorization' figured in the header and if the content
+    is not empty after 'Authorization'.
+    """
+    if 'Authorization' not in request.headers:
+        return abort(403, "No valid token provided")
+
+    token = request.headers['Authorization'].split()[1]
+    if token is None:
+        return abort(403, "No valid token provided")
+    return token
+
 
 def fill_job_user(job):
     uid = job['user_id']

@@ -162,6 +162,12 @@ You can close this box by clicking on the *Close* button:
 
 .. figure:: img/screenshot_job_close_details.*
 
+The Jobs view now takes Slurm's Private Data parameter into account. The
+description can be found in `Slurm <https://slurm.schedmd.com/slurm.conf.html>`_.
+If ``jobs`` has been defined previously in Slurm configuration, regular users
+can only see their own jobs whereas the superusers see all the jobs and guests
+can see none.
+
 Racks view
 ----------
 
@@ -199,7 +205,8 @@ rectangle. If a core is allocated to a job, the core is colored with a color
 depending on the job ID. All cores allocated to a job have the same color.
 However, note that due to limited number of colors, when there are a lot of
 running jobs, 2 cores allocated to 2 different jobs could potentially have the
-same color.
+same color. With Private Date set for ``jobs``, only current-user-related jobs
+will be shown for regular users.
 
 Again, a small legendary in a frame at the top right corner gives a recap of
 these information.
@@ -217,7 +224,8 @@ This view shows a representation in three dimensions of the HPC, according to
 how it is defined in the ``racks.xml`` file.
 
 As on the JobsMap view, it gives the activity on each core, showing the color
-of the current processed job.
+of the current processed job. Same effect of viewing restriction as JobsMap
+view with Private Data ``jobs`` parameter is defined.
 
 You can choose between 3 ways of visualization:
 
@@ -296,6 +304,12 @@ The table is composed of one row per reservation and 5 columns:
 #. The start time of this reservation
 #. The end time of this reservation
 
+This view, like Jobs View, can be applied with Slurm's Private Data as well.
+If ``reservations`` has been defined previously in
+`Slurm <https://slurm.schedmd.com/slurm.conf.html>`_ configuration, regular
+users are prevented from viewing others' reservations. Only admins are
+allowed to consult all the reservations.
+
 Gantt view
 ----------
 
@@ -308,6 +322,9 @@ informations in a modal.
 .. figure:: img/screenshot_ganntt_view_nodes.*
 
 .. figure:: img/screenshot_ganntt_view_qos.*
+
+Only jobs of current user will be evaluated for regular users if ``jobs``
+has been defined in Private Data configuration.
 
 Topology view
 -------------
