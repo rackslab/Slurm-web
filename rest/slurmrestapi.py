@@ -40,7 +40,8 @@ from settings import settings
 # for authentication
 from auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
-                  guests_allowed, auth_enabled, fill_job_user)
+                  guests_allowed, auth_enabled, fill_job_user,
+                  get_current_user)
 
 from cache import cache
 
@@ -115,7 +116,7 @@ def login():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
+@cache(True)
 def get_jobs():
     jobs = pyslurm.job().get()
 
@@ -131,7 +132,8 @@ def get_jobs():
             jobs[jobid]["nodeset"] = list(
                 NodeSet(job["nodes"].encode('ascii', 'ignore'))
             )
-    return jobs
+    return filter_entities('jobs', jobs)
+
 
 
 @app.route('/job/<int:job_id>', methods=['GET', 'OPTIONS'])
@@ -140,10 +142,20 @@ def get_jobs():
 @authentication_verify()
 @cache()
 def show_job(job_id):
-
     # pyslurm >= 16.05 expects a string in parameter of job.find_id()
     job = pyslurm.job().find_id(str(job_id))
+    onlyUsersJobs = False
     fill_job_user(job)
+    if auth_enabled:
+        # If auth_enabled is true, getting the current user becomes
+        # possible because authentification_verify decorator has been
+        # already checked.
+
+        currentUser = get_current_user()
+        onlyUsersJobs = check_private_data_for_entity(currentUser, 'jobs')
+
+    if (onlyUsersJobs and job['login'] != currentUser.login):
+        raise AllUnauthorizedError
 
     return job
 
@@ -198,11 +210,11 @@ def get_racks():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
+@cache(True)
 def get_reservations():
 
     reservations = pyslurm.reservation().get()
-    return reservations
+    return filter_entities('reservations', reservations)
 
 
 @app.route('/partitions', methods=['GET', 'OPTIONS'])
@@ -502,6 +514,50 @@ def proxy():
     return render_template('proxy.html',
                            url_root=request.url_root,
                            masters=masters)
+
+
+def check_private_data_for_entity(user, entity):
+    """
+    Return true if the entity is one of the attribute defined previously in
+    Private Data settings.
+    """
+    onlyUsersEntities = False
+    currentUser = user
+
+    if auth_enabled:
+        # Fetch the attributs of private_data
+        config = pyslurm.config().get()
+        private_data = config["private_data_list"]
+
+        if (private_data and entity in private_data and
+                currentUser.role != 'admin'):
+            onlyUsersEntities = True
+    return onlyUsersEntities
+
+
+def filter_entities(entity, entitiesList):
+    onlyUsersEntities = False
+    if auth_enabled:
+        # If auth_enabled is true, getting the current user becomes
+        # possible because authentification_verify decorator has been
+        # already checked.
+        currentUser = get_current_user()
+        onlyUsersEntities = check_private_data_for_entity(
+            currentUser, entity)
+
+    if onlyUsersEntities:
+        # if private data is applied and the jobs' owner is different from
+        # current user, then the jobs will not be added to the job list to
+        # show if auth disabled, onlyUsersJobs becomes always False and all
+        # the jobs are added to the job list to show
+
+        return dict((k, v) for k, v in entitiesList.iteritems()
+                    if ((entity == 'reservations' and currentUser.login in
+                        v['users']) or (entity == 'jobs' and
+                        currentUser.login == v['login'])))
+
+    return entitiesList
+
 
 if __name__ == '__main__':
     app.run(debug=True)
