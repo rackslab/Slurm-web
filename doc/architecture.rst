@@ -91,3 +91,9 @@ You can set in this section:
 - *base* : the database where users have to be searched
 - *ugroup* : the LDAP group which the users are members
 - *expiration* : the TTL of the generated token
+
+Slurm-web also takes into account of the Private data parameter from
+`Slurm <https://slurm.schedmd.com/slurm.conf.html>`_. So far, only the Jobs
+View and Reservations View in Slurm-web are concerned by Private Data
+parameter. This feature prevents regular users and guests from seeing others'
+jobs or reservations if defined.
