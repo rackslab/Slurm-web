@@ -821,17 +821,10 @@ class SlurmCtld(object):
         self.qos = set()
         self.reservations = set()
         self.topology = set()
-        # Add private_data to mock config()
-        self.private_data = set()
-        self.private_data_list = set()
 
     @property
     def config(self):
-        return {
-            u'cluster_name': self.cluster.name,
-            # Add private_data to mock config()
-            u'private_data': self.private_data,
-            u'private_data_list': self.private_data_list}
+        return { 'cluster_name': self.cluster.name }
 
     def find_node(self, nodename):
         for node in self.nodes:

@@ -70,14 +70,10 @@ def setup_cluster():
     setup.racks.add_nodeset(rack, 'cn[01-20]', 'nodetype1', '0', '2')
 
     setup.userbase = UserBase()
-    setup.userbase.add(User('pierre', 'curie', 'toto', ['user', 'admin']))
-    # define mcurie as regular user to test private_data
-    setup.userbase.add(User('marie', 'curie', 'toto', ['user']))
+    setup.userbase.add(User('pierre', 'curie', 'toto', ['user','admin']))
+    setup.userbase.add(User('marie', 'curie', 'toto', ['user','admin']))
 
     setup.ctld = SlurmCtld(name)
-    # Set private_data configuration
-    setup.ctld.private_data = 73
-    setup.ctld.private_data_list = ['jobs', 'usage', 'reservations']
     for nodeid in range(1, 30):
         nodename = u"cn%02d" % (nodeid)
         node = SlurmNode(nodename)
@@ -113,26 +109,6 @@ def setup_cluster():
     job.user_id = setup.userbase[0].uid
     job.account = 'physic'
     job.shared = 2^16 - 2
-    job.work_dir = u'/home/pierre'
-    job.command = u'/home/pierre/sleep.sh'
-    job.partition = partition.name
-    setup.ctld.jobs.add(job)
-
-    # Add another job from  diffrent user to test private_data
-    job = SlurmJob('2235')
-    job.name = 'test.sh'
-    job.qos = xqos.name
-    job.job_state = 'RUNNING'
-    job.nodes = 'cn03'
-    job.num_nodes = 1
-    job.num_cpus = 1
-    job.start_time = int(time.time() - 10)
-    job.time_limit = 3600
-    job.cpus_allocated = {'cn3': 1}
-    job.group_id = setup.userbase[1].gid
-    job.user_id = setup.userbase[1].uid
-    job.account = 'physic'
-    job.shared = 2 ^ 16 - 2
     job.work_dir = u'/home/pierre'
     job.command = u'/home/pierre/sleep.sh'
     job.partition = partition.name
