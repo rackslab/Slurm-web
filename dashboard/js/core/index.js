@@ -158,7 +158,7 @@ require([
     $(document).trigger('show', { page: config.STARTPAGE });
   });
 
-  $(document).on('logout', function(e) {
+  $(document).on('logout', function(e, onlyCurrentCluster) {
     var cluster;
 
     e.preventDefault();
@@ -168,14 +168,14 @@ require([
       user.removeUser(cluster);
     }
 
-    if (config.AUTOLOGIN) {
+    if (!config.AUTOLOGIN || onlyCurrentCluster) {
+      // clear authentication on current cluster
+      logout(config.cluster);
+    } else {
       // clear authentication on all clusters
       for (cluster in window.clusters) {
         logout(window.clusters[cluster]);
       }
-    } else {
-      // clear authentication on current cluster
-      logout(config.cluster);
     }
 
     $(document).trigger('show', { page: config.cluster.authentication.enabled ? 'login' : config.STARTPAGE });

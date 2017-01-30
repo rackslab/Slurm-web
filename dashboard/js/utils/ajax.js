@@ -31,7 +31,10 @@ define([
     // /login route since this error in handled with login form logic in
     // dashboard/js/core/login/login.js
     if (jqueryXHR.status === 403 && !(error.url.indexOf('/login') > -1)) {
-      $(document).trigger('logout');
+      // Set logout() onlyCurrentCluster parameter to true in order to restrict
+      // the logout to the current cluster only when autologin is on. This has
+      // the effect to avoid a global logout when only one cluster failed.
+      $(document).trigger('logout', true);
     }
 
     // Ignore error for /cluster here because this route is used to
