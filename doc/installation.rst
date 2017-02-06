@@ -464,8 +464,6 @@ Dashboard configuration settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All configuration files for dashboard are in the directory ``conf/dashboard``.
-Note that Apache keep files in cache when it serves them. If you change one of
-these files, relaunch Apache.
 
 App ``conf/dashboard/config.json``
 """"""""""""""""""""""""""""""""""

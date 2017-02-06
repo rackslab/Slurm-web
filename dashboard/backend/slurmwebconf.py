@@ -21,8 +21,16 @@
 from flask import Flask, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "secret_key"
 
+# Set SEND_FILE_MAX_AGE_DEFAULT to 0 in order to avoid caching effect on the
+# dashboard configuration files. This way, configuration changes have effect
+# as soon the configuration files change. Default Flask/Werkzeug value is 12h.
+# With such value, admins necesseraly had to restart the backend web application
+# in order to invalidate the cache when changing settings.
+app.config.update(
+    SEND_FILE_MAX_AGE_DEFAULT=0,
+    SECRET_KEY='secret_key'
+)
 
 @app.route('/version', methods=['GET'])
 def version():
