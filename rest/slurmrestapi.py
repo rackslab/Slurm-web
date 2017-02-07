@@ -42,7 +42,7 @@ from auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
                   guests_allowed, auth_enabled, fill_job_user)
 
-from cache import cache
+from cache import get_from_cache
 
 # for nodeset conversion
 from ClusterShell.NodeSet import NodeSet
@@ -115,9 +115,8 @@ def login():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs():
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     for jobid, job in jobs.iteritems():
         # add login and user's name (additionally to UID) for each job
@@ -138,11 +137,10 @@ def get_jobs():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def show_job(job_id):
 
     # pyslurm >= 16.05 expects a string in parameter of job.find_id()
-    job = pyslurm.job().find_id(str(job_id))
+    job = get_from_cache(pyslurm.job.find_id, 'show_job', str(job_id))
     fill_job_user(job)
 
     return job
@@ -152,10 +150,9 @@ def show_job(job_id):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_nodes():
 
-    nodes = pyslurm.node().get()
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
     return nodes
 
 
@@ -185,10 +182,9 @@ def get_cluster():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_racks():
     try:
-        racks = parse_racks()
+        racks = get_from_cache(parse_racks, 'get_racks')
     except Exception as e:
         racks = {'error': str(e)}
     return racks
@@ -198,10 +194,10 @@ def get_racks():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_reservations():
 
-    reservations = pyslurm.reservation().get()
+    reservations = get_from_cache(
+        pyslurm.reservation().get, 'get_reservations')
     return reservations
 
 
@@ -209,10 +205,9 @@ def get_reservations():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_partitions():
 
-    partitions = pyslurm.partition().get()
+    partitions = get_from_cache(pyslurm.partition().get, 'get_partitions')
     return partitions
 
 
@@ -261,11 +256,10 @@ def convert_tres_ids(numerical_tres):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_qos():
 
     try:
-        qos = pyslurm.qos().get()
+        qos = get_from_cache(pyslurm.qos().get, 'get_qos')
         # for all TRES limits of all QOS, replace TRES type IDs by their
         # textual form using tres_convert_ids()
         for qos_name in qos:
@@ -283,11 +277,10 @@ def get_qos():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_topology():
 
     try:
-        topology = pyslurm.topology().get()
+        topology = get_from_cache(pyslurm.topology().get, 'get_topology')
         # As of pyslurm 15.08.0~git20160229-2, switches and nodes dict members
         # are strings (or None eventually) representing the hostlist of devices
         # connected to the switch. These hostlist are expanded in lists using
@@ -309,10 +302,9 @@ def get_topology():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_node_id(node_id):
 
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     returned_jobs = {}
 
@@ -336,10 +328,9 @@ def get_jobs_by_node_id(node_id):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_node_ids():
 
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     print "Post datas : %s" % request.data
     nodes = json.loads(request.data).get('nodes', [])
@@ -369,11 +360,10 @@ def get_jobs_by_node_ids():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_nodes():
 
-    jobs = pyslurm.job().get()
-    nodes = pyslurm.node().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
 
     returned_nodes = {}
 
@@ -396,11 +386,10 @@ def get_jobs_by_nodes():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_qos():
 
-    jobs = pyslurm.job().get()
-    qos = pyslurm.qos().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
+    qos = get_from_cache(pyslurm.qos().get, 'get_qos')
 
     returned_qos = {}
 
@@ -419,8 +408,11 @@ def get_jobs_by_qos():
 @app.route('/nodeset', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
-@cache()
 def convert_nodeset():
+    return get_from_cache(convert_nodeset_internal, 'onvert_nodeset')
+
+
+def convert_nodeset_internal():
     data = json.loads(request.data)
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
@@ -429,13 +421,12 @@ def convert_nodeset():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
-@cache()
 def sinfo():
 
     # Partition and node lists are required
     # to compute sinfo informations
-    partitions = pyslurm.partition().get()
-    nodes = pyslurm.node().get()
+    partitions = get_from_cache(pyslurm.partition().get, 'get_partitions')
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
 
     # Retreiving the state of each nodes
     nodes_state = dict(
