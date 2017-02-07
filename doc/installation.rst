@@ -445,6 +445,13 @@ guest button is added under the login form in the dashboard. The guests users
 have the *all* role. Then the *all* role must be enabled as well to allow the
 guests users to access the REST API.
 
+Besides the restriction of fields, it is also possible to add restrictions on
+jobs or reservations according to one's roles. This restriction can be set by
+Private Data from `Slurm <https://slurm.schedmd.com/slurm.conf.html>`_. If
+``jobs`` or ``reservations`` are defined previously in Slurm, non-admin users
+will not see nobody but their own jobs or reservations. The Jobs View or
+Reservations View will be empty if logging as ``guests``.
+
 Cache
 """""
 

@@ -31,6 +31,7 @@ import json
 from functools import wraps
 from settings import settings
 from ConfigParser import NoOptionError, NoSectionError
+from auth import get_current_user, auth_enabled
 
 
 def get_int_setting(param, default):
@@ -69,7 +70,7 @@ except (NoOptionError, NoSectionError):
     enabled = False
 
 
-def cache():
+def cache(userSpecific=False):
     def decorator(f):
         @wraps(f)
         def inner(*args, **kwargs):
@@ -80,7 +81,11 @@ def cache():
                 f.__name__,
                 ''.join("%s-%r" % (key, val) for (key,
                                                   val) in kwargs.iteritems())
-                )
+            )
+
+            if auth_enabled and userSpecific:
+                cache_key = "%s-%s" % (cache_key, get_current_user())
+            print("cache_key : {}".format(cache_key))
 
             try:
 
