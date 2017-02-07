@@ -21,8 +21,10 @@
 from flask import Flask, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "secret_key"
-
+app.config.update(
+    SEND_FILE_MAX_AGE_DEFAULT=0,
+    SECRET_KEY='secret_key'
+)
 
 @app.route('/version', methods=['GET'])
 def version():
