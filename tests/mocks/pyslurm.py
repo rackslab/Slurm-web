@@ -875,7 +875,7 @@ class MockPySlurmJob(object):
     def find_id(self, jobid):
         for job in context.CTLD.jobs:
             if job.jobid == jobid:
-                return job.todict()[jobid]
+                return [job.todict()[jobid]]
         return None
 
 class MockPySlurmReservation(object):
