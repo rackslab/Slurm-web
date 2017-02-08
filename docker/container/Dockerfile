@@ -46,7 +46,7 @@ RUN cd /usr/src && \
     mk-build-deps -ri -t "apt-get -y --no-install-recommends" && \
     dch -v $SLURM_VER-1 -D testing "New upstream release" && \
     debuild -us -uc && \
-    dpkg -i ../python-pyslurm_$SLURM_VER-1_amd64.deb 
+    dpkg -i ../python-pyslurm_$SLURM_VER-1_amd64.deb
 
 RUN cd /usr/src && \
     git clone https://github.com/edf-hpc/opentypejs.git && \
@@ -62,7 +62,7 @@ RUN cd /usr/src && \
 	cd libjs-bootstrap-typeahead/ && \
     git checkout debian/0.11.1-1 && \
 	tar cvfj ../libjs-bootstrap-typeahead_0.11.1.orig.tar.bz2 --exclude .git . && \
-	debuild -us -uc && \ 
+	debuild -us -uc && \
 	dpkg -i ../libjs-bootstrap-typeahead_0.11.1-1_all.deb
 
 RUN cd /usr/src && \
@@ -79,7 +79,7 @@ RUN cd /usr/src && \
     cd slurm-web && \
     git checkout debian/2.0.0 && \
     debuild -us -uc && \
-    dpkg -i ../slurm-web-*deb 
+    dpkg -i ../slurm-web-*deb
 
 # Create apache2 service file and start it
 RUN rm /etc/apache2/sites-available/default-ssl.conf && \
@@ -89,7 +89,7 @@ RUN rm /etc/apache2/sites-available/default-ssl.conf && \
     echo /var/lock/apache2 > /etc/container_environment/APACHE_LOCK_DIR && \
     echo /var/run/apache2.pid > /etc/container_environment/APACHE_PID_FILE && \
     echo /var/run/apache2 > /etc/container_environment/APACHE_RUN_DIR && \
-    chown -R www-data:www-data /var/log/apache2 
+    chown -R www-data:www-data /var/log/apache2
 RUN mkdir -p /etc/service/apache2
 COPY apache2.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
