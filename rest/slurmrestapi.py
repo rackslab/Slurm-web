@@ -420,9 +420,9 @@ def convert_nodeset():
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
 
-@app.route('/sinfo', methods=['POST', 'OPTIONS'])
-@crossdomain(origin=origins, methods=['POST'],
-             headers=['Accept', 'Content-Type', 'X-Requested-With'])
+@app.route('/sinfo', methods=['GET', 'OPTIONS'])
+@crossdomain(origin=origins, methods=['GET'],
+             headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
 def sinfo():
 
