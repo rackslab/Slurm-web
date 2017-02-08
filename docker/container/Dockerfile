@@ -1,7 +1,25 @@
+# Copyright (C) 2017 Kilian Cavalotti <kilian@stanford.edu>
+#
+# This file is part of slurm-web.
+#
+# slurm-web is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# slurm-web is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
+
 # Use phusion/baseimage as base image. To make your builds reproducible, make
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
+
 FROM phusion/baseimage:0.9.19
 MAINTAINER Kilian Cavalotti <kilian@stanford.edu>
 
