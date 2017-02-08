@@ -323,10 +323,8 @@ def get_jobs_by_node_id(node_id):
     # filter jobs by node
     for jobid, job in jobs.iteritems():
         nodes_list = job['cpus_allocated'].keys()
-        print "Nodelist for %s : %s" % (node_id, nodes_list)
         if node_id in nodes_list:
             returned_jobs[jobid] = job
-            print "Node %s added to jobs : %s" % (node_id, returned_jobs)
 
     for jobid, job in returned_jobs.iteritems():
         fill_job_user(job)
@@ -344,21 +342,17 @@ def get_jobs_by_node_ids():
 
     jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
-    print "Post datas : %s" % request.data
     nodes = json.loads(request.data).get('nodes', [])
-    print "Nodelist : %s" % nodes
 
     returned_jobs = {}
 
     # filter jobs by node
     for jobid, job in jobs.iteritems():
         nodes_list = job['cpus_allocated'].keys()
-        print "Nodelist for %s : %s" % (jobid, nodes_list)
 
         for node_id in nodes:
             if node_id in nodes_list:
                 returned_jobs[jobid] = job
-                print "Node %s added to jobs : %s" % (node_id, returned_jobs)
 
     for jobid, job in returned_jobs.iteritems():
         fill_job_user(job)
