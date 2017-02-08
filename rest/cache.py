@@ -69,44 +69,40 @@ except (NoOptionError, NoSectionError):
     enabled = False
 
 
-def cache():
-    def decorator(f):
-        @wraps(f)
-        def inner(*args, **kwargs):
-            if not enabled:
-                return f(*args, **kwargs)
+def get_from_cache(f, overrideName=None, *args, **kwargs):
+    '''
+    Return cached entities according to input function if cache enabled.
+    '''
+    if not enabled:
+        return f(*args, **kwargs)
 
-            cache_key = "%s-%s" % (
-                f.__name__,
-                ''.join("%s-%r" % (key, val) for (key,
-                                                  val) in kwargs.iteritems())
-                )
+    cache_key = "%s-%s" % (
+        f.__name__ if overrideName is None else overrideName,
+        ''.join("%s-%r" % (key, val) for (key,
+                                          val) in kwargs.iteritems())
+    )
 
-            try:
+    try:
 
-                data = r.get(cache_key)
-                if data is not None:
-                    print "get %s from cache" % cache_key
-                    return json.loads(data)
+        data = r.get(cache_key)
+        if data is not None:
+            print "get %s from cache" % cache_key
+            return json.loads(data)
 
-                if 'job' in f.__name__:
-                    expiration = jobs_expiration
-                else:
-                    expiration = global_expiration
+        if 'job' in f.__name__:
+            expiration = jobs_expiration
+        else:
+            expiration = global_expiration
 
-                resp = f(*args, **kwargs)
-                if isinstance(resp, dict):
-                    print "set %s in cache with expiration %d" % (cache_key,
-                                                                  expiration)
-                    r.set(cache_key, json.dumps(resp))
-                    r.expire(cache_key, expiration)
+        resp = f(*args, **kwargs)
+        if isinstance(resp, dict):
+            print "set %s in cache with expiration %d" % (cache_key,
+                                                          expiration)
+            r.set(cache_key, json.dumps(resp))
+            r.expire(cache_key, expiration)
 
-            except redis.ConnectionError:
-                print "WARNING: ConnectionError from Redis, server unreachable"
-                return f(*args, **kwargs)
+    except redis.ConnectionError:
+        print "WARNING: ConnectionError from Redis, server unreachable"
+        return f(*args, **kwargs)
 
-            return resp
-
-        return inner
-
-    return decorator
+    return resp

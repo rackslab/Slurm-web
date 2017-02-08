@@ -40,9 +40,10 @@ from settings import settings
 # for authentication
 from auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
-                  guests_allowed, auth_enabled, fill_job_user)
+                  guests_allowed, auth_enabled, fill_job_user,
+                  get_current_user)
 
-from cache import cache
+from cache import get_from_cache
 
 # for nodeset conversion
 from ClusterShell.NodeSet import NodeSet
@@ -115,9 +116,8 @@ def login():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs():
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     for jobid, job in jobs.iteritems():
         # add login and user's name (additionally to UID) for each job
@@ -131,19 +131,29 @@ def get_jobs():
             jobs[jobid]["nodeset"] = list(
                 NodeSet(job["nodes"].encode('ascii', 'ignore'))
             )
-    return jobs
+    return filter_entities('jobs', jobs)
 
 
 @app.route('/job/<int:job_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def show_job(job_id):
 
     # pyslurm >= 16.05 expects a string in parameter of job.find_id()
-    job = pyslurm.job().find_id(str(job_id))
+    job = get_from_cache(pyslurm.job.find_id, 'show_job', str(job_id))
+    onlyUsersJobs = False
     fill_job_user(job)
+    if auth_enabled:
+        # If auth_enabled is true, getting the current user becomes
+        # possible because authentification_verify decorator has been
+        # already checked.
+
+        currentUser = get_current_user()
+        onlyUsersJobs = check_private_data_for_entity(currentUser, 'jobs')
+
+    if (onlyUsersJobs and job['login'] != currentUser.login):
+        raise AllUnauthorizedError
 
     return job
 
@@ -152,10 +162,9 @@ def show_job(job_id):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_nodes():
 
-    nodes = pyslurm.node().get()
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
     return nodes
 
 
@@ -185,10 +194,9 @@ def get_cluster():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_racks():
     try:
-        racks = parse_racks()
+        racks = get_from_cache(parse_racks, 'get_racks')
     except Exception as e:
         racks = {'error': str(e)}
     return racks
@@ -198,21 +206,20 @@ def get_racks():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_reservations():
 
-    reservations = pyslurm.reservation().get()
-    return reservations
+    reservations = get_from_cache(
+        pyslurm.reservation().get, 'get_reservations')
+    return filter_entities('reservations', reservations)
 
 
 @app.route('/partitions', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_partitions():
 
-    partitions = pyslurm.partition().get()
+    partitions = get_from_cache(pyslurm.partition().get, 'get_partitions')
     return partitions
 
 
@@ -261,11 +268,10 @@ def convert_tres_ids(numerical_tres):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_qos():
 
     try:
-        qos = pyslurm.qos().get()
+        qos = get_from_cache(pyslurm.qos().get, 'get_qos')
         # for all TRES limits of all QOS, replace TRES type IDs by their
         # textual form using tres_convert_ids()
         for qos_name in qos:
@@ -283,11 +289,10 @@ def get_qos():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_topology():
 
     try:
-        topology = pyslurm.topology().get()
+        topology = get_from_cache(pyslurm.topology().get, 'get_topology')
         # As of pyslurm 15.08.0~git20160229-2, switches and nodes dict members
         # are strings (or None eventually) representing the hostlist of devices
         # connected to the switch. These hostlist are expanded in lists using
@@ -309,10 +314,9 @@ def get_topology():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_node_id(node_id):
 
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     returned_jobs = {}
 
@@ -336,10 +340,9 @@ def get_jobs_by_node_id(node_id):
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_node_ids():
 
-    jobs = pyslurm.job().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
 
     print "Post datas : %s" % request.data
     nodes = json.loads(request.data).get('nodes', [])
@@ -369,11 +372,10 @@ def get_jobs_by_node_ids():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_nodes():
 
-    jobs = pyslurm.job().get()
-    nodes = pyslurm.node().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
 
     returned_nodes = {}
 
@@ -396,11 +398,10 @@ def get_jobs_by_nodes():
 @crossdomain(origin=origins, methods=['GET'],
              headers=['Accept', 'Content-Type', 'X-Requested-With', 'Authorization'])
 @authentication_verify()
-@cache()
 def get_jobs_by_qos():
 
-    jobs = pyslurm.job().get()
-    qos = pyslurm.qos().get()
+    jobs = get_from_cache(pyslurm.job().get, 'get_jobs')
+    qos = get_from_cache(pyslurm.qos().get, 'get_qos')
 
     returned_qos = {}
 
@@ -419,8 +420,11 @@ def get_jobs_by_qos():
 @app.route('/nodeset', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
-@cache()
 def convert_nodeset():
+    return get_from_cache(convert_nodeset_internal, 'onvert_nodeset')
+
+
+def convert_nodeset_internal():
     data = json.loads(request.data)
     return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
 
@@ -429,13 +433,12 @@ def convert_nodeset():
 @crossdomain(origin=origins, methods=['POST'],
              headers=['Accept', 'Content-Type', 'X-Requested-With'])
 @authentication_verify()
-@cache()
 def sinfo():
 
     # Partition and node lists are required
     # to compute sinfo informations
-    partitions = pyslurm.partition().get()
-    nodes = pyslurm.node().get()
+    partitions = get_from_cache(pyslurm.partition().get, 'get_partitions')
+    nodes = get_from_cache(pyslurm.node().get, 'get_nodes')
 
     # Retreiving the state of each nodes
     nodes_state = dict(
@@ -502,6 +505,52 @@ def proxy():
     return render_template('proxy.html',
                            url_root=request.url_root,
                            masters=masters)
+
+
+def check_private_data_for_entity(user, entity):
+    """
+    Return true if the entity is one of the attribute defined previously in
+    Private Data settings.
+    """
+    onlyUsersEntities = False
+
+    if auth_enabled:
+        # Fetch the attributs of private_data
+        config = pyslurm.config().get()
+        private_data = config["private_data_list"]
+
+        if (private_data and entity in private_data and
+                user.role != 'admin'):
+            onlyUsersEntities = True
+    return onlyUsersEntities
+
+
+def filter_entities(entity, entitiesList):
+    """
+    Return the list entities filtered if privateData is on for the entities.
+    """
+    onlyUsersEntities = False
+    if auth_enabled:
+        # If auth_enabled is true, getting the current user becomes
+        # possible because authentification_verify decorator has been
+        # already checked.
+        currentUser = get_current_user()
+        onlyUsersEntities = check_private_data_for_entity(
+            currentUser, entity)
+
+    if onlyUsersEntities:
+        # if private data is applied and the entities' owner is different from
+        # current user, then the entities will not be added to the list to
+        # show if auth disabled, onlyUsersEntities becomes always False and all
+        # the entities are added to the list to show
+
+        return dict((k, v) for k, v in entitiesList.iteritems()
+                    if ((entity == 'reservations' and currentUser.login in
+                        v['users']) or (entity == 'jobs' and
+                        currentUser.login == v['login'])))
+
+    return entitiesList
+
 
 if __name__ == '__main__':
     app.run(debug=True)
