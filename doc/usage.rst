@@ -72,8 +72,8 @@ There are 9 columns:
 #. The QOS of the job
 #. The partition of the job
 #. The Workload Characterization Key (WCKey) of the job
-#. An optional customizable column if using the :doc:`*JOBS_XTRA_COL* feature
-</installation>`.
+#. An optional customizable column if using the ``JOBS_XTRA_COL`` feature.
+   Please refer to the :doc:`/installation` for more details.
 
 You can filter the displayed jobs by using the input above the table. All the
 shown jobs then satisfy all the filters given in the input. There is an
