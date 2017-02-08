@@ -73,7 +73,7 @@ Docker
 ^^^^^^
 
 To build Slurm-web as a Docker container, you will need to:
- 
+
 1. Clone the git repository
 """""""""""""""""""""""""""
 
@@ -91,10 +91,12 @@ To build Slurm-web as a Docker container, you will need to:
     $ docker build -t slurm-web .
     $ cd ../..
 
-3. Customize the configuration files 
+3. Customize the configuration files
 """"""""""""""""""""""""""""""""""""
 
-The container will use configuration files stored in a `conf/` directory (you can customize the path in the `run.sh` script). You can copy the provided `run.sh` script and examples in a location of your choice, and start from there:
+The container will use configuration files stored in a `conf/` directory (you
+can customize the path in the `run.sh` script). You can copy the provided
+`run.sh` script and examples in a location of your choice, and start from there:
 
 .. code-block:: bash
 
@@ -108,14 +110,17 @@ The container will use configuration files stored in a `conf/` directory (you ca
 4. Run the container
 """"""""""""""""""""
 
-You may want to edit the `run.sh` script to specify where you stored your configuration files
+You may want to edit the `run.sh` script to specify where you stored your
+configuration files.
 
 .. code-block:: bash
 
     $ cd $WORKDIR
     $ ./run.sh
 
-You can then check that the container is running with `docker ps`, and the access the Slurm-web interface my pointing your browser to http://localhost:8081/slurm
+You can then check that the container is running with `docker ps`, and then
+access the Slurm-web interface by pointing your browser to
+http://localhost:8081/slurm.
 
 Distributions
 ^^^^^^^^^^^^^
