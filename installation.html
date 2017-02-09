@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; Slurm-web 2.1 documentation</title>
+  <title>Installation Guide &mdash; Slurm-web 2.2.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
         <link rel="next" title="Dashboard usage" href="usage.html"/>
         <link rel="prev" title="Introduction" href="introduction.html"/> 
 
@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#sinfo">Sinfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
@@ -193,6 +194,51 @@ If you want to improve the situation on these distributions, please contact us.<
 <div class="section" id="from-source">
 <h3>From source<a class="headerlink" href="#from-source" title="Permalink to this headline">¶</a></h3>
 <p>Not supported yet. Please contact us if you want to improve this part.</p>
+</div>
+<div class="section" id="docker">
+<h3>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h3>
+<p>To build Slurm-web as a Docker container, you will need to:</p>
+<div class="section" id="clone-the-git-repository">
+<h4>1. Clone the git repository<a class="headerlink" href="#clone-the-git-repository" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/edf-hpc/slurm-web.git
+<span class="nv">$ </span><span class="nb">cd </span>slurm-web
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-the-image">
+<h4>2. Build the image<a class="headerlink" href="#build-the-image" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>docker/container
+<span class="nv">$ </span>docker build -t slurm-web .
+<span class="nv">$ </span><span class="nb">cd</span> ../..
+</pre></div>
+</div>
+</div>
+<div class="section" id="customize-the-configuration-files">
+<h4>3. Customize the configuration files<a class="headerlink" href="#customize-the-configuration-files" title="Permalink to this headline">¶</a></h4>
+<p>The container will use configuration files stored in a <cite>conf/</cite> directory (you
+can customize the path in the <cite>run.sh</cite> script). You can copy the provided
+<cite>run.sh</cite> script and examples in a location of your choice, and start from there:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ WORKDIR</span><span class="o">=</span><span class="nv">$HOME</span>/slurm-web
+<span class="nv">$ </span>mkdir <span class="nv">$WORKDIR</span>
+<span class="nv">$ </span>cp docker/run/run.sh <span class="nv">$WORKDIR</span>/
+<span class="nv">$ </span>cp -R conf/ <span class="nv">$WORKDIR</span>/
+<span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$WORKDIR</span>
+... edit configuration files ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-container">
+<h4>4. Run the container<a class="headerlink" href="#run-the-container" title="Permalink to this headline">¶</a></h4>
+<p>You may want to edit the <cite>run.sh</cite> script to specify where you stored your
+configuration files.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$WORKDIR</span>
+<span class="nv">$ </span>./run.sh
+</pre></div>
+</div>
+<p>You can then check that the container is running with <cite>docker ps</cite>, and then
+access the Slurm-web interface by pointing your browser to
+<a class="reference external" href="http://localhost:8081/slurm">http://localhost:8081/slurm</a>.</p>
+</div>
 </div>
 <div class="section" id="distributions">
 <h3>Distributions<a class="headerlink" href="#distributions" title="Permalink to this headline">¶</a></h3>
@@ -482,6 +528,12 @@ of the field&#8217;s name separated by commas.</p>
 guest button is added under the login form in the dashboard. The guests users
 have the <em>all</em> role. Then the <em>all</em> role must be enabled as well to allow the
 guests users to access the REST API.</p>
+<p>Besides the restriction of fields, it is also possible to add restrictions on
+jobs or reservations according to one&#8217;s roles. This restriction can be set by
+Private Data from <a class="reference external" href="https://slurm.schedmd.com/slurm.conf.html">Slurm</a>. If
+<tt class="docutils literal"><span class="pre">jobs</span></tt> or <tt class="docutils literal"><span class="pre">reservations</span></tt> are defined previously in Slurm, non-admin users
+will not see nobody but their own jobs or reservations. The Jobs View or
+Reservations View will be empty if logging as <tt class="docutils literal"><span class="pre">guests</span></tt>.</p>
 </div>
 <div class="section" id="cache">
 <h4>Cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h4>
@@ -494,9 +546,7 @@ slurmctld.</p>
 </div>
 <div class="section" id="dashboard-configuration-settings">
 <h3>Dashboard configuration settings<a class="headerlink" href="#dashboard-configuration-settings" title="Permalink to this headline">¶</a></h3>
-<p>All configuration files for dashboard are in the directory <tt class="docutils literal"><span class="pre">conf/dashboard</span></tt>.
-Note that Apache keep files in cache when it serves them. If you change one of
-these files, relaunch Apache.</p>
+<p>All configuration files for dashboard are in the directory <tt class="docutils literal"><span class="pre">conf/dashboard</span></tt>.</p>
 <div class="section" id="app-conf-dashboard-config-json">
 <h4>App <tt class="docutils literal"><span class="pre">conf/dashboard/config.json</span></tt><a class="headerlink" href="#app-conf-dashboard-config-json" title="Permalink to this headline">¶</a></h4>
 <p>Used for general purpose.</p>
@@ -505,7 +555,8 @@ these files, relaunch Apache.</p>
   <span class="nt">&quot;STARTPAGE&quot;</span><span class="p">:</span> <span class="s2">&quot;jobs&quot;</span><span class="p">,</span>
   <span class="nt">&quot;REFRESH&quot;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
   <span class="nt">&quot;MAXNODESLENGTH&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-  <span class="nt">&quot;AUTOLOGIN&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="nt">&quot;AUTOLOGIN&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;LOGOURL&quot;</span><span class="p">:</span> <span class="s2">&quot;../static/logo.png&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -533,7 +584,39 @@ these files, relaunch Apache.</p>
 </li>
 <li><p class="first"><em>AUTOLOGIN</em> (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).</p>
 </li>
+<li><p class="first"><em>LOGOURL</em> (String) : Define the image url in the top left-hand corner.</p>
+</li>
+<li><p class="first"><em>JOBS_XTRA_COL</em> (Hash) : Define an additional optional column if the jobs
+view. This parameter is optional. When set, it must contain the following 3
+parameters:</p>
+<ul class="simple">
+<li><em>NAME</em>: The column name</li>
+<li><em>CONTENT</em>: The HTML content of the cell for each job.</li>
+<li><em>CONDITION</em>: The job state (eg. <cite>RUNNING</cite>) for which the content of the
+cell is displayed. The cell for jobs in other states in remains empty.
+There is a special value <cite>ALL</cite> for the cell content to be displayed for
+all jobs.</li>
 </ul>
+<p>The content can have special placeholders which are substituted based on the
+context:</p>
+<ul class="simple">
+<li><cite>{{cluster}}</cite>: the cluster name</li>
+<li><cite>{{jobId}}</cite>: the slurm job ID</li>
+</ul>
+</li>
+</ul>
+<p>Here is a full example of a <em>JOBS_XTRA_COL</em>:</p>
+<div class="highlight-json"><div class="highlight"><pre>&quot;JOBS_XTRA_COL&quot;:
+{
+ &quot;NAME&quot;: &quot;metrics&quot;,
+ &quot;CONTENT&quot;: &quot;&lt;a target=\&quot;_blank\&quot; href=\&quot;http://metrics.company.tld/{{cluster}}/{{jobId}}\&quot;&gt;view&lt;/a&gt;&quot;,
+ &quot;CONDITION&quot;: &quot;RUNNING&quot;
+}
+</pre></div>
+</div>
+<p>This example configures a column whose name is metrics. A link named <em>view</em>
+appears for all running jobs. This link redirects to an HTTP URL on
+<em>metrics.company.tld</em> containing the cluster name and the job ID.</p>
 </div>
 <div class="section" id="d-draw-conf-dashboard-2d-config-json">
 <h4>2D Draw <tt class="docutils literal"><span class="pre">conf/dashboard/2d.config.json</span></tt><a class="headerlink" href="#d-draw-conf-dashboard-2d-config-json" title="Permalink to this headline">¶</a></h4>
@@ -861,7 +944,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EDF CCN-HPC.
+        &copy; Copyright 2015-2017, EDF CCN-HPC.
     </p>
   </div>
 
@@ -881,7 +964,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1',
+            VERSION:'2.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

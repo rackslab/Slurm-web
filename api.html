@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>REST API reference &mdash; Slurm-web 2.1 documentation</title>
+  <title>REST API reference &mdash; Slurm-web 2.2.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
         <link rel="next" title="How to contribute or add page" href="contribute.html"/>
         <link rel="prev" title="Software architecture" href="architecture.html"/> 
 
@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reservations">Reservations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sinfo">Sinfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-node">Jobs by node</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#jobs-by-nodes">Jobs by nodes</a></li>
@@ -153,9 +154,9 @@ Useful to test if the API is up and running.</p>
 Used when the authentication feature is enabled.
 Give the <tt class="docutils literal"><span class="pre">username</span></tt> and the <tt class="docutils literal"><span class="pre">password</span></tt> as JSON parameters.
 It returns an authentication token.</p>
-<p>Each method below is a POST method with JSON datas.
-In case when authentication is enabled, it must contain a <tt class="docutils literal"><span class="pre">token</span></tt> parameter
-where the token sent by the login must be set.</p>
+<p>Each method below is a GET method with JSON data. In case when
+authentication is enabled, it must contain a token sent as
+<tt class="docutils literal"><span class="pre">Authorization</span></tt> request header.</p>
 </div>
 <div class="section" id="cluster">
 <h2>Cluster<a class="headerlink" href="#cluster" title="Permalink to this headline">¶</a></h2>
@@ -198,6 +199,11 @@ where the token sent by the login must be set.</p>
 <h2>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h2>
 <p>Topology defined on this cluster:</p>
 <p><tt class="docutils literal"><span class="pre">/topology</span></tt></p>
+</div>
+<div class="section" id="sinfo">
+<h2>Sinfo<a class="headerlink" href="#sinfo" title="Permalink to this headline">¶</a></h2>
+<p>Return an <tt class="docutils literal"><span class="pre">sinfo</span></tt> style cluster status:</p>
+<p><tt class="docutils literal"><span class="pre">/sinfo</span></tt></p>
 </div>
 <div class="section" id="jobs-by-node">
 <h2>Jobs by node<a class="headerlink" href="#jobs-by-node" title="Permalink to this headline">¶</a></h2>
@@ -249,7 +255,7 @@ No authentication needed for this route.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EDF CCN-HPC.
+        &copy; Copyright 2015-2017, EDF CCN-HPC.
     </p>
   </div>
 
@@ -269,7 +275,7 @@ No authentication needed for this route.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1',
+            VERSION:'2.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

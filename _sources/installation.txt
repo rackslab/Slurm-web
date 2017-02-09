@@ -69,6 +69,59 @@ From source
 
 Not supported yet. Please contact us if you want to improve this part.
 
+Docker
+^^^^^^
+
+To build Slurm-web as a Docker container, you will need to:
+
+1. Clone the git repository
+"""""""""""""""""""""""""""
+
+.. code-block:: bash
+
+   $ git clone https://github.com/edf-hpc/slurm-web.git
+   $ cd slurm-web
+
+2. Build the image
+""""""""""""""""""
+
+.. code-block:: bash
+
+    $ cd docker/container
+    $ docker build -t slurm-web .
+    $ cd ../..
+
+3. Customize the configuration files
+""""""""""""""""""""""""""""""""""""
+
+The container will use configuration files stored in a `conf/` directory (you
+can customize the path in the `run.sh` script). You can copy the provided
+`run.sh` script and examples in a location of your choice, and start from there:
+
+.. code-block:: bash
+
+   $ WORKDIR=$HOME/slurm-web
+   $ mkdir $WORKDIR
+   $ cp docker/run/run.sh $WORKDIR/
+   $ cp -R conf/ $WORKDIR/
+   $ cd $WORKDIR
+   ... edit configuration files ...
+
+4. Run the container
+""""""""""""""""""""
+
+You may want to edit the `run.sh` script to specify where you stored your
+configuration files.
+
+.. code-block:: bash
+
+    $ cd $WORKDIR
+    $ ./run.sh
+
+You can then check that the container is running with `docker ps`, and then
+access the Slurm-web interface by pointing your browser to
+http://localhost:8081/slurm.
+
 Distributions
 ^^^^^^^^^^^^^
 
@@ -397,6 +450,13 @@ guest button is added under the login form in the dashboard. The guests users
 have the *all* role. Then the *all* role must be enabled as well to allow the
 guests users to access the REST API.
 
+Besides the restriction of fields, it is also possible to add restrictions on
+jobs or reservations according to one's roles. This restriction can be set by
+Private Data from `Slurm <https://slurm.schedmd.com/slurm.conf.html>`_. If
+``jobs`` or ``reservations`` are defined previously in Slurm, non-admin users
+will not see nobody but their own jobs or reservations. The Jobs View or
+Reservations View will be empty if logging as ``guests``.
+
 Cache
 """""
 
@@ -411,8 +471,6 @@ Dashboard configuration settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All configuration files for dashboard are in the directory ``conf/dashboard``.
-Note that Apache keep files in cache when it serves them. If you change one of
-these files, relaunch Apache.
 
 App ``conf/dashboard/config.json``
 """"""""""""""""""""""""""""""""""
@@ -427,7 +485,8 @@ Basic configuration file :
     "STARTPAGE": "jobs",
     "REFRESH": 30000,
     "MAXNODESLENGTH": 25,
-    "AUTOLOGIN": false
+    "AUTOLOGIN": false,
+    "LOGOURL": "../static/logo.png"
   }
 
 - *STARTPAGE* (String) : Name of the page loaded at the application startup.
@@ -449,6 +508,40 @@ Basic configuration file :
 - *MAXNODESLENGTH* (Number) : Maximum characters show for the nodes name in "Nodes" column in module Jobs.
 
 - *AUTOLOGIN* (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).
+
+- *LOGOURL* (String) : Define the image url in the top left-hand corner.
+
+- *JOBS_XTRA_COL* (Hash) : Define an additional optional column if the jobs
+  view. This parameter is optional. When set, it must contain the following 3
+  parameters:
+
+  - *NAME*: The column name
+  - *CONTENT*: The HTML content of the cell for each job.
+  - *CONDITION*: The job state (eg. `RUNNING`) for which the content of the
+    cell is displayed. The cell for jobs in other states in remains empty.
+    There is a special value `ALL` for the cell content to be displayed for
+    all jobs.
+
+  The content can have special placeholders which are substituted based on the
+  context:
+
+  - `{{cluster}}`: the cluster name
+  - `{{jobId}}`: the slurm job ID
+
+Here is a full example of a *JOBS_XTRA_COL*:
+
+.. code-block:: json
+
+  "JOBS_XTRA_COL":
+  {
+   "NAME": "metrics",
+   "CONTENT": "<a target=\"_blank\" href=\"http://metrics.company.tld/{{cluster}}/{{jobId}}\">view</a>",
+   "CONDITION": "RUNNING"
+  }
+
+This example configures a column whose name is metrics. A link named *view*
+appears for all running jobs. This link redirects to an HTTP URL on
+*metrics.company.tld* containing the cluster name and the job ID.
 
 
 2D Draw ``conf/dashboard/2d.config.json``

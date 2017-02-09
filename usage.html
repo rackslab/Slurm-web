@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dashboard usage &mdash; Slurm-web 2.1 documentation</title>
+  <title>Dashboard usage &mdash; Slurm-web 2.2.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.1 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
         <link rel="next" title="Software architecture" href="architecture.html"/>
         <link rel="prev" title="Installation Guide" href="installation.html"/> 
 
@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#qos">QOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#reservations">Reservations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#topology">Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#sinfo">Sinfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node">Jobs by node</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-node-ids">Jobs by node ids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#jobs-by-nodes">Jobs by nodes</a></li>
@@ -190,13 +191,13 @@ are idle. These diagrams become really relevant when you have multiple QOS and
 partitions and there are many running jobs.</p>
 <p>Then, after the charts, there is a table with one job per row. This is the list
 of all jobs running or pending on the system.</p>
-<p>There are 8 columns:</p>
+<p>There are 9 columns:</p>
 <ol class="arabic simple">
 <li>The Slurm job ID</li>
 <li>The name of the user with his/her login on the system between parenthesis</li>
-<li>The list of nodes that are allocated for this job, if any. If the job is
-pending or blocked for any reason, the field could be empty since Slurm may
-have not decided yet on which nodes this job will run.</li>
+<li>The number of cores and nodes that are allocated for this job, if any. If the
+job is pending or blocked for any reason, the field could be empty since Slurm
+may have not decided yet on which nodes this job will run.</li>
 <li>The current state of the job</li>
 <li>If the job is pending or blocked, the reason which explains why the job is
 in this state. If the job is running or completing, this field is empty.</li>
@@ -204,12 +205,15 @@ in this state. If the job is running or completing, this field is empty.</li>
 its start time in the future.</li>
 <li>The QOS of the job</li>
 <li>The partition of the job</li>
+<li>The Workload Characterization Key (WCKey) of the job</li>
+<li>An optional customizable column if using the <tt class="docutils literal"><span class="pre">JOBS_XTRA_COL</span></tt> feature.
+Please refer to the <a class="reference internal" href="installation.html"><em>Installation Guide</em></a> for more details.</li>
 </ol>
 <p>You can filter the displayed jobs by using the input above the table. All the
 shown jobs then satisfy all the filters given in the input. There is an
-autocompletion mechanism on all partitions, QoS, Name, User, Nodes, State, Start Time
-and End Time existing in the table. The filters field work in a substractive
-way.</p>
+autocompletion mechanism on all partitions, QoS, WCKey, Name, User, Nodes, State,
+Start Time and End Time existing in the table. The filters field work in a
+substractive way.</p>
 <p>There is a special use case to filter by Start and End Time. You must begin the
 filter by choosing the field Start Time with the word &#8220;start&#8221; or End Time with
 the word &#8220;end&#8221;. Followed by a comparison operator &#8220;&lt;&#8221; or &#8220;&gt;&#8221;. At the end you
@@ -266,6 +270,7 @@ not empty, the number of nodes is given between parenthesis.</li>
 <li>The Slurm account used for this job</li>
 <li>The QOS of the job</li>
 <li>The partition of the job</li>
+<li>The Workload Characterization Key (WCKey) of the job</li>
 <li>The exclusive flag whose value is <em>yes</em> or <em>no</em>, as requested by users at the
 job submission. If <em>yes</em>, the job get exclusive to resources on allocated
 nodes. That means that no other job could run on these nodes at the same time
@@ -285,6 +290,11 @@ the walltime is not set.</li>
 <div class="figure">
 <img alt="_images/screenshot_job_close_details.png" src="_images/screenshot_job_close_details.png" />
 </div>
+<p>The Jobs view now takes Slurm&#8217;s Private Data parameter into account. The
+description can be found in <a class="reference external" href="https://slurm.schedmd.com/slurm.conf.html">Slurm</a>.
+If <tt class="docutils literal"><span class="pre">jobs</span></tt> has been defined previously in Slurm configuration, regular users
+can only see their own jobs whereas the superusers see all the jobs and guests
+can see none.</p>
 </div>
 <div class="section" id="racks-view">
 <h2>Racks view<a class="headerlink" href="#racks-view" title="Permalink to this headline">¶</a></h2>
@@ -318,7 +328,8 @@ rectangle. If a core is allocated to a job, the core is colored with a color
 depending on the job ID. All cores allocated to a job have the same color.
 However, note that due to limited number of colors, when there are a lot of
 running jobs, 2 cores allocated to 2 different jobs could potentially have the
-same color.</p>
+same color. With Private Date set for <tt class="docutils literal"><span class="pre">jobs</span></tt>, only current-user-related jobs
+will be shown for regular users.</p>
 <p>Again, a small legendary in a frame at the top right corner gives a recap of
 these information.</p>
 <p>To get more details about the activity on one specific node or core, you can
@@ -330,7 +341,8 @@ in the box about job of the Jobs view.</p>
 <p>This view shows a representation in three dimensions of the HPC, according to
 how it is defined in the <tt class="docutils literal"><span class="pre">racks.xml</span></tt> file.</p>
 <p>As on the JobsMap view, it gives the activity on each core, showing the color
-of the current processed job.</p>
+of the current processed job. Same effect of viewing restriction as JobsMap
+view with Private Data <tt class="docutils literal"><span class="pre">jobs</span></tt> parameter is defined.</p>
 <p>You can choose between 3 ways of visualization:</p>
 <ul class="simple">
 <li><em>Camera orbit</em>:
@@ -405,6 +417,11 @@ on the supercomputer:</p>
 <li>The start time of this reservation</li>
 <li>The end time of this reservation</li>
 </ol>
+<p>This view, like Jobs View, can be applied with Slurm&#8217;s Private Data as well.
+If <tt class="docutils literal"><span class="pre">reservations</span></tt> has been defined previously in
+<a class="reference external" href="https://slurm.schedmd.com/slurm.conf.html">Slurm</a> configuration, regular
+users are prevented from viewing others&#8217; reservations. Only admins are
+allowed to consult all the reservations.</p>
 </div>
 <div class="section" id="gantt-view">
 <h2>Gantt view<a class="headerlink" href="#gantt-view" title="Permalink to this headline">¶</a></h2>
@@ -419,6 +436,8 @@ informations in a modal.</p>
 <div class="figure">
 <img alt="_images/screenshot_ganntt_view_qos.png" src="_images/screenshot_ganntt_view_qos.png" />
 </div>
+<p>Only jobs of current user will be evaluated for regular users if <tt class="docutils literal"><span class="pre">jobs</span></tt>
+has been defined in Private Data configuration.</p>
 </div>
 <div class="section" id="topology-view">
 <h2>Topology view<a class="headerlink" href="#topology-view" title="Permalink to this headline">¶</a></h2>
@@ -451,7 +470,7 @@ opened and shows details about the current job running on the selected node.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EDF CCN-HPC.
+        &copy; Copyright 2015-2017, EDF CCN-HPC.
     </p>
   </div>
 
@@ -471,7 +490,7 @@ opened and shows details about the current job running on the selected node.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1',
+            VERSION:'2.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
