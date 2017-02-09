@@ -1,3 +1,58 @@
+slurm-web (2.2.0) unstable; urgency=medium
+
+  [ Yen C. Li ]
+  * REST API:
+    * Honor Slurm PrivateData settings for jobs and reservations (#149)
+    * Use GET instead of POST for most routes. The optional authentication token
+      is now given in a new Authorization HTTP header (#63).
+    * Remove password from token (#64)
+    * Handle LDAP SERVER_DOWN exception (#107)
+  * Dashboard:
+    * Make path to top-left corner logo configurable (#102)
+    * Show full name at the top right corner (#110)
+    * Show real cluster name instead of local (#61)
+    * Show TRES instead of nodelist in jobs view (#89)
+    * Show node down/drain reason (#90)
+    * Add optional extra customizable col in jobs view (#65)
+    * Significantly reduce margins between racks (#126)
+    * Fix empty jobs view lock (#136)
+    * Fix serial authentification failures (#137)
+    * Factorize dashboard error management (#124,#150)
+    * Add WCKey to dashboard jobs view (#141)
+    * Fix global logout on one cluster auth fail (#158)
+    * Disable caching effect on dashboard conf files (#99,#159)
+  * Doc:
+    * Update for new features
+
+  [ Rémi Palancher ]
+  * Tests:
+    * Introduce a programmable testing environment with mocks and fake data
+    sources.
+  * REST API:
+    * Fix PySLURM call to job find_id() following API change introduced with
+      PySLURM >= 16.05 (#138).
+    * Remove use of join in partitions view following API change introduced with
+      PySLURM >= 16.05 (#140).
+    * Slurm-web REST API now depends on PySLURM >= 16.05
+  * Doc:
+    * Minor doc formatting fixes
+
+  [ Alexandre Beche ]
+  * REST API:
+    * Adding sinfo endpoint to slurmrestapi (#145)
+
+  [ oulinbao ]
+  * Doc:
+    * Correct typo Flash to Flask in README (#148)
+
+  [ Kilian Cavalotti ]
+  * Integration:
+    * Provide DockerFile and associated scripts to instanciate Slurm-web within
+      Docker container. The install guide documentation has been updated with
+      instanciation instructions. (#160)
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 08 Feb 2017 10:05:25 +0100
+
 slurm-web (2.1.3) unstable; urgency=medium
 
   * Fix LDAP SSL/TLS server certificate validation
