@@ -267,8 +267,10 @@ class User(object):
                 if member and member[0] == '@' and self.groups is not None \
                    and member[1:] in self.groups:
                     views.remove(view)
+                    break
                 elif member == self.login:
                     views.remove(view)
+                    break
         return list(views)
 
     def get_user_name(self):
