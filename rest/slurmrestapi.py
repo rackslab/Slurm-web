@@ -330,7 +330,7 @@ def get_jobs_by_node_id(node_id):
     for jobid, job in returned_jobs.iteritems():
         fill_job_user(job)
 
-    return returned_jobs
+    return filter_entities('jobs', returned_jobs)
 
 
 # returns a dict composed with all jobs running on the given nodes
@@ -358,7 +358,7 @@ def get_jobs_by_node_ids():
     for jobid, job in returned_jobs.iteritems():
         fill_job_user(job)
 
-    return returned_jobs
+    return filter_entities('jobs', returned_jobs)
 
 
 # returns a dict composed with all nodes ID as key associated to a dict
@@ -382,7 +382,7 @@ def get_jobs_by_nodes():
             if node_id in nodes_list:
                 returned_jobs[jobid] = job
 
-        returned_nodes[node_id] = returned_jobs
+        returned_nodes[node_id] = filter_entities('jobs', returned_jobs)
 
     return returned_nodes
 
@@ -407,7 +407,7 @@ def get_jobs_by_qos():
             if qos_id == job['qos']:
                 returned_jobs[jobid] = job
 
-        returned_qos[qos_id] = returned_jobs
+        returned_qos[qos_id] = filter_entities('jobs', returned_jobs)
 
     return returned_qos
 
