@@ -1,3 +1,17 @@
+slurm-web (2.2.1) unstable; urgency=medium
+
+  [ Yen C. Li ]
+  * REST API:
+    * Fix privatedata hole in some API routes (#170)
+  * Conf:
+    * Turn WSGIPassAuthorization on in Apache2 conf (#162)
+
+  [ Rémi Palancher ]
+  * REST API:
+    * Break loop when view removed from restricted set
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 06 Apr 2017 09:22:12 +0200
+
 slurm-web (2.2.0) unstable; urgency=medium
 
   [ Yen C. Li ]
