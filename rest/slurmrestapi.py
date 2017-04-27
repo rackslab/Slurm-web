@@ -142,7 +142,7 @@ def show_job(job_id):
 
     # PySLURM >= 16.05 expects a string in parameter of job.find_id() and
     # returns a list. The expected job dict is the 1st element of this list.
-    job = get_from_cache(pyslurm.job.find_id, 'show_job', str(job_id))[0]
+    job = get_from_cache(pyslurm.job().find_id, 'show_job', str(job_id))[0]
     onlyUsersJobs = False
     fill_job_user(job)
     if auth_enabled:
