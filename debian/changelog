@@ -1,3 +1,10 @@
+slurm-web (2.2.2) unstable; urgency=medium
+
+  * Add missing parenthesis when calling pyslurm().job
+  * Handle more node states
+
+ -- Mehdi Dogguy <mehdi@dogguy.org>  Thu, 27 Apr 2017 18:01:08 +0200
+
 slurm-web (2.2.1) unstable; urgency=medium
 
   [ Yen C. Li ]
