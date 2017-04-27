@@ -55,9 +55,12 @@ define([
       case 'IDLE':
       case 'IDLE*':
       case 'IDLE#':
-      case 'IDLE+POWER':
         stateColor = colors.LED.AVAILABLE;
         nodeColor = colors.LED.IDLE;
+        break;
+      case 'IDLE+POWER':
+        stateColor = colors.LED.AVAILABLE;
+        nodeColor = colors.LED.UNAVAILABLE;
         break;
       case 'ALLOCATED':
       case 'ALLOCATED*':
