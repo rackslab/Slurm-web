@@ -54,12 +54,14 @@ define([
       switch (node.state) {
       case 'IDLE':
       case 'IDLE*':
+      case 'IDLE#':
       case 'IDLE+POWER':
         stateColor = colors.LED.AVAILABLE;
         nodeColor = colors.LED.IDLE;
         break;
       case 'ALLOCATED':
       case 'ALLOCATED*':
+      case 'ALLOCATED#':
       case 'MIXED':
       case 'MIXED*':
       case 'COMPLETING':
@@ -82,6 +84,7 @@ define([
       case 'DOWN':
       case 'DOWN*':
       case 'DOWN*+DRAIN':
+      case 'DOWN+DRAIN':
         stateColor = colors.LED.DOWN;
         nodeColor = colors.LED.UNAVAILABLE;
         break;
