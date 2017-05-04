@@ -72,6 +72,10 @@ define([
         nodeColor = allocatedColor;
         stateColor = colors.LED.AVAILABLE;
         break;
+      case 'ALLOCATED+DRAIN':
+        nodeColor = allocatedColor;
+        stateColor = colors.LED.DRAINED;
+        break;
       case 'RESERVED':
         nodeColor = allocatedColor;
         stateColor = colors.LED.RESERVED;
