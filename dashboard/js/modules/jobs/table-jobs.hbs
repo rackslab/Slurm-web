@@ -22,7 +22,11 @@
           <tr class="job-row" id="tr-job-{{@key}}">
             <td>{{@key}}</td>
             <td>{{login}} ({{username}})</td>
-            <td>{{tres_alloc_str}}</td>
+            {{#if tres_alloc_str}}
+              <td>{{tres_alloc_str}}</td>
+            {{else}}
+              <td>{{tres_req_str}}</td>
+            {{/if}}
             <td>{{job_state}}</td>
             <td>{{printReason job_state state_reason}}</td>
             <td>{{printStartTime start_time eligible_time job_state}}</td>
