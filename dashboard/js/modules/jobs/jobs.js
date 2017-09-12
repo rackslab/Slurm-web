@@ -162,13 +162,14 @@ define([
             maxLegendHeight = 0;
 
           if (Object.keys(jobs).length === 0) {
-            $('#main').append(template());
+            $('#main').append(template({hasJobs: false}));
             $(document).trigger('pageLoaded');
             return;
           }
 
           context = {
-            tagsinputOptions: self.tagsinputOptions.toString()
+            tagsinputOptions: self.tagsinputOptions.toString(),
+            hasJobs: Object.keys(jobs).length !== 0
           };
 
           plotParams = {
