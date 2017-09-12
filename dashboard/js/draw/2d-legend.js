@@ -71,6 +71,9 @@ define([
         this.legend.y += 10;
         this.drawNodeText(ctx, 'fully allocated', colors.LED.FULLYALLOCATED);
         this.drawNodeText(ctx, 'partly allocated', colors.LED.PARTALLOCATED);
+        this.drawNodeText(ctx, 'idle', colors.LED.IDLE);
+        this.drawNodeText(ctx, 'unavailable', colors.LED.UNAVAILABLE);
+        this.drawNodeText(ctx, 'unknown', colors.LED.UNKNOWN);
       }
 
       this.legend.height = this.legend.y + 10;
