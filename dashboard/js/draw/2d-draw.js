@@ -232,6 +232,7 @@ define([
         core = {},
         coreId = 0,
         coresDrawn = 0,
+        coresDrawnLayout = [],
         coresNumber = slurmNode && slurmNode.cpus || 0,
         coresTableInfos = factorDraw.bestFactor(node.innerWidth, node.innerHeight, coresNumber),
         coresColumns = coresTableInfos[1],
@@ -245,21 +246,44 @@ define([
         coresJobNumber = allocatedCPUs[job];
         core.color = pickJobColor(parseInt(job, 10));
 
-        for (; coreId < coresDrawn + coresJobNumber; coreId++) {
+        if(allocatedCPUs[layout] !== null){
+          for(coreLayout in allocatedCPUs[layout]){
+            core.coords = getCoreABSCoordinates(node, allocatedCPUs[layout][coreLayout], coresRows, coresColumns, core.size);
+            core.x = Math.floor(core.coords.x);
+            core.y = Math.floor(core.coords.y);
+            self.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, core);
+            drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, core.color, colors.COREBORDER);
+            coresDrawnLayout.push(allocatedCPUs[layout][coreLayout]);
+          }
+        }
+        else{
+          for (; coreId < coresDrawn + coresJobNumber; coreId){
+            core.coords = getCoreABSCoordinates(node, coreId, coresRows, coresColumns, core.size);
+            core.x = Math.floor(core.coords.x);
+            core.y = Math.floor(core.coords.y);
+            self.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, core);
+            drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, core.color, colors.COREBORDER);
+          }
+        }
+        coresDrawn = coresJobNumber;
+      }
+      if(allocatedCPUs[layout] !== null){
+        for (coreId = 0; coreId < coresNumber; coreId) {
+          if(!($.inArray(coreId, coresDrawnLayout))){
+            core.coords = getCoreABSCoordinates(node, coreId, coresRows, coresColumns, core.size);
+            core.x = Math.floor(core.coords.x);
+            core.y = Math.floor(core.coords.y);
+            drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, colors.LED.IDLE, colors.COREBORDER);
+          }
+        }
+      }
+      else{
+        for (; coreId < coresNumber; coreId) {
           core.coords = getCoreABSCoordinates(node, coreId, coresRows, coresColumns, core.size);
           core.x = Math.floor(core.coords.x);
           core.y = Math.floor(core.coords.y);
-          self.intersections.addCoreIntersections({ rack: rack.name, node: rackNode.name, core: coreId, job: job }, core);
-          drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, core.color, colors.COREBORDER);
+          drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, colors.LED.IDLE, colors.COREBORDER);
         }
-        coresDrawn += coresJobNumber;
-      }
-
-      for (; coreId < coresNumber; coreId++) {
-        core.coords = getCoreABSCoordinates(node, coreId, coresRows, coresColumns, core.size);
-        core.x = Math.floor(core.coords.x);
-        core.y = Math.floor(core.coords.y);
-        drawRectangleBorder(ctx, core.x, core.y, core.size, core.size, 1, colors.LED.IDLE, colors.COREBORDER);
       }
     }
 

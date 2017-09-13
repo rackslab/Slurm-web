@@ -26,18 +26,25 @@ define([
     buildAllocatedCPUs: function(jobs) {
       var allocatedCPUs = {},
         nodesCPUs = null,
+        nodesCPUsLayout = null,
         job,
         node;
 
       for (job in jobs) {
         if (jobs.hasOwnProperty(job) && jobs[job].job_state === 'RUNNING') {
           nodesCPUs = jobs[job].cpus_allocated;
+          if(jobs[job].hasOwnProperty(cpus_alloc_layout)){
+            nodesCPUsLayout = jobs[job].cpus_alloc_layout;
+          }
           for (node in nodesCPUs) {
             if (nodesCPUs.hasOwnProperty(node)) {
               if (!allocatedCPUs.hasOwnProperty(node)) {
                 allocatedCPUs[node] = {};
               }
               allocatedCPUs[node][job] = nodesCPUs[node];
+              if(nodesCPUsLayout !== null){
+                allocatedCPUs[node][layout]=nodesCPUsLayout[node];
+              }
             }
           }
         }
