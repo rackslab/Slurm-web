@@ -145,9 +145,17 @@ require([
   String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
   }
+  //define loader
+  var $loader = $('#loader').hide();
+  //show loader when page is loading
+  $(document).ajaxStart(function(){
+    $loader.show();
+  }) //hide when stop loading
+  .ajaxStop(function(){
+    $loader.hide();
+  });
 
   $(document).on('loadPage', function(e, options) {
-
     e.stopPropagation();
     $(document).trigger('destroyNavbar');
 
