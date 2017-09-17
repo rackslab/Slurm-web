@@ -29,6 +29,8 @@ require.config({
     three: '/javascript/three/three.min',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
     'token-utils': '../../../js/utils/token',
+    'ajax-utils': '../../../js/utils/ajax',
+    'error-utils': '../../../js/utils/error',
     '3d-draw': '../../../js/draw/3d-draw',
     '3d-map-draw': '../../../js/draw/3d-map',
     'factor-draw': '../../../js/draw/factor',
