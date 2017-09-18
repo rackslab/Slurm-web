@@ -823,7 +823,7 @@ Basic configuration file :
 
   - *FONT* (rgb()): Font color for the rack name banner
 
-Clusters ``clusters.config.js``
+Clusters ``clusters.config.json``
 """""""""""""""""""""""""""""""""""
 
 The Slurm-web Dashboard can retrieve informations from several REST APIs hosted
@@ -832,7 +832,7 @@ in the example below :
 
 .. code-block:: js
 
-  window.clusters = [
+  [
     {
       "name": "My first cluster",
       "api": {
@@ -854,8 +854,8 @@ default the REST API is configured to be reached on the route ``/slurm-restapi``
 ).
 
 If you have only one cluster hosted on the same server than the dashboard, use
-an empty array to set ``window.clusters``:
+an empty array :
 
 .. code-block:: js
 
-  window.clusters = []
+  []

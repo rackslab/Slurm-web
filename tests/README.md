@@ -38,10 +38,10 @@ Then install the slurm-web-confdashboard package because it is not emulated yet
 by the testing scripts.
 
 Then add the following content to
-`/etc/slurm-web/dashboard/clusters.config.js`:
+`/etc/slurm-web/dashboard/clusters.config.json`:
 
 ```
-window.clusters = [
+[
   {
     "name": "saturne",
     "api": {

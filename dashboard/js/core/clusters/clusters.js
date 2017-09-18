@@ -22,10 +22,12 @@ define([
   'jquery',
   'async',
   'handlebars',
+  'text!/slurm-web-conf/clusters.config.json',
   'text!../../js/core/clusters/clusters.hbs',
   'ajax-utils',
   'error-utils'
-], function($, async, Handlebars, template, ajaxUtils, errorUtils) {
+], function($, async, Handlebars, clustersConfig, template, ajaxUtils, errorUtils) {
+  window.clusters = JSON.parse(clustersConfig);
   var clusters = window.clusters,
     index;
 
