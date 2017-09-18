@@ -1,5 +1,8 @@
+Users Guide
+###########
+
 Dashboard usage
-===============
+---------------
 
 To start using the web dashboard, first connect to this URL with a web browser
 (where *server* is the network hostname of the server hosting the dashboard):
@@ -32,7 +35,7 @@ The last entry concerns the user's authentication. It is not displayed if this
 feature is disabled.
 
 Jobs view
----------
+^^^^^^^^^
 
 The Jobs view gives an overview of all Slurm jobs currently running or pending
 on the supercomputer.
@@ -169,7 +172,7 @@ can only see their own jobs whereas the superusers see all the jobs and guests
 can see none.
 
 Racks view
-----------
+^^^^^^^^^^
 
 The Racks view shows the current status of all nodes in the supercomputer:
 
@@ -193,7 +196,7 @@ A small legendary in a frame at the top right corner gives a recap of these
 information.
 
 JobsMap view
-------------
+^^^^^^^^^^^^
 
 The JobMaps view gives more or less the same information then the Racks view
 with more details about cores allocation:
@@ -217,8 +220,8 @@ click on it.
 Once clicked, an information box shows up with the same details about jobs, as
 in the box about job of the Jobs view.
 
-3D View
-_______
+3D view
+^^^^^^^
 
 This view shows a representation in three dimensions of the HPC, according to
 how it is defined in the ``racks.xml`` file.
@@ -242,7 +245,7 @@ You can choose between 3 ways of visualization:
 
 
 Partitions view
----------------
+^^^^^^^^^^^^^^^
 
 The Partitions view give the list of configured partitions in the supercomputer:
 
@@ -257,7 +260,7 @@ The table has the following columns:
 #. Number of CPUs
 
 QOS view
---------
+^^^^^^^^
 
 The QOS view gives the list of configured QOSes in the supercomputer:
 
@@ -289,7 +292,7 @@ The table has the following columns:
 Empty columns are hidden.
 
 Reservations view
------------------
+^^^^^^^^^^^^^^^^^
 
 The Reservations view gives an overview of current and future reservations set
 on the supercomputer:
@@ -311,7 +314,7 @@ users are prevented from viewing others' reservations. Only admins are
 allowed to consult all the reservations.
 
 Gantt view
-----------
+^^^^^^^^^^
 
 The Gantt view aims to show jobs running, completed or pending, divided up
 according to either nodes or qos. These jobs are represented according to an
@@ -327,7 +330,7 @@ Only jobs of current user will be evaluated for regular users if ``jobs``
 has been defined in Private Data configuration.
 
 Topology view
--------------
+^^^^^^^^^^^^^
 
 The Topology view shows the organization of slurm nodes according to how it is
 defined in the configuration file ```topology.conf``` from Slurm. This
@@ -336,3 +339,88 @@ on a nodeset to see the connected nodes. When you click on a node, a modal is
 opened and shows details about the current job running on the selected node.
 
 .. figure:: img/screenshot_topology_view.*
+
+REST API CLI usage
+------------------
+
+It is possible to send requests to the REST API server component using CLI.
+
+If authentication is disabled on the REST API server, CLI HTTP clients such as
+``curl`` can be directly employed. In this example, the jobs are retrieved in
+JSON format on the REST API server `api.cluster`:
+
+.. code-block:: sh
+
+    curl http://api.cluster/slurm-restapi/jobs
+
+If authentication is enabled, the HTTP client must initially request a valid
+token and provide it in the headers to the following requests. Here is an
+example Python script, relying on the `requests library`_, to retrieve the
+jobs on REST API server with authentication enabled:
+
+.. code-block:: python
+
+     #!/usr/bin/env python
+
+    import requests
+    import getpass
+    import json
+
+    # session must be used if there's network restriction
+    session = requests.Session()
+    session.trust_env = False
+
+    # Replace localhost:cluster by URL:port
+    baseUrl = "https://api.cluster/slurm-restapi"
+
+    versionUrl = baseUrl + "/version"
+    print versionUrl
+    versionResponse = session.get(versionUrl, verify=False)
+    print versionResponse
+    if versionResponse.ok:
+        print versionResponse.content
+    else:
+        versionResponse.raise_for_status()
+
+    loginUrl = baseUrl + "/login"
+    login = raw_input("username: ")
+    if login != 'guest':
+        pswd = getpass.getpass('Password:')
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+
+    if login == 'guest':
+        loginResponse = session.post(
+            loginUrl, headers=headers, json={'guest': True})
+    else:
+        loginResponse = session.post(loginUrl, headers=headers, json={
+                                     'login': login, 'password': pswd})
+
+    if loginResponse.ok:
+        print loginResponse.content
+        userInfos = json.loads(loginResponse.content)
+        authHeader = "Bearer " + userInfos['id_token']
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json', 'Authorization': authHeader}
+        jobsUrl = baseUrl + "/jobs"
+        jobsResponse = session.get(jobsUrl, headers=headers)
+
+        if jobsResponse.ok:
+            print jobsResponse.content
+        else:
+            jobsResponse.raise_for_status()
+    else:
+        # If response code is not ok, print the resulting http error code with
+        # description
+        loginResponse.raise_for_status()
+
+.. _requests library: http://docs.python-requests.org
+
+Edit the ``baseUrl`` variable with the correct URL to the REST API server.
+
+The Python script prompts the user for its login and password then request for
+a valid token to retrieve. Once retrieved, the token is added into the headers
+of the HTTP request to get the jobs in JSON format.
+
+Please note this script does not properly check the SSL certicate on the REST
+API server when using the HTTPS protocol. This script is provided as an example
+and must not be used in production.
