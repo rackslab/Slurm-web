@@ -349,13 +349,13 @@ define([
       row = tab[0];
       column = tab[1];
 
-      if (row / column === 1) {
-        cpuDimensions = Math.min(width, height);
-        cpuDepth = nodeWidth * config.CPUDEPTH;
-      } else {
+      //if (row / column === 1) {
+      //  cpuDimensions = Math.min(width, height);
+      //  cpuDepth = nodeWidth * config.CPUDEPTH;
+      //} else {
         cpuDimensions = Math.min(height / row, width / column);
         cpuDepth = nodeWidth * config.CPUDEPTH;
-      }
+      //}
 
       factorWidth = column * cpuDimensions;
       factorHeight = row * cpuDimensions;
