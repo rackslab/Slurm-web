@@ -348,13 +348,12 @@ Here is an example of a valid configuration file:
   # You can set here an access control list for each view of the dashboard for
   # this cluster.
   # This feature requires authentication to be enabled.
-  # For each view, you can give a list of groups (whose names are prefixed by @)
-  # and logins, to define who can access to this view.
-  # If no ACL is provided for a view, so every authenticated user can access to
+  # For each view, you can give a list of roles to define who
+  # can access to this view.
+  # If no ACL is provided for a view, every authenticated user can access to
   # this view.
-  # i.e. ``jobs = @admin,pierre`` implies that the jobs view will be available
-  # only for every user from the group 'admin', and the user with 'pierre' as
-  # login.
+  # i.e. ``jobs = admin`` implies that the jobs view will be available only
+  # for every user which has role of 'admin'.
   # If you give an empty value for an entry (i.e. ``jobs =``), the corresponding
   # view will not be accessible for anybody.
   #
@@ -362,9 +361,8 @@ Here is an example of a valid configuration file:
   #   'jobs', 'jobsmap', 'partitions', 'reservations', 'qos', 'racks', '3dview',
   #   'gantt', 'topology'
   # ]
-  jobs = @users,@admin
-  gantt = @admin,pierre
-  3dview =
+  jobs = user,admin
+  gantt = admin
 
   [ldap]
   # Configure here settings to connect to your LDAP server.
