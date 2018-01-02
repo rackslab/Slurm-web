@@ -263,14 +263,8 @@ class User(object):
         for xacl in acl:
             view = xacl[0]
             members = xacl[1].split(',')
-            for member in members:
-                if member and member[0] == '@' and self.groups is not None \
-                   and member[1:] in self.groups:
-                    views.remove(view)
-                    break
-                elif member == self.login:
-                    views.remove(view)
-                    break
+            if self.role in members:
+                views.remove(view)
         return list(views)
 
     def get_user_name(self):
