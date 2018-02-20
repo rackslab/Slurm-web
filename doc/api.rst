@@ -18,7 +18,12 @@ It returns an authentication token.
 
 Each method below is a GET method with JSON data. In case when
 authentication is enabled, it must contain a token sent as
-``Authorization`` request header.
+``Authorization`` request header. The second part of the header
+value must be the token:
+
+```
+Authorization: Bearer <TOKEN>
+```
 
 Cluster
 -------
