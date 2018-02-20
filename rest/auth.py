@@ -33,6 +33,7 @@ import pwd
 
 
 guests_allowed = False
+trusted_sources_allowed = False
 all_enabled = True
 auth_enabled = settings.get('config', 'authentication') == 'enable'
 
@@ -65,6 +66,14 @@ if auth_enabled:
         elif not guests_allowed_s == 'disabled':
             print("invalid value '%s' for guests parameter, guests will be "
                   "disabled." % (guests_allowed_s))
+
+    if settings.has_option('roles', 'trusted_sources'):
+        trusted_sources_allowed_s = settings.get('roles', 'trusted_sources')
+        if trusted_sources_allowed_s == 'enabled':
+            trusted_sources_allowed = True
+        elif not trusted_sources_allowed_s == 'disabled':
+            print("invalid value '%s' for trusted_sources parameter, trusted"
+                  " sources will be disabled." % (trusted_sources_allowed_s))
 
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
@@ -168,6 +177,16 @@ class User(object):
             raise AllUnauthorizedError
         return User('guest', 'all')
 
+    # create a trusted_source user
+    @staticmethod
+    def trusted_source(source):
+        if not trusted_sources_allowed:
+            raise AuthenticationError
+        role = User.get_role('trusted_source', source=source)
+        if role == 'all':
+            raise AllUnauthorizedError
+        return User('trusted_source', role)
+
     @staticmethod
     def get_groups_from_ldap(login, password):
 
@@ -208,16 +227,24 @@ class User(object):
             conn.unbind_s()
 
     @staticmethod
-    def get_role(login, groups):
+    def get_role(login, groups=None, source=None):
+        if groups is None:
+            groups = []
         if login in admins:
             return 'admin'
         for group in groups:
             if ("@" + group) in admins:
                 return 'admin'
+        if source is not None:
+            if ("%" + source) in admins:
+                return 'admin'
         if login in users:
             return 'user'
         for group in groups:
             if ("@" + group) in users:
+                return 'user'
+        if source is not None:
+            if ("%" + source) in users:
                 return 'user'
         return 'all'
 
@@ -269,8 +296,8 @@ class User(object):
 
     def get_user_name(self):
         # return user's name from the 1st item of gecos field
-        if self.login == 'guest':
-            return 'guest'
+        if self.login in ['guest', 'trusted_source']:
+            return self.login
         return pwd.getpwnam(self.login)[4].split(',')[0]
 
 
