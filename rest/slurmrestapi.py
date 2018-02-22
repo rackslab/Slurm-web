@@ -92,6 +92,14 @@ def login():
             abort(403, "Guests users are not allowed.")
         except AllUnauthorizedError:
             abort(403, "You do not have any role for this cluster")
+    elif data.get('trusted_source', None) is True:
+        try:
+            source = request.remote_addr
+            user = User.trusted_source(source)
+        except AuthenticationError:
+            abort(403, "Unrecognized source.")
+        except AllUnauthorizedError:
+            abort(403, "No role authorized for this source.")
     else:
         try:
             user = User.user(data['login'],
