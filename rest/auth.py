@@ -183,6 +183,11 @@ class User(object):
         if not trusted_sources_allowed:
             raise AuthenticationError
         role = User.get_role('trusted_source', source=source)
+        # When trusted_sources are allowed, all source IP addresses not
+        # explicitely declared in either the admin or user roles automatically
+        # inherit the `all` role as soon as they set the appropriate parameter
+        # in the login request. To close this breache, raise exception when the
+        # client gets the `all` role, even when all_enabled is True.
         if role == 'all':
             raise AllUnauthorizedError
         return User('trusted_source', role)

@@ -50,7 +50,7 @@ Authentication & Roles
 ----------------------
 
 A client program (dashboard or API client) will get a token that will authorize
-the client to access data from the Slurm API. There is three role levels:
+the client to access data from the Slurm API. There are three role levels:
 
 * ``admin``, all data
 * ``user``, all data concerning the logged-in user
@@ -64,12 +64,11 @@ jobs or reservations if defined.
 
 The role is determined by the authentication and settings in ``restapi.conf``.
 
-There is three kinds of authentication:
+There are three kinds of authentication:
 
 * ``guests``, anonymous access
 * ``user``, username and password matching a real user on the target Slurm
 * ``trusted_sources``, whitelisted client identified by its IP address
-
 
 Guests
 ^^^^^^
@@ -125,8 +124,16 @@ You can set in this section:
 Trusted Sources
 ^^^^^^^^^^^^^^^
 
-When trusted sources are allowed, it is possible to specify an IP address in the
-parameter admin with a ``%`` prefix:
+The REST API can be setup to accept unauthenticated requests from specific
+trusted sources hosts.
+
+ declare trusted sources hosts that can bypass user
+the authentication mechanism
+
+When trusted sources are allowed, the trusted source IP addresses must be
+assigned to either the admin or the user role with a ``%`` prefix. For example,
+to trust 127.0.0.1 (localhost) source IP address and assign it the admin role,
+add the following parameters in the configuration file:
 
 .. code-block:: python
 
@@ -137,4 +144,3 @@ parameter admin with a ``%`` prefix:
   admin = @adminstrators,%127.0.0.1
 
   ...
-
