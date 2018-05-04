@@ -1,3 +1,35 @@
+slurm-web (2.2.3) unstable; urgency=medium
+
+  [ Mehdi Dogguy ]
+  * Handle more node states (IDLE#, DOWN+DRAIN and ALLOCATED#)
+  * Show IDLE+POWER nodes with a slightly darker background
+  * Add state ALLOCATED+DRAIN in colors.js
+
+  [ Yen C. Li ]
+  * Fix regression for 3D view
+  * Doc an example Python script to request REST API
+  * Add required resources for pending jobs
+  * Show clear message when there's no job to display
+  * Complete legends on Rack/JobsMap views
+  * Display spinner when pages are loading
+  * Turn clusters.config.js to json file
+  * Consider allocated cores layout in JobsMap view
+  * Fix regression on node dimension in 3D view
+  * Take rack layout into account in 3D view
+  * Make ACL base on roles
+  * Update screenshots
+
+  [ Thomas HAMEL ]
+  * Implement trusted_source auth mechanism
+
+  [ Rémi Palancher ]
+  * Light doc/comment fix for trusted sources feature
+
+  [ Yen C. Li ]
+  * Improve error messages
+
+ -- Thomas HAMEL <thomas-externe.hamel@edf.fr>  Fri, 04 May 2018 14:36:24 +0200
+
 slurm-web (2.2.2) unstable; urgency=medium
 
   * Add missing parenthesis when calling pyslurm().job
