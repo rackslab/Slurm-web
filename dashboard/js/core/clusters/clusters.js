@@ -127,7 +127,7 @@ define([
 
         if (failingClusters.length) {
           for (index in failingClusters) {
-            errorUtils.setError('Error while fetching cluster ' + failingClusters[index].name + ' : it seems to be unreachable');
+            errorUtils.setError('Cluster ' + failingClusters[index].name + ' seems to be unreachable or under maintenance.');
           }
 
           $('#flash').addClass('display');

@@ -52,6 +52,8 @@ define([
       // status here.
       if (!jqueryXHR.status) {
         errorUtils.setError('Unknown error on request ' + error.type + ' ' + error.url);
+      } else if (jqueryXHR.status === 403 ) {
+        errorUtils.setError('You are not logged in. Please login to continue. (' + jqueryXHR.status + ')');
       } else {
         errorUtils.setError('Error ' + jqueryXHR.status + ' on request ' + error.type + ' ' + error.url);
       }
