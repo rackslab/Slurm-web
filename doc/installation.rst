@@ -511,6 +511,8 @@ Basic configuration file :
 
 - *LOGOURL* (String) : Define the image url in the top left-hand corner.
 
+- *PWDTYPE* (String) : The type of password can be specified here if necessary.
+
 - *JOBS_XTRA_COL* (Hash) : Define an additional optional column if the jobs
   view. This parameter is optional. When set, it must contain the following 3
   parameters:

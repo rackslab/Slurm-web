@@ -73,6 +73,7 @@ define([
     }
 
     this.init = function() {
+      var context;
       var options = ajaxUtils.getAjaxOptions(false);
       options.type = 'POST';
 
@@ -104,7 +105,12 @@ define([
         loginAction(options);
       }
 
-      $('#main').append(template());
+      if(config.PWDTYPE) {
+        context = {
+          pwdtype: '('+config.PWDTYPE+')'
+        };
+      }
+      $('#main').append(template(context));
       $(document).trigger('pageLoaded');
 
       // hack for placeholder in IE
