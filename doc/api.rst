@@ -12,18 +12,22 @@ Login
 
 POST method to authenticate users on the REST API.
 Used when the authentication feature is enabled.
-Give the ``username`` and the ``password`` as JSON parameters.
+Give the ``login`` and the ``password`` as JSON parameters.
 It returns an authentication token.
 
+Example :
+``curl -k -H "Content-Type: application/json" -X POST --data '{"login":"test","password":"test"}' https://mycluster.com/slurm-restapi/login``
 
 Each method below is a GET method with JSON data. In case when
 authentication is enabled, it must contain a token sent as
 ``Authorization`` request header. The second part of the header
 value must be the token:
 
-```
-Authorization: Bearer <TOKEN>
-```
+``Authorization: Bearer <TOKEN>``
+
+Example :
+``curl -k -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -X GET https://mycluster.com/slurm-restapi/racks``
+
 
 Cluster
 -------
