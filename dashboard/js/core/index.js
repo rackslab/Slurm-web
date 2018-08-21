@@ -251,6 +251,19 @@ require([
 
     if (page.hasOwnProperty('refresh')) {
       page.refresh();
+      if(page.hasOwnProperty('stopRefresh')){
+        $("#refreshCheckboxContainer").show();
+        $("#refreshCheckbox").change(function(){
+          if(this.checked){
+            page.refresh();
+          }
+          else{
+            page.stopRefresh();
+          }
+        });
+      }else{
+        $("#refreshCheckboxContainer").show();
+      }
     }
   });
 

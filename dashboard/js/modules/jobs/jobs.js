@@ -393,6 +393,10 @@ define([
       }, config.REFRESH);
     };
 
+    this.stopRefresh = function(){
+      clearInterval(this.interval);
+    }
+
     this.destroy = function(destroyInterval) {
       if (this.interval && destroyInterval) {
         clearInterval(this.interval);
