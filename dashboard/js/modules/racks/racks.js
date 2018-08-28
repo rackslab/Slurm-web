@@ -125,6 +125,10 @@ define([
     this.refresh = function() {
       var self = this;
 
+      this.stopRefresh = function(){
+        clearInterval(this.interval);
+      }
+
       this.interval = setInterval(function() {
         self.saveUI();
         $('#racks').remove();

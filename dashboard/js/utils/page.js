@@ -28,6 +28,9 @@ define([], function() {
     this.refresh = function() {
       return;
     };
+    this.stopRefresh = function() {
+      return;
+    };
     this.destroy = function() {
       return;
     };

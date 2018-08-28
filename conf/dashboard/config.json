@@ -1,6 +1,7 @@
 {
   "STARTPAGE": "jobs",
   "REFRESH": 60000,
+  "REFRESHCHECKBOX": true,
   "MAXNODESLENGTH": 25,
   "AUTOLOGIN": false,
   "LOGOURL": "../static/logo.png"

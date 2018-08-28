@@ -503,6 +503,8 @@ Basic configuration file :
 
 - *REFRESH* (Number) : Time in milliseconds between two api call, used for module refresh.
 
+- *REFRESHCHECKBOX* (Boolean) : Allow to show/hide the refresh control checkbox. Hide if undefined.
+
 - *MAXNODESLENGTH* (Number) : Maximum characters show for the nodes name in "Nodes" column in module Jobs.
 
 - *AUTOLOGIN* (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).

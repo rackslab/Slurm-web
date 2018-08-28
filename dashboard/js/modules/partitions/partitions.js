@@ -79,6 +79,10 @@ define([
       }, config.REFRESH);
     };
 
+    this.stopRefresh = function(){
+      clearInterval(this.interval);
+    }
+
     this.destroy = function() {
       if (this.interval) {
         clearInterval(this.interval);

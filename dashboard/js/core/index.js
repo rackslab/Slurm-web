@@ -251,7 +251,7 @@ require([
 
     if (page.hasOwnProperty('refresh')) {
       page.refresh();
-      if(page.hasOwnProperty('stopRefresh')){
+      if(page.hasOwnProperty('stopRefresh') && config.REFRESHCHECKBOX){
         $("#refreshCheckboxContainer").show();
         $("#refreshCheckbox").change(function(){
           if(this.checked){
@@ -262,7 +262,7 @@ require([
           }
         });
       }else{
-        $("#refreshCheckboxContainer").show();
+        $("#refreshCheckboxContainer").hide();
       }
     }
   });
