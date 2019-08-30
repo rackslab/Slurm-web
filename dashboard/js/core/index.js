@@ -251,20 +251,28 @@ require([
 
     if (page.hasOwnProperty('refresh')) {
       page.refresh();
-      if(page.hasOwnProperty('stopRefresh') && config.REFRESHCHECKBOX){
-        $("#refreshCheckboxContainer").show();
-        $("#refreshCheckbox").change(function(){
-          if(this.checked){
-            page.refresh();
-          }
-          else{
-            page.stopRefresh();
-          }
-        });
-      }else{
-        $("#refreshCheckboxContainer").hide();
-      }
     }
+
+    if (page.hasOwnProperty('stopRefresh') && config.REFRESHCHECKBOX) {
+      $("#refreshCheckbox").off("change"); // don't stack events
+      $("#refreshCheckbox").change(function() {
+        if (this.checked) {
+          page.refresh();
+        } else {
+          page.stopRefresh();
+        }
+        document.cookie = 'dashboardRefresh='+this.checked+'; max-age=31536000';
+      });
+      var cookieCheck = document.cookie.replace(/(?:(?:^|.*;\s*)dashboardRefresh\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "false";
+      $("#refreshCheckbox").prop('checked', cookieCheck);
+      if (!cookieCheck) {
+        page.stopRefresh();
+      }
+      $("#refreshCheckboxContainer").show();
+    } else {
+      $("#refreshCheckboxContainer").hide();
+    }
+
   });
 
   $(window).resize(function() {

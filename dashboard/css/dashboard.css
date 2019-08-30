@@ -20,8 +20,9 @@ canvas {
 }
 
 #refreshCheckboxContainer {
-  position: relative;
-  left: 95%;
+  position: absolute;
+  top: 7px;
+  right: 10px;
 }
 
 /*
