@@ -1,3 +1,12 @@
+slurm-web (2.2.4) unstable; urgency=medium
+
+  [ Frédéric Ballan ]
+  * Try to log in current cluster first
+  * Allow switch to login page if unauthorized
+  * Enhance auto-refresh checkbox's behavior
+
+ -- Frédéric BALLAN <frederic-externe.ballan@edf.fr>  Fri, 30 August 2019 15:39:45 +0200
+
 slurm-web (2.2.3) unstable; urgency=medium
 
   [ Mehdi Dogguy ]
