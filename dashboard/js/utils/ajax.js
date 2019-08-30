@@ -35,6 +35,7 @@ define([
       // the logout to the current cluster only when autologin is on. This has
       // the effect to avoid a global logout when only one cluster failed.
       $(document).trigger('logout', true);
+      return; // otherwise errorUtils below prevents page switching
     }
 
     // Ignore error for /cluster here because this route is used to
