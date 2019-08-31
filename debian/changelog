@@ -5,7 +5,7 @@ slurm-web (2.2.4) unstable; urgency=medium
   * Allow switch to login page if unauthorized
   * Enhance auto-refresh checkbox's behavior
 
- -- Frédéric BALLAN <frederic-externe.ballan@edf.fr>  Fri, 30 August 2019 15:39:45 +0200
+ -- Frédéric BALLAN <frederic-externe.ballan@edf.fr>  Fri, 30 Aug 2019 15:39:45 +0200
 
 slurm-web (2.2.3) unstable; urgency=medium
 
