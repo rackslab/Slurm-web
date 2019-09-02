@@ -1,5 +1,8 @@
 slurm-web (2.2.4) unstable; urgency=medium
 
+  [ esolares ]
+  * Fixed month abbreviation in debian/changelog
+
   [ Frédéric Ballan ]
   * Try to log in current cluster first
   * Allow switch to login page if unauthorized
