@@ -20,7 +20,7 @@
 
 import ldap
 import json
-from flask import request, abort, jsonify
+from flask import request, abort, jsonify, Response
 from settings import settings
 from functools import wraps
 from werkzeug.exceptions import Forbidden
@@ -311,6 +311,8 @@ def authentication_verify():
         @wraps(f)
         def inner(*args, **kwargs):
             resp = f(*args, **kwargs)
+            if type(resp) is Response:
+                return resp
             if not auth_enabled:
                 return jsonify(resp)
 

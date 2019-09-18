@@ -483,9 +483,17 @@ def sinfo():
           'nodelist': str(nodeset),
         })
 
-    # Jsonify can not works on list, thus using json.dumps
+    # Jsonify <v0.11 can not work on lists, thus using json.dumps
     # And making sure headers are properly set
-    return make_response(json.dumps(resp), mimetype='application/json')
+    indent = None
+    separators = (',', ':')
+    if app.config.get('JSONIFY_PRETTYPRINT_REGULAR', False) \
+            and not request.is_xhr:
+        indent = 2
+        separators = (', ', ': ')
+    return app.response_class(
+        (json.dumps(resp, indent=indent, separators=separators), '\n'),
+        mimetype='application/json')
 
 
 # The purpose of the /proxy and /static routes is just to make CORS work on IE9
