@@ -1,3 +1,11 @@
+slurm-web (2.2.5) unstable; urgency=medium
+
+  [ Frédéric Ballan ]
+  * Fix a bug with /sinfo rest point
+  * Fix 2.2.4 changelog
+
+ -- Frédéric Ballan <frederic-externe.ballan@edf.fr>  Wed, 18 Sep 2019 14:15:20 +0200
+
 slurm-web (2.2.4) unstable; urgency=medium
 
   [ esolares ]
