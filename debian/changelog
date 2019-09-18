@@ -8,6 +8,22 @@ slurm-web (2.2.4) unstable; urgency=medium
   * Allow switch to login page if unauthorized
   * Enhance auto-refresh checkbox's behavior
 
+  [ Kevin Dice ]
+  * Force munged to suppress bound to socket error #168
+
+  [ Mehdi Dogguy ]
+  * Set default refresh delay to 1min
+
+  [ Nicolas Meaux ]
+  * give some docs examples for api login
+
+  [ Yen C. Li ]
+  * Fix regression on allocated cores layout
+  * Empty nodes should not be ignored
+  * User may disable pages from auto-refreshing
+  * Add advance refresh checkbox control
+  * Add possibility for password hint
+
  -- Frédéric BALLAN <frederic-externe.ballan@edf.fr>  Fri, 30 Aug 2019 15:39:45 +0200
 
 slurm-web (2.2.3) unstable; urgency=medium
