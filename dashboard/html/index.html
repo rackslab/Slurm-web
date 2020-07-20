@@ -12,6 +12,14 @@
     <link href="/javascript/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/javascript/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <style> html{display:none;} </style>
+    <script>
+      if (self == top) {
+        document.documentElement.style.display = 'block';
+      } else {
+        top.location = self.location;
+      }
+    </script>
   </head>
   <body>
     <script type="text/javascript" data-main="js/core/index" src="/javascript/requirejs/require.min.js"></script>
