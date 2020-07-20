@@ -1,3 +1,11 @@
+slurm-web (2.2.6) unstable; urgency=medium
+
+  * Close some vulnerabilities
+  * Show total amount of cpus on running processes
+  * Improve readability on the pie charts
+
+ -- Frédéric Ballan <frederic-externe.ballan@edf.fr>  Mon, 20 Jul 2020 18:30:41 +0200
+
 slurm-web (2.2.5) unstable; urgency=medium
 
   [ Frédéric Ballan ]

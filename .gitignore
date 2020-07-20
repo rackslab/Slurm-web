@@ -2,3 +2,4 @@
 *.min.js
 doc/_build
 dashboard/js/fonts
+.vscode
