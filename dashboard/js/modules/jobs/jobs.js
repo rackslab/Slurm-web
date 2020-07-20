@@ -89,6 +89,7 @@ define([
       if (self.tagsinputOptions.length > 0) {
         tagsinputUtils.filterJobs(jobs, self.tagsinputOptions, config, filteredJobs);
       } else {
+        $('#total-cpus').text('');
         filteredJobs(jobs, jobs);
       }
     }
@@ -393,7 +394,7 @@ define([
       }, config.REFRESH);
     };
 
-    this.stopRefresh = function(){
+    this.stopRefresh = function() {
       clearInterval(this.interval);
     }
 

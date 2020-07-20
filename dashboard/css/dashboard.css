@@ -500,6 +500,11 @@ border: none;
   margin: 100px;
 }
 
+#total-cpus {
+  float:left;
+  margin-top: -1.5em;
+}
+
 .typeahead,
 .tt-query,
 .tt-hint {

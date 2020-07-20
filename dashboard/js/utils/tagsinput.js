@@ -186,16 +186,26 @@ define([
               return false;
             });
 
+            let totalCpus = 0;
             for (i = 0; i < jobsFiltered.length; i++) {
               result[jobsFiltered[i].key] = jobsFiltered[i];
+              if (jobsFiltered[i].job_state === 'RUNNING') {
+                totalCpus += jobsFiltered[i].num_cpus;
+              }
             }
+            $('#total-cpus').text(totalCpus+' cœurs utilisés');
 
             return callback(jobs, result);
           });
       } else {
+        let totalCpus = 0;
         for (i = 0; i < jobsFiltered.length; i++) {
           result[jobsFiltered[i].key] = jobsFiltered[i];
+          if (jobsFiltered[i].job_state === 'RUNNING') {
+            totalCpus += jobsFiltered[i].num_cpus;
+          }
         }
+        $('#total-cpus').text(totalCpus+' cœurs utilisés');
 
         return callback(jobs, result);
       }
