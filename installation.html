@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; Slurm-web 2.2.0 documentation</title>
+  <title>Installation Guide &mdash; Slurm-web 2.2.6 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
-        <link rel="next" title="Dashboard usage" href="usage.html"/>
+    <link rel="top" title="Slurm-web 2.2.6 documentation" href="index.html"/>
+        <link rel="next" title="Users Guide" href="usage.html"/>
         <link rel="prev" title="Introduction" href="introduction.html"/> 
 
   
@@ -66,19 +66,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Dashboard usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobs-view">Jobs view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#racks-view">Racks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobsmap-view">JobsMap view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Users Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#dashboard-usage">Dashboard usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#rest-api-cli-usage">REST API CLI usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-roles">Authentication &amp; Roles</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
@@ -436,13 +430,12 @@ Here is an example of a valid configuration file:</p>
 <span class="c"># You can set here an access control list for each view of the dashboard for</span>
 <span class="c"># this cluster.</span>
 <span class="c"># This feature requires authentication to be enabled.</span>
-<span class="c"># For each view, you can give a list of groups (whose names are prefixed by @)</span>
-<span class="c"># and logins, to define who can access to this view.</span>
-<span class="c"># If no ACL is provided for a view, so every authenticated user can access to</span>
+<span class="c"># For each view, you can give a list of roles to define who can access to this</span>
+<span class="c"># view.</span>
+<span class="c"># If no ACL is provided for a view, every authenticated user can access to</span>
 <span class="c"># this view.</span>
-<span class="c"># i.e. ``jobs = @admin,pierre`` implies that the jobs view will be available</span>
-<span class="c"># only for every user from the group &#39;admin&#39;, and the user with &#39;pierre&#39; as</span>
-<span class="c"># login.</span>
+<span class="c"># i.e. ``jobs = admin`` implies that the jobs view will be available only for</span>
+<span class="c"># every user which has role of &#39;admin&#39;.</span>
 <span class="c"># If you give an empty value for an entry (i.e. ``jobs =``), the corresponding</span>
 <span class="c"># view will not be accessible for anybody.</span>
 <span class="c">#</span>
@@ -450,9 +443,8 @@ Here is an example of a valid configuration file:</p>
 <span class="c">#   &#39;jobs&#39;, &#39;jobsmap&#39;, &#39;partitions&#39;, &#39;reservations&#39;, &#39;qos&#39;, &#39;racks&#39;, &#39;3dview&#39;,</span>
 <span class="c">#   &#39;gantt&#39;, &#39;topology&#39;</span>
 <span class="c"># ]</span>
-<span class="n">jobs</span> <span class="o">=</span> <span class="nd">@users</span><span class="p">,</span><span class="nd">@admin</span>
-<span class="n">gantt</span> <span class="o">=</span> <span class="nd">@admin</span><span class="p">,</span><span class="n">pierre</span>
-<span class="mi">3</span><span class="n">dview</span> <span class="o">=</span>
+<span class="n">jobs</span> <span class="o">=</span> <span class="n">user</span><span class="p">,</span><span class="n">admin</span>
+<span class="n">gantt</span> <span class="o">=</span> <span class="n">admin</span>
 
 <span class="p">[</span><span class="n">ldap</span><span class="p">]</span>
 <span class="c"># Configure here settings to connect to your LDAP server.</span>
@@ -580,11 +572,15 @@ slurmctld.</p>
 </li>
 <li><p class="first"><em>REFRESH</em> (Number) : Time in milliseconds between two api call, used for module refresh.</p>
 </li>
+<li><p class="first"><em>REFRESHCHECKBOX</em> (Boolean) : Allow to show/hide the refresh control checkbox. Hide if undefined.</p>
+</li>
 <li><p class="first"><em>MAXNODESLENGTH</em> (Number) : Maximum characters show for the nodes name in &#8220;Nodes&#8221; column in module Jobs.</p>
 </li>
 <li><p class="first"><em>AUTOLOGIN</em> (Boolean) : Enable/disable automatic login on all clusters (optionnal: disabled if omitted).</p>
 </li>
 <li><p class="first"><em>LOGOURL</em> (String) : Define the image url in the top left-hand corner.</p>
+</li>
+<li><p class="first"><em>PWDTYPE</em> (String) : The type of password can be specified here if necessary.</p>
 </li>
 <li><p class="first"><em>JOBS_XTRA_COL</em> (Hash) : Define an additional optional column if the jobs
 view. This parameter is optional. When set, it must contain the following 3
@@ -890,12 +886,12 @@ appears for all running jobs. This link redirects to an HTTP URL on
 </li>
 </ul>
 </div>
-<div class="section" id="clusters-clusters-config-js">
-<h4>Clusters <tt class="docutils literal"><span class="pre">clusters.config.js</span></tt><a class="headerlink" href="#clusters-clusters-config-js" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="clusters-clusters-config-json">
+<h4>Clusters <tt class="docutils literal"><span class="pre">clusters.config.json</span></tt><a class="headerlink" href="#clusters-clusters-config-json" title="Permalink to this headline">¶</a></h4>
 <p>The Slurm-web Dashboard can retrieve informations from several REST APIs hosted
 on different servers. Simply set the address of each one to reach them, like
 in the example below :</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">clusters</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">[</span>
   <span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;My first cluster&quot;</span><span class="p">,</span>
     <span class="s2">&quot;api&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -917,8 +913,8 @@ in the example below :</p>
 default the REST API is configured to be reached on the route <tt class="docutils literal"><span class="pre">/slurm-restapi</span></tt>
 ).</p>
 <p>If you have only one cluster hosted on the same server than the dashboard, use
-an empty array to set <tt class="docutils literal"><span class="pre">window.clusters</span></tt>:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+an empty array :</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">[]</span>
 </pre></div>
 </div>
 </div>
@@ -932,7 +928,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="usage.html" class="btn btn-neutral float-right" title="Dashboard usage"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Users Guide"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="introduction.html" class="btn btn-neutral" title="Introduction"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -944,7 +940,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, EDF CCN-HPC.
+        &copy; Copyright 2015-2020, EDF CCN-HPC.
     </p>
   </div>
 
@@ -964,7 +960,7 @@ an empty array to set <tt class="docutils literal"><span class="pre">window.clus
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.2.0',
+            VERSION:'2.2.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

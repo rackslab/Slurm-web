@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>REST API reference &mdash; Slurm-web 2.2.0 documentation</title>
+  <title>REST API reference &mdash; Slurm-web 2.2.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.6 documentation" href="index.html"/>
         <link rel="next" title="How to contribute or add page" href="contribute.html"/>
         <link rel="prev" title="Software architecture" href="architecture.html"/> 
 
@@ -66,19 +66,13 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Dashboard usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobs-view">Jobs view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#racks-view">Racks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobsmap-view">JobsMap view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Users Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#dashboard-usage">Dashboard usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#rest-api-cli-usage">REST API CLI usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-roles">Authentication &amp; Roles</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">REST API reference</a><ul>
@@ -152,11 +146,17 @@ Useful to test if the API is up and running.</p>
 <h2>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h2>
 <p>POST method to authenticate users on the REST API.
 Used when the authentication feature is enabled.
-Give the <tt class="docutils literal"><span class="pre">username</span></tt> and the <tt class="docutils literal"><span class="pre">password</span></tt> as JSON parameters.
+Give the <tt class="docutils literal"><span class="pre">login</span></tt> and the <tt class="docutils literal"><span class="pre">password</span></tt> as JSON parameters.
 It returns an authentication token.</p>
+<p>Example :
+<tt class="docutils literal"><span class="pre">curl</span> <span class="pre">-k</span> <span class="pre">-H</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">-X</span> <span class="pre">POST</span> <span class="pre">--data</span> <span class="pre">'{&quot;login&quot;:&quot;test&quot;,&quot;password&quot;:&quot;test&quot;}'</span> <span class="pre">https://mycluster.com/slurm-restapi/login</span></tt></p>
 <p>Each method below is a GET method with JSON data. In case when
 authentication is enabled, it must contain a token sent as
-<tt class="docutils literal"><span class="pre">Authorization</span></tt> request header.</p>
+<tt class="docutils literal"><span class="pre">Authorization</span></tt> request header. The second part of the header
+value must be the token:</p>
+<p><tt class="docutils literal"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;TOKEN&gt;</span></tt></p>
+<p>Example :
+<tt class="docutils literal"><span class="pre">curl</span> <span class="pre">-k</span> <span class="pre">-H</span> <span class="pre">&quot;Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;TOKEN&gt;&quot;</span> <span class="pre">-H</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">https://mycluster.com/slurm-restapi/racks</span></tt></p>
 </div>
 <div class="section" id="cluster">
 <h2>Cluster<a class="headerlink" href="#cluster" title="Permalink to this headline">¶</a></h2>
@@ -255,7 +255,7 @@ No authentication needed for this route.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, EDF CCN-HPC.
+        &copy; Copyright 2015-2020, EDF CCN-HPC.
     </p>
   </div>
 
@@ -275,7 +275,7 @@ No authentication needed for this route.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.2.0',
+            VERSION:'2.2.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

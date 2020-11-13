@@ -46,9 +46,38 @@ The dashboard relies on the backend API, but the reverse is not true. The
 backend API can be used standalone to serve data for other external
 applications.
 
+Authentication & Roles
+----------------------
 
-Authentication mechanism
-------------------------
+A client program (dashboard or API client) will get a token that will authorize
+the client to access data from the Slurm API. There are three role levels:
+
+* ``admin``, all data
+* ``user``, all data concerning the logged-in user
+* ``all``, data publicly accessible
+
+Slurm-web also takes into account of the Private data parameter from
+`Slurm <https://slurm.schedmd.com/slurm.conf.html>`_. So far, only the Jobs
+View and Reservations View in Slurm-web are concerned by Private Data
+parameter. This feature prevents regular users and guests from seeing others'
+jobs or reservations if defined.
+
+The role is determined by the authentication and settings in ``restapi.conf``.
+
+There are three kinds of authentication:
+
+* ``guests``, anonymous access
+* ``user``, username and password matching a real user on the target Slurm
+* ``trusted_sources``, whitelisted client identified by its IP address
+
+Guests
+^^^^^^
+
+When the guest mode is enabled, login is not mandatory. A guest user always has the
+``all`` role.
+
+User Authentication
+^^^^^^^^^^^^^^^^^^^
 
 Slurm-web owns its authentication system based on an LDAP server. This feature
 can be enabled by turning the value of the parameter ``authentication`` in the
@@ -92,8 +121,26 @@ You can set in this section:
 - *ugroup* : the LDAP group which the users are members
 - *expiration* : the TTL of the generated token
 
-Slurm-web also takes into account of the Private data parameter from
-`Slurm <https://slurm.schedmd.com/slurm.conf.html>`_. So far, only the Jobs
-View and Reservations View in Slurm-web are concerned by Private Data
-parameter. This feature prevents regular users and guests from seeing others'
-jobs or reservations if defined.
+Trusted Sources
+^^^^^^^^^^^^^^^
+
+The REST API can be setup to accept unauthenticated requests from specific
+trusted sources hosts.
+
+ declare trusted sources hosts that can bypass user
+the authentication mechanism
+
+When trusted sources are allowed, the trusted source IP addresses must be
+assigned to either the admin or the user role with a ``%`` prefix. For example,
+to trust 127.0.0.1 (localhost) source IP address and assign it the admin role,
+add the following parameters in the configuration file:
+
+.. code-block:: python
+
+  ...
+
+  [roles]
+  trusted_sources = enabled
+  admin = @adminstrators,%127.0.0.1
+
+  ...

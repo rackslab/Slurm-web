@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Software architecture &mdash; Slurm-web 2.2.0 documentation</title>
+  <title>Software architecture &mdash; Slurm-web 2.2.6 documentation</title>
   
 
   
@@ -28,9 +28,9 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.6 documentation" href="index.html"/>
         <link rel="next" title="REST API reference" href="api.html"/>
-        <link rel="prev" title="Dashboard usage" href="usage.html"/> 
+        <link rel="prev" title="Users Guide" href="usage.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -66,19 +66,13 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Dashboard usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobs-view">Jobs view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#racks-view">Racks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#jobsmap-view">JobsMap view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#partitions-view">Partitions view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#qos-view">QOS view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#reservations-view">Reservations view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#gantt-view">Gantt view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#topology-view">Topology view</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Users Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#dashboard-usage">Dashboard usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#rest-api-cli-usage">REST API CLI usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Software architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#authentication-mechanism">Authentication mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-roles">Authentication &amp; Roles</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
@@ -176,8 +170,34 @@ for users.</p>
 <p>The dashboard relies on the backend API, but the reverse is not true. The
 backend API can be used standalone to serve data for other external
 applications.</p>
-<div class="section" id="authentication-mechanism">
-<h2>Authentication mechanism<a class="headerlink" href="#authentication-mechanism" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="authentication-roles">
+<h2>Authentication &amp; Roles<a class="headerlink" href="#authentication-roles" title="Permalink to this headline">¶</a></h2>
+<p>A client program (dashboard or API client) will get a token that will authorize
+the client to access data from the Slurm API. There are three role levels:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">admin</span></tt>, all data</li>
+<li><tt class="docutils literal"><span class="pre">user</span></tt>, all data concerning the logged-in user</li>
+<li><tt class="docutils literal"><span class="pre">all</span></tt>, data publicly accessible</li>
+</ul>
+<p>Slurm-web also takes into account of the Private data parameter from
+<a class="reference external" href="https://slurm.schedmd.com/slurm.conf.html">Slurm</a>. So far, only the Jobs
+View and Reservations View in Slurm-web are concerned by Private Data
+parameter. This feature prevents regular users and guests from seeing others&#8217;
+jobs or reservations if defined.</p>
+<p>The role is determined by the authentication and settings in <tt class="docutils literal"><span class="pre">restapi.conf</span></tt>.</p>
+<p>There are three kinds of authentication:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">guests</span></tt>, anonymous access</li>
+<li><tt class="docutils literal"><span class="pre">user</span></tt>, username and password matching a real user on the target Slurm</li>
+<li><tt class="docutils literal"><span class="pre">trusted_sources</span></tt>, whitelisted client identified by its IP address</li>
+</ul>
+<div class="section" id="guests">
+<h3>Guests<a class="headerlink" href="#guests" title="Permalink to this headline">¶</a></h3>
+<p>When the guest mode is enabled, login is not mandatory. A guest user always has the
+<tt class="docutils literal"><span class="pre">all</span></tt> role.</p>
+</div>
+<div class="section" id="user-authentication">
+<h3>User Authentication<a class="headerlink" href="#user-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Slurm-web owns its authentication system based on an LDAP server. This feature
 can be enabled by turning the value of the parameter <tt class="docutils literal"><span class="pre">authentication</span></tt> in the
 <tt class="docutils literal"><span class="pre">config</span></tt> section of the file <tt class="docutils literal"><span class="pre">restapi.conf</span></tt> to <tt class="docutils literal"><span class="pre">enable</span></tt>.</p>
@@ -213,11 +233,28 @@ LDAP server to be used with Slurm-web:</p>
 <li><em>ugroup</em> : the LDAP group which the users are members</li>
 <li><em>expiration</em> : the TTL of the generated token</li>
 </ul>
-<p>Slurm-web also takes into account of the Private data parameter from
-<a class="reference external" href="https://slurm.schedmd.com/slurm.conf.html">Slurm</a>. So far, only the Jobs
-View and Reservations View in Slurm-web are concerned by Private Data
-parameter. This feature prevents regular users and guests from seeing others&#8217;
-jobs or reservations if defined.</p>
+</div>
+<div class="section" id="trusted-sources">
+<h3>Trusted Sources<a class="headerlink" href="#trusted-sources" title="Permalink to this headline">¶</a></h3>
+<p>The REST API can be setup to accept unauthenticated requests from specific
+trusted sources hosts.</p>
+<blockquote>
+<div>declare trusted sources hosts that can bypass user</div></blockquote>
+<p>the authentication mechanism</p>
+<p>When trusted sources are allowed, the trusted source IP addresses must be
+assigned to either the admin or the user role with a <tt class="docutils literal"><span class="pre">%</span></tt> prefix. For example,
+to trust 127.0.0.1 (localhost) source IP address and assign it the admin role,
+add the following parameters in the configuration file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+
+<span class="p">[</span><span class="n">roles</span><span class="p">]</span>
+<span class="n">trusted_sources</span> <span class="o">=</span> <span class="n">enabled</span>
+<span class="n">admin</span> <span class="o">=</span> <span class="nd">@adminstrators</span><span class="p">,</span><span class="o">%</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -230,7 +267,7 @@ jobs or reservations if defined.</p>
         <a href="api.html" class="btn btn-neutral float-right" title="REST API reference"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="usage.html" class="btn btn-neutral" title="Dashboard usage"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral" title="Users Guide"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -239,7 +276,7 @@ jobs or reservations if defined.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, EDF CCN-HPC.
+        &copy; Copyright 2015-2020, EDF CCN-HPC.
     </p>
   </div>
 
@@ -259,7 +296,7 @@ jobs or reservations if defined.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.2.0',
+            VERSION:'2.2.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

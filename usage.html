@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dashboard usage &mdash; Slurm-web 2.2.0 documentation</title>
+  <title>Users Guide &mdash; Slurm-web 2.2.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Slurm-web 2.2.0 documentation" href="index.html"/>
+    <link rel="top" title="Slurm-web 2.2.6 documentation" href="index.html"/>
         <link rel="next" title="Software architecture" href="architecture.html"/>
         <link rel="prev" title="Installation Guide" href="installation.html"/> 
 
@@ -66,19 +66,13 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Dashboard usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#jobs-view">Jobs view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#racks-view">Racks view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#jobsmap-view">JobsMap view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#partitions-view">Partitions view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#qos-view">QOS view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reservations-view">Reservations view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gantt-view">Gantt view</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#topology-view">Topology view</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Users Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dashboard-usage">Dashboard usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rest-api-cli-usage">REST API CLI usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Software architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-mechanism">Authentication mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#authentication-roles">Authentication &amp; Roles</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">REST API reference</a><ul>
@@ -130,7 +124,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Dashboard usage</li>
+    <li>Users Guide</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/usage.txt" rel="nofollow"> View page source</a>
@@ -141,8 +135,10 @@
 </div>
           <div role="main">
             
-  <div class="section" id="dashboard-usage">
-<h1>Dashboard usage<a class="headerlink" href="#dashboard-usage" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="users-guide">
+<h1>Users Guide<a class="headerlink" href="#users-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dashboard-usage">
+<h2>Dashboard usage<a class="headerlink" href="#dashboard-usage" title="Permalink to this headline">¶</a></h2>
 <p>To start using the web dashboard, first connect to this URL with a web browser
 (where <em>server</em> is the network hostname of the server hosting the dashboard):
 <a class="reference external" href="http://server/slurm/">http://server/slurm/</a></p>
@@ -171,7 +167,7 @@ which looks like the following screenshot:</p>
 <p>The last entry concerns the user&#8217;s authentication. It is not displayed if this
 feature is disabled.</p>
 <div class="section" id="jobs-view">
-<h2>Jobs view<a class="headerlink" href="#jobs-view" title="Permalink to this headline">¶</a></h2>
+<h3>Jobs view<a class="headerlink" href="#jobs-view" title="Permalink to this headline">¶</a></h3>
 <p>The Jobs view gives an overview of all Slurm jobs currently running or pending
 on the supercomputer.</p>
 <p>At the top of this view, there are 5 pie charts. The biggest one on the left
@@ -297,7 +293,7 @@ can only see their own jobs whereas the superusers see all the jobs and guests
 can see none.</p>
 </div>
 <div class="section" id="racks-view">
-<h2>Racks view<a class="headerlink" href="#racks-view" title="Permalink to this headline">¶</a></h2>
+<h3>Racks view<a class="headerlink" href="#racks-view" title="Permalink to this headline">¶</a></h3>
 <p>The Racks view shows the current status of all nodes in the supercomputer:</p>
 <div class="figure">
 <img alt="_images/screenshot_racks_view.png" src="_images/screenshot_racks_view.png" />
@@ -317,7 +313,7 @@ totally idle, the color stays grey.</p>
 information.</p>
 </div>
 <div class="section" id="jobsmap-view">
-<h2>JobsMap view<a class="headerlink" href="#jobsmap-view" title="Permalink to this headline">¶</a></h2>
+<h3>JobsMap view<a class="headerlink" href="#jobsmap-view" title="Permalink to this headline">¶</a></h3>
 <p>The JobMaps view gives more or less the same information then the Racks view
 with more details about cores allocation:</p>
 <div class="figure">
@@ -336,8 +332,9 @@ these information.</p>
 click on it.</p>
 <p>Once clicked, an information box shows up with the same details about jobs, as
 in the box about job of the Jobs view.</p>
+</div>
 <div class="section" id="d-view">
-<h3>3D View<a class="headerlink" href="#d-view" title="Permalink to this headline">¶</a></h3>
+<h3>3D view<a class="headerlink" href="#d-view" title="Permalink to this headline">¶</a></h3>
 <p>This view shows a representation in three dimensions of the HPC, according to
 how it is defined in the <tt class="docutils literal"><span class="pre">racks.xml</span></tt> file.</p>
 <p>As on the JobsMap view, it gives the activity on each core, showing the color
@@ -355,9 +352,8 @@ direction with the mouse.</li>
 A view with an automatically moving between racks.</li>
 </ul>
 </div>
-</div>
 <div class="section" id="partitions-view">
-<h2>Partitions view<a class="headerlink" href="#partitions-view" title="Permalink to this headline">¶</a></h2>
+<h3>Partitions view<a class="headerlink" href="#partitions-view" title="Permalink to this headline">¶</a></h3>
 <p>The Partitions view give the list of configured partitions in the supercomputer:</p>
 <div class="figure">
 <img alt="_images/screenshot_partitions.png" src="_images/screenshot_partitions.png" />
@@ -372,7 +368,7 @@ A view with an automatically moving between racks.</li>
 </ol>
 </div>
 <div class="section" id="qos-view">
-<h2>QOS view<a class="headerlink" href="#qos-view" title="Permalink to this headline">¶</a></h2>
+<h3>QOS view<a class="headerlink" href="#qos-view" title="Permalink to this headline">¶</a></h3>
 <p>The QOS view gives the list of configured QOSes in the supercomputer:</p>
 <div class="figure">
 <img alt="_images/screenshot_qos.png" src="_images/screenshot_qos.png" />
@@ -403,7 +399,7 @@ A view with an automatically moving between racks.</li>
 <p>Empty columns are hidden.</p>
 </div>
 <div class="section" id="reservations-view">
-<h2>Reservations view<a class="headerlink" href="#reservations-view" title="Permalink to this headline">¶</a></h2>
+<h3>Reservations view<a class="headerlink" href="#reservations-view" title="Permalink to this headline">¶</a></h3>
 <p>The Reservations view gives an overview of current and future reservations set
 on the supercomputer:</p>
 <div class="figure">
@@ -424,7 +420,7 @@ users are prevented from viewing others&#8217; reservations. Only admins are
 allowed to consult all the reservations.</p>
 </div>
 <div class="section" id="gantt-view">
-<h2>Gantt view<a class="headerlink" href="#gantt-view" title="Permalink to this headline">¶</a></h2>
+<h3>Gantt view<a class="headerlink" href="#gantt-view" title="Permalink to this headline">¶</a></h3>
 <p>The Gantt view aims to show jobs running, completed or pending, divided up
 according to either nodes or qos. These jobs are represented according to an
 horizontal axis of time. Running jobs are drawn in blue, completed ones in
@@ -440,7 +436,7 @@ informations in a modal.</p>
 has been defined in Private Data configuration.</p>
 </div>
 <div class="section" id="topology-view">
-<h2>Topology view<a class="headerlink" href="#topology-view" title="Permalink to this headline">¶</a></h2>
+<h3>Topology view<a class="headerlink" href="#topology-view" title="Permalink to this headline">¶</a></h3>
 <p>The Topology view shows the organization of slurm nodes according to how it is
 defined in the configuration file <tt class="docutils literal"><span class="pre">`topology.conf`</span></tt> from Slurm. This
 representation use a force graph. Nodes are grouped by nodesets. You can click
@@ -449,6 +445,82 @@ opened and shows details about the current job running on the selected node.</p>
 <div class="figure">
 <img alt="_images/screenshot_topology_view.png" src="_images/screenshot_topology_view.png" />
 </div>
+</div>
+</div>
+<div class="section" id="rest-api-cli-usage">
+<h2>REST API CLI usage<a class="headerlink" href="#rest-api-cli-usage" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to send requests to the REST API server component using CLI.</p>
+<p>If authentication is disabled on the REST API server, CLI HTTP clients such as
+<tt class="docutils literal"><span class="pre">curl</span></tt> can be directly employed. In this example, the jobs are retrieved in
+JSON format on the REST API server <cite>api.cluster</cite>:</p>
+<div class="highlight-sh"><div class="highlight"><pre>curl http://api.cluster/slurm-restapi/jobs
+</pre></div>
+</div>
+<p>If authentication is enabled, the HTTP client must initially request a valid
+token and provide it in the headers to the following requests. Here is an
+example Python script, relying on the <a class="reference external" href="http://docs.python-requests.org">requests library</a>, to retrieve the
+jobs on REST API server with authentication enabled:</p>
+<div class="highlight-python"><div class="highlight"><pre> <span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c"># session must be used if there&#39;s network restriction</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">trust_env</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># Replace localhost:cluster by URL:port</span>
+<span class="n">baseUrl</span> <span class="o">=</span> <span class="s">&quot;https://api.cluster/slurm-restapi&quot;</span>
+
+<span class="n">versionUrl</span> <span class="o">=</span> <span class="n">baseUrl</span> <span class="o">+</span> <span class="s">&quot;/version&quot;</span>
+<span class="k">print</span> <span class="n">versionUrl</span>
+<span class="n">versionResponse</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">versionUrl</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">versionResponse</span>
+<span class="k">if</span> <span class="n">versionResponse</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">versionResponse</span><span class="o">.</span><span class="n">content</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">versionResponse</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+<span class="n">loginUrl</span> <span class="o">=</span> <span class="n">baseUrl</span> <span class="o">+</span> <span class="s">&quot;/login&quot;</span>
+<span class="n">login</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;username: &quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">login</span> <span class="o">!=</span> <span class="s">&#39;guest&#39;</span><span class="p">:</span>
+    <span class="n">pswd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s">&#39;Password:&#39;</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Accept&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span> <span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">}</span>
+
+<span class="k">if</span> <span class="n">login</span> <span class="o">==</span> <span class="s">&#39;guest&#39;</span><span class="p">:</span>
+    <span class="n">loginResponse</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">loginUrl</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;guest&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">loginResponse</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">loginUrl</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+                                 <span class="s">&#39;login&#39;</span><span class="p">:</span> <span class="n">login</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">pswd</span><span class="p">})</span>
+
+<span class="k">if</span> <span class="n">loginResponse</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">loginResponse</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">userInfos</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">loginResponse</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">authHeader</span> <span class="o">=</span> <span class="s">&quot;Bearer &quot;</span> <span class="o">+</span> <span class="n">userInfos</span><span class="p">[</span><span class="s">&#39;id_token&#39;</span><span class="p">]</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Accept&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span>
+               <span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span> <span class="s">&#39;Authorization&#39;</span><span class="p">:</span> <span class="n">authHeader</span><span class="p">}</span>
+    <span class="n">jobsUrl</span> <span class="o">=</span> <span class="n">baseUrl</span> <span class="o">+</span> <span class="s">&quot;/jobs&quot;</span>
+    <span class="n">jobsResponse</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">jobsUrl</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">jobsResponse</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">jobsResponse</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jobsResponse</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c"># If response code is not ok, print the resulting http error code with</span>
+    <span class="c"># description</span>
+    <span class="n">loginResponse</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Edit the <tt class="docutils literal"><span class="pre">baseUrl</span></tt> variable with the correct URL to the REST API server.</p>
+<p>The Python script prompts the user for its login and password then request for
+a valid token to retrieve. Once retrieved, the token is added into the headers
+of the HTTP request to get the jobs in JSON format.</p>
+<p>Please note this script does not properly check the SSL certicate on the REST
+API server when using the HTTPS protocol. This script is provided as an example
+and must not be used in production.</p>
 </div>
 </div>
 
@@ -470,7 +542,7 @@ opened and shows details about the current job running on the selected node.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, EDF CCN-HPC.
+        &copy; Copyright 2015-2020, EDF CCN-HPC.
     </p>
   </div>
 
@@ -490,7 +562,7 @@ opened and shows details about the current job running on the selected node.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.2.0',
+            VERSION:'2.2.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
