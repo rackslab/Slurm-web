@@ -72,10 +72,38 @@ Installation
 From source
 ^^^^^^^^^^^
 
-Not supported yet. Please contact us if you want to improve this part.
+Installing from source depends on Python pip and Nodejs.
+You can install the pythonic rest api in a virtual environment or system wide.
 
-Docker
-^^^^^^
+Note: YMMV, but installing using setuptools v47.1.0 do not seem to work reliably with native virtual packages eventhough PEP420 support has been
+merged in setuptools [v40.1.0](https://setuptools.readthedocs.io/en/latest/history.html#v40-1-0). I have had personnally more sucess using `pip install .` and thus recommends you do the same.
+
+For the rest api and conf dashboard:
+.. code-block:: bash
+
+    # Optional: create a virtual environment
+    $ python3 -m venv slurm-web-venv
+    $ source slurm-web-venv/bin/activate
+    # Install the rest api and its dependencies
+    $ python3 -m pip install .
+
+For the 'static' website:
+.. code-block:: bash
+
+    $ uglifyjs -o dashboard/js/libraries/xdomain.min.js dashboard/js/libraries/xdomain.js
+    $ mkdir -p dashboard/js/fonts
+    $ nodejs /usr/lib/nodejs/font-converter.js /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf > dashboard/js/fonts/DejaVuSansMono.typeface.js
+
+An optional test framework is available under `src/slurmweb/tests`
+You can install all of its dependencies using:
+
+.. code-block:: bash
+
+    $ cd src/slurmweb/tests
+    $ pip install -r requirements.txt
+
+Docker (OUTDATED: needs work)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To build Slurm-web as a Docker container, you will need to:
 
@@ -869,3 +897,54 @@ an empty array :
 .. code-block:: js
 
   []
+
+
+Running
+-------
+
+As a flask APP
+^^^^^^^^^^^^^^
+
+This is mainly intended to be used as testing purposes as this might not provide
+the expected level of performance and scalability.
+
+The restapi and the backend can be run as a flask application.
+Note that if you installed slurmweb in a python virtual env, you will have to activate it before running flask.
+
+For the restapi:
+.. code-block:: bash
+
+    $ export FLASK_APP=slurmweb.restapi
+    $ flask run
+
+For the conf backend:
+
+.. code-block:: bash
+
+    $ export FLASK_APP=slurmweb.confdashboard
+    $ flask run
+
+And finally the 'static' dashboard can be served as a static website
+
+.. code-block:: bash
+
+    $ cd dashboard && python3 -m SimpleHTTPServer
+
+See the [flask documentation](https://flask.palletsprojects.com/en/1.1.x/quickstart/) for more information.
+
+As a wsgi served by apache
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is the intended production environment.
+
+You will find example configuration files for apache in the conf folder.
+
+.. code-block::
+
+    conf/
+    ├── slurm-web-confdashboard.conf
+    ├── slurm-web-dashboard.conf
+    └── slurm-web-restapi.conf
+
+Those configuration files shall be edited/updated to suit your environment and moved to the apache directory of your distribution.
+
