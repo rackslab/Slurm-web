@@ -29,16 +29,21 @@ following command (or any similar) to build the binary packages::
 The packages should build properly, then you can add them to your own internal
 Debian repository.
 
+RHEL/Centos packages
+^^^^^^^^^^^^^^^^^^^^
+
+On an EL8 based system, using mock, run the following command to build the binary packages::
+
+  mock --mount --isolation=simple --root epel-8 --buildsrpm --spec slurm-web/rhel/slurm-web.spec --sources src/ --resultdir result/
+  mock --mount --old-chroot --root epel-8--rebuild result/slurm-web-2.3.0-1.el8.edf.src.rpm --resultdir result/
+
+The packages should build properly, then you can add them to your own internal
+RHEL repository.
+
 Requirements
 ------------
 
-For the moment, Slurm-web is developed as a native Debian package. This means it
-is very easy to install it and configure it on Debian based GNU/Linux
-distributions (eg. Ubuntu).
-
-However, the drawback is that it becomes much harder to install it on others
-RPM based GNU/Linux distributions (such as RHEL, Centos, Fedora, and so on).
-If you want to improve the situation on these distributions, please contact us.
+Slurm-web is provided with recipes to build a debian or rhel8 package.
 
 The backend API depends on the following libraries:
 
@@ -136,7 +141,10 @@ install these packages with the following command::
 RHEL/Centos
 """""""""""
 
-Not supported yet. Please contact us if you want to improve this part.
+Once the binary packages of Slurm-web are in your internal RHEL repository, simply
+install these packages with the following command::
+
+    yum install slurm-web-restapi slurm-web-dashboard-backend slurm-web-dashboard
 
 Configuration
 -------------
