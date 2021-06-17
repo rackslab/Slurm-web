@@ -2,7 +2,7 @@
 # Main preamble
 Summary: Slurm Web Python REST API
 Name: slurm-web
-Version: 2.3.0
+Version: 2.3.1
 Release:  1%{?dist}.edf
 Source0: %{name}-%{version}.tar.gz
 License: GPLv3
@@ -11,7 +11,7 @@ Prefix: %{_prefix}
 Vendor: EDF CCN HPC <dsp-cspito-ccn-hpc@edf.fr>
 Url: https://github.com/scibian/%{__name}
 
-BuildRequires: python36 python3-pip
+BuildRequires: python36 python3-pip python3-pip-wheel
 Requires: slurm-web-dashboard slurm-web-dashboard-backend slurm-web-restapi
 
 %description
@@ -65,7 +65,7 @@ Static Flask server to supply config files for the dashboard
 
 %package restapi
 Summary: Slurm Web Python REST API
-Requires: python36 python3-flask python3-redis python3-ldap python3-pyslurm python3-Cython
+Requires: python36 python3-flask python3-redis python3-ldap python3-pyslurm python3-Cython python3-itsdangerous python3-simplejson
 %description restapi
 Slurm Web backend  REST API developed in Python using Flask web framework.
 
@@ -78,7 +78,7 @@ Slurm Web backend  REST API developed in Python using Flask web framework.
 %{python3_sitelib}/slurmweb_core*
 
 %files dashboard
-/usr/share/slurm-web/dashboard
+/usr/share/slurm-web/dashboard*
 
 %files dashboard-backend
 %config /etc/slurm-web/dashboard/*
@@ -91,6 +91,64 @@ Slurm Web backend  REST API developed in Python using Flask web framework.
 /usr/share/slurm-web/restapi
 %{python3_sitelib}/slurmweb/restapi
 
+##############################
+# Postinst / Postrm Sections #
+##############################
+%post restapi
+#! /bin/sh
+# postinst script for slurm-web-restapi
+#
+
+set -e
+arg='configure'
+case "$arg" in
+    configure)
+      # If the key file does exist, generate if with linux fast pseudo-random
+      # number generator.
+      if [ ! -e /etc/slurm-web/secret.key ] ; then
+        head -c 64 /dev/urandom > /etc/slurm-web/secret.key
+      fi
+      adduser --system --shell=/bin/sh --no-create-home --home /nonexistent apache
+      chown apache: /etc/slurm-web/secret.key
+      chmod 0400 /etc/slurm-web/secret.key
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
+
+%postun restapi
+#! /bin/sh
+# postrm script for slurm-web-restapi
+set -e
+arg='remove'
+case "$arg" in
+       remove)
+         rm -f /etc/slurm-web/secret.key
+        ;;
+
+       remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+
+        ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+
+esac
+
+exit 0
+
 %changelog
+* Fri Jun 17 2021 Nilce BOUSSAMBA <nilce-externe.boussamba@edf.fr> 2.3.1-1el8.edf
+- Add  postinst & postrm scripts, simplejson python package mandatory to handle Json file & fix some bug related to 2to3 migration
 * Mon Mar 22 2021 Guillaume Ranquet <guillaume-externe.ranquet@edf.fr> 2.3.0-1el8.edf
 - Initial RPM release
