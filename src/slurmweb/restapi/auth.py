@@ -234,7 +234,7 @@ class User(object):
         if login in admins:
             return 'admin'
         for group in groups:
-            if ("@" + group) in admins:
+            if ("@" + group.decode()) in admins:
                 return 'admin'
         if source is not None:
             if ("%" + source) in admins:
@@ -242,7 +242,7 @@ class User(object):
         if login in users:
             return 'user'
         for group in groups:
-            if ("@" + group) in users:
+            if ("@" + group.decode()) in users:
                 return 'user'
         if source is not None:
             if ("%" + source) in users:
