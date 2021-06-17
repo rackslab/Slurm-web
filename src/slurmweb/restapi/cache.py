@@ -80,7 +80,7 @@ def get_from_cache(f, overrideName=None, *args, **kwargs):
     cache_key = "%s-%s" % (
         f.__name__ if overrideName is None else overrideName,
         ''.join("%s-%r" % (key, val) for (key,
-                                          val) in kwargs.iteritems())
+                                          val) in kwargs.items())
     )
 
     try:

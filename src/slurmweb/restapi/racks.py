@@ -42,7 +42,7 @@ class Racksrow(object):
     @staticmethod
     def racksrow2dict(racksrow):
         xracks = {}
-        for name, rack in racksrow.racks.iteritems():
+        for name, rack in racksrow.racks.items():
             xracks[rack.name] = Rack.rack2dict(rack)
         return xracks
 

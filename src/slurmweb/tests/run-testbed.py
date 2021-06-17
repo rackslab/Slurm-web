@@ -78,7 +78,7 @@ class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
             filename = self.path.split('/')[-1]
             r = requests.get('http://localhost:2010/' + filename)
             self.send_response(r.status_code)
-            for key, value in r.headers.iteritems():
+            for key, value in r.headers.items():
                 self.send_header(key, value)
             self.end_headers()
             self.wfile.write(r.content)
@@ -90,7 +90,7 @@ class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
                       % (r.url,
                          r.status_code,
                          str(r.headers)))
-            for key, value in r.headers.iteritems():
+            for key, value in r.headers.items():
                 if key not in [ 'connection',
                                 'keep-alive',
                                 'content-encoding',
