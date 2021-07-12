@@ -1,4 +1,4 @@
 conf/slurm-web-confdashboard.conf etc/apache2/conf-available
 conf/dashboard/* etc/slurm-web/dashboard
-debian_slurm-web/usr/local/lib/python3.*/*/slurmweb/confdashboard/slurm-web-conf.wsgi usr/share/slurm-web/conf-server
-debian_slurm-web/usr/local/lib/python3.*/*/slurmweb/confdashboard/ usr/lib/python3/dist-packages/slurmweb
+usr/lib/python*/*/slurmweb/confdashboard/slurm-web-conf.wsgi usr/share/slurm-web/conf-server
+usr/lib/python*/*/slurmweb/confdashboard/*.py
