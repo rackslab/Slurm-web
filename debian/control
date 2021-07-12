@@ -14,15 +14,25 @@ Build-Depends:
  fonts-dejavu-core,
  node-opentypejs (>> 0.4.3-1),
 
+Package: slurm-web-common
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ ${python3:Depends},
+ python3-flask,
+Description: Slurm Web Python common files
+ Slurm Web common Python module files.
+
 Package: slurm-web-restapi
 Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${python3:Depends},
+ slurm-web-common (= ${binary:Version}),
  apache2 | httpd,
  libapache2-mod-wsgi-py3,
- python3-flask,
  python3-pyslurm (>= 16.05),
  python3-clustershell,
  python3-ldap,
@@ -36,9 +46,9 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${python3:Depends},
+ slurm-web-common (= ${binary:Version}),
  apache2 | httpd,
  libapache2-mod-wsgi-py3,
- python3-flask
 Description: Slurm Web conf dashboard
  Static Flask server to supply config files for the dashboard
 
@@ -69,7 +79,6 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- ${python3:Depends},
  slurm-web-restapi (= ${binary:Version}),
  slurm-web-dashboard (= ${binary:Version})
 Description: Slurm Web meta-package with all components
