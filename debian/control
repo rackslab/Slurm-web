@@ -19,14 +19,14 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ ${python3:Depends},
  apache2 | httpd,
- libapache2-mod-wsgi,
+ libapache2-mod-wsgi-py3,
  python3-flask,
  python3-pyslurm (>= 16.05),
- clustershell,
+ python3-clustershell,
  python3-ldap,
- python3-itsdangerous,
- python3-redis
+ python3-redis,
 Description: Slurm Web Python REST API
  Slurm Web backend  REST API developed in Python using Flask web framework.
 
@@ -35,8 +35,9 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ ${python3:Depends},
  apache2 | httpd,
- libapache2-mod-wsgi,
+ libapache2-mod-wsgi-py3,
  python3-flask
 Description: Slurm Web conf dashboard
  Static Flask server to supply config files for the dashboard
@@ -68,6 +69,7 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ ${python3:Depends},
  slurm-web-restapi (= ${binary:Version}),
  slurm-web-dashboard (= ${binary:Version})
 Description: Slurm Web meta-package with all components
