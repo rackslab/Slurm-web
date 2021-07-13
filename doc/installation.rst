@@ -72,11 +72,8 @@ Installation
 From source
 ^^^^^^^^^^^
 
-Installing from source depends on Python pip and Nodejs.
-You can install the pythonic rest api in a virtual environment or system wide.
-
-Note: YMMV, but installing using setuptools v47.1.0 do not seem to work reliably with native virtual packages eventhough PEP420 support has been
-merged in setuptools [v40.1.0](https://setuptools.readthedocs.io/en/latest/history.html#v40-1-0). I have had personnally more sucess using `pip install .` and thus recommends you do the same.
+Installing from source depends on Python setuptools and Nodejs. You can install
+the REST API in a virtual environment or system wide.
 
 For the rest api and conf dashboard:
 .. code-block:: bash
@@ -85,7 +82,7 @@ For the rest api and conf dashboard:
     $ python3 -m venv slurm-web-venv
     $ source slurm-web-venv/bin/activate
     # Install the rest api and its dependencies
-    $ python3 -m pip install .
+    $ python3 setup.py install
 
 For the 'static' website:
 .. code-block:: bash
