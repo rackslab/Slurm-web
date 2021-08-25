@@ -28,8 +28,8 @@ from mocks.racks import MockRacksXML
 
 def setup_cluster():
 
-    name = u"jupiter"
-    print("setting up cluster %s" % (name))
+    name = "jupiter"
+    print(("setting up cluster %s" % (name)))
     setup = ClusterSetup(name)
     setup.conf = {
             'cors': {
@@ -143,7 +143,7 @@ def setup_cluster():
 
     xqos = SlurmQos('qos_test')
     xqos.grp_jobs = 10
-    xqos.max_tres_pj = u'1=224,4=8'
+    xqos.max_tres_pj = '1=224,4=8'
     xqos.priority = 100
     setup.ctld.qos.add(xqos)
 
@@ -171,19 +171,19 @@ def setup_cluster():
         job.user_id = setup.userbase[0].uid
         job.account = 'physic'
         job.shared = 2^16 - 2
-        job.work_dir = u'/home/pierre'
-        job.command = u'/home/pierre/test.sh'
+        job.work_dir = '/home/pierre'
+        job.command = '/home/pierre/test.sh'
         job.partition = partition.name
         if jobid > 1245:
-            job.wckey = u'Routine'
+            job.wckey = 'Routine'
         else:
-            job.wckey = u'Confidential'
+            job.wckey = 'Confidential'
         setup.ctld.jobs.add(job)
 
         node.alloc_cpus += 1
         if node.alloc_cpus == node.cpus:
-            node.state = u"ALLOCATED"
+            node.state = "ALLOCATED"
         else:
-            node.state = u"MIXED"
+            node.state = "MIXED"
 
     return setup

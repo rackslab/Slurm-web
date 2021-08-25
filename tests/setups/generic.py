@@ -35,4 +35,4 @@ class ClusterSetup(object):
         context.USERBASE = self.userbase
         context.CONF = self.conf
         context.CTLD = self.ctld
-        print("feeding mocks CTLD: userbase: %s" % (str(context.CTLD)))
+        print(("feeding mocks CTLD: userbase: %s" % (str(context.CTLD))))

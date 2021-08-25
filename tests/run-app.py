@@ -51,7 +51,7 @@ parser.add_argument("-d", "--debug",
 args = parser.parse_args()
 
 if args.debug:
-    print "path: %s" % (str(sys.path))
+    print("path: %s" % (str(sys.path)))
 
 if args.app == 'rest':
 
@@ -71,7 +71,7 @@ elif args.app == 'conf':
     from slurmwebconf import app
 
 else:
-    print "unknown app %s" % (args.app)
+    print("unknown app %s" % (args.app))
     sys.exit(1)
 
 

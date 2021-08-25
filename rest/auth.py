@@ -26,7 +26,7 @@ from functools import wraps
 from werkzeug.exceptions import Forbidden
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-from ConfigParser import NoSectionError, NoOptionError
+from configparser import NoSectionError, NoOptionError
 import os
 import platform
 import pwd
@@ -48,12 +48,12 @@ if auth_enabled:
 
     # check secret key file exist or print error otherwise
     if not os.path.exists(secret_key_file):
-        print "Secret key file %s does not exists" % (secret_key_file)
+        print("Secret key file %s does not exists" % (secret_key_file))
 
     try:
         secret_key = open(secret_key_file, 'rb').read()
     except IOError:
-        print "IO error with secret key file %s" % (secret_key_file)
+        print("IO error with secret key file %s" % (secret_key_file))
         # fallback to bad secret key
         secret_key = b"badsecretkey"
 
@@ -64,16 +64,16 @@ if auth_enabled:
         if guests_allowed_s == 'enabled':
             guests_allowed = True
         elif not guests_allowed_s == 'disabled':
-            print("invalid value '%s' for guests parameter, guests will be "
-                  "disabled." % (guests_allowed_s))
+            print(("invalid value '%s' for guests parameter, guests will be "
+                  "disabled." % (guests_allowed_s)))
 
     if settings.has_option('roles', 'trusted_sources'):
         trusted_sources_allowed_s = settings.get('roles', 'trusted_sources')
         if trusted_sources_allowed_s == 'enabled':
             trusted_sources_allowed = True
         elif not trusted_sources_allowed_s == 'disabled':
-            print("invalid value '%s' for trusted_sources parameter, trusted"
-                  " sources will be disabled." % (trusted_sources_allowed_s))
+            print(("invalid value '%s' for trusted_sources parameter, trusted"
+                  " sources will be disabled." % (trusted_sources_allowed_s)))
 
     filtered_keys_by_role = {
         'all': settings.get('roles', 'restricted_fields_for_all').split(','),
@@ -87,8 +87,8 @@ if auth_enabled:
         if all_s == 'disabled':
             all_enabled = False
         elif not all_s == 'enabled':
-            print("invalid value '%s' for all parameters, all role will be "
-                  "enabled." % (all_s))
+            print(("invalid value '%s' for all parameters, all role will be "
+                  "enabled." % (all_s)))
 
     users = settings.get('roles', 'user').split(',')
     admins = settings.get('roles', 'admin').split(',')
@@ -150,7 +150,7 @@ class CORSForbidden(Forbidden):
                 ('Access-Control-Allow-Origin', '*')]
 
 
-abort.mapping.update({403: CORSForbidden})
+#abort.mapping.update({403: CORSForbidden})
 
 
 class User(object):
@@ -206,7 +206,7 @@ class User(object):
             user_dn = "uid=%s,%s" % (login, base_people)
             conn.simple_bind_s(user_dn, password)
 
-            print "User %s authenticated" % login
+            print("User %s authenticated" % login)
 
             # search for user's groups
             look_filter = "(|(&(objectClass=*)(member=%s)))" % (user_dn)
@@ -217,15 +217,15 @@ class User(object):
             return groups
 
         except ldap.SERVER_DOWN:
-            print 'The LDAP server is unreachable.'
+            print('The LDAP server is unreachable.')
             raise AuthenticationError
 
         except ldap.INVALID_CREDENTIALS:
-            print "Authentication failed: login id or password is incorrect."
+            print("Authentication failed: login id or password is incorrect.")
             raise AuthenticationError
 
         except ldap.NO_SUCH_OBJECT as e:
-            print "No result found: %s " + str(e)
+            print("No result found: %s " + str(e))
             raise AuthenticationError
 
         finally:
@@ -261,7 +261,7 @@ class User(object):
             'login': self.login,
             'role':  self.role
         })
-        print "generate_auth_token : token -> %s" % token
+        print("generate_auth_token : token -> %s" % token)
         return token
 
     @staticmethod
@@ -269,16 +269,16 @@ class User(object):
         s = Serializer(secret_key)
         try:
             data = s.loads(token)
-            print "verify_auth_token : data -> login id: %s role: %s" \
-                  % (data['login'], data['role'])
+            print("verify_auth_token : data -> login id: %s role: %s" \
+                  % (data['login'], data['role']))
         except SignatureExpired:
-            print "verify_auth_token : SignatureExpired "
+            print("verify_auth_token : SignatureExpired ")
             return None  # valid token, but expired
         except BadSignature:
-            print "verify_auth_token : BadSignature "
+            print("verify_auth_token : BadSignature ")
             return None  # invalid token
         except TypeError:
-            print "verify_auth_token : TypeError"
+            print("verify_auth_token : TypeError")
             return None
 
         if data['login'] == 'guest':
@@ -375,4 +375,4 @@ def fill_job_user(job):
         # user name is the first part of gecos
         uids[uid_s]['username'] = pw[4].split(',')[0]
     job['login'] = uids[uid_s]['login']
-    job['username'] = uids[uid_s]['username']
+    job['username'] = uids[uid_s]['username'].encode('utf-8', 'surrogateescape').decode('utf-8')

@@ -36,9 +36,9 @@ class MockConfigParserClass(object):
 
     def get(self, section, option):
 
-        if section not in context.CONF.keys():
+        if section not in list(context.CONF.keys()):
             raise MockNoSectionError(section)
-        if option not in context.CONF[section].keys():
+        if option not in list(context.CONF[section].keys()):
             raise MockNoOptionError(section, option)
         return context.CONF[section][option]
 
@@ -48,7 +48,7 @@ class MockConfigParserClass(object):
         return option in context.CONF[section]
 
     def items(self, section):
-        return context.CONF[section].keys()
+        return list(context.CONF[section].keys())
 
 
 class MockConfigParserModule(object):

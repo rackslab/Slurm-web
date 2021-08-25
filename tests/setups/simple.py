@@ -72,9 +72,9 @@ def setup_cluster():
     setup.userbase.add(User('pierre', 'curie', 'toto', ['user','admin']))
     setup.userbase.add(User('marie', 'curie', 'toto', ['user','admin']))
 
-    setup.ctld = SlurmCtld(u'cluster1')
+    setup.ctld = SlurmCtld('cluster1')
     for nodeid in range(1, 30):
-        nodename = u"cn%02d" % (nodeid)
+        nodename = "cn%02d" % (nodeid)
         node = SlurmNode(nodename)
         if nodeid == 3:
             node.state = 'MIXED'
@@ -89,7 +89,7 @@ def setup_cluster():
 
     xqos = SlurmQos('qos_test')
     xqos.grp_jobs = 10
-    xqos.max_tres_pj = u'1=224,4=8'
+    xqos.max_tres_pj = '1=224,4=8'
     xqos.priority = 100
     setup.ctld.qos.add(xqos)
 
@@ -107,8 +107,8 @@ def setup_cluster():
     job.user_id = setup.userbase[0].uid
     job.account = 'physic'
     job.shared = 2^16 - 2
-    job.work_dir = u'/home/pierre'
-    job.command = u'/home/pierre/sleep.sh'
+    job.work_dir = '/home/pierre'
+    job.command = '/home/pierre/sleep.sh'
     job.partition = partition.name
     setup.ctld.jobs.add(job)
 

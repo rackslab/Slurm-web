@@ -98,9 +98,9 @@ class SlurmNode(object):
         self.features = []
         self.weight = 1
         self.energy_current_watts = 0
-        self.energy_consumed = 0L
-        self.energy_base_consumed = 0L
-        self.energy_previous_consumed = 0L
+        self.energy_consumed = 0
+        self.energy_base_consumed = 0
+        self.energy_previous_consumed = 0
         self.energy_base_watts = 0
         self.threads = 1
         self.boards = 1
@@ -111,23 +111,23 @@ class SlurmNode(object):
         self.boot_time = int(time.time())
         self.slurmd_start_time = int(time.time())
         self.reason_time = 0
-        self.version = u'15.08'
+        self.version = '15.08'
         self.node_hostname = self.name
         self.power_mgmt = {}
         self.core_spec_cnt = 0
         self.err_cpus = 0
         self.reason_uid = 2^32 - 2
         self.node_addr = self.name
-        self.arch = u'x86_64'
+        self.arch = 'x86_64'
         self.gres = []
         self.gres_used = []
         self.mem_spec_limit = 0
-        self.os = u'Linux'
+        self.os = 'Linux'
         self.cpu_load = 1
 
     @property
     def tres_fmt_str(self):
-        return u"cpu=%d,mem=%d" % (self.cpus, self.real_memory)
+        return "cpu=%d,mem=%d" % (self.cpus, self.real_memory)
 
     def todict(self):
         return { self.name: {
@@ -297,8 +297,8 @@ class SlurmJob(object):
         self.user_id = 10001
         self.account = None
         self.shared = 2^16 - 2
-        self.work_dir = u'/home/pierre'
-        self.command = u'/home/pierre/sleep.sh'
+        self.work_dir = '/home/pierre'
+        self.command = '/home/pierre/sleep.sh'
         self.partition = 'normal'
 
         # settings with sane defaults
@@ -311,7 +311,7 @@ class SlurmJob(object):
         self.suspend_time = 0
         self.block_id = None
         self.alloc_sid = 813  # ?
-        self.std_in = u'/dev/null'
+        self.std_in = '/dev/null'
         self.std_out = None
         self.std_err = None
         self.submit_time = int(time.time())
@@ -321,7 +321,7 @@ class SlurmJob(object):
         self.conn_type = 'n/a'
         self.show_flags = 2
         self.assoc_id = 0
-        self.alloc_node = u'login'
+        self.alloc_node = 'login'
         self.contiguous = False
         self.ramdisk_image = None
         self.req_switch = 0
@@ -388,7 +388,7 @@ class SlurmJob(object):
 
     @property
     def tres_req_str(self):
-        return u'cpu=%s,node=%s' % (self.num_cpus, self.num_nodes)
+        return 'cpu=%s,node=%s' % (self.num_cpus, self.num_nodes)
 
     @property
     def batch_host(self):
@@ -401,104 +401,104 @@ class SlurmJob(object):
     def todict(self):
 
       return { self.jobid: {
-          u'qos': self.qos,
-          u'sicp_mode': self.sicp_mode,
-          u'sockets_per_node': self.sockets_per_node,
-          u'pn_min_tmp_disk': self.pn_min_tmp_disk,
-          u'job_state': self.job_state,
-          u'bitflags': self.bitflags,
-          u'cpu_freq_gov': self.cpu_freq_gov,
-          u'ntasks_per_socket': self.ntasks_per_socket,
-          u'nodes': self.nodes,
-          u'suspend_time': self.suspend_time,
-          u'block_id': self.block_id,
-          u'alloc_sid': self.alloc_sid,
-          u'std_in': self.std_in,
-          u'start_time': self.start_time,
-          u'submit_time': self.submit_time,
-          u'rotate': self.rotate,
-          u'name': self.name,
-          u'ntasks_per_board': self.ntasks_per_board,
-          u'conn_type': self.conn_type,
-          u'cpus_allocated': self.cpus_allocated,
-          u'show_flags': self.show_flags,
-          u'group_id': self.group_id,
-          u'time_limit': self.time_limit,
-          u'alloc_node': self.alloc_node,
-          u'std_out': self.std_out,
-          u'tres_req_str': self.tres_req_str,
-          u'eligible_time': self.eligible_time,
-          u'contiguous': self.contiguous,
-          u'ramdisk_image': self.ramdisk_image,
-          u'req_switch': self.req_switch,
-          u'licenses': self.licenses,
-          u'state_desc': self.state_desc,
-          u'network': self.network,
-          u'array_task_id': self.array_task_id,
-          u'max_nodes': self.max_nodes,
-          u'reboot': self.reboot,
-          u'num_nodes': self.num_nodes,
-          u'batch_script': self.batch_script,
-          u'batch_flag': self. batch_flag,
-          u'shared': self.shared,
-          u'end_time': self.end_time,
-          u'ntasks_per_node': self.ntasks_per_node,
-          u'cpu_freq_min': self.cpu_freq_min,
-          u'array_job_id': self.array_job_id,
-          u'pn_min_memory': self.pn_min_memory,
-          u'wckey': self.wckey,
-          u'burst_buffer': self.burst_buffer,
-          u'time_min': self.time_min,
-          u'resize_time': self.resize_time,
-          u'cores_per_socket': self.cores_per_socket,
-          u'dependency': self.dependency,
-          u'cpu_freq_max': self.cpu_freq_max,
-          u'resv_name': self.resv_name,
-          u'boards_per_node': self.boards_per_node,
-          u'comment': self.comment,
-          u'features': self.features,
-          u'preempt_time': self.preempt_time,
-          u'array_max_tasks': self.array_max_tasks,
-          u'user_id': self.user_id,
-          u'ntasks_per_core': self.ntasks_per_core,
-          u'work_dir': self.work_dir,
-          u'assoc_id': self.assoc_id,
-          u'priority': self.priority,
-          u'power_flags': self.power_flags,
-          u'pn_min_cpus': self.pn_min_cpus,
-          u'billable_tres': self.billable_tres,
-          u'linux_image': self.linux_image,
-          u'ionodes': self.ionodes,
-          u'blrts_image': self.blrts_image,
-          u'tres_alloc_str': self.tres_alloc_str,
-          u'wait4switch': self.wait4switch,
-          u'account': self.account,
-          u'gres': self.gres,
-          u'batch_host': self.batch_host,
-          u'requeue': self.requeue,
-          u'exc_nodes': self.exc_nodes,
-          u'std_err': self.std_err,
-          u'cnode_cnt': self.cnode_cnt,
-          u'array_task_str': self.array_task_str,
-          u'command': self.command,
-          u'resv_id': self.resv_id,
-          u'state_reason': self.state_reason,
-          u'num_cpus': self.num_cpus,
-          u'exit_code': self.exit_code,
-          u'mloader_image': self.mloader_image,
-          u'max_cpus': self.max_cpus,
-          u'nice': self.nice,
-          u'profile': self.profile,
-          u'altered': self.altered,
-          u'cpus_per_task': self.cpus_per_task,
-          u'req_nodes': self.req_nodes,
-          u'pre_sus_time': self.pre_sus_time,
-          u'restart_cnt': self.restart_cnt,
-          u'partition': self.partition,
-          u'core_spec': self.core_spec,
-          u'derived_ec': self.derived_ec,
-          u'sockets_per_board': self.sockets_per_board,
-          u'threads_per_core': self.threads_per_core } }
+          'qos': self.qos,
+          'sicp_mode': self.sicp_mode,
+          'sockets_per_node': self.sockets_per_node,
+          'pn_min_tmp_disk': self.pn_min_tmp_disk,
+          'job_state': self.job_state,
+          'bitflags': self.bitflags,
+          'cpu_freq_gov': self.cpu_freq_gov,
+          'ntasks_per_socket': self.ntasks_per_socket,
+          'nodes': self.nodes,
+          'suspend_time': self.suspend_time,
+          'block_id': self.block_id,
+          'alloc_sid': self.alloc_sid,
+          'std_in': self.std_in,
+          'start_time': self.start_time,
+          'submit_time': self.submit_time,
+          'rotate': self.rotate,
+          'name': self.name,
+          'ntasks_per_board': self.ntasks_per_board,
+          'conn_type': self.conn_type,
+          'cpus_allocated': self.cpus_allocated,
+          'show_flags': self.show_flags,
+          'group_id': self.group_id,
+          'time_limit': self.time_limit,
+          'alloc_node': self.alloc_node,
+          'std_out': self.std_out,
+          'tres_req_str': self.tres_req_str,
+          'eligible_time': self.eligible_time,
+          'contiguous': self.contiguous,
+          'ramdisk_image': self.ramdisk_image,
+          'req_switch': self.req_switch,
+          'licenses': self.licenses,
+          'state_desc': self.state_desc,
+          'network': self.network,
+          'array_task_id': self.array_task_id,
+          'max_nodes': self.max_nodes,
+          'reboot': self.reboot,
+          'num_nodes': self.num_nodes,
+          'batch_script': self.batch_script,
+          'batch_flag': self. batch_flag,
+          'shared': self.shared,
+          'end_time': self.end_time,
+          'ntasks_per_node': self.ntasks_per_node,
+          'cpu_freq_min': self.cpu_freq_min,
+          'array_job_id': self.array_job_id,
+          'pn_min_memory': self.pn_min_memory,
+          'wckey': self.wckey,
+          'burst_buffer': self.burst_buffer,
+          'time_min': self.time_min,
+          'resize_time': self.resize_time,
+          'cores_per_socket': self.cores_per_socket,
+          'dependency': self.dependency,
+          'cpu_freq_max': self.cpu_freq_max,
+          'resv_name': self.resv_name,
+          'boards_per_node': self.boards_per_node,
+          'comment': self.comment,
+          'features': self.features,
+          'preempt_time': self.preempt_time,
+          'array_max_tasks': self.array_max_tasks,
+          'user_id': self.user_id,
+          'ntasks_per_core': self.ntasks_per_core,
+          'work_dir': self.work_dir,
+          'assoc_id': self.assoc_id,
+          'priority': self.priority,
+          'power_flags': self.power_flags,
+          'pn_min_cpus': self.pn_min_cpus,
+          'billable_tres': self.billable_tres,
+          'linux_image': self.linux_image,
+          'ionodes': self.ionodes,
+          'blrts_image': self.blrts_image,
+          'tres_alloc_str': self.tres_alloc_str,
+          'wait4switch': self.wait4switch,
+          'account': self.account,
+          'gres': self.gres,
+          'batch_host': self.batch_host,
+          'requeue': self.requeue,
+          'exc_nodes': self.exc_nodes,
+          'std_err': self.std_err,
+          'cnode_cnt': self.cnode_cnt,
+          'array_task_str': self.array_task_str,
+          'command': self.command,
+          'resv_id': self.resv_id,
+          'state_reason': self.state_reason,
+          'num_cpus': self.num_cpus,
+          'exit_code': self.exit_code,
+          'mloader_image': self.mloader_image,
+          'max_cpus': self.max_cpus,
+          'nice': self.nice,
+          'profile': self.profile,
+          'altered': self.altered,
+          'cpus_per_task': self.cpus_per_task,
+          'req_nodes': self.req_nodes,
+          'pre_sus_time': self.pre_sus_time,
+          'restart_cnt': self.restart_cnt,
+          'partition': self.partition,
+          'core_spec': self.core_spec,
+          'derived_ec': self.derived_ec,
+          'sockets_per_board': self.sockets_per_board,
+          'threads_per_core': self.threads_per_core } }
 
 class SlurmPartition(object):
     """
@@ -576,7 +576,7 @@ class SlurmPartition(object):
         self.flag_disable_root_jobs = 0
         self.flag_exclusive_user = 0
         self.flag_lln = 0
-        self.flag_shared = u'EXCLUSIVE'
+        self.flag_shared = 'EXCLUSIVE'
         self.flag_hidden = 0
         self.state_up = 'up',
         self.max_time = 2^32 - 1
@@ -585,49 +585,49 @@ class SlurmPartition(object):
 
     @property
     def tres_fmt_str(self):
-        return u"cpu=%d,mem=%d,node=%d" % \
+        return "cpu=%d,mem=%d,node=%d" % \
                    (self.total_cpus,
                     self.total_mem,
                     self.total_nodes)
 
     def todict(self):
         return { self.name: {
-            u'billing_wights_str': self.billing_wights,
-            u'def_mem_per_cpu': self.def_mem_per_cpu,
-            u'max_mem_per_cpu': self.max_mem_per_cpu,
-            u'allow_alloc_nodes': self.allow_alloc_nodes,
-            u'total_nodes': self.total_nodes,
-            u'min_nodes': self.min_nodes,
-            u'deny_accounts': self.deny_accounts,
-            u'preempt_mode': self.preempt_mode,
-            u'deny_qos': self.deny_qos,
-            u'allow_qos': self.allow_qos,
-            u'cr_type': self.cr_type,
-            u'alternate': self.alternate,
-            u'priority': self.priority,
-            u'nodes': self.nodes,
-            u'total_cpus': self.total_cpus,
-            u'tres_fmt_str': self.tres_fmt_str,
-            u'default_time': self.default_time,
-            u'qos_char': self.qos_char,
-            u'allow_accounts': self.allow_accounts,
-            u'max_cpus_per_node': self.max_cpus_per_node,
-            u'max_share': self.max_share,
-            u'name': self.name,
-            u'grace_time': self.grace_time,
-            u'flags': {
-                u'RootOnly': self.flag_root_only,
-                u'Default': self.flag_default,
-                u'DisableRootJobs': self.flag_disable_root_jobs,
-                u'ExclusiveUser': self.flag_exclusive_user,
-                u'LLN': self.flag_lln,
-                u'Shared': self.flag_shared,
-                u'Hidden': self.flag_hidden
+            'billing_wights_str': self.billing_wights,
+            'def_mem_per_cpu': self.def_mem_per_cpu,
+            'max_mem_per_cpu': self.max_mem_per_cpu,
+            'allow_alloc_nodes': self.allow_alloc_nodes,
+            'total_nodes': self.total_nodes,
+            'min_nodes': self.min_nodes,
+            'deny_accounts': self.deny_accounts,
+            'preempt_mode': self.preempt_mode,
+            'deny_qos': self.deny_qos,
+            'allow_qos': self.allow_qos,
+            'cr_type': self.cr_type,
+            'alternate': self.alternate,
+            'priority': self.priority,
+            'nodes': self.nodes,
+            'total_cpus': self.total_cpus,
+            'tres_fmt_str': self.tres_fmt_str,
+            'default_time': self.default_time,
+            'qos_char': self.qos_char,
+            'allow_accounts': self.allow_accounts,
+            'max_cpus_per_node': self.max_cpus_per_node,
+            'max_share': self.max_share,
+            'name': self.name,
+            'grace_time': self.grace_time,
+            'flags': {
+                'RootOnly': self.flag_root_only,
+                'Default': self.flag_default,
+                'DisableRootJobs': self.flag_disable_root_jobs,
+                'ExclusiveUser': self.flag_exclusive_user,
+                'LLN': self.flag_lln,
+                'Shared': self.flag_shared,
+                'Hidden': self.flag_hidden
             },
-            u'state_up': self.state_up,
-            u'max_time': self.max_time,
-            u'max_nodes': self.max_nodes,
-            u'allow_groups': self.allow_groups } }
+            'state_up': self.state_up,
+            'max_time': self.max_time,
+            'max_nodes': self.max_nodes,
+            'allow_groups': self.allow_groups } }
 
 class SlurmReservation(object):
     """
@@ -672,24 +672,24 @@ class SlurmReservation(object):
 
     @property
     def tres_str(self):
-      return u"cpu=%d" % (self.core_cnt)
+      return "cpu=%d" % (self.core_cnt)
 
     def todict(self):
         return { self.name: {
-            u'features': self.features,
-            u'resv_watts': self.resv_watts,
-            u'start_time': self.start_time,
-            u'partition': self.partition,
-            u'node_list': self.node_list,
-            u'flags': self.flags,
-            u'end_time': self.end_time,
-            u'accounts': self.accounts,
-            u'burst_buffer': self.burst_buffer,
-            u'licenses': self.licenses,
-            u'core_cnt': self.core_cnt,
-            u'tres_str': self.tres_str,
-            u'node_cnt': self.node_cnt,
-            u'users': self.users } }
+            'features': self.features,
+            'resv_watts': self.resv_watts,
+            'start_time': self.start_time,
+            'partition': self.partition,
+            'node_list': self.node_list,
+            'flags': self.flags,
+            'end_time': self.end_time,
+            'accounts': self.accounts,
+            'burst_buffer': self.burst_buffer,
+            'licenses': self.licenses,
+            'core_cnt': self.core_cnt,
+            'tres_str': self.tres_str,
+            'node_cnt': self.node_cnt,
+            'users': self.users } }
 
 
 class SlurmQos(object):
@@ -745,7 +745,7 @@ class SlurmQos(object):
         self.description = self.name
         self.usage_thres =  float(2^32 - 1)
         self.grp_wall = 2^32 - 1
-        self.min_tres_pj = u'1=1'
+        self.min_tres_pj = '1=1'
         self.grace_time = 0
         self.max_submit_jobs_pu = 2^32 - 1
         self.max_tres_run_mins_pu = None
@@ -753,29 +753,29 @@ class SlurmQos(object):
 
     def todict(self):
         return { self.name: {
-            u'grp_tres': self.grp_tres,
-            u'grp_tres_mins': self.grp_tres_mins,
-            u'grp_tres_run_mins': self.grp_tres_run_mins,
-            u'grp_jobs': self.grp_jobs,
-            u'max_tres_mins_pj': self.max_tres_mins_pj,
-            u'preempt_mode': self.preempt_mode,
-            u'usage_factor': self.usage_factor,
-            u'max_tres_pn': self.max_tres_pn,
-            u'max_tres_pj': self.max_tres_pj,
-            u'priority': self.priority,
-            u'max_tres_pu': self.max_tres_pu,
-            u'description': self.description,
-            u'usage_thres': self.usage_thres,
-            u'grp_submit_jobs': self.grp_submit_jobs,
-            u'grp_wall': self.grp_wall,
-            u'min_tres_pj': self.min_tres_pj,
-            u'name': self.name,
-            u'grace_time': self.grace_time,
-            u'max_jobs_pu': self.max_jobs_pu,
-            u'max_submit_jobs_pu': self.max_submit_jobs_pu,
-            u'max_tres_run_mins_pu': self.max_tres_run_mins_pu,
-            u'flags': self.flags,
-            u'max_wall_pj': self.max_wall_pj } }
+            'grp_tres': self.grp_tres,
+            'grp_tres_mins': self.grp_tres_mins,
+            'grp_tres_run_mins': self.grp_tres_run_mins,
+            'grp_jobs': self.grp_jobs,
+            'max_tres_mins_pj': self.max_tres_mins_pj,
+            'preempt_mode': self.preempt_mode,
+            'usage_factor': self.usage_factor,
+            'max_tres_pn': self.max_tres_pn,
+            'max_tres_pj': self.max_tres_pj,
+            'priority': self.priority,
+            'max_tres_pu': self.max_tres_pu,
+            'description': self.description,
+            'usage_thres': self.usage_thres,
+            'grp_submit_jobs': self.grp_submit_jobs,
+            'grp_wall': self.grp_wall,
+            'min_tres_pj': self.min_tres_pj,
+            'name': self.name,
+            'grace_time': self.grace_time,
+            'max_jobs_pu': self.max_jobs_pu,
+            'max_submit_jobs_pu': self.max_submit_jobs_pu,
+            'max_tres_run_mins_pu': self.max_tres_run_mins_pu,
+            'flags': self.flags,
+            'max_wall_pj': self.max_wall_pj } }
 
 
 class SlurmTopology(object):
@@ -804,11 +804,11 @@ class SlurmTopology(object):
     def todict(self):
 
         return { self.switch: {
-            u'link_speed': self.link_speed,
-            u'switches': self.switches,
-            u'nodes': self.nodes,
-            u'name': self.switch,
-            u'level': self.level } }
+            'link_speed': self.link_speed,
+            'switches': self.switches,
+            'nodes': self.nodes,
+            'name': self.switch,
+            'level': self.level } }
 
 class SlurmCtld(object):
 
@@ -828,10 +828,10 @@ class SlurmCtld(object):
     @property
     def config(self):
         return {
-            u'cluster_name': self.cluster.name,
+            'cluster_name': self.cluster.name,
             # Add private_data to mock config()
-            u'private_data': self.private_data,
-            u'private_data_list': self.private_data_list}
+            'private_data': self.private_data,
+            'private_data_list': self.private_data_list}
 
     def find_node(self, nodename):
         for node in self.nodes:

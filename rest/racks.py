@@ -21,7 +21,7 @@
 import xml.etree.ElementTree as ET
 from ClusterShell.NodeSet import NodeSet
 from settings import settings
-from ConfigParser import NoOptionError
+from configparser import NoOptionError
 
 
 class NodeType(object):
@@ -42,7 +42,7 @@ class Racksrow(object):
     @staticmethod
     def racksrow2dict(racksrow):
         xracks = {}
-        for name, rack in racksrow.racks.iteritems():
+        for name, rack in racksrow.racks.items():
             xracks[rack.name] = Rack.rack2dict(rack)
         return xracks
 
@@ -127,7 +127,7 @@ def parse_racks():
             xml_s = f_xml.read()
         root = ET.fromstring(xml_s)
     except ET.ParseError as error:
-        print("parse error: %s" % (str(error)))
+        print(("parse error: %s" % (str(error))))
         return None
 
     # parse nodetypes and fill nodetypes dict with
