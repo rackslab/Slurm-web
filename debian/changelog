@@ -1,3 +1,21 @@
+slurm-web (2.4.0) unstable; urgency=medium
+
+  * Back to standard old pybuild/setuptools as pip/wheel based builds are not
+    available on all supported debian releases
+  * Introduce slurm-web-common package to install slurm-web Python module
+    files common to all slurm-web python packages. making slurm-web binary
+    package a meta-package to install all Slurm-web components.
+  * Adopt dh_python3 deps management
+  * Rely on standard debian build paths to simplify d/*.install
+  * Bump d/compat to 9
+  * Fix bytes/unicode encoding issues related to python3 porting, newer version
+    of pyslurm/slurm or whatever.
+  * Fix restapi module import in WSGI script
+  * Fix interpolation error with IP addresses whitelist
+  * Fix handling of job exclusive field in dashboard
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Wed, 01 Dec 2021 15:00:12 +0100
+
 slurm-web (2.3.0) unstable; urgency=medium
 
   * Portage to python3

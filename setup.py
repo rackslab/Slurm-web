@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='slurm-web',
-    version='2.3.1',
+    version='2.4.0',
     author='EDF CCN-HPC',
     author_email='dsp-cspit-ccn-hpc@edf.fr',
     description='Web solution for Slurm HPC job schedulers',

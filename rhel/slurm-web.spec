@@ -2,8 +2,8 @@
 # Main preamble
 Summary: Slurm-web dashboard and REST API
 Name: slurm-web
-Version: 2.3.1
-Release:  1%{?dist}.edf
+Version: 2.4.0
+Release: 1%{?dist}.edf
 Source0: %{name}-%{version}.tar.gz
 License: GPLv3
 Group: Application/System
@@ -134,6 +134,15 @@ chmod 0400 /etc/slurm-web/secret.key
 rm -f /etc/slurm-web/secret.key
 
 %changelog
+* Wed Dec 01 2021 Rémi Palancher <remi-externe.palancher@edf.fr> 2.4.0-1el8.edf
+- Adopt packaging scheme similar to scibian
+- Back to setuptools as pip/wheels is not available on all supported platforms
+- Cleanup of post/postun snippets
+- Fix bytes/unicode encoding issues related to python3 porting, newer version
+  of pyslurm/slurm or whatever
+- Fix restapi module import in WSGI script
+- Fix interpolation error with IP addresses whitelist
+- Fix handling of job exclusive field in dashboard
 * Thu Jun 17 2021 Nilce BOUSSAMBA <nilce-externe.boussamba@edf.fr> 2.3.1-1el8.edf
 - Add  postinst & postrm scripts, simplejson python package mandatory to handle Json file & fix some bug related to 2to3 migration
 * Mon Mar 22 2021 Guillaume Ranquet <guillaume-externe.ranquet@edf.fr> 2.3.0-1el8.edf
