@@ -136,9 +136,7 @@ def get_jobs():
 
         # convert nodeset in array of nodes
         if job["nodes"] is not None:
-            jobs[jobid]["nodeset"] = list(
-                NodeSet(job["nodes"].encode('ascii', 'ignore'))
-            )
+            jobs[jobid]["nodeset"] = list(NodeSet(job["nodes"]))
     return filter_entities('jobs', jobs)
 
 
@@ -426,7 +424,7 @@ def get_jobs_by_qos():
 def convert_nodeset():
 
     data = json.loads(request.data)
-    return json.dumps(list(NodeSet(data['nodeset'].encode('ascii', 'ignore'))))
+    return json.dumps(list(NodeSet(data['nodeset'])))
 
 
 @app.route('/sinfo', methods=['GET', 'OPTIONS'])
