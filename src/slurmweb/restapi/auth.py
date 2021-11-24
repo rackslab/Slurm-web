@@ -256,7 +256,7 @@ class User(object):
         token = s.dumps({
             'login': self.login,
             'role':  self.role
-        })
+        }).decode('ascii')
         print("generate_auth_token : token -> %s" % token)
         return token
 
