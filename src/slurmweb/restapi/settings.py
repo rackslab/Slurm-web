@@ -23,5 +23,5 @@ import configparser
 
 # path can be set by the env variable REST_CONF
 path = os.getenv('RESTAPI_CONF', '/etc/slurm-web/restapi.conf')
-settings = configparser.ConfigParser()
+settings = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 settings.read(path)
