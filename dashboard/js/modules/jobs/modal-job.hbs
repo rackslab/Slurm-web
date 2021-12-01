@@ -20,7 +20,7 @@
           <li>QOS: {{job.qos}}</li>
           <li>partition: {{job.partition}}</li>
           <li>workload: {{job.wckey}}</li>
-          <li>exclusive: {{yesOrNo (different job.exclusive)}}</li>
+          <li>exclusive: {{isExclusive job.shared}}</li>
           <li>command: {{printCommand job.command}}</li>
           <li>start time: {{printDateFromTimestamp job.start_time}}</li>
           <li>eligible time: {{printDateFromTimestamp job.eligible_time}}</li>

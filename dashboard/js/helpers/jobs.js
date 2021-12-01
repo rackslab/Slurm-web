@@ -89,4 +89,12 @@ define([
     }
     return options.inverse(this);
   });
+
+  // handlebar helper to label exclusive: based on job.shared
+  Handlebars.registerHelper('isExclusive', function(shared){
+    if(shared === '0'){
+      return 'Yes';
+    }
+    return 'No';
+  });
 });
