@@ -335,7 +335,7 @@ define([
       if (jobs.hasOwnProperty(node.name)) {
         for (jobId in jobs[node.name]) {
           if (jobs[node.name].hasOwnProperty(jobId)) {
-            for (i = 0; i < jobs[node.name][jobId]; i++) {
+            for (i = 0; i < jobs[node.name][jobId]['cpus']; i++) {
               nodeJobs.push(jobId);
             }
           }

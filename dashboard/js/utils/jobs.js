@@ -33,7 +33,7 @@ define([
       for (job in jobs) {
         if (jobs.hasOwnProperty(job) && jobs[job].job_state === 'RUNNING') {
           nodesCPUs = jobs[job].cpus_allocated;
-          if(jobs[job].hasOwnProperty('cpus_alloc_layout')){
+          if (jobs[job].hasOwnProperty('cpus_alloc_layout')){
             nodesCPUsLayout = jobs[job].cpus_alloc_layout;
           }
           for (node in nodesCPUs) {
@@ -41,9 +41,9 @@ define([
               if (!allocatedCPUs.hasOwnProperty(node)) {
                 allocatedCPUs[node] = {};
               }
-              allocatedCPUs[node][job] = nodesCPUs[node];
+              allocatedCPUs[node][job] = { 'cpus': nodesCPUs[node] };
               if(nodesCPUsLayout !== null){
-                allocatedCPUs[node]['layout']=nodesCPUsLayout[node];
+                allocatedCPUs[node][job]['layout'] = nodesCPUsLayout[node];
               }
             }
           }
