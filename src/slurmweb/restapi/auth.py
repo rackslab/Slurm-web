@@ -371,4 +371,4 @@ def fill_job_user(job):
         # user name is the first part of gecos
         uids[uid_s]['username'] = pw[4].split(',')[0]
     job['login'] = uids[uid_s]['login']
-    job['username'] = uids[uid_s]['username']
+    job['username'] = uids[uid_s]['username'].encode('utf-8', 'surrogateescape').decode('utf-8')
