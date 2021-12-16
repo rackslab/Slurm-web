@@ -330,13 +330,15 @@ define([
 
       cpus = nodes[node.name].cpus;
 
-      nodeJobs = [];
+      nodeJobs = new Array(cpus);
 
       if (jobs.hasOwnProperty(node.name)) {
         for (jobId in jobs[node.name]) {
           if (jobs[node.name].hasOwnProperty(jobId)) {
-            for (i = 0; i < jobs[node.name][jobId]['cpus']; i++) {
-              nodeJobs.push(jobId);
+            if (jobs[node.name][jobId]['layout'] !== null) {
+              for(core in jobs[node.name][jobId]['layout']) {
+                nodeJobs[jobs[node.name][jobId]['layout'][core]] = jobId;
+              }
             }
           }
         }
