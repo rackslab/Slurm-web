@@ -3,3 +3,16 @@
 doc/_build
 dashboard/js/fonts
 .vscode
+slurm_web.egg-info
+.pybuild
+debian/.debhelper/
+debian/files
+debian/*.log
+debian/*.debhelper
+debian/*.substvars
+debian/slurm-web-common/
+debian/slurm-web-confdashboard/
+debian/slurm-web-dashboard/
+debian/slurm-web-restapi/
+debian/slurm-web/
+debian/tmp/
