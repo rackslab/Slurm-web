@@ -28,6 +28,7 @@ require.config({
     xdomain: '../../../js/libraries/xdomain.min',
     three: '/javascript/three/three.min',
     bootstrap: '/javascript/bootstrap/js/bootstrap',
+    typeface: '../../../js/libraries/typeface.min',
     'token-utils': '../../../js/utils/token',
     'ajax-utils': '../../../js/utils/ajax',
     'error-utils': '../../../js/utils/error',
@@ -75,7 +76,8 @@ function init() {
     '3d-draw',
     '3d-map-draw',
     'jobs-utils',
-    'bootstrap'
+    'bootstrap',
+    'typeface'
   ], function($, async, tokenUtils, ajaxUtils, errorUtils, config, D3Draw, d3MapDraw, jobsUtils) {
     var options, canvas, draw, url = window.location.toString();
 
