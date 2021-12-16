@@ -13,7 +13,7 @@ setuptools.setup(
     url='https://github.com/edf-hpc/slurm-web',
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
-    package_data={'': '*.wsgi'},
+    package_data={'': ['*.wsgi']},
     install_requires=['Flask',
                       'ClusterShell',
                       'pyslurm',
