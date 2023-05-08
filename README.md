@@ -1,8 +1,10 @@
 Slurm-web
 =========
 
-[![Code Climate](https://codeclimate.com/github/edf-hpc/slurm-web/badges/gpa.svg)](https://codeclimate.com/github/edf-hpc/slurm-web)
-[![Issue Count](https://codeclimate.com/github/edf-hpc/slurm-web/badges/issue_count.svg)](https://codeclimate.com/github/edf-hpc/slurm-web)
+**CAUTION:** Please note that the serie Slurm-web versions _2.x_ is not
+maintained anymore. A new roadmap has been defined with
+[future plans](https://github.com/rackslab/slurm-web#plan-for-future),
+available in `main` branch.
 
 Overview
 --------
@@ -25,7 +27,7 @@ The documentation is distributed with Slurm-web source code in the `doc/`
 directory.
 
 It is also available online on Slurm-web website:
-http://edf-hpc.github.io/slurm-web/
+http://rackslab.github.io/slurm-web/
 
 It contains full details about Slurm-web architecture, installation and usage
 guide.
@@ -39,8 +41,8 @@ version 3.
 Authors
 -------
 
-Slurm-web development is sponsored and mainly driven by [EDF](http://edf.fr)
-company (Electricité De France) with great work from the
+Slurm-web development has been sponsored and mainly driven by
+[EDF](http://edf.fr) company (Electricité De France) with great work from the
 [derniercri](http://derniercri.io) developers crew.
 
 Feedback from the community is important! Other users problems are among our
@@ -51,7 +53,6 @@ Support
 -------
 
 For bug reports and questions, please open issues on GitHub project:
-http://github.com/edf-hpc/slurm-web/issues
+http://github.com/rackslab/slurm-web/issues
 
-For any other things, please contact us by email at:
-dsp-cspite-ccn-hpc@edf.fr
+For any other things, please [contact Rackslab](https://rackslab.io/en/contact/).
