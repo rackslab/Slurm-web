@@ -20,7 +20,7 @@ Code Climate
 ^^^^^^^^^^^^
 
 The quality of the codebase is overseen by Code Climate. You can refer to its
-summary at https://codeclimate.com/github/edf-hpc/slurm-web
+summary at https://codeclimate.com/github/rackslab/slurm-web
 
 
 Architecture Front

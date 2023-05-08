@@ -8,11 +8,11 @@ Source code
 ^^^^^^^^^^^
 
 The source code of Slurm-web is hosted on GitHub at this URL:
-https://github.com/edf-hpc/slurm-web
+https://github.com/rackslab/slurm-web
 
 You can download latest version of this source code by clone the Git repository::
 
-    git clone https://github.com/edf-hpc/slurm-web.git
+    git clone https://github.com/rackslab/slurm-web.git
 
 Debian packages
 ^^^^^^^^^^^^^^^
@@ -79,7 +79,7 @@ To build Slurm-web as a Docker container, you will need to:
 
 .. code-block:: bash
 
-   $ git clone https://github.com/edf-hpc/slurm-web.git
+   $ git clone https://github.com/rackslab/slurm-web.git
    $ cd slurm-web
 
 2. Build the image
