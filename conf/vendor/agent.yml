@@ -1,0 +1,250 @@
+---
+# This file contains the configuration settings definition for Slurm-web agent
+# in RFL ConfigurationLoader format.
+slurmrestd:
+  socket:
+    type: path
+    default: /var/spool/slurm/restd/slurmrestd.socket
+    doc: Path to slurmrestd UNIX socket
+  version:
+    type: str
+    default: '0.0.39'
+    doc: Slurm REST API version
+
+filters:
+  jobs:
+    type: list
+    content: str
+    default:
+    - job_id
+    - user_name
+    - account
+    - job_state
+    - state_reason
+    - partition
+    - priority
+    - qos
+    doc: |
+      List of jobs fields selected in slurmrestd API when retrieving a list of
+      jobs, all other fields arefiltered out.
+  acctjob:
+    type: list
+    content: str
+    default:
+    - association
+    - comment
+    - derived_exit_code
+    - exit_code
+    - group
+    - name
+    - nodes
+    - partition
+    - priority
+    - qos
+    - required
+    - script
+    - state
+    - steps
+    - submit_line
+    - time
+    - tres
+    - used_gres
+    - user
+    - wckey
+    - working_directory
+    doc: |
+      List of slurmdbd job fields selected in slurmrestd API when retrieving a
+      unique job, all other fields are filtered out.
+  ctldjob:
+    type: list
+    content: str
+    default:
+    - accrue_time
+    - batch_flag
+    - command
+    - cpus
+    - current_working_directory
+    - exclusive
+    - last_sched_evaluation
+    - node_count
+    - partition
+    - standard_error
+    - standard_input
+    - standard_output
+    - state_reason
+    - tasks
+    - tres_req_str
+    doc: |
+      List of slurmctld job fields selected in slurmrestd API when retrieving a
+      unique job, all other fields are filtered out.
+  nodes:
+    type: list
+    content: str
+    default:
+    - name
+    - cpus
+    - cores
+    - real_memory
+    - state
+    - partitions
+    doc: |
+      List of nodes fields selected in slurmrestd API, all other fields are
+      filtered out.
+  partitions:
+    type: list
+    content: str
+    default:
+    - name
+    - node_sets
+    doc: |
+      List of partitions fields selected in slurmrestd API, all other fields are
+      filtered out.
+  qos:
+    type: list
+    content: str
+    default:
+    - name
+    - description
+    doc: |
+      List of qos fields selected in slurmrestd API, all other fields are
+      filtered out.
+  accounts:
+    type: list
+    content: str
+    default:
+    - name
+    doc: |
+      List of accounts fields selected in slurmrestd API, all other fields are
+      filtered out.
+
+service:
+  cluster:
+    type: str
+    required: true
+    doc: Name of cluster served by agent
+  interface:
+    type: str
+    default: localhost
+    doc: Interface address to bind for incoming connections
+  port:
+    type: int
+    default: 5000
+    doc: TCP port to listen for incoming connections
+  cors:
+    type: bool
+    default: false
+    doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
+
+policy:
+  definition:
+    type: path
+    default: /usr/share/slurm-web/policy.yml
+    doc: Path to RBAC policy definition file with available actions
+  vendor_roles:
+    type: path
+    default: /usr/share/slurm-web/policy.conf
+    doc: |
+      Path to default vendor RBAC policy definition file with roles and
+      permitted actions
+  roles:
+    type: path
+    default: /etc/slurm-web/policy.conf
+    doc: |
+      Path to site RBAC policy definition file with roles and permitted actions
+
+jwt:
+  key:
+    type: path
+    default: /var/lib/slurm-web/jwt.key
+    doc: Path to private key for JWT signature
+  algorithm:
+    type: str
+    choices:
+    # Full list available in PyJWT documentation:
+    # https://pyjwt.readthedocs.io/en/latest/algorithms.html
+    - HS256
+    - HS384
+    - HS512
+    - ES256
+    - ES256K
+    - ES384
+    - ES512
+    - RS256
+    - RS384
+    - RS512
+    - PS256
+    - PS384
+    - PS512
+    - EdDSA
+    default: HS256
+    doc: Cryptographic algorithm used to sign JWT
+  audience:
+    type: str
+    default:
+    doc: |
+      Audience defined in generated JWT and expected in JWT provided by clients
+
+racksdb:
+  # The default values in this section must be synchronized with RacksDB library
+  # defaults.
+  db:
+    type: path
+    default: /var/lib/racksdb
+    doc: Path to RacksDB database
+  schema:
+    type: path
+    default: /usr/share/racksdb/schemas/racksdb.yml
+    doc: Path to RacksDB database schema
+  extensions:
+    type: path
+    default: /etc/racksdb/extensions.yml
+    doc: Path to site-specific RacksDB schema extensions
+  drawings_schema:
+    type: path
+    default: /usr/share/racksdb/schemas/drawings.yml
+    doc: Path to RacksDB database schema
+  tags:
+    type: list
+    content: str
+    doc: List of tags applied to compute nodes in RacksDB database
+
+cache:
+  enabled:
+    type: bool
+    default: true
+    doc: Determine if caching is enabled
+  host:
+    type: str
+    default: localhost
+    doc: Hostname of Redis cache server
+  port:
+    type: int
+    default: 6379
+    doc: TCP port of Redis cache server
+  password:
+    type: str
+    doc: Password to connect to protected Redis server
+  jobs:
+    type: int
+    default: 30
+    doc: Expiration delay in seconds for jobs in cache
+  job:
+    type: int
+    default: 10
+    doc: Expiration delay in seconds for invidual jobs in cache
+  nodes:
+    type: int
+    default: 30
+    doc: Expiration delay in seconds for nodes in cache
+  partitions:
+    type: int
+    default: 60
+    doc: Expiration delay in seconds for partitions in cache
+  qos:
+    type: int
+    default: 60
+    doc: Expiration delay in seconds for QOS in cache
+  accounts:
+    type: int
+    default: 60
+    doc: Expiration delay in seconds for accounts in cache

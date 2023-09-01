@@ -1,0 +1,17 @@
+[service]
+cors=yes
+port={{ service_port }}
+
+[agents]
+url =
+{%- for agent in agents %}
+  http://localhost:{{ agent.service_port }}
+{%- endfor %}
+
+[jwt]
+key={{ jwt_key }}
+
+[ldap]
+uri=ldap://localhost:{{ ldap_port }}
+user_base=ou=people,dc=cluster,dc={{ ldap_base }}
+group_base=ou=groups,dc=cluster,dc={{ ldap_base }}

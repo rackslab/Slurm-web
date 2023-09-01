@@ -1,0 +1,17 @@
+[roles]
+{% if cluster == "tiny" %}
+user=@{{ groups[2].name }},@{{ groups[3].name }}
+{% else %}
+user=@{{ groups[2].name }}
+{% endif %}
+admin=@{{ groups[1].name }}
+special={{ users[3].login }}
+
+[user]
+actions=view-stats,view-jobs
+
+[admin]
+actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos,view-accounts,view-reservations
+
+[special]
+actions=view-qos

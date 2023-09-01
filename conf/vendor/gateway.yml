@@ -1,0 +1,118 @@
+service:
+  interface:
+    type: str
+    default: localhost
+    doc: Interface address to bind for incoming connections
+  port:
+    type: int
+    default: 5000
+    doc: TCP port to listen for incoming connections
+  cors:
+    type: bool
+    default: false
+    doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
+
+agents:
+  url:
+    type: list
+    content: uri
+    required: true
+    doc: List of Slurm-web agents URL
+  version:
+    type: str
+    default: 3.0.0a1
+    doc: Version of Slurm-web agent API
+  racksdb_version:
+    type: str
+    default: 0.3.0
+    doc: Version of RacksDB API
+
+authentication:
+  method:
+    type: str
+    choices:
+    - ldap
+    default: ldap
+    doc: Authentification method
+
+ldap:
+  uri:
+    type: uri
+    doc: URI to connect to LDAP server
+    ex: ldap://localhost
+    #required: when authentication.method=='ldap'
+  cacert:
+    type: path
+    doc: Path to CA certificate
+    ex: /path/to/certificate.pem
+  starttls:
+    type: bool
+    default: false
+    doc: Use STARTTLS protocol to negociate TLS connection with LDAP server
+  user_base:
+    type: str
+    doc: Base DN for users entries
+    ex: ou=people,dc=example,dc=org
+  group_base:
+    type: str
+    doc: Base DN for group entries
+    ex: ou=group,dc=example,dc=org
+  user_class:
+    type: str
+    default: posixAccount
+    doc: Class of user entries
+  user_fullname_attribute:
+    type: str
+    default: cn
+    doc: User entry attribute for full name
+  group_name_attribute:
+    type: str
+    default: cn
+    doc: Group entry attribute for name
+  bind_dn:
+    type: str
+    doc: DN used to bind to the LDAP server
+    ex: cn=system,ou=people,dc=example,dc=org
+  bind_password:
+    type: str
+    doc: Password of bind DN
+  restricted_groups:
+    type: list
+    content: str
+    doc: List of users groups allowed to connect
+
+jwt:
+  key:
+    type: path
+    default: /var/lib/slurm-web/jwt.key
+    doc: Path to private key for JWT signature
+  duration:
+    type: int
+    default: 1
+    doc: JWT validity duration in days
+  algorithm:
+    type: str
+    choices:
+    # Full list available in PyJWT documentation:
+    # https://pyjwt.readthedocs.io/en/latest/algorithms.html
+    - HS256
+    - HS384
+    - HS512
+    - ES256
+    - ES256K
+    - ES384
+    - ES512
+    - RS256
+    - RS384
+    - RS512
+    - PS256
+    - PS384
+    - PS512
+    - EdDSA
+    default: HS256
+    doc: Cryptographic algorithm used to sign JWT
+  audience:
+    type: str
+    default:
+    doc: |
+      Audience defined in generated JWT and expected in JWT provided by clients

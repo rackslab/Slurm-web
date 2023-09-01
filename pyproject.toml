@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Slurm-web"
+version = "3.0.0a1"
+description = "Web interface to Slurm HPC clusters"
+license = {text = "GPLv3+"}
+requires-python = ">=3.6"
+keywords = ["slurm", "hpc", "cluster"]
+authors = [
+    {name = "Rémi Palancher", email = "remi@rackslab.io"},
+]
+dependencies = [
+    "Flask",
+    "Flask-Cors",
+    "RacksDB[web]",
+    "redis",
+    "requests",
+    "RFL.authentication",
+    "RFL.log",
+    "RFL.settings",
+    "RFL.web",
+]
+readme = "README.md"
+
+[project.scripts]
+slurm-web-agent = 'slurmweb.exec.agent:SlurmwebExecAgent.run'
+slurm-web-gateway = 'slurmweb.exec.gateway:SlurmwebExecGateway.run'
+slurm-web-ldap-check = 'slurmweb.exec.ldap:SlurmwebExecLDAPCheck.run'
+
+[tool.setuptools.packages.find]
+include = ['slurmweb*']
+
+[project.urls]
+"Homepage" = "https://github.com/rackslab/slurm-web"
+"Bug Tracker" = "https://github.com/rackslab/slurm-web/issues"
+
+[tool.black]
+target-version = ['py36']
+color = 1

@@ -1,0 +1,224 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import type { Ref } from 'vue'
+import { useClusterDataPoller } from '@/composables/DataPoller'
+import type { ClusterNode } from '@/composables/GatewayAPI'
+import ResourcesViewer from '@/components/resources/ResourcesViewer.vue'
+import NodeMainState from '@/components/resources/NodeMainState.vue'
+import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
+import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
+import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
+import { ChevronRightIcon } from '@heroicons/vue/20/solid'
+
+const props = defineProps({
+  cluster: {
+    type: String,
+    required: true
+  }
+})
+
+const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
+
+function arraysEqual<CType>(a: Array<CType>, b: Array<CType>): boolean {
+  if (a === b) return true
+  if (a == null || b == null) return false
+  if (a.length !== b.length) return false
+
+  // If you don't care about the order of the elements inside
+  // the array, you should sort both arrays here.
+  // Please note that calling sort on an array will modify that array.
+  // you might want to clone your array first.
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false
+  }
+  return true
+}
+
+interface FoldedClusterNode extends ClusterNode {
+  number: number
+}
+
+const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
+  let previousNode: FoldedClusterNode | undefined = undefined
+  let similarNodes: string[] = []
+  const result: FoldedClusterNode[] = []
+  const newFoldedNodesShow: Record<string, boolean> = {}
+
+  function finishSet() {
+    if (previousNode) {
+      previousNode.name = foldNodeset(similarNodes)
+      if (previousNode.name in foldedNodesShow.value) {
+        newFoldedNodesShow[previousNode.name] = foldedNodesShow.value[previousNode.name]
+      } else {
+        newFoldedNodesShow[previousNode.name] = false
+      }
+    }
+  }
+
+  if (data.value) {
+    for (const currentNode of data.value) {
+      if (
+        previousNode &&
+        previousNode.cpus == currentNode.cpus &&
+        previousNode.cores == currentNode.cores &&
+        previousNode.real_memory == currentNode.real_memory &&
+        arraysEqual<string>(previousNode.state, currentNode.state) &&
+        arraysEqual<string>(previousNode.partitions, currentNode.partitions)
+      ) {
+        previousNode.number += 1
+        similarNodes.push(currentNode.name)
+      } else {
+        finishSet()
+        // Prepare next iteration
+        previousNode = { ...currentNode, number: 1 }
+        similarNodes = [currentNode.name]
+        // Push next folded node in result
+        result.push(previousNode)
+      }
+    }
+    // handle last node
+    finishSet()
+    // make new folded nodes show into effect
+    foldedNodesShow.value = newFoldedNodesShow
+    return result
+  } else {
+    return []
+  }
+})
+
+const { data, unable } = useClusterDataPoller<ClusterNode[]>('nodes', 10000, props)
+</script>
+
+<template>
+  <ClusterMainLayout :cluster="props.cluster" title="Resources">
+    <div class="bg-white">
+      <div class="mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Nodes</h1>
+        <p class="mt-4 max-w-xl text-sm text-gray-700">State of nodes on cluster</p>
+      </div>
+      <ResourcesViewer v-if="data" :cluster="props.cluster" :nodes="data" />
+      <div v-if="unable">Unable to retrieve nodes information from cluster {{ props.cluster }}</div>
+      <div v-else class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    colspan="2"
+                    class="w-12 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
+                  >
+                    Nodename
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    State
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Allocation
+                  </th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    Cores
+                  </th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    Memory
+                  </th>
+
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    Partitions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <template v-for="node in foldedNodes" :key="node.name">
+                  <tr class="bg-white">
+                    <td class="w-4">
+                      <button
+                        v-if="node.number > 1"
+                        type="button"
+                        class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                        @click="foldedNodesShow[node.name] = !foldedNodesShow[node.name]"
+                      >
+                        <span class="sr-only">Close menu</span>
+                        <ChevronRightIcon
+                          class="h-6 w-6"
+                          aria-hidden="true"
+                          :class="[foldedNodesShow[node.name] ? 'rotate-90' : '', 'transition']"
+                        />
+                      </button>
+                    </td>
+                    <td class="whitespace-nowrap py-4 text-sm text-gray-900">
+                      <span class="font-medium font-mono">{{ node.name }}</span
+                      ><span class="px-1 italic text-gray-500">{{
+                        node.number > 1 ? '(' + node.number + ')' : ''
+                      }}</span>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <NodeMainState :states="node.state" />
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <NodeAllocationState :states="node.state" />
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {{ node.cpus }} x {{ node.cores }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      {{ node.real_memory }}
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <span
+                        v-for="partition in node.partitions"
+                        class="bg-gray-500 text-white rounded px-2 py-1 font-medium"
+                        >{{ partition }}</span
+                      >
+                    </td>
+                  </tr>
+                  <template v-if="node.number > 1">
+                    <Transition
+                      enter-active-class="duration-100 ease-out"
+                      enter-from-class="-translate-y-6 opacity-0"
+                      enter-to-class="opacity-100"
+                      leave-active-class="duration-100 ease-out"
+                      leave-from-class="opacity-100"
+                      leave-to-class="-translate-y-6 opacity-0"
+                    >
+                      <tr v-show="foldedNodesShow[node.name]">
+                        <td colspan="7" class="z-0 bg-gray-300">
+                          <ul
+                            role="list"
+                            class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4 lg:grid-cols-16"
+                          >
+                            <li
+                              v-for="_node in expandNodeset(node.name)"
+                              :key="_node"
+                              class="col-span-1 flex rounded-md shadow-sm"
+                            >
+                              <div
+                                class="flex flex-1 items-center justify-between truncate rounded-md shadow-sm border-b border-r border-t border-gray-200 bg-white"
+                              >
+                                <div class="flex-1 font-mono truncate px-4 py-2 text-xs">
+                                  <p class="text-gray-500">{{ _node }}</p>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </td>
+                      </tr>
+                    </Transition>
+                  </template>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ClusterMainLayout>
+</template>

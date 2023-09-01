@@ -1,0 +1,346 @@
+#!/usr/bin/python3
+#
+# Copyright (c) 2023 Rackslab
+#
+# This file is part of Slurm-web.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+from dataclasses import dataclass
+import sshtunnel
+import paramiko
+import shlex
+import logging
+import subprocess
+from pathlib import Path
+import signal
+import tempfile
+import secrets
+import atexit
+import shutil
+import time
+import argparse
+import json
+import socket
+import sys
+
+import jinja2
+from racksdb import RacksDB
+
+logger = logging.getLogger(__name__)
+
+DEV_HOST = "firehpc.dev.rackslab.io"
+
+DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "racksdb"]
+# DEBUG_FLAGS = ["ALL"]
+
+
+def runcmd(cmd: list[str]) -> subprocess.Popen:
+    try:
+        return subprocess.Popen(cmd)
+    except FileNotFoundError:
+        logger.error("Command not found: %s", shlex.join(cmd))
+        sys.exit(1)
+
+
+@dataclass
+class PortForward:
+    remote: int
+    local: int
+
+
+class PortAllocator:
+    def __init__(self, initial=0):
+        self.current = initial - 1
+        self.forwards = {
+            "ldap": PortForward(389, 3389),  # LDAP
+            "slurmrestd": PortForward(2375, 2375),  # slurmrestd
+            "redis": PortForward(6379, 6379),  # redis
+        }
+
+    def allocate(self):
+        self.current += 1
+        return {
+            key: PortForward(value.remote, value.local + self.current)
+            for key, value in self.forwards.items()
+        }
+
+
+@dataclass
+class ClusterChannel:
+    name: str
+    connection: paramiko.client.SSHClient
+    forwarder: sshtunnel.SSHTunnelForwarder
+    process: subprocess.Popen
+
+    @classmethod
+    def connect(
+        cls,
+        host: str,
+        ssh_client: paramiko.client.SSHClient,
+        forwards: dict[str, PortForward],
+        cluster: str,
+        cluster_id: int,
+    ):
+        remote_bind_addresses = []
+        local_bind_addresses = []
+
+        for forward in forwards.values():
+            remote_bind_addresses.append((f"admin.{cluster}", forward.remote))
+            local_bind_addresses.append(("localhost", forward.local))
+        forwarder = sshtunnel.SSHTunnelForwarder(
+            host,
+            allow_agent=True,
+            remote_bind_addresses=remote_bind_addresses,
+            local_bind_addresses=local_bind_addresses,
+        )
+        forwarder.start()
+
+        # run socat to forward slurmrestd UNIX socket
+        cmd = shlex.join(
+            [
+                "firehpc",
+                "ssh",
+                f"admin.{cluster}",
+                "socat",
+                f"TCP-LISTEN:{forwards['slurmrestd'].remote},fork",
+                "UNIX-CONNECT:/run/slurmrestd/slurmrestd.socket",
+            ]
+        )
+        logger.info("Running command on development server: %s", cmd)
+        ssh_client.exec_command(cmd)
+
+        cmd = [
+            "socat",
+            f"UNIX-LISTEN:/tmp/slurmrestd-{cluster}.socket,fork",
+            f"TCP-CONNECT:localhost:{forwards['slurmrestd'].local}",
+        ]
+        logger.info("Running command locally: %s", shlex.join(cmd))
+        process = runcmd(cmd)
+        return cls(cluster, ssh_client, forwarder, process)
+
+    def stop(self) -> None:
+        logger.info("Stopping %s remote socat command", self.name)
+        cmd = shlex.join(["firehpc", "ssh", f"admin.{self.name}", "killall", "socat"])
+        self.connection.exec_command(cmd)
+        logger.info("Stopping %s forwarder", self.name)
+        self.forwarder.stop()
+        logger.info("Stopping %s socat process", self.name)
+        self.process.kill()
+
+
+@dataclass
+class SlurmwebAgent:
+    name: str
+    channel: ClusterChannel
+    forwards: dict[str, PortForward]
+    service_port: int
+    conf_path: Path = None
+    policy_path: Path = None
+    process: subprocess.Popen = None
+
+    @classmethod
+    def init(
+        cls,
+        host: str,
+        port_allocator: PortAllocator,
+        ssh_client: paramiko.client.SSHClient,
+        name: str,
+        cluster_id: int,
+    ):
+        forwards = port_allocator.allocate()
+        channel = ClusterChannel.connect(host, ssh_client, forwards, name, cluster_id)
+        return cls(name, channel, forwards, 5013 + cluster_id)
+
+    def render_policy(self, tmpdir: Path) -> None:
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
+        template = environment.get_template("policy.ini.j2")
+        self.policy_path = tmpdir / f"policy-{self.name}.ini"
+        _, stdout, _ = self.channel.connection.exec_command(
+            shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
+        )
+        cluster_status = json.loads(stdout.read())
+        with open(self.policy_path, "w+") as fh:
+            fh.write(
+                template.render(
+                    cluster=self.name,
+                    users=cluster_status["users"],
+                    groups=cluster_status["groups"],
+                )
+            )
+
+    def render_conf(
+        self, tmpdir: Path, jwt_key_path: Path, cache_enabled: bool
+    ) -> None:
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
+        template = environment.get_template("agent.ini.j2")
+        sftp = self.channel.connection.open_sftp()
+        logger.info("Reading remote redis password for cluster %s", self.name)
+        redis_password = None
+        if cache_enabled:
+            try:
+                with sftp.open(
+                    f".local/state/firehpc/{self.name}/redis/redis.password"
+                ) as fh:
+                    redis_password = fh.read().decode()
+            except FileNotFoundError:
+                logger.warning(
+                    "Remote Redis password file not found for cluster %s, force disabling cache",
+                    self.name,
+                )
+                cache_enabled = False
+        self.conf_path = tmpdir / f"agent-{self.name}.ini"
+        with open(self.conf_path, "w+") as fh:
+            fh.write(
+                template.render(
+                    cluster_name=self.name,
+                    service_port=self.service_port,
+                    slurmrestd_socket=f"/tmp/slurmrestd-{self.name}.socket",
+                    jwt_key=jwt_key_path,
+                    cache_enabled=cache_enabled,
+                    policy_path=self.policy_path,
+                    redis_port=self.forwards["redis"].local,
+                    redis_password=redis_password,
+                )
+            )
+
+    def launch(self) -> None:
+        cmd = (
+            ["slurm-web-agent", "--debug", "--debug-flags"]
+            + DEBUG_FLAGS
+            + [
+                "--conf-defs",
+                "conf/vendor/agent.yml",
+                "--conf",
+                str(self.conf_path),
+            ]
+        )
+        logging.info("Launching Slurm-web agent %s: %s", self.name, shlex.join(cmd))
+        self.process = runcmd(cmd)
+
+    def stop(self) -> None:
+        logging.info("Stopping slurm-web agent %s", self.name)
+        self.process.kill()
+        self.channel.stop()
+
+
+@dataclass
+class SlurmwebGateway:
+    conf_path: Path = None
+
+    def render_conf(
+        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent]
+    ):
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
+        template = environment.get_template("gateway.ini.j2")
+        self.conf_path = tmpdir / "gateway.ini"
+        with open(self.conf_path, "w+") as fh:
+            fh.write(
+                template.render(
+                    service_port=5012,
+                    jwt_key=jwt_key_path,
+                    ldap_port=agents[0].forwards["ldap"].local,
+                    ldap_base=agents[0].name,
+                    agents=agents,
+                )
+            )
+
+    def launch(self):
+        cmd = (
+            ["slurm-web-gateway", "--debug", "--debug-flags"]
+            + DEBUG_FLAGS
+            + [
+                "--conf-defs",
+                "conf/vendor/gateway.yml",
+                "--conf",
+                str(self.conf_path),
+            ]
+        )
+        logging.info("Launching Slurm-web gateway: %s", shlex.join(cmd))
+        self.process = runcmd(cmd)
+
+    def stop(self):
+        logging.info("Stopping slurm-web gateway")
+        self.process.kill()
+
+
+def delete_tmpdir(path: Path):
+    logging.info("Removing temporary directory %s", path)
+    shutil.rmtree(path)
+
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+
+    parser = argparse.ArgumentParser(
+        description="Launch Slurm-web development environment"
+    )
+    parser.add_argument(
+        "--no-cache",
+        dest="cache",
+        action="store_false",
+        help="Disable redis cache",
+    )
+    args = parser.parse_args()
+
+    # Load cluster list from RacksDB database
+    db = RacksDB.load(db="dev/firehpc/racksdb.yml")
+
+    # Connect to development host
+    ssh_client = paramiko.SSHClient()
+    ssh_client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
+    logger.info("Connecting to development host %s", DEV_HOST)
+    try:
+        ssh_client.connect(DEV_HOST)
+    except socket.gaierror as err:
+        logger.error("Unable to get address of %s: %s", DEV_HOST, str(err))
+        sys.exit(1)
+    # Create temporary directory and register its automatic deletion at exit
+    tmpdir = Path(tempfile.mkdtemp(prefix="slurm-web-dev"))
+    atexit.register(delete_tmpdir, tmpdir)
+
+    # Generate random JWT key
+    jwt_key_path = tmpdir / "jwt.key"
+    with open(jwt_key_path, "w+") as fh:
+        fh.write(secrets.token_hex(64))
+
+    # Launch all clusters agents
+    cluster_id = 0
+    agents = []
+    port_allocator = PortAllocator()
+    for infrastructure in db.infrastructures:
+        agent = SlurmwebAgent.init(
+            DEV_HOST, port_allocator, ssh_client, infrastructure.name, cluster_id
+        )
+        # Generate agent configuration file
+        agent.render_policy(tmpdir)
+        agent.render_conf(tmpdir, jwt_key_path, args.cache)
+        # Launch agent in backgroup
+        agent.launch()
+        agents.append(agent)
+        cluster_id += 1
+
+    # Wait a second for all agents to start properly
+    time.sleep(1)
+
+    # Launch gateway
+    gateway = SlurmwebGateway()
+    gateway.render_conf(tmpdir, jwt_key_path, agents)
+    gateway.launch()
+
+    logger.info("Development environment is ready, type ^c to stop")
+    try:
+        signal.pause()
+    except KeyboardInterrupt:
+        # Stop gateway
+        gateway.stop()
+        # Stop all cluster agents
+        for agent in agents:
+            agent.stop()
+        logger.info("Closing SSH connection")
+        ssh_client.close()
+        logger.info("Stopping development environment tunnals")
+
+
+if __name__ == "__main__":
+    main()
