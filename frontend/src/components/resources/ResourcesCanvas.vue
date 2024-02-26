@@ -37,7 +37,7 @@ let allNodesPaths: Record<
   string,
   { x: number; y: number; width: number; height: number; path: Path2D }
 > = {}
-const currentNode: Ref<string | undefined> = ref()
+const currentNode: Ref<ClusterNode | undefined> = ref()
 let previousPath: Path2D | undefined = undefined
 let coordinates: RacksDBInfrastructureCoordinates | undefined = undefined
 let image: ImageBitmapSource | undefined = undefined
@@ -45,13 +45,21 @@ let bitmap: ImageBitmap | undefined = undefined
 let x_shift: number = 0
 let y_shift: number = 1
 
-function getNodeState(nodeName: string): string[] {
+function getClusterNode(nodeName: string): ClusterNode | undefined {
   try {
-    return props.nodes.filter((node) => node.name == nodeName)[0].state
+    return props.nodes.filter((node) => node.name == nodeName)[0]
   } catch (error: any) {
-    console.log(`Error ${error.name} in getNodeState(${nodeName}): ${error.message}`)
-    return []
+    console.log(`Error ${error.name} in getClusterNode(${nodeName}): ${error.message}`)
+    return undefined
   }
+}
+
+function getNodeState(nodeName: string): string[] {
+  return getClusterNode(nodeName)?.state || []
+}
+
+function inSelectedNodes(nodeName: string): boolean {
+  return getClusterNode(nodeName) !== undefined
 }
 
 function getNodeFillStrokeColors(nodeName: string): [string, string | undefined] {
@@ -123,44 +131,49 @@ async function updateCanvas(fullUpdate: boolean = true) {
         const node_x = nodeCoordinates[0] + x_shift + 1
         const node_y = nodeCoordinates[1] + y_shift
         nodePath.rect(node_x, node_y, nodeCoordinates[2] - 1, nodeCoordinates[3])
-        const [fillColor, strokeColor] = getNodeFillStrokeColors(nodeName)
-        ctx.fillStyle = fillColor
-        ctx.fill(nodePath)
 
-        // Draw node stroke if its color is defined
-        if (strokeColor) {
-          ctx.strokeStyle = strokeColor
-          // Define stroke width depending on node height
-          if (nodeCoordinates[3] > 10) {
-            ctx.lineWidth = 5
-          } else {
-            ctx.lineWidth = 2
+        if (!inSelectedNodes(nodeName)) {
+          ctx.fillStyle = '#aaaaaa'
+          ctx.fill(nodePath)
+        } else {
+          const [fillColor, strokeColor] = getNodeFillStrokeColors(nodeName)
+          ctx.fillStyle = fillColor
+          ctx.fill(nodePath)
+
+          // Draw node stroke if its color is defined
+          if (strokeColor) {
+            ctx.strokeStyle = strokeColor
+            // Define stroke width depending on node height
+            if (nodeCoordinates[3] > 10) {
+              ctx.lineWidth = 5
+            } else {
+              ctx.lineWidth = 2
+            }
+            ctx.strokeRect(
+              nodeCoordinates[0] + x_shift + ctx.lineWidth / 2 + 1,
+              nodeCoordinates[1] + y_shift + ctx.lineWidth / 2,
+              nodeCoordinates[2] - ctx.lineWidth - 1,
+              nodeCoordinates[3] - ctx.lineWidth
+            )
+            ctx.lineWidth = 1
           }
-          ctx.strokeRect(
-            nodeCoordinates[0] + x_shift + ctx.lineWidth / 2 + 1,
-            nodeCoordinates[1] + y_shift + ctx.lineWidth / 2,
-            nodeCoordinates[2] - ctx.lineWidth - 1,
-            nodeCoordinates[3] - ctx.lineWidth
-          )
-          ctx.lineWidth = 1
-        }
 
+          // Add node path to global hash
+          allNodesPaths[nodeName] = {
+            x: node_x,
+            y: node_y,
+            width: nodeCoordinates[2],
+            height: nodeCoordinates[3],
+            path: nodePath
+          }
+        }
         // Draw general black stroke to delimit all nodes
         ctx.strokeStyle = 'black'
         ctx.stroke(nodePath)
-
-        // Add node path to global hash
-        allNodesPaths[nodeName] = {
-          x: node_x,
-          y: node_y,
-          width: nodeCoordinates[2],
-          height: nodeCoordinates[3],
-          path: nodePath
-        }
       }
       // redraw hover ring if cursor is currently over a node
       if (currentNode.value) {
-        drawNodeHoverRing(ctx, allNodesPaths[currentNode.value].path)
+        drawNodeHoverRing(ctx, allNodesPaths[currentNode.value.name].path)
       }
     }
   }
@@ -178,7 +191,7 @@ function setMouseEventHandler() {
       if (isPointInPath) {
         nodeFound = true
         nodeTooltipOpen.value = true
-        currentNode.value = nodeName
+        currentNode.value = getClusterNode(nodeName)
         // Check mouse moved over another node
         if (nodePath.path !== previousPath) {
           // Erase hover ring on previous node
@@ -251,6 +264,7 @@ watch(
 watch(
   () => props.nodes,
   () => {
+    allNodesPaths = {}
     updateCanvas(false)
   }
 )
@@ -278,13 +292,13 @@ onUnmounted(() => {
       <div v-if="currentNode" class="overflow-hidden w-40 rounded-md bg-white shadow-lg">
         <ul role="list" class="divide-y divide-gray-200">
           <li class="text-center bg-gray-200 py-2 text-sm">
-            <strong>Node {{ currentNode }}</strong>
+            <strong>Node {{ currentNode.name }}</strong>
           </li>
           <li class="flex px-4 py-1 text-xs text-gray-400">
-            <NodeMainState :states="getNodeState(currentNode)" />
+            <NodeMainState :node="currentNode" />
           </li>
           <li class="flex px-4 py-1 text-xs text-gray-400">
-            <NodeAllocationState :states="getNodeState(currentNode)" />
+            <NodeAllocationState :node="currentNode" />
           </li>
         </ul>
       </div>

@@ -7,7 +7,6 @@ import {
   APIServerError,
   RequestError
 } from '@/composables/HTTPErrors'
-import type { AreaHTMLAttributes } from 'vue'
 
 interface loginIdents {
   user: string
@@ -141,6 +140,30 @@ export interface ClusterIndividualJob {
   working_directory: string
 }
 
+export type ClusterNodeMainState = 'down' | 'drain' | 'draining' | 'up'
+export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle'
+
+export function getNodeMainState(node: ClusterNode): ClusterNodeMainState {
+  if (node.state.includes('DOWN')) {
+    return 'down'
+  } else if (node.state.includes('DRAIN')) {
+    return 'drain'
+  } else if (node.state.includes('DRAINING')) {
+    return 'draining'
+  } else {
+    return 'up'
+  }
+}
+
+export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedState {
+  if (node.state.includes('ALLOCATED')) {
+    return 'allocated'
+  } else if (node.state.includes('MIXED')) {
+    return 'mixed'
+  } else {
+    return 'idle'
+  }
+}
 export interface ClusterNode {
   name: string
   cores: number

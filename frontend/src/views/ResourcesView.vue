@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import type { Ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
+import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import ResourcesViewer from '@/components/resources/ResourcesViewer.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
+import ResourcesFiltersPanel from '@/components/resources/ResourcesFiltersPanel.vue'
+import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 
@@ -18,6 +23,10 @@ const props = defineProps({
 })
 
 const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
+const runtimeStore = useRuntimeStore()
+const route = useRoute()
+const router = useRouter()
+const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>('nodes', 10000, props)
 
 function arraysEqual<CType>(a: Array<CType>, b: Array<CType>): boolean {
   if (a === b) return true
@@ -39,6 +48,13 @@ interface FoldedClusterNode extends ClusterNode {
   number: number
 }
 
+const filteredNodes: Ref<ClusterNode[]> = computed(() => {
+  if (!data.value) {
+    return []
+  }
+  return [...data.value].filter((node) => runtimeStore.resources.matchesFilters(node))
+})
+
 const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
   let previousNode: FoldedClusterNode | undefined = undefined
   let similarNodes: string[] = []
@@ -56,48 +72,99 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
     }
   }
 
-  if (data.value) {
-    for (const currentNode of data.value) {
-      if (
-        previousNode &&
-        previousNode.cpus == currentNode.cpus &&
-        previousNode.cores == currentNode.cores &&
-        previousNode.real_memory == currentNode.real_memory &&
-        arraysEqual<string>(previousNode.state, currentNode.state) &&
-        arraysEqual<string>(previousNode.partitions, currentNode.partitions)
-      ) {
-        previousNode.number += 1
-        similarNodes.push(currentNode.name)
-      } else {
-        finishSet()
-        // Prepare next iteration
-        previousNode = { ...currentNode, number: 1 }
-        similarNodes = [currentNode.name]
-        // Push next folded node in result
-        result.push(previousNode)
-      }
+  for (const currentNode of filteredNodes.value) {
+    if (
+      previousNode &&
+      previousNode.cpus == currentNode.cpus &&
+      previousNode.cores == currentNode.cores &&
+      previousNode.real_memory == currentNode.real_memory &&
+      arraysEqual<string>(previousNode.state, currentNode.state) &&
+      arraysEqual<string>(previousNode.partitions, currentNode.partitions)
+    ) {
+      previousNode.number += 1
+      similarNodes.push(currentNode.name)
+    } else {
+      finishSet()
+      // Prepare next iteration
+      previousNode = { ...currentNode, number: 1 }
+      similarNodes = [currentNode.name]
+      // Push next folded node in result
+      result.push(previousNode)
     }
-    // handle last node
-    finishSet()
-    // make new folded nodes show into effect
-    foldedNodesShow.value = newFoldedNodesShow
-    return result
-  } else {
-    return []
   }
+  // handle last node
+  finishSet()
+  // make new folded nodes show into effect
+  foldedNodesShow.value = newFoldedNodesShow
+  return result
 })
 
-const { data, unable } = useClusterDataPoller<ClusterNode[]>('nodes', 10000, props)
+function updateQueryParameters() {
+  console.log('Updating query parameters')
+  router.push({ name: 'resources', query: runtimeStore.resources.query() as LocationQueryRaw })
+}
+
+/*
+ * Watch states and users filters in Pinia store to update route query
+ * accordingly.
+ *
+ * This is not explained in Pinia documentation but to watch Pinia store nested
+ * attribute, the solution is to used watch getter. This solution has been found
+ * here: https://stackoverflow.com/a/71937507
+ */
+watch(
+  () => runtimeStore.resources.filters.states,
+  () => {
+    updateQueryParameters()
+  }
+)
+watch(
+  () => runtimeStore.resources.filters.partitions,
+  () => {
+    updateQueryParameters()
+  }
+)
+
+onMounted(() => {
+  if (['states', 'partitions'].some((parameter) => parameter in route.query)) {
+    if (route.query.states) {
+      /* Retrieve the states filters from query and update the store */
+      runtimeStore.resources.filters.states = (route.query.states as string).split(',')
+    }
+    if (route.query.partitions) {
+      /* Retrieve the partitions filters from query and update the store */
+      runtimeStore.resources.filters.partitions = (route.query.partitions as string).split(',')
+    }
+  } else {
+    /* Route has no query parameter. Update query parameters to match those that
+     * can be defined in runtime store. This typically happens when user define
+     * filters, leave jobs route (eg. in left menu) and comes back. */
+    updateQueryParameters()
+  }
+})
 </script>
 
 <template>
   <ClusterMainLayout :cluster="props.cluster" title="Resources">
     <div class="bg-white">
-      <div class="mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Nodes</h1>
-        <p class="mt-4 max-w-xl text-sm text-gray-700">State of nodes on cluster</p>
+      <ResourcesFiltersPanel :cluster="props.cluster" :nbNodes="filteredNodes.length" />
+
+      <div class="mx-auto flex items-center justify-between px-4 py-16 sm:px-6 lg:px-8">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Nodes</h1>
+          <p class="mt-4 max-w-xl text-sm text-gray-700">State of nodes on cluster</p>
+        </div>
+        <div v-if="loaded" class="mt-4 text-gray-600 text-right">
+          <div class="text-5xl font-bold">{{ filteredNodes.length }}</div>
+          <div class="text-sm font-light">node{{ filteredNodes.length > 1 ? 's' : '' }} found</div>
+        </div>
+        <div v-else class="animate-pulse flex space-x-4">
+          <div class="rounded-2xl bg-slate-200 h-14 w-14"></div>
+        </div>
       </div>
-      <ResourcesViewer v-if="data" :cluster="props.cluster" :nodes="data" />
+
+      <ResourcesViewer :cluster="props.cluster" :nodes="filteredNodes" />
+      <ResourcesFiltersBar :cluster="props.cluster" />
       <div v-if="unable">Unable to retrieve nodes information from cluster {{ props.cluster }}</div>
       <div v-else class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -161,10 +228,10 @@ const { data, unable } = useClusterDataPoller<ClusterNode[]>('nodes', 10000, pro
                       }}</span>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <NodeMainState :states="node.state" />
+                      <NodeMainState :node="node" />
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <NodeAllocationState :states="node.state" />
+                      <NodeAllocationState :node="node" />
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {{ node.cpus }} x {{ node.cores }}

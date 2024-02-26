@@ -2,7 +2,12 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { RouteLocation } from 'vue-router'
-import type { ClusterDescription, ClusterJob } from '@/composables/GatewayAPI'
+import { getNodeMainState } from '@/composables/GatewayAPI'
+import type { ClusterDescription, ClusterJob, ClusterNode } from '@/composables/GatewayAPI'
+
+/*
+ * Jobs view settings
+ */
 
 interface JobsViewFilters {
   states: string[]
@@ -159,6 +164,75 @@ export class JobsViewSettings {
   }
 }
 
+/*
+ * Resources view settings
+ */
+
+interface ResourcesViewFilters {
+  states: string[]
+  partitions: string[]
+}
+
+interface ResourcesQueryParameters {
+  states?: string
+  partitions?: string
+}
+
+export const resourcesStates = [
+  { value: 'up', label: 'Up' },
+  { value: 'drain', label: 'Drain' },
+  { value: 'draining', label: 'Draining' },
+  { value: 'down', label: 'Down' }
+]
+
+export class ResourcesViewSettings {
+  openFiltersPanel: boolean = false
+  filters: ResourcesViewFilters = { states: [], partitions: [] }
+  removeStateFilter(state: string) {
+    this.filters.states = this.filters.states.filter((element) => element != state)
+  }
+
+  removePartitionFilter(partition: string) {
+    this.filters.partitions = this.filters.partitions.filter((element) => element != partition)
+  }
+  emptyFilters(): boolean {
+    return this.filters.states.length == 0 && this.filters.partitions.length == 0
+  }
+  matchesFilters(node: ClusterNode): boolean {
+    if (this.emptyFilters()) {
+      return true
+    }
+    if (this.filters.states.length != 0) {
+      if (
+        !this.filters.states.some((state) => state.toLocaleLowerCase() == getNodeMainState(node))
+      ) {
+        return false
+      }
+    }
+    if (this.filters.partitions.length != 0) {
+      if (!this.filters.partitions.some((partition) => node.partitions.includes(partition))) {
+        return false
+      }
+    }
+
+    return true
+  }
+  query(): ResourcesQueryParameters {
+    const result: ResourcesQueryParameters = {}
+    if (this.filters.states.length > 0) {
+      result.states = this.filters.states.join()
+    }
+    if (this.filters.partitions.length > 0) {
+      result.partitions = this.filters.partitions.join()
+    }
+    return result
+  }
+}
+
+/*
+ * Shared settings
+ */
+
 type NotificationType = 'INFO' | 'ERROR'
 
 class Notification {
@@ -193,7 +267,10 @@ export const useRuntimeStore = defineStore('runtime', () => {
   const navigation: Ref<string> = ref('home')
   const routePath: Ref<string> = ref('/')
   const beforeSettingsRoute: Ref<RouteLocation | undefined> = ref(undefined)
+
   const jobs: Ref<JobsViewSettings> = ref(new JobsViewSettings())
+  const resources: Ref<ResourcesViewSettings> = ref(new ResourcesViewSettings())
+
   const errors: Ref<Array<RuntimeError>> = ref([])
   const notifications: Ref<Array<Notification>> = ref([])
   const sidebarOpen: Ref<boolean> = ref(false)
@@ -251,6 +328,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
     routePath,
     beforeSettingsRoute,
     jobs,
+    resources,
     errors,
     notifications,
     sidebarOpen,

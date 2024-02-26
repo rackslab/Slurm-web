@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import type { Ref, PropType } from 'vue'
+import type { ClusterNode } from '@/composables/GatewayAPI'
+import { getNodeAllocationState } from '@/composables/GatewayAPI'
 import { Battery0Icon, Battery50Icon, Battery100Icon } from '@heroicons/vue/20/solid'
+
 const props = defineProps({
-  states: {
-    type: Array as PropType<string[]>,
+  node: {
+    type: Object as PropType<ClusterNode>,
     required: true
   }
 })
@@ -15,48 +18,52 @@ interface NodeAllocationLabelColors {
   color: string
 }
 
-const nodeAllocationState: Ref<NodeAllocationLabelColors | undefined> = ref()
+const nodeAllocationLabelColor: Ref<NodeAllocationLabelColors | undefined> = ref()
 
 function getStatusColor(): NodeAllocationLabelColors {
-  if (props.states.includes('ALLOCATED')) {
-    return {
-      label: 'allocated',
-      icon: Battery100Icon,
-      color: 'fill-orange-600'
-    }
-  } else if (props.states.includes('MIXED')) {
-    return {
-      label: 'mixed',
-      icon: Battery50Icon,
-      color: 'fill-yellow-700'
-    }
-  } else {
-    return {
-      label: 'idle',
-      icon: Battery0Icon,
-      color: 'fill-green-500'
-    }
+  switch (getNodeAllocationState(props.node)) {
+    case 'allocated':
+      return {
+        label: 'allocated',
+        icon: Battery100Icon,
+        color: 'fill-orange-600'
+      }
+    case 'mixed':
+      return {
+        label: 'mixed',
+        icon: Battery50Icon,
+        color: 'fill-yellow-700'
+      }
+    default:
+      return {
+        label: 'idle',
+        icon: Battery0Icon,
+        color: 'fill-green-500'
+      }
   }
 }
 
 watch(
-  () => props.states,
+  () => props.node,
   () => {
-    nodeAllocationState.value = getStatusColor()
+    nodeAllocationLabelColor.value = getStatusColor()
   }
 )
 
 onMounted(() => {
-  nodeAllocationState.value = getStatusColor()
+  nodeAllocationLabelColor.value = getStatusColor()
 })
 </script>
 
 <template>
   <span
-    v-if="nodeAllocationState"
+    v-if="nodeAllocationLabelColor"
     class="max-h-6 text-xs inline-flex items-center gap-x-1.5 rounded-md font-medium align-middle"
   >
-    <component :is="nodeAllocationState.icon" :class="[nodeAllocationState.color, 'h-6 w-6']" />
-    {{ nodeAllocationState.label.toUpperCase() }}
+    <component
+      :is="nodeAllocationLabelColor.icon"
+      :class="[nodeAllocationLabelColor.color, 'h-6 w-6']"
+    />
+    {{ nodeAllocationLabelColor.label.toUpperCase() }}
   </span>
 </template>

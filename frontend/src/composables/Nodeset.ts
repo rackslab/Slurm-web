@@ -68,14 +68,14 @@ export function expandNodeset(nodeset: string): string[] {
   for (const match of nodeset.matchAll(re)) {
     const prefix = match[1]
     if (match[2]) {
-        result.push(prefix+match[2])
+      result.push(prefix + match[2])
     } else {
-        const digits = match[3].length
-        const first = parseInt(match[3])
-        const last = parseInt(match[4])
-        for(let index=first ; index <= last ; index++) {
-            result.push(prefix + index.toString().padStart(digits, '0'))
-        }
+      const digits = match[3].length
+      const first = parseInt(match[3])
+      const last = parseInt(match[4])
+      for (let index = first; index <= last; index++) {
+        result.push(prefix + index.toString().padStart(digits, '0'))
+      }
     }
   }
   return result

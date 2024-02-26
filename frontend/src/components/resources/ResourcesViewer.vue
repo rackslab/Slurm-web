@@ -48,7 +48,12 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
       <span class="sr-only">fullscreen</span>
       <ArrowsPointingOutIcon class="h-6 w-6" aria-hidden="true" />
     </button>
-    <ResourcesCanvas :cluster="props.cluster" :nodes="props.nodes" :fullscreen="fullscreen" @image-size="positionFullscreenButton"/>
+    <ResourcesCanvas
+      :cluster="props.cluster"
+      :nodes="props.nodes"
+      :fullscreen="fullscreen"
+      @image-size="positionFullscreenButton"
+    />
   </div>
 
   <TransitionRoot as="template" :show="fullscreen">
