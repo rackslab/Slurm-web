@@ -63,7 +63,7 @@ export function expandNodeset(nodeset: string): string[] {
   //const re = /[A-Za-z_-]+([0-9]+|\[0-9]+\-[0-9]+\])(,[A-Za-z_-]+([0-9]+|\[0-9]+\-[0-9]+\]))*/
   //const re = /[A-Za-z_-]+\[[0-9]+\-[0-9]+\]/
   const re = /([A-Za-z_-]+)(?:([0-9]+)|\[([0-9]+)\-([0-9]+)\])/gm
-  let result: string[] = []
+  const result: string[] = []
   //const re = /([A-Za-z]+(?:[0-9]+|\[[0-9]+\-[0-9]+\]))(?:,([A-Za-z]+(?:[0-9]+|\[[0-9]+\-[0-9]+\])))*/
   for (const match of nodeset.matchAll(re)) {
     const prefix = match[1]

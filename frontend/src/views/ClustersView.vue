@@ -55,16 +55,16 @@ onMounted(() => {
       <button
         @click="navigate"
         role="link"
-        class="flex m-2 p-2 text-gray-600 hover:text-gray-800 absolute right-0"
+        class="absolute right-0 m-2 flex p-2 text-gray-600 hover:text-gray-800"
       >
         Signout
         <ArrowRightOnRectangleIcon class="h-6 w-6" />
       </button>
     </RouterLink>
     <section
-      class="flex h-screen justify-center items-center gap-y-6 bg-slurmweb-light dark:bg-gray-900"
+      class="flex h-screen items-center justify-center gap-y-6 bg-slurmweb-light dark:bg-gray-900"
     >
-      <div v-if="unable" class="lg:w-[60%] w-full rounded-md bg-red-50 p-4">
+      <div v-if="unable" class="w-full rounded-md bg-red-50 p-4 lg:w-[60%]">
         <div class="flex">
           <div class="flex-shrink-0">
             <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
@@ -75,8 +75,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else-if="loaded" class="lg:w-[60%] w-full flex flex-col">
-        <h1 class="flex px-4 text-left font-medium text-gray-700 text-lg">Select a cluster</h1>
+      <div v-else-if="loaded" class="flex w-full flex-col lg:w-[60%]">
+        <h1 class="flex px-4 text-left text-lg font-medium text-gray-700">Select a cluster</h1>
         <ul
           role="list"
           class="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 lg:rounded-xl"
@@ -88,7 +88,7 @@ onMounted(() => {
               cluster.permissions.actions.length > 0
                 ? 'cursor-pointer hover:bg-gray-50'
                 : 'cursor-not-allowed bg-gray-100',
-              'relative flex justify-between items-center px-4 py-5 h-20  sm:px-6'
+              'relative flex h-20 items-center justify-between px-4 py-5  sm:px-6'
             ]"
             @click="
               cluster.permissions.actions.length > 0 &&
@@ -101,7 +101,7 @@ onMounted(() => {
                 {{ cluster.name }}
               </RouterLink>
             </span>
-            <span v-if="cluster.stats" class="hidden md:flex text-center">
+            <span v-if="cluster.stats" class="hidden text-center md:flex">
               <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
                 <CpuChipIcon class="h-6 w-full" />
                 <p class="w-full">
@@ -151,7 +151,7 @@ onMounted(() => {
       </div>
       <div
         v-else
-        class="flex items-center justify-center lg:w-[60%] w-full animate-pulse rounded-xl text-gray-600 text-sm bg-slate-200 h-24"
+        class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%]"
       >
         Loading clusters…
       </div>

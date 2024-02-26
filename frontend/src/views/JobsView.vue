@@ -319,7 +319,7 @@ onMounted(() => {
                   <h2 class="text-lg font-medium text-gray-900">
                     Filters
                     <span
-                      class="bg-indigo-100 text-slurmweb ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
+                      class="ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-slurmweb md:inline-block"
                       >{{ sortedJobs.length }}</span
                     >
                   </h2>
@@ -342,7 +342,7 @@ onMounted(() => {
                       >
                         <span class="flex">
                           <BoltIcon
-                            class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-gray-600 text-white rounded-full p-2"
+                            class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-gray-600 p-2 text-white"
                           />
                           <span class="font-medium text-gray-900">State</span>
                         </span>
@@ -389,7 +389,7 @@ onMounted(() => {
                       >
                         <span class="flex">
                           <UserIcon
-                            class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-emerald-500 text-white rounded-full p-2"
+                            class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-emerald-500 p-2 text-white"
                           />
                           <span class="font-medium text-gray-900">Users</span>
                         </span>
@@ -417,7 +417,7 @@ onMounted(() => {
                       >
                         <span class="flex">
                           <UsersIcon
-                            class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-yellow-500 text-white rounded-full p-2"
+                            class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-yellow-500 p-2 text-white"
                           />
                           <span class="font-medium text-gray-900">Accounts</span>
                         </span>
@@ -445,7 +445,7 @@ onMounted(() => {
                       >
                         <span class="flex">
                           <SwatchIcon
-                            class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-purple-500 text-white rounded-full p-2"
+                            class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-purple-500 p-2 text-white"
                           />
                           <span class="font-medium text-gray-900">QOS</span>
                         </span>
@@ -473,7 +473,7 @@ onMounted(() => {
                       >
                         <span class="flex">
                           <RectangleGroupIcon
-                            class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-amber-700 text-white rounded-full p-2"
+                            class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-amber-700 p-2 text-white"
                           />
                           <span class="font-medium text-gray-900">Partitions</span>
                         </span>
@@ -502,12 +502,12 @@ onMounted(() => {
           <p class="mt-4 max-w-xl text-sm font-light text-gray-600">Jobs in cluster queue</p>
         </div>
 
-        <div v-if="loaded" class="mt-4 text-gray-600 text-right">
+        <div v-if="loaded" class="mt-4 text-right text-gray-600">
           <div class="text-5xl font-bold">{{ sortedJobs.length }}</div>
           <div class="text-sm font-light">job{{ sortedJobs.length > 1 ? 's' : '' }} found</div>
         </div>
-        <div v-else class="animate-pulse flex space-x-4">
-          <div class="rounded-2xl bg-slate-200 h-14 w-14"></div>
+        <div v-else class="flex animate-pulse space-x-4">
+          <div class="h-14 w-14 rounded-2xl bg-slate-200"></div>
         </div>
       </div>
 
@@ -533,7 +533,7 @@ onMounted(() => {
         <div v-show="!runtimeStore.jobs.emptyFilters()" class="bg-gray-100">
           <div class="mx-auto px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
             <h3 class="text-sm font-medium text-gray-500">
-              <FunnelIcon class="h-4 w-4 mr-1" />
+              <FunnelIcon class="mr-1 h-4 w-4" />
               <span class="sr-only">Filters active</span>
             </h3>
 
@@ -544,9 +544,9 @@ onMounted(() => {
                 <span
                   v-for="activeStateFilter in runtimeStore.jobs.filters.states"
                   :key="activeStateFilter"
-                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-gray-600 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-gray-600 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
                 >
-                  <BoltIcon class="h-4 w-4 mr-1" />
+                  <BoltIcon class="mr-1 h-4 w-4" />
                   <span>{{ activeStateFilter }}</span>
                   <button
                     type="button"
@@ -562,9 +562,9 @@ onMounted(() => {
                 <span
                   v-for="activeUserFilter in runtimeStore.jobs.filters.users"
                   :key="activeUserFilter"
-                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-emerald-500 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-emerald-500 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
                 >
-                  <UserIcon class="h-4 w-4 mr-1" />
+                  <UserIcon class="mr-1 h-4 w-4" />
                   <span>{{ activeUserFilter }}</span>
                   <button
                     type="button"
@@ -580,9 +580,9 @@ onMounted(() => {
                 <span
                   v-for="activeAccountFilter in runtimeStore.jobs.filters.accounts"
                   :key="activeAccountFilter"
-                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-yellow-500 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-yellow-500 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
                 >
-                  <UsersIcon class="h-4 w-4 mr-1" />
+                  <UsersIcon class="mr-1 h-4 w-4" />
                   <span>{{ activeAccountFilter }}</span>
                   <button
                     type="button"
@@ -598,9 +598,9 @@ onMounted(() => {
                 <span
                   v-for="activeQosFilter in runtimeStore.jobs.filters.qos"
                   :key="activeQosFilter"
-                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-purple-500 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-purple-500 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
                 >
-                  <SwatchIcon class="h-4 w-4 mr-1" />
+                  <SwatchIcon class="mr-1 h-4 w-4" />
                   <span>{{ activeQosFilter }}</span>
                   <button
                     type="button"
@@ -616,9 +616,9 @@ onMounted(() => {
                 <span
                   v-for="activePartitionFilter in runtimeStore.jobs.filters.partitions"
                   :key="activePartitionFilter"
-                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-amber-700 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+                  class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-amber-700 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
                 >
-                  <RectangleGroupIcon class="h-4 w-4 mr-1" />
+                  <RectangleGroupIcon class="mr-1 h-4 w-4" />
                   <span>{{ activePartitionFilter }}</span>
                   <button
                     type="button"
@@ -704,7 +704,7 @@ onMounted(() => {
                     </template>
                   </td>
                   <td
-                    class="whitespace-nowrap max-w-fit py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8"
+                    class="max-w-fit whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8"
                   >
                     <RouterLink
                       :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
@@ -758,7 +758,7 @@ onMounted(() => {
                     <button
                       :class="[
                         runtimeStore.jobs.page == 1
-                          ? 'text-gray-100 bg-gray-100 cursor-default'
+                          ? 'cursor-default bg-gray-100 text-gray-100'
                           : 'text-gray-400 hover:bg-gray-50',
                         'relative inline-flex items-center rounded-l-md px-2 py-2  ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0'
                       ]"
@@ -771,7 +771,7 @@ onMounted(() => {
                       <button
                         v-if="page.ellipsis"
                         aria-current="page"
-                        class="bg-white text-gray-600 ring-1 ring-inset ring-gray-300 relative z-10 inline-flex items-center px-4 py-2 text-xs font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        class="relative z-10 inline-flex items-center bg-white px-4 py-2 text-xs font-semibold text-gray-600 ring-1 ring-inset ring-gray-300 focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         …
                       </button>
@@ -792,7 +792,7 @@ onMounted(() => {
                     <button
                       :class="[
                         runtimeStore.jobs.page == lastpage
-                          ? 'text-gray-100 bg-gray-100 cursor-default'
+                          ? 'cursor-default bg-gray-100 text-gray-100'
                           : 'text-gray-400 hover:bg-gray-50',
                         'relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0'
                       ]"

@@ -6,6 +6,6 @@ import SettingsTabs from '@/components/settings/SettingsTabs.vue'
 <template>
   <SettingsLayout>
     <SettingsTabs entry="General" />
-    <div class="pt-16 px-4 sm:px-6 lg:px-8">General Settings</div>
+    <div class="px-4 pt-16 sm:px-6 lg:px-8">General Settings</div>
   </SettingsLayout>
 </template>

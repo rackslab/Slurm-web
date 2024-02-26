@@ -59,7 +59,7 @@ const runtimeStore = useRuntimeStore()
               <h2 class="text-lg font-medium text-gray-900">
                 Filters
                 <span
-                  class="bg-indigo-100 text-slurmweb ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
+                  class="ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-slurmweb md:inline-block"
                   >{{ props.nbNodes }}</span
                 >
               </h2>
@@ -82,7 +82,7 @@ const runtimeStore = useRuntimeStore()
                   >
                     <span class="flex">
                       <BoltIcon
-                        class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-gray-600 text-white rounded-full p-2"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-gray-600 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">State</span>
                     </span>
@@ -131,7 +131,7 @@ const runtimeStore = useRuntimeStore()
                   >
                     <span class="flex">
                       <RectangleGroupIcon
-                        class="h-8 w-8 -mt-1 -ml-1 mr-2 bg-amber-700 text-white rounded-full p-2"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-amber-700 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">Partitions</span>
                     </span>

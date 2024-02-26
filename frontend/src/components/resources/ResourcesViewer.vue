@@ -43,7 +43,7 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
       v-show="displayFullscreenButton"
       ref="fullscreenButton"
       @click="toggleFullScreen()"
-      class="absolute top-4 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 rounded-lg"
+      class="absolute top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
     >
       <span class="sr-only">fullscreen</span>
       <ArrowsPointingOutIcon class="h-6 w-6" aria-hidden="true" />
@@ -82,12 +82,12 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative transform overflow-hidden bg-white px-4 text-left shadow-xl transition-all min-w-full min-h-screen"
+              class="relative min-h-screen min-w-full transform overflow-hidden bg-white px-4 text-left shadow-xl transition-all"
             >
               <div class="absolute right-0 top-0 z-50 pr-4 pt-4 sm:block">
                 <button
                   type="button"
-                  class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                  class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
                   @click="toggleFullScreen()"
                 >
                   <span class="sr-only">Close</span>
@@ -95,11 +95,11 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
                 </button>
               </div>
               <div
-                class="flex flex-col relative mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left min-h-screen"
+                class="relative mt-3 flex min-h-screen flex-col text-center sm:ml-4 sm:mt-0 sm:text-left"
               >
                 <DialogTitle
                   as="h3"
-                  class="flex text-base font-semibold leading-6 text-gray-900 p-6"
+                  class="flex p-6 text-base font-semibold leading-6 text-gray-900"
                   >Cluster {{ props.cluster }}</DialogTitle
                 >
                 <ResourcesCanvas

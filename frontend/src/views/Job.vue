@@ -39,7 +39,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
     <button
       @click="backToJobs()"
       type="button"
-      class="inline-flex items-center gap-x-2 rounded-md bg-slurmweb mt-8 mb-16 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+      class="mb-16 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
     >
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to jobs
@@ -112,7 +112,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
               </div>
               <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Submit line</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 font-mono">
+                <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.submit_line }}
                 </dd>
               </div>
@@ -124,7 +124,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
               </div>
               <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Working directory</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 font-mono">
+                <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.working_directory }}
                 </dd>
               </div>

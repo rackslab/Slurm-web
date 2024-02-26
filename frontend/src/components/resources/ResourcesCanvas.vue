@@ -284,14 +284,14 @@ onUnmounted(() => {
     ref="container"
     :class="[fullscreen ? 'grow' : 'h-96', 'flex min-w-full items-center justify-center']"
   >
-    <div ref="loading" class="text-slurmweb h-1/2">
+    <div ref="loading" class="h-1/2 text-slurmweb">
       <Spinner :size="8" />
     </div>
 
     <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
-      <div v-if="currentNode" class="overflow-hidden w-40 rounded-md bg-white shadow-lg">
+      <div v-if="currentNode" class="w-40 overflow-hidden rounded-md bg-white shadow-lg">
         <ul role="list" class="divide-y divide-gray-200">
-          <li class="text-center bg-gray-200 py-2 text-sm">
+          <li class="bg-gray-200 py-2 text-center text-sm">
             <strong>Node {{ currentNode.name }}</strong>
           </li>
           <li class="flex px-4 py-1 text-xs text-gray-400">
@@ -303,7 +303,7 @@ onUnmounted(() => {
         </ul>
       </div>
       <div
-        class="h-0 w-0 right-0 left-0 absolute m-auto border-x-[12px] border-x-transparent border-t-[10px] border-t-white"
+        class="absolute left-0 right-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
       ></div>
     </aside>
 

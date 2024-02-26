@@ -11,7 +11,7 @@ const authStore = useAuthStore()
 <template>
   <SettingsLayout>
     <SettingsTabs entry="Account" />
-    <div class="pt-16 px-4 sm:px-6 lg:px-8">
+    <div class="px-4 pt-16 sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-base font-semibold leading-6 text-gray-900">Account</h1>
@@ -55,11 +55,11 @@ const authStore = useAuthStore()
             <dt class="text-sm font-medium leading-6 text-gray-900">{{ cluster.name }}</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               Roles :
-              <ul class="list-disc ml-6 mb-4">
+              <ul class="mb-4 ml-6 list-disc">
                 <li v-for="role in cluster.permissions.roles.sort()">{{ role }}</li>
               </ul>
               Actions :
-              <ul class="list-disc ml-6">
+              <ul class="ml-6 list-disc">
                 <li v-for="action in cluster.permissions.actions.sort()">{{ action }}</li>
               </ul>
             </dd>

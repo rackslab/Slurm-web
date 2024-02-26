@@ -20,7 +20,7 @@ const runtimeStore = useRuntimeStore()
   <template v-if="runtimeStore.availableClusters.length > 1">
     <Popover class="relative">
       <PopoverButton
-        class="inline-flex items-center gap-x-1 font-bold leading-6 text-transparent hover:text-gray-400 rounded p-3 hover:bg-slurmweb-light"
+        class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-transparent hover:bg-slurmweb-light hover:text-gray-400"
       >
         <ChevronDownIcon class="h-5 w-5" aria-hidden="true" />
         <span class="text-gray-700 hover:text-gray-900">{{ props.cluster }}</span>
@@ -79,8 +79,8 @@ const runtimeStore = useRuntimeStore()
                   <span class="absolute inset-0" />
                 </RouterLink>
 
-                <span v-if="cluster.stats" class="flex w-30 mt-1 text-xs leading-5 text-gray-500">
-                  <CpuChipIcon class="h-5 mx-1" />
+                <span v-if="cluster.stats" class="w-30 mt-1 flex text-xs leading-5 text-gray-500">
+                  <CpuChipIcon class="mx-1 h-5" />
                   {{ cluster.stats.resources.nodes }} node{{
                     cluster.stats.resources.nodes > 1 ? 's' : ''
                   }}
@@ -94,7 +94,7 @@ const runtimeStore = useRuntimeStore()
   </template>
   <span
     v-else
-    class="inline-flex items-center gap-x-1 font-bold leading-6 rounded p-3 text-gray-700"
+    class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-gray-700"
   >
     {{ props.cluster }}
   </span>

@@ -59,24 +59,24 @@ async function submitLogin() {
 <template>
   <main>
     <section class="bg-slurmweb-light dark:bg-gray-900">
-      <div class="flex flex-col items-center justify-center px-6 py-4 mx-auto h-screen lg:py-0">
+      <div class="mx-auto flex h-screen flex-col items-center justify-center px-6 py-4 lg:py-0">
         <div
-          class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+          class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
         >
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <img src="/logo/bitmaps/slurm-web_bgwhite_small.png" class="mb-8 m-auto" />
+          <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
+            <img src="/logo/bitmaps/slurm-web_bgwhite_small.png" class="m-auto mb-8" />
             <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submitLogin">
               <div>
                 <label
                   for="user"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >Login</label
                 >
                 <input
                   name="user"
                   id="user"
                   v-model="username"
-                  class="transition-colors border border-gray-300 text-gray-900 placeholder-gray-300 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-slurmweb block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-slurmweb dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   :class="{ 'bg-gray-50': !highlightLogin, 'bg-red-200': highlightLogin }"
                   placeholder="Username"
                 />
@@ -84,7 +84,7 @@ async function submitLogin() {
               <div>
                 <label
                   for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >Password</label
                 >
                 <input
@@ -92,7 +92,7 @@ async function submitLogin() {
                   name="password"
                   id="password"
                   v-model="password"
-                  class="border border-gray-300 text-gray-900 placeholder-gray-300 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-slurmweb block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   :class="{ 'bg-gray-50': !highlightPassword, 'bg-red-200': highlightPassword }"
                   placeholder="••••••••"
                 />
@@ -100,12 +100,12 @@ async function submitLogin() {
               <button
                 type="submit"
                 :disabled="disableSubmission"
-                class="w-full text-white bg-slurmweb hover:bg-slurmweb-dark disabled:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full rounded-lg bg-slurmweb px-5 py-2.5 text-sm font-medium text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-4 disabled:bg-slate-300"
                 :class="{ 'animate-horizontal-shake': shakeLoginButton }"
               >
                 <template v-if="disableSubmission">
                   <svg
-                    class="animate-spin h-4 w-4 mx-2 -ml-2 text-white inline-block"
+                    class="mx-2 -ml-2 inline-block h-4 w-4 animate-spin text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

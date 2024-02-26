@@ -37,7 +37,7 @@
 - [ ] Click on node in infrastructure graphical representation to open node
       details page
 - [ ] RPM/deb packages
-- [ ] Deterministic sort of TailwindCSS classes
+- [x] Deterministic sort of TailwindCSS classes
 
 ## Later
 

@@ -18,7 +18,7 @@ const runtimeStore = useRuntimeStore()
     <h2 id="filter-heading" class="sr-only">Filters</h2>
 
     <div class="border-gray-200 bg-white pb-4">
-      <div class="flex px-4 sm:px-6 lg:px-8 justify-end">
+      <div class="flex justify-end px-4 sm:px-6 lg:px-8">
         <button
           type="button"
           class="inline-flex gap-x-1.5 rounded-md bg-slurmweb px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-darker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb"
@@ -34,7 +34,7 @@ const runtimeStore = useRuntimeStore()
     <div v-show="!runtimeStore.resources.emptyFilters()" class="bg-gray-100">
       <div class="mx-auto px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
         <h3 class="text-sm font-medium text-gray-500">
-          <FunnelIcon class="h-4 w-4 mr-1" />
+          <FunnelIcon class="mr-1 h-4 w-4" />
           <span class="sr-only">Filters active</span>
         </h3>
 
@@ -45,9 +45,9 @@ const runtimeStore = useRuntimeStore()
             <span
               v-for="activeStateFilter in runtimeStore.resources.filters.states"
               :key="activeStateFilter"
-              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-gray-600 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-gray-600 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
             >
-              <BoltIcon class="h-4 w-4 mr-1" />
+              <BoltIcon class="mr-1 h-4 w-4" />
               <span>{{ activeStateFilter }}</span>
               <button
                 type="button"
@@ -63,9 +63,9 @@ const runtimeStore = useRuntimeStore()
             <span
               v-for="activePartitionFilter in runtimeStore.resources.filters.partitions"
               :key="activePartitionFilter"
-              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-amber-700 text-white py-1.5 pl-3 pr-2 text-sm font-medium"
+              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-amber-700 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
             >
-              <RectangleGroupIcon class="h-4 w-4 mr-1" />
+              <RectangleGroupIcon class="mr-1 h-4 w-4" />
               <span>{{ activePartitionFilter }}</span>
               <button
                 type="button"

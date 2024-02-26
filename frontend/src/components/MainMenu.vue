@@ -101,7 +101,7 @@ const navigation = [
                             item.route == runtimeStore.navigation
                               ? 'bg-slurmweb-dark text-white'
                               : 'text-slurmweb-font-disabled hover:text-white',
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                            'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
                           ]"
                         >
                           <component
@@ -158,8 +158,8 @@ const navigation = [
                   :class="[
                     item.route == runtimeStore.navigation
                       ? 'bg-slurmweb-dark text-white'
-                      : 'text-slurmweb-font-disabled hover:text-white hover:slurmweb-dark',
-                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                      : 'hover:slurmweb-dark text-slurmweb-font-disabled hover:text-white',
+                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
                   ]"
                 >
                   <component :is="item.icon" :class="['h-6 w-6 shrink-0']" aria-hidden="true" />

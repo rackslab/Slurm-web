@@ -9,7 +9,7 @@ const runtimeStore = useRuntimeStore()
 <template>
   <SettingsLayout>
     <SettingsTabs entry="Errors" />
-    <div class="pt-16 px-4 sm:px-6 lg:px-8">
+    <div class="px-4 pt-16 sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-base font-semibold leading-6 text-gray-900">Errors</h1>

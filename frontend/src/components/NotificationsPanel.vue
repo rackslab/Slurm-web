@@ -9,7 +9,7 @@ const runtimeStore = useRuntimeStore()
 <template>
   <!-- Global notification live region, render this permanently at the end of the document 
   class="pointer-events-none fixed inset-0 flex flex-col items-end px-4 py-6 sm:items-start sm:p-6"-->
-  <div aria-live="assertive" class="absolute top-2 right-4 w-96 flex flex-col space-y-4 z-50">
+  <div aria-live="assertive" class="absolute right-4 top-2 z-50 flex w-96 flex-col space-y-4">
     <!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
     <TransitionGroup
       move-class="transition-all ease-in-out duration-500"

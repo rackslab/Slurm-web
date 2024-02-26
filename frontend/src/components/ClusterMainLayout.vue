@@ -35,7 +35,7 @@ onMounted(() => {
   <MainMenu />
   <div class="lg:pl-72">
     <div
-      class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b lg:px-4 border-gray-200 bg-white shadow-sm sm:gap-x-6"
+      class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 lg:px-4"
     >
       <button
         type="button"
@@ -50,7 +50,7 @@ onMounted(() => {
       <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
       <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        <div class="relative flex flex-1 mt-1 items-center">
+        <div class="relative mt-1 flex flex-1 items-center">
           <ClustersPopOver :cluster="props.cluster" />
           <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
           {{ props.title }}
@@ -61,7 +61,7 @@ onMounted(() => {
             <button
               @click="navigate"
               role="link"
-              class="lg:-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+              class="p-2.5 text-gray-400 hover:text-gray-500 lg:-m-2.5"
             >
               <ServerStackIcon class="h-6 w-6" />
             </button>
@@ -82,7 +82,7 @@ onMounted(() => {
             <button
               @click="navigate"
               role="link"
-              class="lg:-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+              class="p-2.5 text-gray-400 hover:text-gray-500 lg:-m-2.5"
             >
               <ArrowRightOnRectangleIcon class="h-6 w-6" />
             </button>

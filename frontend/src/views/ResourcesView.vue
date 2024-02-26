@@ -154,12 +154,12 @@ onMounted(() => {
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">Nodes</h1>
           <p class="mt-4 max-w-xl text-sm text-gray-700">State of nodes on cluster</p>
         </div>
-        <div v-if="loaded" class="mt-4 text-gray-600 text-right">
+        <div v-if="loaded" class="mt-4 text-right text-gray-600">
           <div class="text-5xl font-bold">{{ filteredNodes.length }}</div>
           <div class="text-sm font-light">node{{ filteredNodes.length > 1 ? 's' : '' }} found</div>
         </div>
-        <div v-else class="animate-pulse flex space-x-4">
-          <div class="rounded-2xl bg-slate-200 h-14 w-14"></div>
+        <div v-else class="flex animate-pulse space-x-4">
+          <div class="h-14 w-14 rounded-2xl bg-slate-200"></div>
         </div>
       </div>
 
@@ -222,7 +222,7 @@ onMounted(() => {
                       </button>
                     </td>
                     <td class="whitespace-nowrap py-4 text-sm text-gray-900">
-                      <span class="font-medium font-mono">{{ node.name }}</span
+                      <span class="font-mono font-medium">{{ node.name }}</span
                       ><span class="px-1 italic text-gray-500">{{
                         node.number > 1 ? '(' + node.number + ')' : ''
                       }}</span>
@@ -242,7 +242,7 @@ onMounted(() => {
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <span
                         v-for="partition in node.partitions"
-                        class="bg-gray-500 text-white rounded px-2 py-1 font-medium"
+                        class="rounded bg-gray-500 px-2 py-1 font-medium text-white"
                         >{{ partition }}</span
                       >
                     </td>
@@ -260,7 +260,7 @@ onMounted(() => {
                         <td colspan="7" class="z-0 bg-gray-300">
                           <ul
                             role="list"
-                            class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4 lg:grid-cols-16"
+                            class="lg:grid-cols-16 m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4"
                           >
                             <li
                               v-for="_node in expandNodeset(node.name)"
@@ -268,9 +268,9 @@ onMounted(() => {
                               class="col-span-1 flex rounded-md shadow-sm"
                             >
                               <div
-                                class="flex flex-1 items-center justify-between truncate rounded-md shadow-sm border-b border-r border-t border-gray-200 bg-white"
+                                class="flex flex-1 items-center justify-between truncate rounded-md border-b border-r border-t border-gray-200 bg-white shadow-sm"
                               >
-                                <div class="flex-1 font-mono truncate px-4 py-2 text-xs">
+                                <div class="flex-1 truncate px-4 py-2 font-mono text-xs">
                                   <p class="text-gray-500">{{ _node }}</p>
                                 </div>
                               </div>

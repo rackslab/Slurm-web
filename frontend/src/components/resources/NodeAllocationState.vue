@@ -58,7 +58,7 @@ onMounted(() => {
 <template>
   <span
     v-if="nodeAllocationLabelColor"
-    class="max-h-6 text-xs inline-flex items-center gap-x-1.5 rounded-md font-medium align-middle"
+    class="inline-flex max-h-6 items-center gap-x-1.5 rounded-md align-middle text-xs font-medium"
   >
     <component
       :is="nodeAllocationLabelColor.icon"

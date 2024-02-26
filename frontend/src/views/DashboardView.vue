@@ -23,8 +23,8 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000, prop
           <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
             {{ data.resources.nodes }}
           </span>
-          <div v-else class="animate-pulse flex space-x-4">
-            <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-200"></div>
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
@@ -32,8 +32,8 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000, prop
           <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
             {{ data.resources.cores }}
           </span>
-          <div v-else class="animate-pulse flex space-x-4">
-            <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-200"></div>
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
@@ -41,8 +41,8 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000, prop
           <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
             {{ data.jobs.running }}
           </span>
-          <div v-else class="animate-pulse flex space-x-4">
-            <div class="rounded-full bg-slate-200 h-10 w-10"></div>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-200"></div>
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
@@ -50,8 +50,8 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000, prop
           <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
             {{ data.jobs.total }}
           </span>
-          <div v-else class="animate-pulse flex space-x-4">
-            <div class="rounded-full bg-slate-100 h-10 w-10"></div>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-100"></div>
           </div>
         </div>
       </div>
