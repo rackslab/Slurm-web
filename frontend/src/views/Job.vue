@@ -31,7 +31,7 @@ function backToJobs() {
   })
 }
 
-const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, props)
+const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, props.id)
 </script>
 
 <template>

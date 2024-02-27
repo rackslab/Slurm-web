@@ -40,7 +40,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<AccountDescription[]>('accounts', props)
+const { data } = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
 </script>
 
 <template>

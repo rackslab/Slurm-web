@@ -40,7 +40,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterQos[]>('qos', props)
+const { data } = useClusterDataGetter<ClusterQos[]>('qos', props.cluster)
 </script>
 
 <template>

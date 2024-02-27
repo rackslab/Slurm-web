@@ -10,7 +10,7 @@ const props = defineProps({
   }
 })
 
-const { data, unable } = useClusterDataPoller<ClusterQos[]>('qos', 10000, props)
+const { data, unable } = useClusterDataPoller<ClusterQos[]>('qos', 10000)
 </script>
 
 <template>

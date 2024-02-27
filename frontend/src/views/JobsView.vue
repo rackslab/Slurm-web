@@ -51,7 +51,7 @@ const state_filters = [
 
 const open = ref(false)
 const route = useRoute()
-const { data, unable, loaded } = useClusterDataPoller<ClusterJob[]>('jobs', 5000, props)
+const { data, unable, loaded } = useClusterDataPoller<ClusterJob[]>('jobs', 5000)
 
 const sortedJobs = computed(() => {
   console.log(`Computing sorted jobs by ${runtimeStore.jobs.sort}`)

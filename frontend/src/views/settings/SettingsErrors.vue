@@ -45,7 +45,7 @@ const runtimeStore = useRuntimeStore()
                   <td
                     class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"
                   >
-                    {{ error.timestamp.toString() }}
+                    {{ error.timestamp.toLocaleString() }}
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {{ error.route }}

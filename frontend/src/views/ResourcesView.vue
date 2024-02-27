@@ -26,7 +26,7 @@ const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
 const runtimeStore = useRuntimeStore()
 const route = useRoute()
 const router = useRouter()
-const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>('nodes', 10000, props)
+const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>('nodes', 10000)
 
 function arraysEqual<CType>(a: Array<CType>, b: Array<CType>): boolean {
   if (a === b) return true

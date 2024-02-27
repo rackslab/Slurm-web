@@ -42,7 +42,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterPartition[]>('partitions', props)
+const { data } = useClusterDataGetter<ClusterPartition[]>('partitions', props.cluster)
 </script>
 
 <template>

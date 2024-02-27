@@ -3,13 +3,8 @@ import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { GatewayGenericAPIKey, GatewayClusterAPIKey } from '@/composables/GatewayAPI'
+import type { GatewayGenericAPIKey, GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
-
-interface ClusterGetterProps {
-  cluster: string
-  id?: number
-}
 
 export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
   const data: Ref<Type | undefined> = ref()
@@ -60,8 +55,8 @@ export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
 }
 
 export function useClusterDataGetter<Type>(
-  callback: GatewayClusterAPIKey,
-  props: ClusterGetterProps
+  callback: GatewayAnyClusterApiKey,
+  otherParam?: string | number
 ) {
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
@@ -75,7 +70,7 @@ export function useClusterDataGetter<Type>(
     router.push({ name: 'login' })
   }
 
-  function reportPermissionError(error: PermissionError, cluster: string) {
+  function reportPermissionError(error: PermissionError) {
     runtime.reportError(`Permission error: ${error.message}`)
     unable.value = true
   }
@@ -85,31 +80,28 @@ export function useClusterDataGetter<Type>(
     unable.value = true
   }
 
-  function otherProps() {
-    const { cluster, ...other } = props
-    return Object.values(other) as [number]
-  }
-
-  function allProps() {
-    return Object.values(props) as [number]
-  }
-
   async function get(cluster: string) {
     try {
       unable.value = false
 
-      data.value = (await gateway[callback](props.cluster, ...otherProps())) as Type
+      if (gateway.isValidGatewayClusterWithStringAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as string)) as Type
+      } else if (gateway.isValidGatewayClusterWithNumberAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as number)) as Type
+      } else {
+        data.value = (await gateway[callback](cluster)) as Type
+      }
       loaded.value = true
     } catch (error: any) {
       /*
        * Skip errors received lately from other clusters, after the view cluster
        * parameter has changed.
        */
-      if (cluster == props.cluster) {
+      if (cluster === runtime.currentCluster?.name) {
         if (error instanceof AuthenticationError) {
           reportAuthenticationError(error)
         } else if (error instanceof PermissionError) {
-          reportPermissionError(error, cluster)
+          reportPermissionError(error)
         } else {
           reportOtherError(error)
         }
@@ -118,15 +110,21 @@ export function useClusterDataGetter<Type>(
   }
 
   watch(
-    () => props.cluster,
+    () => runtime.currentCluster,
     (newCluster, oldCluster) => {
-      console.log(`Updating ${callback} getter from cluster ${oldCluster} to ${newCluster}`)
+      console.log(
+        `Updating ${callback} getter from cluster ${oldCluster?.name} to ${newCluster?.name}`
+      )
       loaded.value = false
-      get(newCluster)
+      if (newCluster) {
+        get(newCluster.name)
+      }
     }
   )
   onMounted(() => {
-    get(props.cluster)
+    if (runtime.currentCluster) {
+      get(runtime.currentCluster.name)
+    }
   })
   return { data, unable, loaded }
 }

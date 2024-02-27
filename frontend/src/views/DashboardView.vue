@@ -10,7 +10,7 @@ const props = defineProps({
   }
 })
 
-const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000, props)
+const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
 </script>
 
 <template>

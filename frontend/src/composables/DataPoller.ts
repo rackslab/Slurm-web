@@ -3,19 +3,20 @@ import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { GatewayClusterAPIKey } from '@/composables/GatewayAPI'
+import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 
-interface ClusterPollerProps {
-  cluster: string
-  id?: number
+type ClusterDataPoller<Type> = {
+  data: Ref<Type | undefined>
+  unable: Ref<boolean>
+  loaded: Ref<boolean>
 }
 
 export function useClusterDataPoller<Type>(
-  callback: GatewayClusterAPIKey,
+  callback: GatewayAnyClusterApiKey,
   timeout: number,
-  props: ClusterPollerProps
-) {
+  otherParam?: number | string
+): ClusterDataPoller<Type> {
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
@@ -41,22 +42,24 @@ export function useClusterDataPoller<Type>(
     unable.value = true
   }
 
-  function otherProps() {
-    const { cluster, ...other } = props
-    return Object.values(other) as [number]
-  }
-
   async function poll(cluster: string) {
     try {
       unable.value = false
-      data.value = (await gateway[callback](props.cluster, ...otherProps())) as Type
+      if (gateway.isValidGatewayClusterWithStringAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as string)) as Type
+      } else if (gateway.isValidGatewayClusterWithNumberAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as number)) as Type
+      } else {
+        data.value = (await gateway[callback](cluster)) as Type
+      }
+
       loaded.value = true
     } catch (error: any) {
       /*
        * Skip errors received lately from other clusters, after the view cluster
        * parameter has changed.
        */
-      if (cluster == props.cluster) {
+      if (cluster === runtime.currentCluster?.name) {
         if (error instanceof AuthenticationError) {
           reportAuthenticationError(error)
         } else if (error instanceof PermissionError) {
@@ -72,8 +75,8 @@ export function useClusterDataPoller<Type>(
     console.log(`Start polling ${callback} on cluster ${cluster}`)
     _stop = false
     await poll(cluster)
-    if (cluster == props.cluster && !_stop) {
-      _timeout = setTimeout(start, timeout, props.cluster, ...otherProps())
+    if (cluster === runtime.currentCluster?.name && !_stop) {
+      _timeout = setTimeout(start, timeout, cluster)
     }
   }
 
@@ -85,21 +88,31 @@ export function useClusterDataPoller<Type>(
   }
 
   watch(
-    () => props.cluster,
+    () => runtime.currentCluster,
     (newCluster, oldCluster) => {
-      stop(oldCluster)
-      console.log(`Updating ${callback} poller from cluster ${oldCluster} to ${newCluster}`)
+      if (oldCluster) {
+        stop(oldCluster.name)
+      }
+      console.log(
+        `Updating ${callback} poller from cluster ${oldCluster?.name} to ${newCluster?.name}`
+      )
       data.value = undefined
       loaded.value = false
-      start(newCluster)
+      if (newCluster) {
+        start(newCluster.name)
+      }
     }
   )
 
   onMounted(() => {
-    start(props.cluster)
+    if (runtime.currentCluster) {
+      start(runtime.currentCluster.name)
+    }
   })
   onUnmounted(() => {
-    stop(props.cluster)
+    if (runtime.currentCluster) {
+      stop(runtime.currentCluster.name)
+    }
   })
 
   return { data, unable, loaded }

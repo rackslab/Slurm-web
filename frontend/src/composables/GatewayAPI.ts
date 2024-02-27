@@ -186,15 +186,18 @@ export interface ClusterQos {
 export type RacksDBAPIImage = ImageBitmapSource
 export type RacksDBAPIResult = RacksDBAPIImage
 export type RacksDBInfrastructureCoordinates = Record<string, [number, number, number, number]>
-export type GatewayGenericAPIKey = 'clusters' | 'users'
-export type GatewayClusterAPIKey =
-  | 'stats'
-  | 'jobs'
-  | 'job'
-  | 'nodes'
-  | 'partitions'
-  | 'qos'
-  | 'accounts'
+const GatewayGenericAPIKeys = ['clusters', 'users'] as const
+export type GatewayGenericAPIKey = (typeof GatewayGenericAPIKeys)[number]
+const GatewayClusterAPIKeys = ['stats', 'jobs', 'nodes', 'partitions', 'qos', 'accounts'] as const
+export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
+const GatewayClusterWithNumberAPIKeys = ['job'] as const
+export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
+const GatewayClusterWithStringAPIKeys = ['node'] as const
+export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
+export type GatewayAnyClusterApiKey =
+  | GatewayClusterAPIKey
+  | GatewayClusterWithNumberAPIKey
+  | GatewayClusterWithStringAPIKey
 
 export function useGatewayAPI() {
   const http = useHttp()
@@ -356,6 +359,33 @@ export function useGatewayAPI() {
     controller = new AbortController()
   }
 
+  /*
+   * Custom type guards for Gateway API keys
+   */
+
+  function isValidGatewayGenericAPIKey(key: string): key is GatewayGenericAPIKey {
+    return typeof key === 'string' && GatewayGenericAPIKeys.includes(key as GatewayGenericAPIKey)
+  }
+  function isValidGatewayClusterAPIKey(key: string): key is GatewayClusterAPIKey {
+    return typeof key === 'string' && GatewayClusterAPIKeys.includes(key as GatewayClusterAPIKey)
+  }
+  function isValidGatewayClusterWithStringAPIKey(
+    key: string
+  ): key is GatewayClusterWithStringAPIKey {
+    return (
+      typeof key === 'string' &&
+      GatewayClusterWithStringAPIKeys.includes(key as GatewayClusterWithStringAPIKey)
+    )
+  }
+  function isValidGatewayClusterWithNumberAPIKey(
+    key: string
+  ): key is GatewayClusterWithNumberAPIKey {
+    return (
+      typeof key === 'string' &&
+      GatewayClusterWithNumberAPIKeys.includes(key as GatewayClusterWithNumberAPIKey)
+    )
+  }
+
   return {
     login,
     clusters,
@@ -368,6 +398,10 @@ export function useGatewayAPI() {
     qos,
     accounts,
     infrastructureImagePng,
-    abort
+    abort,
+    isValidGatewayGenericAPIKey,
+    isValidGatewayClusterAPIKey,
+    isValidGatewayClusterWithStringAPIKey,
+    isValidGatewayClusterWithNumberAPIKey
   }
 }
