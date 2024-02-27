@@ -186,6 +186,12 @@ def nodes(cluster: str):
 
 @check_jwt
 @validate_cluster
+def node(cluster: str, name: str):
+    return proxy_agent(cluster, f"node/{name}", request.token)
+
+
+@check_jwt
+@validate_cluster
 def partitions(cluster: str):
     return proxy_agent(cluster, "partitions", request.token)
 

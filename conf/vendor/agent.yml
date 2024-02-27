@@ -83,13 +83,37 @@ filters:
     default:
     - name
     - cpus
+    - sockets
     - cores
     - real_memory
     - state
+    - reason
     - partitions
     doc: |
       List of nodes fields selected in slurmrestd API, all other fields are
       filtered out.
+  node:
+    type: list
+    content: str
+    default:
+    - name
+    - architecture
+    - operating_system
+    - boot_time
+    - last_busy
+    - cpus
+    - sockets
+    - cores
+    - threads
+    - real_memory
+    - state
+    - reason
+    - partitions
+    - alloc_cpus
+    - alloc_memory
+    doc: |
+      List of invidual node fields selected in slurmrestd API, all other fields
+      are filtered out.
   partitions:
     type: list
     content: str
@@ -236,6 +260,10 @@ cache:
     type: int
     default: 30
     doc: Expiration delay in seconds for nodes in cache
+  node:
+    type: int
+    default: 10
+    doc: Expiration delay in seconds for node in cache
   partitions:
     type: int
     default: 60

@@ -139,6 +139,18 @@ def _get_job(job):
     return result
 
 
+def _get_node(name):
+    try:
+        return filter_fields(
+            current_app.settings.filters.node,
+            slurmrest,
+            f"/slurm/v{current_app.settings.slurmrestd.version}/node/{name}",
+            "nodes",
+        )[0]
+    except IndexError:
+        abort(404, f"Node {name} not found")
+
+
 def _cached_job(job):
     return _cached_data(
         f"job-{job}",
@@ -157,6 +169,15 @@ def _cached_nodes():
         slurmrest,
         f"/slurm/v{current_app.settings.slurmrestd.version}/nodes",
         "nodes",
+    )
+
+
+def _cached_node(name):
+    return _cached_data(
+        f"node-{name}",
+        current_app.settings.cache.node,
+        _get_node,
+        name,
     )
 
 
@@ -231,6 +252,11 @@ def job(job: int):
 @rbac_action("view-nodes")
 def nodes():
     return jsonify(_cached_nodes())
+
+
+@rbac_action("view-nodes")
+def node(name: str):
+    return jsonify(_cached_node(name))
 
 
 @rbac_action("view-partitions")

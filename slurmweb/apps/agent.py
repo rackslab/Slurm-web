@@ -32,6 +32,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/jobs", views.jobs),
         SlurmwebAppRoute(f"/v{get_version()}/job/<int:job>", views.job),
         SlurmwebAppRoute(f"/v{get_version()}/nodes", views.nodes),
+        SlurmwebAppRoute(f"/v{get_version()}/node/<name>", views.node),
         SlurmwebAppRoute(f"/v{get_version()}/partitions", views.partitions),
         SlurmwebAppRoute(f"/v{get_version()}/qos", views.qos),
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
