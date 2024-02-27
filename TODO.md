@@ -8,23 +8,22 @@
 - [x] Back to jobs button in job details page
 - [x] Jobs QOS filter
 - [x] Jobs partition filter
-- [ ] QOS list page
+- [x] QOS list page
 - [x] Logout button in clusters page
 - [x] Signout notification as info instead of error
 - [x] Refactor queryers and error handlers in jobs filters components
 - [x] Tests user permission in jobs filter panel
 - [x] Move remove*Filter() functions in runtimeStore
-- [ ] Move Jobs filters panel in dedicated component
-- [ ] Fix npm run lint warnings and errors
-- [ ] Add copyright header in all pages
-- [ ] Advanced reservations page
+- [x] Move Jobs filters panel and bar in dedicated components
+- [x] Fix npm run lint warnings and errors
+- [ ] Add copyright header in all source code files
+- [x] Advanced reservations page
 - [x] Formatted nodes list
 - [x] Group consecutive nodes in nodes table
 - [x] Nodes filtering by partition
 - [x] Nodes filtering by state
 - [ ] Factorize partition filter selector
-- [ ] Node details page
-- [ ] Add node reason in node table
+- [x] Node details page
 - [ ] Custom allocated/mixed/idle icon
 - [x] Filter nodes by tags in infrastructure graphical representation
 - [x] Show spinner while loading infrastructure graphical representation 
@@ -34,10 +33,16 @@
 - [x] Add hover node labels in infrastructure graphical representation
 - [x] Display nodes states in infrastructure graphical representation
 - [x] Button to display infrastructure graphical representation in fullscreen
-- [ ] Click on node in infrastructure graphical representation to open node
+- [x] Click on node in infrastructure graphical representation to open node
       details page
-- [ ] RPM/deb packages
 - [x] Deterministic sort of TailwindCSS classes
+- [x] Add better error and information messages
+- [x] Rename views more consistently
+- [ ] RPM/deb packages
+- [ ] Full documentation
+      - [ ] Overview page
+      - [ ] Quickstart Guide
+      - [ ] Configuration Reference
 
 ## Later
 
