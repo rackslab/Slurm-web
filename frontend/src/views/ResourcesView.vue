@@ -6,14 +6,14 @@ import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterNode } from '@/composables/GatewayAPI'
-import ResourcesViewer from '@/components/resources/ResourcesViewer.vue'
+import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import ResourcesFiltersPanel from '@/components/resources/ResourcesFiltersPanel.vue'
 import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
-import { ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { ChevronRightIcon, MagnifyingGlassPlusIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
   cluster: {
@@ -75,7 +75,7 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
   for (const currentNode of filteredNodes.value) {
     if (
       previousNode &&
-      previousNode.cpus == currentNode.cpus &&
+      previousNode.sockets == currentNode.sockets &&
       previousNode.cores == currentNode.cores &&
       previousNode.real_memory == currentNode.real_memory &&
       arraysEqual<string>(previousNode.state, currentNode.state) &&
@@ -163,8 +163,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <ResourcesViewer :cluster="props.cluster" :nodes="filteredNodes" />
+      <ResourcesDiagram :cluster="props.cluster" :nodes="filteredNodes" />
       <ResourcesFiltersBar :cluster="props.cluster" />
+
       <div v-if="unable">Unable to retrieve nodes information from cluster {{ props.cluster }}</div>
       <div v-else class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -192,7 +193,7 @@ onMounted(() => {
                     Allocation
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Cores
+                    CPU
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Memory
@@ -209,11 +210,10 @@ onMounted(() => {
                     <td class="w-4">
                       <button
                         v-if="node.number > 1"
-                        type="button"
                         class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
                         @click="foldedNodesShow[node.name] = !foldedNodesShow[node.name]"
                       >
-                        <span class="sr-only">Close menu</span>
+                        <span class="sr-only">Toggle folded nodes {{ node.name }}</span>
                         <ChevronRightIcon
                           class="h-6 w-6"
                           aria-hidden="true"
@@ -222,10 +222,28 @@ onMounted(() => {
                       </button>
                     </td>
                     <td class="whitespace-nowrap py-4 text-sm text-gray-900">
-                      <span class="font-mono font-medium">{{ node.name }}</span
-                      ><span class="px-1 italic text-gray-500">{{
-                        node.number > 1 ? '(' + node.number + ')' : ''
-                      }}</span>
+                      <RouterLink
+                        v-if="node.number == 1"
+                        class="inline-flex text-white hover:font-bold hover:text-gray-500"
+                        :to="{
+                          name: 'node',
+                          params: { cluster: $props.cluster, nodeName: node.name }
+                        }"
+                      >
+                        <span class="pr-4 font-mono text-black">{{ node.name }}</span>
+                        <MagnifyingGlassPlusIcon class="h-4 w-4" />
+                      </RouterLink>
+                      <button
+                        v-else
+                        @click="foldedNodesShow[node.name] = !foldedNodesShow[node.name]"
+                        class="hover:font-bold"
+                      >
+                        <span class="sr-only">Toggle folded nodes {{ node.name }}</span>
+                        <span class="font-mono">{{ node.name }}</span>
+                        <span class="px-1 font-normal italic text-gray-500"
+                          >({{ node.number }})</span
+                        >
+                      </button>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <NodeMainState :node="node" />
@@ -234,10 +252,10 @@ onMounted(() => {
                       <NodeAllocationState :node="node" />
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ node.cpus }} x {{ node.cores }}
+                      {{ node.sockets }} x {{ node.cores }}
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ node.real_memory }}
+                      {{ node.real_memory }}MB
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <span
@@ -265,15 +283,22 @@ onMounted(() => {
                             <li
                               v-for="_node in expandNodeset(node.name)"
                               :key="_node"
-                              class="col-span-1 flex rounded-md shadow-sm"
+                              class="col-span-1 flex rounded-md border-gray-200 bg-white text-left font-mono text-xs text-gray-500 shadow-sm transition-transform hover:scale-105"
                             >
-                              <div
-                                class="flex flex-1 items-center justify-between truncate rounded-md border-b border-r border-t border-gray-200 bg-white shadow-sm"
+                              <button
+                                class="inline-flex w-full px-4 py-2 text-white hover:text-gray-500"
+                                @click="
+                                  router.push({
+                                    name: 'node',
+                                    params: { cluster: $props.cluster, nodeName: _node }
+                                  })
+                                "
                               >
-                                <div class="flex-1 truncate px-4 py-2 font-mono text-xs">
-                                  <p class="text-gray-500">{{ _node }}</p>
-                                </div>
-                              </div>
+                                <span class="visible mr-0 grow text-left text-gray-500">{{
+                                  _node
+                                }}</span>
+                                <MagnifyingGlassPlusIcon class="h-4 w-4" />
+                              </button>
                             </li>
                           </ul>
                         </td>

@@ -6,6 +6,7 @@ import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composable
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import Spinner from '@/components/Spinner.vue'
+import router from '@/router'
 
 const props = defineProps({
   cluster: {
@@ -210,6 +211,9 @@ function setMouseEventHandler() {
           drawNodeHoverRing(ctx, nodePath.path)
           previousPath = nodePath.path
         }
+        if (canvas.value) {
+          canvas.value.style.cursor = 'pointer'
+        }
       }
     }
 
@@ -221,6 +225,19 @@ function setMouseEventHandler() {
       previousPath = undefined
       nodeTooltipOpen.value = false
       currentNode.value = undefined
+      if (canvas.value) {
+        canvas.value.style.cursor = 'default'
+      }
+    }
+  })
+  canvas.value.addEventListener('mouseup', (event) => {
+    let nodeFound = false
+    // Iterate over all nodes
+    for (const [nodeName, nodePath] of Object.entries(allNodesPaths)) {
+      const isPointInPath = ctx.isPointInPath(nodePath.path, event.offsetX, event.offsetY)
+      if (isPointInPath) {
+        router.push({ name: 'node', params: { cluster: props.cluster, nodeName: nodeName } })
+      }
     }
   })
 }
