@@ -37,6 +37,7 @@ export class JobsViewSettings {
   sort: JobSortCriterion = 'id'
   order: JobSortOrder = 'asc'
   page: number = 1
+  openFiltersPanel: boolean = false
   filters: JobsViewFilters = { states: [], users: [], accounts: [], qos: [], partitions: [] }
 
   restoreSortDefault(): void {
