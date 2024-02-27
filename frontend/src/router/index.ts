@@ -11,6 +11,7 @@ import ClustersView from '@/views/ClustersView.vue'
 import JobsView from '@/views/JobsView.vue'
 import JobView from '@/views/Job.vue'
 import ResourcesView from '@/views/ResourcesView.vue'
+import NodeView from '@/views/Node.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
 import AccountsView from '@/views/AccountsView.vue'
@@ -98,6 +99,15 @@ const router = createRouter({
       path: '/:cluster/resources',
       name: 'resources',
       component: ResourcesView,
+      props: true,
+      meta: {
+        entry: 'resources'
+      }
+    },
+    {
+      path: '/:cluster/node/:nodeName',
+      name: 'node',
+      component: NodeView,
       props: true,
       meta: {
         entry: 'resources'

@@ -166,11 +166,23 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
 }
 export interface ClusterNode {
   name: string
+  sockets: number
   cores: number
   cpus: number
   real_memory: number
   state: Array<string>
+  reason: string
   partitions: Array<string>
+}
+
+export interface ClusterIndividualNode extends ClusterNode {
+  architecture: string
+  operating_system: string
+  boot_time: number
+  last_busy: number
+  threads: number
+  alloc_cpus: number
+  alloc_memory: number
 }
 
 export interface ClusterPartition {
@@ -308,12 +320,16 @@ export function useGatewayAPI() {
     return await get<ClusterJob[]>(`/agents/${cluster}/jobs`)
   }
 
-  async function job(cluster: string, job: number): Promise<ClusterJob> {
-    return await get<ClusterJob>(`/agents/${cluster}/job/${job}`)
+  async function job(cluster: string, job: number): Promise<ClusterIndividualJob> {
+    return await get<ClusterIndividualJob>(`/agents/${cluster}/job/${job}`)
   }
 
   async function nodes(cluster: string): Promise<ClusterNode[]> {
     return await get<ClusterNode[]>(`/agents/${cluster}/nodes`)
+  }
+
+  async function node(cluster: string, nodeName: string): Promise<ClusterIndividualNode> {
+    return await get<ClusterIndividualNode>(`/agents/${cluster}/node/${nodeName}`)
   }
 
   async function partitions(cluster: string): Promise<ClusterPartition[]> {
@@ -394,6 +410,7 @@ export function useGatewayAPI() {
     jobs,
     job,
     nodes,
+    node,
     partitions,
     qos,
     accounts,
