@@ -164,7 +164,7 @@ onMounted(() => {
       </div>
 
       <ResourcesDiagram :cluster="props.cluster" :nodes="filteredNodes" />
-      <ResourcesFiltersBar :cluster="props.cluster" />
+      <ResourcesFiltersBar />
 
       <div v-if="unable">Unable to retrieve nodes information from cluster {{ props.cluster }}</div>
       <div v-else class="mt-8 flow-root">

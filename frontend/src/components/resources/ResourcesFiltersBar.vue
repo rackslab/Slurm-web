@@ -3,13 +3,6 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { FunnelIcon, BoltIcon, RectangleGroupIcon } from '@heroicons/vue/20/solid'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
-
 const runtimeStore = useRuntimeStore()
 </script>
 
