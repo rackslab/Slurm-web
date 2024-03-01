@@ -60,16 +60,10 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
   let previousNode: FoldedClusterNode | undefined = undefined
   let similarNodes: string[] = []
   const result: FoldedClusterNode[] = []
-  const newFoldedNodesShow: Record<string, boolean> = {}
 
   function finishSet() {
     if (previousNode) {
       previousNode.name = foldNodeset(similarNodes)
-      if (previousNode.name in foldedNodesShow.value) {
-        newFoldedNodesShow[previousNode.name] = foldedNodesShow.value[previousNode.name]
-      } else {
-        newFoldedNodesShow[previousNode.name] = false
-      }
     }
   }
 
@@ -95,8 +89,6 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
   }
   // handle last node
   finishSet()
-  // make new folded nodes show into effect
-  foldedNodesShow.value = newFoldedNodesShow
   return result
 })
 
@@ -123,6 +115,27 @@ watch(
   () => runtimeStore.resources.filters.partitions,
   () => {
     updateQueryParameters()
+  }
+)
+/*
+ * Update foldedNodesShow record when foldedNodes.value is updated. This is not
+ * a computed ref because computed refs are read-only and we need to modify
+ * foldedNodesShow values in template.
+ */
+watch(
+  () => foldedNodes.value,
+  () => {
+    const newFoldedNodesShow: Record<string, boolean> = {}
+
+    for (const foldedNodeset of foldedNodes.value) {
+      if (foldedNodesShow.value && foldedNodeset.name in foldedNodesShow.value) {
+        newFoldedNodesShow[foldedNodeset.name] = foldedNodesShow.value[foldedNodeset.name]
+      } else {
+        newFoldedNodesShow[foldedNodeset.name] = false
+      }
+    }
+    console.log('New folded nodes show', newFoldedNodesShow)
+    foldedNodesShow.value = newFoldedNodesShow
   }
 )
 
