@@ -205,6 +205,18 @@ def _cached_qos():
     )
 
 
+def _cached_reservations():
+    return _cached_data(
+        "reservations",
+        current_app.settings.cache.reservations,
+        filter_fields,
+        current_app.settings.filters.reservations,
+        slurmrest,
+        f"/slurm/v{current_app.settings.slurmrestd.version}/reservations",
+        "reservations",
+    )
+
+
 def _cached_accounts():
     return _cached_data(
         "accounts",
@@ -267,6 +279,11 @@ def partitions():
 @rbac_action("view-qos")
 def qos():
     return jsonify(_cached_qos())
+
+
+@rbac_action("view-reservations")
+def reservations():
+    return jsonify(_cached_reservations())
 
 
 @rbac_action("view-accounts")

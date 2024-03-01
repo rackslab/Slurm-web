@@ -204,6 +204,12 @@ def qos(cluster: str):
 
 @check_jwt
 @validate_cluster
+def reservations(cluster: str):
+    return proxy_agent(cluster, "reservations", request.token)
+
+
+@check_jwt
+@validate_cluster
 def accounts(cluster: str):
     return proxy_agent(cluster, "accounts", request.token)
 

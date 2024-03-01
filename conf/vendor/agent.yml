@@ -135,6 +135,21 @@ filters:
     doc: |
       List of qos fields selected in slurmrestd API, all other fields are
       filtered out.
+  reservations:
+    type: list
+    content: str
+    default:
+    - name
+    - users
+    - accounts
+    - node_list
+    - node_count
+    - start_time
+    - end_time
+    - flags
+    doc: |
+      List of reservations fields selected in slurmrestd API, all other fields
+      are filtered out.
   accounts:
     type: list
     content: str
@@ -275,6 +290,10 @@ cache:
     type: int
     default: 60
     doc: Expiration delay in seconds for QOS in cache
+  reservations:
+    type: int
+    default: 60
+    doc: Expiration delay in seconds for reservations in cache
   accounts:
     type: int
     default: 60
