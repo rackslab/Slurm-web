@@ -64,7 +64,7 @@ export interface ClusterJob {
   qos: string
 }
 
-export interface ClusterJobTRES {
+export interface ClusterTRES {
   count: number
   id: number
   name: string
@@ -132,7 +132,7 @@ export interface ClusterIndividualJob {
   submit_line: string
   tasks: ClusterOptionalNumber
   time: ClusterJobTime
-  tres: { allocated: ClusterJobTRES[]; requested: ClusterJobTRES[] }
+  tres: { allocated: ClusterTRES[]; requested: ClusterTRES[] }
   tres_req_str: string
   used_gres: string
   user: string
@@ -193,7 +193,127 @@ export interface ClusterPartition {
 export interface ClusterQos {
   name: string
   description: string
+  priority: ClusterOptionalNumber
+  flags: string[]
+  limits: {
+    max: {
+      active_jobs: {
+        count: ClusterOptionalNumber // GrpJobs
+      }
+      tres: {
+        total: ClusterTRES[] // GrpTRES
+        per: {
+          account: ClusterTRES[] // MaxTRESPA
+          job: ClusterTRES[] // MaxTRES
+          node: ClusterTRES[] // MaxTRESPerNode
+          user: ClusterTRES[] // MaxTRESPerUser
+        }
+      }
+      wall_clock: {
+        per: {
+          job: ClusterOptionalNumber // MaxWall, in minutes
+        }
+      }
+      jobs: {
+        active_jobs: {
+          per: {
+            account: ClusterOptionalNumber // MaxJobsPerAccount
+            user: ClusterOptionalNumber // MaxJobsPerUser
+          }
+        }
+        per: {
+          account: ClusterOptionalNumber // MaxJobsSubmitPerAccount
+          user: ClusterOptionalNumber // MaxJobsSubmitPerUser
+        }
+      }
+    }
+  }
 }
+
+export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
+  if (!optionalNumber.set) {
+    return '-'
+  }
+  if (optionalNumber.infinite) {
+    return '∞'
+  }
+  return optionalNumber.number.toString()
+}
+
+function sortClusterTRES(tres_a: ClusterTRES, tres_b: ClusterTRES) {
+  const allTRES = ['node', 'cpu', 'mem']
+  return allTRES.indexOf(tres_a.type) - allTRES.indexOf(tres_b.type)
+}
+
+export function renderClusterTRES(tres: ClusterTRES[]): string {
+  if (tres.length == 0) {
+    return '-'
+  }
+  return tres
+    .sort((a, b) => sortClusterTRES(a, b))
+    .map((_tres) => _tres.type + '=' + _tres.count)
+    .join()
+}
+
+export function renderClusterTRESHuman(tres: ClusterTRES[]): string {
+  if (tres.length == 0) {
+    return '-'
+  }
+
+  function renderClusterTRESComponent(type: string, count: number): string {
+    switch (type) {
+      case 'node':
+        return `${count} ${type}${count > 1 ? 's' : ''}`
+      case 'cpu':
+        return `${count} CPU${count > 1 ? 's' : ''}`
+      case 'mem':
+        return `${count} MB of memory`
+      default:
+        return `${count} ${type}${count > 1 ? 's' : ''}`
+    }
+  }
+
+  return tres
+    .sort((a, b) => sortClusterTRES(a, b))
+    .map((_tres) => renderClusterTRESComponent(_tres.type, _tres.count))
+    .join(', ')
+    .replace(/, ([^,]*)$/, ' and $1')
+}
+
+export function renderQosFlag(flag: string): string {
+  switch (flag) {
+    case 'OVERRIDE_PARTITION_QOS':
+      return 'OverPartQos'
+    default:
+      return flag
+  }
+}
+
+export function renderWalltime(value: ClusterOptionalNumber): string {
+  if (!value.set) {
+    return '-'
+  }
+  if (value.infinite) {
+    return '∞'
+  }
+  let minutes = value.number
+  let result = ''
+  if (minutes > 60 * 24) {
+    const nb_days = Math.floor(minutes / (60 * 24))
+    result += nb_days.toString() + ' days '
+    minutes -= nb_days * (60 * 24)
+  }
+  if (minutes > 60) {
+    const nb_hours = Math.floor(minutes / 60)
+    result += nb_hours.toString() + ' hours '
+    minutes -= nb_hours * 60
+  }
+  if (minutes > 0) {
+    result += minutes.toString() + ' mins'
+  }
+  return result
+}
+
 
 export type RacksDBAPIImage = ImageBitmapSource
 export type RacksDBAPIResult = RacksDBAPIImage

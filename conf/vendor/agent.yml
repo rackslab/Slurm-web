@@ -129,6 +129,9 @@ filters:
     default:
     - name
     - description
+    - priority
+    - flags
+    - limits
     doc: |
       List of qos fields selected in slurmrestd API, all other fields are
       filtered out.
