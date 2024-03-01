@@ -121,6 +121,7 @@ async function updateCanvas(fullUpdate: boolean = true) {
         `image width ${bitmap.width} height ${bitmap.height} canvas width ${canvas.value.width} height ${canvas.value.height}`
       )
       if (fullUpdate) {
+        ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
         ctx.drawImage(bitmap, x_shift, y_shift, bitmap.width, bitmap.height)
       }
       loading.value.style.display = 'none'
