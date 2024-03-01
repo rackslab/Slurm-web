@@ -141,7 +141,7 @@ export interface ClusterIndividualJob {
 }
 
 export type ClusterNodeMainState = 'down' | 'drain' | 'draining' | 'up'
-export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle'
+export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle' | 'unavailable'
 
 export function getNodeMainState(node: ClusterNode): ClusterNodeMainState {
   if (node.state.includes('DOWN')) {
@@ -160,6 +160,8 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
     return 'allocated'
   } else if (node.state.includes('MIXED')) {
     return 'mixed'
+  } else if (node.state.includes('DOWN')) {
+    return 'unavailable'
   } else {
     return 'idle'
   }

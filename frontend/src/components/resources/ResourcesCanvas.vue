@@ -65,6 +65,7 @@ function inSelectedNodes(nodeName: string): boolean {
 
 function getNodeFillStrokeColors(nodeName: string): [string, string | undefined] {
   const fillColors = {
+    DOWN: '#b82c2c',
     IDLE: '#71db78',
     MIXED: '#f2ab78',
     ALLOCATED: '#bf5a13'
