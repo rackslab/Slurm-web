@@ -146,9 +146,9 @@ export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle'
 export function getNodeMainState(node: ClusterNode): ClusterNodeMainState {
   if (node.state.includes('DOWN')) {
     return 'down'
-  } else if (node.state.includes('DRAIN')) {
+  } else if (node.state.includes('DRAIN') && node.state.includes('IDLE')) {
     return 'drain'
-  } else if (node.state.includes('DRAINING')) {
+  } else if (node.state.includes('DRAIN')) {
     return 'draining'
   } else {
     return 'up'
