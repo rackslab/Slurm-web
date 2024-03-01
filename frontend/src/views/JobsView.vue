@@ -11,6 +11,9 @@ import JobStatusLabel from '@/components/jobs/JobStatusLabel.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
+import InfoAlert from '@/components/InfoAlert.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import Spinner from '@/components/Spinner.vue'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
@@ -295,9 +298,18 @@ onMounted(() => {
       </section>
 
       <div class="mt-8 flow-root">
-        <div v-if="unable">Unable to get jobs</div>
-        <div v-else-if="!loaded" class="mx-4">Loading jobs…</div>
-        <div v-else-if="sortedJobs.length" class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <ErrorAlert v-if="unable"
+          >Unable to retrieve jobs from cluster
+          <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+        >
+        <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
+          <Spinner :size="5" />
+          Loading jobs…
+        </div>
+        <InfoAlert v-else-if="data?.length == 0"
+          >No nodes found on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+        >
+        <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">
             <table class="min-w-full divide-y divide-gray-300">
               <thead>
@@ -462,7 +474,6 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div v-else>No job to display</div>
       </div>
     </div>
   </ClusterMainLayout>

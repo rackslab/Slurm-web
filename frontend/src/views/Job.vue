@@ -7,6 +7,8 @@ import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobStatusLabel from '@/components/jobs/JobStatusLabel.vue'
 import JobSteps from '@/components/jobs/JobSteps.vue'
 import { useRuntimeStore } from '@/stores/runtime'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import Spinner from '@/components/Spinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
@@ -44,8 +46,15 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to jobs
     </button>
-    <div v-if="unable">Unable to retrieve job {{ id }}</div>
-    <div v-else-if="!loaded">Loading job {{ id }}</div>
+
+    <ErrorAlert v-if="unable"
+      >Unable to retrieve job {{ id }} from cluster
+      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+    >
+    <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
+      <Spinner :size="5" />
+      Loading job {{ id }}
+    </div>
     <div v-else-if="data">
       <div class="flex justify-between">
         <div class="px-4 pb-8 sm:px-0">

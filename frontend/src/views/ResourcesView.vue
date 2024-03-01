@@ -13,6 +13,7 @@ import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import ResourcesFiltersPanel from '@/components/resources/ResourcesFiltersPanel.vue'
 import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
+import ErrorAlert from '@/components/ErrorAlert.vue'
 import { ChevronRightIcon, MagnifyingGlassPlusIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
@@ -166,7 +167,10 @@ onMounted(() => {
       <ResourcesDiagram :cluster="props.cluster" :nodes="filteredNodes" />
       <ResourcesFiltersBar />
 
-      <div v-if="unable">Unable to retrieve nodes information from cluster {{ props.cluster }}</div>
+      <ErrorAlert v-if="unable"
+        >Unable to retrieve nodes from cluster
+        <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+      >
       <div v-else class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">

@@ -10,6 +10,8 @@ import {
   renderWalltime
 } from '@/composables/GatewayAPI'
 import type { ClusterQos, ClusterOptionalNumber, ClusterTRES } from '@/composables/GatewayAPI'
+import InfoAlert from '@/components/InfoAlert.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
 import QosHelpModal from '@/components/qos/QosHelpModal.vue'
 import type { QosModalLimitDescription } from '@/components/qos/QosHelpModal.vue'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
@@ -110,7 +112,13 @@ function qosResourcesLimits(qos: ClusterQos) {
       :limit="modalQosLimit"
       @close-help-modal="closeHelpModal"
     />
-    <div v-if="unable">Unable to retrieve qos information from cluster {{ props.cluster }}</div>
+    <ErrorAlert v-if="unable"
+      >Unable to retrieve qos from cluster
+      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+    >
+    <InfoAlert v-else-if="data?.length == 0"
+      >No qos defined on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+    >
     <div v-else class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle">

@@ -2,6 +2,8 @@
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterReservation } from '@/composables/GatewayAPI'
+import InfoAlert from '@/components/InfoAlert.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
 
 const props = defineProps({
   cluster: {
@@ -48,8 +50,14 @@ function representDuration(start: number, end: number): string {
         </p>
       </div>
     </div>
-    <div v-if="unable">Unable to retrieve reservations from cluster {{ props.cluster }}</div>
-    <div v-else-if="data?.length == 0">No reservation defined on cluster</div>
+    <ErrorAlert v-if="unable"
+      >Unable to retrieve reservations from cluster
+      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+    >
+    <InfoAlert v-else-if="data?.length == 0"
+      >No reservation defined on cluster
+      <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+    >
     <div v-else class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle">

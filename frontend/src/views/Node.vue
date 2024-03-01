@@ -7,6 +7,8 @@ import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterIndividualNode } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import Spinner from '@/components/Spinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
@@ -48,8 +50,14 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to resources
     </button>
-    <div v-if="unable">Unable to retrieve node {{ nodeName }}</div>
-    <div v-else-if="!loaded">Loading node {{ nodeName }}</div>
+    <ErrorAlert v-if="unable"
+      >Unable to retrieve node {{ nodeName }} from cluster
+      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+    >
+    <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
+      <Spinner :size="5" />
+      Loading node {{ nodeName }}
+    </div>
     <div v-else-if="data">
       <div class="flex justify-between">
         <div class="px-4 pb-8 sm:px-0">
