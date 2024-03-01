@@ -14,8 +14,6 @@ import ResourcesView from '@/views/ResourcesView.vue'
 import NodeView from '@/views/Node.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
-import AccountsView from '@/views/AccountsView.vue'
-import ReportsView from '@/views/ReportsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -129,24 +127,6 @@ const router = createRouter({
       props: true,
       meta: {
         entry: 'reservations'
-      }
-    },
-    {
-      path: '/:cluster/accounts',
-      name: 'accounts',
-      component: AccountsView,
-      props: true,
-      meta: {
-        entry: 'accounts'
-      }
-    },
-    {
-      path: '/:cluster/reports',
-      name: 'reports',
-      component: ReportsView,
-      props: true,
-      meta: {
-        entry: 'reports'
       }
     }
   ]

@@ -4,11 +4,9 @@ import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
   CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
   HomeIcon,
   PlayCircleIcon,
-  UsersIcon,
   CpuChipIcon,
   SwatchIcon,
   XMarkIcon
@@ -27,9 +25,7 @@ const navigation = [
     route: 'reservations',
     icon: CalendarIcon,
     permission: 'view-reservations'
-  },
-  { name: 'Accounts', route: 'accounts', icon: UsersIcon, permission: 'view-accounts' },
-  { name: 'Reports', route: 'reports', icon: ChartPieIcon, permission: 'view-stats' }
+  }
 ]
 </script>
 
