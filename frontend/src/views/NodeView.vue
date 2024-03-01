@@ -8,7 +8,7 @@ import type { ClusterIndividualNode } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import Spinner from '@/components/Spinner.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
@@ -55,7 +55,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >
     <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
-      <Spinner :size="5" />
+      <LoadingSpinner :size="5" />
       Loading node {{ nodeName }}
     </div>
     <div v-else-if="data">
@@ -129,6 +129,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <span
                     v-for="partition in data.partitions"
+                    :key="partition"
                     class="rounded bg-gray-500 px-2 py-1 font-medium text-white"
                     >{{ partition }}</span
                   >

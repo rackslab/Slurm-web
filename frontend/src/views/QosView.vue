@@ -240,6 +240,7 @@ function qosResourcesLimits(qos: ClusterQos) {
                 <td class="hidden px-3 py-4 text-sm text-gray-500 2xl:table-cell">
                   <span
                     v-for="flag in qos.flags"
+                    :key="flag"
                     class="m-1 inline-flex items-center rounded-md bg-slurmweb-light/50 px-2 py-1 text-xs font-medium text-slurmweb-dark ring-1 ring-inset ring-slurmweb-dark/10"
                     >{{ renderQosFlag(flag) }}</span
                   >

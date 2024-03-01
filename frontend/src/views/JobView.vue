@@ -8,7 +8,7 @@ import JobStatusLabel from '@/components/jobs/JobStatusLabel.vue'
 import JobSteps from '@/components/jobs/JobSteps.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import Spinner from '@/components/Spinner.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
@@ -52,7 +52,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >
     <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
-      <Spinner :size="5" />
+      <LoadingSpinner :size="5" />
       Loading job {{ id }}
     </div>
     <div v-else-if="data">
@@ -166,7 +166,9 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
                 <dt class="text-sm font-medium leading-6 text-gray-900">Requested</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <ul>
-                    <li v-for="tres in data.tres.requested">{{ tres.type }}: {{ tres.count }}</li>
+                    <li v-for="tres in data.tres.requested" :key="tres.id">
+                      {{ tres.type }}: {{ tres.count }}
+                    </li>
                   </ul>
                 </dd>
               </div>
@@ -174,7 +176,9 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
                 <dt class="text-sm font-medium leading-6 text-gray-900">Allocated</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <ul>
-                    <li v-for="tres in data.tres.allocated">{{ tres.type }}: {{ tres.count }}</li>
+                    <li v-for="tres in data.tres.allocated" :key="tres.id">
+                      {{ tres.type }}: {{ tres.count }}
+                    </li>
                   </ul>
                 </dd>
               </div>

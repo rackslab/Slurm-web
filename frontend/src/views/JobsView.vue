@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from 'vue'
+import { onMounted, watch, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -13,7 +13,7 @@ import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import Spinner from '@/components/Spinner.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
@@ -303,7 +303,7 @@ onMounted(() => {
           <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
         >
         <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
-          <Spinner :size="5" />
+          <LoadingSpinner :size="5" />
           Loading jobs…
         </div>
         <InfoAlert v-else-if="data?.length == 0"

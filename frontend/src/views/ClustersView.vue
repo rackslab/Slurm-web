@@ -5,7 +5,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
-import Spinner from '@/components/Spinner.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronRightIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 import { CpuChipIcon, PlayCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
@@ -154,7 +154,7 @@ onMounted(() => {
         v-else
         class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%]"
       >
-        <Spinner :size="5" />
+        <LoadingSpinner :size="5" />
         Loading clusters…
       </div>
     </section>

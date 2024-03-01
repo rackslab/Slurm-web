@@ -60,11 +60,8 @@ export function foldNodeset(nodeNames: string[]): string {
 }
 
 export function expandNodeset(nodeset: string): string[] {
-  //const re = /[A-Za-z_-]+([0-9]+|\[0-9]+\-[0-9]+\])(,[A-Za-z_-]+([0-9]+|\[0-9]+\-[0-9]+\]))*/
-  //const re = /[A-Za-z_-]+\[[0-9]+\-[0-9]+\]/
-  const re = /([A-Za-z_-]+)(?:([0-9]+)|\[([0-9]+)\-([0-9]+)\])/gm
+  const re = /([A-Za-z_-]+)(?:([0-9]+)|\[([0-9]+)-([0-9]+)\])/gm
   const result: string[] = []
-  //const re = /([A-Za-z]+(?:[0-9]+|\[[0-9]+\-[0-9]+\]))(?:,([A-Za-z]+(?:[0-9]+|\[[0-9]+\-[0-9]+\])))*/
   for (const match of nodeset.matchAll(re)) {
     const prefix = match[1]
     if (match[2]) {

@@ -264,6 +264,7 @@ onMounted(() => {
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <span
                         v-for="partition in node.partitions"
+                        :key="partition"
                         class="rounded bg-gray-500 px-2 py-1 font-medium text-white"
                         >{{ partition }}</span
                       >

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'

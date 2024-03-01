@@ -8,7 +8,7 @@ import {
 } from '@/composables/GatewayAPI'
 import type { ClusterOptionalNumber, ClusterTRES } from '@/composables/GatewayAPI'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
+import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 
 export interface QosModalLimitDescription {
   id: string

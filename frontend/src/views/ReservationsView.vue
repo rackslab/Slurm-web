@@ -125,17 +125,20 @@ function representDuration(start: number, end: number): string {
                 </td>
                 <td class="px-3 text-sm">
                   <ul class="list-disc">
-                    <li v-for="user in reservation.users.split(',')">{{ user }}</li>
+                    <li v-for="user in reservation.users.split(',')" :key="user">{{ user }}</li>
                   </ul>
                 </td>
                 <td class="px-3 text-sm">
                   <ul class="list-disc">
-                    <li v-for="account in reservation.accounts.split(',')">{{ account }}</li>
+                    <li v-for="account in reservation.accounts.split(',')" :key="account">
+                      {{ account }}
+                    </li>
                   </ul>
                 </td>
                 <td class="pl-3 text-sm sm:pr-6 lg:pr-8">
                   <span
                     v-for="flag in reservation.flags"
+                    :key="flag"
                     class="m-1 inline-flex items-center rounded-md bg-slurmweb-light/50 px-2 py-1 text-xs font-medium text-slurmweb-dark ring-1 ring-inset ring-slurmweb-dark/10"
                     >{{ flag }}</span
                   >

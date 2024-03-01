@@ -5,7 +5,7 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
-import Spinner from '@/components/Spinner.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import router from '@/router'
 
 const props = defineProps({
@@ -233,7 +233,6 @@ function setMouseEventHandler() {
     }
   })
   canvas.value.addEventListener('mouseup', (event) => {
-    let nodeFound = false
     // Iterate over all nodes
     for (const [nodeName, nodePath] of Object.entries(allNodesPaths)) {
       const isPointInPath = ctx.isPointInPath(nodePath.path, event.offsetX, event.offsetY)
@@ -304,7 +303,7 @@ onUnmounted(() => {
     :class="[fullscreen ? 'grow' : 'h-96', 'flex min-w-full items-center justify-center']"
   >
     <div ref="loading" class="h-1/2 text-slurmweb">
-      <Spinner :size="8" />
+      <LoadingSpinner :size="8" />
     </div>
 
     <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
