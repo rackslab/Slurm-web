@@ -232,6 +232,17 @@ export interface ClusterQos {
   }
 }
 
+export interface ClusterReservation {
+  name: string
+  users: string
+  accounts: string
+  node_list: string
+  start_time: number
+  node_count: number
+  end_time: number
+  flags: string[]
+}
+
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
   if (!optionalNumber.set) {
     return '-'
@@ -316,13 +327,20 @@ export function renderWalltime(value: ClusterOptionalNumber): string {
   return result
 }
 
-
 export type RacksDBAPIImage = ImageBitmapSource
 export type RacksDBAPIResult = RacksDBAPIImage
 export type RacksDBInfrastructureCoordinates = Record<string, [number, number, number, number]>
 const GatewayGenericAPIKeys = ['clusters', 'users'] as const
 export type GatewayGenericAPIKey = (typeof GatewayGenericAPIKeys)[number]
-const GatewayClusterAPIKeys = ['stats', 'jobs', 'nodes', 'partitions', 'qos', 'accounts'] as const
+const GatewayClusterAPIKeys = [
+  'stats',
+  'jobs',
+  'nodes',
+  'partitions',
+  'qos',
+  'reservations',
+  'accounts'
+] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
 export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
@@ -462,6 +480,10 @@ export function useGatewayAPI() {
     return await get<ClusterQos[]>(`/agents/${cluster}/qos`)
   }
 
+  async function reservations(cluster: string): Promise<ClusterQos[]> {
+    return await get<ClusterQos[]>(`/agents/${cluster}/reservations`)
+  }
+
   async function accounts(cluster: string): Promise<Array<AccountDescription>> {
     return await get<AccountDescription[]>(`/agents/${cluster}/accounts`)
   }
@@ -535,6 +557,7 @@ export function useGatewayAPI() {
     node,
     partitions,
     qos,
+    reservations,
     accounts,
     infrastructureImagePng,
     abort,
