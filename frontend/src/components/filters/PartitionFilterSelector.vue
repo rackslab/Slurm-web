@@ -20,6 +20,8 @@ const props = defineProps({
   }
 })
 
+const model = defineModel<string[]>({ required: true })
+
 const runtimeStore = useRuntimeStore()
 const query = ref('')
 
@@ -47,7 +49,7 @@ const { data } = useClusterDataGetter<ClusterPartition[]>('partitions', props.cl
 
 <template>
   <div class="relative mt-2">
-    <Combobox as="div" v-model="runtimeStore.jobs.filters.partitions" multiple>
+    <Combobox as="div" v-model="model" multiple>
       <ComboboxInput
         class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
         @change="query = $event.target.value"

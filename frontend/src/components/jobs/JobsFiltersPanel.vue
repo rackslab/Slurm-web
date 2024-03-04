@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRuntimeStore } from '@/stores/runtime'
-import PartitionFilterSelector from '@/components/jobs/PartitionFilterSelector.vue'
+import PartitionFilterSelector from '@/components/filters/PartitionFilterSelector.vue'
 import UserFilterSelector from '@/components/jobs/UserFilterSelector.vue'
 import AccountFilterSelector from '@/components/jobs/AccountFilterSelector.vue'
 import QosFilterSelector from '@/components/jobs/QosFilterSelector.vue'
@@ -240,7 +240,10 @@ const state_filters = [
                   </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                  <PartitionFilterSelector :cluster="props.cluster" />
+                  <PartitionFilterSelector
+                    :cluster="props.cluster"
+                    v-model="runtimeStore.jobs.filters.partitions"
+                  />
                 </DisclosurePanel>
               </Disclosure>
             </form>

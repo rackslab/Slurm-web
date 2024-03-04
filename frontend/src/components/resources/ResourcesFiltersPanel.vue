@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRuntimeStore, resourcesStates } from '@/stores/runtime'
-import PartitionFilterSelector from '@/components/resources/PartitionFilterSelector.vue'
+import PartitionFilterSelector from '@/components/filters/PartitionFilterSelector.vue'
 import {
   Dialog,
   DialogPanel,
@@ -144,7 +144,10 @@ const runtimeStore = useRuntimeStore()
                   </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                  <PartitionFilterSelector :cluster="props.cluster" />
+                  <PartitionFilterSelector
+                    :cluster="props.cluster"
+                    v-model="runtimeStore.resources.filters.partitions"
+                  />
                 </DisclosurePanel>
               </Disclosure>
             </form>
