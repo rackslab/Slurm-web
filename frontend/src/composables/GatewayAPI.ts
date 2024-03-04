@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023-2024 Rackslab
+ *
+ * This file is part of Slurm-web.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { useHttp } from '@/plugins/http'
 import { useAuthStore } from '@/stores/auth'
 import type { ResponseType, AxiosResponse, AxiosRequestConfig } from 'axios'

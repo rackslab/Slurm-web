@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023-2024 Rackslab
+ *
+ * This file is part of Slurm-web.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { ref, watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'

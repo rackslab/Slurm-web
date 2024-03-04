@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023-2024 Rackslab
+ *
+ * This file is part of Slurm-web.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import './style.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

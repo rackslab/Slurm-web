@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2023-2024 Rackslab
+ *
+ * This file is part of Slurm-web.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 export class AuthenticationError extends Error {
   constructor(message: string) {
     super(message)

@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2023-2024 Rackslab
+
+  This file is part of Slurm-web.
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/vue/20/solid'

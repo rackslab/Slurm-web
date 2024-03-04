@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2023-2024 Rackslab
+
+  This file is part of Slurm-web.
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { PropType } from 'vue'
