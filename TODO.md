@@ -16,15 +16,15 @@
 - [x] Move remove*Filter() functions in runtimeStore
 - [x] Move Jobs filters panel and bar in dedicated components
 - [x] Fix npm run lint warnings and errors
-- [ ] Add copyright header in all source code files
+- [x] Add copyright header in all source code files
 - [x] Advanced reservations page
 - [x] Formatted nodes list
 - [x] Group consecutive nodes in nodes table
 - [x] Nodes filtering by partition
 - [x] Nodes filtering by state
-- [ ] Factorize partition filter selector
+- [x] Factorize partition filter selector
 - [x] Node details page
-- [ ] Custom allocated/mixed/idle icon
+- [x] Custom allocated/mixed/idle icon
 - [x] Filter nodes by tags in infrastructure graphical representation
 - [x] Show spinner while loading infrastructure graphical representation 
 - [x] Responsive pixel perfect infrastructure graphical representation
