@@ -23,6 +23,7 @@ const props = defineProps({
   }
 })
 
+const isFirefox = navigator.userAgent.includes('Firefox')
 const emit = defineEmits(['imageSize'])
 
 const gateway = useGatewayAPI()
@@ -128,8 +129,8 @@ async function updateCanvas(fullUpdate: boolean = true) {
       // Draw all nodes using their coordinates
       for (const [nodeName, nodeCoordinates] of Object.entries(coordinates)) {
         const nodePath = new Path2D()
-        const node_x = nodeCoordinates[0] + x_shift + 1
-        const node_y = nodeCoordinates[1] + y_shift
+        const node_x = nodeCoordinates[0] + x_shift + 1 - (isFirefox ? 0 : 0.5)
+        const node_y = nodeCoordinates[1] + y_shift - (isFirefox ? 0 : 0.5)
         nodePath.rect(node_x, node_y, nodeCoordinates[2] - 1, nodeCoordinates[3])
 
         if (!inSelectedNodes(nodeName)) {
@@ -150,8 +151,8 @@ async function updateCanvas(fullUpdate: boolean = true) {
               ctx.lineWidth = 2
             }
             ctx.strokeRect(
-              nodeCoordinates[0] + x_shift + ctx.lineWidth / 2 + 1,
-              nodeCoordinates[1] + y_shift + ctx.lineWidth / 2,
+              nodeCoordinates[0] + x_shift + ctx.lineWidth / 2 + 1 - (isFirefox ? 0 : 0.5),
+              nodeCoordinates[1] + y_shift + ctx.lineWidth / 2 - (isFirefox ? 0 : 0.5),
               nodeCoordinates[2] - ctx.lineWidth - 1,
               nodeCoordinates[3] - ctx.lineWidth
             )
