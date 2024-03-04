@@ -149,8 +149,7 @@ router.beforeEach(async (to, from) => {
   if (to.params.cluster) {
     if (!runtime.currentCluster || to.params.cluster !== runtime.currentCluster.name) {
       runtime.currentCluster = runtime.getCluster(to.params.cluster as string)
-      console.log(`Calling getCluster(): ${runtime.currentCluster?.name} / ${to.params.cluster}`)
-      console.log(`New permissions: ${runtime.currentCluster?.permissions.actions}`)
+      console.log(`New cluster ${runtime.currentCluster?.name} permissions: ${runtime.currentCluster?.permissions.actions}`)
     }
   } else {
     console.log(`Unsetting current cluster`)

@@ -134,7 +134,6 @@ watch(
         newFoldedNodesShow[foldedNodeset.name] = false
       }
     }
-    console.log('New folded nodes show', newFoldedNodesShow)
     foldedNodesShow.value = newFoldedNodesShow
   }
 )

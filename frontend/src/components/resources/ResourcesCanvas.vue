@@ -118,9 +118,6 @@ async function updateCanvas(fullUpdate: boolean = true) {
 
     const ctx = canvas.value.getContext('2d')
     if (ctx && image && coordinates && bitmap) {
-      console.log(
-        `image width ${bitmap.width} height ${bitmap.height} canvas width ${canvas.value.width} height ${canvas.value.height}`
-      )
       if (fullUpdate) {
         ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
         ctx.drawImage(bitmap, x_shift, y_shift, bitmap.width, bitmap.height)
@@ -204,7 +201,6 @@ function setMouseEventHandler() {
           }
           // Position nodeTooltip
           if (nodeTooltip.value && container.value) {
-            //console.log(nodePath.x.toString(), nodePath.y.toString())
             nodeTooltip.value.style.left =
               (nodePath.x + (nodePath.width - 176) / 2).toString() + 'px'
             nodeTooltip.value.style.bottom =
