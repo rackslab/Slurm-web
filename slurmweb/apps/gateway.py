@@ -32,7 +32,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
 
     NAME = "slurm-web-gateway"
     SITE_CONFIGURATION = "/etc/slurm-web/gateway.ini"
-    SETTINGS_DEFINITION = "/usr/share/slurm-web/gateway.yml"
+    SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/gateway.yml"
     VIEWS = {
         SlurmwebAppRoute("/version", views.version),
         SlurmwebAppRoute("/login", views.login, methods=["POST"]),

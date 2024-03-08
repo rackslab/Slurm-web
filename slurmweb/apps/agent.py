@@ -23,7 +23,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
 
     NAME = "slurm-web-agent"
     SITE_CONFIGURATION = "/etc/slurm-web/agent.ini"
-    SETTINGS_DEFINITION = "/usr/share/slurm-web/agent.yml"
+    SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/agent.yml"
     VIEWS = {
         SlurmwebAppRoute("/version", views.version),
         SlurmwebAppRoute(f"/v{get_version()}/info", views.info),
