@@ -184,13 +184,13 @@ policy:
     doc: Path to RBAC policy definition file with available actions
   vendor_roles:
     type: path
-    default: /usr/share/slurm-web/policy.conf
+    default: /usr/share/slurm-web/policy.ini
     doc: |
       Path to default vendor RBAC policy definition file with roles and
       permitted actions
   roles:
     type: path
-    default: /etc/slurm-web/policy.conf
+    default: /etc/slurm-web/policy.ini
     doc: |
       Path to site RBAC policy definition file with roles and permitted actions
 
