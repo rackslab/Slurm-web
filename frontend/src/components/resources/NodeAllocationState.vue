@@ -69,8 +69,17 @@ onMounted(() => {
     class="inline-flex max-h-6 items-center gap-x-1.5 rounded-md align-middle text-xs font-medium"
     :class="nodeAllocationLabelColor.color"
   >
-    <svg v-if="nodeAllocationLabelColor.label == 'idle'" viewBox="0 0 3.175 5.556" xmlns="http://www.w3.org/2000/svg" class="h-5 w-2">
-      <path d="M2.38 0c.438 0 .794.355.794.794v3.969a.794.794 0 0 1-.794.793H.792a.794.794 0 0 1-.793-.793V.793C-.001.355.354 0 .792 0zm0 5.16c.22 0 .397-.178.397-.397V.793A.397.397 0 0 0 2.38.397H.793a.397.397 0 0 0-.397.397v3.969c0 .219.177.396.396.396z" clip-rule="evenodd" fill-rule="evenodd"/>
+    <svg
+      v-if="nodeAllocationLabelColor.label == 'idle'"
+      viewBox="0 0 3.175 5.556"
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-2"
+    >
+      <path
+        d="M2.38 0c.438 0 .794.355.794.794v3.969a.794.794 0 0 1-.794.793H.792a.794.794 0 0 1-.793-.793V.793C-.001.355.354 0 .792 0zm0 5.16c.22 0 .397-.178.397-.397V.793A.397.397 0 0 0 2.38.397H.793a.397.397 0 0 0-.397.397v3.969c0 .219.177.396.396.396z"
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+      />
     </svg>
 
     <svg
