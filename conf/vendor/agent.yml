@@ -1,6 +1,24 @@
 ---
 # This file contains the configuration settings definition for Slurm-web agent
 # in RFL ConfigurationLoader format.
+service:
+  cluster:
+    type: str
+    required: true
+    doc: Name of cluster served by agent
+  interface:
+    type: str
+    default: localhost
+    doc: Interface address to bind for incoming connections
+  port:
+    type: int
+    default: 5000
+    doc: TCP port to listen for incoming connections
+  cors:
+    type: bool
+    default: false
+    doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
+
 slurmrestd:
   socket:
     type: path
@@ -158,24 +176,6 @@ filters:
     doc: |
       List of accounts fields selected in slurmrestd API, all other fields are
       filtered out.
-
-service:
-  cluster:
-    type: str
-    required: true
-    doc: Name of cluster served by agent
-  interface:
-    type: str
-    default: localhost
-    doc: Interface address to bind for incoming connections
-  port:
-    type: int
-    default: 5000
-    doc: TCP port to listen for incoming connections
-  cors:
-    type: bool
-    default: false
-    doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
 
 policy:
   definition:
