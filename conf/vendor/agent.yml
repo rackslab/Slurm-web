@@ -18,6 +18,23 @@ service:
     type: bool
     default: false
     doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
+  debug:
+    type: bool
+    default: false
+    doc: Enable debug mode
+  debug_flags:
+    type: list
+    content: str
+    default:
+    - slurmweb
+    choices:
+    - slurmweb
+    - rfl
+    - werkzeug
+    - urllib3
+    - racksdb
+    - ALL
+    doc: List of debug flags to enable.
 
 slurmrestd:
   socket:

@@ -13,7 +13,7 @@ from flask import Flask, jsonify
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import SettingsDefinitionError, SettingsOverrideError
 
-from rfl.log import setup_logger
+from rfl.log import setup_logger, enforce_debug
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +53,13 @@ class SlurmwebGenericApp:
         except SettingsOverrideError as err:
             logger.critical(err)
             sys.exit(1)
+
+        if self.settings.service.debug:
+            enforce_debug(
+                flags=list(
+                    set(seed.debug_flags) | set(self.settings.service.debug_flags)
+                )
+            )
 
     def run(self):
         raise NotImplementedError
