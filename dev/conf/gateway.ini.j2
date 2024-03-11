@@ -2,6 +2,14 @@
 cors=yes
 port={{ service_port }}
 
+[ui]
+host=http://localhost:{{ service_port }}
+{%- if ui is defined and ui %}
+path={{ ui }}
+{%- else %}
+enabled=no
+{%- endif %}
+
 [agents]
 url =
 {%- for agent in agents %}

@@ -229,7 +229,7 @@ class SlurmwebGateway:
     conf_path: Path = None
 
     def render_conf(
-        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent]
+        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent], ui: Path | None
     ):
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("gateway.ini.j2")
@@ -242,6 +242,7 @@ class SlurmwebGateway:
                     ldap_port=agents[0].forwards["ldap"].local,
                     ldap_base=agents[0].name,
                     agents=agents,
+                    ui=ui
                 )
             )
 
@@ -280,6 +281,12 @@ def main():
         dest="cache",
         action="store_false",
         help="Disable redis cache",
+    )
+    parser.add_argument(
+        "--with-ui",
+        dest="ui",
+        type=Path,
+        help="Path to frontend application",
     )
     args = parser.parse_args()
 
@@ -325,7 +332,7 @@ def main():
 
     # Launch gateway
     gateway = SlurmwebGateway()
-    gateway.render_conf(tmpdir, jwt_key_path, agents)
+    gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui)
     gateway.launch()
 
     logger.info("Development environment is ready, type ^c to stop")
