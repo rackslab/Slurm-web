@@ -55,8 +55,8 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         ),
     }
 
-    def __init__(self, args):
-        SlurmwebWebApp.__init__(self, args)
+    def __init__(self, seed):
+        SlurmwebWebApp.__init__(self, seed)
         if self.settings.authentication.method == "ldap":
             self.authentifier = LDAPAuthentifier(
                 uri=self.settings.ldap.uri,

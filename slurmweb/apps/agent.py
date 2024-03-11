@@ -39,8 +39,8 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
     }
 
-    def __init__(self, args):
-        SlurmwebWebApp.__init__(self, args)
+    def __init__(self, seed):
+        SlurmwebWebApp.__init__(self, seed)
         self.register_blueprint(
             RacksDBWebBlueprint(
                 db=self.settings.racksdb.db,

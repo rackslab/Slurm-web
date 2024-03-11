@@ -9,7 +9,8 @@ from pathlib import Path
 
 from ..version import get_version
 
-from ..apps import SlurmwebAppArgs
+from . import SlurmwebAppArgs
+from ..apps import SlurmwebConfSeed
 from ..apps.agent import SlurmwebAppAgent
 
 
@@ -52,5 +53,7 @@ class SlurmwebExecAgent:
             type=Path,
         )
 
-        application = SlurmwebAppAgent(parser.parse_args(namespace=SlurmwebAppArgs))
+        application = SlurmwebAppAgent(
+            SlurmwebConfSeed.from_args(parser.parse_args(namespace=SlurmwebAppArgs))
+        )
         application.run()

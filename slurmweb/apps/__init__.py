@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
+from typing import List
+from pathlib import Path
 import logging
 
 from flask import Flask, jsonify
@@ -16,10 +18,18 @@ from rfl.log import setup_logger, TTYFormatter
 logger = logging.getLogger(__name__)
 
 
-class SlurmwebAppArgs:
-    """argparser Namespace for SlurmwebExec*"""
+class SlurmwebConfSeed:
+    def __init__(
+        self, debug: bool, debug_flags: List[str], conf_defs: Path, conf: Path
+    ):
+        self.debug = debug
+        self.debug_flags = debug_flags
+        self.conf_defs = conf_defs
+        self.conf = conf
 
-    pass
+    @classmethod
+    def from_args(cls, args):
+        return cls(args.debug, args.debug_flags, args.conf_defs, args.conf)
 
 
 class SlurmwebGenericApp:
@@ -27,20 +37,20 @@ class SlurmwebGenericApp:
     SITE_CONFIGURATION = None
     SETTINGS_DEFINITION = None
 
-    def __init__(self, args: SlurmwebAppArgs):
+    def __init__(self, seed: SlurmwebConfSeed):
         # load configuration files
         setup_logger(
             TTYFormatter,
-            debug=args.debug,
-            flags=args.debug_flags,
+            debug=seed.debug,
+            flags=seed.debug_flags,
         )
         try:
-            self.settings = RuntimeSettings.yaml_definition(args.conf_defs)
+            self.settings = RuntimeSettings.yaml_definition(seed.conf_defs)
         except SettingsDefinitionError as err:
             logger.critical(err)
             sys.exit(1)
         try:
-            self.settings.override_ini(args.conf)
+            self.settings.override_ini(seed.conf)
         except SettingsOverrideError as err:
             logger.critical(err)
             sys.exit(1)
@@ -53,8 +63,8 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
 
     VIEWS = set()
 
-    def __init__(self, args: SlurmwebAppArgs):
-        SlurmwebGenericApp.__init__(self, args)
+    def __init__(self, seed: SlurmwebConfSeed):
+        SlurmwebGenericApp.__init__(self, seed)
         Flask.__init__(self, self.NAME)
         # set URL rules
         for route in self.VIEWS:
@@ -62,7 +72,7 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
             if route.methods is not None:
                 kwargs["methods"] = route.methods
             self.add_url_rule(route.endpoint, view_func=route.func, **kwargs)
-        self.debug_flags = args.debug_flags
+        self.debug_flags = seed.debug_flags
 
         # register generic error handler
         for error in [401, 403, 404, 500]:
