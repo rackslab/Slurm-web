@@ -143,7 +143,7 @@ function representDuration(start: number, end: number): string {
                     </li>
                   </ul>
                 </td>
-                <td class="pl-3 text-sm sm:pr-6 lg:pr-8">
+                <td class="hidden pl-3 text-sm sm:pr-6 lg:pr-8 2xl:table-cell">
                   <span
                     v-for="flag in reservation.flags"
                     :key="flag"
