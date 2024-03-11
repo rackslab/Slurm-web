@@ -225,3 +225,18 @@ def racksdb(cluster: str, query: str):
         json=False,
         with_version=False,
     )
+
+
+def ui_index():
+    return current_app.send_static_file("index.html")
+
+
+def ui_files(name):
+    if (
+        name in ["favicon.ico", "config.json"]
+        or name.startswith("assets/")
+        or name.startswith("logo/")
+    ):
+        return current_app.send_static_file(name)
+    else:
+        return current_app.send_static_file("index.html")

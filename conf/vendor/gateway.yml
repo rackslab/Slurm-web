@@ -12,6 +12,20 @@ service:
     default: false
     doc: When true, Cross-Origin Resource Sharing (CORS) headers are enabled.
 
+ui:
+  host:
+    type: uri
+    required: true
+    doc: Public URL to access the gateway component
+  enabled:
+    type: bool
+    default: true
+    doc: Serve frontend application with gateway
+  path:
+    type: path
+    default: /usr/share/slurm-web/frontend
+    doc: Path to Slurm-web frontend application
+
 agents:
   url:
     type: list

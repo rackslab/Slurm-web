@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
 import logging
 
 from rfl.web.tokens import RFLTokenizedWebApp
@@ -80,6 +81,17 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             algorithm=self.settings.jwt.algorithm,
             key=self.settings.jwt.key,
         )
+        # Setup frontend application and add corresponding routes if UI is enabled.
+        if self.settings.ui.enabled:
+            # Generate config.json used by frontend application
+            ui_config = {
+                "API_SERVER": self.settings.ui.host.geturl(),
+            }
+            with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
+                fh.write(json.dumps(ui_config))
+            self.static_folder = self.settings.ui.path
+            self.add_url_rule("/", view_func=views.ui_index)
+            self.add_url_rule("/<path:name>", view_func=views.ui_files)
         # Get information from all agents
         self.agents = {}
         for url in self.settings.agents.url:
