@@ -4,10 +4,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-
+import sys
 import logging
 
 from rfl.web.tokens import RFLTokenizedRBACWebApp
+from racksdb import DBSchemaError, DBFormatError
 from racksdb.web.app import RacksDBWebBlueprint
 
 from . import SlurmwebWebApp
@@ -41,18 +42,29 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
 
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
-        self.register_blueprint(
-            RacksDBWebBlueprint(
-                db=self.settings.racksdb.db,
-                ext=self.settings.racksdb.extensions,
-                schema=self.settings.racksdb.schema,
-                drawings_schema=self.settings.racksdb.drawings_schema,
-                default_drawing_parameters={
-                    "infrastructure": {"equipment_tags": self.settings.racksdb.tags}
-                },
-            ),
-            url_prefix="/racksdb",
-        )
+
+        # Load RacksDB blueprint and fail with error if unable to load schema or
+        # database.
+        try:
+            self.register_blueprint(
+                RacksDBWebBlueprint(
+                    db=self.settings.racksdb.db,
+                    ext=self.settings.racksdb.extensions,
+                    schema=self.settings.racksdb.schema,
+                    drawings_schema=self.settings.racksdb.drawings_schema,
+                    default_drawing_parameters={
+                        "infrastructure": {"equipment_tags": self.settings.racksdb.tags}
+                    },
+                ),
+                url_prefix="/racksdb",
+            )
+        except DBFormatError as err:
+            logger.critical("Unable to load RacksDB database: %s", err)
+            sys.exit(1)
+        except DBSchemaError as err:
+            logger.critical("Unable to load RacksDB schema: %s", err)
+            sys.exit(1)
+
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)
             selected_roles_policy_path = self.settings.policy.roles
