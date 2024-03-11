@@ -15,15 +15,21 @@ authors = [
 dependencies = [
     "Flask",
     "Flask-Cors",
-    "RacksDB[web]",
-    "redis",
     "requests",
-    "RFL.authentication",
     "RFL.log",
     "RFL.settings",
     "RFL.web",
 ]
 readme = "README.md"
+
+[project.optional-dependencies]
+gateway = [
+    "RFL.authentication",
+]
+agent = [
+    "RacksDB[web]",
+    "redis",
+]
 
 [project.scripts]
 slurm-web-agent = 'slurmweb.exec.agent:SlurmwebExecAgent.run'
