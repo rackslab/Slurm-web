@@ -13,7 +13,7 @@ from flask import Flask, jsonify
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import SettingsDefinitionError, SettingsOverrideError
 
-from rfl.log import setup_logger, TTYFormatter
+from rfl.log import setup_logger
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,6 @@ class SlurmwebGenericApp:
     def __init__(self, seed: SlurmwebConfSeed):
         # load configuration files
         setup_logger(
-            TTYFormatter,
             debug=seed.debug,
             flags=seed.debug_flags,
         )
