@@ -5,7 +5,7 @@ service:
     doc: Interface address to bind for incoming connections
   port:
     type: int
-    default: 5000
+    default: 5011
     doc: TCP port to listen for incoming connections
   cors:
     type: bool
