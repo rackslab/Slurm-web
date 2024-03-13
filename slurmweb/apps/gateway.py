@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import sys
 import json
 import logging
 
@@ -91,8 +92,16 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     else f"http://localhost:{self.settings.service.port}"
                 ),
             }
-            with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
-                fh.write(json.dumps(ui_config))
+            try:
+                with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
+                    fh.write(json.dumps(ui_config))
+            except PermissionError as err:
+                logger.critical(
+                    "Unable to edit frontend application configuration file %s: %s",
+                    self.settings.ui.path.joinpath("config.json"),
+                    err,
+                )
+                sys.exit(1)
             self.static_folder = self.settings.ui.path
             self.add_url_rule("/", view_func=views.ui_index)
             self.add_url_rule("/<path:name>", view_func=views.ui_files)
