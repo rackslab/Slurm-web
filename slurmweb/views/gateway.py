@@ -11,6 +11,7 @@ from functools import wraps
 from flask import Response, current_app, jsonify, request, abort
 import requests
 from rfl.web.tokens import check_jwt
+from rfl.authentication.user import AuthenticatedUser
 from rfl.authentication.errors import LDAPAuthenticationError
 
 from ..version import get_version
@@ -41,8 +42,15 @@ def version():
 
 
 def login():
+    idents = json.loads(request.data)
+    # Check authentication is enabled or fail with 500
+    if not current_app.settings.authentication.enabled:
+        logger.warning(
+            "Authentication attempt from user %s but authentication is disabled",
+            idents["user"],
+        )
+        abort(500, "Unable to authenticate")
     try:
-        idents = json.loads(request.data)
         user = current_app.authentifier.login(
             user=idents["user"], password=idents["password"]
         )
@@ -61,6 +69,24 @@ def login():
         token=token,
         fullname=user.fullname,
         groups=user.groups,
+    )
+
+
+def anonymous():
+    # Check authentication is disabled or fail with 401
+    if current_app.settings.authentication.enabled:
+        logger.warning(
+            "Anonymous access attempt but authentication is enabled",
+        )
+        abort(401, "Unauthorized anonymous access")
+    # Generate token
+    token = current_app.jwt.generate(
+        user=AuthenticatedUser(login="anonymous", fullname="anonymous", groups=[]),
+        duration=current_app.settings.jwt.duration,
+    )
+    return jsonify(
+        result="Successful anonymous access",
+        token=token,
     )
 
 

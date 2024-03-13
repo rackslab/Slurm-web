@@ -71,6 +71,10 @@ agents:
     doc: Version of RacksDB API
 
 authentication:
+  enabled:
+    type: bool
+    default: false
+    doc: Determine if authentication is enabled
   method:
     type: str
     choices:

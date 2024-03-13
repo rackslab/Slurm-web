@@ -38,6 +38,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
     VIEWS = {
         SlurmwebAppRoute("/version", views.version),
         SlurmwebAppRoute("/login", views.login, methods=["POST"]),
+        SlurmwebAppRoute("/anonymous", views.anonymous),
         SlurmwebAppRoute("/clusters", views.clusters),
         SlurmwebAppRoute("/users", views.users),
         SlurmwebAppRoute("/agents/<cluster>/stats", views.stats),
@@ -58,24 +59,30 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
 
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
-        if self.settings.authentication.method == "ldap":
-            self.authentifier = LDAPAuthentifier(
-                uri=self.settings.ldap.uri,
-                cacert=self.settings.ldap.cacert,
-                user_base=self.settings.ldap.user_base,
-                user_class=self.settings.ldap.user_class,
-                group_base=self.settings.ldap.group_base,
-                user_fullname_attribute=self.settings.ldap.user_fullname_attribute,
-                group_name_attribute=self.settings.ldap.group_name_attribute,
-                starttls=self.settings.ldap.starttls,
-                bind_dn=self.settings.ldap.bind_dn,
-                bind_password=self.settings.ldap.bind_password,
-                restricted_groups=self.settings.ldap.restricted_groups,
-            )
+
+        # Setup authentifier
+        if self.settings.authentication.enabled:
+            if self.settings.authentication.method == "ldap":
+                self.authentifier = LDAPAuthentifier(
+                    uri=self.settings.ldap.uri,
+                    cacert=self.settings.ldap.cacert,
+                    user_base=self.settings.ldap.user_base,
+                    user_class=self.settings.ldap.user_class,
+                    group_base=self.settings.ldap.group_base,
+                    user_fullname_attribute=self.settings.ldap.user_fullname_attribute,
+                    group_name_attribute=self.settings.ldap.group_name_attribute,
+                    starttls=self.settings.ldap.starttls,
+                    bind_dn=self.settings.ldap.bind_dn,
+                    bind_password=self.settings.ldap.bind_password,
+                    restricted_groups=self.settings.ldap.restricted_groups,
+                )
+            else:
+                raise SlurmwebConfigurationError(
+                    f"Unsupport authentication method {self.settings.authentication.method}"
+                )
         else:
-            raise SlurmwebConfigurationError(
-                f"Unsupport authentication method {self.settings.authentication.method}"
-            )
+            self.authentifier = None
+
         RFLTokenizedWebApp.__init__(
             self,
             audience=self.settings.jwt.audience,
@@ -91,6 +98,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     if self.settings.ui.host is not None
                     else f"http://localhost:{self.settings.service.port}"
                 ),
+                "AUTHENTICATION": self.settings.authentication.enabled,
             }
             try:
                 with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
