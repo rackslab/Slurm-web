@@ -71,7 +71,6 @@ ldap:
     type: uri
     doc: URI to connect to LDAP server
     ex: ldap://localhost
-    #required: when authentication.method=='ldap'
   cacert:
     type: path
     doc: Path to CA certificate
