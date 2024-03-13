@@ -20,16 +20,24 @@ logger = logging.getLogger(__name__)
 
 class SlurmwebConfSeed:
     def __init__(
-        self, debug: bool, debug_flags: List[str], conf_defs: Path, conf: Path
+        self,
+        debug: bool,
+        log_flags: List[str],
+        debug_flags: List[str],
+        conf_defs: Path,
+        conf: Path,
     ):
         self.debug = debug
+        self.log_flags = log_flags
         self.debug_flags = debug_flags
         self.conf_defs = conf_defs
         self.conf = conf
 
     @classmethod
     def from_args(cls, args):
-        return cls(args.debug, args.debug_flags, args.conf_defs, args.conf)
+        return cls(
+            args.debug, args.log_flags, args.debug_flags, args.conf_defs, args.conf
+        )
 
 
 class SlurmwebGenericApp:
@@ -41,7 +49,8 @@ class SlurmwebGenericApp:
         # load configuration files
         setup_logger(
             debug=seed.debug,
-            flags=seed.debug_flags,
+            log_flags=seed.log_flags,
+            debug_flags=seed.debug_flags,
         )
         try:
             self.settings = RuntimeSettings.yaml_definition(seed.conf_defs)
@@ -56,9 +65,12 @@ class SlurmwebGenericApp:
 
         if self.settings.service.debug:
             enforce_debug(
-                flags=list(
+                log_flags=list(
+                    set(seed.log_flags) | set(self.settings.service.log_flags)
+                ),
+                debug_flags=list(
                     set(seed.debug_flags) | set(self.settings.service.debug_flags)
-                )
+                ),
             )
 
     def run(self):

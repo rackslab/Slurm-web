@@ -15,6 +15,19 @@ service:
     type: bool
     default: false
     doc: Enable debug mode
+  log_flags:
+    type: list
+    content: str
+    default:
+    - ALL
+    choices:
+    - slurmweb
+    - rfl
+    - werkzeug
+    - urllib3
+    - racksdb
+    - ALL
+    doc: List of log flags to enable.
   debug_flags:
     type: list
     content: str

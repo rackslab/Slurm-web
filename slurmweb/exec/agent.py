@@ -32,6 +32,13 @@ class SlurmwebExecAgent:
             help="Enable debug mode",
         )
         parser.add_argument(
+            "--log-flags",
+            help="Log flags (default: %(default)s)",
+            default="ALL",
+            nargs="*",
+            choices=["slurmweb", "rfl", "racksdb", "werkzeug", "urllib3", "ALL"],
+        )
+        parser.add_argument(
             "--debug-flags",
             help="Debug flags (default: %(default)s)",
             default="slurmweb",
