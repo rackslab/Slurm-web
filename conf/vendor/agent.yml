@@ -283,7 +283,7 @@ racksdb:
 cache:
   enabled:
     type: bool
-    default: true
+    default: false
     doc: Determine if caching is enabled
   host:
     type: str
