@@ -82,8 +82,12 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             policy=self.settings.policy.definition,
             roles=selected_roles_policy_path,
         )
-        self.cache = CachingService(
-            host=self.settings.cache.host,
-            port=self.settings.cache.port,
-            password=self.settings.cache.password,
-        )
+        if self.settings.cache.enabled:
+            self.cache = CachingService(
+                host=self.settings.cache.host,
+                port=self.settings.cache.port,
+                password=self.settings.cache.password,
+            )
+        else:
+            logger.warning("Caching is disabled")
+            self.cache = None
