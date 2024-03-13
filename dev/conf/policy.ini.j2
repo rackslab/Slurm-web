@@ -1,4 +1,11 @@
 [roles]
+{% if anonymous %}
+anonymous
+
+[anonymous]
+actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos
+{% else %}
+
 {% if cluster == "tiny" %}
 user=@{{ groups[2].name }},@{{ groups[3].name }}
 {% else %}
@@ -15,3 +22,4 @@ actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos,view-accounts,v
 
 [special]
 actions=view-qos
+{% endif %}

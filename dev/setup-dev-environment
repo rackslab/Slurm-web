@@ -152,7 +152,7 @@ class SlurmwebAgent:
         channel = ClusterChannel.connect(host, ssh_client, forwards, name, cluster_id)
         return cls(name, channel, forwards, 5013 + cluster_id)
 
-    def render_policy(self, tmpdir: Path) -> None:
+    def render_policy(self, tmpdir: Path, anonymous: bool) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("policy.ini.j2")
         self.policy_path = tmpdir / f"policy-{self.name}.ini"
@@ -166,6 +166,7 @@ class SlurmwebAgent:
                     cluster=self.name,
                     users=cluster_status["users"],
                     groups=cluster_status["groups"],
+                    anonymous=anonymous,
                 )
             )
 
@@ -229,7 +230,7 @@ class SlurmwebGateway:
     conf_path: Path = None
 
     def render_conf(
-        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent], ui: Path | None
+        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent], ui: Path | None, anonymous: bool
     ):
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("gateway.ini.j2")
@@ -242,7 +243,8 @@ class SlurmwebGateway:
                     ldap_port=agents[0].forwards["ldap"].local,
                     ldap_base=agents[0].name,
                     agents=agents,
-                    ui=ui
+                    ui=ui,
+                    anonymous=anonymous,
                 )
             )
 
@@ -288,6 +290,11 @@ def main():
         type=Path,
         help="Path to frontend application",
     )
+    parser.add_argument(
+        "--anonymous",
+        action="store_true",
+        help="Enable anonymous mode and disable authentication",
+    )
     args = parser.parse_args()
 
     # Load cluster list from RacksDB database
@@ -320,7 +327,7 @@ def main():
             DEV_HOST, port_allocator, ssh_client, infrastructure.name, cluster_id
         )
         # Generate agent configuration file
-        agent.render_policy(tmpdir)
+        agent.render_policy(tmpdir, args.anonymous)
         agent.render_conf(tmpdir, jwt_key_path, args.cache)
         # Launch agent in backgroup
         agent.launch()
@@ -332,7 +339,7 @@ def main():
 
     # Launch gateway
     gateway = SlurmwebGateway()
-    gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui)
+    gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui, args.anonymous)
     gateway.launch()
 
     logger.info("Development environment is ready, type ^c to stop")
