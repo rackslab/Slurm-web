@@ -46,6 +46,10 @@ interface GatewayLoginResponse extends UserDescription {
   groups: string[]
 }
 
+interface GatewayAnonymousLoginResponse {
+  token: string
+}
+
 export class ClusterStats {
   resources: {
     nodes: number
@@ -452,6 +456,18 @@ export function useGatewayAPI() {
     }
   }
 
+  async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
+    try {
+      return (await get('/anonymous')) as GatewayAnonymousLoginResponse
+    } catch (error: any) {
+      /* Translate 401 APIServerError into AuthenticationError */
+      if (error instanceof APIServerError && error.status == 401) {
+        throw new AuthenticationError(error.message)
+      }
+      throw error
+    }
+  }
+
   async function clusters(): Promise<Array<ClusterDescription>> {
     return await get<ClusterDescription[]>(`/clusters`)
   }
@@ -556,6 +572,7 @@ export function useGatewayAPI() {
 
   return {
     login,
+    anonymousLogin,
     clusters,
     users,
     stats,

@@ -11,6 +11,7 @@ import { inject } from 'vue'
 
 export interface RuntimeConfiguration {
   api_server: string
+  authentication: boolean
 }
 
 const injectionKey = Symbol('rc')
@@ -32,8 +33,9 @@ export const initRuntimeConfiguration = async (): Promise<RuntimeConfiguration> 
   const value = await resp.json()
 
   return {
-    api_server: value.API_SERVER
+    api_server: value.API_SERVER,
+    authentication: value.AUTHENTICATION
   } as RuntimeConfiguration
 }
 
-export const loadRuntimeConfiguration = () => inject(injectionKey) as RuntimeConfiguration
+export const useRuntimeConfiguration = () => inject(injectionKey) as RuntimeConfiguration

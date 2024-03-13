@@ -9,8 +9,10 @@
 import { createRouter, createWebHistory, type RouteLocation } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import DashboardView from '@/views/DashboardView.vue'
 import LoginView from '@/views/LoginView.vue'
+import AnonymousView from '@/views/AnonymousView.vue'
 import SignoutView from '@/views/SignoutView.vue'
 import SettingsMainView from '@/views/settings/SettingsMain.vue'
 import SettingsErrorsView from '@/views/settings/SettingsErrors.vue'
@@ -36,6 +38,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/anonymous',
+      name: 'anonymous',
+      component: AnonymousView
     },
     {
       path: '/clusters',
@@ -142,13 +149,23 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   /* redirect to login page if not logged in and trying to access a restricted page */
-  const publicPages = ['/login']
+  const publicPages = ['/login', '/anonymous']
   const authRequired = !publicPages.includes(to.path)
   const auth = useAuthStore()
   const runtime = useRuntimeStore()
+  const runtimeConfiguration = useRuntimeConfiguration()
+
+  if (to.name == 'login' && !runtimeConfiguration.authentication) {
+    return '/anonymous'
+  }
+
   if (authRequired && !auth.token) {
     auth.returnUrl = to.fullPath
-    return '/login'
+    if (runtimeConfiguration.authentication) {
+      return '/login'
+    } else {
+      return '/anonymous'
+    }
   }
   runtime.navigation = to.meta.entry as string
   runtime.routePath = to.path as string

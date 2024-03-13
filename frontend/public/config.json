@@ -1,3 +1,4 @@
 {
-  "API_SERVER": "http://localhost:5012"
+  "API_SERVER": "http://localhost:5012",
+  "AUTHENTICATION": true
 }

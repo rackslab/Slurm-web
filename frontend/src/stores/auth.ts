@@ -37,6 +37,10 @@ export const useAuthStore = defineStore('auth', () => {
     router.push(returnUrl.value || { name: 'clusters' })
   }
 
+  function anonymousLogin(_token: string) {
+    login(_token, 'anonymous', 'anonymous', [])
+  }
+
   function logout() {
     token.value = null
     localStorage.removeItem('token')
@@ -46,5 +50,5 @@ export const useAuthStore = defineStore('auth', () => {
     router.push({ name: 'login' })
   }
 
-  return { token, username, fullname, groups, returnUrl, login, logout }
+  return { token, username, fullname, groups, returnUrl, login, anonymousLogin, logout }
 })
