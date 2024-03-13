@@ -85,7 +85,11 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         if self.settings.ui.enabled:
             # Generate config.json used by frontend application
             ui_config = {
-                "API_SERVER": self.settings.ui.host.geturl(),
+                "API_SERVER": (
+                    self.settings.ui.host.geturl()
+                    if self.settings.ui.host is not None
+                    else f"http://localhost:{self.settings.service.port}"
+                ),
             }
             with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
                 fh.write(json.dumps(ui_config))

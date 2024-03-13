@@ -45,7 +45,6 @@ service:
 ui:
   host:
     type: uri
-    required: true
     doc: Public URL to access the gateway component
   enabled:
     type: bool
