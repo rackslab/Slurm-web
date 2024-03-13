@@ -103,7 +103,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                 )
                 sys.exit(1)
             self.static_folder = self.settings.ui.path
-            self.add_url_rule("/", view_func=views.ui_index)
+            self.add_url_rule("/", view_func=views.ui_files)
             self.add_url_rule("/<path:name>", view_func=views.ui_files)
         # Get information from all agents
         self.agents = {}
