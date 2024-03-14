@@ -4,8 +4,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-import json
 import logging
 
 from rfl.web.tokens import RFLTokenizedWebApp
@@ -89,27 +87,9 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             algorithm=self.settings.jwt.algorithm,
             key=self.settings.jwt.key,
         )
-        # Setup frontend application and add corresponding routes if UI is enabled.
+        # Add UI rules if enabled.
         if self.settings.ui.enabled:
-            # Generate config.json used by frontend application
-            ui_config = {
-                "API_SERVER": (
-                    self.settings.ui.host.geturl()
-                    if self.settings.ui.host is not None
-                    else f"http://localhost:{self.settings.service.port}"
-                ),
-                "AUTHENTICATION": self.settings.authentication.enabled,
-            }
-            try:
-                with open(self.settings.ui.path.joinpath("config.json"), "w+") as fh:
-                    fh.write(json.dumps(ui_config))
-            except PermissionError as err:
-                logger.critical(
-                    "Unable to edit frontend application configuration file %s: %s",
-                    self.settings.ui.path.joinpath("config.json"),
-                    err,
-                )
-                sys.exit(1)
+            self.add_url_rule("/config.json", view_func=views.ui_config)
             self.static_folder = self.settings.ui.path
             self.add_url_rule("/", view_func=views.ui_files)
             self.add_url_rule("/<path:name>", view_func=views.ui_files)

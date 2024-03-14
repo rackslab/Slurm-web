@@ -253,6 +253,19 @@ def racksdb(cluster: str, query: str):
     )
 
 
+def ui_config():
+    return jsonify(
+        {
+            "API_SERVER": (
+                current_app.settings.ui.host.geturl()
+                if current_app.settings.ui.host is not None
+                else f"http://localhost:{current_app.settings.service.port}"
+            ),
+            "AUTHENTICATION": current_app.settings.authentication.enabled,
+        }
+    )
+
+
 def ui_files(name="index.html"):
     if (
         name in ["favicon.ico", "config.json"]
