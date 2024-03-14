@@ -387,7 +387,16 @@ export function useGatewayAPI() {
       return await func()
     } catch (error: any) {
       if (error.response) {
-        /* Server replied with error status code */
+        /* Server replied with error status code.
+         *
+         * If the reponse body is an arraybuffer instead of JSON, convert it
+         * to JSON first.
+         */
+        if (error.response.data instanceof ArrayBuffer) {
+          error.response.data = JSON.parse(
+            new TextDecoder().decode(error.response.data as ArrayBuffer)
+          )
+        }
         if (error.response.status == 401) {
           throw new AuthenticationError(error.response.data.description)
         } else if (error.response.status == 403) {

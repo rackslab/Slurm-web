@@ -10,6 +10,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Ref, PropType } from 'vue'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
+import { APIServerError } from '@/composables/HTTPErrors'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
@@ -40,6 +41,8 @@ const loading: Ref<HTMLSpanElement | null> = ref(null)
 const canvas: Ref<HTMLCanvasElement | null> = ref(null)
 const nodeTooltip: Ref<HTMLDivElement | null> = ref(null)
 const nodeTooltipOpen: Ref<boolean> = ref(false)
+const errorMessage: Ref<string | undefined> = ref()
+const unable: Ref<boolean> = ref(false)
 let timeout: number = -1 // holder for timeout id
 const delay = 250 // delay after event is "complete" to run callback
 let allNodesPaths: Record<
@@ -69,6 +72,16 @@ function getNodeState(nodeName: string): string[] {
 
 function inSelectedNodes(nodeName: string): boolean {
   return getClusterNode(nodeName) !== undefined
+}
+
+function reportAPIServerError(error: APIServerError) {
+  errorMessage.value = `API server error (${error.status}): ${error.message}`
+  unable.value = true
+}
+
+function reportOtherError(error: Error) {
+  errorMessage.value = `Server error: ${error.message}`
+  unable.value = true
 }
 
 function getNodeFillStrokeColors(nodeName: string): [string, string | undefined] {
@@ -112,11 +125,20 @@ async function updateCanvas(fullUpdate: boolean = true) {
       /* Resize canvas to fill parent container size */
       canvas.value.width = container.value.clientWidth
       canvas.value.height = container.value.clientHeight
-      ;[image, coordinates] = await gateway.infrastructureImagePng(
-        props.cluster,
-        canvas.value.width,
-        canvas.value.height
-      )
+      try {
+        ;[image, coordinates] = await gateway.infrastructureImagePng(
+          props.cluster,
+          canvas.value.width,
+          canvas.value.height
+        )
+      } catch (error: any) {
+        if (error instanceof APIServerError) {
+          reportAPIServerError(error)
+        } else {
+          reportOtherError(error)
+        }
+        return
+      }
       bitmap = await createImageBitmap(image)
       /* Calculate x and y shift required to center generated image */
       x_shift = Math.round((canvas.value.width - bitmap.width) / 2)
@@ -306,29 +328,32 @@ onUnmounted(() => {
     ref="container"
     :class="[fullscreen ? 'grow' : 'h-96', 'flex min-w-full items-center justify-center']"
   >
-    <div ref="loading" class="h-1/2 text-slurmweb">
-      <LoadingSpinner :size="8" />
-    </div>
-
-    <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
-      <div v-if="currentNode" class="w-40 overflow-hidden rounded-md bg-white shadow-lg">
-        <ul role="list" class="divide-y divide-gray-200">
-          <li class="bg-gray-200 py-2 text-center text-sm">
-            <strong>Node {{ currentNode.name }}</strong>
-          </li>
-          <li class="flex px-4 py-1 text-xs text-gray-400">
-            <NodeMainState :node="currentNode" />
-          </li>
-          <li class="flex px-4 py-1 text-xs text-gray-400">
-            <NodeAllocationState :node="currentNode" />
-          </li>
-        </ul>
+    <span v-if="unable" class="text-sm text-gray-500">{{ errorMessage }}</span>
+    <template v-else>
+      <div ref="loading" class="h-1/2 text-slurmweb">
+        <LoadingSpinner :size="8" />
       </div>
-      <div
-        class="absolute left-0 right-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
-      ></div>
-    </aside>
 
-    <canvas ref="canvas">Cluster canvas</canvas>
+      <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
+        <div v-if="currentNode" class="w-40 overflow-hidden rounded-md bg-white shadow-lg">
+          <ul role="list" class="divide-y divide-gray-200">
+            <li class="bg-gray-200 py-2 text-center text-sm">
+              <strong>Node {{ currentNode.name }}</strong>
+            </li>
+            <li class="flex px-4 py-1 text-xs text-gray-400">
+              <NodeMainState :node="currentNode" />
+            </li>
+            <li class="flex px-4 py-1 text-xs text-gray-400">
+              <NodeAllocationState :node="currentNode" />
+            </li>
+          </ul>
+        </div>
+        <div
+          class="absolute left-0 right-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
+        ></div>
+      </aside>
+
+      <canvas ref="canvas">Cluster canvas</canvas>
+    </template>
   </div>
 </template>
