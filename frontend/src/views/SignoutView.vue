@@ -11,15 +11,22 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 
 const authStore = useAuthStore()
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
+const runtimeConfiguration = useRuntimeConfiguration()
 
 onMounted(() => {
   authStore.logout()
   runtimeStore.reportInfo('You have been signed out')
-  router.push({ name: 'login' })
+
+  if (runtimeConfiguration.authentication) {
+    router.push({ name: 'login' })
+  } else {
+    router.push({ name: 'anonymous' })
+  }
 })
 </script>
 
