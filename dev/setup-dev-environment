@@ -230,7 +230,12 @@ class SlurmwebGateway:
     conf_path: Path = None
 
     def render_conf(
-        self, tmpdir: Path, jwt_key_path: Path, agents: list[SlurmwebAgent], ui: Path | None, anonymous: bool
+        self,
+        tmpdir: Path,
+        jwt_key_path: Path,
+        agents: list[SlurmwebAgent],
+        ui: Path | None,
+        anonymous: bool,
     ):
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("gateway.ini.j2")
