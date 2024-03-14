@@ -26,7 +26,7 @@ const unable: Ref<Boolean> = ref(false)
 
 function reportAuthenticationError(error: AuthenticationError) {
   runtimeStore.reportError(`Authentication error: ${error.message}`)
-  router.push({ name: 'login' })
+  router.push({ name: 'signout' })
 }
 
 function reportOtherError(error: Error) {

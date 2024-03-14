@@ -24,7 +24,7 @@ export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
 
   function reportAuthenticationError(error: AuthenticationError) {
     runtime.reportError(`Authentication error: ${error.message}`)
-    router.push({ name: 'login' })
+    router.push({ name: 'signout' })
   }
 
   function reportPermissionError(error: PermissionError) {
@@ -75,7 +75,7 @@ export function useClusterDataGetter<Type>(
 
   function reportAuthenticationError(error: AuthenticationError) {
     runtime.reportError(`Authentication error: ${error.message}`)
-    router.push({ name: 'login' })
+    router.push({ name: 'signout' })
   }
 
   function reportPermissionError(error: PermissionError) {
