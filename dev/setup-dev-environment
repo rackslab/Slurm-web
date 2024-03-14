@@ -15,7 +15,6 @@ import subprocess
 from pathlib import Path
 import signal
 import tempfile
-import secrets
 import atexit
 import shutil
 import time
@@ -25,6 +24,7 @@ import socket
 import sys
 
 import jinja2
+from rfl.authentication.jwt import jwt_gen_key
 from racksdb import RacksDB
 
 logger = logging.getLogger(__name__)
@@ -315,8 +315,7 @@ def main():
 
     # Generate random JWT key
     jwt_key_path = tmpdir / "jwt.key"
-    with open(jwt_key_path, "w+") as fh:
-        fh.write(secrets.token_hex(64))
+    jwt_gen_key(jwt_key_path)
 
     # Launch all clusters agents
     cluster_id = 0
