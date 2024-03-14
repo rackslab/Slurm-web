@@ -11,6 +11,7 @@ import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
@@ -18,6 +19,7 @@ import { ChevronRightIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 import { CpuChipIcon, PlayCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 const runtimeStore = useRuntimeStore()
+const runtimeConfiguration = useRuntimeConfiguration()
 const gateway = useGatewayAPI()
 const router = useRouter()
 const clusters: Ref<Array<ClusterDescription>> = ref([])
@@ -60,7 +62,12 @@ onMounted(() => {
 
 <template>
   <main>
-    <RouterLink :to="{ name: 'signout' }" custom v-slot="{ navigate }">
+    <RouterLink
+      v-if="runtimeConfiguration.authentication"
+      :to="{ name: 'signout' }"
+      custom
+      v-slot="{ navigate }"
+    >
       <button
         @click="navigate"
         role="link"

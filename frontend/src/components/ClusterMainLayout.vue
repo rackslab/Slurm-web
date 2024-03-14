@@ -11,6 +11,7 @@ import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useAuthStore } from '@/stores/auth'
 import { Bars3Icon, ArrowRightOnRectangleIcon, ServerStackIcon } from '@heroicons/vue/24/outline'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
@@ -30,6 +31,7 @@ const props = defineProps({
 
 const clusterNotFound: Ref<boolean> = ref(false)
 const runtimeStore = useRuntimeStore()
+const runtimeConfiguration = useRuntimeConfiguration()
 const authStore = useAuthStore()
 
 onMounted(() => {
@@ -79,14 +81,19 @@ onMounted(() => {
           <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true" />
 
           <!-- Profile -->
-          <span class="hidden lg:flex lg:items-center">
+          <span v-if="runtimeConfiguration.authentication" class="hidden lg:flex lg:items-center">
             <span class="m-2 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
               {{ authStore.fullname }}
             </span>
           </span>
 
           <!-- Signout button -->
-          <RouterLink :to="{ name: 'signout' }" custom v-slot="{ navigate }">
+          <RouterLink
+            v-if="runtimeConfiguration.authentication"
+            :to="{ name: 'signout' }"
+            custom
+            v-slot="{ navigate }"
+          >
             <button
               @click="navigate"
               role="link"
