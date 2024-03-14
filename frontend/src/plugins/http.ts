@@ -18,7 +18,7 @@ export const useHttp = () => inject(injectionKey) as AxiosInstance
 export const httpPlugin: Plugin = {
   install(app: App) {
     const http = axios.create({
-      baseURL: app.config.globalProperties.$rc.api_server
+      baseURL: `${app.config.globalProperties.$rc.api_server}/api/`
     })
     app.provide(injectionKey, http)
   }
