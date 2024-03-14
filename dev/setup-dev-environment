@@ -298,7 +298,9 @@ def main():
     args = parser.parse_args()
 
     # Load cluster list from RacksDB database
-    db = RacksDB.load(db="dev/firehpc/racksdb.yml")
+    db = RacksDB.load(
+        db="dev/firehpc/racksdb.yml", schema="../RacksDB/schemas/racksdb.yml"
+    )
 
     # Connect to development host
     ssh_client = paramiko.SSHClient()
