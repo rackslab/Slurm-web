@@ -278,6 +278,8 @@ racksdb:
   tags:
     type: list
     content: str
+    default:
+    - compute
     doc: List of tags applied to compute nodes in RacksDB database
 
 cache:
