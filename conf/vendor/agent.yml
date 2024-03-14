@@ -52,7 +52,7 @@ service:
 slurmrestd:
   socket:
     type: path
-    default: /var/spool/slurm/restd/slurmrestd.socket
+    default: /run/slurmrestd/slurmrestd.socket
     doc: Path to slurmrestd UNIX socket
   version:
     type: str
