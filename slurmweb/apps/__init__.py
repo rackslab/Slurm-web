@@ -106,9 +106,11 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
         logger.info("Running %s application", self.NAME)
         if self.settings.service.cors:
             logger.debug("CORS is enabled")
-            from flask_cors import CORS
-
-            CORS(self)
+            try:
+                from flask_cors import CORS
+                CORS(self)
+            except ImportError:
+                logger.warning("Unable to load CORS module, CORS is disabled.")
         Flask.run(
             self,
             host=self.settings.service.interface,
