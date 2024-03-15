@@ -14,7 +14,6 @@ authors = [
 ]
 dependencies = [
     "Flask",
-    "Flask-Cors",
     "requests",
     "RFL.authentication",
     "RFL.log",
@@ -24,6 +23,9 @@ dependencies = [
 readme = "README.md"
 
 [project.optional-dependencies]
+dev = [
+    "Flask-Cors",
+]
 agent = [
     "RacksDB[web]",
     "redis",
