@@ -13,6 +13,10 @@ class SlurmwebConfigurationError(Exception):
     pass
 
 
+class SlurmwebAgentError(Exception):
+    pass
+
+
 class SlurmwebAuthenticationError(Exception):
     pass
 

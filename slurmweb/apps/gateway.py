@@ -13,7 +13,7 @@ import requests
 from . import SlurmwebWebApp
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
-from ..errors import SlurmwebConfigurationError
+from ..errors import SlurmwebConfigurationError, SlurmwebAgentError
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,12 @@ class SlurmwebAgent:
 
     @classmethod
     def from_json(cls, url, data):
-        return cls(data["cluster"], url)
+        try:
+            return cls(data["cluster"], url)
+        except KeyError as err:
+            raise SlurmwebAgentError(
+                "Unable to retrieve cluster name from agent"
+            ) from err
 
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
