@@ -7,11 +7,42 @@
 -->
 
 <script setup lang="ts">
+import type { FunctionalComponent } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
+import type { ResourcesViewFilters, ResourcesViewSettings } from '@/stores/runtime'
 import { FunnelIcon, BoltIcon, RectangleGroupIcon } from '@heroicons/vue/20/solid'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 const runtimeStore = useRuntimeStore()
+
+const activeFiltersGroups: Array<{
+  group: string
+  list: keyof ResourcesViewFilters
+  icon: FunctionalComponent
+  removeCallback: (this: ResourcesViewSettings, filter: string) => void
+  colors: { badge: string; button: string }
+}> = [
+  {
+    group: 'state',
+    list: 'states',
+    icon: BoltIcon,
+    removeCallback: runtimeStore.resources.removeStateFilter,
+    colors: {
+      badge: 'border-gray-200 bg-gray-600',
+      button: 'text-gray-400 hover:bg-gray-700 hover:text-gray-500'
+    }
+  },
+  {
+    group: 'partition',
+    list: 'partitions',
+    icon: RectangleGroupIcon,
+    removeCallback: runtimeStore.resources.removePartitionFilter,
+    colors: {
+      badge: 'border-gray-200 bg-amber-700',
+      button: 'text-amber-800 hover:bg-amber-800 hover:text-amber-900'
+    }
+  }
+]
 </script>
 
 <template>
@@ -43,42 +74,39 @@ const runtimeStore = useRuntimeStore()
 
         <div class="mt-2 sm:ml-4 sm:mt-0">
           <div class="-m-1 flex flex-wrap items-center">
-            <span
-              v-for="activeStateFilter in runtimeStore.resources.filters.states"
-              :key="activeStateFilter"
-              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-gray-600 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
+            <template
+              v-for="activeFilterGroup in activeFiltersGroups"
+              :key="activeFilterGroup.group"
             >
-              <BoltIcon class="mr-1 h-4 w-4" />
-              <span>{{ activeStateFilter }}</span>
-              <button
-                type="button"
-                class="ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-700 hover:text-gray-500"
-                @click="runtimeStore.resources.removeStateFilter(activeStateFilter)"
+              <span
+                v-for="activeFilter in runtimeStore.resources.filters[activeFilterGroup.list]"
+                :key="activeFilter"
+                :class="[
+                  activeFilterGroup.colors.badge,
+                  'm-1 inline-flex items-center rounded-full border py-1.5 pl-3 pr-2 text-sm font-medium text-white'
+                ]"
               >
-                <span class="sr-only">Remove filter for state:{{ activeStateFilter }}</span>
-                <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                  <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
-                </svg>
-              </button>
-            </span>
-            <span
-              v-for="activePartitionFilter in runtimeStore.resources.filters.partitions"
-              :key="activePartitionFilter"
-              class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-amber-700 py-1.5 pl-3 pr-2 text-sm font-medium text-white"
-            >
-              <RectangleGroupIcon class="mr-1 h-4 w-4" />
-              <span>{{ activePartitionFilter }}</span>
-              <button
-                type="button"
-                class="ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1 text-amber-800 hover:bg-amber-800 hover:text-amber-900"
-                @click="runtimeStore.resources.removePartitionFilter(activePartitionFilter)"
-              >
-                <span class="sr-only">Remove filter for partition:{{ activePartitionFilter }}</span>
-                <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                  <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
-                </svg>
-              </button>
-            </span>
+                <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4"></component>
+                <span>{{ activeFilter }}</span>
+                <button
+                  type="button"
+                  :class="[
+                    activeFilterGroup.colors.button,
+                    'ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1'
+                  ]"
+                  @click="
+                    activeFilterGroup.removeCallback.call(runtimeStore.resources, activeFilter)
+                  "
+                >
+                  <span class="sr-only"
+                    >Remove filter for {{ activeFilterGroup.group }}:{{ activeFilter }}</span
+                  >
+                  <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                    <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
+                  </svg>
+                </button>
+              </span>
+            </template>
           </div>
         </div>
       </div>

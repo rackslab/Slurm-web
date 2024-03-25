@@ -17,7 +17,7 @@ import type { ClusterDescription, ClusterJob, ClusterNode } from '@/composables/
  * Jobs view settings
  */
 
-interface JobsViewFilters {
+export interface JobsViewFilters {
   states: string[]
   users: string[]
   accounts: string[]
@@ -177,7 +177,7 @@ export class JobsViewSettings {
  * Resources view settings
  */
 
-interface ResourcesViewFilters {
+export interface ResourcesViewFilters {
   states: string[]
   partitions: string[]
 }
