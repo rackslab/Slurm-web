@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import time
 import logging
 
 from rfl.web.tokens import RFLTokenizedWebApp
@@ -60,6 +61,49 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         ),
     }
 
+    def _agent_info(self, url: str) -> SlurmwebAgent:
+        response = requests.get(f"{url}/v{self.settings.agents.version}/info")
+        return SlurmwebAgent.from_json(url, response.json())
+
+    @property
+    def agents(self):
+        """Get agents information dictionnary. If the cache timeout is not reached,
+        return the _agent property without modification. Else, poll all agents declared
+        in configuration to get information from them, re-initialize _agents property
+        with new retrieved values and return it."""
+
+        if int(time.time()) < self._agents_timeout:
+            return self._agents
+
+        self._agents = {}
+        for url in self.settings.agents.url:
+            try:
+                logger.info("Retrieving info from agent at url %s", url.geturl())
+                agent = self._agent_info(url.geturl())
+            except (
+                requests.exceptions.ConnectionError,
+                requests.exceptions.JSONDecodeError,
+                SlurmwebAgentError,
+            ) as err:
+                logger.error(
+                    "Unable to retrieve agent info from url %s: [%s] %s",
+                    url.geturl(),
+                    type(err).__name__,
+                    str(err),
+                )
+            else:
+                logger.debug(
+                    "Discovered available agent for cluster %s at url %s",
+                    agent.cluster,
+                    url.geturl(),
+                )
+                self._agents[agent.cluster] = agent
+
+        # Set new agents information timeout
+        self._agents_timeout = int(time.time()) + 300
+
+        return self._agents
+
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
 
@@ -98,30 +142,6 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             self.static_folder = self.settings.ui.path
             self.add_url_rule("/", view_func=views.ui_files)
             self.add_url_rule("/<path:name>", view_func=views.ui_files)
-        # Get information from all agents
-        self.agents = {}
-        for url in self.settings.agents.url:
-            try:
-                logger.info("Retrieving info from agent at url %s", url.geturl())
-                agent = self._agent_info(url.geturl())
-            except (
-                requests.exceptions.ConnectionError,
-                requests.exceptions.JSONDecodeError,
-            ) as err:
-                logger.error(
-                    "Unable to retrieve agent info from url %s: [%s] %s",
-                    url.geturl(),
-                    type(err).__name__,
-                    str(err),
-                )
-            else:
-                logger.debug(
-                    "Discovered available agent for cluster %s at url %s",
-                    agent.cluster,
-                    url.geturl(),
-                )
-                self.agents[agent.cluster] = agent
 
-    def _agent_info(self, url: str) -> SlurmwebAgent:
-        response = requests.get(f"{url}/v{self.settings.agents.version}/info")
-        return SlurmwebAgent.from_json(url, response.json())
+        self._agents = {}
+        self._agents_timeout = 0
