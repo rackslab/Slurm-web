@@ -15,6 +15,7 @@ from . import SlurmwebGenericApp
 
 from rfl.authentication.jwt import jwt_gen_key
 from rfl.authentication.errors import JWTPrivateKeyGeneratorError
+
 logger = logging.getLogger(__name__)
 
 
