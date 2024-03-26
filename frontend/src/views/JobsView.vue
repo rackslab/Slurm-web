@@ -315,7 +315,7 @@ onMounted(() => {
           Loading jobs…
         </div>
         <InfoAlert v-else-if="data?.length == 0"
-          >No nodes found on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+          >No jobs found on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
         >
         <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">
