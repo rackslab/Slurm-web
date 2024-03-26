@@ -100,7 +100,7 @@ const activeFiltersGroups: Array<{
               :key="activeFilter"
               :class="[
                 activeFilterGroup.colors.badge,
-                'm-1 inline-flex items-center rounded-full border py-1.5 pl-3 pr-2 text-sm font-medium text-white'
+                'm-1 inline-flex items-center rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium text-white'
               ]"
             >
               <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4"></component>
