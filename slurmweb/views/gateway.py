@@ -38,7 +38,7 @@ def validate_cluster(view):
 
 
 def version():
-    return Response(f"Slurm-web gateway v{get_version()}", mimetype="text/plain")
+    return Response(f"Slurm-web gateway v{get_version()}\n", mimetype="text/plain")
 
 
 def login():

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def version():
-    return Response(f"Slurm-web agent v{get_version()}", mimetype="text/plain")
+    return Response(f"Slurm-web agent v{get_version()}\n", mimetype="text/plain")
 
 
 def info():
