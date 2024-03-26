@@ -66,13 +66,13 @@ def slurmrest(query, key, handle_errors=True):
     return result[key]
 
 
-def filter_item_fields(item: Dict, selection: Union[list[str]]):
+def filter_item_fields(item: Dict, selection: Union[List[str]]):
     for key in list(item.keys()):
         if key not in selection:
             del item[key]
 
 
-def filter_fields(selection: Union[list[str], None], func: Callable, *args: List[Any]):
+def filter_fields(selection: Union[List[str], None], func: Callable, *args: List[Any]):
     items = func(*args)
     if selection is not None:
         if isinstance(items, list):
