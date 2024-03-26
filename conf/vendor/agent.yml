@@ -252,7 +252,7 @@ jwt:
     doc: Cryptographic algorithm used to sign JWT
   audience:
     type: str
-    default:
+    default: slurm-web
     doc: |
       Audience defined in generated JWT and expected in JWT provided by clients
 
