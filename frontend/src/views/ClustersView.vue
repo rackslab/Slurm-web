@@ -91,7 +91,25 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else-if="loaded" class="flex w-full flex-col lg:w-[60%]">
+      <div
+        v-else-if="!loaded"
+        class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%]"
+      >
+        <LoadingSpinner :size="5" />
+        Loading clusters…
+      </div>
+      <div v-else-if="!clusters.length" class="w-full rounded-md bg-blue-50 p-4 lg:w-[60%]">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <XCircleIcon class="h-5 w-5 text-blue-400" aria-hidden="true" />
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">Empty cluster list</h3>
+            <p class="mt-2 text-sm text-blue-700">Try to refresh…</p>
+          </div>
+        </div>
+      </div>
+      <div v-else class="flex w-full flex-col lg:w-[60%]">
         <h1 class="flex px-4 text-left text-lg font-medium text-gray-700">Select a cluster</h1>
         <ul
           role="list"
@@ -164,13 +182,6 @@ onMounted(() => {
             </div>
           </li>
         </ul>
-      </div>
-      <div
-        v-else
-        class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%]"
-      >
-        <LoadingSpinner :size="5" />
-        Loading clusters…
       </div>
     </section>
   </main>
