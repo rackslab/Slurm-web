@@ -1,0 +1,13 @@
+Ubuntu 24.04 LTS::
++
+====
+[source]
+----
+Types: deb
+URIs: https://pkgs.rackslab.io/deb
+Suites: ubuntu24.04
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====

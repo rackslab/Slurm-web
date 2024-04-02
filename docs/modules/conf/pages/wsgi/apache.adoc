@@ -1,0 +1,90 @@
+= Setup Apache
+
+== RHEL
+
+NOTE: This procedure works on RHEL, CentOS, AlmaLinux, Rocky Linux and Fedora.
+
+Install Apache2 HTTP server and uWSGI:
+
+[source,console]
+----
+# dnf install httpd uwsgi uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Create file [.path]#`/etc/httpd/conf.d/slurm-web.conf`#:
+
+[source]
+----
+<VirtualHost *:80>
+
+    ProxyPass /agent unix:/run/slurm-web-agent/uwsgi.sock|uwsgi://agent/
+    ProxyPass / unix:/run/slurm-web-gateway/uwsgi.sock|uwsgi://gateway/
+
+</VirtualHost>
+----
+
+Start and enable `httpd` service:
+
+[source,console]
+----
+# systemctl enable --now httpd.service
+----
+
+include::partial$http-available.adoc[]
+
+== Debian
+
+NOTE: This procedure works on Debian and Ubuntu.
+
+Install Apache2 HTTP server and uWSGI:
+
+[source,console]
+----
+# apt install apache2 libapache2-mod-uwsgi uwsgi-core uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Enable Apache2 _uwsgi_ module:
+
+[source,console]
+----
+# a2enmod proxy_uwsgi
+----
+
+Create file [.path]#`/etc/apache2/sites-available/slurm-web.conf`#:
+
+[source]
+----
+ServerName $HOST
+<VirtualHost *:80>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    ProxyPass /agent unix:/run/slurm-web-agent/uwsgi.sock|uwsgi://agent/
+    ProxyPass / unix:/run/slurm-web-gateway/uwsgi.sock|uwsgi://gateway/
+
+</VirtualHost>
+----
+
+Where [.cli-optval]#$HOST# is the public hostname of your server.
+
+Disable default site and enable new Slurm-web site:
+
+[source,console]
+----
+# a2dissite 000-default
+# a2ensite slurm-web
+----
+
+Reload Apache2 service to apply new configuration:
+
+[source,console]
+----
+# systemctl reload apache2.service
+----
+
+include::partial$http-available.adoc[]

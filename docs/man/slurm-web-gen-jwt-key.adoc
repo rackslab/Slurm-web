@@ -1,0 +1,23 @@
+= slurm-web-gen-jwt-key(1)
+Rackslab: https://rackslab.io
+:doctype: manpage
+:manmanual: slurm-web-gen-jwt-key
+:man-linkstyle: pass:[blue R < >]
+
+== Name
+
+slurm-web-gen-jwt-key - Utility to generate secret JWT signing key for Slurm-web
+and secure this key with restricted permissions.
+
+include::../modules/usage/partials/man-gen-jwt-key.adoc[]
+
+== Resources
+
+Slurm-web web site: https://github.com/rackslab/slurm-web
+
+== Copying
+
+Copyright (C) 2023-2024 {author}. +
+
+Slurm-web is distributed under the terms of the GNU General Public License v3.0
+or later (GPLv3+).

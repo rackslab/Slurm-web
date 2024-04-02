@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+
+import sys
+import yaml
+from pathlib import Path
+
+from rfl.build.ninja import NinjaBuilder
+from rfl.build.projectversion import project_version
+
+# Sizes names and associated DPI
+SVG_SIZES = {"tiny": 32, "small": 64, "medium": 96, "large": 128, "xlarge": 192}
+DOCS_DIR = Path(__file__).parent
+TARGETS = ["all", "man", "conf", "policy", "png", "clean"]
+MANPAGE_SOURCE = f"Slurm-web {project_version()}"
+
+
+def main():
+
+    targets = sys.argv[1:]
+
+    if any([target not in TARGETS for target in targets]):
+        print(f"Supported targets are: {TARGETS}")
+        sys.exit(1)
+
+    if not (len(targets)):
+        targets = ["all"]
+
+    builder = NinjaBuilder()
+
+    with open(DOCS_DIR / "utils/build.yaml") as fh:
+        rules = yaml.safe_load(fh.read())
+
+    # clean target
+    if "clean" in targets:
+        manpages = (DOCS_DIR / "man").glob("*.1")
+        for manpage in manpages:
+            print(f"Removing manpage {manpage}")
+            manpage.unlink()
+        confdefs = (DOCS_DIR / "modules/conf/partials").glob("conf-*.adoc")
+        for confdef in confdefs:
+            print(f"Removing configuration reference document {confdef}")
+            confdef.unlink()
+        policy = DOCS_DIR / "modules/conf/partials/policy-actions.adoc"
+        if policy.exists():
+            print(f"Removing policy action reference document {confdef}")
+            policy.unlink()
+        generated_pngs = [
+            (DOCS_DIR / svg_s).with_suffix(".png") for svg_s in rules["diagrams"].keys()
+        ]
+        for generated_png in generated_pngs:
+            print(f"Removing generated PNG image {generated_png}")
+            generated_png.unlink()
+
+    builder.rule(
+        name="manpage",
+        command=(
+            f"asciidoctor --backend manpage --attribute mansource='{MANPAGE_SOURCE}' $in"
+        ),
+    )
+
+    builder.rule(
+        name="conf-def",
+        command=(f"python3 {DOCS_DIR}/utils/gen-conf-ref.py $in > $out"),
+    )
+
+    builder.rule(
+        name="policy-actions",
+        command=(f"python3 {DOCS_DIR}/utils/gen-conf-policy.py $in > $out"),
+    )
+
+    for size, dpi in SVG_SIZES.items():
+        builder.rule(
+            name=f"png-{size}",
+            command=(
+                f"inkscape $in --export-type=png --export-overwrite --export-dpi={dpi} "
+                "--export-filename=$out"
+            ),
+        )
+
+    if "man" in targets or "all" in targets:
+        manpages = (DOCS_DIR / "man").glob("*.adoc")
+        for manpage in manpages:
+            implicit = (
+                DOCS_DIR
+                / "modules/usage/partials"
+                / f"man-{manpage.name.split('-', 2)[-1]}"
+            )
+            target = (DOCS_DIR / "man" / manpage.stem).with_suffix(".1")
+            builder.build(
+                outputs=[target], rule="manpage", inputs=[manpage], implicit=[implicit]
+            )
+
+    if "conf" in targets or "all" in targets:
+        confdefs = [
+            DOCS_DIR / "../conf/vendor" / f"{component}.yml"
+            for component in ["agent", "gateway"]
+        ]
+        for confdef in confdefs:
+            target = DOCS_DIR / "modules/conf/partials" / f"conf-{confdef.stem}.adoc"
+            builder.build(outputs=[target], rule="conf-def", inputs=[confdef])
+
+    if "policy" in targets or "all" in targets:
+        policy_def = DOCS_DIR / "../conf/vendor/policy.yml"
+        target = DOCS_DIR / "modules/conf/partials/policy-actions.adoc"
+        builder.build(outputs=[target], rule="policy-actions", inputs=[policy_def])
+
+    if "png" in targets or "all" in targets:
+        svg_rules = rules["diagrams"]
+        for svg_s, size in svg_rules.items():
+            svg = DOCS_DIR / svg_s
+            # png = svg.parent / f"{svg.stem}.png"
+            png = svg.with_suffix(".png")
+            builder.build(outputs=[png], rule=f"png-{size}", inputs=[svg])
+
+    builder.run()
+
+
+if __name__ == "__main__":
+    main()

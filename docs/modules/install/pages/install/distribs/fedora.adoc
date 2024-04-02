@@ -1,0 +1,16 @@
+= Fedora
+
+image:https://rackslab.io/images/distribs/fedora.png[Fedora,float=right]
+
+This installation procedure works on Fedora version 39 and 40.
+
+include::partial$install/signing-dnf.adoc[]
+
+include::partial$install/repo-dnf.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-fedora.adoc[]
+======
+
+include::partial$install/install-dnf.adoc[]

@@ -1,0 +1,43 @@
+= Production HTTP Server
+
+This sections explains how to setup production HTTP with Slurm-web. Multiple
+HTTP servers are supported:
+
+* xref:wsgi/apache.adoc[Apache]
+* xref:wsgi/nginx.adoc[Nginx]
+* xref:wsgi/caddy.adoc[Caddy]
+
+[IMPORTANT]
+====
+For simplicity reason and focus on Slurm-web specifics, this documentation
+provides configuration snippets to setup HTTP servers with insecure HTTP
+protocol without SSL/TLS. Of course, *you MUST setup HTTPS with SSL/TLS on your
+production HTTP server* to protect sensible data (passwords, confidential Slurm
+information, etc).
+
+There are plenty of methods to setup HTTPS with SSL/TLS certificates, it mostly
+depends on your network environment (ex: Let's Encrypt, Internet trusted CA,
+entreprise CA, …), so it is not covered in this documentation. Please refer to
+official HTTP servers documentation for more help.
+====
+
+NOTE: All these examples propose to launch Slurm-web _gateway_ and _agent_ with
+https://uwsgi-docs.readthedocs.io/en/latest/[uWSGI] because it is stable,
+versatible with good performances. There are alternatives though like
+https://gunicorn.org/[Gunicorn] or
+https://modwsgi.readthedocs.io/en/master/[mod_wsgi]. While documentation is not
+provided, Slurm-web should be compatible with these alternatives.
+
+[NOTE]
+====
+In this documentation, _gateway_ and _agent_ are installed on the same host, in
+_mono-cluster mode_. However, Slurm-web supports
+xref:overview:architecture.adoc#multiclusters[_multi-clusters mode_] with one
+central _gateway_ and multiple _agents_. It is just a matter of:
+
+- Deploying a production HTTP server with only the _agent_ component on all
+  clusters,
+- Deploying one production HTTP server with only the _gateway_ component on
+  central server,
+- Settings the _agents_ URL in _gateway_ configuration file.
+====

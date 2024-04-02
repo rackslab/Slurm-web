@@ -1,0 +1,30 @@
+== General Options
+
+[.cli-opt]#*-h, --help*#::
+  Show this help message and exit.
+
+[.cli-opt]#*-v, --version*#::
+  Show Slurm-web version number and exit.
+
+[.cli-opt]#*--debug*#::
+  Enable debug mode with more debug messages in logs.
+
+[.cli-opt]#*--log-flags*=#[.cli-optval]##_FLAGS_##::
+  Libraries for which logs (except debug messages) are enabled. Multiple values
+  can be selected among _slurmweb_, _rfl_, _racksdb_, _werkzeug_, _urllib3_.
+  Special value *ALL* enable logs for all libraries. Default value is *ALL*.
+  This option can be used to filter out logs of too verbose libraries.
+
+[.cli-opt]#*--debug-flags*=#[.cli-optval]##_FLAGS_##::
+  Libraries for which debug logs are enabled when [.cli-opt]#`--debug`#
+  option is used. Multiple values can be selected among _slurmweb_, _rfl_,
+  _racksdb_, _werkzeug_, _urllib3_. Special value *ALL* enable debug logs for
+  all libraries. Default value is *slurmweb*.
+
+[.cli-opt]#*--conf-defs*=#[.cli-optval]##_DEFS_##::
+  Path to Slurm-web gateway YAML configuration definition file. Default value is
+  [.path]#`/usr/share/slurm-web/conf/gateway.yml`#.
+
+[.cli-opt]#*--conf*=#[.cli-optval]##_CONF_##::
+  Path to Slurm-web gateway site configuration file. Default value is
+  [.path]#`/etc/slurm-web/gateway.ini`#.

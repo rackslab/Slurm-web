@@ -1,0 +1,58 @@
+Copy examples of uWSGI services provided in Slurm-web packages:
+
+[source,console]
+----
+# cp -v /usr/share/slurm-web/wsgi/agent/slurm-web-{agent,gateway}-uwsgi.service /etc/systemd/system/
+----
+
+Edit [.path]#`/etc/systemd/system/slurm-web-gateway-uwsgi.service`# to force
+HTTP protocol:
+
+[source,diff]
+----
+--- a/etc/systemd/system/slurm-web-gateway-uwsgi.service
++++ b/etc/systemd/system/slurm-web-gateway-uwsgi.service
+@@ -6,7 +6,7 @@
+ User=slurm-web
+ Group=slurm-web
+ RuntimeDirectory=slurm-web-gateway
+-ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/gateway/slurm-web-gateway.ini
++ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/gateway/slurm-web-gateway.ini --protocol http
+ 
+ [Install]
+ WantedBy=multi-user.target
+----
+
+And also in [.path]#`/etc/systemd/system/slurm-web-gateway-uwsgi.service`#:
+
+[source,diff]
+----
+--- a/etc/systemd/system/slurm-web-agent-uwsgi.service
++++ b/etc/systemd/system/slurm-web-agent-uwsgi.service
+@@ -6,7 +6,7 @@
+ User=slurm
+ Group=slurm
+ RuntimeDirectory=slurm-web-agent
+-ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
++ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini --protocol http
+ 
+ [Install]
+ WantedBy=multi-user.target
+----
+
+NOTE: This modification is required because Caddy does not support native uWSGI
+protocol.
+
+Reload unit files to apply changes:
+
+[source,console]
+----
+# systemctl daemon-reload
+----
+
+Start and enable these services:
+
+[source,console]
+----
+# systemctl enable --now slurm-web-agent-uwsgi.service slurm-web-gateway-uwsgi.service
+----

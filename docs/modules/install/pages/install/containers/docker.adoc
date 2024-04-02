@@ -1,0 +1,5 @@
+= Docker
+
+CAUTION: Installation of Slurm-web with Docker containers is not supported yet.
+This feature is currently in the https://slurm-web.com/roadmap/[roadmap].
+https://rackslab.io/en/contact/[Contact us] if you need this feature.

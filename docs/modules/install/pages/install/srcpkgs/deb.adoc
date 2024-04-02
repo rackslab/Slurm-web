@@ -1,0 +1,40 @@
+= Debian Source Packages
+
+Slurm-web Debian source packages are available at this URL:
+https://pkgs.rackslab.io/deb/pool/main/s/slurm-web
+
+Select version of `*.dsc` file at your convenience and copy its URL.
+
+Then run this command, for example with `slurm-web_3.0.0-1.deb12.dsc`:
+
+[source,console]
+----
+$ dget -ux https://pkgs.rackslab.io/deb/pool/main/s/slurm-web/slurm-web_3.0.0-1.deb12.dsc
+----
+
+Move into the source folder:
+
+[source,console]
+----
+$ cd slurm-web
+----
+
+Install missing build dependencies:
+
+[source,console]
+----
+$ sudo mk-build-deps -ri
+----
+
+NOTE: Command `mk-build-deps` is included in `devscripts`. Install this package
+first if the command is not found on your system.
+
+Build packages:
+
+[source,console]
+----
+$ dpkg-buildpackage
+----
+
+After successful completion of this command, Slurm-web `*.deb` packages are
+available in parent folder.

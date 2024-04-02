@@ -1,0 +1,22 @@
+name: slurm-web
+title: Slurm-web
+version: v3
+prerelease: devel
+start_page: overview:start.adoc
+asciidoc:
+  attributes:
+    source-language: asciidoc@
+    table-caption: false
+    version: 3.0.0
+nav:
+- modules/overview/nav.adoc
+- modules/install/nav.adoc
+- modules/conf/nav.adoc
+- modules/usage/nav.adoc
+- modules/misc/nav.adoc
+ext:
+  collector:
+    run:
+      command: sh docs/utils/generate-changelog.sh
+    scan:
+      dir: generated-doc

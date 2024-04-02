@@ -1,0 +1,29 @@
+Fedora 39::
++
+====
+[source]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/fc39/main/$basearch/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====
+
+Fedora 40::
++
+====
+[source]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/fc40/main/$basearch/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====

@@ -1,0 +1,30 @@
+= Distributions System Packages
+
+This section contains documentation to install Slurm-web with standard system
+packages on all supported GNU/Linux distributions:
+
+:distribsdir: https://rackslab.io/images/distribs
+
+[%autowidth,cols="2*",frame=none,grid=none]
+|===
+|image:{distribsdir}/redhat.png[Red Hat,xref=install/distribs/rhel.adoc]
+.^|xref:install/distribs/rhel.adoc[Red Hat Entreprise Linux] (RHEL)
+
+|image:{distribsdir}/centos.png[CentOS,xref=install/distribs/centos.adoc]
+.^|xref:install/distribs/centos.adoc[CentOS]
+
+|image:{distribsdir}/alma.png[AlmaLinux,xref=install/distribs/alma.adoc]
+.^|xref:install/distribs/alma.adoc[AlmaLinux]
+
+|image:{distribsdir}/rocky.png[Rocky Linux,xref=install/distribs/rocky.adoc]
+.^|xref:install/distribs/rocky.adoc[Rocky Linux]
+
+|image:{distribsdir}/fedora.png[Fedora,xref=install/distribs/fedora.adoc]
+.^|xref:install/distribs/fedora.adoc[Fedora]
+
+|image:{distribsdir}/debian.png[Debian,xref=install/distribs/debian.adoc]
+.^|xref:install/distribs/debian.adoc[Debian]
+
+|image:{distribsdir}/ubuntu.png[Ubuntu,xref=install/distribs/ubuntu.adoc]
+.^|xref:install/distribs/ubuntu.adoc[Ubuntu]
+|===

@@ -1,0 +1,7 @@
+= Installation with Containers
+
+This section contains documentation to install Slurm-web with the following
+Linux containers technologies:
+
+* xref:install/containers/docker.adoc[Docker]
+* xref:install/containers/podman.adoc[Podman]

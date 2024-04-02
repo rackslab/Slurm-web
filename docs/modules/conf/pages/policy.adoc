@@ -1,0 +1,131 @@
+= Authorization Policy
+
+Slurm-web offers the possibility to manage permissions to access data with
+fine-grain role-based access control (RBAC) authorization policy. The
+authorization policy is enforced at _agent_ level. In
+xref:overview:architecture.adoc#multiclusters[multi-clusters mode], policies can
+be different on all clusters.
+
+Slurm-web permissions are independent of Slurm permissions (ex: privatedata,
+coordinators, operators, etc…). For example, users can have the permission to
+view reservations in Slurm-web but not in Slurm and vice-versa. Users can even
+have permissions in Slurm-web without any permission on Slurm cluster.
+
+Slurm-web _agent_ component is installed with a default vendor authorization
+policy defined in file [.path]#`/usr/share/slurm-web/conf/policy.ini`#. This
+default policy gives _anonymous_ users some permissions and authenticated users
+a bit more permissions.
+
+CAUTION: Do not edit this default vendor authorization policy, or your changes
+will be lost on next Slurm-web upgrades!
+
+A site specific policy can be defined in configuration file
+[.path]#`/etc/slurm-web/policy.ini`#. When this file is created, the default
+vendor policy is ignored.
+
+== File Format
+
+The authorization policy is an INI file with different sections described below.
+
+=== Roles Members
+
+The file must have one `[roles]` section to define roles and their memberships.
+In this section:
+
+* Keys are arbitrary *name of roles*,
+* Values are comma separated list of LDAP *users* and *groups* associated to
+  this role. The groups names must be prefixed by `@`. Special value `ALL` can
+  be used to designate all users authenticated on LDAP directory.
+
+A special role name is `anonymous`. When this role is defined, it is
+automatically assigned to all users when authentication is disabled on Slurm-web
+_gateway_. The key of this special role does not have to be associated to a
+value.
+
+Arbitrary number of roles can be defined.
+
+=== Roles Permissions
+
+Sections must be defined for every roles defined in `[roles]` section. All these
+sections must have an `actions` key. The value assigned to this key is the
+comma-separated <<#actions,list of actions>> granted to the role.
+
+=== Examples
+
+.Show simple example
+[%collapsible]
+====
+[source,ini]
+----
+[roles]
+# Members of scientists have the user role
+user=@rd,@it
+# Members of it group have the the admin role
+admin=@it
+
+[user]
+actions=view-stats,view-jobs,view-accounts
+
+[admin]
+actions=view-nodes,view-partitions,view-qos,view-reservations
+----
+
+Two roles are defined in this authorization policy:
+
+* *user* role is assigned to all members of _rd_ and _it_ LDAP groups. Users
+  with this role have permissions on `view-stats`, `view-jobs` and
+  `view-accounts` actions.
+* *admin* role is assigned to all members of _it_ LDAP group. Users with this
+  role haves permissions on `view-nodes`, `view-partitions`, `view-qos` and
+  `view-reservations` actions.
+
+Members of _it_ group inherit both *user* and *admin* roles with the union of
+all granted actions.
+====
+
+.Show full example
+[%collapsible]
+====
+[source,ini]
+----
+[roles]
+# Enable anonymous role with basic views
+anonymous
+# All authenticated users have the user role
+user=ALL
+# Admin role for it group members
+admin=@it,jdoe
+
+[anonymous]
+actions=view-stats
+
+[user]
+actions=view-stats,view-jobs,view-accounts
+
+[admin]
+actions=view-nodes,view-partitions,view-qos,view-reservations
+----
+
+Anonymous role is enabled in this authorization policy. It is assigned to all
+users when authentication is disabled in Slurm-web gateway. This role is only
+granted the `view-stats` action.
+
+Two other roles are defined in this authorization policy:
+
+* *user* role is assigned to all users authenticated on LDAP directory. This
+  role gives permissions on `view-stats`, `view-jobs` and `view-accounts`
+  actions.
+* *admin* role is assigned to all members of _it_ LDAP group and _jdoe_
+  individual user. Users with this role haves permissions on `view-nodes`,
+  `view-partitions`, `view-qos` and `view-reservations` actions.
+
+Members of _it_ group and _jdoe_ inherit both *user* and *admin* roles with the
+union of all granted actions.
+====
+
+[#actions]
+== Available Actions
+
+This table describes the list of actions that can be assigned to roles:
+
+include::partial$policy-actions.adoc[]

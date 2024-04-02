@@ -1,0 +1,11 @@
+= Rocky Linux
+
+image:https://rackslab.io/images/distribs/rocky.png[Rocky Linux,float=right]
+
+This installation procedure works on Rocky Linux version 8 and 9.
+
+:tab: Rocky Linux
+
+include::partial$install/rpm.adoc[]
+
+:!tab:

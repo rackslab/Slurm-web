@@ -1,0 +1,15 @@
+Update packages repositories metadata:
+
+[source,console]
+----
+# apt update
+----
+
+Install Slurm-web _agent_ and _gateway_ packages:
+
+[source,console]
+----
+# apt install slurm-web-agent slurm-web-gateway
+----
+
+All dependencies are automatically installed.

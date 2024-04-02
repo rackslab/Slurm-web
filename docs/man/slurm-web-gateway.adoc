@@ -1,0 +1,22 @@
+= slurm-web-gateway(1)
+Rackslab: https://rackslab.io
+:doctype: manpage
+:manmanual: slurm-web-gateway
+:man-linkstyle: pass:[blue R < >]
+
+== Name
+
+slurm-web-gateway - Gateway component of Slurm-web HPC dashboard
+
+include::../modules/usage/partials/man-gateway.adoc[]
+
+== Resources
+
+Slurm-web web site: https://github.com/rackslab/slurm-web
+
+== Copying
+
+Copyright (C) 2023-2024 {author}. +
+
+Slurm-web is distributed under the terms of the GNU General Public License v3.0
+or later (GPLv3+).

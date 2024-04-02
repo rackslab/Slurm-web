@@ -1,0 +1,7 @@
+= Configuration Settings
+
+This section contains Slurm-web components configuration settings reference
+documentation:
+
+* xref:conf/gateway.adoc[Gateway configuration settings]
+* xref:conf/agent.adoc[Agent configuration settings]

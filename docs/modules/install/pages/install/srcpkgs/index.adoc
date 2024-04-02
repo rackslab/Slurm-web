@@ -1,0 +1,8 @@
+= Distributions Source Packages
+
+This section contains documentation to download and rebuild Slurm-web
+distributions source packages on your own infrastructure. The following package
+formats are supported:
+
+* xref:install/srcpkgs/rpm.adoc[RPM]
+* xref:install/srcpkgs/deb.adoc[Deb]

@@ -1,0 +1,8 @@
+= Installation Guide
+
+This guide explains how to install Slurm-web with different methods:
+
+* xref:install/distribs/index.adoc[Distributions system packages] _(recommended)_
+* xref:install/containers/index.adoc[Containers]
+* xref:install/srcpkgs/index.adoc[Distributions source packages]
+* xref:install/sources.adoc[From sources] _(for developers)_

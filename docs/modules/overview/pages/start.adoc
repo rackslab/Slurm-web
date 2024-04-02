@@ -1,0 +1,25 @@
+= Getting Started
+
+image::overview:slurm-web_logo.png[Slurm-web Overview,float=right]
+
+*Slurm-web* is an _open source_ web dashboard for Slurm based HPC clusters.
+
+https://slurm.schedmd.com/overview.html[*Slurm*] is the world leading workload
+manager for HPC clusters with all most advanced features to manage jobs and
+resources efficiently with a powerful command-line interface (CLI).
+
+*Slurm-web* provides a clear graphical user interface with views to track your
+jobs, intuitive insights and advanced visualizations on top of Slurm to monitor
+status of HPC supercomputers in your organization, in a web browser on all your
+devices.
+
+icon:glasses[] Get a xref:overview.adoc[complete overview] of Slurm-web
+to discover its most advanced features.
+
+icon:download[] For installation procedure, checkout the
+xref:install:quickstart.adoc[quickstart guide].
+
+{empty} +
+{empty} +
+
+image:slurm-web_devices.png[]

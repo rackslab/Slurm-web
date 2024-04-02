@@ -1,0 +1,8 @@
+Install Slurm-web _agent_ and _gateway_ packages:
+
+[source,console]
+----
+# dnf install slurm-web-agent slurm-web-gateway
+----
+
+All dependencies are automatically installed.

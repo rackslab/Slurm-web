@@ -1,0 +1,24 @@
+= Support
+
+Need help to deploy or setup Slurm-web? Get technical support.
+
+== Community Support
+
+Multiple community channels are available to ask questions:
+
+* https://github.com/rackslab/slurm-web/discussions/categories/q-a[*GitHub discussions Q&A category*]
+* https://matrix.to/#/#slurm-web:talk.rackslab.io[*Matrix Slurm-web community room*]
+
+This support is provided by the community with best-effort participation of
+Rackslab team. Please mind that people might not be available to answer your
+questions.
+
+== Commercial Support
+
+*Rackslab* offers commercial support to help organizations securing their
+deployment of Slurm-web with service level agreement (SLA) and minimal response
+time.
+
+Our professional team has a unique expertise to offer a wide range of services
+from assistance to setup the installation to the most advanced bug resolution.
+https://rackslab.io/en/contant/[Contact us] for more information.

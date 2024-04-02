@@ -1,0 +1,9 @@
+---
+# Define DPI/sizes for which PNG bitmaps versions of SVG diagrams must be
+# generated.
+diagrams:
+  modules/overview/images/slurm-web_transparent_cache.svg: medium
+  modules/overview/images/arch/slurm-web_architecture.svg: medium
+  modules/overview/images/arch/slurm-web_distribution.svg: medium
+  modules/overview/images/arch/slurm-web_integration.svg: medium
+  modules/overview/images/arch/slurm-web_protocols.svg: medium

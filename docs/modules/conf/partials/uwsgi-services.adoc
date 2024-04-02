@@ -1,0 +1,15 @@
+Copy examples of uWSGI services provided in Slurm-web packages and reload units:
+
+[source,console]
+----
+# cp -v /usr/share/slurm-web/wsgi/agent/slurm-web-{gateway,agent}-uwsgi.service \
+  /etc/systemd/system/
+# systemctl daemon-reload
+----
+
+Start and enable these services:
+
+[source,console]
+----
+# systemctl enable --now slurm-web-agent-uwsgi.service slurm-web-gateway-uwsgi.service
+----

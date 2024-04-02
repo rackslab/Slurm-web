@@ -1,0 +1,105 @@
+= Setup Nginx
+
+== RHEL
+
+NOTE: This procedure works on RHEL, CentOS, AlmaLinux, Rocky Linux and Fedora.
+
+Install Nginx HTTP server and uWSGI:
+
+[source,console]
+----
+# dnf install nginx uwsgi uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Create file [.path]#`/etc/nginx/conf.d/slurm-web.conf`#:
+
+[source]
+----
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $HOST;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/run/slurm-web-gateway/uwsgi.sock;
+    }
+
+    location /agent/ {
+        include uwsgi_params;
+        rewrite ^/agent/(.*)$ /$1 break;
+        uwsgi_pass unix:/run/slurm-web-agent/uwsgi.sock;
+    }
+}
+----
+
+Where [.cli-optval]#$HOST#  is the public hostname of your server.
+
+[source,console]
+----
+# systemctl reload nginx.service
+----
+
+include::partial$http-available.adoc[]
+
+== Debian
+
+NOTE: This procedure works on Debian and Ubuntu.
+
+Install Nginx HTTP server and uWSGI:
+
+[source,console]
+----
+# apt install nginx uwsgi-core uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Create file [.path]#`/etc/nginx/sites-available/slurm-web.conf`#:
+
+[source]
+----
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $HOST;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/run/slurm-web-gateway/uwsgi.sock;
+    }
+
+    location /agent/ {
+        include uwsgi_params;
+        rewrite ^/agent/(.*)$ /$1 break;
+        uwsgi_pass unix:/run/slurm-web-agent/uwsgi.sock;
+    }
+}
+----
+
+Where [.cli-optval]#$HOST#  is the public hostname of your server.
+
+Enable Slurm-web site:
+
+[source,console]
+----
+# ln -s /etc/nginx/sites-available/slurm-web.conf /etc/nginx/sites-enabled/slurm-web.conf
+----
+
+Remove default site:
+
+[source,console]
+----
+# rm /etc/nginx/sites-enabled/default
+----
+
+Reload Nginx service to apply new configuration:
+
+[source,console]
+----
+# systemctl reload nginx.service
+----
+
+include::partial$http-available.adoc[]

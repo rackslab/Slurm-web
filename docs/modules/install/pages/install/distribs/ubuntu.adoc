@@ -1,0 +1,16 @@
+= Ubuntu
+
+image:https://rackslab.io/images/distribs/ubuntu.png[Ubuntu,float=right]
+
+This installation procedure works on Ubuntu 24.04 LTS _« Noble Numbat »_.
+
+include::partial$install/signing-apt.adoc[]
+
+include::partial$install/repo-apt.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-ubuntu.adoc[]
+======
+
+include::partial$install/install-apt.adoc[]

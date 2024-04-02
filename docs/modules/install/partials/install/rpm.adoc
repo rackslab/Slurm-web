@@ -1,0 +1,18 @@
+Enable https://docs.fedoraproject.org/en-US/epel/[EPEL] repositories to get all
+Slurm-web dependencies:
+
+[source,console]
+----
+# dnf install -y epel-release
+----
+
+include::partial$install/signing-dnf.adoc[]
+
+include::partial$install/repo-dnf.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-el.adoc[]
+======
+
+include::partial$install/install-dnf.adoc[]

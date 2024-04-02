@@ -1,0 +1,57 @@
+= Installation from Sources
+
+CAUTION: Installation of Slurm-web from sources is not recommanded for most
+users, please prefer xref:install/distribs/index.adoc[supported distribution packages].
+This procedure is intended to developers who want to contribute to Slurm-web.
+
+Download Slurm-web source code:
+
+* From Git repository:
++
+[source,console]
+----
+$ git clone https://github.com/rackslab/slurm-web.git
+----
+
+* From release source archive, for example `v3.0.0`:
++
+[source,console]
+----
+$ curl -L https://github.com/rackslab/slurm-web/archive/refs/tags/v3.0.0.tar.gz | tar -xzf-
+----
+
+Move into the source tree and install Slurm-web and Python packages dependencies
+from PyPI:
+
+[source,console]
+----
+$ pip install -e .
+----
+
+Install Slurm-web frontend application dependencies from npm repositories:
+
+[source,console]
+----
+$ cd frontend && npm ci
+----
+
+Launch Slurm-web agent:
+
+[source,console]
+----
+$ slurm-web-agent
+----
+
+Launch Slurm-web gateway:
+
+[source,console]
+----
+$ slurm-web-gateway
+----
+
+Launch Slurm-web frontend:
+
+[source,console]
+----
+$ cd frontend && npm run dev
+----

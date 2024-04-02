@@ -1,0 +1,6 @@
+Download and install packages repository signing key:
+
+[source,console]
+----
+# curl -sS https://pkgs.rackslab.io/keyring.asc | gpg --dearmor | tee /usr/share/keyrings/rackslab.gpg > /dev/null
+----

@@ -3,6 +3,7 @@ __pycache__/
 .ninja_log
 build/
 dist/
-
+generated-doc
 node_modules
 /frontend/dist
+/docs/man/*.1

@@ -1,0 +1,20 @@
+== Synopsis
+
+[.cli-opt]#*slurm-web-gateway*# `[_GENERAL OPTIONS_]`
+
+== Description
+
+Slurm-web is a web dashboard for Slurm HPC cluster. Its architecture is based on
+two components: the gateway and agents. This command launches the agent in
+charge of authentication, forwarding requests to the agents and serving UI
+frontend.
+
+include::gateway-opts.adoc[]
+
+== Exit status
+
+*0*::
+  `slurm-web-gateway` has processed command with success.
+
+*1*::
+  `slurm-web-gateway` encountered an error.

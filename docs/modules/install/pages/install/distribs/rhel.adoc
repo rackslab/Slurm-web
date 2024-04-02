@@ -1,0 +1,11 @@
+= Red Hat Entreprise Linux (RHEL)
+
+image:https://rackslab.io/images/distribs/redhat.png[Red Hat,float=right]
+
+This installation procedure works on RHEL version 8 and 9.
+
+:tab: RHEL
+
+include::partial$install/rpm.adoc[]
+
+:!tab:

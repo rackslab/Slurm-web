@@ -1,0 +1,41 @@
+Debian 12 _« bookworm »_::
++
+====
+[source]
+----
+Types: deb
+URIs: https://pkgs.rackslab.io/deb
+Suites: bookworm
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====
+
+Debian 13 _« trixie »_::
++
+====
+[source]
+----
+Types: deb
+URIs: https://pkgs.rackslab.io/deb
+Suites: trixie
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====
+
+Debian unstable _« sid »_::
++
+====
+[source]
+----
+Types: deb
+URIs: https://pkgs.rackslab.io/deb
+Suites: sid
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====

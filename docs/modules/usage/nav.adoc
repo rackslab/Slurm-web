@@ -1,0 +1,6 @@
+.Manpages
+* xref:manpages/slurm-web-gateway.adoc[`slurm-web-gateway`]
+* xref:manpages/slurm-web-agent.adoc[`slurm-web-agent`]
+* xref:manpages/slurm-web-ldap-check.adoc[`slurm-web-ldap-check`]
+* xref:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key`]
+

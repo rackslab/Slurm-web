@@ -1,0 +1,6 @@
+Download and save RPM repository kerying:
+
+[source,console]
+----
+# curl https://pkgs.rackslab.io/keyring.asc --output /etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----

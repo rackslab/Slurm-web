@@ -1,0 +1,28 @@
+= RPM Source Packages
+
+Slurm-web RPM source packages are available at these URL:
+
+* el8 : https://pkgs.rackslab.io/rpm/el8/main/source/Packages
+* el9 : https://pkgs.rackslab.io/rpm/el9/main/source/Packages
+* Fedora 38 : https://pkgs.rackslab.io/rpm/fc39/main/source/Packages
+* Fedora 39 : https://pkgs.rackslab.io/rpm/fc39/main/source/Packages
+
+Select version at your convenience and download the `*.src.rpm` file, for
+example `slurm-web-3.0.0-1.el8.src.rpm`.
+
+Install build requirements:
+
+[source,console]
+----
+$ sudo dnf builddep slurm-web-3.0.0-1.el8.src.rpm
+----
+
+Build binary RPM packages:
+
+[source,console]
+----
+$ rpmbuild --rebuild slurm-web-3.0.0-1.el8.src.rpm
+----
+
+After successful completion of this command, Slurm-web `*.rpm` packages can be
+found in [.path]#`~/rpmbuild/RPMS`# folder.

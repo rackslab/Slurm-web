@@ -1,0 +1,43 @@
+{tab} 8::
++
+====
+
+ifdef::tab-el-note[]
+NOTE: These packages are also compatible with https://www.centos.org/[CentOS 8],
+https://rockylinux.org/[Rocky Linux 8] and
+https://almalinux.org/[AlmaLinux OS 8].
+endif::[]
+
+[source]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/el8/main/$basearch/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====
+
+{tab} 9::
++
+====
+
+ifdef::tab-el-note[]
+NOTE: These packages are also compatible with https://www.centos.org/[CentOS 9],
+https://rockylinux.org/[Rocky Linux 9] and
+https://almalinux.org/[AlmaLinux OS 9].
+endif::[]
+
+[source]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/el9/main/$basearch/
+gpgcheck=1
+enabled=1
+countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====

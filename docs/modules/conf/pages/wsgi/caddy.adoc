@@ -1,0 +1,83 @@
+= Setup Caddy
+
+== RHEL
+
+NOTE: This procedure works on RHEL, CentOS, AlmaLinux, Rocky Linux and Fedora.
+
+On RHEL, CentOS, AlmaLinux and Rocky Linux, enable
+https://docs.fedoraproject.org/en-US/epel/[EPEL] repositories to get access to
+Caddy packages:
+
+[source,console]
+----
+# dnf install -y epel-release
+----
+
+NOTE: It is not required on Fedora on which Caddy is available in default
+distribution repositories.
+
+Install Caddy HTTP server and uWSGI:
+
+[source,console]
+----
+# dnf install caddy uwsgi uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services-http.adoc[]
+
+Create fome [.path]#`/etc/caddy/Caddyfile.d/slurm-web.caddyfile`# with this
+content:
+
+[source]
+----
+$HOST {
+    reverse_proxy unix//run/slurm-web-gateway/uwsgi.sock
+    handle_path /agent/* {
+        reverse_proxy unix//run/slurm-web-agent/uwsgi.sock
+    }
+}
+----
+
+Where [.cli-optval]#$HOST# is the public hostname of your server.
+
+Enable and start _caddy_ service:
+
+[source,console]
+----
+# systemctl enable --now caddy.service
+----
+
+include::partial$http-available.adoc[]
+
+== Debian
+
+NOTE: This procedure works on Debian and Ubuntu.
+
+Install Caddy HTTP server and uWSGI:
+
+[source,console]
+----
+# apt install caddy uwsgi-core uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services-http.adoc[]
+
+Edit [.path]#`/etc/caddy/Caddyfile`# to add the following directives in default
+site block:
+
+[source]
+----
+    reverse_proxy unix//run/slurm-web-gateway/uwsgi.sock
+    handle_path /agent/* {
+        reverse_proxy unix//run/slurm-web-agent/uwsgi.sock
+    }
+----
+
+Reload _caddy_ configuration to apply configuration changes:
+
+[source,console]
+----
+# systemctl reload caddy.service
+----
+
+include::partial$http-available.adoc[]

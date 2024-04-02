@@ -1,0 +1,9 @@
+= `slurm-web-agent` command
+
+This page describes all `slurm-web-agent` command options available, with
+many examples and descriptions of its behaviours. The content of the page this
+also available in `slurm-web-agent(1)` manpage after installation.
+
+:!example-caption:
+
+include::partial$man-agent.adoc[]

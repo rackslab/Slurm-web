@@ -1,0 +1,651 @@
+= Quickstart
+
+== Requirements
+
+:fn-slurm-version: footnote:slurm-version[Slurm-web {version} actually requires Slurm REST API v0.0.39 available in Slurm 23.02 and above. Please refer to xref:overview:architecture.adoc#slurm-versions[Slurm REST API versions section] for more details.]
+
+* Cluster with Slurm >= 23.02 {fn-slurm-version}
+* Host installed with a supported GNU/Linux distributions among:
+** CentOS
+** Almalinux
+** RockyLinux
+** Fedora
+** RHEL
+** Debian
+** Ubuntu
+* LDAP directory (for authentication)
+
+[#slurmrestd]
+== Install `slurmrestd`
+
+:slurm-install-guide: https://slurm.schedmd.com/quickstart_admin.html
+:slurm-rest-quickstart: https://slurm.schedmd.com/rest_quickstart.html
+
+:epel: https://docs.fedoraproject.org/en-US/epel/
+:debian: https://www.debian.org/
+
+Slurm-web extracts Slurm information from the REST API provided its `slurmrestd`
+daemon. This daemon must be installed on the host. The installation method
+depends on the origin of Slurm packages deployed on the cluster:
+
+[tabs]
+======
+SchedMD RPM packages::
++
+====
+On clusters deployed with SchedMD official RPM packages, install `slurmrestd`
+daemon with this command:
+
+[source,console]
+----
+# dnf install slurm-slurmrestd
+----
+
+TIP: Please refer to {slurm-install-guide}[SchedMD official Slurm installation
+guide] for more help.
+====
+
+EPEL::
++
+====
+On clusters deployed with RPM packages from {epel}[EPEL community],
+install `slurmrestd` daemon with this command:
+
+[source,console]
+----
+# dnf install slurm-slurmrestd
+----
+====
+
+SchedMD Deb packages::
++
+====
+On clusters deployed with SchedMD official Deb packages, install `slurmrestd`
+daemon with this command:
+
+[source,console]
+----
+# apt install slurm-smd-slurmrestd
+----
+
+TIP: Please refer to {slurm-install-guide}[SchedMD official Slurm installation
+guide] for more help.
+====
+
+Debian::
++
+====
+On clusters deployed with RPM packages from {debian}[Debian community], install
+`slurmrestd` with this command:
+
+[source,console]
+----
+# apt install slurmrestd
+----
+====
+======
+
+== Setup `slurmrestd`
+
+Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
+drop-in configuration override for `slurmrestd` daemon:
+
+[source,ini]
+----
+[Service]
+# Unset vendor unit ExecStart to avoid cumulative definition
+ExecStart=
+Environment=
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS unix:/run/slurmrestd/slurmrestd.socket
+RuntimeDirectory=slurmrestd
+RuntimeDirectoryMode=0755
+User=slurm
+Group=slurm
+----
+
+NOTE: This configuration file makes `slurmrestd` listen for incoming connections
+on Unix socket accessible by Slurm-web.
+
+Make `systemd` reload units changes on disk:
+
+[source,console]
+----
+# systemctl daemon-reload
+----
+
+Enable and start `slurmrestd` service:
+
+[source,console]
+----
+# systemctl enable --now slurmrest.service
+----
+
+To check `slurmrestd` daemon is properly running, run this command:
+
+[source,console]
+----
+# curl --unix-socket /run/slurmrestd/slurmrestd.socket http:/slurm/slurm/v0.0.39/diag
+{
+   "meta": {
+     "plugin": {
+       "type": "openapi\/v0.0.39",
+       "name": "Slurm OpenAPI v0.0.39",
+       "data_parser": "v0.0.39"
+     },
+  …
+}
+----
+
+In case of failure, please refer to
+xref:misc:troubleshooting.adoc#slurmrestd[troubleshooting guide] for help.
+
+[sidebar]
+--
+.More links
+* {slurm-rest-quickstart}[Official Slurm REST quickstart guide] with more
+  details about `slurmrestd` service configuration.
+--
+
+== Install Slurm-web
+
+NOTE: For simplicity reason, this quickstart guide provides a simple
+installation method with distribution system packages compatible with most
+environments. Please refer the complete
+xref:install/index.adoc[Installation Guide] for more detailed installation
+methods.
+
+[#dnf]
+=== DNF
+
+This procedure works on
+https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
+https://www.centos.org/[CentOS],
+https://rockylinux.org/[Rocky Linux] and
+https://almalinux.org/[AlmaLinux OS],
+
+[NOTE]
+====
+On RHEL, CentOS and Rocky Linux some dependencies are missing in standard
+distribution repositories. You must enable
+https://docs.fedoraproject.org/en-US/epel/[EPEL] repositories to get all
+requirements on these distributions:
+
+[source,shell]
+----
+# dnf install -y epel-release
+----
+====
+
+include::partial$install/signing-dnf.adoc[]
+
+include::partial$install/repo-dnf.adoc[]
+
+:tab: RHEL
+:tab-el-note:
+
+[tabs]
+======
+include::partial$install/tabs-el.adoc[]
+
+include::partial$install/tabs-fedora.adoc[]
+======
+
+:!tab-el-note:
+:!tab:
+
+include::partial$install/install-dnf.adoc[]
+
+[#apt]
+=== APT
+
+This procedure works https://debian.org/[Debian] and
+https://ubuntu.com/[Ubuntu].
+
+include::partial$install/signing-apt.adoc[]
+
+include::partial$install/repo-apt.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-deb.adoc[]
+
+include::partial$install/tabs-ubuntu.adoc[]
+======
+
+include::partial$install/install-apt.adoc[]
+
+
+[sidebar]
+--
+.More links
+* xref:install/index.adoc[Installation Guide] with all supported installation
+  methods.
+--
+
+== JWT signing key
+
+Slurm-web authenticates users with https://jwt.io/[JSON Web Token] (JWT) for
+communications between its components. A secret key is required to
+cryptographically sign generated tokens. Run this command to generate this key:
+
+[source,console]
+----
+# /usr/libexec/slurm-web/slurm-web-gen-jwt-key
+INFO ⸬ Running slurm-web-gen-jwt-key
+INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
+INFO ⸬ Setting read permission on key for slurm-web user
+INFO ⸬ Setting read permission on key for slurm user
+----
+
+[sidebar]
+--
+.More links
+* xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
+* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
+--
+
+== Initial setup
+
+Create _agent_ configuration file [.path]#`/etc/slurm-web/agent.ini`# to set the
+cluster name, for example:
+
+[source,ini]
+----
+[service]
+cluster=atlas
+----
+
+Create _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`# with
+URL to the _agent_:
+
+[source,ini]
+----
+[agents]
+url=http://localhost:5012
+----
+
+NOTE: By default, Slurm-web agent listens on port TCP/5012 of loopback network
+interface. This can be changed with `port` parameter in
+xref:conf:conf/agent.adoc#_service[`service` section of agent configuration].
+
+[sidebar]
+--
+.More links
+* xref:conf:conf/agent.adoc[]
+* xref:conf:conf/gateway.adoc[]
+--
+
+[#racksdb]
+== RacksDB database
+
+Slurm-web uses xref:racksdb:overview:start.adoc[RacksDB] to generate graphical
+representation of datacenters racks with the compute nodes. RacksDB database
+must be defined with your HPC cluster infrastructure. This is actually quick and
+easy easy based on
+xref:racksdb:install:quickstart.adoc#examples[the examples provided].
+
+Some requirements must be fulfilled in this database:
+
+* The infrastructure must have the same name as the cluster
+  <<_initial_setup,previously declared>> in _agent_ configuration file.
+* The _compute_ tag must be assigned to all compute nodes declared in Slurm
+  configuration.
+
+[NOTE]
+====
+You can choose other tag name but you will have to declare this tag in
+xref:conf:conf/agent.adoc#_racksdb[`racksdb` section of agent configuration],
+for example:
+
+[source,ini]
+----
+[racksdb]
+tags=blade
+----
+====
+
+[sidebar]
+--
+.More links
+* xref:racksdb:overview:start.adoc[RacksDB reference documentation]
+* xref:racksdb:install:quickstart.adoc[RacksDB quickstart guide]
+* xref:racksdb:db:structure.adoc[RacksDB database structure reference]
+--
+
+== First Access
+
+Slurm-web is now ready to start! Enable and start the _agent_ and _gateway_
+native services:
+
+[source,console]
+----
+# systemctl enable --now slurm-web-agent.service
+# systemctl enable --now slurm-web-gateway.service
+----
+
+Connect your browser to the _gateway_ on http://localhost:5011. You should see
+the configured cluster:
+
+image:slurm-web_clusters.png[]
+
+[NOTE]
+====
+By default, Slurm-web gateway native service listens for incoming network
+connections on port TCP/5011. This can be changed with `port` parameter in
+xref:conf:conf/gateway.adoc#_service[`service` section of gateway configuration].
+
+Also, the gateway native service is binded to loopback network interface by
+default. It restricts access to localhost for security reason. It is recommended
+to setup <<#production,production HTTP server>> for external access to
+Slurm-web. However, this can be changed anyway with the following lines in
+_gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`#:
+
+[source,ini]
+----
+[service]
+interface=HOSTNAME_OR_IP
+
+[ui]
+host=http://HOSTNAME_OR_IP:5011
+----
+
+Real values depend on the DNS hostname or the public IP address of the host.
+
+Slurm-web is now be available on: http://HOSTNAME_OR_IP:5011
+
+Please refer to
+xref:conf:conf/gateway.adoc[gateway configuration reference documentation] for
+more details.
+====
+
+TIP: In case of failure, please refer to
+xref:misc:troubleshooting.adoc#native[troubleshooting guide] for help.
+
+.More details
+****
+* xref:conf:conf/gateway.adoc[Gateway configuration reference documentation]
+****
+
+== Setup authentication
+
+To restrict access to the dashboard, you must enable authentication. Slurm-web
+supports LDAP authentication.
+
+Add the following settings in the _gateway_ configuration file
+[.path]#`/etc/slurm-web/gateway.conf`#:
+
+[source,ini]
+----
+[authentication]
+enabled=yes
+
+[ldap]
+uri=ldap://SERVER
+user_base=ou=PEOPLE,dc=EXAMPLE,dc=TLD
+group_base=ou=GROUPS,dc=EXAMPLE,dc=TLD
+----
+
+`SERVER`, user and groups search bases must be adapted to match your LDAP server
+and directory tree.
+
+[NOTE]
+====
+Slurm-web also supports LDAPS (SSL/TLS) and STARTTLS secured protocols with LDAP
+servers.
+
+The groups of users permitted to authenticate on Slurm-web can also be
+restricted with `restricted_groups` parameter.
+
+Please refer to reference documentation of
+xref:conf:conf/gateway.adoc#_ldap[`ldap` section in gateway configuration] for
+more details.
+====
+
+Restart _gateway_ service to apply the new configuration:
+
+[source,console]
+----
+# systemctl restart slurm-web-gateway.service
+----
+
+The authentication form is now presented on Slurm-web access:
+
+image:slurm-web_login.png[]
+
+Upon successfull LDAP authentication, users have access to the clusters.
+
+TIP: Any problem to setup LDAP authentication?
+xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web-ldap-check`] utility
+might help. More details in xref:misc:troubleshooting.adoc#ldap[Troubleshooting
+page].
+
+.More details
+****
+* xref:conf:conf/gateway.adoc[Gateway configuration reference documentation]
+****
+
+[#policy]
+== Setup policy
+
+At this stage, the _agent_ is running with default authorization policy. You can
+create a file [.path]#`/etc/slurm-web/policy.ini`# to define your custom RBAC
+fine-grain policy with specific roles.
+
+Consider this example:
+
+[source,ini]
+----
+[roles]
+user=@biology
+admin=jwalls
+
+[user]
+actions=view-stats,view-jobs,view-nodes
+
+[admin]
+actions=view-partitions,view-qos,view-accounts,view-reservations
+----
+
+This policy defines *two roles*:
+
+* *user* for members of _biology_ group. This role has permission on
+  `view-stats`, `view-jobs` and `view-nodes` actions.
+* *admin* for _jwalls_ user. This role has permission on `view-partitions`,
+  `view-qos`,`view-accounts` and `view-reservations` actions.
+
+NOTE: Please refer to
+xref:conf:policy.adoc#actions[Authorization policy reference documentation] for
+description of all available actions and the corresponding permissions granted
+in user interface.
+
+Restart the _agent_ component to apply the new configuration:
+
+[source,console]
+----
+# systemctl restart slurm-web-agent.service
+----
+
+User _jwalls_ who is also member of _biology_ group is granted both _user_ and
+_admin_ roles, she has access to everything:
+
+image:slurm-web_policy_admin.png[]
+
+Another user in _biology_ group can only view jobs and resources:
+
+image:slurm-web_policy_user.png[]
+
+Access to the cluster is denied to all other users:
+
+image:slurm-web_policy_others.png[]
+
+.More details
+****
+* xref:conf:policy.adoc[Authorization policy reference documentation]
+****
+
+[#cache]
+== Setup cache
+
+Slurm-web has a xref:overview:overview.adoc#cache[transparent caching feature]
+which can use https://redis.io/[Redis] (or any compatible alternative) in-memory
+database to cache Slurm responses.
+
+IMPORTANT: It is highly recommended to setup cache on Slurm-web agent to
+significantly reduce the amount of repetitive requests sent to Slurm and reduce
+its load.
+
+Install Redis:
+
+[tabs]
+======
+APT::
++
+====
+For https://debian.org/[Debian] and https://ubuntu.com/[Ubuntu], run this
+command:
+
+[source,console]
+----
+# apt install redis-server
+----
+====
+
+DNF::
++
+====
+For
+https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
+https://www.centos.org/[CentOS],
+https://rockylinux.org/[Rocky Linux] and
+https://almalinux.org/[AlmaLinux OS], run this command:
+
+[source,console]
+----
+# dnf install redis
+----
+
+Start and enable the service:
+
+[source,console]
+----
+# systemctl enable --now redis.service
+----
+====
+======
+
+Edit _agent_ configuration file [.path]#`/etc/slurm-web/agent.ini`# to enable
+cache:
+
+[source,ini]
+----
+[cache]
+enabled=yes
+----
+
+NOTE: It is also possible to setup a remote Redis server, configure a password
+to access a server secured in protected mode or adjust cache timeouts. More
+details in
+xref:conf:conf/agent.adoc#_cache[`cache` section of agent configuration file].
+
+.More details
+****
+* xref:conf:conf/agent.adoc[Agent configuration reference documentation]
+****
+
+[#production]
+== Production HTTP server
+
+At this stage, Slurm-web is served by a Python HTTP server which is not designed
+for production requirements. The performances are not optimal and network
+communications are not secured with SSL/TLS certificate. This setup is not
+recommended for production. It is recommended to setup a production HTTP server
+such as Nginx, Apache or Caddy to launch Slurm-web as a WSGI application.
+
+NOTE: For simplicity reason, this quickstart guide gives only the procedure to
+setup Nginx but documentation is available for
+xref:conf:wsgi/index.adoc[other supported HTTP servers].
+
+Stop and disable Slurm-web native services:
+
+[source,console]
+----
+# systemctl disable --now slurm-web-agent.service slurm-web-gateway.service
+----
+
+Edit _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.conf`#:
+
+[source,ini]
+----
+[ui]
+host=http://DNS_HOSTNAME
+
+[agents]
+url=http://localhost/agent
+----
+
+Real values depend on the DNS hostname of the host.
+
+TIP: The `[service]` section can be safely removed now as it is ignored when
+Slurm-web is launched as WSGI applications.
+
+include::conf:partial$uwsgi-services.adoc[]
+
+Edit Nginx site configuration to add these locations:
+
+[source]
+----
+server {
+  …
+
+  location / {
+    include uwsgi_params;
+    uwsgi_pass unix:/run/slurm-web-gateway/uwsgi.sock;
+  }
+
+  location /agent/ {
+    include uwsgi_params;
+    rewrite ^/agent/(.*)$ /$1 break;
+    uwsgi_pass unix:/run/slurm-web-agent/uwsgi.sock;
+  }
+}
+----
+
+Reload Nginx to apply new configuration:
+
+[source,console]
+----
+# systemctl reload nginx.service
+----
+
+Slurm-web is now available at: http://DNS_HOSTNAME/
+
+In case of failure, please refer to
+xref:misc:troubleshooting.adoc#wsgi[troubleshooting guide] for help.
+
+.More details
+****
+* xref:conf:wsgi/index.adoc[Production HTTP server setup guide].
+****
+
+== Multi-clusters
+
+Slurm-web is designed to support
+xref:overview:architecture.adoc#multiclusters[distributed setup] with a central
+server and multiple clusters. Compared to the steps above, the following changes
+must be considered:
+
+. <<#slurmrestd,Install and setup `slurmrestd`>> on all clusters.
+. Install `Slurm-web` agent on all clusters, colocated on the same hosts as
+  `slurmrestd`.
+. Install `Slurm-web` gateway on the central server.
+. Setup xref:conf:wsgi/index.adoc[production HTTP servers] with HTTPS (SSL/TLS)
+  for all agents and the gateway.
+. Set URL of all agents in
+  xref:conf:conf/gateway.adoc#_agents[`agents` section of gateway configuration].
+. Generate JWT signing key on central server and deploy this key on all agents
+  servers (same key must be shared by all agents and the gateway).
+. Deploy <<#racksdb,RacksDB database>> on all agents servers.
+. Deploy <<#policy,custom policy>> on all agents servers.
+. <<#cache,Install Redis>> on all agents servers.
+
+Et voilà!

@@ -1,0 +1,17 @@
+= Debian
+
+image:https://rackslab.io/images/distribs/debian.png[Debian,float=right]
+
+This installation procedure works on Debian version 12 _« bookworm »_, 13
+_« trixie »_ and unstable _« sid »_.
+
+include::partial$install/signing-apt.adoc[]
+
+include::partial$install/repo-apt.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-deb.adoc[]
+======
+
+include::partial$install/install-apt.adoc[]

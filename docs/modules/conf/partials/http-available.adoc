@@ -1,0 +1,5 @@
+Slurm-web is now available at http://[.cli-optval]#$HOST#/ where
+[.cli-optval]#$HOST# is the public hostname of your server.
+
+TIP: In case of failure, please refer to
+xref:misc:troubleshooting.adoc#wsgi[troubleshooting guide] for help.

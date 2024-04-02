@@ -1,0 +1,20 @@
+== Synopsis
+
+[.cli-opt]#*slurm-web-gen-jwt-key*# `[_GENERAL OPTIONS_]`
+
+== Description
+
+Slurm-web is a web dashboard for Slurm HPC cluster. Its architecture is based on
+two components: the gateway and agents. Both of these components authentication
+user requests with JWT and signing key. This command generates the JWT signing
+key file and protect it with restrictive permissions.
+
+include::gateway-opts.adoc[]
+
+== Exit status
+
+*0*::
+  `slurm-web-gen-jwt-key` has processed command with success.
+
+*1*::
+  `slurm-web-gen-jwt-key` encountered an error.

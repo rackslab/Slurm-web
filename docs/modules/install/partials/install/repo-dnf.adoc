@@ -1,0 +1,2 @@
+Create DNF repository file [.path]#`/etc/yum.repos.d/rackslab.repo`# with this
+content:

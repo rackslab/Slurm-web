@@ -1,0 +1,9 @@
+= `slurm-web-gen-jwt-key` command
+
+This page describes all `slurm-web-gen-jwt-key` command options available, with
+many examples and descriptions of its behaviours. The content of the page this
+also available in `slurm-web-gen-jwt-key(1)` manpage after installation.
+
+:!example-caption:
+
+include::partial$man-gen-jwt-key.adoc[]
