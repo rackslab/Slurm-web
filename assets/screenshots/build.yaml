@@ -1,0 +1,27 @@
+---
+# Define DPI/sizes for which PNG bitmaps version of assemblies must be
+# generated.
+assemblies:
+  slurm-web_devices.svg:
+  - medium
+  slurm-web_multi-clusters.svg:
+  - large
+  slurm-web_nodes_fullscreen.svg:
+  - small
+  slurm-web_integrated_help.svg:
+  - large
+  slurm-web_responsive.svg:
+  - large
+# List raw screenshots for which versions with dropped shadow must be generated.
+shadowed:
+- screenshot_auth.png
+- screenshot_rbac.png
+- screenshot_cluster_change.png
+- screenshot_clusters.png
+- screenshot_dashboard_tablet.png
+- screenshot_jobs_filters.png
+- screenshot_job_status.png
+- screenshot_nodes_hovering.png
+- screenshot_nodes_issues.png
+- screenshot_qos.png
+- screenshot_reservations.png

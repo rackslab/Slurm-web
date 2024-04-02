@@ -3,6 +3,8 @@
 import itertools
 from pathlib import Path
 
+import yaml
+
 from rfl.build.ninja import NinjaBuilder
 
 # Combination of logo and background colors available in branding reference file
@@ -17,6 +19,10 @@ LOGO_DIR = "logo"
 SCALABLES_DIR = "scalables"
 BITMAPS_DIR = "bitmaps"
 FAVICON_DIR = "favicon"
+SCREENSHOTS_DIR = "screenshots"
+RAW_DIR = "raw"
+ASSEMBLIES_DIR = "assemblies"
+SHADOWED_DIR = "shadowed"
 FAVICON_SIZES = [256, 64, 48, 32, 16]
 
 
@@ -67,11 +73,40 @@ def main():
 
     # Generate PNG bitmaps of all logos in multiples sizes
     svgs = (Path(LOGO_DIR) / SCALABLES_DIR).glob("slurm-web*.svg")
-    for svg_s in svgs:
-        svg = Path(svg_s)
+    for svg in svgs:
         for size in SVG_SIZES.keys():
             png = Path(LOGO_DIR) / BITMAPS_DIR / f"{svg.stem}_{size}.png"
             builder.build(outputs=[png], rule=f"png-{size}", inputs=[svg])
+
+    with open(Path(SCREENSHOTS_DIR)/ "build.yaml") as fh:
+        rules = yaml.safe_load(fh.read())
+
+
+    assemblies = rules["assemblies"]
+    for assembly_s, sizes in assemblies.items():
+        assembly = Path(SCREENSHOTS_DIR) / ASSEMBLIES_DIR / assembly_s
+        for size in sizes:
+            png = assembly.parent / BITMAPS_DIR / f"{assembly.stem}-{size}.png"
+            builder.build(outputs=[png], rule=f"png-{size}", inputs=[assembly])
+
+
+    builder.rule(
+        name="shadow",
+        command=(
+            "convert $in -gravity 'northwest' -background 'rgba(255,255,255,0)' "
+            "-splice '10x10' "
+            "\( +clone -background black -shadow \"30x3-1-1\" \) +swap "
+            "-background none -mosaic +repage \( +clone "
+            "-background black -shadow \"30x8+5+5\" \) +swap "
+            "-background none -mosaic +repage $out"
+        ),
+    )
+
+    raws = rules["shadowed"]
+    for raw_s in raws:
+        raw = Path(SCREENSHOTS_DIR) / RAW_DIR / raw_s
+        shadowed = Path(SCREENSHOTS_DIR) / SHADOWED_DIR / raw.name
+        builder.build(outputs=[shadowed], rule="shadow", inputs=[raw])
 
     builder.run()
 
