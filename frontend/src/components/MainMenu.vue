@@ -88,7 +88,7 @@ const navigation = [
               <div class="flex h-16 shrink-0 items-center justify-center">
                 <img
                   class="flex h-12"
-                  src="/logo/bitmaps/slurm-web_horizontal_bgblue_small.png"
+                  src="/logo/slurm-web_horizontal.png"
                   alt="Slurm-web"
                 />
               </div>
@@ -148,7 +148,7 @@ const navigation = [
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-slurmweb px-6 pb-4">
       <div class="flex h-24 shrink-0 items-center">
-        <img src="/logo/bitmaps/slurm-web_horizontal_bgblue_small.png" alt="Slurm-web" />
+        <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
       </div>
       <nav class="flex flex-1 flex-col">
         <ul role="list" class="flex flex-1 flex-col gap-y-7">

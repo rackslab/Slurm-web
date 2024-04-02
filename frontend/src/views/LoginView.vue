@@ -72,7 +72,7 @@ async function submitLogin() {
           class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
         >
           <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <img src="/logo/bitmaps/slurm-web_bgwhite_small.png" class="m-auto mb-8" />
+            <img src="/logo/slurm-web_logo.png" class="m-auto mb-8" />
             <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submitLogin">
               <div>
                 <label
