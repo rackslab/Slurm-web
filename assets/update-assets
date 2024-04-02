@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+
+import itertools
+from pathlib import Path
+
+from rfl.build.ninja import NinjaBuilder
+
+# Combination of logo and background colors available in branding reference file
+LOGOS = ["", "_full", "_full_horizontal"]
+BACKGROUNDS = ["white", "blue", "dark"]
+
+# Sizes names and associated DPI
+SVG_SIZES = {"tiny": 32, "small": 64, "medium": 92, "large": 128, "xlarge": 192}
+
+INKSCAPE_COMMON_OPTS = "--export-overwrite"
+LOGO_DIR = "logo"
+SCALABLES_DIR = "scalables"
+BITMAPS_DIR = "bitmaps"
+FAVICON_DIR = "favicon"
+FAVICON_SIZES = [256, 64, 48, 32, 16]
+
+
+def main():
+    builder = NinjaBuilder()
+
+    branding = Path("branding") / "branding.svg"
+    for element in [
+        (f"logo{logo_background[0]}_{logo_background[1]}", f"slurm-web{logo_background[0]}_{logo_background[1]}")
+        for logo_background in itertools.product(LOGOS, BACKGROUNDS)
+    ]:
+
+        builder.rule(
+            name=f"svg-plain-{element[0]}",
+            command=(
+                f"inkscape $in {INKSCAPE_COMMON_OPTS} --export-id={element[0]} "
+                "--export-id-only --export-plain-svg --export-filename=- | "
+                "python3 -m scour.scour /dev/stdin $out"
+            ),
+        )
+        svg = Path(LOGO_DIR) / SCALABLES_DIR / f"{element[1]}.svg"
+        builder.build(outputs=[svg], rule=f"svg-plain-{element[0]}", inputs=[branding])
+
+    # The SVG file is first converted to PNG by inkscape and converted into ico by
+    # convert in order to keep alpha channel. If the SVG file is directly consumed by
+    # convert, alpha channel is lost.
+    builder.rule(
+        name="favicon",
+        command=(
+            f"inkscape $in {INKSCAPE_COMMON_OPTS} --export-id=favicon "
+            "--export-id-only --export-type=png --export-dpi=96 --export-filename=- "
+            "| convert - -resize 256x256 -define "
+            f"icon:auto-resize={','.join([str(size) for size in FAVICON_SIZES])} $out"
+        ),
+    )
+    favicon = Path(FAVICON_DIR) / "favicon.ico"
+    builder.build(outputs=[favicon], rule="favicon", inputs=[branding])
+
+    # Declare build rules for all DPI sizes
+    for size, dpi in SVG_SIZES.items():
+        builder.rule(
+            name=f"png-{size}",
+            command=(
+                f"inkscape $in {INKSCAPE_COMMON_OPTS} --export-type=png --export-dpi={dpi} "
+                "--export-filename=$out"
+            ),
+        )
+
+    # Generate PNG bitmaps of all logos in multiples sizes
+    svgs = (Path(LOGO_DIR) / SCALABLES_DIR).glob("slurm-web*.svg")
+    for svg_s in svgs:
+        svg = Path(svg_s)
+        for size in SVG_SIZES.keys():
+            png = Path(LOGO_DIR) / BITMAPS_DIR / f"{svg.stem}_{size}.png"
+            builder.build(outputs=[png], rule=f"png-{size}", inputs=[svg])
+
+    builder.run()
+
+
+if __name__ == "__main__":
+    main()

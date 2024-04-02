@@ -1,7 +1,8 @@
-# Slurm-web logo assets
+# Slurm-web assets
 
-Edit SVG files only! To update PNG and ICO bitmaps, just run:
+Edit branding SVG file `branding/branding.svg` only! To update all other files,
+just run:
 
 ```sh
-$ ./update-bitmaps
+$ ./update-assets
 ```
