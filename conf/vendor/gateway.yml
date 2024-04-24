@@ -67,7 +67,7 @@ agents:
     doc: Version of Slurm-web agent API
   racksdb_version:
     type: str
-    default: 0.3.0
+    default: 0.4.0
     doc: Version of RacksDB API
 
 authentication:
