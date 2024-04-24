@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="229.44965mm"
-   height="102.61591mm"
-   viewBox="0 0 229.44965 102.61591"
+   width="236.75238mm"
+   height="112.13532mm"
+   viewBox="0 0 236.75238 112.13532"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -29,7 +29,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="1.5554293"
-     inkscape:cx="127.93896"
+     inkscape:cx="154.94115"
      inkscape:cy="145.61896"
      inkscape:window-width="3840"
      inkscape:window-height="2096"
@@ -685,12 +685,36 @@
        x2="1"
        y2="0"
        spreadMethod="pad" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1137"
+       x="-0.025245907"
+       y="-0.4863139"
+       width="1.0504918"
+       height="1.9726278">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.956031"
+         id="feGaussianBlur1139" />
+    </filter>
   </defs>
   <g
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1.1704645,-48.332375)">
+     transform="translate(8.4732064,-48.332375)">
+    <ellipse
+       style="opacity:0.6;fill:#585858;stroke-width:0.600001;stroke-linecap:round;stroke-linejoin:round;filter:url(#filter1137)"
+       id="path1053"
+       cx="91.804497"
+       cy="150.47737"
+       rx="92.97496"
+       ry="4.8265886"
+       transform="matrix(1.0323901,0,0,1.0323901,-2.4183025,-4.7130996)"
+       inkscape:export-filename="/home/remi/Documents/git/communication/slurm-web.com/assets/images/banner/devices.png"
+       inkscape:export-xdpi="2.0415373"
+       inkscape:export-ydpi="2.0415373" />
     <rect
        id="rect2453"
        style="fill:#d0d0d2;stroke:#b3b7b7;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:bevel"
@@ -711,7 +735,7 @@
        x="21.522316" />
     <path
        id="rect3227"
-       style="opacity:1;fill:#ffffff;stroke-width:0.264583;fill-opacity:1"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
        d="m 23.964479,53.58139 c 0,28.92839 0,57.85677 0,86.78516 45.42057,0 90.841141,0 136.261721,0 0,-29.10482 0,-58.20964 0,-87.31445 -45.42058,0 -90.841151,0 -136.261721,0 0,0.17643 0,0.35286 0,0.52929 z" />
     <path
        id="path3241"

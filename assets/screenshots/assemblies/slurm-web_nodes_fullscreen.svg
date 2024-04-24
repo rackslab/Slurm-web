@@ -3,8 +3,8 @@
 
 <svg
    width="209.30893mm"
-   height="170.48383mm"
-   viewBox="0 0 209.30893 170.48383"
+   height="173.91544mm"
+   viewBox="0 0 209.30893 173.91544"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -28,9 +28,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.5499273"
-     inkscape:cx="487.33714"
-     inkscape:cy="185.47906"
+     inkscape:zoom="3.1108586"
+     inkscape:cx="410.17615"
+     inkscape:cy="686.30571"
      inkscape:window-width="1850"
      inkscape:window-height="1237"
      inkscape:window-x="26"
@@ -92,12 +92,33 @@
        x2="574.69733"
        y2="250.52858"
        gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter945"
+       x="-0.026074174"
+       y="-0.30170096"
+       width="1.0521483"
+       height="1.6034019">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.9400622"
+         id="feGaussianBlur947" />
+    </filter>
   </defs>
   <g
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(82.276637,-72.678578)">
+    <ellipse
+       style="opacity:0.6;fill:#939393;stroke-width:0.600001;stroke-linecap:round;stroke-linejoin:round;filter:url(#filter945);fill-opacity:1"
+       id="path861"
+       cx="22.488152"
+       cy="243.11989"
+       rx="43.264061"
+       ry="3.739049"
+       transform="matrix(1.0107976,0,0,0.62114136,-0.24281757,91.858325)" />
     <g
        id="g8"
        inkscape:label="ink_ext_XXXXXX"
@@ -142,5 +163,12 @@
        id="image883"
        x="-48.379391"
        y="79.489098" />
+    <ellipse
+       style="opacity:0.6;fill:#585858;stroke-width:0.600001;stroke-linecap:round;stroke-linejoin:round"
+       id="path863"
+       cx="26.332455"
+       cy="242.75011"
+       rx="0.0051683262"
+       ry="1.3383615" />
   </g>
 </svg>
