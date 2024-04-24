@@ -1,0 +1,11 @@
+[Unit]
+Description=Slurm-web HPC dashboard gateway
+After=systemd-sysusers.service
+
+[Service]
+ExecStart=/usr/libexec/slurm-web/slurm-web-gateway
+Restart=on-failure
+User=slurm-web
+
+[Install]
+WantedBy=multi-user.target
