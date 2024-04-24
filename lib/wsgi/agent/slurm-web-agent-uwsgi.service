@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance for Slurm-web agent
+After=network.target
+
+[Service]
+User=slurm
+Group=slurm
+RuntimeDirectory=slurm-web-agent
+ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
+
+[Install]
+WantedBy=multi-user.target
+
