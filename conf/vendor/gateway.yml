@@ -2,11 +2,13 @@ service:
   interface:
     type: str
     default: localhost
-    doc: Interface address to bind for incoming connections
+    doc: |
+      Address of network interfaces to bind native service for incoming
+      connections. Special value `0.0.0.0` means all network interfaces.
   port:
     type: int
     default: 5011
-    doc: TCP port to listen for incoming connections
+    doc: TCP port to listen for incoming connections.
   cors:
     type: bool
     default: false
@@ -27,7 +29,7 @@ service:
     - urllib3
     - racksdb
     - ALL
-    doc: List of log flags to enable.
+    doc: List of log flags to enable. Special value `ALL` enables all log flags.
   debug_flags:
     type: list
     content: str
@@ -40,7 +42,9 @@ service:
     - urllib3
     - racksdb
     - ALL
-    doc: List of debug flags to enable.
+    doc: |
+      List of debug flags to enable. Special value `ALL` enables all debug
+      flags.
 
 ui:
   host:

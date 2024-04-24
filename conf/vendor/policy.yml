@@ -1,9 +1,19 @@
 ---
 actions:
-  view-stats: View general cluster statistics
-  view-jobs: View all users jobs
-  view-nodes: View all nodes
-  view-partitions: View all partitions
-  view-qos: View all defined QOS
-  view-accounts: View all accounts
-  view-reservations: View all reservations
+  view-stats: |
+    View general cluster statistics in home dashboard and clusters list.
+  view-jobs: |
+    Get _Jobs_ entry in main menu and permission to view all users jobs in
+    queue and all jobs details.
+  view-nodes: |
+    Get _Resources_ entry in main menu and permission to view the list of
+    compute nodes in cluster with their status in Slurm.
+  view-partitions: |
+    Permission to filter jobs and nodes by partition.
+  view-qos: |
+    Get _QOS_ entry in main menu and permission to view the list of defined QOS.
+  view-accounts: |
+    Permission to filter jobs by account.
+  view-reservations: |
+    Get _Reservations_ entry in main menu and permission to view the list of
+    defined reservations.

@@ -34,7 +34,7 @@ service:
     - urllib3
     - racksdb
     - ALL
-    doc: List of log flags to enable.
+    doc: List of log flags to enable. Special value `ALL` enables all log flags.
   debug_flags:
     type: list
     content: str
@@ -47,7 +47,9 @@ service:
     - urllib3
     - racksdb
     - ALL
-    doc: List of debug flags to enable.
+    doc: |
+      List of debug flags to enable. Special value `ALL` enables all debug
+      flags.
 
 slurmrestd:
   socket:
