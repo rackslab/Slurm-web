@@ -1,0 +1,14 @@
+- name: racksdb
+  rooms:
+  - name: tiny
+    dimensions:
+      depth: 4m
+      width: 8m
+    rows:
+    - name: R1
+      position:
+        depth: 1.5m
+        width: 1.5m
+      racks:
+      - name: R1-A[01-04]
+        type: standard

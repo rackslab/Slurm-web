@@ -1,0 +1,4 @@
+common_with_devs_repos: true
+slurm_with_jwt: false
+slurmweb_enabled: true
+redis_enabled: true

@@ -1,0 +1,19 @@
+description: Pocket HPC cluster
+layout:
+- rack: R1-A04
+  nodes:
+  - name: cn[1-4]
+    slot: 15
+    type: container
+    tags:
+    - compute
+  - name: login
+    slot: 22
+    type: container
+    tags:
+    - login
+  - name: admin
+    slot: 25
+    type: container
+    tags:
+    - admin

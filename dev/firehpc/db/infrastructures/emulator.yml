@@ -1,0 +1,33 @@
+description: HPC cluster
+layout:
+- rack: R1-A01
+  nodes:
+  - name: cn[001-040]
+    slot: 2
+    type: container
+    tags:
+    - compute
+- rack: R1-A02
+  nodes:
+  - name: cn[041-080]
+    slot: 2
+    type: container
+    tags:
+    - compute
+- rack: R1-A03
+  nodes:
+  - name: cn[081-100]
+    slot: 2
+    type: container
+    tags:
+    - compute
+  - name: login
+    slot: 25
+    type: container
+    tags:
+    - login
+  - name: admin
+    slot: 30
+    type: container
+    tags:
+    - admin

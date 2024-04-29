@@ -1,0 +1,18 @@
+- id: container
+  model: systemd-nspawn container
+  height: 1u
+  width: full
+  cpu:
+    cores: 8
+    model: Emulated CPU
+    sockets: 1
+  ram:
+    dimm: 2
+    size: 8GB
+  storage:
+  - model: Samsung 980 Pro
+    size: 256GB
+    type: nvme
+  netifs:
+  - bandwidth: 1Gb
+    type: ethernet
