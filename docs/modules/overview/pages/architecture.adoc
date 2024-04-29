@@ -4,8 +4,8 @@
 
 == Components
 
-This diagram represented all Slurm-web components with their respective roles
-and integration with Slurm workload manager:
+This diagram represents all Slurm-web components with their respective roles and
+integration with Slurm workload manager:
 
 .Slurm-web architecture with components roles [xref:image$arch/slurm-web_architecture.svg[icon:download[] SVG]]
 image::arch/slurm-web_architecture.png[]
@@ -53,8 +53,8 @@ database to save cached data from Slurm.
 [#protocols]
 == Protocols
 
-The protocols used for communication between Slurm-web and Slurm components are
-represented in this diagram:
+Protocols and authentication realms used for communication between Slurm-web and
+Slurm components are represented in this diagram:
 
 .Protocols in communication between Slurm-web components [xref:image$arch/slurm-web_protocols.svg[icon:download[] SVG]]
 image::arch/slurm-web_protocols.png[]
