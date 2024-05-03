@@ -45,6 +45,14 @@ _gateway_):
 $ dev/setup-dev-environment
 ```
 
+By default, the script connects on development server with local user name. It
+is possible to use an alternate remote user name with `LOGNAME` environment
+variable:
+
+```console
+$ LOGNAME=jdoe dev/setup-dev-environment
+```
+
 In a second shell, launch frontend application:
 
 ```console

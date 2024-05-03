@@ -22,6 +22,7 @@ import argparse
 import json
 import socket
 import sys
+import getpass
 
 import jinja2
 from rfl.authentication.jwt import jwt_gen_key
@@ -30,6 +31,7 @@ from racksdb import RacksDB
 logger = logging.getLogger(__name__)
 
 DEV_HOST = "firehpc.dev.rackslab.io"
+USER = getpass.getuser()
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "racksdb"]
 # DEBUG_FLAGS = ["ALL"]
@@ -95,6 +97,7 @@ class ClusterChannel:
             local_bind_addresses.append(("localhost", forward.local))
         forwarder = sshtunnel.SSHTunnelForwarder(
             host,
+            ssh_username=USER,
             allow_agent=True,
             remote_bind_addresses=remote_bind_addresses,
             local_bind_addresses=local_bind_addresses,
@@ -316,9 +319,12 @@ def main():
     ssh_client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
     logger.info("Connecting to development host %s", DEV_HOST)
     try:
-        ssh_client.connect(DEV_HOST)
+        ssh_client.connect(DEV_HOST, username=USER)
     except socket.gaierror as err:
         logger.error("Unable to get address of %s: %s", DEV_HOST, str(err))
+        sys.exit(1)
+    except paramiko.ssh_exception.PasswordRequiredException as err:
+        logger.error("Unable to connect on %s@%s: %s", USER, DEV_HOST, str(err))
         sys.exit(1)
     # Create temporary directory and register its automatic deletion at exit
     tmpdir = Path(tempfile.mkdtemp(prefix="slurm-web-dev"))
