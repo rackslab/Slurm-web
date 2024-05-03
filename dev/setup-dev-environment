@@ -191,7 +191,8 @@ class SlurmwebAgent:
                     redis_password = fh.read().decode()
             except FileNotFoundError:
                 logger.warning(
-                    "Remote Redis password file not found for cluster %s, force disabling cache",
+                    "Remote Redis password file not found for cluster %s, force "
+                    "disabling cache",
                     self.name,
                 )
                 cache_enabled = False
