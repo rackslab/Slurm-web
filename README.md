@@ -1,99 +1,110 @@
 # Slurm-web
 
-🚧 **Slurm-web is still under active development. Stable release is planned soon.** 🚧
-
 ## Overview
 
-Slurm-web is an open source web interface to [Slurm](https://slurm.schedmd.com/)
-based HPC supercomputers. It provides intuitive views of current jobs and nodes
-states. The organization of this project is being reworked significantly, see
-the [next section](#plan-for-future) for more details.
+<img
+  src="assets/logo/bitmaps/slurm-web_full_white_medium.png"
+  alt="Slurm-web logo"
+  align="right">
 
-## Plan for future
+Slurm-web is an open source web dashboard for Slurm based HPC clusters.
 
-After years of initial investments from [EDF](https://www.edf.fr/en) leading to
-version 2.x, the project is now endorsed by [Rackslab](https://rackslab.io)
-which becomes its new official maintainer.
+[Slurm](https://slurm.schedmd.com/) is the world leading workload manager for
+HPC clusters with all most advanced features to manage jobs and resources
+efficiently with a powerful command-line interface (CLI).
 
-The goal is to build the reference open source web interface for Slurm. A new
-ambitious roadmap has been defined with long-term vision about this project,
-starting with version 3.0 coming later this year.
+Slurm-web provides a clear graphical user interface with views to track your
+jobs, intuitive insights and advanced visualizations on top of Slurm to monitor
+status of HPC supercomputers in your organization, in a web browser on all your
+devices.
 
-In addition to the current feature set offered by Slurm-web, the following new
-features are planned:
+<p align="center">
+<img
+  src="assets/screenshots/assemblies/bitmaps/slurm-web_devices-medium.png"
+  alt="Slurm-web on all devices"
+  width="600px"
+  style="margin: 0 auto;">
+<p>
 
-- Real time updates of the dashboard
-- Accounting reports and views on past jobs
-- Built-in metrics about jobs and scheduling
-- Job submission and inspection
-- Significantly improved Gantt view
-- QOS, associations and reservations management
-- Native RPM/deb packages and containers for easy deployment on most Linux distributions
+Many features in a reactive & responsive web UI:
 
-The software architecture will be reviewed with modern established technologies
-and based on reference slurmrestd API.
+* Instant jobs filtering and sorting
+* Live jobs status update
+* Advanced visualization of node status with racking topology
+* Intuitive visualization of QOS and advanced reservations
+* Multi-clusters support
+* LDAP authentication
+* Advanced RBAC permissions management
+* Transparent caching
 
-The [detailed roadmap](https://github.com/rackslab/slurm-web/discussions/235) is
-published project discussions https://github.com/rackslab/slurm-web/discussions/235.
-You are more than welcome to discuss about it there, ask questions and give
-comments!
+Get more details in
+[Slurm-web advanced features overview](https://docs.rackslab.io/slurm-web/overview/overview.html).
 
-This `main` branch will quickly contain the next version 3.0 of Slurm-web under
-development. The source code of the previous versions has been moved in `2.x`
-branch.
+## Quickstart
 
-## FAQ
+To install and start using Slurm-web in a few steps, follow the
+[quickstart guide](https://docs.rackslab.io/slurm-web/install/quickstart.html)!
+Packages are available for most Linux distributions for easy installation and
+upgrade.
 
-### Does Rackslab maintain and support previous versions 2.x?
+## Documentation
 
-Our primary focus is to develop the feature release 3.0 with new modern and
-solid foundations, for faster development of the envisioned features, more
-reliably and flexibility. Unfortunately, we don't have the manpower to maintain
-and support the previous 2.x releases. If any community member is willing to
-participate on this, feel free to open pull requests, we will be more than happy
-to merge your contributions!
+The [full documentation](https://docs.rackslab.io/slurm-web/) of Slurm-web is
+available online with software architecture details, installation guide,
+configuration references, troubleshooting guide, etc.
 
-### Where is the source code of the previous versions?
+## Status
 
-The source code of the previous version has been moved in `2.x` branch. This
-`main` branch will contain the future version 3.0 under development.
+Slurm-web is considered stable and ready for production.
 
-### Will Slurm-web stay free software?
+## Authors
 
-The licence of Slurm-web source code will not change, it will remain free
-software (as in beer and as in speech) released under the terms of GPLv3.
-Rackslab strongly believes in free software values and is deeply committed in
-this regard.
+Slurm-web is developed and maintained by [Rackslab](https://rackslab.io),
+software editor of open source solutions designed to help HPC supercomputers
+administration, operations and management.
 
-### Will you charge for software licences?
+## Support
 
-No, you will still be able to install Slurm-web for free (as in beer). See our
-[business model](#what-is-your-business-model) for more details.
+Need help to deploy or setup Slurm-web? There are multiple ways to get technical
+support.
 
-### Will you release full entreprise versions vs limited community versions (aka. freemium model) ?
+### Community
 
-No, there will be only one fully-featured version of Slurm-web free for
-everyone. See our [business model](#what-is-your-business-model) for more
-details.
+Multiple community channels are available to ask questions:
 
-### What is your business model?
+* **Matrix Chat** [#slurm-web:talk.rackslab.io](https://matrix.to/#/#slurm-web:talk.rackslab.io):
+  instant messaging for quick feedback and help.
 
-During the initial development phase, Rackslab is actively looking for
-organizations willing to sponsor the development of Slurm-web. If your
-organization has interest in this project and wants to participate in boosting
-its development, please [contact us](https://rackslab.io/en/contact/)! Your
-contribution among others is essential to build a solid and durable team around
-this project.
+> [!NOTE]
+> A [Matrix account](https://matrix.org/docs/chat_basics/matrix-for-im/#creating-a-matrix-account)
+> is required to access the chat room. It can be created in few steps on any
+> Matrix network public provider such as [matrix.org](https://matrix.org) or
+> [gitter.im](https://gitter.im/#apps).
 
-Once Slurm-web reaches a solid state, Rackslab plans to offer professional
-support and development service for organizations, with the goal to make the
-project sustainable, very active and innovative.
+* [**GitHub Discussions Q&A**](https://github.com/rackslab/slurm-web/discussions/categories/q-a):
+  post your questions with more context and details for more in-depth answers.
 
-### Where can I give comments or suggestions about the roadmap?
+This support is provided by the community with best-effort participation of
+Rackslab team. Please mind that people might not be available to answer your
+questions.
 
-The [detailed roadmap](https://github.com/rackslab/slurm-web/discussions/235) is
-published in [project discussions](https://github.com/rackslab/slurm-web/discussions).
-Feel free to comment, ask questions or give suggestions there!
+### Professional
 
-Any additional question? Feel free to ask in
-[project discussions](https://github.com/rackslab/slurm-web/discussions)!
+[Rackslab](https://rackslab.io) offers commercial support to help organizations
+secure their deployment of Slurm-web with service level agreement (SLA) and
+minimal response time.
+
+Our professional team has a unique expertise to offer a wide range of services
+from assistance to setup the installation to the most advanced bug resolution.
+[Contact us](https://rackslab.io/en/contact/) for more information.
+
+## Development
+
+Want to contribute? Documentation to deploy a development environment is
+available in
+[development README.md](https://github.com/rackslab/slurm-web/blob/main/dev/README.md)
+
+## License
+
+Slurm-web is distributed under the terms of the GNU General Public License v3.0
+or later (GPLv3+).
