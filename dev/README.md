@@ -30,6 +30,14 @@ Install `sshtunnel` (required by `dev/setup-dev-environment` and Slurm-web
 ```console
 $ pip install sshtunnel
 $ pip install -e .
+$ pip install -e .[dev]
+$ pip install -e .[agent]
+```
+
+Install `socat` on your host:
+
+```console
+$ sudo apt install socat
 ```
 
 A Git clone of RacksDB close to Slurm-web source tree is required:
