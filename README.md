@@ -1,25 +1,13 @@
 # Slurm-web
 
+🚧 **Slurm-web is still under active development. Stable release is planned soon.** 🚧
+
 ## Overview
 
 Slurm-web is an open source web interface to [Slurm](https://slurm.schedmd.com/)
 based HPC supercomputers. It provides intuitive views of current jobs and nodes
 states. The organization of this project is being reworked significantly, see
 the [next section](#plan-for-future) for more details.
-
-## Install
-
-Install build requirement for _python-ldap_ package:
-
-```
-$ sudo apt install libldap-dev libsasl2-dev
-```
-
-Install Python package from source:
-
-```
-$ pip install -e .
-```
 
 ## Plan for future
 
