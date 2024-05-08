@@ -2,7 +2,6 @@
 
 ## For v3
 
-- [ ] Extra service message on login page
 - [x] Jobs sort by priority
 - [x] Jobs sort order
 - [x] Back to jobs button in job details page
@@ -38,15 +37,16 @@
 - [x] Deterministic sort of TailwindCSS classes
 - [x] Add better error and information messages
 - [x] Rename views more consistently
-- [ ] RPM/deb packages
-- [ ] Full documentation
-      - [ ] Overview page
-      - [ ] Quickstart Guide
-      - [ ] Configuration Reference
+- [x] RPM/deb packages
+- [x] Full documentation
+      - [x] Overview page
+      - [x] Quickstart Guide
+      - [x] Configuration Reference
 
 ## Later
 
 - [ ] Support alternative CA between gateway and agent
+- [ ] Extra service message on login page
 - [ ] Maintain Redis cache hits statistics
 - [ ] Add anchors on fields in jobs details page
 - [ ] Display derived exit code in job details page
