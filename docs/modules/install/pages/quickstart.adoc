@@ -117,7 +117,7 @@ Enable and start `slurmrestd` service:
 
 [source,console]
 ----
-# systemctl enable --now slurmrest.service
+# systemctl enable --now slurmrestd.service
 ----
 
 To check `slurmrestd` daemon is properly running, run this command:
