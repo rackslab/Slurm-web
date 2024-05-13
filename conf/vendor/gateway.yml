@@ -67,7 +67,7 @@ agents:
     doc: List of Slurm-web agents URL
   version:
     type: str
-    default: 3.0.0a1
+    default: 3.0.0
     doc: Version of Slurm-web agent API
   racksdb_version:
     type: str
