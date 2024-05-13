@@ -12,7 +12,7 @@ command:
 
 [source,console]
 ----
-$ curl --silent --unix-socket /run/slurmrestd/slurmrestd.socket http:///slurm/slurm/v0.0.39/diag | \
+$ curl --silent --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v0.0.39/diag | \
   jq '.statistics | with_entries(select(.key | startswith("jobs")))'
 {
   "jobs_submitted": 0,

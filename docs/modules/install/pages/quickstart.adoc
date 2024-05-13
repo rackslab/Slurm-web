@@ -124,7 +124,7 @@ To check `slurmrestd` daemon is properly running, run this command:
 
 [source,console]
 ----
-# curl --unix-socket /run/slurmrestd/slurmrestd.socket http:/slurm/slurm/v0.0.39/diag
+# curl --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v0.0.39/diag
 {
    "meta": {
      "plugin": {
