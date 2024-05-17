@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Typo in slurmrestd service name in quick start guide.
   - Use consistent URL format for `curl` commands on `slurmrestd` Unix sockets.
+  - Fix agent and gateway configuration file extension in configuration files
+    reference documentation.
 
 ## [3.0.0] - 2024-05-13
 

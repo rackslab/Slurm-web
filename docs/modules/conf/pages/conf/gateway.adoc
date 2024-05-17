@@ -1,7 +1,7 @@
 = Gateway Configuration Settings
 
 Slurm-web gateway can be configured in INI file
-[.path]#`/etc/slurm-web/gateway.conf`#.
+[.path]#`/etc/slurm-web/gateway.ini`#.
 
 This page contains the reference description of all configuration parameters
 that can be defined in this file, grouped by sections.

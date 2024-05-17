@@ -1,7 +1,7 @@
 = Agent Configuration Settings
 
 Slurm-web agent can be configured in INI file
-[.path]#`/etc/slurm-web/agent.conf`#.
+[.path]#`/etc/slurm-web/agent.ini`#.
 
 This page contains the reference description of all configuration parameters
 that can be defined in this file, grouped by sections.
