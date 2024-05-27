@@ -1,4 +1,33 @@
 common_with_devs_repos: true
 slurm_with_jwt: false
+slurm_params:
+  PriorityType: priority/multifactor
+slurm_partitions:
+- name: batch
+  node: cn[001-080]
+  default: yes
+  maxtime: INFINITE
+  state: UP
+- name: debug
+  node: cn[081-099]
+  maxtime: "1:0:0"
+  state: UP
+- name: interactive
+  node: cn100
+  maxtime: "10:00"
+  state: UP
+slurm_qos:
+- name: critical
+  args:
+  - GrpTRES=node=50
+  - GrpJobs=60
+  - MaxTRES=cpu=48
+  - MaxWall=8:00:00
+  - MaxTRESPU=cpu=10,mem=5
+  - MaxTRESPA=cpu=15,mem=10
+  - MaxJobsPU=10
+  - MaxSubmitJobsPU=20
+  - MaxSubmitJobsPA=30
+  - Priority=200
 slurmweb_enabled: true
 redis_enabled: true

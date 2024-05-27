@@ -1,4 +1,7 @@
 common_with_devs_repos: true
 slurm_with_jwt: false
+slurm_params:
+  PriorityType: priority/multifactor
+  SelectType: select/cons_res
 slurmweb_enabled: true
 redis_enabled: true
