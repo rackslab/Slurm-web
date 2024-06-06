@@ -372,7 +372,7 @@ To restrict access to the dashboard, you must enable authentication. Slurm-web
 supports LDAP authentication.
 
 Add the following settings in the _gateway_ configuration file
-[.path]#`/etc/slurm-web/gateway.conf`#:
+[.path]#`/etc/slurm-web/gateway.ini`#:
 
 [source,ini]
 ----
@@ -572,7 +572,7 @@ Stop and disable Slurm-web native services:
 # systemctl disable --now slurm-web-agent.service slurm-web-gateway.service
 ----
 
-Edit _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.conf`#:
+Edit _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`#:
 
 [source,ini]
 ----
