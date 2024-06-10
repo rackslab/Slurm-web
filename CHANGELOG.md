@@ -8,13 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- frontend: Display job priority in job details page (#300).
+- frontend:
+  - Display job priority in job details page (#300).
+  - Display requested resources in jobs list (#297).
 - agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
   list responses.
 
 ### Changed
-- frontend: Use server icon instead of cpu chip icon to represent nodes in
-  clusters list and clusters pop over menu.
+- frontend:
+  - Use server icon instead of cpu chip icon to represent nodes in clusters list
+    and clusters pop over menu.
+  - Merge account column with user column in jobs list, the account is now
+    displayed between parenthesis.
 - docs: Update configuration reference documentation with new default values.
 
 ### Fixed

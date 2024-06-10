@@ -74,6 +74,8 @@ export interface ClusterJob {
   partition: string
   priority: ClusterOptionalNumber
   qos: string
+  cpus: ClusterOptionalNumber
+  node_count: ClusterOptionalNumber
 }
 
 export interface ClusterTRES {

@@ -25,6 +25,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { ServerIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   cluster: {
@@ -332,10 +333,10 @@ onMounted(() => {
                     State
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    User
+                    User (account)
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Account
+                    Resources
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Partition
@@ -362,10 +363,15 @@ onMounted(() => {
                     <JobStatusLabel :status="job.job_state" />
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {{ job.user_name }}
+                    {{ job.user_name }} ({{ job.account }})
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {{ job.account }}
+                    <span class="inline-flex mr-2">
+                      <ServerIcon class="h-5 w-5 mr-0.5" aria-hidden="true" /> {{ job.node_count.number }}
+                    </span>
+                    <span class="inline-flex">
+                      <CpuChipIcon class="h-5 w-5 mr-0.5" aria-hidden="true" /> {{ job.cpus.number }}
+                    </span>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {{ job.partition }}
