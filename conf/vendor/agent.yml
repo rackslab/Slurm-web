@@ -74,6 +74,8 @@ filters:
     - partition
     - priority
     - qos
+    - cpus
+    - node_count
     doc: |
       List of jobs fields selected in slurmrestd API when retrieving a list of
       jobs, all other fields arefiltered out.

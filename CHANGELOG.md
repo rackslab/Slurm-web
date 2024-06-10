@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - frontend: Display job priority in job details page (#300).
+- agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
+  list responses.
 
 ### Changed
 - frontend: Use server icon instead of cpu chip icon to represent nodes in
