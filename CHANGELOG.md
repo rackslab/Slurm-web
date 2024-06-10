@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- frontend: Display job priority in job details page (#300).
+
 ### Changed
 - frontend: Use server icon instead of cpu chip icon to represent nodes in
   clusters list and clusters pop over menu.
