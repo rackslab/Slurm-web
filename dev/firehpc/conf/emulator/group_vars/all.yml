@@ -19,12 +19,8 @@ slurm_partitions:
 slurm_qos:
 - name: critical
   args:
-  - GrpTRES=node=50
-  - GrpJobs=60
-  - MaxTRES=cpu=48
-  - MaxWall=8:00:00
-  - MaxTRESPU=cpu=10,mem=5
-  - MaxTRESPA=cpu=15,mem=10
+  - GrpJobs=300
+  - MaxWall=2-00:00:00
   - MaxJobsPU=10
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
