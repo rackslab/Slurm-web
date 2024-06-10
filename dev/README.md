@@ -78,6 +78,16 @@ on a cluster:
 $ firehpc status --cluster tiny
 ```
 
+## Slurmrestd tests
+
+Remote `slurmrestd` instances can be accessed through local sockets in `/tmp/`
+directory. For example:
+
+```console
+$ curl --silent --unix-socket /tmp/slurmrestd-pocket.socket  \
+  http://slurm/slurm/v0.0.39/jobs
+```
+
 ## Remote Installation
 
 To access Slurm-web deployed in containers, create SSH SOCKS5 proxy on
