@@ -195,6 +195,10 @@ jobs, all other fields arefiltered out.
 
 * `qos`
 
+* `cpus`
+
+* `node_count`
+
 
 |-
 
