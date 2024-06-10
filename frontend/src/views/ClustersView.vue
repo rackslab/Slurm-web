@@ -16,7 +16,7 @@ import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronRightIcon, XCircleIcon } from '@heroicons/vue/20/solid'
-import { CpuChipIcon, PlayCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
+import { ServerIcon, PlayCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
@@ -137,7 +137,7 @@ onMounted(() => {
             </span>
             <span v-if="cluster.stats" class="hidden text-center md:flex">
               <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
-                <CpuChipIcon class="h-6 w-full" />
+                <ServerIcon class="h-6 w-full" />
                 <p class="w-full">
                   {{ cluster.stats.resources.nodes }} node{{
                     cluster.stats.resources.nodes > 1 ? 's' : ''

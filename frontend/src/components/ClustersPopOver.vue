@@ -12,7 +12,7 @@ import type { RouteRecordName } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-import { CpuChipIcon } from '@heroicons/vue/24/outline'
+import { ServerIcon } from '@heroicons/vue/24/outline'
 const props = defineProps({
   cluster: {
     type: String,
@@ -88,7 +88,7 @@ const runtimeStore = useRuntimeStore()
                 </RouterLink>
 
                 <span v-if="cluster.stats" class="w-30 mt-1 flex text-xs leading-5 text-gray-500">
-                  <CpuChipIcon class="mx-1 h-5" />
+                  <ServerIcon class="mx-1 h-5" />
                   {{ cluster.stats.resources.nodes }} node{{
                     cluster.stats.resources.nodes > 1 ? 's' : ''
                   }}

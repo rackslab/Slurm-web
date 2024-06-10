@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- frontend: Use server icon instead of cpu chip icon to represent nodes in
+  clusters list and clusters pop over menu.
+
 ### Fixed
 - docs:
   - Typo in slurmrestd service name in quick start guide.
