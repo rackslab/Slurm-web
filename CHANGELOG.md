@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     reference documentation.
   - Fix some agent and gateway configuration file extension typos in quickstart
     guide.
+  - Invert initial setup and JWT signing key sections in quickstart to satisfy
+    `slurm-web-gen-jwt-key` configuration requirement.
 
 ## [3.0.0] - 2024-05-13
 

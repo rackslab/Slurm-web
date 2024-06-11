@@ -222,28 +222,6 @@ include::partial$install/install-apt.adoc[]
   methods.
 --
 
-== JWT signing key
-
-Slurm-web authenticates users with https://jwt.io/[JSON Web Token] (JWT) for
-communications between its components. A secret key is required to
-cryptographically sign generated tokens. Run this command to generate this key:
-
-[source,console]
-----
-# /usr/libexec/slurm-web/slurm-web-gen-jwt-key
-INFO ⸬ Running slurm-web-gen-jwt-key
-INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
-INFO ⸬ Setting read permission on key for slurm-web user
-INFO ⸬ Setting read permission on key for slurm user
-----
-
-[sidebar]
---
-.More links
-* xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
-* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
---
-
 == Initial setup
 
 Create _agent_ configuration file [.path]#`/etc/slurm-web/agent.ini`# to set the
@@ -273,6 +251,28 @@ xref:conf:conf/agent.adoc#_service[`service` section of agent configuration].
 .More links
 * xref:conf:conf/agent.adoc[]
 * xref:conf:conf/gateway.adoc[]
+--
+
+== JWT signing key
+
+Slurm-web authenticates users with https://jwt.io/[JSON Web Token] (JWT) for
+communications between its components. A secret key is required to
+cryptographically sign generated tokens. Run this command to generate this key:
+
+[source,console]
+----
+# /usr/libexec/slurm-web/slurm-web-gen-jwt-key
+INFO ⸬ Running slurm-web-gen-jwt-key
+INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
+INFO ⸬ Setting read permission on key for slurm-web user
+INFO ⸬ Setting read permission on key for slurm user
+----
+
+[sidebar]
+--
+.More links
+* xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
+* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
 --
 
 [#racksdb]
