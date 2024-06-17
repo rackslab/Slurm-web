@@ -32,6 +32,11 @@ function getStatusColor(status: string): JobLabelColors {
         span: 'bg-yellow-100 text-yellow-800',
         circle: 'fill-yellow-500'
       }
+    case 'CANCELLED':
+      return {
+        span: 'bg-purple-100 text-purple-700',
+        circle: 'fill-purple-500'
+      }
     default:
       return {
         span: 'bg-gray-100 text-gray-600',

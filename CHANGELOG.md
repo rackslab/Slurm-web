@@ -25,8 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs: Add requirement on RFL >= 1.0.2.
 
 ### Fixed
-- frontend: Support expansion and folding of nodesets with multiple digits and
-  arbitrary suffixes (#302).
+- frontend:
+  - Support expansion and folding of nodesets with multiple digits and arbitrary
+    suffixes (#302).
+  - Handle jobs cancelled state with specific badge color (#295).
 - gateway: Add possibility to configure custom LDAP user name attribute in
   alternative to `uid` (#305).
 - docs:
