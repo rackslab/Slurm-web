@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Update configuration reference documentation with new default values.
 
 ### Fixed
+- frontend: Support expansion and folding of nodesets with multiple digits and
+  arbitrary suffixes (#302).
 - docs:
   - Typo in slurmrestd service name in quick start guide.
   - Use consistent URL format for `curl` commands on `slurmrestd` Unix sockets.
