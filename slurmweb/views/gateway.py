@@ -7,13 +7,15 @@
 import json
 import logging
 from functools import wraps
+import asyncio
 
 from flask import Response, current_app, jsonify, request, abort
-import requests
+import aiohttp
 from rfl.web.tokens import check_jwt
 from rfl.authentication.user import AuthenticatedUser
 from rfl.authentication.errors import LDAPAuthenticationError
 
+from ..asyncrun import asyncio_run
 from ..version import get_version
 
 
@@ -90,40 +92,59 @@ def anonymous():
     )
 
 
-@check_jwt
-def clusters():
-    # get permissions on all agents
-    clusters = []
-    for agent in current_app.agents.values():
-        cluster = {"name": agent.cluster}
-        response = request_agent(agent.cluster, "permissions", request.token)
-        if response.status_code != 200:
-            logger.error(
-                "Unable to retrieve permissions from cluster %s: %d",
-                agent.cluster,
-                response.status_code,
-            )
-            continue  # skip to next cluster
+async def get_cluster(agent):
+    """Return dict with cluster information, for the cluster managed by the given agent.
+    The dict contains permissions on the cluster for the request token and high-level
+    stats, provided the token has permission to get these stats. Return None if
+    request to get permissions failed."""
+    async with aiohttp.ClientSession() as session:
+        async with request_agent(
+            session, agent.cluster, "permissions", request.token
+        ) as response:
+            if response.status != 200:
+                logger.error(
+                    "Unable to retrieve permissions from cluster %s: %d",
+                    agent.cluster,
+                    response.status,
+                )
+                return None
 
-        permissions = response.json()
-        cluster.update({"permissions": permissions})
-        clusters.append(cluster)
+            permissions = await response.json()
+
+        cluster = {"name": agent.cluster, "permissions": permissions}
 
         # If view-stats action is permitted on cluster, enrich response with
         # cluster stats.
         if "view-stats" in permissions["actions"]:
-            response = request_agent(agent.cluster, "stats", request.token)
-            if response.status_code != 200:
-                logger.error(
-                    "Unable to retrieve stats from cluster %s: %d",
-                    agent.cluster,
-                    response.status_code,
-                )
-            else:
-                cluster.update({"stats": response.json()})
-    return jsonify(
-        clusters,
-    )
+            async with await request_agent(
+                session, agent.cluster, "stats", request.token
+            ) as response:
+                if response.status != 200:
+                    logger.error(
+                        "Unable to retrieve stats from cluster %s: %d",
+                        agent.cluster,
+                        response.status,
+                    )
+                else:
+                    cluster.update({"stats": await response.json()})
+    return cluster
+
+
+async def get_clusters():
+    """Return the list of available clusters with permissions/stats. Clusters on which
+    request to get permissions failed are filtered out."""
+    return [
+        cluster
+        for cluster in await asyncio.gather(
+            *[get_cluster(agent) for agent in current_app.agents.values()]
+        )
+        if cluster is not None
+    ]
+
+
+@check_jwt
+def clusters():
+    return jsonify(asyncio_run(get_clusters()))
 
 
 @check_jwt
@@ -137,8 +158,14 @@ def users():
 
 
 def request_agent(
-    cluster: str, query: str, token: str = None, with_version: bool = True
+    session: aiohttp.ClientSession,
+    cluster: str,
+    query: str,
+    token: str = None,
+    with_version: bool = True,
 ):
+    """Return the aiohttp request context manager on the given session for the given
+    query."""
     headers = {}
     if token is not None:
         headers = {"Authorization": f"Bearer {token}"}
@@ -151,39 +178,46 @@ def request_agent(
         else:
             url = f"{current_app.agents[cluster].url}/{query}"
         if request.method == "GET":
-            return requests.get(
-                url,
-                headers=headers,
-            )
+            return session.get(url, headers=headers)
         elif request.method == "POST":
-            return requests.post(
+            return session.post(
                 url,
                 headers=headers,
                 json=request.json,
             )
         else:
             abort(500, f"Unsupported request method {request.method}")
-    except requests.exceptions.ConnectionError as err:
+    except aiohttp.ClientConnectionError as err:
         logger.error("Connection error with agent %s: %s", cluster, str(err))
         abort(500, f"Connection error: {str(err)}")
 
 
-def proxy_agent(
+async def async_proxy_agent(
     cluster: str,
     query: str,
     token: str = None,
     json: bool = True,
     with_version: bool = True,
 ):
-    response = request_agent(cluster, query, token, with_version)
-    if json:
-        return jsonify(response.json()), response.status_code
-    else:
-        return Response(
-            response.content,
-            status=response.status_code,
-            mimetype=response.headers.get("content-type"),
-        )
+    """Initialize an asynchronous client session, send the request to the agent and
+    return Flask response."""
+    async with aiohttp.ClientSession() as session:
+        async with request_agent(
+            session, cluster, query, token, with_version
+        ) as response:
+            if json:
+                return jsonify(await response.json()), response.status
+            else:
+                return Response(
+                    await response.read(),
+                    status=response.status,
+                    mimetype=response.headers.get("content-type"),
+                )
+
+
+def proxy_agent(*args, **kwargs):
+    """Launch asynchronous coroutine to request the agent."""
+    return asyncio_run(async_proxy_agent(*args, **kwargs))
 
 
 @check_jwt

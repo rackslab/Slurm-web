@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Display job priority in job details page (#300).
   - Display requested resources in jobs list (#297).
+- gateway: Retrieve list of clusters permissions and stats in parallel with
+  asynchronous requests (#304).
 - agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
   list responses.
 - conf: Add `ldap`>`user_name_attribute` parameter for the gateway.
@@ -23,7 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Merge account column with user column in jobs list, the account is now
     displayed between parenthesis.
 - docs: Update configuration reference documentation.
-- pkgs: Add requirement on RFL >= 1.0.2.
+- pkgs:
+  - Add requirement on RFL >= 1.0.2.
+  - Add requirement on _aiohttp_.
 
 ### Fixed
 - frontend:
