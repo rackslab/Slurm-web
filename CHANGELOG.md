@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Display requested resources in jobs list (#297).
 - agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
   list responses.
+- conf: Add `ldap`>`user_name_attribute` parameter for the gateway.
 
 ### Changed
 - frontend:
@@ -21,10 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Merge account column with user column in jobs list, the account is now
     displayed between parenthesis.
 - docs: Update configuration reference documentation with new default values.
+- pkgs: Add requirement on RFL >= 1.0.2.
 
 ### Fixed
 - frontend: Support expansion and folding of nodesets with multiple digits and
   arbitrary suffixes (#302).
+- gateway: Add possibility to configure custom LDAP user name attribute in
+  alternative to `uid` (#305).
 - docs:
   - Typo in slurmrestd service name in quick start guide.
   - Use consistent URL format for `curl` commands on `slurmrestd` Unix sockets.

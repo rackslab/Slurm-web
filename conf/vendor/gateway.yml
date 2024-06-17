@@ -111,6 +111,10 @@ ldap:
     type: str
     default: posixAccount
     doc: Class of user entries
+  user_name_attribute:
+    type: str
+    default: uid
+    doc: User entry attribute for user name
   user_fullname_attribute:
     type: str
     default: cn

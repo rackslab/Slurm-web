@@ -15,7 +15,7 @@ authors = [
 dependencies = [
     "Flask",
     "requests",
-    "RFL.authentication",
+    "RFL.authentication >= 1.0.2",
     "RFL.log",
     "RFL.settings",
     "RFL.web",
