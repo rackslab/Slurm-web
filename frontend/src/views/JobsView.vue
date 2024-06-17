@@ -366,11 +366,13 @@ onMounted(() => {
                     {{ job.user_name }} ({{ job.account }})
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <span class="inline-flex mr-2">
-                      <ServerIcon class="h-5 w-5 mr-0.5" aria-hidden="true" /> {{ job.node_count.number }}
+                    <span class="mr-2 inline-flex">
+                      <ServerIcon class="mr-0.5 h-5 w-5" aria-hidden="true" />
+                      {{ job.node_count.number }}
                     </span>
                     <span class="inline-flex">
-                      <CpuChipIcon class="h-5 w-5 mr-0.5" aria-hidden="true" /> {{ job.cpus.number }}
+                      <CpuChipIcon class="mr-0.5 h-5 w-5" aria-hidden="true" />
+                      {{ job.cpus.number }}
                     </span>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
