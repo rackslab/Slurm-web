@@ -322,6 +322,17 @@ _No default value_
 
 |-
 
+|user_name_attribute
+|str
+|User entry attribute for user name
+
+
+
+
+*Default:* `uid`
+
+|-
+
 |user_fullname_attribute
 |str
 |User entry attribute for full name

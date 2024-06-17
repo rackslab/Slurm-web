@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     and clusters pop over menu.
   - Merge account column with user column in jobs list, the account is now
     displayed between parenthesis.
-- docs: Update configuration reference documentation with new default values.
+- docs: Update configuration reference documentation.
 - pkgs: Add requirement on RFL >= 1.0.2.
 
 ### Fixed
