@@ -18,6 +18,7 @@ import jinja2
 
 from rfl.settings.definition import SettingsDefinition, SettingsDefinitionLoaderYaml
 
+
 def bases(obj):
     """Jinja2 Filter to list of parent classes names of an object."""
     return [_class.__name__ for _class in obj.__class__.__bases__]

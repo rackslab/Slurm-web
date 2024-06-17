@@ -17,6 +17,7 @@ from pathlib import Path
 import jinja2
 import yaml
 
+
 def bases(obj):
     """Jinja2 Filter to list of parent classes names of an object."""
     return [_class.__name__ for _class in obj.__class__.__bases__]
@@ -30,7 +31,7 @@ def main():
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(Path(__file__).parent))
     template = env.get_template("policy-actions.adoc.j2")
     output = template.render(
-        actions=content['actions'],
+        actions=content["actions"],
     )
     print(output)
 
