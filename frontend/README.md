@@ -29,3 +29,9 @@ npm run lint
 ```sh
 npm run type-check
 ```
+
+### Unit tests
+
+```sh
+npm run test:unit
+```
