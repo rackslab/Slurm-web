@@ -284,7 +284,7 @@ function updateCanvasDimensions() {
     // clear the timeout
     clearTimeout(timeout)
     // start timing for event "completion"
-    timeout = setTimeout(updateCanvas, delay)
+    timeout = window.setTimeout(updateCanvas, delay)
   }
 }
 

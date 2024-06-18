@@ -84,7 +84,7 @@ export function useClusterDataPoller<Type>(
     _stop = false
     await poll(cluster)
     if (cluster === runtime.currentCluster?.name && !_stop) {
-      _timeout = setTimeout(start, timeout, cluster)
+      _timeout = window.setTimeout(start, timeout, cluster)
     }
   }
 
