@@ -84,7 +84,6 @@ export function foldNodeset(nodeNames: string[]): string {
         node_ids.push(match[2])
       }
     })
-    console.log(`pattern: ${node_pattern} ids: ${node_ids}`)
 
     if (currentConsecutiveNodes && currentConsecutiveNodes.isNext(node_pattern, node_ids)) {
       currentConsecutiveNodes.addOne()
