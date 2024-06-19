@@ -111,6 +111,10 @@ async def get_cluster(agent):
 
             permissions = await response.json()
 
+        # Hide the cluster if the actions list is empty and ui.hide_denied is enabled.
+        if not len(permissions["actions"]) and current_app.settings.ui.hide_denied:
+            return None
+
         cluster = {"name": agent.cluster, "permissions": permissions}
 
         # If view-stats action is permitted on cluster, enrich response with
