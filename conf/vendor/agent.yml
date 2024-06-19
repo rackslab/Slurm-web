@@ -6,6 +6,7 @@ service:
     type: str
     required: true
     doc: Name of cluster served by agent
+    ex: atlas
   interface:
     type: str
     default: localhost
@@ -301,7 +302,10 @@ cache:
     doc: TCP port of Redis cache server
   password:
     type: str
-    doc: Password to connect to protected Redis server
+    doc: |
+      Password to connect to protected Redis server. When this parameter is
+      not defined, Redis server is accessed without password.
+    ex: SECR3T
   jobs:
     type: int
     default: 30

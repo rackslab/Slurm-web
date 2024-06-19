@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Handle jobs cancelled state with specific badge color (#295).
 - gateway: Add possibility to configure custom LDAP user name attribute in
   alternative to `uid` (#305).
+- conf: Add documentation precisions and examples in agent and gateway
+  configuration definitions.
 - docs:
   - Typo in slurmrestd service name in quick start guide.
   - Use consistent URL format for `curl` commands on `slurmrestd` Unix sockets.

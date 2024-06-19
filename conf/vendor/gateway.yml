@@ -50,6 +50,7 @@ ui:
   host:
     type: uri
     doc: Public URL to access the gateway component
+    ex: https://dashboard.corp.com/
   enabled:
     type: bool
     default: true
@@ -65,6 +66,9 @@ agents:
     content: uri
     required: true
     doc: List of Slurm-web agents URL
+    ex:
+    - https://cluster1/agent
+    - https://cluster2/agent
   version:
     type: str
     default: 3.0.0
@@ -93,7 +97,10 @@ ldap:
     ex: ldap://localhost
   cacert:
     type: path
-    doc: Path to CA certificate
+    doc: |
+      Path to CA certificate used to validate signature of LDAP server
+      certificate when using ldaps or STARTTLS protocols. When not defined, the
+      default system CA certificates is used.
     ex: /path/to/certificate.pem
   starttls:
     type: bool
@@ -125,15 +132,25 @@ ldap:
     doc: Group entry attribute for name
   bind_dn:
     type: str
-    doc: DN used to bind to the LDAP server
+    doc: |
+      DN used to bind to the LDAP server. When this parameter is not defined,
+      access to LDAP directory is performed anonymously.
     ex: cn=system,ou=people,dc=example,dc=org
   bind_password:
     type: str
-    doc: Password of bind DN
+    doc: |
+      Password of bind DN. This parameter is required when `bind_dn` is
+      defined.
+    ex: SECR3T
   restricted_groups:
     type: list
     content: str
-    doc: List of users groups allowed to connect
+    doc: |
+      List of users groups allowed to connect. When this parameter is not
+      defined, all users in LDAP directory are authorized to sign in.
+    ex:
+    - admins
+    - biology
 
 jwt:
   key:
