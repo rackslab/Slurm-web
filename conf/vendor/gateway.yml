@@ -59,6 +59,14 @@ ui:
     type: path
     default: /usr/share/slurm-web/frontend
     doc: Path to Slurm-web frontend application
+  hide_denied:
+    type: bool
+    default: false
+    doc: |
+      Control if users can see the list of denied clusters, ie. clusters on
+      which they do not have any permission. When false, these clusters are
+      visible and marked as denied for these users. When true, these clusters
+      are hidden to these users.
 
 agents:
   url:

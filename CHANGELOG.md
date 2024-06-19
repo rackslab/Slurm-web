@@ -11,12 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Display job priority in job details page (#300).
   - Display requested resources in jobs list (#297).
-- gateway: Retrieve list of clusters permissions and stats in parallel with
-  asynchronous requests (#304).
+- gateway:
+  - Retrieve list of clusters permissions and stats in parallel with
+    asynchronous requests (#304).
+  - Add possibility to hide the list of denied clusters on which users do not
+    have any permission (#296).
 - agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
   list responses.
-- conf: Add `ldap`>`user_name_attribute` parameter for the gateway.
 - docs: Add full gateway and agent configuration files examples.
+- conf:
+  - Add `ldap`>`user_name_attribute` parameter for the gateway.
+  - Add `ui`>`hide_denied` parameter for the gateway.
 
 ### Changed
 - frontend:
