@@ -1,0 +1,57 @@
+{%- if 'ui' in definition.sections | map(attribute='name') %}
+{%- set component = 'gateway' %}
+{%- else %}
+{%- set component = 'agent' %}
+{%- endif -%}
+# This file is an example for Slurm-web {{ component }} /etc/slurm-web/{{ component }}.ini
+#
+# Please note this example file contains values for all parameters but most
+# parameters are actually optional. You should define only the sections and
+# parameters that are either really required or those for which you want to
+# override default value.
+{%- for section in definition.sections %}
+
+[{{ section.name }}]
+{%- for parameter in section.parameters %}
+
+# {{ parameter.doc | wordwrap(wrapstring='\n# ')}}
+{%- if parameter.choices %}
+#
+# Possible values:
+{%- for choice in parameter.choices %}
+# - {{ choice }}
+{%- endfor %}
+{%- endif %}
+{%- if parameter.default %}
+{%- set default = parameter.default %}
+{%- if parameter._type == "bool" %}
+{%- set default = "yes" if default == True else "no" %}
+{%- endif %}
+#
+{%- if default.__class__.__name__ == 'list' %}
+{%- set default = "# - " + default | join('\n# - ') %}
+# Default value:
+{{ default }}
+{%- else %}
+# Default value: {{ default }}
+{%- endif %}
+{%- endif %}
+{%- if parameter.required %}
+#
+# This parameter is required.
+{%- endif %}
+
+{%- if parameter.example %}
+{%- set value = parameter.example %}
+{%- else %}
+{%- set value = parameter.default %}
+{%- endif %}
+{%- if parameter._type == "bool" %}
+{%- set value = "yes" if value == True else "no" %}
+{%- endif %}
+{%- if value.__class__.__name__ == 'list' %}
+{%- set value = "\n  " + value | join('\n  ') %}
+{%- endif %}
+{{ parameter.name }}={{ value }}
+{%- endfor %}
+{%- endfor %}
