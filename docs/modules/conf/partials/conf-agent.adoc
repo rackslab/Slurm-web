@@ -20,6 +20,8 @@
 |Name of cluster served by agent
 
 
+*Example:* `atlas`
+
 
 _No default value_
 
@@ -702,8 +704,12 @@ permitted actions
 
 |password
 |str
-|Password to connect to protected Redis server
+|Password to connect to protected Redis server. When this parameter is
+not defined, Redis server is accessed without password.
 
+
+
+*Example:* `SECR3T`
 
 
 _No default value_

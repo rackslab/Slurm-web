@@ -130,6 +130,8 @@ flags.
 |Public URL to access the gateway component
 
 
+*Example:* `https://dashboard.corp.com/`
+
 
 _No default value_
 
@@ -173,6 +175,8 @@ _No default value_
 |list[uri]
 |List of Slurm-web agents URL
 
+
+*Example:* `['https://cluster1/agent', 'https://cluster2/agent']`
 
 
 _No default value_
@@ -266,7 +270,10 @@ _No default value_
 
 |cacert
 |path
-|Path to CA certificate
+|Path to CA certificate used to validate signature of LDAP server
+certificate when using ldaps or STARTTLS protocols. When not defined, the
+default system CA certificates is used.
+
 
 
 *Example:* `/path/to/certificate.pem`
@@ -357,7 +364,9 @@ _No default value_
 
 |bind_dn
 |str
-|DN used to bind to the LDAP server
+|DN used to bind to the LDAP server. When this parameter is not defined,
+access to LDAP directory is performed anonymously.
+
 
 
 *Example:* `cn=system,ou=people,dc=example,dc=org`
@@ -369,8 +378,12 @@ _No default value_
 
 |bind_password
 |str
-|Password of bind DN
+|Password of bind DN. This parameter is required when `bind_dn` is
+defined.
 
+
+
+*Example:* `SECR3T`
 
 
 _No default value_
@@ -379,8 +392,12 @@ _No default value_
 
 |restricted_groups
 |list[str]
-|List of users groups allowed to connect
+|List of users groups allowed to connect. When this parameter is not
+defined, all users in LDAP directory are authorized to sign in.
 
+
+
+*Example:* `['admins', 'biology']`
 
 
 _No default value_
