@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: Add `cpus` and `node_count` fields as provided by `slurmrestd` in jobs
   list responses.
 - conf: Add `ldap`>`user_name_attribute` parameter for the gateway.
+- docs: Add full gateway and agent configuration files examples.
 
 ### Changed
 - frontend:

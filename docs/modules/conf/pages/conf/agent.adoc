@@ -3,7 +3,23 @@
 Slurm-web agent can be configured in INI file
 [.path]#`/etc/slurm-web/agent.ini`#.
 
-This page contains the reference description of all configuration parameters
-that can be defined in this file, grouped by sections.
+This page contains the <<sections,reference documentation>> of all configuration
+parameters that can be defined in this file, grouped by sections, and a
+<<example,full example>> of this configuration file.
 
-include::partial$conf-agent.adoc[]
+[#sections]
+== Sections
+
+include::partial$conf-agent.adoc[leveloffset=+1]
+
+[#example]
+== Example
+
+NOTE: This example file is also installed in Slurm-web agent distribution
+packages at [.path]#`/usr/share/doc/slurm-web-agent/examples/agent.ini`#.
+
+.Complete example of Slurm-web agent configuration file
+[,ini]
+----
+include::example$agent.ini[]
+----

@@ -3,7 +3,24 @@
 Slurm-web gateway can be configured in INI file
 [.path]#`/etc/slurm-web/gateway.ini`#.
 
-This page contains the reference description of all configuration parameters
-that can be defined in this file, grouped by sections.
+This page contains the <<sections,reference documentation>> of all configuration
+parameters that can be defined in this file, grouped by sections, and a
+<<example,full example>> of this configuration file.
 
-include::partial$conf-gateway.adoc[]
+[#sections]
+== Sections
+
+include::partial$conf-gateway.adoc[leveloffset=+1]
+
+[#example]
+== Example
+
+NOTE: This example file is also installed in Slurm-web gateway
+xref:install:install/distribs/index.adoc[distribution packages] at
+[.path]#`/usr/share/doc/slurm-web-gateway/examples/gateway.ini`#.
+
+.Complete example of Slurm-web gateway configuration file
+[,ini]
+----
+include::example$gateway.ini[]
+----
