@@ -49,7 +49,10 @@ function representDuration(start: number, end: number): string {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" title="Reservations">
+  <ClusterMainLayout
+    :cluster="props.cluster"
+    :breadcrumbDetails="[{ titleView: 'Reservations', routeName: 'reservations' }]"
+  >
     <div class="mx-auto flex items-center justify-between">
       <div class="px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">Reservations</h1>

@@ -269,7 +269,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" title="Jobs">
+  <ClusterMainLayout
+    :cluster="props.cluster"
+    :breadcrumbDetails="[{ titleView: 'Jobs', routeName: 'jobs' }]"
+  >
     <div class="bg-white">
       <JobsFiltersPanel :cluster="props.cluster" :nb-jobs="sortedJobs.length" />
       <div class="mx-auto flex items-center justify-between">
