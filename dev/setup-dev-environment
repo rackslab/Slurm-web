@@ -211,6 +211,7 @@ class SlurmwebAgent:
                     policy_path=self.policy_path,
                     redis_port=self.forwards["redis"].local,
                     redis_password=redis_password,
+                    db_path=tmpdir / f"job-templates-{self.name}.db"
                 )
             )
 
