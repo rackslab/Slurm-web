@@ -49,7 +49,10 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="cluster" :title="`Node ${nodeName}`">
+  <ClusterMainLayout
+    :cluster="cluster"
+    :breadcrumb="[{ title: 'Resources', routeName: 'resources' }, { title: `Node ${nodeName}` }]"
+  >
     <button
       @click="backToResources()"
       type="button"
