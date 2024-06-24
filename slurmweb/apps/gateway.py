@@ -35,7 +35,6 @@ class SlurmwebAgent:
 
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
-
     NAME = "slurm-web-gateway"
     SITE_CONFIGURATION = "/etc/slurm-web/gateway.ini"
     SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/gateway.yml"
