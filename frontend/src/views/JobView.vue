@@ -45,7 +45,13 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="cluster" :title="`Job ${id}`">
+  <ClusterMainLayout
+    :cluster="cluster"
+    :breadcrumbDetails="[
+      { titleView: 'Jobs', routeName: 'jobs' },
+      { titleView: `Job ${id}`, routeName: 'job' }
+    ]"
+  >
     <button
       @click="backToJobs()"
       type="button"

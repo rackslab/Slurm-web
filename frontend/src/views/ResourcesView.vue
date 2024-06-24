@@ -166,7 +166,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" title="Resources">
+  <ClusterMainLayout
+    :cluster="props.cluster"
+    :breadcrumbDetails="[{ titleView: 'Resources', routeName: 'resources' }]"
+  >
     <div class="bg-white">
       <ResourcesFiltersPanel :cluster="props.cluster" :nbNodes="filteredNodes.length" />
 
