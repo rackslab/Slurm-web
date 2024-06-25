@@ -14,6 +14,7 @@ from rfl.web.tokens import rbac_action, check_jwt
 from ..version import get_version
 from ..errors import SlurmwebCacheError, SlurmwebRestdError
 from . import SlurmrestdUnixAdapter
+from ..db.models import Templates
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
@@ -360,3 +361,8 @@ def reservations():
 @rbac_action("view-accounts")
 def accounts():
     return jsonify(_cached_accounts())
+
+
+def templates():
+    lstTemplates = list(Templates.select().dicts())
+    return jsonify(lstTemplates)
