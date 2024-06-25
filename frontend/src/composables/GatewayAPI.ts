@@ -254,6 +254,12 @@ export interface ClusterReservation {
   flags: string[]
 }
 
+export interface Template {
+  id: number
+  name: string
+  description: string
+}
+
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
   if (!optionalNumber.set) {
     return '-'
@@ -350,7 +356,8 @@ const GatewayClusterAPIKeys = [
   'partitions',
   'qos',
   'reservations',
-  'accounts'
+  'accounts',
+  'templates'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
@@ -520,6 +527,10 @@ export function useGatewayAPI() {
     return await get<AccountDescription[]>(`/agents/${cluster}/accounts`)
   }
 
+  async function templates(cluster: string): Promise<Array<Template>> {
+    return await get<Template[]>(`/agents/${cluster}/templates`)
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     width: number,
@@ -592,6 +603,7 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    templates,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,
