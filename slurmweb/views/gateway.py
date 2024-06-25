@@ -323,3 +323,9 @@ def ui_files(name="index.html"):
         return current_app.send_static_file(name)
     else:
         return current_app.send_static_file("index.html")
+
+
+@check_jwt
+@validate_cluster
+def templates(cluster: str):
+    return proxy_agent(cluster, "templates", request.token)
