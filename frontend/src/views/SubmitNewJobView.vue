@@ -8,13 +8,24 @@
 
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
-import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import { ref, onMounted } from 'vue'
+import type { Template } from '@/composables/GatewayAPI'
+import type { Ref } from 'vue'
+
+const gateway = useGatewayAPI()
+const templates: Ref<Array<Template>> = ref([])
 
 const props = defineProps({
   cluster: {
     type: String,
     required: true
   }
+})
+
+onMounted(async () => {
+  templates.value = await gateway.templates(props.cluster)
 })
 </script>
 
@@ -29,5 +40,39 @@ const props = defineProps({
         Back to jobs
       </button></router-link
     >
+
+    <div class="mt-8 flex flex-col items-center">
+      <div class="ml-5 text-left">
+        <p class="text-3xl font-bold tracking-tight text-gray-900">Submit new job</p>
+        <p class="mt-4 max-w-xl text-sm font-light text-gray-600">
+          Select a template to submit a new job
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-6">
+          <div
+            v-for="template in templates"
+            :key="template.id"
+            class="flex flex-col rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 sm:w-[400px] md:w-[400px] lg:w-[400px]"
+          >
+            <div class="m-10">
+              <div class="flex h-fit">
+                <h3 class="text-sm font-medium text-gray-900">{{ template.name }}</h3>
+              </div>
+              <p class="mt-5 text-sm text-gray-500">{{ template.description }}</p>
+            </div>
+            <div class="flex-grow"></div>
+
+            <div class="w-full border-t border-gray-200 dark:border-gray-700">
+              <button
+                class="flex w-full items-center justify-center rounded-b-lg py-3 font-medium transition duration-200 ease-in-out hover:bg-slurmweb hover:text-white dark:bg-gray-700"
+              >
+                Select
+                <ChevronRightIcon class="ml-1 h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </ClusterMainLayout>
 </template>
