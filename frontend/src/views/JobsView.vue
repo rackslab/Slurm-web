@@ -279,6 +279,17 @@ onMounted(() => {
         </div>
 
         <div v-if="loaded" class="mt-4 text-right text-gray-600">
+          <div class="pb-5">
+            <router-link :to="{ name: 'submit-new-job' }"
+              ><button
+                type="button"
+                class="inline-flex items-center gap-x-1.5 rounded-md bg-slurmweb px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-darker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb"
+              >
+                <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                New job
+              </button></router-link
+            >
+          </div>
           <div class="text-5xl font-bold">{{ sortedJobs.length }}</div>
           <div class="text-sm font-light">job{{ sortedJobs.length > 1 ? 's' : '' }} found</div>
         </div>
