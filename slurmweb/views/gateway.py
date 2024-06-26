@@ -329,3 +329,9 @@ def ui_files(name="index.html"):
 @validate_cluster
 def templates(cluster: str):
     return proxy_agent(cluster, "templates", request.token)
+
+
+@check_jwt
+@validate_cluster
+def inputs(cluster: str):
+    return proxy_agent(cluster, "inputs", request.token)
