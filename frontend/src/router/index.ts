@@ -25,6 +25,7 @@ import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
 import SubmitNewJobView from '@/views/SubmitNewJobView.vue'
+import JobConfigurationView from '@/views/JobConfigurationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -101,6 +102,15 @@ const router = createRouter({
       path: '/:cluster/jobs/submit-new-job',
       name: 'submit-new-job',
       component: SubmitNewJobView,
+      props: true,
+      meta: {
+        entry: 'jobs'
+      }
+    },
+    {
+      path: '/:cluster/jobs/submit-new-job/:idTemplate',
+      name: 'job-configuration',
+      component: JobConfigurationView,
       props: true,
       meta: {
         entry: 'jobs'
