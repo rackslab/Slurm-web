@@ -9,6 +9,12 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { onMounted, ref } from 'vue'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import type { Ref } from 'vue'
+
+const gateway = useGatewayAPI()
+const selectedTemplate: Ref<Record<string, string>> = ref({})
 
 const props = defineProps({
   cluster: {
@@ -19,6 +25,17 @@ const props = defineProps({
     type: String,
     required: true
   }
+})
+
+onMounted(async () => {
+  let getTemplates = await gateway.templates(props.cluster)
+
+  getTemplates.forEach((template) => {
+    if (template.id == Number(props.idTemplate)) {
+      selectedTemplate.value['name'] = template.name
+      selectedTemplate.value['description'] = template.description
+    }
+  })
 })
 </script>
 
@@ -33,5 +50,14 @@ const props = defineProps({
         Back to templates
       </button></router-link
     >
+
+    <div class="mt-8 flex flex-col items-center">
+      <div class="ml-5 text-left">
+        <p class="text-3xl font-bold tracking-tight text-gray-900">{{ selectedTemplate.name }}</p>
+        <p class="mt-4 max-w-xl text-sm font-light text-gray-600">
+          {{ selectedTemplate.description }}
+        </p>
+      </div>
+    </div>
   </ClusterMainLayout>
 </template>
