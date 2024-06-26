@@ -21,7 +21,7 @@ from ..slurmrestd.errors import (
 )
 from ..errors import SlurmwebCacheError, SlurmwebRestdError
 from . import SlurmrestdUnixAdapter
-from ..db.models import Templates
+from ..db.models import Templates, Inputs
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
@@ -162,3 +162,8 @@ def accounts():
 def templates():
     lstTemplates = list(Templates.select().dicts())
     return jsonify(lstTemplates)
+
+
+def inputs():
+    lstInputs = list(Inputs.select().dicts())
+    return jsonify(lstInputs)
