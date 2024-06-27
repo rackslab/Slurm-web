@@ -75,12 +75,14 @@ onMounted(async () => {
           <p class="mt-1 pl-5 text-sm text-gray-500">{{ input.default }}</p>
         </div>
         <div class="flex justify-end">
-          <button
-            type="button"
-            class="text-blck mb-16 mt-8 inline-flex w-20 justify-center gap-x-2 rounded-md bg-gray-200 px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+          <router-link :to="{ name: 'submit-new-job' }"
+            ><button
+              type="button"
+              class="text-blck mb-16 mt-8 inline-flex w-20 justify-center gap-x-2 rounded-md bg-gray-200 px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            >
+              Cancel
+            </button></router-link
           >
-            Cancel
-          </button>
           <button
             type="button"
             class="mb-16 ml-5 mt-8 inline-flex w-20 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
