@@ -1,5 +1,5 @@
 = Troubleshooting
-:version: 3.0.0
+:version: 3.1.0
 :slurm-api-version:
 
 This page contains troubleshooting tips to help find out the reason of issues.

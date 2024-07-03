@@ -205,7 +205,7 @@ _No default value_
 
 
 
-*Default:* `3.0.0`
+*Default:* `3.1.0`
 
 |-
 

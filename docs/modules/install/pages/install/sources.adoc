@@ -13,11 +13,11 @@ Download Slurm-web source code:
 $ git clone https://github.com/rackslab/slurm-web.git
 ----
 
-* From release source archive, for example `v3.0.0`:
+* From release source archive, for example `v3.1.0`:
 +
 [source,console]
 ----
-$ curl -L https://github.com/rackslab/slurm-web/archive/refs/tags/v3.0.0.tar.gz | tar -xzf-
+$ curl -L https://github.com/rackslab/slurm-web/archive/refs/tags/v3.1.0.tar.gz | tar -xzf-
 ----
 
 Move into the source tree and install Slurm-web and Python packages dependencies
