@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/vue/20/solid'
+import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { ref, onMounted } from 'vue'
 import type { Template } from '@/composables/GatewayAPI'
@@ -75,6 +76,15 @@ onMounted(async () => {
                 Edit
               </button>
             </div>
+          </div>
+          <div class="flex items-center">
+            <button
+              type="button"
+              class="relative flex w-full flex-col items-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-slurmweb focus:ring-offset-2 sm:w-[400px] md:w-[400px] lg:w-[400px]"
+            >
+              <PlusCircleIcon class="h-14 w-14 text-slurmweb" />
+              <span class="mt-2 block text-sm font-medium text-gray-900">Create new template</span>
+            </button>
           </div>
         </div>
       </div>
