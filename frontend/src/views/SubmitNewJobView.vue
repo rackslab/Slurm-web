@@ -30,7 +30,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" title="Submit new job">
+  <ClusterMainLayout
+    :cluster="props.cluster"
+    :breadcrumb="[{ title: 'Jobs', routeName: 'jobs' }, { title: 'Submit new job' }]"
+  >
     <router-link :to="{ name: 'jobs' }"
       ><button
         type="button"
