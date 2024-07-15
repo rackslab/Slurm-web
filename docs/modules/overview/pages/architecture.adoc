@@ -71,7 +71,8 @@ performed with HTTP protocol over a Unix socket.
 
 NOTE: Slurm `slurmrestd` supports incoming connections on TCP/IP sockets but
 this configuration is not yet supported by Slurm-web. This is currently a
-limitation in Slurm-web that might change in the future.
+limitation in Slurm-web that might change in the future (see
+https://github.com/rackslab/Slurm-web/issues/313[#313]).
 
 Slurm components communicates with specific binary RPC protocol over TCP/IP
 sockets. Communications between the *agent* and Slurm components are secured
