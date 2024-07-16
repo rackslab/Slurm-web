@@ -82,7 +82,6 @@ class SlurmwebGenericApp:
 
 
 class SlurmwebWebApp(SlurmwebGenericApp, Flask):
-
     VIEWS = set()
 
     def __init__(self, seed: SlurmwebConfSeed):
