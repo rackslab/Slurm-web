@@ -30,7 +30,7 @@ from racksdb import RacksDB
 
 from slurmweb.db.models import (
     Templates,
-    Types,
+    Input_types,
     Inputs,
     Template_users_logins,
     Template_users_accounts,
@@ -82,9 +82,9 @@ def insert_data(tmpdir, agentName):
         description="Simulate weather patterns using real-time data and predictive models",
     )
 
-    type_float, _ = Types.get_or_create(name="float")
-    type_string, _ = Types.get_or_create(name="string")
-    type_int, _ = Types.get_or_create(name="int")
+    type_float, _ = Input_types.get_or_create(name="float")
+    type_string, _ = Input_types.get_or_create(name="string")
+    type_int, _ = Input_types.get_or_create(name="int")
 
     # input template1
     input1_t1, _ = Inputs.get_or_create(
