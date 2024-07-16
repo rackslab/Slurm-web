@@ -335,3 +335,9 @@ def templates(cluster: str):
 @validate_cluster
 def inputs(cluster: str):
     return proxy_agent(cluster, "inputs", request.token)
+
+
+@check_jwt
+@validate_cluster
+def input_types(cluster: str):
+    return proxy_agent(cluster, "input-types", request.token)
