@@ -14,7 +14,7 @@ from rfl.web.tokens import rbac_action, check_jwt
 from ..version import get_version
 from ..errors import SlurmwebCacheError, SlurmwebRestdError
 from . import SlurmrestdUnixAdapter
-from ..db.models import Templates, Inputs
+from ..db.models import Templates, Inputs, Input_types
 
 
 logger = logging.getLogger(__name__)
@@ -300,3 +300,8 @@ def templates():
 def inputs():
     lstInputs = list(Inputs.select().dicts())
     return jsonify(lstInputs)
+
+
+def input_types():
+    lstInputTypes = list(Input_types.select().dicts())
+    return jsonify(lstInputTypes)
