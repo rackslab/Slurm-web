@@ -16,7 +16,7 @@ def create_db(path):
         db.create_tables(
             [
                 Templates,
-                Types,
+                Input_types,
                 Inputs,
                 Template_developers_logins,
                 Template_developers_accounts,
@@ -36,7 +36,7 @@ class Templates(BaseModel):
     description = CharField(max_length=100)
 
 
-class Types(BaseModel):
+class Input_types(BaseModel):
     name = CharField(max_length=50)
 
 
@@ -48,7 +48,7 @@ class Inputs(BaseModel):
     maxVal = FloatField(null=True)
     regex = CharField(null=True, max_length=100)
     template = ForeignKeyField(Templates, backref="inputs")
-    type = ForeignKeyField(Types, backref="inputs")
+    type = ForeignKeyField(Input_types, backref="inputs")
 
 
 class Template_users_logins(BaseModel):
