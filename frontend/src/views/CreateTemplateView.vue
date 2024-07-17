@@ -8,13 +8,47 @@
 
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
-import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { ref, onMounted } from 'vue'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxLabel,
+  ListboxOption,
+  ListboxOptions
+} from '@headlessui/vue'
+import { CheckIcon, ChevronUpDownIcon, PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import type {
+  UserAccount,
+  UserLogin,
+  DeveloperAccount,
+  DeveloperLogin
+} from '@/composables/GatewayAPI'
+import type { Ref } from 'vue'
+
+const gateway = useGatewayAPI()
+const userAccounts: Ref<Array<UserAccount>> = ref([])
+const userLogins: Ref<Array<UserLogin>> = ref([])
+const developerAccounts: Ref<Array<DeveloperAccount>> = ref([])
+const developerLogins: Ref<Array<DeveloperLogin>> = ref([])
+
+const selectedUserAccounts = ref([])
+const selectedUserLogins = ref([])
+const selectedDeveloperAccounts = ref([])
+const selectedDeveloperLogins = ref([])
 
 const props = defineProps({
   cluster: {
     type: String,
     required: true
   }
+})
+
+onMounted(async () => {
+  userAccounts.value = await gateway.user_accounts(props.cluster)
+  userLogins.value = await gateway.user_logins(props.cluster)
+  developerAccounts.value = await gateway.developer_accounts(props.cluster)
+  developerLogins.value = await gateway.developer_logins(props.cluster)
 })
 </script>
 
@@ -36,5 +70,401 @@ const props = defineProps({
         Back to templates
       </button></router-link
     >
+
+    <!-- form -->
+    <div class="mt-8 flex flex-col items-center">
+      <div class="ml-5 text-left">
+        <p class="text-3xl font-bold tracking-tight text-gray-900">Create template</p>
+
+        <p class="pt-10 text-right"><span class="text-slurmweb-red">*</span>required fields</p>
+
+        <div class="flex items-center">
+          <div class="w-[250px]">
+            <label for="templateName" class="text-sm font-medium text-gray-900"
+              >Name<span class="text-slurmweb-red">*</span></label
+            >
+            <p class="mt-1 text-sm text-gray-500">Name of the template</p>
+          </div>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            <input
+              type="text"
+              name="templateName"
+              id="templateName"
+              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center pt-5">
+          <div class="w-[250px]">
+            <label for="templateDescription" class="text-sm font-medium text-gray-900"
+              >Description</label
+            >
+            <p class="mt-1 text-sm text-gray-500">Long description of the template</p>
+          </div>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            <input
+              type="text"
+              name="templateDescription"
+              id="templateDescription"
+              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            />
+          </div>
+        </div>
+
+        <hr class="my-5 border-gray-500" />
+
+        <!--Users section -->
+        <p class="text-sm font-medium text-gray-900">
+          Users<span class="text-slurmweb-red">*</span>
+        </p>
+        <p class="mt-1 text-sm text-gray-500">Users who can use the template</p>
+
+        <!-- user accounts -->
+        <Listbox as="div" v-model="selectedUserAccounts" class="flex pt-5" multiple>
+          <div class="w-[250px]">
+            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
+              >Accounts</ListboxLabel
+            >
+            <p class="mt-1 text-sm text-gray-500">Select users by account</p>
+          </div>
+          <div class="relative mt-2">
+            <ListboxButton
+              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            >
+              <span class="flex items-center">
+                <span class="block truncate">{{
+                  selectedUserAccounts.map((userAccount) => userAccount).join(', ')
+                }}</span>
+              </span>
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
+              >
+                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </span>
+            </ListboxButton>
+
+            <transition
+              leave-active-class="transition ease-in duration-100"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ListboxOptions
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              >
+                <ListboxOption
+                  as="template"
+                  v-for="userAccount in userAccounts"
+                  :key="userAccount.id"
+                  :value="userAccount.name"
+                  v-slot="{ active, selected }"
+                >
+                  <li
+                    :class="[
+                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
+                      'relative cursor-default select-none py-2 pl-3 pr-9'
+                    ]"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
+                        >{{ userAccount.name }}</span
+                      >
+                    </div>
+
+                    <span
+                      v-if="selected"
+                      :class="[
+                        active ? 'text-white' : 'text-indigo-600',
+                        'absolute inset-y-0 right-0 flex items-center pr-4'
+                      ]"
+                    >
+                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </li>
+                </ListboxOption>
+              </ListboxOptions>
+            </transition>
+          </div>
+        </Listbox>
+
+        <!--user logins-->
+        <Listbox as="div" v-model="selectedUserLogins" class="flex pt-5" multiple>
+          <div class="w-[250px]">
+            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
+              >Logins</ListboxLabel
+            >
+            <p class="mt-1 text-sm text-gray-500">Select users by login or name</p>
+          </div>
+          <div class="relative mt-2">
+            <ListboxButton
+              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            >
+              <span class="flex items-center">
+                <span class="block truncate">{{
+                  selectedUserLogins.map((userLogin) => userLogin).join(', ')
+                }}</span>
+              </span>
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
+              >
+                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </span>
+            </ListboxButton>
+
+            <transition
+              leave-active-class="transition ease-in duration-100"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ListboxOptions
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              >
+                <ListboxOption
+                  as="template"
+                  v-for="userLogin in userLogins"
+                  :key="userLogin.id"
+                  :value="userLogin"
+                  v-slot="{ active, selected }"
+                >
+                  <li
+                    :class="[
+                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
+                      'relative cursor-default select-none py-2 pl-3 pr-9'
+                    ]"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
+                        >{{ userLogin.name }}</span
+                      >
+                    </div>
+
+                    <span
+                      v-if="selected"
+                      :class="[
+                        active ? 'text-white' : 'text-indigo-600',
+                        'absolute inset-y-0 right-0 flex items-center pr-4'
+                      ]"
+                    >
+                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </li>
+                </ListboxOption>
+              </ListboxOptions>
+            </transition>
+          </div>
+        </Listbox>
+
+        <hr class="my-5 border-gray-500" />
+
+        <!--developers section -->
+        <p class="text-sm font-medium text-gray-900">
+          Developers<span class="text-slurmweb-red">*</span>
+        </p>
+        <p class="mt-1 text-sm text-gray-500">Developers who can edit the template</p>
+
+        <!-- developer accounts -->
+        <Listbox as="div" v-model="selectedDeveloperAccounts" class="flex pt-5" multiple>
+          <div class="w-[250px]">
+            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
+              >Accounts</ListboxLabel
+            >
+            <p class="mt-1 text-sm text-gray-500">Select developers by account</p>
+          </div>
+          <div class="relative mt-2">
+            <ListboxButton
+              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            >
+              <span class="flex items-center">
+                <span class="block truncate">{{
+                  selectedDeveloperAccounts.map((developerAccount) => developerAccount).join(', ')
+                }}</span>
+              </span>
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
+              >
+                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </span>
+            </ListboxButton>
+
+            <transition
+              leave-active-class="transition ease-in duration-100"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ListboxOptions
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              >
+                <ListboxOption
+                  as="template"
+                  v-for="developerAccount in developerAccounts"
+                  :key="developerAccount.id"
+                  :value="developerAccount.name"
+                  v-slot="{ active, selected }"
+                >
+                  <li
+                    :class="[
+                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
+                      'relative cursor-default select-none py-2 pl-3 pr-9'
+                    ]"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
+                        >{{ developerAccount.name }}</span
+                      >
+                    </div>
+
+                    <span
+                      v-if="selected"
+                      :class="[
+                        active ? 'text-white' : 'text-indigo-600',
+                        'absolute inset-y-0 right-0 flex items-center pr-4'
+                      ]"
+                    >
+                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </li>
+                </ListboxOption>
+              </ListboxOptions>
+            </transition>
+          </div>
+        </Listbox>
+
+        <!--developer logins-->
+        <Listbox as="div" v-model="selectedDeveloperLogins" class="flex pt-5" multiple>
+          <div class="w-[250px]">
+            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
+              >Logins</ListboxLabel
+            >
+            <p class="mt-1 text-sm text-gray-500">Select developers by login or name</p>
+          </div>
+          <div class="relative mt-2">
+            <ListboxButton
+              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+            >
+              <span class="flex items-center">
+                <span class="block truncate">{{
+                  selectedDeveloperLogins.map((developerLogin) => developerLogin).join(', ')
+                }}</span>
+              </span>
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
+              >
+                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </span>
+            </ListboxButton>
+
+            <transition
+              leave-active-class="transition ease-in duration-100"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ListboxOptions
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              >
+                <ListboxOption
+                  as="template"
+                  v-for="developerLogin in developerLogins"
+                  :key="developerLogin.id"
+                  :value="developerLogin"
+                  v-slot="{ active, selected }"
+                >
+                  <li
+                    :class="[
+                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
+                      'relative cursor-default select-none py-2 pl-3 pr-9'
+                    ]"
+                  >
+                    <div class="flex items-center">
+                      <span
+                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
+                        >{{ developerLogin.name }}</span
+                      >
+                    </div>
+
+                    <span
+                      v-if="selected"
+                      :class="[
+                        active ? 'text-white' : 'text-indigo-600',
+                        'absolute inset-y-0 right-0 flex items-center pr-4'
+                      ]"
+                    >
+                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </li>
+                </ListboxOption>
+              </ListboxOptions>
+            </transition>
+          </div>
+        </Listbox>
+
+        <!--inputs section-->
+        <div class="pt-14">
+          <table class="w-full border-b border-gray-500 text-center">
+            <thead>
+              <tr>
+                <th class="pb-3">Input name<span class="text-slurmweb-red">*</span></th>
+                <th class="pb-3">Description</th>
+                <th class="pb-3">Type<span class="text-slurmweb-red">*</span></th>
+                <th class="pb-3">Default</th>
+                <th class="pb-3">Constraints</th>
+              </tr>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+          <router-link :to="{ name: 'create-input' }"
+            ><button
+              type="button"
+              class="my-5 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            >
+              <PlusIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              Add input
+            </button></router-link
+          >
+        </div>
+
+        <!--script batch section-->
+        <div class="flex flex-col pt-14">
+          <div class="w-[250px]">
+            <label for="scriptBatch" class="text-sm font-medium text-gray-900"
+              >Batch script<span class="text-slurmweb-red">*</span></label
+            >
+            <p class="mt-1 text-sm text-gray-500">Script executed by the job</p>
+          </div>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            <textarea
+              name="scriptBatch"
+              id="scriptBatch"
+              cols="20"
+              rows="10"
+              class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
+            >
+            </textarea>
+          </div>
+
+          <!--buttons-->
+          <div class="flex justify-end">
+            <router-link :to="{ name: 'templates' }"
+              ><button
+                type="button"
+                class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+              >
+                Cancel
+              </button></router-link
+            >
+
+            <button
+              type="button"
+              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </ClusterMainLayout>
 </template>
