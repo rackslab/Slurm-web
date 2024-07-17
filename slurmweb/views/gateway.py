@@ -341,3 +341,27 @@ def inputs(cluster: str):
 @validate_cluster
 def input_types(cluster: str):
     return proxy_agent(cluster, "input-types", request.token)
+
+
+@check_jwt
+@validate_cluster
+def user_accounts(cluster: str):
+    return proxy_agent(cluster, "user-accounts", request.token)
+
+
+@check_jwt
+@validate_cluster
+def user_logins(cluster: str):
+    return proxy_agent(cluster, "user-logins", request.token)
+
+
+@check_jwt
+@validate_cluster
+def developer_accounts(cluster: str):
+    return proxy_agent(cluster, "developer-accounts", request.token)
+
+
+@check_jwt
+@validate_cluster
+def developer_logins(cluster: str):
+    return proxy_agent(cluster, "developer-logins", request.token)
