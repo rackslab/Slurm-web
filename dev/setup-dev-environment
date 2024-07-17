@@ -220,27 +220,12 @@ def insert_data(tmpdir, agentName):
         template=template3,
         type=type_string,
     )
-
-    # Génération des logins et comptes pour template1
-    for i in range(4):
-        Template_users_logins.create(name=user_logins[i], template=template1)
-        Template_users_accounts.create(name=user_accounts[i], template=template1)
-        Template_developers_logins.create(name=dev_logins[i], template=template1)
-        Template_developers_accounts.create(name=dev_accounts[i], template=template1)
-
-    # Génération des logins et comptes pour template2
-    for i in range(4):
-        Template_users_logins.create(name=user_logins[i], template=template2)
-        Template_users_accounts.create(name=user_accounts[i], template=template2)
-        Template_developers_logins.create(name=dev_logins[i], template=template2)
-        Template_developers_accounts.create(name=dev_accounts[i], template=template2)
-
-    # Génération des logins et comptes pour template3
-    for i in range(4):
-        Template_users_logins.create(name=user_logins[i], template=template3)
-        Template_users_accounts.create(name=user_accounts[i], template=template3)
-        Template_developers_logins.create(name=dev_logins[i], template=template3)
-        Template_developers_accounts.create(name=dev_accounts[i], template=template3)
+    
+    for i in range(3):
+        Template_users_logins.create(name=user_logins[i], template=f"template{i}")
+        Template_users_accounts.create(name=user_accounts[i], template=f"template{i}")
+        Template_developers_logins.create(name=dev_logins[i], template=f"template{i}")
+        Template_developers_accounts.create(name=dev_accounts[i], template=f"template{i}")
 
 
 @dataclass
