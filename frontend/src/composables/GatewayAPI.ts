@@ -278,6 +278,30 @@ export interface InputType {
   name: string
 }
 
+export interface UserAccount {
+  id: number
+  name: string
+  idTemplate: number
+}
+
+export interface UserLogin {
+  id: number
+  name: string
+  idTemplate: number
+}
+
+export interface DeveloperAccount {
+  id: number
+  name: string
+  idTemplate: number
+}
+
+export interface DeveloperLogin {
+  id: number
+  name: string
+  idTemplate: number
+}
+
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
   if (!optionalNumber.set) {
     return '-'
@@ -377,7 +401,11 @@ const GatewayClusterAPIKeys = [
   'accounts',
   'templates',
   'inputs',
-  'input-types'
+  'input_types',
+  'user_accounts',
+  'user_logins',
+  'developer_accounts',
+  'developer_logins'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
@@ -559,6 +587,22 @@ export function useGatewayAPI() {
     return await get<InputType[]>(`/agents/${cluster}/input-types`)
   }
 
+  async function user_accounts(cluster: string): Promise<Array<UserAccount>> {
+    return await get<UserAccount[]>(`/agents/${cluster}/user-accounts`)
+  }
+
+  async function user_logins(cluster: string): Promise<Array<UserLogin>> {
+    return await get<UserLogin[]>(`/agents/${cluster}/user-logins`)
+  }
+
+  async function developer_accounts(cluster: string): Promise<Array<DeveloperAccount>> {
+    return await get<DeveloperAccount[]>(`/agents/${cluster}/developer-accounts`)
+  }
+
+  async function developer_logins(cluster: string): Promise<Array<DeveloperLogin>> {
+    return await get<DeveloperLogin[]>(`/agents/${cluster}/developer-logins`)
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     infrastructure: string,
@@ -635,6 +679,10 @@ export function useGatewayAPI() {
     templates,
     inputs,
     input_types,
+    user_accounts,
+    user_logins,
+    developer_accounts,
+    developer_logins,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,
