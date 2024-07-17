@@ -224,7 +224,7 @@ onMounted(async () => {
                   as="template"
                   v-for="userLogin in userLogins"
                   :key="userLogin.id"
-                  :value="userLogin"
+                  :value="userLogin.name"
                   v-slot="{ active, selected }"
                 >
                   <li
@@ -368,7 +368,7 @@ onMounted(async () => {
                   as="template"
                   v-for="developerLogin in developerLogins"
                   :key="developerLogin.id"
-                  :value="developerLogin"
+                  :value="developerLogin.name"
                   v-slot="{ active, selected }"
                 >
                   <li
