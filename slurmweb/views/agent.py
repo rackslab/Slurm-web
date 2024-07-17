@@ -21,7 +21,15 @@ from ..slurmrestd.errors import (
 )
 from ..errors import SlurmwebCacheError, SlurmwebRestdError
 from . import SlurmrestdUnixAdapter
-from ..db.models import Templates, Inputs, Input_types
+from ..db.models import (
+    Templates,
+    Inputs,
+    Input_types,
+    Template_users_accounts,
+    Template_users_logins,
+    Template_developers_accounts,
+    Template_developers_logins,
+)
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
@@ -172,3 +180,23 @@ def inputs():
 def input_types():
     lstInputTypes = list(Input_types.select().dicts())
     return jsonify(lstInputTypes)
+
+
+def user_accounts():
+    lstUserAccounts = list(Template_users_accounts.select().dicts())
+    return jsonify(lstUserAccounts)
+
+
+def user_logins():
+    lstUserLogins = list(Template_users_logins.select().dicts())
+    return jsonify(lstUserLogins)
+
+
+def developer_accounts():
+    lstDeveloperAccounts = list(Template_developers_accounts.select().dicts())
+    return jsonify(lstDeveloperAccounts)
+
+
+def developer_logins():
+    lstDeveloperLogins = list(Template_developers_logins.select().dicts())
+    return jsonify(lstDeveloperLogins)

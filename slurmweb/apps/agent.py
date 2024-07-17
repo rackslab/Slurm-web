@@ -42,6 +42,12 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/templates", views.templates),
         SlurmwebAppRoute(f"/v{get_version()}/inputs", views.inputs),
         SlurmwebAppRoute(f"/v{get_version()}/input-types", views.input_types),
+        SlurmwebAppRoute(f"/v{get_version()}/user-accounts", views.user_accounts),
+        SlurmwebAppRoute(f"/v{get_version()}/user-logins", views.user_logins),
+        SlurmwebAppRoute(
+            f"/v{get_version()}/developer-accounts", views.developer_accounts
+        ),
+        SlurmwebAppRoute(f"/v{get_version()}/developer-logins", views.developer_logins),
     }
 
     def __init__(self, seed):
