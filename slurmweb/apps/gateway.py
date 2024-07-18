@@ -70,6 +70,11 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             views.racksdb,
             methods=["GET", "POST"],
         ),
+        SlurmwebAppRoute(
+            "/api/agents/<cluster>/create-template",
+            views.create_template,
+            methods=["POST"],
+        ),
     }
 
     def _agent_info(self, url: str) -> SlurmwebAgent:
