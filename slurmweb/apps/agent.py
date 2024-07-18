@@ -48,6 +48,11 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             f"/v{get_version()}/developer-accounts", views.developer_accounts
         ),
         SlurmwebAppRoute(f"/v{get_version()}/developer-logins", views.developer_logins),
+        SlurmwebAppRoute(
+            f"/v{get_version()}/create-template",
+            views.create_template,
+            methods=["POST"],
+        ),
     }
 
     def __init__(self, seed):
