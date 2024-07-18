@@ -17,3 +17,5 @@ actions:
   view-reservations: |
     Get _Reservations_ entry in main menu and permission to view the list of
     defined reservations.
+  manage-templates: |
+    Permission to create, edit or delete a template
