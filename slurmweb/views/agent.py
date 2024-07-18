@@ -7,6 +7,7 @@
 from typing import Union, Callable, List, Any, Dict
 import logging
 
+import json
 from flask import Response, current_app, jsonify, abort, request
 import requests
 from rfl.web.tokens import rbac_action, check_jwt
@@ -333,3 +334,20 @@ def developer_accounts():
 def developer_logins():
     lstDeveloperLogins = list(Template_developers_logins.select().dicts())
     return jsonify(lstDeveloperLogins)
+
+
+@rbac_action("manage-templates")
+def create_template():
+    template_data = json.loads(request.data)
+    new_template = Templates.create(
+        name=template_data["name"], description=template_data["description"]
+    )
+
+    for userAccount in range(len(template_data["userAccounts"])):
+        print(template_data["userAccounts"][userAccount])
+        print(new_template.id)
+        Template_users_accounts.create(
+            name=template_data["userAccounts"][userAccount], template=new_template.id
+        )
+
+    return jsonify({"result": "success"})
