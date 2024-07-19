@@ -211,10 +211,25 @@ def create_template():
     )
 
     for userAccount in range(len(template_data["userAccounts"])):
-        print(template_data["userAccounts"][userAccount])
-        print(new_template.id)
         Template_users_accounts.create(
             name=template_data["userAccounts"][userAccount], template=new_template.id
+        )
+
+    for userLogin in range(len(template_data["userLogins"])):
+        Template_users_logins.create(
+            name=template_data["userLogins"][userLogin], template=new_template.id
+        )
+
+    for developerAccount in range(len(template_data["developerAccounts"])):
+        Template_developers_accounts.create(
+            name=template_data["developerAccounts"][developerAccount],
+            template=new_template.id,
+        )
+
+    for developerLogin in range(len(template_data["developerLogins"])):
+        Template_developers_logins.create(
+            name=template_data["developerLogins"][developerLogin],
+            template=new_template.id,
         )
 
     return jsonify({"result": "success"})
