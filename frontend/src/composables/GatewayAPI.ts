@@ -302,6 +302,21 @@ export interface DeveloperLogin {
   idTemplate: number
 }
 
+interface DbCreateResponse {
+  result: string
+}
+
+export interface CreateTemplate {
+  name: string
+  description: string
+  userAccounts: Array<string>
+  userLogins: Array<string>
+  developerAccounts: Array<string>
+  developerLogins: Array<string>
+  // Add inputs later
+  scriptBatch: string
+}
+
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
   if (!optionalNumber.set) {
     return '-'
@@ -405,7 +420,8 @@ const GatewayClusterAPIKeys = [
   'user_accounts',
   'user_logins',
   'developer_accounts',
-  'developer_logins'
+  'developer_logins',
+  'create_template'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
@@ -603,6 +619,13 @@ export function useGatewayAPI() {
     return await get<DeveloperLogin[]>(`/agents/${cluster}/developer-logins`)
   }
 
+  async function create_template(
+    cluster: string,
+    newTemplate: CreateTemplate
+  ): Promise<DbCreateResponse> {
+    return (await post(`/agents/${cluster}/create-template`, newTemplate)) as DbCreateResponse
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     infrastructure: string,
@@ -683,6 +706,7 @@ export function useGatewayAPI() {
     user_logins,
     developer_accounts,
     developer_logins,
+    create_template,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,
