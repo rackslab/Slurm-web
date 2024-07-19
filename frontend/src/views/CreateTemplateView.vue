@@ -18,24 +18,34 @@ import {
 } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon, PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type {
-  UserAccount,
-  UserLogin,
-  DeveloperAccount,
-  DeveloperLogin
-} from '@/composables/GatewayAPI'
+import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
 
 const gateway = useGatewayAPI()
-const userAccounts: Ref<Array<UserAccount>> = ref([])
-const userLogins: Ref<Array<UserLogin>> = ref([])
-const developerAccounts: Ref<Array<DeveloperAccount>> = ref([])
-const developerLogins: Ref<Array<DeveloperLogin>> = ref([])
+const accounts: Ref<Array<AccountDescription>> = ref([])
+const logins: Ref<Array<UserDescription>> = ref([])
 
 const selectedUserAccounts = ref([])
 const selectedUserLogins = ref([])
 const selectedDeveloperAccounts = ref([])
 const selectedDeveloperLogins = ref([])
+
+const nameTemplate = ref('')
+const descriptionTemplate = ref('')
+const scriptBatchTemplate = ref('')
+
+function createTemplate() {
+  const newTemplate: CreateTemplate = {
+    name: nameTemplate.value,
+    description: descriptionTemplate.value,
+    userAccounts: selectedUserAccounts.value,
+    userLogins: selectedUserLogins.value,
+    developerAccounts: selectedDeveloperAccounts.value,
+    developerLogins: selectedDeveloperLogins.value,
+    scriptBatch: scriptBatchTemplate.value
+  }
+  gateway.create_template(props.cluster, newTemplate)
+}
 
 const props = defineProps({
   cluster: {
@@ -45,10 +55,8 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-  userAccounts.value = await gateway.user_accounts(props.cluster)
-  userLogins.value = await gateway.user_logins(props.cluster)
-  developerAccounts.value = await gateway.developer_accounts(props.cluster)
-  developerLogins.value = await gateway.developer_logins(props.cluster)
+  accounts.value = await gateway.accounts(props.cluster)
+  logins.value = await gateway.users()
 })
 </script>
 
@@ -87,6 +95,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
+              v-model="nameTemplate"
               type="text"
               name="templateName"
               id="templateName"
@@ -104,6 +113,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
+              v-model="descriptionTemplate"
               type="text"
               name="templateDescription"
               id="templateDescription"
@@ -134,7 +144,7 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedUserAccounts.map((userAccount) => userAccount).join(', ')
+                  selectedUserAccounts.map((userAccount) => `@${userAccount}`).join(', ')
                 }}</span>
               </span>
               <span
@@ -154,9 +164,9 @@ onMounted(async () => {
               >
                 <ListboxOption
                   as="template"
-                  v-for="userAccount in userAccounts"
-                  :key="userAccount.id"
-                  :value="userAccount.name"
+                  v-for="account in accounts"
+                  :key="account.name"
+                  :value="account.name"
                   v-slot="{ active, selected }"
                 >
                   <li
@@ -166,16 +176,15 @@ onMounted(async () => {
                     ]"
                   >
                     <div class="flex items-center">
-                      <span
-                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
-                        >{{ userAccount.name }}</span
+                      <span :class="['truncate', selected && 'font-semibold']"
+                        >@{{ account.name }}</span
                       >
                     </div>
 
                     <span
                       v-if="selected"
                       :class="[
-                        active ? 'text-white' : 'text-indigo-600',
+                        active ? 'text-white' : 'text-slurmweb',
                         'absolute inset-y-0 right-0 flex items-center pr-4'
                       ]"
                     >
@@ -222,9 +231,9 @@ onMounted(async () => {
               >
                 <ListboxOption
                   as="template"
-                  v-for="userLogin in userLogins"
-                  :key="userLogin.id"
-                  :value="userLogin.name"
+                  v-for="userLogin in logins"
+                  :key="userLogin.login"
+                  :value="userLogin.login"
                   v-slot="{ active, selected }"
                 >
                   <li
@@ -233,11 +242,18 @@ onMounted(async () => {
                       'relative cursor-default select-none py-2 pl-3 pr-9'
                     ]"
                   >
-                    <div class="flex items-center">
+                    <div class="flex">
+                      <span :class="['truncate', selected && 'font-semibold']">
+                        {{ userLogin.fullname }}
+                      </span>
                       <span
-                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
-                        >{{ userLogin.name }}</span
+                        :class="[
+                          'ml-2 truncate text-gray-500',
+                          active ? 'text-indigo-200' : 'text-gray-500'
+                        ]"
                       >
+                        {{ userLogin.login }}
+                      </span>
                     </div>
 
                     <span
@@ -278,7 +294,9 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedDeveloperAccounts.map((developerAccount) => developerAccount).join(', ')
+                  selectedDeveloperAccounts
+                    .map((developerAccount) => `@${developerAccount}`)
+                    .join(', ')
                 }}</span>
               </span>
               <span
@@ -298,8 +316,8 @@ onMounted(async () => {
               >
                 <ListboxOption
                   as="template"
-                  v-for="developerAccount in developerAccounts"
-                  :key="developerAccount.id"
+                  v-for="developerAccount in accounts"
+                  :key="developerAccount.name"
                   :value="developerAccount.name"
                   v-slot="{ active, selected }"
                 >
@@ -309,10 +327,9 @@ onMounted(async () => {
                       'relative cursor-default select-none py-2 pl-3 pr-9'
                     ]"
                   >
-                    <div class="flex items-center">
-                      <span
-                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
-                        >{{ developerAccount.name }}</span
+                    <div class="flex">
+                      <span :class="['truncate', selected && 'font-semibold']"
+                        >@{{ developerAccount.name }}</span
                       >
                     </div>
 
@@ -366,9 +383,9 @@ onMounted(async () => {
               >
                 <ListboxOption
                   as="template"
-                  v-for="developerLogin in developerLogins"
-                  :key="developerLogin.id"
-                  :value="developerLogin.name"
+                  v-for="developerLogin in logins"
+                  :key="developerLogin.login"
+                  :value="developerLogin.login"
                   v-slot="{ active, selected }"
                 >
                   <li
@@ -377,11 +394,18 @@ onMounted(async () => {
                       'relative cursor-default select-none py-2 pl-3 pr-9'
                     ]"
                   >
-                    <div class="flex items-center">
+                    <div class="flex">
+                      <span :class="['truncate', selected && 'font-semibold']">
+                        {{ developerLogin.fullname }}
+                      </span>
                       <span
-                        :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
-                        >{{ developerLogin.name }}</span
+                        :class="[
+                          'ml-2 truncate text-gray-500',
+                          active ? 'text-indigo-200' : 'text-gray-500'
+                        ]"
                       >
+                        {{ developerLogin.login }}
+                      </span>
                     </div>
 
                     <span
@@ -436,6 +460,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <textarea
+              v-model="scriptBatchTemplate"
               name="scriptBatch"
               id="scriptBatch"
               cols="20"
@@ -457,6 +482,7 @@ onMounted(async () => {
             >
 
             <button
+              @click="createTemplate()"
               type="button"
               class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
