@@ -8,11 +8,11 @@ import os
 import sys
 import pwd
 import subprocess
-import shlex
 import logging
 
 from . import SlurmwebGenericApp
 
+from rfl.core.utils import shlex_join
 from rfl.authentication.jwt import jwt_gen_key
 from rfl.authentication.errors import JWTPrivateKeyGeneratorError
 
@@ -56,5 +56,5 @@ class SlurmwebAppGenJWT(SlurmwebGenericApp):
                 subprocess.run(cmd)
             except subprocess.CalledProcessError as err:
                 logger.error(
-                    "Error while running command: %s: %s", shlex.join(cmd), err
+                    "Error while running command: %s: %s", shlex_join(cmd), err
                 )

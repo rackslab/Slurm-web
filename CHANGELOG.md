@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   gateway and backend site configuration (#317).
 - agent: translate HTTP/404 from slurmrestd into JSON error agent that can be
   interpreted by frontend and emit clear error message in logs (#321).
+- genjwt: fix portability to Python < 3.8 in debug message.
 
 ## [3.1.0] - 2024-07-03
 
