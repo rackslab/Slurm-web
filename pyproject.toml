@@ -17,6 +17,7 @@ dependencies = [
     "requests",
     "aiohttp",
     "RFL.authentication >= 1.0.2",
+    "RFL.core >= 1.0.3",
     "RFL.log",
     "RFL.settings",
     "RFL.web",

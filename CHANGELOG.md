@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Add link to related github issue for `slurmrestd` TCP/IP socket
   limitation in architecture page.
 
+## Changed
+- pkgs: Add requirement on RFL.core >= 1.0.3.
+
 ### Fixed
 - backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
   gateway and backend site configuration (#317).
