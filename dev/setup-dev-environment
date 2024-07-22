@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
 
-DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "racksdb"]
+DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
 # DEBUG_FLAGS = ["ALL"]
 
 
