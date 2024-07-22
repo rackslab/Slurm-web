@@ -11,7 +11,11 @@ import logging
 
 from flask import Flask, jsonify
 from rfl.settings import RuntimeSettings
-from rfl.settings.errors import SettingsDefinitionError, SettingsOverrideError
+from rfl.settings.errors import (
+    SettingsDefinitionError,
+    SettingsOverrideError,
+    SettingsSiteLoaderError,
+)
 
 from rfl.log import setup_logger, enforce_debug
 
@@ -59,7 +63,7 @@ class SlurmwebGenericApp:
             sys.exit(1)
         try:
             self.settings.override_ini(seed.conf)
-        except SettingsOverrideError as err:
+        except (SettingsSiteLoaderError, SettingsOverrideError) as err:
             logger.critical(err)
             sys.exit(1)
 
