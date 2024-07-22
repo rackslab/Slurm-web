@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unrelead]
+## [Unreleased]
 
 ### Added
 - docs: Add link to related github issue for `slurmrestd` TCP/IP socket
@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
   gateway and backend site configuration (#317).
+- agent: translate HTTP/404 from slurmrestd into JSON error agent that can be
+  interpreted by frontend and emit clear error message in logs (#321).
 
 ## [3.1.0] - 2024-07-03
 

@@ -48,6 +48,9 @@ def slurmrest(query, key, handle_errors=True):
     except requests.exceptions.ConnectionError as err:
         logger.error("Unable to connect to slurmrestd: %s", err)
         abort(500, f"Unable to connect to slurmrestd: {err}")
+    if response.status_code == 404:
+        logger.error("URL not found on slurmrestd: %s/%s", prefix, query)
+        abort(404, f"URL not found on slurmrestd: {prefix}/{query}")
     result = response.json()
     if len(result["errors"]):
         if handle_errors:
