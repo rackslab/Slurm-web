@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import {
   Listbox,
   ListboxButton,
@@ -62,6 +62,22 @@ const props = defineProps({
 onMounted(async () => {
   accounts.value = await gateway.accounts(props.cluster)
   logins.value = await gateway.users()
+})
+
+watch(selectedUserAccounts, (accounts) => {
+  templateStore.userAccounts = accounts
+})
+
+watch(selectedUserLogins, (logins) => {
+  templateStore.userLogins = logins
+})
+
+watch(selectedDeveloperAccounts, (accounts) => {
+  templateStore.developerAccounts = accounts
+})
+
+watch(selectedDeveloperLogins, (logins) => {
+  templateStore.developerLogins = logins
 })
 </script>
 
@@ -144,7 +160,7 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedUserAccounts.map((userAccount) => `@${userAccount}`).join(', ')
+                  templateStore.userAccounts.map((userAccount) => `@${userAccount}`).join(', ')
                 }}</span>
               </span>
               <span
@@ -210,7 +226,7 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedUserLogins.map((userLogin) => userLogin).join(', ')
+                  templateStore.userLogins.map((userLogin) => `${userLogin}`).join(', ')
                 }}</span>
               </span>
               <span
@@ -291,7 +307,7 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedDeveloperAccounts
+                  templateStore.developerAccounts
                     .map((developerAccount) => `@${developerAccount}`)
                     .join(', ')
                 }}</span>
@@ -359,7 +375,9 @@ onMounted(async () => {
             >
               <span class="flex items-center">
                 <span class="block truncate">{{
-                  selectedDeveloperLogins.map((developerLogin) => developerLogin).join(', ')
+                  templateStore.developerLogins
+                    .map((developerLogin) => `${developerLogin}`)
+                    .join(', ')
                 }}</span>
               </span>
               <span
