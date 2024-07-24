@@ -84,7 +84,6 @@ onMounted(async () => {
       </button></router-link
     >
 
-    <!-- form -->
     <div class="mt-8 flex flex-col items-center">
       <div class="ml-5 text-left">
         <p class="text-3xl font-bold tracking-tight text-gray-900">Create template</p>
@@ -103,7 +102,6 @@ onMounted(async () => {
               v-model="templateStore.name"
               type="text"
               name="templateName"
-              id="templateName"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
           </div>
@@ -121,7 +119,6 @@ onMounted(async () => {
               v-model="templateStore.description"
               type="text"
               name="templateDescription"
-              id="templateDescription"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
           </div>
@@ -129,13 +126,11 @@ onMounted(async () => {
 
         <hr class="my-5 border-gray-500" />
 
-        <!--Users section -->
         <p class="text-sm font-medium text-gray-900">
           Users<span class="text-slurmweb-red">*</span>
         </p>
         <p class="mt-1 text-sm text-gray-500">Users who can use the template</p>
 
-        <!-- user accounts -->
         <Listbox as="div" v-model="selectedUserAccounts" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
@@ -202,7 +197,6 @@ onMounted(async () => {
           </div>
         </Listbox>
 
-        <!--user logins-->
         <Listbox as="div" v-model="selectedUserLogins" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
@@ -279,13 +273,11 @@ onMounted(async () => {
 
         <hr class="my-5 border-gray-500" />
 
-        <!--developers section -->
         <p class="text-sm font-medium text-gray-900">
           Developers<span class="text-slurmweb-red">*</span>
         </p>
         <p class="mt-1 text-sm text-gray-500">Developers who can edit the template</p>
 
-        <!-- developer accounts -->
         <Listbox as="div" v-model="selectedDeveloperAccounts" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
@@ -354,7 +346,6 @@ onMounted(async () => {
           </div>
         </Listbox>
 
-        <!--developer logins-->
         <Listbox as="div" v-model="selectedDeveloperLogins" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
@@ -429,7 +420,6 @@ onMounted(async () => {
           </div>
         </Listbox>
 
-        <!--inputs section-->
         <div class="pt-14">
           <table class="w-full text-center" v-if="inputStore.inputs.length > 0">
             <thead class="border-b border-gray-500">
@@ -470,7 +460,6 @@ onMounted(async () => {
           >
         </div>
 
-        <!--script batch section-->
         <div class="flex flex-col pt-14">
           <div class="w-[250px]">
             <label for="scriptBatch" class="text-sm font-medium text-gray-900"
@@ -482,7 +471,6 @@ onMounted(async () => {
             <textarea
               v-model="scriptBatchTemplate"
               name="scriptBatch"
-              id="scriptBatch"
               cols="20"
               rows="10"
               class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
@@ -490,7 +478,6 @@ onMounted(async () => {
             </textarea>
           </div>
 
-          <!--buttons-->
           <div class="flex justify-end">
             <router-link :to="{ name: 'templates' }"
               ><button
