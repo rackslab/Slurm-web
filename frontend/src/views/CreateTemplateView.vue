@@ -21,9 +21,12 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
 import { useTemplateStore } from '@/stores/forms/createTemplate'
+import { useInputStore } from '@/stores/forms/createInput'
 
 const templateStore = useTemplateStore()
+const inputStore = useInputStore()
 const gateway = useGatewayAPI()
+
 const accounts: Ref<Array<AccountDescription>> = ref([])
 const logins: Ref<Array<UserDescription>> = ref([])
 
@@ -428,18 +431,33 @@ onMounted(async () => {
 
         <!--inputs section-->
         <div class="pt-14">
-          <table class="w-full border-b border-gray-500 text-center">
-            <thead>
+          <table class="w-full text-center" v-if="inputStore.inputs.length > 0">
+            <thead class="border-b border-gray-500">
               <tr>
                 <th class="pb-3">Input name<span class="text-slurmweb-red">*</span></th>
                 <th class="pb-3">Description</th>
                 <th class="pb-3">Type<span class="text-slurmweb-red">*</span></th>
                 <th class="pb-3">Default</th>
-                <th class="pb-3">Constraints</th>
+                <th class="pb-3">Constraint</th>
               </tr>
             </thead>
 
-            <tbody></tbody>
+            <tbody>
+              <tr v-for="input in inputStore.inputs" :key="input.name">
+                <th>{{ input.name }}</th>
+                <td>{{ input.description }}</td>
+                <td>{{ input.type }}</td>
+                <td>{{ input.default }}</td>
+                <td>
+                  <div v-if="input.type == 'string'">
+                    <p>{{ input.regex }}</p>
+                  </div>
+                  <div v-else>
+                    <p>{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
           <router-link :to="{ name: 'create-input' }"
             ><button
