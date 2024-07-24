@@ -19,14 +19,17 @@ import {
   RadioGroupOption
 } from '@headlessui/vue'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
+import { useInputStore } from '@/stores/forms/createInput'
 
-const selectedType = ref()
 const gateway = useGatewayAPI()
-const input_types: Ref<Array<InputType>> = ref([])
-const constraint = ref('regex')
+const inputStore = useInputStore()
+
+const inputTypes: Ref<Array<InputType>> = ref([])
+const selectedInputType = ref()
+const constraint = ref('none')
 
 const props = defineProps({
   cluster: {
@@ -36,7 +39,11 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-  input_types.value = await gateway.input_types(props.cluster)
+  inputTypes.value = await gateway.input_types(props.cluster)
+})
+
+watch(selectedInputType, () => {
+  inputStore.type = selectedInputType.value
 })
 </script>
 
@@ -50,7 +57,7 @@ onMounted(async () => {
       { title: 'Create input' }
     ]"
   >
-    <router-link :to="{ name: 'jobs' }"
+    <router-link :to="{ name: 'create-template' }"
       ><button
         type="button"
         class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
@@ -66,7 +73,6 @@ onMounted(async () => {
 
         <p class="pt-10 text-right"><span class="text-slurmweb-red">*</span>required fields</p>
 
-        <!-- form -->
         <div class="flex items-center">
           <div class="w-[250px]">
             <label for="name" class="text-sm font-medium text-gray-900"
@@ -76,9 +82,9 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
+              v-model="inputStore.name"
               type="text"
               name="name"
-              id="name"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
           </div>
@@ -91,16 +97,15 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
+              v-model="inputStore.description"
               type="text"
-              name="name"
-              id="name"
+              name="description"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
           </div>
         </div>
 
-        <!-- user accounts -->
-        <Listbox as="div" v-model="selectedType" class="flex pt-5">
+        <Listbox as="div" v-model="selectedInputType" class="flex pt-5">
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Types<span class="text-slurmweb-red">*</span></ListboxLabel
@@ -109,11 +114,9 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2">
             <ListboxButton
-              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-            >
-              <span class="flex items-center">
-                <span class="block truncate">{{ selectedType }}</span>
-              </span>
+              v-model="inputStore.type"
+              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left capitalize text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              >{{ selectedInputType }}
               <span
                 class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
               >
@@ -127,32 +130,32 @@ onMounted(async () => {
               leave-to-class="opacity-0"
             >
               <ListboxOptions
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base capitalize shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   as="template"
-                  v-for="input_type in input_types"
-                  :key="input_type.id"
-                  :value="input_type.name"
+                  v-for="inputType in inputTypes"
+                  :key="inputType.id"
+                  :value="inputType.name"
                   v-slot="{ active, selected }"
                 >
                   <li
                     :class="[
                       active ? 'bg-slurmweb text-white' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-3 pr-9'
+                      'relative cursor-default select-none py-2 pr-9'
                     ]"
                   >
                     <div class="flex items-center">
                       <span
                         :class="[selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate']"
-                        >{{ input_type.name }}</span
+                        >{{ inputType.name }}</span
                       >
                     </div>
 
                     <span
                       v-if="selected"
                       :class="[
-                        active ? 'text-white' : 'text-indigo-600',
+                        active ? 'text-white' : 'text-slurmweb',
                         'absolute inset-y-0 right-0 flex items-center pr-4'
                       ]"
                     >
@@ -167,61 +170,97 @@ onMounted(async () => {
 
         <div class="flex items-center pt-5">
           <div class="w-[250px]">
-            <label for="description" class="text-sm font-medium text-gray-900">Default</label>
+            <label for="default" class="text-sm font-medium text-gray-900">Default</label>
             <p class="mt-1 text-sm text-gray-500">Default value to the input</p>
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
+              v-model="inputStore.default"
               type="text"
-              name="name"
-              id="name"
+              name="default"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
           </div>
         </div>
 
-        <!--If it's a string-->
-        <!--Constraint-->
-        <div v-if="selectedType == 'string'">
+        <div v-if="selectedInputType == 'string'">
           <div class="mt-5 flex items-center">
             <div class="w-[250px]">
               <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
               <p class="mt-1 text-sm text-gray-500">Define constraint for the value</p>
             </div>
-            <div class="relative mt-2 rounded-md shadow-sm">
-              <input
-                type="text"
-                name="constraint"
-                id="constraint"
-                class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-              />
-            </div>
+            <RadioGroup v-model="constraint" class="mt-5">
+              <div class="mt-2 flex space-x-6">
+                <RadioGroupOption v-slot="{ checked }" value="regex" class="flex items-center">
+                  <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
+                  <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']">Regex</span>
+                </RadioGroupOption>
+                <RadioGroupOption v-slot="{ checked }" value="none" class="flex items-center">
+                  <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
+                  <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']">None</span>
+                </RadioGroupOption>
+              </div>
+            </RadioGroup>
           </div>
-          <RadioGroup v-model="constraint" class="mt-5 pl-[250px]">
-            <div class="mt-2 flex space-x-6">
-              <RadioGroupOption v-slot="{ checked }" value="regex" class="flex items-center">
-                <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
-                <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']">Regex</span>
-              </RadioGroupOption>
-              <RadioGroupOption v-slot="{ checked }" value="none" class="flex items-center">
-                <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
-                <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']">None</span>
-              </RadioGroupOption>
-            </div>
-          </RadioGroup>
 
           <input
+            v-if="constraint == 'regex'"
+            v-model="inputStore.regex"
             type="text"
             name="constraint"
-            id="constraint"
             class="ml-[250px] mt-5 block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
           />
         </div>
 
-        <!--buttons-->
+        <div v-if="selectedInputType === 'float' || selectedInputType === 'int'">
+          <div class="mt-5 flex items-center">
+            <div class="w-[250px]">
+              <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
+              <p class="mt-1 text-sm text-gray-500">Define constraint for the value</p>
+            </div>
+            <RadioGroup v-model="constraint" class="mt-5">
+              <div class="mt-2 flex space-x-6">
+                <RadioGroupOption v-slot="{ checked }" value="minMax" class="flex items-center">
+                  <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
+                  <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']"
+                    >Min/Max</span
+                  >
+                </RadioGroupOption>
+                <RadioGroupOption v-slot="{ checked }" value="none" class="flex items-center">
+                  <input type="radio" :checked="checked" class="form-radio text-slurmweb" />
+                  <span :class="[checked ? 'text-slurmweb' : 'text-gray-900', 'ml-2']">None</span>
+                </RadioGroupOption>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div v-if="constraint == 'minMax'" class="flex pt-5">
+            <div class="ml-[250px] flex items-center">
+              <label for="minVal" class="mr-4 text-sm font-medium text-gray-900">Min</label>
+              <input
+                v-model="inputStore.minVal"
+                type="text"
+                name="minVal"
+                class="block h-[35px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[100px]"
+              />
+            </div>
+
+            <div class="ml-10 flex items-center">
+              <label for="maxVal" class="mr-4 text-sm font-medium text-gray-900">Max</label>
+              <input
+                v-model="inputStore.maxVal"
+                type="text"
+                name="maxVal"
+                class="block h-[35px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[100px]"
+              />
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-end">
           <router-link :to="{ name: 'create-template' }"
             ><button
+              @click="inputStore.resetInput()"
               type="button"
               class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
@@ -231,6 +270,7 @@ onMounted(async () => {
 
           <router-link :to="{ name: 'create-template' }"
             ><button
+              @click="inputStore.addInput()"
               type="button"
               class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
