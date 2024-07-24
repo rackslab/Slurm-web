@@ -20,7 +20,9 @@ import { CheckIcon, ChevronUpDownIcon, PlusIcon, ChevronLeftIcon } from '@heroic
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
+import { useTemplateStore } from '@/stores/forms/createTemplate'
 
+const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 const accounts: Ref<Array<AccountDescription>> = ref([])
 const logins: Ref<Array<UserDescription>> = ref([])
@@ -95,7 +97,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="nameTemplate"
+              v-model="templateStore.name"
               type="text"
               name="templateName"
               id="templateName"
@@ -113,7 +115,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="descriptionTemplate"
+              v-model="templateStore.description"
               type="text"
               name="templateDescription"
               id="templateDescription"
@@ -474,6 +476,7 @@ onMounted(async () => {
           <div class="flex justify-end">
             <router-link :to="{ name: 'templates' }"
               ><button
+                @click="templateStore.resetTemplate()"
                 type="button"
                 class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
               >
