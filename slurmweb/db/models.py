@@ -34,6 +34,7 @@ class BaseModel(Model):
 class Templates(BaseModel):
     name = CharField(max_length=50, unique=True)
     description = CharField(max_length=100)
+    batchScript = CharField(max_length=20000)
 
 
 class Input_types(BaseModel):
