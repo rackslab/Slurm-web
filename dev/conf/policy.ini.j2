@@ -7,10 +7,10 @@ actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos
 {% else %}
 
 {% if cluster == "tiny" %}
-user=@{{ groups[2].name }},@{{ groups[3].name }}
+user=@{{ groups[2].name }},@{{ groups[3].name }},@{{ groups[0].name }}
 developer=@{{ groups[0].name }}
 {% else %}
-user=@{{ groups[2].name }},{{ users[9].login }}
+user=@{{ groups[2].name }},{{ users[9].login }},@{{groups[5].name}},{{ users[8].login }}
 developer=@{{groups[5].name}},{{ users[8].login }}
 {% endif %}
 admin=@{{ groups[1].name }}
@@ -20,7 +20,7 @@ special={{ users[3].login }}
 actions=view-stats,view-jobs
 
 [developer]
-actions=view-stats,view-jobs,manage-templates,view-accounts
+actions=manage-templates,view-accounts
 
 [admin]
 actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos,view-accounts,view-reservations,manage-templates
