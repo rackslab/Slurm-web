@@ -19,16 +19,16 @@ import {
   RadioGroupOption
 } from '@headlessui/vue'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
-import { useInputStore } from '@/stores/forms/createInput'
+
+import { useTemplateStore } from '@/stores/template'
 
 const gateway = useGatewayAPI()
-const inputStore = useInputStore()
+const templateStore = useTemplateStore()
 
 const inputTypes: Ref<Array<InputType>> = ref([])
-const selectedInputType = ref()
 const constraint = ref('none')
 
 const props = defineProps({
@@ -40,10 +40,6 @@ const props = defineProps({
 
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
-})
-
-watch(selectedInputType, () => {
-  inputStore.type = selectedInputType.value
 })
 </script>
 
@@ -82,7 +78,7 @@ watch(selectedInputType, () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="inputStore.name"
+              v-model="templateStore.stagingInput.name"
               type="text"
               name="name"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
@@ -95,9 +91,9 @@ watch(selectedInputType, () => {
             <label for="description" class="text-sm font-medium text-gray-900">Description</label>
             <p class="mt-1 text-sm text-gray-500">Long description of the input</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div v-if="templateStore.stagingInput" class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="inputStore.description"
+              v-model="templateStore.stagingInput.description"
               type="text"
               name="description"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
@@ -105,18 +101,18 @@ watch(selectedInputType, () => {
           </div>
         </div>
 
-        <Listbox as="div" v-model="selectedInputType" class="flex pt-5">
+        <Listbox as="div" v-model="templateStore.stagingInput.type" class="flex pt-5">
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Types<span class="text-slurmweb-red">*</span></ListboxLabel
             >
             <p class="mt-1 text-sm text-gray-500">Select the type of the input</p>
           </div>
-          <div class="relative mt-2">
+          <div v-if="templateStore.stagingInput" class="relative mt-2">
             <ListboxButton
-              v-model="inputStore.type"
+              v-model="templateStore.stagingInput.type"
               class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left capitalize text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-              >{{ selectedInputType }}
+              >{{ templateStore.stagingInput.type }}
               <span
                 class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
               >
@@ -173,9 +169,9 @@ watch(selectedInputType, () => {
             <label for="default" class="text-sm font-medium text-gray-900">Default</label>
             <p class="mt-1 text-sm text-gray-500">Default value to the input</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div v-if="templateStore.stagingInput" class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="inputStore.default"
+              v-model="templateStore.stagingInput.default"
               type="text"
               name="default"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
@@ -183,7 +179,7 @@ watch(selectedInputType, () => {
           </div>
         </div>
 
-        <div v-if="selectedInputType == 'string'">
+        <div v-if="templateStore.stagingInput.type == 'string'">
           <div class="mt-5 flex items-center">
             <div class="w-[250px]">
               <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
@@ -204,15 +200,19 @@ watch(selectedInputType, () => {
           </div>
 
           <input
-            v-if="constraint == 'regex'"
-            v-model="inputStore.regex"
+            v-if="constraint == 'regex' && templateStore.stagingInput"
+            v-model="templateStore.stagingInput.regex"
             type="text"
             name="constraint"
             class="ml-[250px] mt-5 block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
           />
         </div>
 
-        <div v-if="selectedInputType === 'float' || selectedInputType === 'int'">
+        <div
+          v-if="
+            templateStore.stagingInput.type === 'float' || templateStore.stagingInput.type === 'int'
+          "
+        >
           <div class="mt-5 flex items-center">
             <div class="w-[250px]">
               <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
@@ -235,20 +235,20 @@ watch(selectedInputType, () => {
           </div>
 
           <div v-if="constraint == 'minMax'" class="flex pt-5">
-            <div class="ml-[250px] flex items-center">
+            <div v-if="templateStore.stagingInput" class="ml-[250px] flex items-center">
               <label for="minVal" class="mr-4 text-sm font-medium text-gray-900">Min</label>
               <input
-                v-model="inputStore.minVal"
+                v-model="templateStore.stagingInput.minVal"
                 type="text"
                 name="minVal"
                 class="block h-[35px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[100px]"
               />
             </div>
 
-            <div class="ml-10 flex items-center">
+            <div v-if="templateStore.stagingInput" class="ml-10 flex items-center">
               <label for="maxVal" class="mr-4 text-sm font-medium text-gray-900">Max</label>
               <input
-                v-model="inputStore.maxVal"
+                v-model="templateStore.stagingInput.maxVal"
                 type="text"
                 name="maxVal"
                 class="block h-[35px] rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[100px]"
@@ -257,10 +257,10 @@ watch(selectedInputType, () => {
           </div>
         </div>
 
-        <div class="flex justify-end pt-5">
+        <div v-if="templateStore.stagingInput" class="flex justify-end pt-5">
           <router-link :to="{ name: 'create-template' }"
             ><button
-              @click="inputStore.resetInput()"
+              @click="templateStore.resetInput()"
               type="button"
               class="mr-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
@@ -270,7 +270,7 @@ watch(selectedInputType, () => {
 
           <router-link :to="{ name: 'create-template' }"
             ><button
-              @click="inputStore.addInput()"
+              @click="templateStore.addInput()"
               type="button"
               class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >

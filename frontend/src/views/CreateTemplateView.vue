@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
-import { ref, onMounted, watch } from 'vue'
+import { ref } from 'vue'
 import {
   Listbox,
   ListboxButton,
@@ -22,32 +22,24 @@ import type { UserDescription, AccountDescription, CreateTemplate } from '@/comp
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import { PermissionError } from '@/composables/HTTPErrors'
 
+import { useTemplateStore } from '@/stores/template'
+
 const templateStore = useTemplateStore()
-const inputStore = useInputStore()
 const gateway = useGatewayAPI()
 
-const accounts: Ref<Array<AccountDescription>> = ref([])
-const logins: Ref<Array<UserDescription>> = ref([])
-
-const selectedUserAccounts = ref([])
-const selectedUserLogins = ref([])
-const selectedDeveloperAccounts = ref([])
-const selectedDeveloperLogins = ref([])
-
-const nameTemplate = ref('')
 const descriptionTemplate = ref('')
 const scriptBatchTemplate = ref('')
 const errorMessage = ref<string | undefined>()
 
-function createTemplate() {
+async function createTemplate() {
   const newTemplate: CreateTemplate = {
-    name: nameTemplate.value,
+    name: templateStore.name,
     description: descriptionTemplate.value,
-    userAccounts: selectedUserAccounts.value,
-    userLogins: selectedUserLogins.value,
-    developerAccounts: selectedDeveloperAccounts.value,
-    developerLogins: selectedDeveloperLogins.value,
-    scriptBatch: scriptBatchTemplate.value
+    userAccounts: templateStore.userAccounts,
+    userLogins: templateStore.userLogins,
+    developerAccounts: templateStore.developerAccounts,
+    developerLogins: templateStore.developerLogins,
+    batchScript: templateStore.batchScript
   }
   try {
     await gateway.create_template(props.cluster, newTemplate)
@@ -63,7 +55,7 @@ function createTemplate() {
 
 function resetForm() {
   templateStore.resetTemplate()
-  inputStore.resetInput()
+  templateStore.resetInput()
 }
 
 const props = defineProps({
@@ -144,7 +136,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
         </p>
         <p class="mt-1 text-sm text-gray-500">Users who can use the template</p>
 
-        <Listbox as="div" v-model="selectedUserAccounts" class="flex pt-5" multiple>
+        <Listbox as="div" v-model="templateStore.userAccounts" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Accounts</ListboxLabel
@@ -211,7 +203,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           </div>
         </Listbox>
 
-        <Listbox as="div" v-model="selectedUserLogins" class="flex pt-5" multiple>
+        <Listbox as="div" v-model="templateStore.userLogins" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Logins</ListboxLabel
@@ -293,7 +285,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
         </p>
         <p class="mt-1 text-sm text-gray-500">Developers who can edit the template</p>
 
-        <Listbox as="div" v-model="selectedDeveloperAccounts" class="flex pt-5" multiple>
+        <Listbox as="div" v-model="templateStore.developerAccounts" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Accounts</ListboxLabel
@@ -362,7 +354,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           </div>
         </Listbox>
 
-        <Listbox as="div" v-model="selectedDeveloperLogins" class="flex pt-5" multiple>
+        <Listbox as="div" v-model="templateStore.developerLogins" class="flex pt-5" multiple>
           <div class="w-[250px]">
             <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
               >Logins</ListboxLabel
@@ -440,7 +432,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
         </Listbox>
 
         <div class="pt-14">
-          <table class="w-full text-center" v-if="inputStore.inputs.length > 0">
+          <table class="w-full text-center" v-if="templateStore.inputs.length > 0">
             <thead class="border-b border-gray-500">
               <tr>
                 <th class="pb-3">Input name<span class="text-slurmweb-red">*</span></th>
@@ -452,17 +444,24 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
             </thead>
 
             <tbody>
-              <tr v-for="input in inputStore.inputs" :key="input.name">
+              <tr v-for="input in templateStore.inputs" :key="input.name">
                 <th>{{ input.name }}</th>
                 <td>{{ input.description }}</td>
                 <td>{{ input.type }}</td>
                 <td>{{ input.default }}</td>
                 <td>
                   <div v-if="input.type == 'string'">
-                    <p>{{ input.regex }}</p>
+                    <p>
+                      <span v-if="input.regex.length > 0">{{ input.regex }}</span
+                      ><span v-else>-</span>
+                    </p>
                   </div>
                   <div v-else>
-                    <p>{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</p>
+                    <p>
+                      <span v-if="input.minVal != '' && input.maxVal != ''"
+                        >{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</span
+                      ><span v-else>-</span>
+                    </p>
                   </div>
                 </td>
               </tr>
