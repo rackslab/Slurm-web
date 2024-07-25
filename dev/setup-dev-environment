@@ -72,14 +72,23 @@ def insert_data(tmpdir, agentName):
     dev_accounts = ["@ai", "@robotics", "@iot", "@data-science"]
 
     template1, _ = Templates.get_or_create(
-        name="Distributed matrix computation", description="Multiply matrix with MPI"
+        name="Distributed matrix computation", description="Multiply matrix with MPI", 
+        batchScript="#SBATCH --name matrix-multiply \n " + 
+                    "#SBATCH --nodes {{ nodes }} \n"+ 
+                    "srun mpi-matrix-multiply --size={{ size }}"
     )
     template2, _ = Templates.get_or_create(
-        name="AI-based solving", description="Solve a complex problem with AI"
+        name="AI-based solving", description="Solve a complex problem with AI",
+        batchScript="#SBATCH --name matrix-multiply \n " + 
+                    "#SBATCH --nodes {{ nodes }} \n"+ 
+                    "srun mpi-matrix-multiply --size={{ size }}"
     )
     template3, _ = Templates.get_or_create(
         name="Real-time weather simulation",
         description="Simulate weather patterns using real-time data and predictive models",
+        batchScript="#SBATCH --name matrix-multiply \n " + 
+                    "#SBATCH --nodes {{ nodes }} \n"+ 
+                    "srun mpi-matrix-multiply --size={{ size }}"
     )
 
     type_float, _ = Input_types.get_or_create(name="float")
