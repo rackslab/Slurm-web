@@ -420,8 +420,7 @@ const GatewayClusterAPIKeys = [
   'user_accounts',
   'user_logins',
   'developer_accounts',
-  'developer_logins',
-  'create_template'
+  'developer_logins'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
