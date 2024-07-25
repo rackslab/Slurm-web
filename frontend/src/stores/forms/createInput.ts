@@ -32,7 +32,6 @@ export const useInputStore = defineStore('inputStore', {
         type: this.type
       }
       this.inputs.push(newInput)
-      this.resetInput()
     },
     resetInput() {
       ;(this.name = ''),
@@ -41,7 +40,8 @@ export const useInputStore = defineStore('inputStore', {
         (this.default = ''),
         (this.minVal = ''),
         (this.maxVal = ''),
-        (this.regex = '')
+        (this.regex = ''),
+        (this.inputs = [])
     }
   }
 })
