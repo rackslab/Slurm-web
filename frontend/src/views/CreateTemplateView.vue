@@ -19,9 +19,8 @@ import {
 import { CheckIcon, ChevronUpDownIcon, PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
-import type { Ref } from 'vue'
-import { useTemplateStore } from '@/stores/forms/createTemplate'
-import { useInputStore } from '@/stores/forms/createInput'
+import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
+import { PermissionError } from '@/composables/HTTPErrors'
 
 const templateStore = useTemplateStore()
 const inputStore = useInputStore()
@@ -38,6 +37,7 @@ const selectedDeveloperLogins = ref([])
 const nameTemplate = ref('')
 const descriptionTemplate = ref('')
 const scriptBatchTemplate = ref('')
+const errorMessage = ref<string | undefined>()
 
 function createTemplate() {
   const newTemplate: CreateTemplate = {
@@ -49,7 +49,16 @@ function createTemplate() {
     developerLogins: selectedDeveloperLogins.value,
     scriptBatch: scriptBatchTemplate.value
   }
-  gateway.create_template(props.cluster, newTemplate)
+  try {
+    await gateway.create_template(props.cluster, newTemplate)
+  } catch (error: any) {
+    console.log(error)
+    if (error instanceof PermissionError) {
+      errorMessage.value = 'Permission denied'
+    } else {
+      errorMessage.value = `Unexpected error ${error}`
+    }
+  }
 }
 
 function resetForm() {
@@ -64,26 +73,8 @@ const props = defineProps({
   }
 })
 
-onMounted(async () => {
-  accounts.value = await gateway.accounts(props.cluster)
-  logins.value = await gateway.users()
-})
-
-watch(selectedUserAccounts, (accounts) => {
-  templateStore.userAccounts = accounts
-})
-
-watch(selectedUserLogins, (logins) => {
-  templateStore.userLogins = logins
-})
-
-watch(selectedDeveloperAccounts, (accounts) => {
-  templateStore.developerAccounts = accounts
-})
-
-watch(selectedDeveloperLogins, (logins) => {
-  templateStore.developerLogins = logins
-})
+const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
+const logins = useGatewayDataGetter<UserDescription[]>('users')
 </script>
 
 <template>
@@ -182,11 +173,12 @@ watch(selectedDeveloperLogins, (logins) => {
               leave-to-class="opacity-0"
             >
               <ListboxOptions
+                v-if="accounts.data"
                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   as="template"
-                  v-for="account in accounts"
+                  v-for="account in accounts.data.value"
                   :key="account.name"
                   :value="account.name"
                   v-slot="{ active, selected }"
@@ -248,11 +240,12 @@ watch(selectedDeveloperLogins, (logins) => {
               leave-to-class="opacity-0"
             >
               <ListboxOptions
+                v-if="logins.data"
                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   as="template"
-                  v-for="userLogin in logins"
+                  v-for="userLogin in logins.data.value"
                   :key="userLogin.login"
                   :value="userLogin.login"
                   v-slot="{ active, selected }"
@@ -331,11 +324,12 @@ watch(selectedDeveloperLogins, (logins) => {
               leave-to-class="opacity-0"
             >
               <ListboxOptions
+                v-if="accounts.data"
                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   as="template"
-                  v-for="developerAccount in accounts"
+                  v-for="developerAccount in accounts.data.value"
                   :key="developerAccount.name"
                   :value="developerAccount.name"
                   v-slot="{ active, selected }"
@@ -399,11 +393,12 @@ watch(selectedDeveloperLogins, (logins) => {
               leave-to-class="opacity-0"
             >
               <ListboxOptions
+                v-if="logins.data"
                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               >
                 <ListboxOption
                   as="template"
-                  v-for="developerLogin in logins"
+                  v-for="developerLogin in logins.data.value"
                   :key="developerLogin.login"
                   :value="developerLogin.login"
                   v-slot="{ active, selected }"
@@ -521,6 +516,7 @@ watch(selectedDeveloperLogins, (logins) => {
               Create
             </button>
           </div>
+          <div>{{ errorMessage }}</div>
         </div>
       </div>
     </div>
