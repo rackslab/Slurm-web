@@ -450,7 +450,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                 <td>{{ input.type }}</td>
                 <td>{{ input.default }}</td>
                 <td>
-                  <div v-if="input.type == 'string'">
+                  <div v-if="input.type == 2">
                     <p>
                       <span v-if="input.regex.length > 0">{{ input.regex }}</span
                       ><span v-else>-</span>
@@ -458,7 +458,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                   </div>
                   <div v-else>
                     <p>
-                      <span v-if="input.minVal != '' && input.maxVal != ''"
+                      <span v-if="input.minVal != 0 && input.maxVal != 0"
                         >{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</span
                       ><span v-else>-</span>
                     </p>
