@@ -262,14 +262,14 @@ export interface Template {
 }
 
 export interface Input {
-  id: number
+  id?: number
   name: string
   description: string
   default: string
   minVal: number
   maxVal: number
   regex: string
-  template: number
+  template?: number
   type: number
 }
 
