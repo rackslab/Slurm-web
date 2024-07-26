@@ -9,16 +9,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
-
-interface Input {
-  name: string
-  description: string
-  default: string
-  minVal: string
-  maxVal: string
-  regex: string
-  type: string
-}
+import type { Input } from '@/composables/GatewayAPI'
 
 export const useTemplateStore = defineStore('template', () => {
   const name: Ref<string> = ref('')
@@ -33,10 +24,10 @@ export const useTemplateStore = defineStore('template', () => {
     name: '',
     description: '',
     default: '',
-    minVal: '',
-    maxVal: '',
+    minVal: 0,
+    maxVal: 0,
     regex: '',
-    type: ''
+    type: 0
   })
 
   function resetTemplate() {
@@ -54,10 +45,10 @@ export const useTemplateStore = defineStore('template', () => {
       name: '',
       description: '',
       default: '',
-      minVal: '',
-      maxVal: '',
+      minVal: 0,
+      maxVal: 0,
       regex: '',
-      type: ''
+      type: 0
     }
   }
 
