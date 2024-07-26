@@ -207,7 +207,9 @@ def developer_logins():
 def create_template():
     template_data = json.loads(request.data)
     new_template = Templates.create(
-        name=template_data["name"], description=template_data["description"]
+        name=template_data["name"],
+        description=template_data["description"],
+        batchScript=template_data["batchScript"],
     )
 
     for userAccount in range(len(template_data["userAccounts"])):
@@ -231,5 +233,20 @@ def create_template():
             name=template_data["developerLogins"][developerLogin],
             template=new_template.id,
         )
+
+    for input in range(len(template_data["inputs"])):
+        for type in Input_types.select():
+            if type.name == template_data["inputs"][input]["type"]:
+                Inputs.create(
+                    name=template_data["inputs"][input]["name"],
+                    description=template_data["inputs"][input]["description"],
+                    default=template_data["inputs"][input]["default"],
+                    minVal=template_data["inputs"][input]["minVal"],
+                    maxVal=template_data["inputs"][input]["maxVal"],
+                    regex=template_data["inputs"][input]["regex"],
+                    template=new_template.id,
+                    type=type.id,
+                )
+                break
 
     return jsonify({"result": "success"})
