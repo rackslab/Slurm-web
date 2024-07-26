@@ -314,7 +314,7 @@ export interface CreateTemplate {
   developerAccounts: Array<string>
   developerLogins: Array<string>
   inputs: Array<Input>
-  scriptBatch: string
+  batchScript: string
 }
 
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
