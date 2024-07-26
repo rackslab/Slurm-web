@@ -27,14 +27,12 @@ import { useTemplateStore } from '@/stores/template'
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
-const descriptionTemplate = ref('')
-const scriptBatchTemplate = ref('')
 const errorMessage = ref<string | undefined>()
 
 async function createTemplate() {
   const newTemplate: CreateTemplate = {
     name: templateStore.name,
-    description: descriptionTemplate.value,
+    description: templateStore.description,
     userAccounts: templateStore.userAccounts,
     userLogins: templateStore.userLogins,
     developerAccounts: templateStore.developerAccounts,
@@ -488,7 +486,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <textarea
-              v-model="scriptBatchTemplate"
+              v-model="templateStore.batchScript"
               name="scriptBatch"
               cols="20"
               rows="10"
