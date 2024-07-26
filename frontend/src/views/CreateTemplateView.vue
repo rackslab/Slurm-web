@@ -39,6 +39,7 @@ async function createTemplate() {
     userLogins: templateStore.userLogins,
     developerAccounts: templateStore.developerAccounts,
     developerLogins: templateStore.developerLogins,
+    inputs: templateStore.inputs,
     batchScript: templateStore.batchScript
   }
   try {
