@@ -315,7 +315,7 @@ export interface CreateTemplate {
   userLogins: Array<string>
   developerAccounts: Array<string>
   developerLogins: Array<string>
-  // Add inputs later
+  inputs: Array<Input>
   scriptBatch: string
 }
 
