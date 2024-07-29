@@ -29,6 +29,7 @@ import JobConfigurationView from '@/views/JobConfigurationView.vue'
 import TemplatesView from '@/views/TemplatesView.vue'
 import CreateTemplateView from '@/views/CreateTemplateView.vue'
 import CreateInputView from '@/views/CreateInputView.vue'
+import EditInputView from '@/views/EditInputView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -141,6 +142,15 @@ const router = createRouter({
       path: '/:cluster/jobs/templates/create-template/create-input',
       name: 'create-input',
       component: CreateInputView,
+      props: true,
+      meta: {
+        entry: 'jobs'
+      }
+    },
+    {
+      path: '/:cluster/jobs/templates/create-template/edit-input/:indexInput',
+      name: 'edit-input',
+      component: EditInputView,
       props: true,
       meta: {
         entry: 'jobs'
