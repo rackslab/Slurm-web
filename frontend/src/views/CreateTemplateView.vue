@@ -73,6 +73,28 @@ const props = defineProps({
 
 const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
 const logins = useGatewayDataGetter<UserDescription[]>('users')
+
+function updateStagingInput(
+  name: string,
+  description: string,
+  type: string,
+  defaultValue: string,
+  regex: string,
+  minVal: string,
+  maxVal: string
+) {
+  templateStore.stagingInput.name = name
+  templateStore.stagingInput.description = description
+  templateStore.stagingInput.type = type
+  templateStore.stagingInput.default = defaultValue
+
+  if (type == 'string') {
+    templateStore.stagingInput.regex = regex
+  } else {
+    templateStore.stagingInput.minVal = minVal
+    templateStore.stagingInput.maxVal = maxVal
+  }
+}
 </script>
 
 <template>
@@ -451,7 +473,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
             </thead>
 
             <tbody>
-              <tr v-for="input in templateStore.inputs" :key="input.name">
+              <tr v-for="(input, index) in templateStore.inputs" :key="input.name">
                 <td class="pt-4">{{ input.name }}</td>
                 <td class="pt-4">{{ input.description }}</td>
                 <td class="pt-4">{{ input.type }}</td>
@@ -480,11 +502,23 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                       <TrashIcon class="h-5 w-5" />
                     </button>
 
-                    <button
-                      class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    >
-                      <PencilIcon class="h-5 w-5" />
-                    </button>
+                    <router-link :to="{ name: 'edit-input', params: { indexInput: index } }">
+                      <button
+                        class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        @click="
+                          updateStagingInput(
+                            input.name,
+                            input.description,
+                            input.type,
+                            input.default,
+                            input.regex,
+                            input.minVal,
+                            input.maxVal
+                          )
+                        "
+                      >
+                        <PencilIcon class="h-5 w-5" /></button
+                    ></router-link>
                   </div>
                 </td>
               </tr>
