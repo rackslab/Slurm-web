@@ -270,7 +270,7 @@ export interface Input {
   maxVal: number
   regex: string
   template?: number
-  type: number
+  type: string
 }
 
 export interface InputType {

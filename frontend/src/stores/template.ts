@@ -27,7 +27,7 @@ export const useTemplateStore = defineStore('template', () => {
     minVal: 0,
     maxVal: 0,
     regex: '',
-    type: 0
+    type: ''
   })
 
   function resetTemplate() {
@@ -48,7 +48,7 @@ export const useTemplateStore = defineStore('template', () => {
       minVal: 0,
       maxVal: 0,
       regex: '',
-      type: 0
+      type: ''
     }
   }
 

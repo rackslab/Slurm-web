@@ -457,7 +457,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                 <td class="pt-4">{{ input.type }}</td>
                 <td class="pt-4">{{ input.default }}</td>
                 <td class="pt-4">
-                  <div v-if="input.type == 2">
+                  <div v-if="input.type == 'string'">
                     <p>
                       <span v-if="input.regex.length > 0">{{ input.regex }}</span>
                       <span v-else>-</span>
