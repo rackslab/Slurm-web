@@ -16,7 +16,14 @@ import {
   ListboxOption,
   ListboxOptions
 } from '@headlessui/vue'
-import { CheckIcon, ChevronUpDownIcon, PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import {
+  CheckIcon,
+  ChevronUpDownIcon,
+  PlusIcon,
+  ChevronLeftIcon,
+  PencilIcon,
+  TrashIcon
+} from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
@@ -434,11 +441,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           <table class="w-full text-center" v-if="templateStore.inputs.length > 0">
             <thead class="border-b border-gray-500">
               <tr>
-                <th class="pb-3">Input name<span class="text-slurmweb-red">*</span></th>
-                <th class="pb-3">Description</th>
-                <th class="pb-3">Type<span class="text-slurmweb-red">*</span></th>
-                <th class="pb-3">Default</th>
-                <th class="pb-3">Constraint</th>
+                <th class="pb-4">Actions</th>
               </tr>
             </thead>
 
@@ -461,6 +464,21 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                         >{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</span
                       ><span v-else>-</span>
                     </p>
+                  </div>
+                </td>
+                <td class="pt-4">
+                  <div class="flex space-x-2">
+                    <button
+                      class="flex items-center justify-center rounded-md bg-slurmweb-red p-2 text-white hover:bg-slurmweb-darkred focus:outline-none focus:ring-2 focus:ring-slurmweb-red"
+                    >
+                      <TrashIcon class="h-5 w-5" />
+                    </button>
+
+                    <button
+                      class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    >
+                      <PencilIcon class="h-5 w-5" />
+                    </button>
                   </div>
                 </td>
               </tr>
