@@ -25,6 +25,7 @@ module.exports = {
           verydark: '#3b5163',
           'font-disabled': '#dbe9f4',
           red: '#BA2430',
+          darkred: '#A12330'
         },
       },
       animation: {
