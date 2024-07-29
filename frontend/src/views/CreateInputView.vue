@@ -112,7 +112,9 @@ onMounted(async () => {
             <ListboxButton
               v-model="templateStore.stagingInput.type"
               class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left capitalize text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-              >{{ templateStore.stagingInput.type }}
+              ><span v-if="templateStore.stagingInput.type != 0">{{
+                templateStore.stagingInput.type
+              }}</span>
               <span
                 class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
               >
@@ -179,7 +181,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <div v-if="templateStore.stagingInput.type == 'string'">
+        <div v-if="templateStore.stagingInput.type == 2">
           <div class="mt-5 flex items-center">
             <div class="w-[250px]">
               <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
@@ -208,11 +210,7 @@ onMounted(async () => {
           />
         </div>
 
-        <div
-          v-if="
-            templateStore.stagingInput.type === 'float' || templateStore.stagingInput.type === 'int'
-          "
-        >
+        <div v-if="templateStore.stagingInput.type === 1 || templateStore.stagingInput.type === 3">
           <div class="mt-5 flex items-center">
             <div class="w-[250px]">
               <label for="constraint" class="text-sm font-medium text-gray-900">Constraint</label>
