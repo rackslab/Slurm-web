@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- docs: Add link to related github issue for `slurmrestd` TCP/IP socket
-  limitation in architecture page.
+- docs:
+  - Add link to related github issue for `slurmrestd` TCP/IP socket limitation
+    in architecture page.
+  - Add warning about the pure documentation purpose of complete examples of
+    gateway/agent configuration files.
 
 ## Changed
 - pkgs: Add requirement on RFL.core >= 1.0.3.

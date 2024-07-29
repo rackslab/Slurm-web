@@ -5,7 +5,7 @@ Slurm-web agent can be configured in INI file
 
 This page contains the <<sections,reference documentation>> of all configuration
 parameters that can be defined in this file, grouped by sections, and a
-<<example,full example>> of this configuration file.
+<<example,full example>> to illustrate its syntax and possible values.
 
 [#sections]
 == Sections
@@ -15,11 +15,21 @@ include::partial$conf-agent.adoc[leveloffset=+1]
 [#example]
 == Example
 
+This section contains a full example of Slurm-web agent configuration file.
+
+CAUTION: Do NOT use this full example file as a basis for your custom site
+configuration. This example is provided only to illustrate the syntax of the
+file, its parameters and possible values. Most parameters are actually optional.
+You should define only the sections and parameters that are either really
+required or those for which you want to override default value. Please refer to
+the xref:install:quickstart.adoc[quickstart guide] to understand the parameters
+you are supposed to define in most cases.
+
 NOTE: This example file is also installed in Slurm-web agent distribution
 packages at [.path]#`/usr/share/doc/slurm-web-agent/examples/agent.ini`#.
 
 .Complete example of Slurm-web agent configuration file
 [,ini]
 ----
-include::example$agent.ini[]
+include::example$agent.ini[lines=1..4;15..-1]
 ----
