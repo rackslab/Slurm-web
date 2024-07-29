@@ -24,8 +24,8 @@ export const useTemplateStore = defineStore('template', () => {
     name: '',
     description: '',
     default: '',
-    minVal: 0,
-    maxVal: 0,
+    minVal: '',
+    maxVal: '',
     regex: '',
     type: ''
   })
@@ -45,8 +45,8 @@ export const useTemplateStore = defineStore('template', () => {
       name: '',
       description: '',
       default: '',
-      minVal: 0,
-      maxVal: 0,
+      minVal: '',
+      maxVal: '',
       regex: '',
       type: ''
     }
