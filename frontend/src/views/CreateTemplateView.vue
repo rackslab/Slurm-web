@@ -465,7 +465,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
                   </div>
                   <div v-else>
                     <p>
-                      <span v-if="input.minVal != 0 && input.maxVal != 0">
+                      <span v-if="input.minVal != '' && input.maxVal != ''">
                         {{ input.minVal }} ≤ n ≥ {{ input.maxVal }}
                       </span>
                       <span v-else>-</span>

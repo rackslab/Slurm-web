@@ -266,8 +266,8 @@ export interface Input {
   name: string
   description: string
   default: string
-  minVal: number
-  maxVal: number
+  minVal: string
+  maxVal: string
   regex: string
   template?: number
   type: string
