@@ -441,28 +441,34 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           <table class="w-full text-center" v-if="templateStore.inputs.length > 0">
             <thead class="border-b border-gray-500">
               <tr>
+                <th class="pb-4">Input name<span class="text-slurmweb-red">*</span></th>
+                <th class="pb-4">Description</th>
+                <th class="pb-4">Type<span class="text-slurmweb-red">*</span></th>
+                <th class="pb-4">Default</th>
+                <th class="pb-4">Constraint</th>
                 <th class="pb-4">Actions</th>
               </tr>
             </thead>
 
             <tbody>
               <tr v-for="input in templateStore.inputs" :key="input.name">
-                <th>{{ input.name }}</th>
-                <td>{{ input.description }}</td>
-                <td>{{ input.type }}</td>
-                <td>{{ input.default }}</td>
-                <td>
+                <td class="pt-4">{{ input.name }}</td>
+                <td class="pt-4">{{ input.description }}</td>
+                <td class="pt-4">{{ input.type }}</td>
+                <td class="pt-4">{{ input.default }}</td>
+                <td class="pt-4">
                   <div v-if="input.type == 2">
                     <p>
-                      <span v-if="input.regex.length > 0">{{ input.regex }}</span
-                      ><span v-else>-</span>
+                      <span v-if="input.regex.length > 0">{{ input.regex }}</span>
+                      <span v-else>-</span>
                     </p>
                   </div>
                   <div v-else>
                     <p>
-                      <span v-if="input.minVal != 0 && input.maxVal != 0"
-                        >{{ input.minVal }} ≤ n ≥ {{ input.maxVal }}</span
-                      ><span v-else>-</span>
+                      <span v-if="input.minVal != 0 && input.maxVal != 0">
+                        {{ input.minVal }} ≤ n ≥ {{ input.maxVal }}
+                      </span>
+                      <span v-else>-</span>
                     </p>
                   </div>
                 </td>
