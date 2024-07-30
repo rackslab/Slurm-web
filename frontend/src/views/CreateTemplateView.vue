@@ -59,25 +59,6 @@ async function createTemplate() {
   }
 }
 
-function deleteStagingInput(index: number) {
-  templateStore.inputs.splice(index, 1)
-}
-
-function resetForm() {
-  templateStore.resetTemplate()
-  templateStore.resetInput()
-}
-
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
-
-const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
-const logins = useGatewayDataGetter<UserDescription[]>('users')
-
 function updateStagingInput(
   name: string,
   description: string,
@@ -99,6 +80,25 @@ function updateStagingInput(
     templateStore.stagingInput.maxVal = maxVal
   }
 }
+
+function deleteStagingInput(index: number) {
+  templateStore.inputs.splice(index, 1)
+}
+
+function resetForm() {
+  templateStore.resetTemplate()
+  templateStore.resetInput()
+}
+
+const props = defineProps({
+  cluster: {
+    type: String,
+    required: true
+  }
+})
+
+const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
+const logins = useGatewayDataGetter<UserDescription[]>('users')
 </script>
 
 <template>
