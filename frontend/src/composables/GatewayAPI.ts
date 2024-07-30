@@ -258,6 +258,7 @@ export interface Template {
   id: number
   name: string
   description: string
+  batchScript: string
 }
 
 export interface Input {
