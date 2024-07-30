@@ -59,6 +59,10 @@ async function createTemplate() {
   }
 }
 
+function deleteStagingInput(index: number) {
+  templateStore.inputs.splice(index, 1)
+}
+
 function resetForm() {
   templateStore.resetTemplate()
   templateStore.resetInput()
@@ -497,6 +501,7 @@ function updateStagingInput(
                 <td class="pt-4">
                   <div class="flex space-x-2">
                     <button
+                      @click="deleteStagingInput(index)"
                       class="flex items-center justify-center rounded-md bg-slurmweb-red p-2 text-white hover:bg-slurmweb-darkred focus:outline-none focus:ring-2 focus:ring-slurmweb-red"
                     >
                       <TrashIcon class="h-5 w-5" />
