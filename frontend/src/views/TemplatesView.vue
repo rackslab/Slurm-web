@@ -69,12 +69,14 @@ onMounted(async () => {
             <div class="flex-grow"></div>
 
             <div class="w-full border-t border-gray-200 dark:border-gray-700">
-              <button
-                class="flex w-full items-center justify-center rounded-b-lg py-3 font-medium transition duration-200 ease-in-out hover:bg-slurmweb hover:text-white dark:bg-gray-700"
+              <router-link :to="{ name: 'edit-template', params: { idTemplate: template.id } }">
+                <button
+                  class="flex w-full items-center justify-center rounded-b-lg py-3 font-medium transition duration-200 ease-in-out hover:bg-slurmweb hover:text-white dark:bg-gray-700"
+                >
+                  <PencilIcon class="mr-2 h-4 w-5" />
+                  Edit
+                </button></router-link
               >
-                <PencilIcon class="mr-2 h-4 w-5" />
-                Edit
-              </button>
             </div>
           </div>
           <div class="flex items-center">
