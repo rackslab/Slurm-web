@@ -29,13 +29,9 @@ import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGe
 import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
 import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
-import type { Ref } from 'vue'
-import type { Input } from '@/composables/GatewayAPI'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
-const selectedTemplate: Ref<Record<string, string>> = ref({})
-const inputs: Ref<Array<Input>> = ref([])
 
 const errorMessage = ref<string | undefined>()
 
@@ -110,14 +106,44 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
 onMounted(async () => {
   let getTemplates = await gateway.templates(props.cluster)
   let getInputs = await gateway.inputs(props.cluster)
+  let getUserAccounts = await gateway.user_accounts(props.cluster)
+  let getUserLogins = await gateway.user_logins(props.cluster)
+  let getDeveloperAccounts = await gateway.user_accounts(props.cluster)
+  let getDeveloperLogins = await gateway.user_logins(props.cluster)
 
   getTemplates.forEach((template) => {
     if (template.id == Number(props.idTemplate)) {
-      selectedTemplate.value['name'] = template.name
-      selectedTemplate.value['description'] = template.description
+      templateStore.name = template.name
+      templateStore.description = template.description
+      templateStore.batchScript = template.batchScript
     }
   })
-  inputs.value = getInputs.filter((input) => input.template == Number(props.idTemplate))
+
+  getUserAccounts.forEach((userAccount) => {
+    if (userAccount.id == Number(props.idTemplate)) {
+      templateStore.userAccounts.push(userAccount.name)
+    }
+  })
+
+  getUserLogins.forEach((userLogin) => {
+    if (userLogin.id == Number(props.idTemplate)) {
+      templateStore.userLogins.push(userLogin.name)
+    }
+  })
+
+  getDeveloperAccounts.forEach((developerAccount) => {
+    if (developerAccount.id == Number(props.idTemplate)) {
+      templateStore.developerAccounts.push(developerAccount.name)
+    }
+  })
+
+  getDeveloperLogins.forEach((developerLogin) => {
+    if (developerLogin.id == Number(props.idTemplate)) {
+      templateStore.developerLogins.push(developerLogin.name)
+    }
+  })
+
+  templateStore.inputs = getInputs.filter((input) => input.template == Number(props.idTemplate))
 })
 </script>
 
@@ -156,7 +182,7 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="selectedTemplate.name"
+              v-model="templateStore.name"
               type="text"
               name="templateName"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
