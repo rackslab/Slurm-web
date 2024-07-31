@@ -49,6 +49,7 @@ async function createTemplate() {
   }
   try {
     await gateway.create_template(props.cluster, newTemplate)
+    resetForm()
   } catch (error: any) {
     console.log(error)
     if (error instanceof PermissionError) {
@@ -569,13 +570,15 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
               </button></router-link
             >
 
-            <button
-              @click="createTemplate()"
-              type="button"
-              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            <router-link :to="{ name: 'templates' }"
+              ><button
+                @click="createTemplate()"
+                type="button"
+                class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+              >
+                Create
+              </button></router-link
             >
-              Create
-            </button>
           </div>
           <div>{{ errorMessage }}</div>
         </div>
