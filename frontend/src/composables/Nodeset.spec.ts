@@ -18,6 +18,10 @@ describe('Nodeset', () => {
     const folded = foldNodeset(['cn-0-01', 'cn-0-02', 'cn-1-03'])
     expect(folded).toBe('cn-0-[01-02],cn-1-03')
   })
+  test('fold without digits', () => {
+    const folded = foldNodeset(['compute', 'cn1', 'cn2', 'cn3', 'cn4', 'test'])
+    expect(folded).toBe('cn[1-4],compute,test')
+  })
   test('expand', () => {
     const expanded = expandNodeset('cn[1-2]')
     expect(expanded).toStrictEqual(['cn1', 'cn2'])
@@ -37,5 +41,9 @@ describe('Nodeset', () => {
   test('expand with multiple digits', () => {
     const expanded = expandNodeset('cn-0-[02-04],cn-1-05')
     expect(expanded).toStrictEqual(['cn-0-02', 'cn-0-03', 'cn-0-04', 'cn-1-05'])
+  })
+  test('expand without digit', () => {
+    const expanded = expandNodeset('compute,cn[1-4],test')
+    expect(expanded).toStrictEqual(['compute', 'cn1', 'cn2', 'cn3', 'cn4', 'test'])
   })
 })
