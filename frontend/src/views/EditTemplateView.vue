@@ -620,7 +620,7 @@ onMounted(async () => {
               type="button"
               class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
-              Create
+              Save
             </button>
           </div>
           <div>{{ errorMessage }}</div>
