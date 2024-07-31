@@ -33,6 +33,7 @@ export const useTemplateStore = defineStore('template', () => {
   function resetTemplate() {
     name.value = ''
     description.value = ''
+    batchScript.value = ''
     userAccounts.value = []
     userLogins.value = []
     developerAccounts.value = []
