@@ -91,8 +91,11 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         else:
             logger.warning("Caching is disabled")
             self.cache = None
-        if self.settings.slurmrestd.slurm_token:
-            self.slurmrestd_headers = {'X-SLURM-USER-TOKEN': self.settings.slurmrestd.slurm_token}
+        if self.settings.slurmrestd.enable_jwt_auth:
+            self.slurmrestd_headers = {
+                'X-SLURM-USER-NAME': self.settings.slurmrestd.jwt_auth_user,
+                'X-SLURM-USER-TOKEN': self.settings.slurmrestd.jwt_auth_token,
+            }
         else:
             self.slurmrestd_headers = None
 

@@ -61,10 +61,16 @@ slurmrestd:
     type: str
     default: '0.0.39'
     doc: Slurm REST API version
-  slurm_token:
+  enable_jwt_auth:
+    type: bool
+    default: false
+    doc: Enable slurmrestd jwt authentication
+  jwt_auth_user:
     type: str
-    default: 'None'
-    doc: Slurm REST API authentication token
+    doc: slurmrestd authentication user
+  jwt_auth_token:
+    type: str
+    doc: slurmrestd authentication token
 
 filters:
   jobs:
