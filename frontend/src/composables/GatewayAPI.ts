@@ -279,28 +279,10 @@ export interface InputType {
   name: string
 }
 
-export interface UserAccount {
+export interface UserDeveloper {
   id: number
   name: string
-  idTemplate: number
-}
-
-export interface UserLogin {
-  id: number
-  name: string
-  idTemplate: number
-}
-
-export interface DeveloperAccount {
-  id: number
-  name: string
-  idTemplate: number
-}
-
-export interface DeveloperLogin {
-  id: number
-  name: string
-  idTemplate: number
+  template: number
 }
 
 interface DbCreateResponse {
@@ -603,20 +585,20 @@ export function useGatewayAPI() {
     return await get<InputType[]>(`/agents/${cluster}/input-types`)
   }
 
-  async function user_accounts(cluster: string): Promise<Array<UserAccount>> {
-    return await get<UserAccount[]>(`/agents/${cluster}/user-accounts`)
+  async function user_accounts(cluster: string): Promise<Array<UserDeveloper>> {
+    return await get<UserDeveloper[]>(`/agents/${cluster}/user-accounts`)
   }
 
-  async function user_logins(cluster: string): Promise<Array<UserLogin>> {
-    return await get<UserLogin[]>(`/agents/${cluster}/user-logins`)
+  async function user_logins(cluster: string): Promise<Array<UserDeveloper>> {
+    return await get<UserDeveloper[]>(`/agents/${cluster}/user-logins`)
   }
 
-  async function developer_accounts(cluster: string): Promise<Array<DeveloperAccount>> {
-    return await get<DeveloperAccount[]>(`/agents/${cluster}/developer-accounts`)
+  async function developer_accounts(cluster: string): Promise<Array<UserDeveloper>> {
+    return await get<UserDeveloper[]>(`/agents/${cluster}/developer-accounts`)
   }
 
-  async function developer_logins(cluster: string): Promise<Array<DeveloperLogin>> {
-    return await get<DeveloperLogin[]>(`/agents/${cluster}/developer-logins`)
+  async function developer_logins(cluster: string): Promise<Array<UserDeveloper>> {
+    return await get<UserDeveloper[]>(`/agents/${cluster}/developer-logins`)
   }
 
   async function create_template(
