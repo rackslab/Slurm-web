@@ -15,7 +15,12 @@ class ConsecutiveNodes {
   constructor(pattern: string, ids: string[]) {
     this.pattern = pattern
     this.ids = ids
-    this.firstNodeId = this.lastNodeId = parseInt(ids[ids.length - 1])
+    if (ids.length) {
+      this.firstNodeId = this.lastNodeId = parseInt(ids[ids.length - 1])
+    } else {
+      // no digit found in node name, set Id to -1.
+      this.firstNodeId = this.lastNodeId = -1
+    }
   }
   isNext(pattern: string, ids: string[]): boolean {
     // different pattern
@@ -43,6 +48,9 @@ class ConsecutiveNodes {
   }
   render(): string {
     let result = this.pattern
+
+    // no digit found when parsing node name, just return the pattern w/o id
+    if (this.firstNodeId == -1) return result
 
     // replace all %s by all except last id
     for (const [i, id] of this.ids.entries()) {
@@ -97,19 +105,23 @@ export function foldNodeset(nodeNames: string[]): string {
 }
 
 export function expandNodeset(nodeset: string): string[] {
-  const re = /([A-Za-z0-9_-]+)(?:([0-9]+)|\[([0-9]+)-([0-9]+)\])/gm
+  const re = /([A-Za-z0-9_-]+)(?:([0-9]+)|\[([0-9]+)-([0-9]+)\])?/gm
   const result: string[] = []
   for (const match of nodeset.matchAll(re)) {
     const prefix = match[1]
+    // test if one node number (ex: node04), node range (ex: node[04-06]) or
+    // no number (ex: node).
     if (match[2]) {
       result.push(prefix + match[2])
-    } else {
+    } else if (match[3] && match[4]) {
       const digits = match[3].length
       const first = parseInt(match[3])
       const last = parseInt(match[4])
       for (let index = first; index <= last; index++) {
         result.push(prefix + index.toString().padStart(digits, '0'))
       }
+    } else {
+      result.push(prefix)
     }
   }
   return result
