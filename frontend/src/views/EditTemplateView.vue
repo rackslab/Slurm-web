@@ -120,25 +120,25 @@ onMounted(async () => {
   })
 
   getUserAccounts.forEach((userAccount) => {
-    if (userAccount.id == Number(props.idTemplate)) {
+    if (userAccount.template == Number(props.idTemplate)) {
       templateStore.userAccounts.push(userAccount.name)
     }
   })
 
   getUserLogins.forEach((userLogin) => {
-    if (userLogin.id == Number(props.idTemplate)) {
+    if (userLogin.template == Number(props.idTemplate)) {
       templateStore.userLogins.push(userLogin.name)
     }
   })
 
   getDeveloperAccounts.forEach((developerAccount) => {
-    if (developerAccount.id == Number(props.idTemplate)) {
+    if (developerAccount.template == Number(props.idTemplate)) {
       templateStore.developerAccounts.push(developerAccount.name)
     }
   })
 
   getDeveloperLogins.forEach((developerLogin) => {
-    if (developerLogin.id == Number(props.idTemplate)) {
+    if (developerLogin.template == Number(props.idTemplate)) {
       templateStore.developerLogins.push(developerLogin.name)
     }
   })
