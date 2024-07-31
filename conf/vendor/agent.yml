@@ -61,6 +61,10 @@ slurmrestd:
     type: str
     default: '0.0.39'
     doc: Slurm REST API version
+  slurm_token:
+    type: str
+    default: 'None'
+    doc: Slurm REST API authentication token
 
 filters:
   jobs:

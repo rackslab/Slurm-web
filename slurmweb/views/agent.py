@@ -44,7 +44,7 @@ def slurmrest(query, key, handle_errors=True):
     prefix = "http+unix://slurmrestd/"
     session.mount(prefix, SlurmrestdUnixAdapter(current_app.settings.slurmrestd.socket))
     try:
-        response = session.get(f"{prefix}/{query}")
+        response = session.get(f"{prefix}/{query}", headers=current_app.slurmrestd_headers)
     except requests.exceptions.ConnectionError as err:
         logger.error("Unable to connect to slurmrestd: %s", err)
         abort(500, f"Unable to connect to slurmrestd: {err}")
