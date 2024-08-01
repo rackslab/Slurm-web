@@ -607,6 +607,13 @@ export function useGatewayAPI() {
     return (await post(`/agents/${cluster}/create-template`, newTemplate)) as DbCreateResponse
   }
 
+  async function edit_template(
+    cluster: string,
+    editTemplate: JobTemplate
+  ): Promise<DbCreateResponse> {
+    return (await post(`/agents/${cluster}/edit-template`, editTemplate)) as DbCreateResponse
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     width: number,
@@ -687,6 +694,7 @@ export function useGatewayAPI() {
     developer_accounts,
     developer_logins,
     create_template,
+    edit_template,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,
