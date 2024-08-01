@@ -371,3 +371,9 @@ def developer_logins(cluster: str):
 @validate_cluster
 def create_template(cluster: str):
     return proxy_agent(cluster, "create-template", request.token)
+
+
+@check_jwt
+@validate_cluster
+def edit_template(cluster: str):
+    return proxy_agent(cluster, "edit-template", request.token)
