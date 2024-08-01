@@ -250,3 +250,115 @@ def create_template():
                 break
 
     return jsonify({"result": "success"})
+
+
+@rbac_action("manage-templates")
+def edit_template():
+    template_data = json.loads(request.data)
+
+    template = Templates.get(Templates.id == template_data["idTemplate"])
+    template.name = template_data["name"]
+    template.description = template_data["description"]
+    template.batchScript = template_data["batchScript"]
+    template.save()
+
+    # user account
+    db_user_accounts = list(
+        Template_users_accounts.select(Template_users_accounts.name)
+        .where(Template_users_accounts.template == template_data["idTemplate"])
+        .dicts()
+    )
+    db_user_account_names = [user["name"] for user in db_user_accounts]
+
+    for form_account in range(len(template_data["userAccounts"])):
+        if template_data["userAccounts"][form_account] not in db_user_account_names:
+            Template_users_accounts.create(
+                name=template_data["userAccounts"][form_account],
+                template=template_data["idTemplate"],
+            )
+
+    for db_account in range(len(db_user_account_names)):
+        if db_user_account_names[db_account] not in template_data["userAccounts"]:
+            Template_users_accounts.delete().where(
+                (Template_users_accounts.name == db_user_account_names[db_account])
+                & (Template_users_accounts.template == template_data["idTemplate"])
+            ).execute()
+
+    # user login
+    db_user_logins = list(
+        Template_users_logins.select(Template_users_logins.name)
+        .where(Template_users_logins.template == template_data["idTemplate"])
+        .dicts()
+    )
+    db_user_login_names = [user["name"] for user in db_user_logins]
+
+    for form_login in range(len(template_data["userLogins"])):
+        if template_data["userLogins"][form_login] not in db_user_login_names:
+            Template_users_logins.create(
+                name=template_data["userLogins"][form_login],
+                template=template_data["idTemplate"],
+            )
+
+    for db_login in range(len(db_user_login_names)):
+        if db_user_login_names[db_login] not in template_data["userLogins"]:
+            Template_users_logins.delete().where(
+                (Template_users_logins.name == db_user_login_names[db_login])
+                & (Template_users_logins.template == template_data["idTemplate"])
+            ).execute()
+
+    # user account
+    db_developer_accounts = list(
+        Template_developers_accounts.select(Template_developers_accounts.name)
+        .where(Template_developers_accounts.template == template_data["idTemplate"])
+        .dicts()
+    )
+    db_developer_account_names = [
+        developer["name"] for developer in db_developer_accounts
+    ]
+
+    for form_account in range(len(template_data["developerAccounts"])):
+        if (
+            template_data["developerAccounts"][form_account]
+            not in db_developer_account_names
+        ):
+            Template_users_accounts.create(
+                name=template_data["developerAccounts"][form_account],
+                template=template_data["idTemplate"],
+            )
+
+    for db_account in range(len(db_developer_account_names)):
+        if (
+            db_developer_account_names[db_account]
+            not in template_data["developerAccounts"]
+        ):
+            Template_developers_accounts.delete().where(
+                (
+                    Template_developers_accounts.name
+                    == db_developer_account_names[db_account]
+                )
+                & (Template_developers_accounts.template == template_data["idTemplate"])
+            ).execute()
+
+    # developer login
+    db_developer_logins = list(
+        Template_developers_logins.select(Template_developers_logins.name)
+        .where(Template_developers_logins.template == template_data["idTemplate"])
+        .dicts()
+    )
+    db_developer_login_names = [developer["name"] for developer in db_developer_logins]
+
+    for form_login in range(len(template_data["developerLogins"])):
+        if template_data["developerLogins"][form_login] not in db_developer_login_names:
+            Template_developers_logins.create(
+                name=template_data["developerLogins"][form_login],
+                template=template_data["idTemplate"],
+            )
+
+    for db_login in range(len(db_developer_login_names)):
+        if db_developer_login_names[db_login] not in template_data["developerLogins"]:
+            Template_developers_logins.delete().where(
+                (Template_developers_logins.name == db_developer_login_names[db_login])
+                & (Template_developers_logins.template == template_data["idTemplate"])
+            ).execute()
+
+    return jsonify({"result": "success"})
