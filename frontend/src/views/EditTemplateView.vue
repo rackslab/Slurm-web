@@ -28,14 +28,14 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
-import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
+import type { UserDescription, AccountDescription, JobTemplate } from '@/composables/GatewayAPI'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
 const errorMessage = ref<string | undefined>()
 
-async function createTemplate() {
+  const editTemplate: JobTemplate = {
   const newTemplate: CreateTemplate = {
     name: templateStore.name,
     description: templateStore.description,
