@@ -49,6 +49,7 @@ async function editTemplate() {
   }
   try {
     await gateway.edit_template(props.cluster, editTemplate)
+    resetForm()
   } catch (error: any) {
     console.log(error)
     if (error instanceof PermissionError) {
