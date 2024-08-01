@@ -131,7 +131,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create-template',
+      path: '/:cluster/jobs/templates/create',
       name: 'create-template',
       component: CreateTemplateView,
       props: true,
@@ -140,7 +140,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create-template/create-input',
+      path: '/:cluster/jobs/templates/create/create-input',
       name: 'create-input',
       component: CreateInputView,
       props: true,
@@ -149,7 +149,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create-template/edit-input/:indexInput',
+      path: '/:cluster/jobs/templates/create/edit-input/:indexInput',
       name: 'edit-input',
       component: EditInputView,
       props: true,
@@ -158,7 +158,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create-template/edit-template/:idTemplate',
+      path: '/:cluster/jobs/templates/edit/:idTemplate',
       name: 'edit-template',
       component: EditTemplateView,
       props: true,
