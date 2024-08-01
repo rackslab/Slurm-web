@@ -35,6 +35,7 @@ const gateway = useGatewayAPI()
 
 const errorMessage = ref<string | undefined>()
 
+async function editTemplate() {
   const editTemplate: JobTemplate = {
     idTemplate: Number(props.idTemplate),
     name: templateStore.name,
@@ -47,7 +48,7 @@ const errorMessage = ref<string | undefined>()
     batchScript: templateStore.batchScript
   }
   try {
-    await gateway.create_template(props.cluster, newTemplate)
+    await gateway.edit_template(props.cluster, editTemplate)
   } catch (error: any) {
     console.log(error)
     if (error instanceof PermissionError) {
