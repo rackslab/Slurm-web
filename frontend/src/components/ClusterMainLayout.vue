@@ -17,10 +17,18 @@ import { Bars3Icon, ArrowRightOnRectangleIcon, ServerStackIcon } from '@heroicon
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import MainMenu from '@/components/MainMenu.vue'
 import ClustersPopOver from '@/components/ClustersPopOver.vue'
+import { useTemplateStore } from '@/stores/template'
+
+const templateStore = useTemplateStore()
 
 type BreadcrumbPart = {
   title: string
   routeName?: string
+}
+
+function resetForm() {
+  templateStore.resetTemplate()
+  templateStore.resetInput()
 }
 
 const props = defineProps({
@@ -67,7 +75,12 @@ onMounted(() => {
       <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <div class="relative mt-1 flex flex-1 items-center">
           <ClustersPopOver :cluster="props.cluster" />
-          <span v-for="breadcrumbPart in props.breadcrumb" :key="breadcrumbPart.title" class="flex">
+          <span
+            @click="resetForm()"
+            v-for="breadcrumbPart in props.breadcrumb"
+            :key="breadcrumbPart.title"
+            class="flex"
+          >
             <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
             <router-link v-if="breadcrumbPart.routeName" :to="{ name: breadcrumbPart.routeName }">{{
               breadcrumbPart.title
