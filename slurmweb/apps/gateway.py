@@ -74,6 +74,11 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             views.create_template,
             methods=["POST"],
         ),
+        SlurmwebAppRoute(
+            "/api/agents/<cluster>/edit-template",
+            views.edit_template,
+            methods=["POST"],
+        ),
     }
 
     def _agent_info(self, url: str) -> SlurmwebAgent:
