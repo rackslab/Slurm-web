@@ -25,7 +25,7 @@ import {
   TrashIcon
 } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { UserDescription, AccountDescription, CreateTemplate } from '@/composables/GatewayAPI'
+import type { UserDescription, AccountDescription, JobTemplate } from '@/composables/GatewayAPI'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import { PermissionError } from '@/composables/HTTPErrors'
 
@@ -37,7 +37,7 @@ const gateway = useGatewayAPI()
 const errorMessage = ref<string | undefined>()
 
 async function createTemplate() {
-  const newTemplate: CreateTemplate = {
+  const newTemplate: JobTemplate = {
     name: templateStore.name,
     description: templateStore.description,
     userAccounts: templateStore.userAccounts,
