@@ -289,6 +289,7 @@ interface DbCreateResponse {
 }
 
 export interface JobTemplate {
+  idTemplate?: number
   name: string
   description: string
   userAccounts: Array<string>

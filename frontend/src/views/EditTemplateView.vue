@@ -36,7 +36,7 @@ const gateway = useGatewayAPI()
 const errorMessage = ref<string | undefined>()
 
   const editTemplate: JobTemplate = {
-  const newTemplate: CreateTemplate = {
+    idTemplate: Number(props.idTemplate),
     name: templateStore.name,
     description: templateStore.description,
     userAccounts: templateStore.userAccounts,
