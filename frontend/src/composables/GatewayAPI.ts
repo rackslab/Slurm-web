@@ -288,7 +288,7 @@ interface DbCreateResponse {
   result: string
 }
 
-export interface CreateTemplate {
+export interface JobTemplate {
   name: string
   description: string
   userAccounts: Array<string>
@@ -602,7 +602,7 @@ export function useGatewayAPI() {
 
   async function create_template(
     cluster: string,
-    newTemplate: CreateTemplate
+    newTemplate: JobTemplate
   ): Promise<DbCreateResponse> {
     return (await post(`/agents/${cluster}/create-template`, newTemplate)) as DbCreateResponse
   }
