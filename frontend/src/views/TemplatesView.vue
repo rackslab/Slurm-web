@@ -10,13 +10,9 @@
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/vue/20/solid'
 import { PlusCircleIcon } from '@heroicons/vue/24/outline'
-import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { ref, onMounted } from 'vue'
 import type { Template } from '@/composables/GatewayAPI'
-import type { Ref } from 'vue'
 
-const gateway = useGatewayAPI()
-const templates: Ref<Array<Template>> = ref([])
+import { useClusterDataGetter } from '@/composables/DataGetter'
 
 const props = defineProps({
   cluster: {
@@ -25,9 +21,7 @@ const props = defineProps({
   }
 })
 
-onMounted(async () => {
-  templates.value = await gateway.templates(props.cluster)
-})
+const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
 </script>
 
 <template>
@@ -52,7 +46,7 @@ onMounted(async () => {
 
         <div class="mt-8 flex flex-wrap justify-center gap-6">
           <div
-            v-for="template in templates"
+            v-for="template in templates.data.value"
             :key="template.id"
             class="flex flex-col rounded-lg border border-gray-200 bg-white shadow sm:w-[400px] md:w-[400px] lg:w-[400px] dark:border-gray-700 dark:bg-gray-800"
           >
