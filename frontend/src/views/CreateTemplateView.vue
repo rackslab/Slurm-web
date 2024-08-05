@@ -9,25 +9,11 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ref } from 'vue'
-import {
-  Listbox,
-  ListboxButton,
-  ListboxLabel,
-  ListboxOption,
-  ListboxOptions
-} from '@headlessui/vue'
-import {
-  CheckIcon,
-  ChevronUpDownIcon,
-  PlusIcon,
-  ChevronLeftIcon,
-  PencilIcon,
-  TrashIcon
-} from '@heroicons/vue/20/solid'
+import { PlusIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { UserDescription, AccountDescription, JobTemplate } from '@/composables/GatewayAPI'
-import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
+import type { JobTemplate } from '@/composables/GatewayAPI'
 import { PermissionError } from '@/composables/HTTPErrors'
+import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 
 import { useTemplateStore } from '@/stores/template'
 
@@ -97,9 +83,6 @@ const props = defineProps({
     required: true
   }
 })
-
-const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
-const logins = useGatewayDataGetter<UserDescription[]>('users')
 </script>
 
 <template>
@@ -169,147 +152,8 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
         </p>
         <p class="mt-1 text-sm text-gray-500">Users who can use the template</p>
 
-        <Listbox as="div" v-model="templateStore.userAccounts" class="flex pt-5" multiple>
-          <div class="w-[250px]">
-            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
-              >Accounts</ListboxLabel
-            >
-            <p class="mt-1 text-sm text-gray-500">Select users by account</p>
-          </div>
-          <div class="relative mt-2">
-            <ListboxButton
-              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-            >
-              <span class="flex items-center">
-                <span class="block truncate">{{
-                  templateStore.userAccounts.map((userAccount) => `@${userAccount}`).join(', ')
-                }}</span>
-              </span>
-              <span
-                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
-              >
-                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-              </span>
-            </ListboxButton>
-
-            <transition
-              leave-active-class="transition ease-in duration-100"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ListboxOptions
-                v-if="accounts.data"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-              >
-                <ListboxOption
-                  as="template"
-                  v-for="account in accounts.data.value"
-                  :key="account.name"
-                  :value="account.name"
-                  v-slot="{ active, selected }"
-                >
-                  <li
-                    :class="[
-                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-3 pr-9'
-                    ]"
-                  >
-                    <div class="flex items-center">
-                      <span :class="['truncate', selected && 'font-semibold']"
-                        >@{{ account.name }}</span
-                      >
-                    </div>
-
-                    <span
-                      v-if="selected"
-                      :class="[
-                        active ? 'text-white' : 'text-slurmweb',
-                        'absolute inset-y-0 right-0 flex items-center pr-4'
-                      ]"
-                    >
-                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  </li>
-                </ListboxOption>
-              </ListboxOptions>
-            </transition>
-          </div>
-        </Listbox>
-
-        <Listbox as="div" v-model="templateStore.userLogins" class="flex pt-5" multiple>
-          <div class="w-[250px]">
-            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
-              >Logins</ListboxLabel
-            >
-            <p class="mt-1 text-sm text-gray-500">Select users by login or name</p>
-          </div>
-          <div class="relative mt-2">
-            <ListboxButton
-              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-            >
-              <span class="flex items-center">
-                <span class="block truncate">{{
-                  templateStore.userLogins.map((userLogin) => `${userLogin}`).join(', ')
-                }}</span>
-              </span>
-              <span
-                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
-              >
-                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-              </span>
-            </ListboxButton>
-
-            <transition
-              leave-active-class="transition ease-in duration-100"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ListboxOptions
-                v-if="logins.data"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-              >
-                <ListboxOption
-                  as="template"
-                  v-for="userLogin in logins.data.value"
-                  :key="userLogin.login"
-                  :value="userLogin.login"
-                  v-slot="{ active, selected }"
-                >
-                  <li
-                    :class="[
-                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-3 pr-9'
-                    ]"
-                  >
-                    <div class="flex">
-                      <span :class="['truncate', selected && 'font-semibold']">
-                        {{ userLogin.fullname }}
-                      </span>
-                      <span
-                        :class="[
-                          'ml-2 truncate text-gray-500',
-                          active ? 'text-indigo-200' : 'text-gray-500'
-                        ]"
-                      >
-                        {{ userLogin.login }}
-                      </span>
-                    </div>
-
-                    <span
-                      v-if="selected"
-                      :class="[
-                        active ? 'text-white' : 'text-indigo-600',
-                        'absolute inset-y-0 right-0 flex items-center pr-4'
-                      ]"
-                    >
-                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  </li>
-                </ListboxOption>
-              </ListboxOptions>
-            </transition>
-          </div>
-        </Listbox>
+        <UserDeveloperListbox role="user" accountOrLogin="Accounts" :cluster="props.cluster" />
+        <UserDeveloperListbox role="user" accountOrLogin="Logins" :cluster="props.cluster" />
 
         <hr class="my-5 border-gray-500" />
 
@@ -318,151 +162,8 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
         </p>
         <p class="mt-1 text-sm text-gray-500">Developers who can edit the template</p>
 
-        <Listbox as="div" v-model="templateStore.developerAccounts" class="flex pt-5" multiple>
-          <div class="w-[250px]">
-            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
-              >Accounts</ListboxLabel
-            >
-            <p class="mt-1 text-sm text-gray-500">Select developers by account</p>
-          </div>
-          <div class="relative mt-2">
-            <ListboxButton
-              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-            >
-              <span class="flex items-center">
-                <span class="block truncate">{{
-                  templateStore.developerAccounts
-                    .map((developerAccount) => `@${developerAccount}`)
-                    .join(', ')
-                }}</span>
-              </span>
-              <span
-                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
-              >
-                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-              </span>
-            </ListboxButton>
-
-            <transition
-              leave-active-class="transition ease-in duration-100"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ListboxOptions
-                v-if="accounts.data"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-              >
-                <ListboxOption
-                  as="template"
-                  v-for="developerAccount in accounts.data.value"
-                  :key="developerAccount.name"
-                  :value="developerAccount.name"
-                  v-slot="{ active, selected }"
-                >
-                  <li
-                    :class="[
-                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-3 pr-9'
-                    ]"
-                  >
-                    <div class="flex">
-                      <span :class="['truncate', selected && 'font-semibold']"
-                        >@{{ developerAccount.name }}</span
-                      >
-                    </div>
-
-                    <span
-                      v-if="selected"
-                      :class="[
-                        active ? 'text-white' : 'text-indigo-600',
-                        'absolute inset-y-0 right-0 flex items-center pr-4'
-                      ]"
-                    >
-                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  </li>
-                </ListboxOption>
-              </ListboxOptions>
-            </transition>
-          </div>
-        </Listbox>
-
-        <Listbox as="div" v-model="templateStore.developerLogins" class="flex pt-5" multiple>
-          <div class="w-[250px]">
-            <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900"
-              >Logins</ListboxLabel
-            >
-            <p class="mt-1 text-sm text-gray-500">Select developers by login or name</p>
-          </div>
-          <div class="relative mt-2">
-            <ListboxButton
-              class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
-            >
-              <span class="flex items-center">
-                <span class="block truncate">{{
-                  templateStore.developerLogins
-                    .map((developerLogin) => `${developerLogin}`)
-                    .join(', ')
-                }}</span>
-              </span>
-              <span
-                class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
-              >
-                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-              </span>
-            </ListboxButton>
-
-            <transition
-              leave-active-class="transition ease-in duration-100"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ListboxOptions
-                v-if="logins.data"
-                class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-              >
-                <ListboxOption
-                  as="template"
-                  v-for="developerLogin in logins.data.value"
-                  :key="developerLogin.login"
-                  :value="developerLogin.login"
-                  v-slot="{ active, selected }"
-                >
-                  <li
-                    :class="[
-                      active ? 'bg-slurmweb text-white' : 'text-gray-900',
-                      'relative cursor-default select-none py-2 pl-3 pr-9'
-                    ]"
-                  >
-                    <div class="flex">
-                      <span :class="['truncate', selected && 'font-semibold']">
-                        {{ developerLogin.fullname }}
-                      </span>
-                      <span
-                        :class="[
-                          'ml-2 truncate text-gray-500',
-                          active ? 'text-indigo-200' : 'text-gray-500'
-                        ]"
-                      >
-                        {{ developerLogin.login }}
-                      </span>
-                    </div>
-
-                    <span
-                      v-if="selected"
-                      :class="[
-                        active ? 'text-white' : 'text-indigo-600',
-                        'absolute inset-y-0 right-0 flex items-center pr-4'
-                      ]"
-                    >
-                      <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  </li>
-                </ListboxOption>
-              </ListboxOptions>
-            </transition>
-          </div>
-        </Listbox>
+        <UserDeveloperListbox role="developer" accountOrLogin="Accounts" :cluster="props.cluster" />
+        <UserDeveloperListbox role="developer" accountOrLogin="Logins" :cluster="props.cluster" />
 
         <div class="pt-14">
           <table class="w-full text-center" v-if="templateStore.inputs.length > 0">
