@@ -7,6 +7,7 @@ import {
   ListboxOptions
 } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { computed } from 'vue'
 import { useTemplateStore } from '@/stores/template'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import type { UserDescription, AccountDescription } from '@/composables/GatewayAPI'
@@ -34,17 +35,31 @@ const props = defineProps({
   }
 })
 
+const templateStoreKeyMap: Record<
+  string,
+  'userAccounts' | 'userLogins' | 'developerAccounts' | 'developerLogins'
+> = {
+  userAccounts: 'userAccounts',
+  userLogins: 'userLogins',
+  developerAccounts: 'developerAccounts',
+  developerLogins: 'developerLogins'
+}
+
+const store = computed({
+  get() {
+    return templateStore[templateStoreKeyMap[`${props.role}${props.accountOrLogin}`]]
+  },
+  set(value) {
+    templateStore[templateStoreKeyMap[`${props.role}${props.accountOrLogin}`]] = value
+  }
+})
+
 const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
 const logins = useGatewayDataGetter<UserDescription[]>('users')
 </script>
 
 <template>
-  <Listbox
-    as="div"
-    :v-model="`templateStore.${props.role}${props.accountOrLogin}`"
-    class="flex pt-5"
-    multiple
-  >
+  <Listbox as="div" v-model="store" class="flex pt-5" multiple>
     <div class="w-[250px]">
       <ListboxLabel class="block text-sm font-medium leading-6 text-gray-900">{{
         props.accountOrLogin
@@ -57,7 +72,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
       >
         <span class="flex items-center">
           <span class="block truncate">{{
-            templateStore.userAccounts.map((userAccount) => `@${userAccount}`).join(', ')
+            store.map((userAccount) => `@${userAccount}`).join(', ')
           }}</span>
         </span>
         <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
