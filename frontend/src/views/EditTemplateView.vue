@@ -279,7 +279,7 @@ onMounted(async () => {
               </tr>
             </tbody>
           </table>
-          <router-link :to="{ name: 'create-input' }"
+          <router-link :to="{ name: 'create-input', params: { createOrEditInput: 'edit' } }"
             ><button
               type="button"
               class="my-5 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
