@@ -321,7 +321,7 @@ def edit_template():
             template_data["developerAccounts"][form_account]
             not in db_developer_account_names
         ):
-            Template_users_accounts.create(
+            Template_developers_accounts.create(
                 name=template_data["developerAccounts"][form_account],
                 template=template_data["idTemplate"],
             )
