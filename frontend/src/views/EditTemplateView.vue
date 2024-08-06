@@ -110,8 +110,8 @@ onMounted(async () => {
   let getInputs = await gateway.inputs(props.cluster)
   let getUserAccounts = await gateway.user_accounts(props.cluster)
   let getUserLogins = await gateway.user_logins(props.cluster)
-  let getDeveloperAccounts = await gateway.user_accounts(props.cluster)
-  let getDeveloperLogins = await gateway.user_logins(props.cluster)
+  let getDeveloperAccounts = await gateway.developer_accounts(props.cluster)
+  let getDeveloperLogins = await gateway.developer_logins(props.cluster)
 
   getTemplates.forEach((template) => {
     if (template.id == Number(props.idTemplate)) {
