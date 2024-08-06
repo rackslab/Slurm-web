@@ -24,6 +24,7 @@ const templateStore = useTemplateStore()
 type BreadcrumbPart = {
   title: string
   routeName?: string
+  idTemplate?: string
 }
 
 function resetForm() {
@@ -79,12 +80,17 @@ onMounted(() => {
             @click="resetForm()"
             v-for="breadcrumbPart in props.breadcrumb"
             :key="breadcrumbPart.title"
-            class="flex"
+            class="flex capitalize"
           >
             <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
-            <router-link v-if="breadcrumbPart.routeName" :to="{ name: breadcrumbPart.routeName }">{{
-              breadcrumbPart.title
-            }}</router-link>
+            <router-link
+              v-if="breadcrumbPart.routeName"
+              :to="{
+                name: breadcrumbPart.routeName,
+                params: { idTemplate: breadcrumbPart.idTemplate }
+              }"
+              >{{ breadcrumbPart.title }}</router-link
+            >
             <template v-else>{{ breadcrumbPart.title }}</template>
           </span>
         </div>
