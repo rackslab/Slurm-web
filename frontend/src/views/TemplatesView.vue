@@ -13,6 +13,14 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import type { Template } from '@/composables/GatewayAPI'
 
 import { useClusterDataGetter } from '@/composables/DataGetter'
+import { useTemplateStore } from '@/stores/template'
+
+const templateStore = useTemplateStore()
+
+function resetForm() {
+  templateStore.resetTemplate()
+  templateStore.resetInput()
+}
 
 const props = defineProps({
   cluster: {
@@ -48,6 +56,7 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
           <div
             v-for="template in templates.data.value"
             :key="template.id"
+            @click="resetForm()"
             class="flex flex-col rounded-lg border border-gray-200 bg-white shadow sm:w-[400px] md:w-[400px] lg:w-[400px] dark:border-gray-700 dark:bg-gray-800"
           >
             <div class="m-10">
@@ -76,6 +85,7 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
           <div class="flex items-center">
             <router-link :to="{ name: 'create-template' }">
               <button
+                @click="resetForm()"
                 type="button"
                 class="relative flex w-full flex-col items-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-slurmweb focus:ring-offset-2 sm:w-[400px] md:w-[400px] lg:w-[400px]"
               >
