@@ -9,11 +9,12 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ref } from 'vue'
-import { PlusIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import { PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { JobTemplate } from '@/composables/GatewayAPI'
 import { PermissionError } from '@/composables/HTTPErrors'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
+import InputsTable from '@/components/jobs/InputsTable.vue'
 
 import { useTemplateStore } from '@/stores/template'
 
@@ -44,32 +45,6 @@ async function createTemplate() {
       errorMessage.value = `Unexpected error ${error}`
     }
   }
-}
-
-function updateStagingInput(
-  name: string,
-  description: string,
-  type: string,
-  defaultValue: string,
-  regex: string,
-  minVal: string,
-  maxVal: string
-) {
-  templateStore.stagingInput.name = name
-  templateStore.stagingInput.description = description
-  templateStore.stagingInput.type = type
-  templateStore.stagingInput.default = defaultValue
-
-  if (type == 'string') {
-    templateStore.stagingInput.regex = regex
-  } else {
-    templateStore.stagingInput.minVal = minVal
-    templateStore.stagingInput.maxVal = maxVal
-  }
-}
-
-function deleteStagingInput(index: number) {
-  templateStore.inputs.splice(index, 1)
 }
 
 function resetForm() {
@@ -166,71 +141,7 @@ const props = defineProps({
         <UserDeveloperListbox role="developer" accountOrLogin="Logins" :cluster="props.cluster" />
 
         <div class="pt-14">
-          <table class="w-full text-center" v-if="templateStore.inputs.length > 0">
-            <thead class="border-b border-gray-500">
-              <tr>
-                <th class="pb-4">Input name<span class="text-slurmweb-red">*</span></th>
-                <th class="pb-4">Description</th>
-                <th class="pb-4">Type<span class="text-slurmweb-red">*</span></th>
-                <th class="pb-4">Default</th>
-                <th class="pb-4">Constraint</th>
-                <th class="pb-4">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr v-for="(input, index) in templateStore.inputs" :key="input.name">
-                <td class="pt-4">{{ input.name }}</td>
-                <td class="pt-4">{{ input.description }}</td>
-                <td class="pt-4">{{ input.type }}</td>
-                <td class="pt-4">{{ input.default }}</td>
-                <td class="pt-4">
-                  <div v-if="input.type == 'string'">
-                    <p>
-                      <span v-if="input.regex.length > 0">{{ input.regex }}</span>
-                      <span v-else>-</span>
-                    </p>
-                  </div>
-                  <div v-else>
-                    <p>
-                      <span v-if="input.minVal != '' && input.maxVal != ''">
-                        {{ input.minVal }} ≤ n ≥ {{ input.maxVal }}
-                      </span>
-                      <span v-else>-</span>
-                    </p>
-                  </div>
-                </td>
-                <td class="pt-4">
-                  <div class="flex space-x-2">
-                    <button
-                      @click="deleteStagingInput(index)"
-                      class="flex items-center justify-center rounded-md bg-slurmweb-red p-2 text-white hover:bg-slurmweb-darkred focus:outline-none focus:ring-2 focus:ring-slurmweb-red"
-                    >
-                      <TrashIcon class="h-5 w-5" />
-                    </button>
-
-                    <router-link :to="{ name: 'edit-input', params: { indexInput: index } }">
-                      <button
-                        class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"
-                        @click="
-                          updateStagingInput(
-                            input.name,
-                            input.description,
-                            input.type,
-                            input.default,
-                            input.regex,
-                            input.minVal,
-                            input.maxVal
-                          )
-                        "
-                      >
-                        <PencilIcon class="h-5 w-5" /></button
-                    ></router-link>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <InputsTable />
           <router-link :to="{ name: 'create-input', params: { createOrEditInput: 'create' } }"
             ><button
               type="button"
