@@ -35,6 +35,10 @@ const props = defineProps({
   cluster: {
     type: String,
     required: true
+  },
+  createOrEditInput: {
+    type: String,
+    required: true
   }
 })
 
