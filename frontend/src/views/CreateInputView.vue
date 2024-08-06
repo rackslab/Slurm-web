@@ -53,7 +53,11 @@ onMounted(async () => {
     :breadcrumb="[
       { title: 'Jobs', routeName: 'jobs' },
       { title: 'Templates', routeName: 'templates' },
-      { title: 'Create', routeName: 'create-template' },
+      {
+        title: props.createOrEditInput,
+        routeName: `${$props.createOrEditInput}-template`,
+        ...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})
+      },
       { title: 'Create input' }
     ]"
   >
