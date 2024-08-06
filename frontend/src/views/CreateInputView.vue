@@ -64,7 +64,9 @@ onMounted(async () => {
     <router-link
       :to="{
         name: `${props.createOrEditInput}-template`,
-        params: {...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})}
+        params: {
+          ...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})
+        }
       }"
       ><button
         @click="templateStore.resetInput"
@@ -274,7 +276,11 @@ onMounted(async () => {
           <router-link
             :to="{
               name: `${props.createOrEditInput}-template`,
-              params: {...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})}
+              params: {
+                ...(props.createOrEditInput === 'edit'
+                  ? { idTemplate: templateStore.idTemplate }
+                  : {})
+              }
             }"
             ><button
               @click="templateStore.resetInput()"
