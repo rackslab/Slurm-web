@@ -466,7 +466,6 @@ def edit_template():
     template.batchScript = template_data["batchScript"]
     template.save()
 
-    # user account
     db_user_accounts = list(
         Template_users_accounts.select(Template_users_accounts.name)
         .where(Template_users_accounts.template == template_data["idTemplate"])
@@ -488,7 +487,6 @@ def edit_template():
                 & (Template_users_accounts.template == template_data["idTemplate"])
             ).execute()
 
-    # user login
     db_user_logins = list(
         Template_users_logins.select(Template_users_logins.name)
         .where(Template_users_logins.template == template_data["idTemplate"])
@@ -510,7 +508,6 @@ def edit_template():
                 & (Template_users_logins.template == template_data["idTemplate"])
             ).execute()
 
-    # user account
     db_developer_accounts = list(
         Template_developers_accounts.select(Template_developers_accounts.name)
         .where(Template_developers_accounts.template == template_data["idTemplate"])
@@ -543,7 +540,6 @@ def edit_template():
                 & (Template_developers_accounts.template == template_data["idTemplate"])
             ).execute()
 
-    # developer login
     db_developer_logins = list(
         Template_developers_logins.select(Template_developers_logins.name)
         .where(Template_developers_logins.template == template_data["idTemplate"])
