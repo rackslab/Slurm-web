@@ -12,6 +12,7 @@ import type { Ref } from 'vue'
 import type { Input } from '@/composables/GatewayAPI'
 
 export const useTemplateStore = defineStore('template', () => {
+  const idTemplate: Ref<string> = ref('')
   const name: Ref<string> = ref('')
   const description: Ref<string> = ref('')
   const userAccounts: Ref<Array<string>> = ref([])
@@ -31,6 +32,7 @@ export const useTemplateStore = defineStore('template', () => {
   })
 
   function resetTemplate() {
+    idTemplate.value = ''
     name.value = ''
     description.value = ''
     batchScript.value = ''
@@ -68,6 +70,7 @@ export const useTemplateStore = defineStore('template', () => {
   }
 
   return {
+    idTemplate,
     name,
     description,
     userAccounts,

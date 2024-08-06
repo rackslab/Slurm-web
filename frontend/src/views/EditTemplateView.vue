@@ -98,6 +98,7 @@ onMounted(async () => {
 
   getTemplates.forEach((template) => {
     if (template.id == Number(props.idTemplate)) {
+      templateStore.idTemplate = String(template.id)
       templateStore.name = template.name
       templateStore.description = template.description
       templateStore.batchScript = template.batchScript
