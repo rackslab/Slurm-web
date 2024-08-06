@@ -61,7 +61,11 @@ onMounted(async () => {
       { title: 'Create input' }
     ]"
   >
-    <router-link :to="{ name: 'create-template' }"
+    <router-link
+      :to="{
+        name: `${props.createOrEditInput}-template`,
+        params: {...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})}
+      }"
       ><button
         @click="templateStore.resetInput"
         type="button"
@@ -267,7 +271,11 @@ onMounted(async () => {
         </div>
 
         <div v-if="templateStore.stagingInput" class="flex justify-end pt-5">
-          <router-link :to="{ name: 'create-template' }"
+          <router-link
+            :to="{
+              name: `${props.createOrEditInput}-template`,
+              params: {...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})}
+            }"
             ><button
               @click="templateStore.resetInput()"
               type="button"
