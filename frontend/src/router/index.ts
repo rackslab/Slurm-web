@@ -140,7 +140,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create/create-input',
+      path: '/:cluster/jobs/templates/:createOrEditInput/create-input',
       name: 'create-input',
       component: CreateInputView,
       props: true,
