@@ -80,29 +80,36 @@ onMounted(async () => {
     }
   })
 
-  getUserAccounts.forEach((userAccount) => {
-    if (userAccount.template == Number(props.idTemplate)) {
-      templateStore.userAccounts.push(userAccount.name)
-    }
-  })
+  if (templateStore.userAccounts.length == 0) {
+    getUserAccounts.forEach((userAccount) => {
+      if (userAccount.template == Number(props.idTemplate)) {
+        templateStore.userAccounts.push(userAccount.name)
+      }
+    })
+  }
+  if (templateStore.userLogins.length == 0) {
+    getUserLogins.forEach((userLogin) => {
+      if (userLogin.template == Number(props.idTemplate)) {
+        templateStore.userLogins.push(userLogin.name)
+      }
+    })
+  }
 
-  getUserLogins.forEach((userLogin) => {
-    if (userLogin.template == Number(props.idTemplate)) {
-      templateStore.userLogins.push(userLogin.name)
-    }
-  })
+  if (templateStore.developerAccounts.length == 0) {
+    getDeveloperAccounts.forEach((developerAccount) => {
+      if (developerAccount.template == Number(props.idTemplate)) {
+        templateStore.developerAccounts.push(developerAccount.name)
+      }
+    })
+  }
 
-  getDeveloperAccounts.forEach((developerAccount) => {
-    if (developerAccount.template == Number(props.idTemplate)) {
-      templateStore.developerAccounts.push(developerAccount.name)
-    }
-  })
-
-  getDeveloperLogins.forEach((developerLogin) => {
-    if (developerLogin.template == Number(props.idTemplate)) {
-      templateStore.developerLogins.push(developerLogin.name)
-    }
-  })
+  if (templateStore.developerLogins.length == 0) {
+    getDeveloperLogins.forEach((developerLogin) => {
+      if (developerLogin.template == Number(props.idTemplate)) {
+        templateStore.developerLogins.push(developerLogin.name)
+      }
+    })
+  }
 
   templateStore.inputs = getInputs.filter((input) => input.template == Number(props.idTemplate))
 })
