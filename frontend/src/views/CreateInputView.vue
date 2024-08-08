@@ -291,7 +291,15 @@ onMounted(async () => {
             </button></router-link
           >
 
-          <router-link :to="{ name: 'create-template' }"
+          <router-link
+            :to="{
+              name: `${props.createOrEditInput}-template`,
+              params: {
+                ...(props.createOrEditInput === 'edit'
+                  ? { idTemplate: templateStore.idTemplate }
+                  : {})
+              }
+            }"
             ><button
               @click="templateStore.addInput()"
               type="button"
