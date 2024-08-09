@@ -111,7 +111,13 @@ onMounted(async () => {
     })
   }
 
-  templateStore.inputs = getInputs.filter((input) => input.template == Number(props.idTemplate))
+  if (templateStore.inputs.length == 0) {
+    getInputs.forEach((input) => {
+      if (input.template == Number(props.idTemplate)) {
+        templateStore.inputs.push(input)
+      }
+    })
+  }
 })
 </script>
 
