@@ -23,7 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: translate HTTP/404 from slurmrestd into JSON error agent that can be
   interpreted by frontend and emit clear error message in logs (#321).
 - genjwt: fix portability to Python < 3.8 in debug message.
-- frontend: support node names without digits in expand/fold logic (#328).
+- frontend:
+  - Support node names without digits in expand/fold logic (#328).
+  - Update dependencies to fix CVE-2024-39338 (axios) and CVE-2024-6783
+    (vue-template-compiler).
 
 ## [3.1.0] - 2024-07-03
 
