@@ -70,7 +70,7 @@ onMounted(() => {
           <span v-for="breadcrumbPart in props.breadcrumb" :key="breadcrumbPart.title" class="flex">
             <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
             <router-link v-if="breadcrumbPart.routeName" :to="{ name: breadcrumbPart.routeName }">{{
-                breadcrumbPart.title
+              breadcrumbPart.title
             }}</router-link>
             <template v-else>{{ breadcrumbPart.title }}</template>
           </span>
