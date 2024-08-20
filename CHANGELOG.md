@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
   gateway and backend site configuration (#317).
+- gateway: Response with HTTP/501 and JSON error when requesting users with
+  authentication disabled.
 - agent:
   - Translate HTTP/404 from slurmrestd into JSON error agent that can be
     interpreted by frontend and emit clear error message in logs (#321).

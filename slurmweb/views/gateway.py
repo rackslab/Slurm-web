@@ -153,6 +153,12 @@ def clusters():
 
 @check_jwt
 def users():
+    # If authentication is disabled, the list of users cannot be retrieved. Respond with
+    # HTTP/501 (not implemented) with a descriptive JSON error.
+    if current_app.authentifier is None:
+        err = "Unable to retrieve users when authentication is disabled"
+        logger.warning(err)
+        abort(501, err)
     return jsonify(
         [
             {"login": user.login, "fullname": user.fullname}
