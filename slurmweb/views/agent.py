@@ -39,6 +39,34 @@ def permissions():
     )
 
 
+def _validate_slurmrestd_response(response) -> None:
+    """Validate slurmrestd response or abort agent resquest with error."""
+    _validate_slurmrestd_status(response)
+    _validate_slurmrestd_json(response)
+
+
+def _validate_slurmrestd_status(response) -> None:
+    """Check response status code is not HTTP/404 or abort"""
+    if response.status_code != 404:
+        return
+    error = f"URL not found on slurmrestd: {response.url}"
+    logger.error(error)
+    abort(404, error)
+
+
+def _validate_slurmrestd_json(response) -> None:
+    """Check json reponse or abort with HTTP/500"""
+    content_type = response.headers.get("content-type")
+    if content_type != "application/json":
+        error = (
+            f"Unsupported Content-Type for slurmrestd response {response.url}: "
+            f"{content_type}"
+        )
+        logger.error(error)
+        logger.debug("slurmrestd query %s response: %s", response.url, response.text)
+        abort(500, error)
+
+
 def slurmrest(query, key, handle_errors=True):
     session = requests.Session()
     prefix = "http+unix://slurmrestd/"
@@ -48,9 +76,9 @@ def slurmrest(query, key, handle_errors=True):
     except requests.exceptions.ConnectionError as err:
         logger.error("Unable to connect to slurmrestd: %s", err)
         abort(500, f"Unable to connect to slurmrestd: {err}")
-    if response.status_code == 404:
-        logger.error("URL not found on slurmrestd: %s/%s", prefix, query)
-        abort(404, f"URL not found on slurmrestd: {prefix}/{query}")
+
+    _validate_slurmrestd_response(response)
+
     result = response.json()
     if len(result["errors"]):
         if handle_errors:

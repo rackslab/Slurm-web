@@ -22,8 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
   gateway and backend site configuration (#317).
-- agent: translate HTTP/404 from slurmrestd into JSON error agent that can be
-  interpreted by frontend and emit clear error message in logs (#321).
+- agent:
+  - Translate HTTP/404 from slurmrestd into JSON error agent that can be
+    interpreted by frontend and emit clear error message in logs (#321).
+  - Detect responses from slurmrestd not formatted in JSON, translated into JSON
+    error for frontend and emit clear error message in logs (#333).
 - genjwt: fix portability to Python < 3.8 in debug message.
 - frontend:
   - Support node names without digits in expand/fold logic (#328).
