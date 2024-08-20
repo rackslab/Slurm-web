@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (vue-template-compiler).
   - Display empty list of users/account with light gray cross instead of dot in
     reservations page (#336).
+  - Hide users disclosure from jobs filters panel when authentication is
+    disabled (#330).
 
 ## [3.1.0] - 2024-07-03
 

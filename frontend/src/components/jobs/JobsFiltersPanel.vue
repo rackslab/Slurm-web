@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import PartitionFilterSelector from '@/components/filters/PartitionFilterSelector.vue'
 import UserFilterSelector from '@/components/jobs/UserFilterSelector.vue'
 import AccountFilterSelector from '@/components/jobs/AccountFilterSelector.vue'
@@ -44,6 +45,7 @@ const props = defineProps({
 })
 
 const runtimeStore = useRuntimeStore()
+const runtimeConfiguration = useRuntimeConfiguration()
 
 const state_filters = [
   { value: 'completed', label: 'Completed' },
@@ -144,7 +146,17 @@ const state_filters = [
                   </div>
                 </DisclosurePanel>
               </Disclosure>
-              <Disclosure as="div" class="border-t border-t-gray-200 px-4 py-6" v-slot="{ open }">
+              <!--
+                Hide users filters disclosure panel when authentication is disabled. The list of
+                users are retrieved from authentication backend. When authentication is disabled,
+                the list of users cannot be retrieved.
+              -->
+              <Disclosure
+                v-if="runtimeConfiguration.authentication"
+                as="div"
+                class="border-t border-t-gray-200 px-4 py-6"
+                v-slot="{ open }"
+              >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
                     class="flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400"
