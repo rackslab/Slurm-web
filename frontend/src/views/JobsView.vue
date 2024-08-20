@@ -22,10 +22,9 @@ import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ServerIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
+import { ServerIcon, CpuChipIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   cluster: {
