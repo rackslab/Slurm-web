@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Support node names without digits in expand/fold logic (#328).
   - Update dependencies to fix CVE-2024-39338 (axios) and CVE-2024-6783
     (vue-template-compiler).
+  - Display empty list of users/account with light gray cross instead of dot in
+    reservations page (#336).
 
 ## [3.1.0] - 2024-07-03
 
