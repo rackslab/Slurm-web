@@ -60,7 +60,13 @@ slurmrestd:
   version:
     type: str
     default: '0.0.39'
-    doc: Slurm REST API version
+    doc: |
+      Slurm REST API version.
+
+      CAUTION: You SHOULD NOT change this parameter unless you really know what
+      you are doing. This parameter is more intented for Slurm-web developers
+      rather than end users. Slurm-web is officially tested and validated with
+      the default value only.
 
 filters:
   jobs:

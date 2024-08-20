@@ -148,7 +148,13 @@ flags.
 
 |version
 |str
-|Slurm REST API version
+|Slurm REST API version.
+
+CAUTION: You SHOULD NOT change this parameter unless you really know what
+you are doing. This parameter is more intented for Slurm-web developers
+rather than end users. Slurm-web is officially tested and validated with
+the default value only.
+
 
 
 

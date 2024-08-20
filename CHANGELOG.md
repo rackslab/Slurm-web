@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     in architecture page.
   - Add warning about the pure documentation purpose of complete examples of
     gateway/agent configuration files.
+  - Explain `[slurmrestd]` > `version` agent setting is more intended for
+    developers and should not be changed.
 
 ## Changed
 - pkgs: Add requirement on RFL.core >= 1.0.3.
