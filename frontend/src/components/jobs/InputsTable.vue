@@ -83,7 +83,9 @@ function deleteStagingInput(index: number) {
               <TrashIcon class="h-5 w-5" />
             </button>
 
-            <router-link :to="{ name: 'edit-input', params: { indexInput: index } }">
+            <router-link
+              :to="{ name: 'edit-input', params: { indexInput: index, createOrEditInput: 'edit' } }"
+            >
               <button
                 class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"
                 @click="
