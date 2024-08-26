@@ -26,6 +26,7 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
             user_base=self.settings.ldap.user_base,
             user_class=self.settings.ldap.user_class,
             group_base=self.settings.ldap.group_base,
+            user_name_attribute=self.settings.ldap.user_name_attribute,
             user_fullname_attribute=self.settings.ldap.user_fullname_attribute,
             group_name_attribute=self.settings.ldap.group_name_attribute,
             starttls=self.settings.ldap.starttls,
