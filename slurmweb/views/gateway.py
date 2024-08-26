@@ -377,3 +377,9 @@ def create_template(cluster: str):
 @validate_cluster
 def edit_template(cluster: str):
     return proxy_agent(cluster, "edit-template", request.token)
+
+
+@check_jwt
+@validate_cluster
+def delete_template(cluster: str):
+    return proxy_agent(cluster, "delete-template", request.token)

@@ -80,6 +80,11 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             views.edit_template,
             methods=["POST"],
         ),
+        SlurmwebAppRoute(
+            "/api/agents/<cluster>/delete-template",
+            views.delete_template,
+            methods=["POST"],
+        ),
     }
 
     def _agent_info(self, url: str) -> SlurmwebAgent:
