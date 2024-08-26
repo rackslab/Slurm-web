@@ -39,6 +39,10 @@ const props = defineProps({
   indexInput: {
     type: String,
     required: true
+  },
+  createOrEditInput: {
+    type: String,
+    required: true
   }
 })
 
@@ -66,8 +70,12 @@ onMounted(async () => {
     :breadcrumb="[
       { title: 'Jobs', routeName: 'jobs' },
       { title: 'Templates', routeName: 'templates' },
-      { title: 'Create', routeName: 'create-template' },
-      { title: 'Edit input' }
+      {
+        title: props.createOrEditInput,
+        routeName: `${$props.createOrEditInput}-template`,
+        ...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})
+      },
+      { title: 'Create input' }
     ]"
   >
     <router-link :to="{ name: 'create-template' }"
@@ -284,7 +292,15 @@ onMounted(async () => {
             </button></router-link
           >
 
-          <router-link :to="{ name: 'create-template' }"
+          <router-link
+            :to="{
+              name: `${props.createOrEditInput}-template`,
+              params: {
+                ...(props.createOrEditInput === 'edit'
+                  ? { idTemplate: templateStore.idTemplate }
+                  : {})
+              }
+            }"
             ><button
               @click="templateStore.editInput(props.indexInput)"
               type="button"
