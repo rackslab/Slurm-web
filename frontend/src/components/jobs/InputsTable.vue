@@ -63,7 +63,7 @@ function deleteStagingInput(index: number) {
         <td class="pt-4">{{ input.name }}</td>
         <td class="pt-4">{{ input.description }}</td>
         <td class="pt-4">
-          <div v-if="input.type == '1' ||input.type == 'float' ">float</div>
+          <div v-if="input.type == '1' || input.type == 'float'">float</div>
           <div v-if="input.type == '2' || input.type == 'string'">string</div>
           <div v-if="input.type == '3' || input.type == 'int'">int</div>
         </td>
