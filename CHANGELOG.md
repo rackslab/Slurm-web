@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     reservations page (#336).
   - Hide users disclosure from jobs filters panel when authentication is
     disabled (#330).
+- docs: Mention requirement of `SLURMRESTD_SECURITY=disable_user_check`
+  environment variable definition in `slurmrestd` service drop-in configuration
+  override (#320).
 
 ## [3.1.0] - 2024-07-03
 

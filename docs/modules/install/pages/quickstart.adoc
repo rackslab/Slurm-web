@@ -97,6 +97,8 @@ drop-in configuration override for `slurmrestd` daemon:
 # Unset vendor unit ExecStart to avoid cumulative definition
 ExecStart=
 Environment=
+# Disable slurm user security check
+Environment=SLURMRESTD_SECURITY=disable_user_check
 ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS unix:/run/slurmrestd/slurmrestd.socket
 RuntimeDirectory=slurmrestd
 RuntimeDirectoryMode=0755
@@ -105,7 +107,14 @@ Group=slurm
 ----
 
 NOTE: This configuration file makes `slurmrestd` listen for incoming connections
-on Unix socket accessible by Slurm-web.
+on Unix socket accessible by Slurm-web. In this configuration `slurmrestd` is
+executed with special `slurm` user to get more permissions on Slurm cluster.
+This is normally not permitted by `slurmrestd` unless
+`SLURMRESTD_SECURITY=disable_user_check` environment variable is defined. This
+is a security measure that is relevant in many use-cases but not for Slurm-web.
+Indeed, Slurm-web has its own internal security
+xref:conf:policy.adoc[autorization policy] to control users permissions and
+enforce security.
 
 Make `systemd` reload units changes on disk:
 
