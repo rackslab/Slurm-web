@@ -359,3 +359,8 @@ def edit_template():
             ).execute()
 
     return jsonify({"result": "success"})
+
+
+@rbac_action("manage-templates")
+def delete_template():
+    return jsonify({"result": "template deleted"})
