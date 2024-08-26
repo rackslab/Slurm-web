@@ -19,10 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf:
   - Add `ldap`>`user_primary_group_attribute` parameter for the gateway.
   - Add `ldap`>`group_object_classes` parameter for the gateway.
+  - Add `cache`>`version` parameter for the agent.
 - gateway: Support custom LDAP user primary group attribute and group object
   classes (#342).
 - ldap-check: Support custom LDAP user primary group attribute and group object
   classes (#342).
+- agent: Retrieve Slurm version from `slurmrestd` REST API and return value in
+  response of `stats` endpoint.
 
 ## Changed
 - frontend: Add intermediate cluster list width to 80% on large screens, before

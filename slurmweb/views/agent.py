@@ -128,6 +128,20 @@ def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[An
         abort(500, f"Cache error: {str(err)}")
 
 
+def _get_version():
+    return slurmrest(f"/slurm/v{current_app.settings.slurmrestd.version}/ping", "meta")[
+        "Slurm"
+    ]["release"]
+
+
+def _cached_version():
+    return _cached_data(
+        "version",
+        current_app.settings.cache.version,
+        _get_version,
+    )
+
+
 def _cached_jobs():
     return _cached_data(
         "jobs",
@@ -276,6 +290,7 @@ def stats():
         cores += node["cpus"]
     return jsonify(
         {
+            "version": _cached_version(),
             "resources": {"nodes": nodes, "cores": cores},
             "jobs": {"running": running, "total": total},
         }
