@@ -23,7 +23,13 @@ function updateStagingInput(
 ) {
   templateStore.stagingInput.name = name
   templateStore.stagingInput.description = description
-  templateStore.stagingInput.type = type
+  if (type == '1') {
+    templateStore.stagingInput.type = 'float'
+  } else if (type == '2') {
+    templateStore.stagingInput.type = 'string'
+  } else {
+    templateStore.stagingInput.type = 'int'
+  }
   templateStore.stagingInput.default = defaultValue
 
   if (type == 'string') {
@@ -56,7 +62,11 @@ function deleteStagingInput(index: number) {
       <tr v-for="(input, index) in templateStore.inputs" :key="input.name">
         <td class="pt-4">{{ input.name }}</td>
         <td class="pt-4">{{ input.description }}</td>
-        <td class="pt-4">{{ input.type }}</td>
+        <td class="pt-4">
+          <div v-if="input.type == '1' ||input.type == 'float' ">float</div>
+          <div v-if="input.type == '2' || input.type == 'string'">string</div>
+          <div v-if="input.type == '3' || input.type == 'int'">int</div>
+        </td>
         <td class="pt-4">{{ input.default }}</td>
         <td class="pt-4">
           <div v-if="input.type == 'string'">
