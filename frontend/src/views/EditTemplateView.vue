@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ref, onMounted } from 'vue'
-import { PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { PlusIcon, ChevronLeftIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
@@ -36,6 +36,31 @@ async function editTemplate() {
   }
   try {
     await gateway.edit_template(props.cluster, editTemplate)
+    resetForm()
+  } catch (error: any) {
+    console.log(error)
+    if (error instanceof PermissionError) {
+      errorMessage.value = 'Permission denied'
+    } else {
+      errorMessage.value = `Unexpected error ${error}`
+    }
+  }
+}
+
+async function deleteTemplate() {
+  const deleteTemplate: JobTemplate = {
+    idTemplate: Number(props.idTemplate),
+    name: templateStore.name,
+    description: templateStore.description,
+    userAccounts: templateStore.userAccounts,
+    userLogins: templateStore.userLogins,
+    developerAccounts: templateStore.developerAccounts,
+    developerLogins: templateStore.developerLogins,
+    inputs: templateStore.inputs,
+    batchScript: templateStore.batchScript
+  }
+  try {
+    await gateway.delete_template(props.cluster, deleteTemplate)
     resetForm()
   } catch (error: any) {
     console.log(error)
@@ -130,16 +155,26 @@ onMounted(async () => {
       { title: 'Edit' }
     ]"
   >
-    <router-link :to="{ name: 'templates' }"
-      ><button
-        @click="resetForm()"
+    <div class="mt-8 flex items-center justify-between">
+      <router-link :to="{ name: 'templates' }">
+        <button
+          @click="resetForm()"
+          type="button"
+          class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+        >
+          <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          Back to templates
+        </button>
+      </router-link>
+      <button
+        @click="deleteTemplate()"
         type="button"
-        class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+        class="mb-16 mr-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
       >
-        <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        Back to templates
-      </button></router-link
-    >
+        <TrashIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        Delete template
+      </button>
+    </div>
 
     <div class="mt-8 flex flex-col items-center">
       <div class="ml-5 text-left">
