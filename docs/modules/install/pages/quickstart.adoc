@@ -4,7 +4,8 @@
 
 :fn-slurm-version: footnote:slurm-version[Slurm-web {version} actually requires Slurm REST API v0.0.39 available in Slurm 23.02 and above. Please refer to xref:overview:architecture.adoc#slurm-versions[Slurm REST API versions section] for more details.]
 
-* Cluster with Slurm >= 23.02 {fn-slurm-version}
+* Cluster with Slurm >= 23.02 {fn-slurm-version} and
+https://slurm.schedmd.com/accounting.html[accounting enabled]
 * Host installed with a supported GNU/Linux distributions among:
 ** CentOS
 ** Almalinux
