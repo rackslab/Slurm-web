@@ -149,7 +149,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/create/edit-input/:indexInput',
+      path: '/:cluster/jobs/templates/:createOrEditInput/edit-input/:indexInput',
       name: 'edit-input',
       component: EditInputView,
       props: true,
