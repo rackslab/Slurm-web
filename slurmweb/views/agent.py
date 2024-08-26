@@ -206,6 +206,7 @@ def developer_logins():
 @rbac_action("manage-templates")
 def create_template():
     template_data = json.loads(request.data)
+
     new_template = Templates.create(
         name=template_data["name"],
         description=template_data["description"],
