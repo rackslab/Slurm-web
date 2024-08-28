@@ -366,6 +366,17 @@ _No default value_
 
 |-
 
+|user_primary_group_attribute
+|str
+|User entry attribute for primary group ID
+
+
+
+
+*Default:* `gidNumber`
+
+|-
+
 |group_name_attribute
 |str
 |Group entry attribute for name
@@ -374,6 +385,23 @@ _No default value_
 
 
 *Default:* `cn`
+
+|-
+
+|group_object_classes
+|list[str]
+|List of LDAP object classes for groups
+
+
+
+
+*Default:*
+
+
+* `posixGroup`
+
+* `groupOfNames`
+
 
 |-
 
