@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Explain `[slurmrestd]` > `version` agent setting is more intended for
     developers and should not be changed.
   - Mention Slurm accounting is required in quickstart guide (#341).
+- conf: Add `ldap`>`user_primary_group_attribute` for the gateway.
+- gateway: Support custom LDAP user primary group attribute.
+- ldap-check: Support custom LDAP user primary group attribute.
 
 ## Changed
 - pkgs: Add requirement on RFL.core >= 1.0.3.

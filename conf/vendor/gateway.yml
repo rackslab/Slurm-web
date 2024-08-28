@@ -134,6 +134,10 @@ ldap:
     type: str
     default: cn
     doc: User entry attribute for full name
+  user_primary_group_attribute:
+    type: str
+    default: gidNumber
+    doc: User entry attribute for primary group ID
   group_name_attribute:
     type: str
     default: cn
