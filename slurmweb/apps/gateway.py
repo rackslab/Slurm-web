@@ -119,6 +119,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     user_fullname_attribute=self.settings.ldap.user_fullname_attribute,
                     user_primary_group_attribute=self.settings.ldap.user_primary_group_attribute,
                     group_name_attribute=self.settings.ldap.group_name_attribute,
+                    group_object_classes=self.settings.ldap.group_object_classes,
                     cacert=self.settings.ldap.cacert,
                     starttls=self.settings.ldap.starttls,
                     bind_dn=self.settings.ldap.bind_dn,

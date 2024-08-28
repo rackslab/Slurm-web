@@ -142,6 +142,13 @@ ldap:
     type: str
     default: cn
     doc: Group entry attribute for name
+  group_object_classes:
+    type: list
+    content: str
+    default:
+    - posixGroup
+    - groupOfNames
+    doc: List of LDAP object classes for groups
   bind_dn:
     type: str
     doc: |
