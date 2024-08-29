@@ -16,7 +16,7 @@ dependencies = [
     "Flask",
     "requests",
     "aiohttp",
-    "RFL.authentication >= 1.0.2",
+    "RFL.authentication >= 1.0.3",
     "RFL.core >= 1.0.3",
     "RFL.log",
     "RFL.settings",
