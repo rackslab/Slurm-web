@@ -109,7 +109,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else class="flex w-full flex-col lg:w-[60%]">
+      <div v-else class="flex w-full flex-col lg:w-[80%] xl:w-[60%]">
         <h1 class="flex px-4 text-left text-lg font-medium text-gray-700">Select a cluster</h1>
         <ul
           role="list"
