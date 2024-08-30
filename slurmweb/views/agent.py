@@ -92,7 +92,13 @@ def slurmrest(query, key, handle_errors=True):
                 error["description"],
                 error["source"],
             )
-    if len(result["warnings"]):
+    if "warnings" not in result:
+        logger.error(
+            "Unable to extract warnings from slurmrestd response to %s, unsupported "
+            "Slurm version?",
+            query,
+        )
+    elif len(result["warnings"]):
         logger.warning("slurmrestd query %s warnings: %s", query, result["warnings"])
     return result[key]
 

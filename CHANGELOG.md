@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     interpreted by frontend and emit clear error message in logs (#321).
   - Detect responses from slurmrestd not formatted in JSON, translated into JSON
     error for frontend and emit clear error message in logs (#333).
+  - Detect absence of _warnings_ key in `slurmrestd` responses and emit warning
+    log instead of crashing (#316).
 - genjwt: fix portability to Python < 3.8 in debug message.
 - ldap-check: fix usage of `user_name_attribute` configuration parameter (#340).
 - frontend:
