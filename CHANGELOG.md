@@ -36,8 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ldap-check: fix usage of `user_name_attribute` configuration parameter (#340).
 - frontend:
   - Support node names without digits in expand/fold logic (#328).
-  - Update dependencies to fix CVE-2024-39338 (axios) and CVE-2024-6783
-    (vue-template-compiler).
+  - Update dependencies to fix CVE-2024-39338 (axios),
+    CVE-2024-6783 (vue-template-compiler) and CVE-2024-4067 (micromatch).
   - Display empty list of users/account with light gray cross instead of dot in
     reservations page (#336).
   - Hide users disclosure from jobs filters panel when authentication is
