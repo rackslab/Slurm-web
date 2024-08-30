@@ -15,6 +15,9 @@ from ..version import get_version
 from ..errors import SlurmwebCacheError, SlurmwebRestdError
 from . import SlurmrestdUnixAdapter
 
+# Tuple used for comparaison with Slurm version retrieved from slurmrestd and
+# check for minimal supported version.
+MINIMAL_SLURM_VERSION = (23, 2, 0)
 
 logger = logging.getLogger(__name__)
 
@@ -137,7 +140,7 @@ def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[An
 def _get_version():
     return slurmrest(f"/slurm/v{current_app.settings.slurmrestd.version}/ping", "meta")[
         "Slurm"
-    ]["release"]
+    ]
 
 
 def _cached_version():
@@ -284,6 +287,22 @@ def _cached_accounts():
 def stats():
     total = 0
     running = 0
+
+    version = _cached_version()
+    logger.info("Retrieved version %s", version)
+    # Check Slurm version is supported or fail with HTTP/500
+    if (
+        not (
+            version["version"]["major"],
+            version["version"]["minor"],
+            version["version"]["micro"],
+        )
+        >= MINIMAL_SLURM_VERSION
+    ):
+        error = f"Unsupported Slurm version {version['release']}"
+        logger.error(error)
+        abort(500, error)
+
     for job in _cached_jobs():
         total += 1
         if "RUNNING" in job["job_state"]:
@@ -296,7 +315,7 @@ def stats():
         cores += node["cpus"]
     return jsonify(
         {
-            "version": _cached_version(),
+            "version": version["release"],
             "resources": {"nodes": nodes, "cores": cores},
             "jobs": {"running": running, "total": total},
         }

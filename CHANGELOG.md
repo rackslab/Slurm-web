@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 - frontend: Add intermediate cluster list width to 80% on large screens, before
   going down to 60% on even larger screens.
+- agent: Check Slurm version returned from `slurmrestd` against hard-coded
+  minimal version and log error if not greater or equal.
 - pkgs: Add requirement on RFL.core and RFL.authentication >= 1.0.3.
 - docs: Update configuration reference documentation.
 
