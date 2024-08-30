@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { ClusterStats } from '@/composables/GatewayAPI'
+import type { ClusterStats } from '@/composables/GatewayAPI'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'

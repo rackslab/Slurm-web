@@ -50,7 +50,7 @@ interface GatewayAnonymousLoginResponse {
   token: string
 }
 
-export class ClusterStats {
+export interface ClusterStats {
   resources: {
     nodes: number
     cores: number
@@ -59,10 +59,7 @@ export class ClusterStats {
     running: number
     total: number
   }
-  constructor() {
-    this.resources = { nodes: 0, cores: 0 }
-    this.jobs = { running: 0, total: 0 }
-  }
+  version: string
 }
 
 export interface ClusterJob {

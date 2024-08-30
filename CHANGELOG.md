@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   classes (#342).
 - agent: Retrieve Slurm version from `slurmrestd` REST API and return value in
   response of `stats` endpoint.
+- frontend: Display Slurm version in clusters list (#314).
 
 ## Changed
 - frontend: Add intermediate cluster list width to 80% on large screens, before

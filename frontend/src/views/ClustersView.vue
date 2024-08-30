@@ -16,6 +16,7 @@ import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronRightIcon, XCircleIcon } from '@heroicons/vue/20/solid'
+import { TagIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon, PlayCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 const runtimeStore = useRuntimeStore()
@@ -129,11 +130,18 @@ onMounted(() => {
                 router.push({ name: 'dashboard', params: { cluster: cluster.name } })
             "
           >
-            <span class="w-16 text-sm font-semibold leading-6 text-gray-900">
+            <span class="w-64 text-sm font-semibold leading-6 text-gray-900">
               <RouterLink :to="{ name: 'dashboard', params: { cluster: cluster.name } }">
                 <span class="inset-x-0 -top-px bottom-0" />
                 {{ cluster.name }}
               </RouterLink>
+              <span
+                v-if="cluster.stats"
+                class="ml-2 hidden items-center gap-x-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-normal text-gray-600 md:inline-flex"
+              >
+                <TagIcon class="h-3" />
+                Slurm {{ cluster.stats.version }}
+              </span>
             </span>
             <span v-if="cluster.stats" class="hidden text-center md:flex">
               <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
@@ -153,7 +161,7 @@ onMounted(() => {
                 </p>
               </span>
             </span>
-            <div class="flex shrink-0 items-center gap-x-4">
+            <div class="mr-0 w-64 shrink-0 items-end gap-x-4">
               <div class="hidden sm:flex sm:flex-col sm:items-end">
                 <div
                   v-if="cluster.permissions.actions.length == 0"
