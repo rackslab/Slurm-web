@@ -134,13 +134,21 @@ function representDuration(start: number, end: number): string {
                   </p>
                 </td>
                 <td class="px-3 text-sm">
-                  <XMarkIcon v-if="!reservation.users" class="mr-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <XMarkIcon
+                    v-if="!reservation.users"
+                    class="mr-0.5 h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
                   <ul v-else class="list-disc">
                     <li v-for="user in reservation.users.split(',')" :key="user">{{ user }}</li>
                   </ul>
                 </td>
                 <td class="px-3 text-sm">
-                  <XMarkIcon v-if="!reservation.accounts" class="mr-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <XMarkIcon
+                    v-if="!reservation.accounts"
+                    class="mr-0.5 h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
                   <ul v-else class="list-disc">
                     <li v-for="account in reservation.accounts.split(',')" :key="account">
                       {{ account }}
