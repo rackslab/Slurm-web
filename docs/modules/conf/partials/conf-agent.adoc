@@ -722,6 +722,17 @@ _No default value_
 
 |-
 
+|version
+|int
+|Expiration delay in seconds for Slurm version in cache
+
+
+
+
+*Default:* `1800`
+
+|-
+
 |jobs
 |int
 |Expiration delay in seconds for jobs in cache
