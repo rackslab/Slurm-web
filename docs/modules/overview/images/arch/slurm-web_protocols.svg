@@ -29,10 +29,10 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="1.5554293"
-     inkscape:cx="426.89179"
-     inkscape:cy="144.33314"
-     inkscape:window-width="1920"
-     inkscape:window-height="1136"
+     inkscape:cx="843.17558"
+     inkscape:cy="137.90405"
+     inkscape:window-width="3840"
+     inkscape:window-height="2096"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -169,6 +169,13 @@
        rx="2.6105554"
        ry="2.7781224" />
     <rect
+       style="opacity:0.3;fill:#6faf40;fill-opacity:1;stroke-width:0.424264;stroke-linecap:round;stroke-linejoin:round"
+       id="rect5299"
+       width="30.427082"
+       height="31.75"
+       x="83.34375"
+       y="37.041668" />
+    <rect
        style="opacity:0.3;fill:#9c21ac;fill-opacity:1;stroke-width:0.612905;stroke-linecap:round;stroke-linejoin:round"
        id="rect1291"
        width="63.499996"
@@ -176,11 +183,11 @@
        x="17.197914"
        y="37.041668" />
     <rect
-       style="opacity:0.3;fill:#c38a1c;fill-opacity:1;stroke-width:0.612905;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.3;fill:#c38a1c;fill-opacity:1;stroke-width:0.424264;stroke-linecap:round;stroke-linejoin:round"
        id="rect1373"
-       width="63.499996"
+       width="30.427082"
        height="31.75"
-       x="83.34375"
+       x="116.41666"
        y="37.041668" />
     <rect
        style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.07814;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
@@ -597,14 +604,25 @@
          y="67.564064">JWT</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;stroke-width:0.264583;fill:#775b25;fill-opacity:1"
-       x="108.59687"
-       y="67.564064"
+       style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
+       x="116.51379"
+       y="67.094521"
        id="text22878"><tspan
          sodipodi:role="line"
          id="tspan22876"
-         style="font-size:4.23333px;stroke-width:0.264583;fill:#775b25;fill-opacity:1"
-         x="108.59687"
-         y="67.564064">Munge</tspan></text>
+         style="font-size:3.52778px;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
+         x="116.51379"
+         y="67.094521">auth/{munge,slurm}</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+       x="87.283653"
+       y="67.11216"
+       id="text5303"><tspan
+         sodipodi:role="line"
+         id="tspan5301"
+         style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+         x="87.283653"
+         y="67.11216">rest_auth/local</tspan></text>
   </g>
 </svg>

@@ -67,16 +67,18 @@ initial authentication with LDAP directory, users are authenticated between
 these components with https://jwt.io/[JSON Web Token] (JWT).
 
 Communications between *agent* component and Slurm `slurmrestd` daemon are
-performed with HTTP protocol over a Unix socket.
+performed with HTTP protocol over a Unix socket. For security reasons
+`slurmrestd` checks the *agent* runs with the same UID/GID as itself with its
+`rest_auth/local` plugin.
 
-NOTE: Slurm `slurmrestd` supports incoming connections on TCP/IP sockets but
-this configuration is not yet supported by Slurm-web. This is currently a
-limitation in Slurm-web that might change in the future (see
+NOTE: Slurm `slurmrestd` supports incoming connections on TCP/IP sockets with
+`rest_auth/jwt` plugin but this configuration is not yet supported by Slurm-web.
+This is currently a limitation in Slurm-web that might change in the future (see
 https://github.com/rackslab/Slurm-web/issues/313[#313]).
 
 Slurm components communicates with specific binary RPC protocol over TCP/IP
-sockets. Communications between the *agent* and Slurm components are secured
-and user are authenticated with https://dun.github.io/munge/[Munge].
+sockets, secured by either https://dun.github.io/munge/[Munge] or
+https://slurm.schedmd.com/authentication.html#slurm[Slurm internal mechanism].
 
 [#multiclusters]
 == Multi-clusters Distribution
