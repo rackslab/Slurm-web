@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- gateway: Support custom LDAP user primary group attribute and group object
+  classes (#342).
+- agent: Retrieve Slurm version from `slurmrestd` REST API and return value in
+  response of `stats` endpoint.
+- frontend: Display Slurm version in clusters list (#314).
+- ldap-check: Support custom LDAP user primary group attribute and group object
+  classes (#342).
+- conf:
+  - Add `ldap`>`user_primary_group_attribute` parameter for the gateway.
+  - Add `ldap`>`group_object_classes` parameter for the gateway.
+  - Add `cache`>`version` parameter for the agent.
 - docs:
   - Add link to related github issue for `slurmrestd` TCP/IP socket limitation
     in architecture page.
@@ -16,23 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Explain `[slurmrestd]` > `version` agent setting is more intended for
     developers and should not be changed.
   - Mention Slurm accounting is required in quickstart guide (#341).
-- conf:
-  - Add `ldap`>`user_primary_group_attribute` parameter for the gateway.
-  - Add `ldap`>`group_object_classes` parameter for the gateway.
-  - Add `cache`>`version` parameter for the agent.
-- gateway: Support custom LDAP user primary group attribute and group object
-  classes (#342).
-- ldap-check: Support custom LDAP user primary group attribute and group object
-  classes (#342).
-- agent: Retrieve Slurm version from `slurmrestd` REST API and return value in
-  response of `stats` endpoint.
-- frontend: Display Slurm version in clusters list (#314).
 
 ## Changed
-- frontend: Add intermediate cluster list width to 80% on large screens, before
-  going down to 60% on even larger screens.
 - agent: Check Slurm version returned from `slurmrestd` against hard-coded
   minimal version and log error if not greater or equal.
+- frontend: Add intermediate cluster list width to 80% on large screens, before
+  going down to 60% on even larger screens.
 - pkgs: Add requirement on RFL.core and RFL.authentication >= 1.0.3.
 - docs: Update configuration reference documentation.
 
