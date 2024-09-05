@@ -16,9 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ldap-check: Support custom LDAP user primary group attribute and group object
   classes (#342).
 - conf:
-  - Add `ldap`>`user_primary_group_attribute` parameter for the gateway.
-  - Add `ldap`>`group_object_classes` parameter for the gateway.
-  - Add `cache`>`version` parameter for the agent.
+  - Add `ldap` > `user_primary_group_attribute` parameter for the gateway.
+  - Add `ldap` > `group_object_classes` parameter for the gateway.
+  - Add `cache` > `version` parameter for the agent.
 - docs:
   - Add link to related github issue for `slurmrestd` TCP/IP socket limitation
     in architecture page.
@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     developers and should not be changed.
   - Mention Slurm accounting is required in quickstart guide (#341).
 
-## Changed
+### Changed
 - agent: Check Slurm version returned from `slurmrestd` against hard-coded
   minimal version and log error if not greater or equal.
 - frontend: Add intermediate cluster list width to 80% on large screens, before
@@ -39,8 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update screenshots with latest UI changes.
 
 ### Fixed
-- backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
-  gateway and backend site configuration (#317).
+- backend: handle `rfl.settings.errors.SettingsSiteLoaderError` when loading
+  gateway and agent site configuration (#317).
 - gateway: Response with HTTP/501 and JSON error when requesting users with
   authentication disabled.
 - agent:
