@@ -6,7 +6,7 @@ asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
-    version: 3.1.0
+    version: 3.2.0
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc
