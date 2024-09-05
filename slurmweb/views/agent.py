@@ -289,7 +289,7 @@ def stats():
     running = 0
 
     version = _cached_version()
-    logger.info("Retrieved version %s", version)
+
     # Check Slurm version is supported or fail with HTTP/500
     if (
         not (
