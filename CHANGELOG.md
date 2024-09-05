@@ -34,7 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend: Add intermediate cluster list width to 80% on large screens, before
   going down to 60% on even larger screens.
 - pkgs: Add requirement on RFL.core and RFL.authentication >= 1.0.3.
-- docs: Update configuration reference documentation.
+- docs:
+  - Update configuration reference documentation.
+  - Update screenshots with latest UI changes.
 
 ### Fixed
 - backend: handle rfl.settings.errors.SettingsSiteLoaderError when loading
