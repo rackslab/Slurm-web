@@ -31,6 +31,12 @@ from racksdb import RacksDB
 logger = logging.getLogger(__name__)
 
 DEV_HOST = "firehpc.dev.rackslab.io"
+# Map between infrastructure names and cluster names that are visible in the UI. For
+# infrastructures not present in this mapping dict, infrastructure name is used in the
+# UI. This allows to trivially change cluster names in the UI.
+MAP_CLUSTER_NAMES = {
+    "emulator": "atlas"
+}
 USER = getpass.getuser()
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
@@ -140,6 +146,7 @@ class ClusterChannel:
 @dataclass
 class SlurmwebAgent:
     name: str
+    ui_name: str
     channel: ClusterChannel
     forwards: dict[str, PortForward]
     service_port: int
@@ -154,11 +161,12 @@ class SlurmwebAgent:
         port_allocator: PortAllocator,
         ssh_client: paramiko.client.SSHClient,
         name: str,
+        ui_name: str,
         cluster_id: int,
     ):
         forwards = port_allocator.allocate()
         channel = ClusterChannel.connect(host, ssh_client, forwards, name, cluster_id)
-        return cls(name, channel, forwards, 5013 + cluster_id)
+        return cls(name,  ui_name, channel, forwards, 5013 + cluster_id)
 
     def render_policy(self, tmpdir: Path, anonymous: bool) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
@@ -203,7 +211,7 @@ class SlurmwebAgent:
         with open(self.conf_path, "w+") as fh:
             fh.write(
                 template.render(
-                    cluster_name=self.name,
+                    cluster_name=self.ui_name,
                     service_port=self.service_port,
                     slurmrestd_socket=f"/tmp/slurmrestd-{self.name}.socket",
                     jwt_key=jwt_key_path,
@@ -339,8 +347,12 @@ def main():
     agents = []
     port_allocator = PortAllocator()
     for infrastructure in db.infrastructures:
+        if infrastructure.name in MAP_CLUSTER_NAMES:
+            ui_name = MAP_CLUSTER_NAMES[infrastructure.name]
+        else:
+            ui_name = infrastructure.name
         agent = SlurmwebAgent.init(
-            DEV_HOST, port_allocator, ssh_client, infrastructure.name, cluster_id
+            DEV_HOST, port_allocator, ssh_client, infrastructure.name, ui_name, cluster_id
         )
         # Generate agent configuration file
         agent.render_policy(tmpdir, args.anonymous)
