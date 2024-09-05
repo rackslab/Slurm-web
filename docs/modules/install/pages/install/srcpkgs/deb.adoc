@@ -5,11 +5,11 @@ https://pkgs.rackslab.io/deb/pool/main/s/slurm-web
 
 Select version of `*.dsc` file at your convenience and copy its URL.
 
-Then run this command, for example with `slurm-web_3.1.0-1.deb12.dsc`:
+Then run this command, for example with `slurm-web_{version}-1.deb12.dsc`:
 
-[source,console]
+[source,console,subs=attributes]
 ----
-$ dget -ux https://pkgs.rackslab.io/deb/pool/main/s/slurm-web/slurm-web_3.1.0-1.deb12.dsc
+$ dget -ux https://pkgs.rackslab.io/deb/pool/main/s/slurm-web/slurm-web_{version}-1.deb12.dsc
 ----
 
 Move into the source folder:

@@ -8,20 +8,20 @@ Slurm-web RPM source packages are available at these URL:
 * Fedora 40 : https://pkgs.rackslab.io/rpm/fc40/main/source/Packages
 
 Select version at your convenience and download the `*.src.rpm` file, for
-example `slurm-web-3.1.0-1.el8.src.rpm`.
+example `slurm-web-{version}-1.el8.src.rpm`.
 
 Install build requirements:
 
-[source,console]
+[source,console,subs=attributes]
 ----
-$ sudo dnf builddep slurm-web-3.1.0-1.el8.src.rpm
+$ sudo dnf builddep slurm-web-{version}-1.el8.src.rpm
 ----
 
 Build binary RPM packages:
 
-[source,console]
+[source,console,subs=attributes]
 ----
-$ rpmbuild --rebuild slurm-web-3.1.0-1.el8.src.rpm
+$ rpmbuild --rebuild slurm-web-{version}-1.el8.src.rpm
 ----
 
 After successful completion of this command, Slurm-web `*.rpm` packages can be
