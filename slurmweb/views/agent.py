@@ -173,6 +173,54 @@ def templates():
     return jsonify(lstTemplates)
 
 
+def get_template_data(id: int):
+    template = list(Templates.select().where(Templates.id == id).dicts())
+    inputs = list(Inputs.select().where(Inputs.template == id).dicts())
+    user_accounts = []
+    user_logins = []
+    developer_accounts = []
+    developer_logins = []
+
+    for user_account in list(
+        Template_users_accounts.select(Template_users_accounts.name)
+        .where(Template_users_accounts.template == id)
+        .dicts()
+    ):
+        user_accounts.append(user_account["name"])
+
+    for user_login in list(
+        Template_users_logins.select(Template_users_logins.name)
+        .where(Template_users_logins.template == id)
+        .dicts()
+    ):
+        user_logins.append(user_login["name"])
+
+    for developer_account in list(
+        Template_developers_accounts.select(Template_developers_accounts.name)
+        .where(Template_developers_accounts.template == id)
+        .dicts()
+    ):
+        developer_accounts.append(developer_account["name"])
+
+    for developer_login in list(
+        Template_developers_logins.select(Template_developers_logins.name)
+        .where(Template_developers_logins.template == id)
+        .dicts()
+    ):
+        developer_logins.append(developer_login["name"])
+
+    return jsonify(
+        {
+            "template": template[0],
+            "inputs": inputs,
+            "userAccounts": user_accounts,
+            "userLogins": user_logins,
+            "developerAccounts": developer_accounts,
+            "developerLogins": developer_logins,
+        }
+    )
+
+
 def inputs():
     lstInputs = list(Inputs.select().dicts())
     return jsonify(lstInputs)
