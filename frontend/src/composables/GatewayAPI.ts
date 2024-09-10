@@ -255,6 +255,15 @@ export interface ClusterReservation {
   flags: string[]
 }
 
+interface TemplateData {
+  template: Template
+  inputs: Input[]
+  userAccounts: string[]
+  userLogins: string[]
+  developerAccounts: string[]
+  developerLogins: string[]
+}
+
 export interface Template {
   id: number
   name: string
@@ -578,6 +587,10 @@ export function useGatewayAPI() {
     return await get<Template[]>(`/agents/${cluster}/templates`)
   }
 
+  async function get_template_data(cluster: string, id: number): Promise<TemplateData> {
+    return await get<TemplateData>(`/agents/${cluster}/template/${id}`)
+  }
+
   async function inputs(cluster: string): Promise<Array<Input>> {
     return await get<Input[]>(`/agents/${cluster}/inputs`)
   }
@@ -706,6 +719,7 @@ export function useGatewayAPI() {
     create_template,
     edit_template,
     delete_template,
+    get_template_data,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,

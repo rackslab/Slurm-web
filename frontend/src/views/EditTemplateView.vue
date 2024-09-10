@@ -89,60 +89,18 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-  let getTemplates = await gateway.templates(props.cluster)
-  let getInputs = await gateway.inputs(props.cluster)
-  let getUserAccounts = await gateway.user_accounts(props.cluster)
-  let getUserLogins = await gateway.user_logins(props.cluster)
-  let getDeveloperAccounts = await gateway.developer_accounts(props.cluster)
-  let getDeveloperLogins = await gateway.developer_logins(props.cluster)
+  let templateData = await gateway.get_template_data(props.cluster, Number(props.idTemplate))
 
-  getTemplates.forEach((template) => {
-    if (template.id == Number(props.idTemplate)) {
-      templateStore.idTemplate = String(template.id)
-      templateStore.name = template.name
-      templateStore.description = template.description
-      templateStore.batchScript = template.batchScript
-    }
-  })
+  templateStore.idTemplate = String(templateData.template.id)
+  templateStore.name = templateData.template.name
+  templateStore.description = templateData.template.description
+  templateStore.batchScript = templateData.template.batchScript
 
-  if (templateStore.userAccounts.length == 0) {
-    getUserAccounts.forEach((userAccount) => {
-      if (userAccount.template == Number(props.idTemplate)) {
-        templateStore.userAccounts.push(userAccount.name)
-      }
-    })
-  }
-  if (templateStore.userLogins.length == 0) {
-    getUserLogins.forEach((userLogin) => {
-      if (userLogin.template == Number(props.idTemplate)) {
-        templateStore.userLogins.push(userLogin.name)
-      }
-    })
-  }
-
-  if (templateStore.developerAccounts.length == 0) {
-    getDeveloperAccounts.forEach((developerAccount) => {
-      if (developerAccount.template == Number(props.idTemplate)) {
-        templateStore.developerAccounts.push(developerAccount.name)
-      }
-    })
-  }
-
-  if (templateStore.developerLogins.length == 0) {
-    getDeveloperLogins.forEach((developerLogin) => {
-      if (developerLogin.template == Number(props.idTemplate)) {
-        templateStore.developerLogins.push(developerLogin.name)
-      }
-    })
-  }
-
-  if (templateStore.inputs.length == 0) {
-    getInputs.forEach((input) => {
-      if (input.template == Number(props.idTemplate)) {
-        templateStore.inputs.push(input)
-      }
-    })
-  }
+  templateStore.userAccounts = templateData.userAccounts
+  templateStore.userLogins = templateData.userLogins
+  templateStore.developerAccounts = templateData.developerAccounts
+  templateStore.developerLogins = templateData.developerLogins
+  templateStore.inputs = templateData.inputs
 })
 </script>
 
