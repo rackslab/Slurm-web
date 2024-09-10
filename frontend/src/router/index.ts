@@ -104,7 +104,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/submit-new-job',
+      path: '/:cluster/jobs/new',
       name: 'submit-new-job',
       component: SubmitNewJobView,
       props: true,
@@ -113,7 +113,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/submit-new-job/:idTemplate',
+      path: '/:cluster/jobs/new/:idTemplate',
       name: 'job-configuration',
       component: JobConfigurationView,
       props: true,
@@ -140,7 +140,16 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/:createOrEditInput/create-input',
+      path: '/:cluster/jobs/templates/:idTemplate',
+      name: 'edit-template',
+      component: EditTemplateView,
+      props: true,
+      meta: {
+        entry: 'jobs'
+      }
+    },
+    {
+      path: '/:cluster/jobs/templates/:createOrEditInput/inputs/create',
       name: 'create-input',
       component: CreateInputView,
       props: true,
@@ -149,18 +158,9 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/jobs/templates/:createOrEditInput/edit-input/:indexInput',
+      path: '/:cluster/jobs/templates/:createOrEditInput/inputs/:indexInput',
       name: 'edit-input',
       component: EditInputView,
-      props: true,
-      meta: {
-        entry: 'jobs'
-      }
-    },
-    {
-      path: '/:cluster/jobs/templates/edit/:idTemplate',
-      name: 'edit-template',
-      component: EditTemplateView,
       props: true,
       meta: {
         entry: 'jobs'
