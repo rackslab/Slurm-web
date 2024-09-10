@@ -55,6 +55,10 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         SlurmwebAppRoute("/api/agents/<cluster>/reservations", views.reservations),
         SlurmwebAppRoute("/api/agents/<cluster>/accounts", views.accounts),
         SlurmwebAppRoute("/api/agents/<cluster>/templates", views.templates),
+        SlurmwebAppRoute(
+            "/api/agents/<cluster>/template/<int:id>",
+            views.get_template_data,
+        ),
         SlurmwebAppRoute("/api/agents/<cluster>/inputs", views.inputs),
         SlurmwebAppRoute("/api/agents/<cluster>/input-types", views.input_types),
         SlurmwebAppRoute("/api/agents/<cluster>/user-accounts", views.user_accounts),

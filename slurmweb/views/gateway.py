@@ -333,6 +333,12 @@ def templates(cluster: str):
 
 @check_jwt
 @validate_cluster
+def get_template_data(cluster: str, id: int):
+    return proxy_agent(cluster, f"template/{id}", request.token)
+
+
+@check_jwt
+@validate_cluster
 def inputs(cluster: str):
     return proxy_agent(cluster, "inputs", request.token)
 
