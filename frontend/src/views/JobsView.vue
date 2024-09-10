@@ -22,10 +22,8 @@ import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { PlusSmallIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline'
-
+import { PlusIcon, Cog6ToothIcon, ServerIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ServerIcon, CpuChipIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   cluster: {
@@ -285,7 +283,7 @@ onMounted(() => {
                 type="button"
                 class="inline-flex items-center gap-x-1.5 rounded-md bg-slurmweb px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-darker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb"
               >
-                <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                <PlusIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 New job
               </button></router-link
             >
@@ -318,7 +316,7 @@ onMounted(() => {
               class="inline-flex items-center gap-x-1.5 rounded-md bg-slurmweb px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-darker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb"
               @click="runtimeStore.jobs.openFiltersPanel = true"
             >
-              <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              <PlusIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Add filters
             </button>
           </div>
