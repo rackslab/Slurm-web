@@ -515,6 +515,19 @@ export function useGatewayAPI() {
     })) as CType
   }
 
+  async function deleteTemplate<CType>(
+    resource: string,
+    withToken: boolean = true,
+    responseType: ResponseType = 'json'
+  ): Promise<CType> {
+    console.log(`Slurm-web gateway API get ${resource}`)
+    return (
+      await requestServer(() => {
+        return http.delete(resource, requestConfig(withToken, responseType))
+      })
+    ).data as CType
+  }
+
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
       return (await post('/login', idents)) as GatewayLoginResponse
@@ -629,11 +642,8 @@ export function useGatewayAPI() {
     return (await post(`/agents/${cluster}/edit-template`, editTemplate)) as DbCreateResponse
   }
 
-  async function delete_template(
-    cluster: string,
-    deleteTemplate: JobTemplate
-  ): Promise<DbCreateResponse> {
-    return (await post(`/agents/${cluster}/delete-template`, deleteTemplate)) as DbCreateResponse
+  async function delete_template(cluster: string, id: number): Promise<DbCreateResponse> {
+    return (await deleteTemplate(`/agents/${cluster}/delete/${id}`)) as DbCreateResponse
   }
 
   async function infrastructureImagePng(
