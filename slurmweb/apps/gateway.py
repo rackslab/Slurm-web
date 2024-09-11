@@ -84,9 +84,9 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             methods=["POST"],
         ),
         SlurmwebAppRoute(
-            "/api/agents/<cluster>/delete-template",
+            "/api/agents/<cluster>/delete/<int:id>",
             views.delete_template,
-            methods=["POST"],
+            methods=["DELETE"],
         ),
     }
 
