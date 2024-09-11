@@ -62,9 +62,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             methods=["POST"],
         ),
         SlurmwebAppRoute(
-            f"/v{get_version()}/delete-template",
+            f"/v{get_version()}/delete/<int:id>",
             views.delete_template,
-            methods=["POST"],
+            methods=["DELETE"],
         ),
     }
 
