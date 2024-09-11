@@ -410,5 +410,6 @@ def edit_template():
 
 
 @rbac_action("manage-templates")
-def delete_template():
+def delete_template(id: int):
+    Templates.delete().where(Templates.id == id).execute()
     return jsonify({"result": "template deleted"})
