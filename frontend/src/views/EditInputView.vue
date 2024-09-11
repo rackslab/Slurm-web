@@ -75,7 +75,7 @@ onMounted(async () => {
         routeName: `${$props.createOrEditInput}-template`,
         ...(props.createOrEditInput === 'edit' ? { idTemplate: templateStore.idTemplate } : {})
       },
-      { title: 'Create input' }
+      { title: `${$props.createOrEditInput} input` }
     ]"
   >
     <router-link :to="{ name: 'create-template' }"
