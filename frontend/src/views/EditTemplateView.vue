@@ -13,9 +13,10 @@ import { PlusIcon, ChevronLeftIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
-import type { JobTemplate } from '@/composables/GatewayAPI'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
+import router from '@/router'
+import type { JobTemplate } from '@/composables/GatewayAPI'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -47,20 +48,10 @@ async function editTemplate() {
   }
 }
 
-async function deleteTemplate() {
-  const deleteTemplate: JobTemplate = {
-    idTemplate: Number(props.idTemplate),
-    name: templateStore.name,
-    description: templateStore.description,
-    userAccounts: templateStore.userAccounts,
-    userLogins: templateStore.userLogins,
-    developerAccounts: templateStore.developerAccounts,
-    developerLogins: templateStore.developerLogins,
-    inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript
-  }
+function deleteTemplate() {
   try {
-    await gateway.delete_template(props.cluster, deleteTemplate)
+    gateway.delete_template(props.cluster, Number(props.idTemplate))
+    router.push({ name: 'templates' })
     resetForm()
   } catch (error: any) {
     console.log(error)
@@ -124,6 +115,7 @@ onMounted(async () => {
           Back to templates
         </button>
       </router-link>
+
       <button
         @click="deleteTemplate()"
         type="button"
