@@ -56,17 +56,13 @@ export const useTemplateStore = defineStore('template', () => {
   }
 
   function addInput() {
-    if (stagingInput.value) {
-      inputs.value.push(stagingInput.value)
-      resetInput()
-    }
+    inputs.value.push(stagingInput.value)
+    resetInput()
   }
 
   function editInput(index: string) {
-    if (stagingInput.value) {
-      inputs.value[Number(index)] = stagingInput.value
-      resetInput()
-    }
+    inputs.value[Number(index)] = stagingInput.value
+    resetInput()
   }
 
   return {
