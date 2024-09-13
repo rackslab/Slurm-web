@@ -187,7 +187,7 @@ onMounted(async () => {
         <UserDeveloperListbox role="developer" accountOrLogin="Logins" :cluster="props.cluster" />
 
         <div class="pt-14">
-          <InputsTable />
+          <InputsTable createOrEdit="edit" />
           <router-link :to="{ name: 'create-input', params: { createOrEditInput: 'edit' } }"
             ><button
               @click="templateStore.resetInput()"

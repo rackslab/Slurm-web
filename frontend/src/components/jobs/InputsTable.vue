@@ -43,6 +43,13 @@ function updateStagingInput(
 function deleteStagingInput(index: number) {
   templateStore.inputs.splice(index, 1)
 }
+
+const props = defineProps({
+  createOrEdit: {
+    type: String,
+    required: true
+  }
+})
 </script>
 
 <template>
@@ -94,7 +101,10 @@ function deleteStagingInput(index: number) {
             </button>
 
             <router-link
-              :to="{ name: 'edit-input', params: { indexInput: index, createOrEditInput: 'edit' } }"
+              :to="{
+                name: 'edit-input',
+                params: { indexInput: index, createOrEditInput: props.createOrEdit }
+              }"
             >
               <button
                 class="flex items-center justify-center rounded-md bg-slurmweb p-2 text-white hover:bg-slurmweb-dark focus:outline-none focus:ring-2 focus:ring-blue-300"

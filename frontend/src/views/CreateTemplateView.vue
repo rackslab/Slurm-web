@@ -141,7 +141,7 @@ const props = defineProps({
         <UserDeveloperListbox role="developer" accountOrLogin="Logins" :cluster="props.cluster" />
 
         <div class="pt-14">
-          <InputsTable />
+          <InputsTable createOrEdit="create" />
           <router-link :to="{ name: 'create-input', params: { createOrEditInput: 'create' } }"
             ><button
               type="button"
