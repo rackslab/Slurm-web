@@ -21,6 +21,9 @@ import { useTemplateStore } from '@/stores/template'
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
+const isNameValid = ref(true)
+const isBatchScriptValid = ref(true)
+
 const errorMessage = ref<string | undefined>()
 
 async function createTemplate() {
@@ -93,13 +96,17 @@ const props = defineProps({
             >
             <p class="mt-1 text-sm text-gray-500">Name of the template</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div class="relative mt-2 rounded-md">
             <input
-              v-model="templateStore.name"
+              v-model="templateStore.stagingInput.name"
+              @blur="isNameValid = templateStore.name.trim() !== ''"
+              :class="{ 'border-red-500 ring-red-500': !isNameValid }"
               type="text"
-              name="templateName"
-              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              name="name"
+              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              autofocus
             />
+            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
           </div>
         </div>
 
@@ -160,15 +167,20 @@ const props = defineProps({
             >
             <p class="mt-1 text-sm text-gray-500">Script executed by the job</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div class="relative mt-2 rounded-md">
             <textarea
+              @blur="isBatchScriptValid = templateStore.batchScript.trim() !== ''"
+              :class="{ 'border-red-500 ring-red-500': !isNameValid }"
               v-model="templateStore.batchScript"
               name="scriptBatch"
               cols="20"
               rows="10"
-              class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
+              class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
             >
             </textarea>
+            <p v-if="!isBatchScriptValid" class="mt-1 text-sm text-red-500">
+              Batch Script is required
+            </p>
           </div>
 
           <div class="flex justify-end">
