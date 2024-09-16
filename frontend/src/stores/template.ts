@@ -23,6 +23,7 @@ export const useTemplateStore = defineStore('template', () => {
   const inputs: Ref<Array<Input>> = ref([])
   const batchScript: Ref<string> = ref('')
   const stagingInput: Ref<Input> = ref({
+    id: '',
     name: '',
     description: '',
     default: '',
@@ -47,6 +48,7 @@ export const useTemplateStore = defineStore('template', () => {
 
   function resetInput() {
     stagingInput.value = {
+      id: '',
       name: '',
       description: '',
       default: '',
