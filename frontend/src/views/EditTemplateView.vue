@@ -15,8 +15,8 @@ import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
-import router from '@/router'
 import type { JobTemplate } from '@/composables/GatewayAPI'
+import DeleteTemplateModal from '@/components/jobs/DeleteTemplateModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -37,21 +37,6 @@ async function editTemplate() {
   }
   try {
     await gateway.edit_template(props.cluster, editTemplate)
-    resetForm()
-  } catch (error: any) {
-    console.log(error)
-    if (error instanceof PermissionError) {
-      errorMessage.value = 'Permission denied'
-    } else {
-      errorMessage.value = `Unexpected error ${error}`
-    }
-  }
-}
-
-function deleteTemplate() {
-  try {
-    gateway.delete_template(props.cluster, Number(props.idTemplate))
-    router.push({ name: 'templates' })
     resetForm()
   } catch (error: any) {
     console.log(error)
@@ -117,7 +102,7 @@ onMounted(async () => {
       </router-link>
 
       <button
-        @click="deleteTemplate()"
+        @click="templateStore.toggleDeleteTemplateModal()"
         type="button"
         class="mb-16 mr-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
       >
@@ -243,5 +228,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <DeleteTemplateModal :cluster="props.cluster" :idTemplate="props.idTemplate" />
   </ClusterMainLayout>
 </template>
