@@ -17,6 +17,8 @@ import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
 import type { JobTemplate } from '@/composables/GatewayAPI'
 import DeleteTemplateModal from '@/components/jobs/DeleteTemplateModal.vue'
+import UnsavedTemplateModal from '@/components/jobs/UnsavedTemplateModal.vue'
+import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -90,16 +92,14 @@ onMounted(async () => {
     ]"
   >
     <div class="mt-8 flex items-center justify-between">
-      <router-link :to="{ name: 'templates' }">
-        <button
-          @click="resetForm()"
-          type="button"
-          class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-        >
-          <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Back to templates
-        </button>
-      </router-link>
+      <button
+        @click="templateStore.toggleUnsavedModal('template')"
+        type="button"
+        class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+      >
+        <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        Back to templates
+      </button>
 
       <button
         @click="templateStore.toggleDeleteTemplateModal()"
@@ -229,6 +229,8 @@ onMounted(async () => {
       </div>
     </div>
 
+    <UnsavedTemplateModal />
     <DeleteTemplateModal :cluster="props.cluster" :idTemplate="props.idTemplate" />
+    <DeleteInputModal />
   </ClusterMainLayout>
 </template>
