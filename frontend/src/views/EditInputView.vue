@@ -23,6 +23,7 @@ import {
   RadioGroup,
   RadioGroupOption
 } from '@headlessui/vue'
+import UnsavedInputModal from '@/components/jobs/UnsavedInputModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -78,17 +79,14 @@ onMounted(async () => {
       { title: `${$props.createOrEditInput} input` }
     ]"
   >
-    <router-link :to="{ name: 'create-template' }"
-      ><button
-        @click="templateStore.resetInput"
-        type="button"
-        class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-      >
-        <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        Back to template
-      </button></router-link
+    <button
+      @click="templateStore.toggleUnsavedModal('input')"
+      type="button"
+      class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
     >
-
+      <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+      Back to template
+    </button>
     <div class="mt-8 flex flex-col items-center">
       <div class="ml-5 text-left">
         <p class="text-3xl font-bold tracking-tight text-gray-900">Edit input</p>
@@ -282,15 +280,13 @@ onMounted(async () => {
           </div>
         </div>
         <div v-if="templateStore.stagingInput" class="flex justify-end pt-5">
-          <router-link :to="{ name: 'create-template' }"
-            ><button
-              @click="templateStore.resetInput()"
-              type="button"
-              class="mr-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Cancel
-            </button></router-link
+          <button
+            @click="templateStore.toggleUnsavedModal('input')"
+            type="button"
+            class="mr-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
           >
+            Cancel
+          </button>
 
           <router-link
             :to="{
@@ -312,5 +308,6 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    <UnsavedInputModal />
   </ClusterMainLayout>
 </template>
