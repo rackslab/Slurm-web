@@ -17,6 +17,7 @@ import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
 
 import { useTemplateStore } from '@/stores/template'
+import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -208,5 +209,7 @@ const props = defineProps({
         </div>
       </div>
     </div>
+
+    <UnsavedModal />
   </ClusterMainLayout>
 </template>
