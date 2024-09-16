@@ -100,6 +100,12 @@ export const useTemplateStore = defineStore('template', () => {
     }
   }
 
+  function toggleDeleteModal(index: number, inputName: string) {
+    stagingInput.value.name = inputName
+    stagingInput.value.id = String(index)
+    toggleModal.value = true
+  }
+
   return {
     idTemplate,
     name,
@@ -116,6 +122,7 @@ export const useTemplateStore = defineStore('template', () => {
     addInput,
     editInput,
     toggleModal,
-    toggleUnsavedModal
+    toggleUnsavedModal,
+    toggleDeleteModal
   }
 })
