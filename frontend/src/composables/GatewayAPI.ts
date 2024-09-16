@@ -272,7 +272,7 @@ export interface Template {
 }
 
 export interface Input {
-  id?: number
+  id?: string
   name: string
   description: string
   default: string
