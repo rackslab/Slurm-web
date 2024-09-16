@@ -18,6 +18,7 @@ import InputsTable from '@/components/jobs/InputsTable.vue'
 
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedTemplateModal.vue'
+import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -150,6 +151,7 @@ const props = defineProps({
           <InputsTable createOrEdit="create" />
           <router-link :to="{ name: 'create-input', params: { createOrEditInput: 'create' } }"
             ><button
+              @click="templateStore.resetInput()"
               type="button"
               class="my-5 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
@@ -207,5 +209,6 @@ const props = defineProps({
     </div>
 
     <UnsavedModal />
+    <DeleteInputModal />
   </ClusterMainLayout>
 </template>
