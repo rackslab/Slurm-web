@@ -412,4 +412,16 @@ def edit_template():
 @rbac_action("manage-templates")
 def delete_template(id: int):
     Templates.delete().where(Templates.id == id).execute()
+    Template_users_accounts.delete().where(
+        Template_users_accounts.template == id
+    ).execute()
+    Template_users_logins.delete().where(Template_users_logins.template == id).execute()
+    Template_developers_accounts.delete().where(
+        Template_developers_accounts.template == id
+    ).execute()
+    Template_developers_logins.delete().where(
+        Template_developers_logins.template == id
+    ).execute()
+    Inputs.delete().where(Inputs.template == id).execute()
+
     return jsonify({"result": "template deleted"})
