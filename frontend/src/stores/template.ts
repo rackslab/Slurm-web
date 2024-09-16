@@ -10,6 +10,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Input } from '@/composables/GatewayAPI'
+import router from '@/router'
 
 export const useTemplateStore = defineStore('template', () => {
   const idTemplate: Ref<string> = ref('')
@@ -30,6 +31,7 @@ export const useTemplateStore = defineStore('template', () => {
     regex: '',
     type: ''
   })
+  const toggleModal = ref(false)
 
   function resetTemplate() {
     idTemplate.value = ''
@@ -65,6 +67,25 @@ export const useTemplateStore = defineStore('template', () => {
     resetInput()
   }
 
+  function toggleUnsavedModal(form: string) {
+    if (form == 'template') {
+      if (
+        name.value != '' ||
+        description.value != '' ||
+        batchScript.value != '' ||
+        userAccounts.value.length! > 0 ||
+        userLogins.value.length! > 0 ||
+        developerAccounts.value.length! > 0 ||
+        developerLogins.value.length! > 0 ||
+        inputs.value.length! > 0
+      ) {
+        toggleModal.value = true
+      } else {
+        router.push({ name: 'templates' })
+      }
+    }
+  }
+
   return {
     idTemplate,
     name,
@@ -79,6 +100,8 @@ export const useTemplateStore = defineStore('template', () => {
     resetTemplate,
     resetInput,
     addInput,
-    editInput
+    editInput,
+    toggleModal,
+    toggleUnsavedModal
   }
 })
