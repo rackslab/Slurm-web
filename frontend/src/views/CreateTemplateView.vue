@@ -99,7 +99,7 @@ const props = defineProps({
           </div>
           <div class="relative mt-2 rounded-md">
             <input
-              v-model="templateStore.stagingInput.name"
+              v-model="templateStore.name"
               @blur="isNameValid = templateStore.name.trim() !== ''"
               :class="{ 'border-red-500 ring-red-500': !isNameValid }"
               type="text"
