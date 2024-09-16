@@ -83,6 +83,20 @@ export const useTemplateStore = defineStore('template', () => {
       } else {
         router.push({ name: 'templates' })
       }
+    } else {
+      if (
+        stagingInput.value.name != '' ||
+        stagingInput.value.description != '' ||
+        stagingInput.value.type.length! > 0 ||
+        stagingInput.value.default != '' ||
+        stagingInput.value.minVal != '' ||
+        stagingInput.value.maxVal != '' ||
+        stagingInput.value.regex != ''
+      ) {
+        toggleModal.value = true
+      } else {
+        router.push({ name: 'create-template' })
+      }
     }
   }
 
