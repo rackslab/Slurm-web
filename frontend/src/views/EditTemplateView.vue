@@ -16,9 +16,8 @@ import { useTemplateStore } from '@/stores/template'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
 import type { JobTemplate } from '@/composables/GatewayAPI'
-import DeleteTemplateModal from '@/components/jobs/DeleteTemplateModal.vue'
+import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
-import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -102,7 +101,7 @@ onMounted(async () => {
       </button>
 
       <button
-        @click="templateStore.toggleDeleteTemplateModal()"
+        @click="templateStore.toggleDeleteModal('template')"
         type="button"
         class="mb-16 mr-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
       >
@@ -227,8 +226,10 @@ onMounted(async () => {
       </div>
     </div>
 
-    <DeleteTemplateModal :cluster="props.cluster" :idTemplate="props.idTemplate" />
-    <DeleteInputModal />
-    <UnsavedModal />
+    <DeleteModal
+      v-if="templateStore.deleteIsClicked"
+      :cluster="props.cluster"
+      :idTemplate="props.idTemplate"
+    />
   </ClusterMainLayout>
 </template>

@@ -32,19 +32,24 @@ function setIsOpen(value: boolean) {
   templateStore.toggleModal = value
 }
 
-function closeDeleteTemplateModal() {
-  try {
-    gateway.delete_template(props.cluster, Number(props.idTemplate))
-    router.push({ name: 'templates' })
-  } catch (error: any) {
-    console.log(error)
-    if (error instanceof PermissionError) {
-      errorMessage.value = 'Permission denied'
-    } else {
-      errorMessage.value = `Unexpected error ${error}`
+function closeDeleteModal() {
+  if (templateStore.formType == 'template') {
+    try {
+      gateway.delete_template(props.cluster, Number(props.idTemplate))
+      router.push({ name: 'templates' })
+    } catch (error: any) {
+      console.log(error)
+      if (error instanceof PermissionError) {
+        errorMessage.value = 'Permission denied'
+      } else {
+        errorMessage.value = `Unexpected error ${error}`
+      }
     }
+    templateStore.toggleModal = false
+  } else {
+    templateStore.inputs.splice(Number(templateStore.stagingInput.id), 1)
+    templateStore.toggleModal = false
   }
-  templateStore.toggleModal = false
 }
 </script>
 
@@ -88,12 +93,21 @@ function closeDeleteTemplateModal() {
                   </div>
                   <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900"
-                      >Delete {{ templateStore.name }} template</DialogTitle
-                    >
+                      >Delete
+                      <span v-if="templateStore.formType == 'template'">
+                        {{ templateStore.name }} template
+                      </span>
+                      <span v-else>{{ templateStore.stagingInput.name }} input</span>
+                    </DialogTitle>
                     <div class="mt-2">
-                      <p class="text-sm text-gray-500">
+                      <p v-if="templateStore.formType == 'template'" class="text-sm text-gray-500">
                         Are you sure you want to delete the template? Users will not be able to use
                         this template anymore. This action cannot be undone.
+                      </p>
+                      <p v-else class="text-sm text-gray-500">
+                        Are you sure you want to delete {{ templateStore.stagingInput.name }} input?
+                        This input will not be available in batch script anymore. This action cannot
+                        be undone.
                       </p>
                     </div>
                   </div>
@@ -103,7 +117,7 @@ function closeDeleteTemplateModal() {
                 <button
                   type="button"
                   class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                  @click="closeDeleteTemplateModal()"
+                  @click="closeDeleteModal()"
                 >
                   Confirm
                 </button>
