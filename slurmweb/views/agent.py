@@ -259,6 +259,7 @@ def create_template():
         name=template_data["name"],
         description=template_data["description"],
         batchScript=template_data["batchScript"],
+        author=template_data["author"],
     )
 
     for userAccount in range(len(template_data["userAccounts"])):
@@ -311,26 +312,31 @@ def edit_template():
     template.batchScript = template_data["batchScript"]
     template.save()
 
-    db_user_accounts = list(
+    # Récupération des comptes utilisateurs de la base de données
+    db_user_accounts = set(
         Template_users_accounts.select(Template_users_accounts.name)
         .where(Template_users_accounts.template == template_data["idTemplate"])
         .dicts()
+        .execute()
     )
-    db_user_account_names = [user["name"] for user in db_user_accounts]
+    db_user_account_names = {user["name"] for user in db_user_accounts}
 
-    for form_account in range(len(template_data["userAccounts"])):
-        if template_data["userAccounts"][form_account] not in db_user_account_names:
-            Template_users_accounts.create(
-                name=template_data["userAccounts"][form_account],
-                template=template_data["idTemplate"],
-            )
+    # Convertir les comptes utilisateurs fournis dans le formulaire en set pour des comparaisons plus simples
+    form_user_accounts = set(template_data["userAccounts"])
 
-    for db_account in range(len(db_user_account_names)):
-        if db_user_account_names[db_account] not in template_data["userAccounts"]:
-            Template_users_accounts.delete().where(
-                (Template_users_accounts.name == db_user_account_names[db_account])
-                & (Template_users_accounts.template == template_data["idTemplate"])
-            ).execute()
+    # Créer les comptes manquants
+    new_accounts = form_user_accounts - db_user_account_names
+    for account in new_accounts:
+        Template_users_accounts.create(
+            name=account, template=template_data["idTemplate"]
+        )
+
+    # Supprimer les comptes en trop
+    removed_accounts = db_user_account_names - form_user_accounts
+    Template_users_accounts.delete().where(
+        (Template_users_accounts.name.in_(removed_accounts))
+        & (Template_users_accounts.template == template_data["idTemplate"])
+    ).execute()
 
     db_user_logins = list(
         Template_users_logins.select(Template_users_logins.name)
@@ -405,6 +411,42 @@ def edit_template():
                 (Template_developers_logins.name == db_developer_login_names[db_login])
                 & (Template_developers_logins.template == template_data["idTemplate"])
             ).execute()
+
+    for input in range(len(template_data["inputs"])):
+        print(template_data["inputs"][input])
+        for type in Input_types.select():
+            if type.name == template_data["inputs"][input]["type"]:
+                if template_data["inputs"][input] not in list(
+                    Inputs.select()
+                    .where(Inputs.template == template_data["idTemplate"])
+                    .dicts()
+                ):
+                    Inputs.create(
+                        name=template_data["inputs"][input]["name"],
+                        description=template_data["inputs"][input]["description"],
+                        default=template_data["inputs"][input]["default"],
+                        minVal=template_data["inputs"][input]["minVal"],
+                        maxVal=template_data["inputs"][input]["maxVal"],
+                        regex=template_data["inputs"][input]["regex"],
+                        template=template_data["idTemplate"],
+                        type=type.id,
+                    )
+                    break
+                else:
+                    print(f'{template_data["inputs"][input]["name"]} est dans la liste')
+
+                    inputTest = Inputs.select().where(
+                        Inputs.id == template_data["inputs"][input]["id"]
+                    )
+                    inputTest.name = (template_data["inputs"][input]["name"],)
+                    inputTest.description = (
+                        template_data["inputs"][input]["description"],
+                    )
+                    inputTest.default = (template_data["inputs"][input]["default"],)
+                    inputTest.minVal = (template_data["inputs"][input]["minVal"],)
+                    inputTest.maxVal = (template_data["inputs"][input]["maxVal"],)
+                    inputTest.regex = template_data["inputs"][input]["regex"]
+                    inputTest.type = type.id
 
     return jsonify({"result": "success"})
 
