@@ -33,6 +33,7 @@ export const useTemplateStore = defineStore('template', () => {
     type: ''
   })
   const toggleModal = ref(false)
+  const formType = ref('')
 
   function resetTemplate() {
     idTemplate.value = ''
@@ -81,6 +82,7 @@ export const useTemplateStore = defineStore('template', () => {
         developerLogins.value.length! > 0 ||
         inputs.value.length! > 0
       ) {
+        formType.value = form
         toggleModal.value = true
       } else {
         router.push({ name: 'templates' })
@@ -95,6 +97,7 @@ export const useTemplateStore = defineStore('template', () => {
         stagingInput.value.maxVal != '' ||
         stagingInput.value.regex != ''
       ) {
+        formType.value = form
         toggleModal.value = true
       } else {
         router.push({ name: 'create-template' })
@@ -130,6 +133,7 @@ export const useTemplateStore = defineStore('template', () => {
     toggleModal,
     toggleUnsavedModal,
     toggleDeleteModal,
-    toggleDeleteTemplateModal
+    toggleDeleteTemplateModal,
+    formType
   }
 })
