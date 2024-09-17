@@ -16,11 +16,17 @@ function setIsOpen(value: boolean) {
   templateStore.toggleModal = value
 }
 
-function closeUnsavedModal() {
-  templateStore.resetTemplate()
-  templateStore.resetInput()
-  templateStore.toggleModal = false
-  router.push({ name: 'templates' })
+function closeUnsavedModal(formType: string) {
+  if (formType == 'template') {
+    templateStore.resetTemplate()
+    templateStore.resetInput()
+    templateStore.toggleModal = false
+    router.push({ name: 'templates' })
+  } else {
+    templateStore.resetInput()
+    templateStore.toggleModal = false
+    router.push({ name: 'create-template' })
+  }
 }
 </script>
 
@@ -68,8 +74,10 @@ function closeUnsavedModal() {
                     >
                     <div class="mt-2">
                       <p class="text-sm text-gray-500">
-                        The modifications on this template are not saved, if you go back to
-                        templates, modifications will be lost.
+                        The modifications on this {{ templateStore.formType }} are not saved, if you
+                        go back to template
+                        <span v-if="templateStore.formType == 'template'">s</span>, modifications
+                        will be lost.
                       </p>
                     </div>
                   </div>
@@ -79,7 +87,7 @@ function closeUnsavedModal() {
                 <button
                   type="button"
                   class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                  @click="closeUnsavedModal()"
+                  @click="closeUnsavedModal(templateStore.formType)"
                 >
                   Confirm
                 </button>

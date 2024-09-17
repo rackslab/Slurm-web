@@ -24,7 +24,7 @@ import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
 
 import { useTemplateStore } from '@/stores/template'
-import UnsavedInputModal from '@/components/jobs/UnsavedInputModal.vue'
+import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 
 const gateway = useGatewayAPI()
 const templateStore = useTemplateStore()
@@ -295,6 +295,6 @@ onMounted(async () => {
       </div>
     </div>
 
-    <UnsavedInputModal />
+    <UnsavedModal />
   </ClusterMainLayout>
 </template>

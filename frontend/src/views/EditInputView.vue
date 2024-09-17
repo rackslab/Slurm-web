@@ -23,7 +23,7 @@ import {
   RadioGroup,
   RadioGroupOption
 } from '@headlessui/vue'
-import UnsavedInputModal from '@/components/jobs/UnsavedInputModal.vue'
+import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -308,6 +308,6 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <UnsavedInputModal />
+    <UnsavedModal />
   </ClusterMainLayout>
 </template>
