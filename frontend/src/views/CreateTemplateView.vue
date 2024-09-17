@@ -212,6 +212,6 @@ const props = defineProps({
     </div>
 
     <DeleteInputModal v-if="templateStore.deleteIsClicked" />
-    <UnsavedModal />
+    <UnsavedModal v-if="templateStore.unsavedIsclicked" />
   </ClusterMainLayout>
 </template>

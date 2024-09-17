@@ -295,6 +295,6 @@ onMounted(async () => {
       </div>
     </div>
 
-    <UnsavedModal />
+    <UnsavedModal v-if="templateStore.unsavedIsclicked" />
   </ClusterMainLayout>
 </template>

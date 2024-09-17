@@ -34,6 +34,8 @@ export const useTemplateStore = defineStore('template', () => {
   })
   const toggleModal = ref(false)
   const formType = ref('')
+  const unsavedIsclicked = ref(false)
+  const deleteIsClicked = ref(false)
 
   function resetTemplate() {
     idTemplate.value = ''
@@ -71,6 +73,8 @@ export const useTemplateStore = defineStore('template', () => {
   }
 
   function toggleUnsavedModal(form: string) {
+    unsavedIsclicked.value = true
+    deleteIsClicked.value = false
     if (form == 'template') {
       if (
         name.value != '' ||
@@ -105,14 +109,8 @@ export const useTemplateStore = defineStore('template', () => {
     }
   }
 
-  function toggleDeleteModal(index: number, inputName: string) {
-    stagingInput.value.name = inputName
-    stagingInput.value.id = String(index)
-    toggleModal.value = true
-  }
-
-  function toggleDeleteTemplateModal() {
-    toggleModal.value = true
+    unsavedIsclicked.value = false
+    deleteIsClicked.value = true
   }
 
   return {
@@ -133,7 +131,8 @@ export const useTemplateStore = defineStore('template', () => {
     toggleModal,
     toggleUnsavedModal,
     toggleDeleteModal,
-    toggleDeleteTemplateModal,
-    formType
+    formType,
+    deleteIsClicked,
+    unsavedIsclicked
   }
 })
