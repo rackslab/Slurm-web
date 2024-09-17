@@ -40,10 +40,6 @@ function updateStagingInput(
   }
 }
 
-function deleteStagingInput(index: number) {
-  templateStore.inputs.splice(index, 1)
-}
-
 const props = defineProps({
   createOrEdit: {
     type: String,
