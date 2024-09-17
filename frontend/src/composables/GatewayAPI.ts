@@ -268,6 +268,7 @@ export interface Template {
   name: string
   description: string
   batchScript: string
+  author: string
 }
 
 export interface Input {
@@ -307,6 +308,7 @@ export interface JobTemplate {
   developerLogins: Array<string>
   inputs: Array<Input>
   batchScript: string
+  author?: string
 }
 
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {

@@ -19,16 +19,18 @@ import InputsTable from '@/components/jobs/InputsTable.vue'
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedTemplateModal.vue'
 import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
+const authStore = useAuthStore()
 
 const isNameValid = ref(true)
 const isBatchScriptValid = ref(true)
 
 const errorMessage = ref<string | undefined>()
 
-async function createTemplate() {
+async function createTemplate(author: string) {
   const newTemplate: JobTemplate = {
     name: templateStore.name,
     description: templateStore.description,
@@ -37,7 +39,8 @@ async function createTemplate() {
     developerAccounts: templateStore.developerAccounts,
     developerLogins: templateStore.developerLogins,
     inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript
+    batchScript: templateStore.batchScript,
+    author: author
   }
   try {
     await gateway.create_template(props.cluster, newTemplate)
@@ -195,7 +198,8 @@ const props = defineProps({
 
             <router-link :to="{ name: 'templates' }"
               ><button
-                @click="createTemplate()"
+                v-if="authStore.username"
+                @click="createTemplate(authStore.username)"
                 type="button"
                 class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
               >
