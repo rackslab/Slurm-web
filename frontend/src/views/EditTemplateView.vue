@@ -17,7 +17,7 @@ import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
 import type { JobTemplate } from '@/composables/GatewayAPI'
 import DeleteTemplateModal from '@/components/jobs/DeleteTemplateModal.vue'
-import UnsavedTemplateModal from '@/components/jobs/UnsavedTemplateModal.vue'
+import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
 
 const templateStore = useTemplateStore()
@@ -227,8 +227,8 @@ onMounted(async () => {
       </div>
     </div>
 
-    <UnsavedTemplateModal />
     <DeleteTemplateModal :cluster="props.cluster" :idTemplate="props.idTemplate" />
     <DeleteInputModal />
+    <UnsavedModal />
   </ClusterMainLayout>
 </template>

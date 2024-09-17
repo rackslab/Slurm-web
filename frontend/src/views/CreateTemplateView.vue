@@ -17,7 +17,7 @@ import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
 
 import { useTemplateStore } from '@/stores/template'
-import UnsavedModal from '@/components/jobs/UnsavedTemplateModal.vue'
+import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 import DeleteInputModal from '@/components/jobs/DeleteInputModal.vue'
 import { useAuthStore } from '@/stores/auth'
 
@@ -212,7 +212,7 @@ const props = defineProps({
       </div>
     </div>
 
-    <UnsavedModal />
     <DeleteInputModal />
+    <UnsavedModal />
   </ClusterMainLayout>
 </template>
