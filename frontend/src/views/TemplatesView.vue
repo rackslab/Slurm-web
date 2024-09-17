@@ -11,11 +11,13 @@ import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/vue/20/solid'
 import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import type { Template } from '@/composables/GatewayAPI'
+import { useAuthStore } from '@/stores/auth'
 
 import { useClusterDataGetter } from '@/composables/DataGetter'
 import { useTemplateStore } from '@/stores/template'
 
 const templateStore = useTemplateStore()
+const authStore = useAuthStore()
 
 function resetForm() {
   templateStore.resetTemplate()
@@ -63,6 +65,7 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
               <div class="flex h-fit">
                 <h3 class="text-sm font-medium text-gray-900">{{ template.name }}</h3>
                 <span
+                  v-if="template.author == authStore.username"
                   class="ml-2 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
                   >Author</span
                 >
