@@ -226,6 +226,7 @@ onMounted(async () => {
       </div>
     </div>
 
+    <UnsavedModal v-if="templateStore.unsavedIsclicked" />
     <DeleteModal
       v-if="templateStore.deleteIsClicked"
       :cluster="props.cluster"
