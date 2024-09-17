@@ -109,8 +109,18 @@ export const useTemplateStore = defineStore('template', () => {
     }
   }
 
+  function toggleDeleteModal(form: string, inputIndex?: number, inputName?: string) {
     unsavedIsclicked.value = false
     deleteIsClicked.value = true
+    if (form == 'template') {
+      formType.value = form
+      toggleModal.value = true
+    } else {
+      stagingInput.value.name = inputName!
+      stagingInput.value.id = String(inputIndex)
+      formType.value = form
+      toggleModal.value = true
+    }
   }
 
   return {
