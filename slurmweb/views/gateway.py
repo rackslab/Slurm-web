@@ -335,12 +335,6 @@ def templates(cluster: str):
 
 @check_jwt
 @validate_cluster
-def get_template_data(cluster: str, id: int):
-    return proxy_agent(cluster, f"template/{id}", request.token)
-
-
-@check_jwt
-@validate_cluster
 def inputs(cluster: str):
     return proxy_agent(cluster, "inputs", request.token)
 
@@ -383,11 +377,5 @@ def create_template(cluster: str):
 
 @check_jwt
 @validate_cluster
-def edit_template(cluster: str):
-    return proxy_agent(cluster, "edit-template", request.token)
-
-
-@check_jwt
-@validate_cluster
-def delete_template(cluster: str, id: int):
-    return proxy_agent(cluster, f"delete/{id}", request.token)
+def template(cluster: str, id: int):
+    return proxy_agent(cluster, f"template/{id}", request.token)
