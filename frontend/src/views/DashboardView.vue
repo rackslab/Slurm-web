@@ -32,7 +32,11 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
       <div v-else class="grid grid-cols-1 gap-px bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm font-medium leading-6 text-gray-400">Nodes</p>
-          <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
+          <span
+            v-if="data"
+            id="metric-nodes"
+            class="text-4xl font-semibold tracking-tight text-gray-600"
+          >
             {{ data.resources.nodes }}
           </span>
           <div v-else class="flex animate-pulse space-x-4">
@@ -41,7 +45,11 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm font-medium leading-6 text-gray-400">Cores</p>
-          <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
+          <span
+            v-if="data"
+            id="metric-cores"
+            class="text-4xl font-semibold tracking-tight text-gray-600"
+          >
             {{ data.resources.cores }}
           </span>
           <div v-else class="flex animate-pulse space-x-4">
@@ -50,7 +58,11 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm font-medium leading-6 text-gray-400">Running jobs</p>
-          <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
+          <span
+            v-if="data"
+            id="metric-jobs-running"
+            class="text-4xl font-semibold tracking-tight text-gray-600"
+          >
             {{ data.jobs.running }}
           </span>
           <div v-else class="flex animate-pulse space-x-4">
@@ -59,7 +71,11 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm font-medium leading-6 text-gray-400">Total jobs</p>
-          <span v-if="data" class="text-4xl font-semibold tracking-tight text-gray-600">
+          <span
+            v-if="data"
+            id="metric-jobs-total"
+            class="text-4xl font-semibold tracking-tight text-gray-600"
+          >
             {{ data.jobs.total }}
           </span>
           <div v-else class="flex animate-pulse space-x-4">
