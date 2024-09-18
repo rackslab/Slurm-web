@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { foldNodeset, expandNodeset } from './Nodeset'
+import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
 
 describe('Nodeset', () => {
   test('fold consecutive', () => {
