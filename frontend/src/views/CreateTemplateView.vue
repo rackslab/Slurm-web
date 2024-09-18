@@ -18,6 +18,7 @@ import InputsTable from '@/components/jobs/InputsTable.vue'
 
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
+import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const templateStore = useTemplateStore()
@@ -211,7 +212,7 @@ const props = defineProps({
       </div>
     </div>
 
-    <DeleteInputModal v-if="templateStore.deleteIsClicked" />
+    <DeleteModal :cluster="props.cluster" v-if="templateStore.deleteIsClicked" />
     <UnsavedModal v-if="templateStore.unsavedIsclicked" />
   </ClusterMainLayout>
 </template>
