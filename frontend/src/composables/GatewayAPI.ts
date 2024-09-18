@@ -641,11 +641,14 @@ export function useGatewayAPI() {
     cluster: string,
     editTemplate: JobTemplate
   ): Promise<DbCreateResponse> {
-    return (await post(`/agents/${cluster}/edit-template`, editTemplate)) as DbCreateResponse
+    return (await post(
+      `/agents/${cluster}/template/${editTemplate.idTemplate}`,
+      editTemplate
+    )) as DbCreateResponse
   }
 
   async function delete_template(cluster: string, id: number): Promise<DbCreateResponse> {
-    return (await deleteTemplate(`/agents/${cluster}/delete/${id}`)) as DbCreateResponse
+    return (await deleteTemplate(`/agents/${cluster}/template/${id}`)) as DbCreateResponse
   }
 
   async function infrastructureImagePng(
