@@ -173,54 +173,6 @@ def templates():
     return jsonify(lstTemplates)
 
 
-def get_template_data(id: int):
-    template = list(Templates.select().where(Templates.id == id).dicts())
-    inputs = list(Inputs.select().where(Inputs.template == id).dicts())
-    user_accounts = []
-    user_logins = []
-    developer_accounts = []
-    developer_logins = []
-
-    for user_account in list(
-        Template_users_accounts.select(Template_users_accounts.name)
-        .where(Template_users_accounts.template == id)
-        .dicts()
-    ):
-        user_accounts.append(user_account["name"])
-
-    for user_login in list(
-        Template_users_logins.select(Template_users_logins.name)
-        .where(Template_users_logins.template == id)
-        .dicts()
-    ):
-        user_logins.append(user_login["name"])
-
-    for developer_account in list(
-        Template_developers_accounts.select(Template_developers_accounts.name)
-        .where(Template_developers_accounts.template == id)
-        .dicts()
-    ):
-        developer_accounts.append(developer_account["name"])
-
-    for developer_login in list(
-        Template_developers_logins.select(Template_developers_logins.name)
-        .where(Template_developers_logins.template == id)
-        .dicts()
-    ):
-        developer_logins.append(developer_login["name"])
-
-    return jsonify(
-        {
-            "template": template[0],
-            "inputs": inputs,
-            "userAccounts": user_accounts,
-            "userLogins": user_logins,
-            "developerAccounts": developer_accounts,
-            "developerLogins": developer_logins,
-        }
-    )
-
-
 def inputs():
     lstInputs = list(Inputs.select().dicts())
     return jsonify(lstInputs)
@@ -303,9 +255,65 @@ def create_template():
 
 
 @rbac_action("manage-templates")
-def edit_template():
-    template_data = json.loads(request.data)
+def template(id: int):
+    if request.method == "GET":
+        return template_get(id)
+    if request.method == "POST":
+        template_data = json.loads(request.data)
+        return template_post(template_data)
+    if request.method == "DELETE":
+        return template_delete(id)
 
+
+def template_get(id: int):
+    template = list(Templates.select().where(Templates.id == id).dicts())
+    inputs = list(Inputs.select().where(Inputs.template == id).dicts())
+    user_accounts = []
+    user_logins = []
+    developer_accounts = []
+    developer_logins = []
+
+    for user_account in list(
+        Template_users_accounts.select(Template_users_accounts.name)
+        .where(Template_users_accounts.template == id)
+        .dicts()
+    ):
+        user_accounts.append(user_account["name"])
+
+    for user_login in list(
+        Template_users_logins.select(Template_users_logins.name)
+        .where(Template_users_logins.template == id)
+        .dicts()
+    ):
+        user_logins.append(user_login["name"])
+
+    for developer_account in list(
+        Template_developers_accounts.select(Template_developers_accounts.name)
+        .where(Template_developers_accounts.template == id)
+        .dicts()
+    ):
+        developer_accounts.append(developer_account["name"])
+
+    for developer_login in list(
+        Template_developers_logins.select(Template_developers_logins.name)
+        .where(Template_developers_logins.template == id)
+        .dicts()
+    ):
+        developer_logins.append(developer_login["name"])
+
+    return jsonify(
+        {
+            "template": template[0],
+            "inputs": inputs,
+            "userAccounts": user_accounts,
+            "userLogins": user_logins,
+            "developerAccounts": developer_accounts,
+            "developerLogins": developer_logins,
+        }
+    )
+
+
+def template_post(template_data):
     template = Templates.get(Templates.id == template_data["idTemplate"])
     template.name = template_data["name"]
     template.description = template_data["description"]
@@ -359,101 +367,119 @@ def edit_template():
                 & (Template_users_logins.template == template_data["idTemplate"])
             ).execute()
 
-    db_developer_accounts = list(
-        Template_developers_accounts.select(Template_developers_accounts.name)
-        .where(Template_developers_accounts.template == template_data["idTemplate"])
-        .dicts()
-    )
-    db_developer_account_names = [
-        developer["name"] for developer in db_developer_accounts
-    ]
+        db_developer_accounts = list(
+            Template_developers_accounts.select(Template_developers_accounts.name)
+            .where(Template_developers_accounts.template == template_data["idTemplate"])
+            .dicts()
+        )
+        db_developer_account_names = [
+            developer["name"] for developer in db_developer_accounts
+        ]
 
-    for form_account in range(len(template_data["developerAccounts"])):
-        if (
-            template_data["developerAccounts"][form_account]
-            not in db_developer_account_names
-        ):
-            Template_developers_accounts.create(
-                name=template_data["developerAccounts"][form_account],
-                template=template_data["idTemplate"],
-            )
-
-    for db_account in range(len(db_developer_account_names)):
-        if (
-            db_developer_account_names[db_account]
-            not in template_data["developerAccounts"]
-        ):
-            Template_developers_accounts.delete().where(
-                (
-                    Template_developers_accounts.name
-                    == db_developer_account_names[db_account]
+        for form_account in range(len(template_data["developerAccounts"])):
+            if (
+                template_data["developerAccounts"][form_account]
+                not in db_developer_account_names
+            ):
+                Template_developers_accounts.create(
+                    name=template_data["developerAccounts"][form_account],
+                    template=template_data["idTemplate"],
                 )
-                & (Template_developers_accounts.template == template_data["idTemplate"])
-            ).execute()
 
-    db_developer_logins = list(
-        Template_developers_logins.select(Template_developers_logins.name)
-        .where(Template_developers_logins.template == template_data["idTemplate"])
-        .dicts()
-    )
-    db_developer_login_names = [developer["name"] for developer in db_developer_logins]
-
-    for form_login in range(len(template_data["developerLogins"])):
-        if template_data["developerLogins"][form_login] not in db_developer_login_names:
-            Template_developers_logins.create(
-                name=template_data["developerLogins"][form_login],
-                template=template_data["idTemplate"],
-            )
-
-    for db_login in range(len(db_developer_login_names)):
-        if db_developer_login_names[db_login] not in template_data["developerLogins"]:
-            Template_developers_logins.delete().where(
-                (Template_developers_logins.name == db_developer_login_names[db_login])
-                & (Template_developers_logins.template == template_data["idTemplate"])
-            ).execute()
-
-    for input in range(len(template_data["inputs"])):
-        print(template_data["inputs"][input])
-        for type in Input_types.select():
-            if type.name == template_data["inputs"][input]["type"]:
-                if template_data["inputs"][input] not in list(
-                    Inputs.select()
-                    .where(Inputs.template == template_data["idTemplate"])
-                    .dicts()
-                ):
-                    Inputs.create(
-                        name=template_data["inputs"][input]["name"],
-                        description=template_data["inputs"][input]["description"],
-                        default=template_data["inputs"][input]["default"],
-                        minVal=template_data["inputs"][input]["minVal"],
-                        maxVal=template_data["inputs"][input]["maxVal"],
-                        regex=template_data["inputs"][input]["regex"],
-                        template=template_data["idTemplate"],
-                        type=type.id,
+        for db_account in range(len(db_developer_account_names)):
+            if (
+                db_developer_account_names[db_account]
+                not in template_data["developerAccounts"]
+            ):
+                Template_developers_accounts.delete().where(
+                    (
+                        Template_developers_accounts.name
+                        == db_developer_account_names[db_account]
                     )
-                    break
-                else:
-                    print(f'{template_data["inputs"][input]["name"]} est dans la liste')
-
-                    inputTest = Inputs.select().where(
-                        Inputs.id == template_data["inputs"][input]["id"]
+                    & (
+                        Template_developers_accounts.template
+                        == template_data["idTemplate"]
                     )
-                    inputTest.name = (template_data["inputs"][input]["name"],)
-                    inputTest.description = (
-                        template_data["inputs"][input]["description"],
+                ).execute()
+
+        db_developer_logins = list(
+            Template_developers_logins.select(Template_developers_logins.name)
+            .where(Template_developers_logins.template == template_data["idTemplate"])
+            .dicts()
+        )
+        db_developer_login_names = [
+            developer["name"] for developer in db_developer_logins
+        ]
+
+        for form_login in range(len(template_data["developerLogins"])):
+            if (
+                template_data["developerLogins"][form_login]
+                not in db_developer_login_names
+            ):
+                Template_developers_logins.create(
+                    name=template_data["developerLogins"][form_login],
+                    template=template_data["idTemplate"],
+                )
+
+        for db_login in range(len(db_developer_login_names)):
+            if (
+                db_developer_login_names[db_login]
+                not in template_data["developerLogins"]
+            ):
+                Template_developers_logins.delete().where(
+                    (
+                        Template_developers_logins.name
+                        == db_developer_login_names[db_login]
                     )
-                    inputTest.default = (template_data["inputs"][input]["default"],)
-                    inputTest.minVal = (template_data["inputs"][input]["minVal"],)
-                    inputTest.maxVal = (template_data["inputs"][input]["maxVal"],)
-                    inputTest.regex = template_data["inputs"][input]["regex"]
-                    inputTest.type = type.id
+                    & (
+                        Template_developers_logins.template
+                        == template_data["idTemplate"]
+                    )
+                ).execute()
 
-    return jsonify({"result": "success"})
+        for input in range(len(template_data["inputs"])):
+            print(template_data["inputs"][input])
+            for type in Input_types.select():
+                if type.name == template_data["inputs"][input]["type"]:
+                    if template_data["inputs"][input] not in list(
+                        Inputs.select()
+                        .where(Inputs.template == template_data["idTemplate"])
+                        .dicts()
+                    ):
+                        Inputs.create(
+                            name=template_data["inputs"][input]["name"],
+                            description=template_data["inputs"][input]["description"],
+                            default=template_data["inputs"][input]["default"],
+                            minVal=template_data["inputs"][input]["minVal"],
+                            maxVal=template_data["inputs"][input]["maxVal"],
+                            regex=template_data["inputs"][input]["regex"],
+                            template=template_data["idTemplate"],
+                            type=type.id,
+                        )
+                        break
+                    else:
+                        print(
+                            f'{template_data["inputs"][input]["name"]} est dans la liste'
+                        )
+
+                        inputTest = Inputs.select().where(
+                            Inputs.id == template_data["inputs"][input]["id"]
+                        )
+                        inputTest.name = (template_data["inputs"][input]["name"],)
+                        inputTest.description = (
+                            template_data["inputs"][input]["description"],
+                        )
+                        inputTest.default = (template_data["inputs"][input]["default"],)
+                        inputTest.minVal = (template_data["inputs"][input]["minVal"],)
+                        inputTest.maxVal = (template_data["inputs"][input]["maxVal"],)
+                        inputTest.regex = template_data["inputs"][input]["regex"]
+                        inputTest.type = type.id
+
+        return jsonify({"result": "success"})
 
 
-@rbac_action("manage-templates")
-def delete_template(id: int):
-    Templates.delete().where(Templates.id == id).execute()
+def template_delete(id: int):
+    Inputs.delete().where(Inputs.template == id).execute()
     Template_users_accounts.delete().where(
         Template_users_accounts.template == id
     ).execute()
@@ -464,6 +490,6 @@ def delete_template(id: int):
     Template_developers_logins.delete().where(
         Template_developers_logins.template == id
     ).execute()
-    Inputs.delete().where(Inputs.template == id).execute()
+    Templates.delete().where(Templates.id == id).execute()
 
     return jsonify({"result": "template deleted"})

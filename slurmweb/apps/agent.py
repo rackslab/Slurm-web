@@ -40,9 +40,6 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/reservations", views.reservations),
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
         SlurmwebAppRoute(f"/v{get_version()}/templates", views.templates),
-        SlurmwebAppRoute(
-            f"/v{get_version()}/template/<int:id>", views.get_template_data
-        ),
         SlurmwebAppRoute(f"/v{get_version()}/inputs", views.inputs),
         SlurmwebAppRoute(f"/v{get_version()}/input-types", views.input_types),
         SlurmwebAppRoute(f"/v{get_version()}/user-accounts", views.user_accounts),
@@ -57,14 +54,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             methods=["POST"],
         ),
         SlurmwebAppRoute(
-            f"/v{get_version()}/edit-template",
-            views.edit_template,
-            methods=["POST"],
-        ),
-        SlurmwebAppRoute(
-            f"/v{get_version()}/delete/<int:id>",
-            views.delete_template,
-            methods=["DELETE"],
+            f"/v{get_version()}/template/<int:id>",
+            views.template,
+            methods=["GET", "POST", "DELETE"],
         ),
     }
 
