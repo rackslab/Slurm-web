@@ -20,8 +20,7 @@ const props = defineProps({
     required: true
   },
   idTemplate: {
-    type: String,
-    required: true
+    type: String
   }
 })
 
