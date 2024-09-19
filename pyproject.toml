@@ -32,6 +32,11 @@ agent = [
     "RacksDB[web]",
     "redis",
 ]
+tests = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+]
 
 [project.scripts]
 slurm-web-agent = 'slurmweb.exec.agent:SlurmwebExecAgent.run'
