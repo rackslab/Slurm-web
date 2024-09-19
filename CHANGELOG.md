@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   gateway (#348).
 - conf: Add `racksdb` > `infrastructure` parameter for the agent.
 
+### Changed
+- docs: Update configuration reference documentation.
+
 ### Fixed
 - agent:
   - Fix retrieval of terminated jobs only available in accounting service with

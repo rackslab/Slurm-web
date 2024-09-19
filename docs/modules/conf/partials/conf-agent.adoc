@@ -648,6 +648,20 @@ permitted actions
 
 |-
 
+|infrastructure
+|str
+|Name of the infrastructure for the cluster in RacksDB. By default, the
+cluster name is used.
+
+
+
+*Example:* `atlas`
+
+
+_No default value_
+
+|-
+
 |tags
 |list[str]
 |List of tags applied to compute nodes in RacksDB database
