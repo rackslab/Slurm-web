@@ -4,9 +4,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from peewee import SqliteDatabase, Model, CharField, FloatField, ForeignKeyField, Check
+import peewee
 
-db = SqliteDatabase(None)
+db = peewee.SqliteDatabase(None)
 
 
 def create_db(path):
@@ -26,68 +26,68 @@ def create_db(path):
         )
 
 
-class BaseModel(Model):
+class BaseModel(peewee.Model):
     class Meta:
         database = db
 
 
 class Templates(BaseModel):
-    name = CharField(unique=True)
-    description = CharField()
-    batchScript = CharField()
-    author = CharField()
+    name = peewee.CharField(unique=True)
+    description = peewee.CharField()
+    batchScript = peewee.CharField()
+    author = peewee.CharField()
 
     class Meta:
         constraints = [
-            Check("LENGTH(name) > 0"),
-            Check("LENGTH(name) <= 50"),
-            Check("LENGTH(description) <= 100"),
-            Check("LENGTH(batchScript) > 0"),
-            Check("LENGTH(batchScript) <= 1000"),
-            Check("LENGTH(author) <= 50"),
+            peewee.Check("LENGTH(name) > 0"),
+            peewee.Check("LENGTH(name) <= 50"),
+            peewee.Check("LENGTH(description) <= 100"),
+            peewee.Check("LENGTH(batchScript) > 0"),
+            peewee.Check("LENGTH(batchScript) <= 1000"),
+            peewee.Check("LENGTH(author) <= 50"),
         ]
 
 
 class Input_types(BaseModel):
-    name = CharField(max_length=50)
+    name = peewee.CharField(max_length=50)
 
 
 class Inputs(BaseModel):
-    name = CharField(unique=True)
-    description = CharField()
-    default_value = CharField(null=True, max_length=45)
-    minVal = FloatField(null=True)
-    maxVal = FloatField(null=True)
-    regex = CharField(null=True)
-    template = ForeignKeyField(Templates, backref="inputs")
-    type = ForeignKeyField(Input_types, backref="inputs", null=False)
+    name = peewee.CharField(unique=True)
+    description = peewee.CharField()
+    default_value = peewee.CharField(null=True, max_length=45)
+    minVal = peewee.FloatField(null=True)
+    maxVal = peewee.FloatField(null=True)
+    regex = peewee.CharField(null=True)
+    template = peewee.ForeignKeyField(Templates, backref="inputs")
+    type = peewee.ForeignKeyField(Input_types, backref="inputs", null=False)
 
     class Meta:
         constraints = [
-            Check("LENGTH(name) > 0"),
-            Check("LENGTH(name) <= 50"),
-            Check("LENGTH(description) <= 100"),
-            Check("LENGTH(default_value) <= 45"),
-            Check("LENGTH(regex) <= 100"),
-            Check("minVal IS NULL OR maxVal IS NULL OR minVal <= maxVal"),
+            peewee.Check("LENGTH(name) > 0"),
+            peewee.Check("LENGTH(name) <= 50"),
+            peewee.Check("LENGTH(description) <= 100"),
+            peewee.Check("LENGTH(default_value) <= 45"),
+            peewee.Check("LENGTH(regex) <= 100"),
+            peewee.Check("minVal IS NULL OR maxVal IS NULL OR minVal <= maxVal"),
         ]
 
 
 class Template_users_logins(BaseModel):
-    name = CharField()
-    template = ForeignKeyField(Templates, backref="users_logins")
+    name = peewee.CharField()
+    template = peewee.ForeignKeyField(Templates, backref="users_logins")
 
 
 class Template_users_accounts(BaseModel):
-    name = CharField()
-    template = ForeignKeyField(Templates, backref="users_accounts")
+    name = peewee.CharField()
+    template = peewee.ForeignKeyField(Templates, backref="users_accounts")
 
 
 class Template_developers_logins(BaseModel):
-    name = CharField()
-    template = ForeignKeyField(Templates, backref="developers_logins")
+    name = peewee.CharField()
+    template = peewee.ForeignKeyField(Templates, backref="developers_logins")
 
 
 class Template_developers_accounts(BaseModel):
-    name = CharField()
-    template = ForeignKeyField(Templates, backref="developers_accounts")
+    name = peewee.CharField()
+    template = peewee.ForeignKeyField(Templates, backref="developers_accounts")
