@@ -1,11 +1,10 @@
 import { describe, test, beforeEach, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
-import { init_plugins, init_stores } from './common'
+import { init_plugins } from './common'
 
 describe('LoginView.vue', () => {
   init_plugins()
-  beforeEach(() => init_stores())
   test('should display login form', () => {
     const wrapper = mount(LoginView, {})
     // Check presence of the logo and its source.

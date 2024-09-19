@@ -4,7 +4,7 @@ import DashboardView from '@/views/DashboardView.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import { init_plugins, init_stores } from './common'
+import { init_plugins } from './common'
 
 const mockClusterDataPoller = {
   data: undefined,
@@ -19,8 +19,9 @@ vi.mock('@/composables/DataPoller', () => ({
 describe('DashboardView.vue', () => {
   beforeEach(() => {
     init_plugins()
-    init_stores()
-    useRuntimeStore().availableClusters = [{ name: 'foo', permissions: { roles: [], actions: [] } }]
+    useRuntimeStore().availableClusters = [
+      { name: 'foo', permissions: { roles: [], actions: [] }, infrastructure: 'foo' }
+    ]
   })
   test('should display dashboard with metrics', async () => {
     mockClusterDataPoller.data = {
