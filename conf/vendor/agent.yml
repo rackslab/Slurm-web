@@ -286,6 +286,12 @@ racksdb:
     type: path
     default: /usr/share/racksdb/schemas/drawings.yml
     doc: Path to RacksDB database schema
+  infrastructure:
+    type: str
+    doc: |
+      Name of the infrastructure for the cluster in RacksDB. By default, the
+      cluster name is used.
+    ex: atlas
   tags:
     type: list
     content: str
