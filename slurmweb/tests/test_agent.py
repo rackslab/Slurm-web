@@ -15,6 +15,8 @@ from flask import Blueprint
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
+from slurmweb.db.models import create_db
+
 
 CONF = """
 [service]
@@ -43,7 +45,6 @@ class TestAgent(unittest.TestCase):
         key = tempfile.NamedTemporaryFile(mode="w+")
         key.write("hey")
         key.seek(0)
-
         vendor_path = os.path.join(
             os.path.dirname(__file__), "..", "..", "conf", "vendor"
         )
@@ -63,7 +64,10 @@ class TestAgent(unittest.TestCase):
         conf_defs = os.path.join(vendor_path, "agent.yml")
 
         # Start the app with mocked RacksDB web blueprint
-        with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
+        with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m, mock.patch(
+            "slurmweb.apps.agent.create_db"
+        ) as mdb:
+            mdb.side_effect = create_db(":memory:")
             m.return_value = FakeRacksDBWebBlueprint()
             self.app = SlurmwebAppAgent(
                 SlurmwebConfSeed(
