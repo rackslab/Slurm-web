@@ -42,14 +42,16 @@ def permissions():
     )
 
 
-def _validate_slurmrestd_response(response) -> None:
+def _validate_slurmrestd_response(response, ignore_notfound) -> None:
     """Validate slurmrestd response or abort agent resquest with error."""
-    _validate_slurmrestd_status(response)
+    _validate_slurmrestd_status(response, ignore_notfound)
     _validate_slurmrestd_json(response)
 
 
-def _validate_slurmrestd_status(response) -> None:
+def _validate_slurmrestd_status(response, ignore_notfound) -> None:
     """Check response status code is not HTTP/404 or abort"""
+    if ignore_notfound:
+        return
     if response.status_code != 404:
         return
     error = f"URL not found on slurmrestd: {response.url}"
@@ -70,7 +72,7 @@ def _validate_slurmrestd_json(response) -> None:
         abort(500, error)
 
 
-def slurmrest(query, key, handle_errors=True):
+def slurmrest(query, key, raise_errors=False, ignore_notfound=False):
     session = requests.Session()
     prefix = "http+unix://slurmrestd/"
     session.mount(prefix, SlurmrestdUnixAdapter(current_app.settings.slurmrestd.socket))
@@ -80,14 +82,11 @@ def slurmrest(query, key, handle_errors=True):
         logger.error("Unable to connect to slurmrestd: %s", err)
         abort(500, f"Unable to connect to slurmrestd: {err}")
 
-    _validate_slurmrestd_response(response)
+    _validate_slurmrestd_response(response, ignore_notfound)
 
     result = response.json()
     if len(result["errors"]):
-        if handle_errors:
-            logger.error("slurmrestd query %s errors: %s", query, result["errors"])
-            abort(500, f"slurmrestd errors: {str(result['errors'])}")
-        else:
+        if raise_errors:
             error = result["errors"][0]
             raise SlurmwebRestdError(
                 error["error"],
@@ -95,6 +94,9 @@ def slurmrest(query, key, handle_errors=True):
                 error["description"],
                 error["source"],
             )
+        else:
+            logger.error("slurmrestd query %s errors: %s", query, result["errors"])
+            abort(500, f"slurmrestd errors: {str(result['errors'])}")
     if "warnings" not in result:
         logger.error(
             "Unable to extract warnings from slurmrestd response to %s, unsupported "
@@ -182,7 +184,8 @@ def _get_job(job):
                 slurmrest,
                 query,
                 "jobs",
-                False,
+                True,
+                True,
             )[0]
         )
     except SlurmwebRestdError as err:
