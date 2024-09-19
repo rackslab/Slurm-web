@@ -20,14 +20,15 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAgent:
-    def __init__(self, cluster, url):
+    def __init__(self, cluster, infrastructure, url):
         self.cluster = cluster
+        self.infrastructure = infrastructure
         self.url = url
 
     @classmethod
     def from_json(cls, url, data):
         try:
-            return cls(data["cluster"], url)
+            return cls(data["cluster"], data["infrastructure"], url)
         except KeyError as err:
             raise SlurmwebAgentError(
                 "Unable to retrieve cluster name from agent"
