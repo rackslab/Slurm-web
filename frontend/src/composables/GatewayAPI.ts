@@ -23,6 +23,7 @@ interface loginIdents {
 
 export interface ClusterDescription {
   name: string
+  infrastructure: string
   permissions: ClusterPermissions
   stats?: ClusterStats
 }
@@ -522,11 +523,12 @@ export function useGatewayAPI() {
 
   async function infrastructureImagePng(
     cluster: string,
+    infrastructure: string,
     width: number,
     height: number
   ): Promise<[RacksDBAPIImage, RacksDBInfrastructureCoordinates]> {
     const response = await postRaw<AxiosResponse>(
-      `/agents/${cluster}/racksdb/draw/infrastructure/${cluster}.png?coordinates`,
+      `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.png?coordinates`,
       {
         general: { pixel_perfect: true },
         dimensions: { width: width, height: height },

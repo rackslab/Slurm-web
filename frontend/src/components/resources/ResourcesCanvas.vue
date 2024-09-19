@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Ref, PropType } from 'vue'
+import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
 import { APIServerError } from '@/composables/HTTPErrors'
@@ -34,6 +35,7 @@ const props = defineProps({
 const isFirefox = navigator.userAgent.includes('Firefox')
 const emit = defineEmits(['imageSize'])
 
+const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
 const container: Ref<HTMLDivElement | null> = ref(null)
@@ -128,6 +130,7 @@ async function updateCanvas(fullUpdate: boolean = true) {
       try {
         ;[image, coordinates] = await gateway.infrastructureImagePng(
           props.cluster,
+          runtimeStore.getCluster(props.cluster).infrastructure,
           canvas.value.width,
           canvas.value.height
         )
