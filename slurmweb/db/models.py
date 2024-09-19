@@ -45,7 +45,7 @@ class Input_types(BaseModel):
 class Inputs(BaseModel):
     name = CharField(max_length=50, unique=True)
     description = CharField(max_length=100)
-    default = CharField(null=True, max_length=45)
+    default_value = CharField(null=True, max_length=45)
     minVal = FloatField(null=True)
     maxVal = FloatField(null=True)
     regex = CharField(null=True, max_length=100)
