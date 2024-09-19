@@ -31,6 +31,7 @@ from ..db.models import (
     Template_developers_accounts,
     Template_developers_logins,
 )
+from peewee import IntegrityError
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
@@ -207,49 +208,54 @@ def developer_logins():
 def create_template():
     template_data = json.loads(request.data)
 
-    new_template = Templates.create(
-        name=template_data["name"],
-        description=template_data["description"],
-        batchScript=template_data["batchScript"],
-        author=template_data["author"],
-    )
-
-    for userAccount in range(len(template_data["userAccounts"])):
-        Template_users_accounts.create(
-            name=template_data["userAccounts"][userAccount], template=new_template.id
+    try:
+        new_template = Templates.create(
+            name=template_data["name"],
+            description=template_data["description"],
+            batchScript=template_data["batchScript"],
+            author=template_data["author"],
         )
 
-    for userLogin in range(len(template_data["userLogins"])):
-        Template_users_logins.create(
-            name=template_data["userLogins"][userLogin], template=new_template.id
-        )
+        for userAccount in range(len(template_data["userAccounts"])):
+            Template_users_accounts.create(
+                name=template_data["userAccounts"][userAccount],
+                template=new_template.id,
+            )
 
-    for developerAccount in range(len(template_data["developerAccounts"])):
-        Template_developers_accounts.create(
-            name=template_data["developerAccounts"][developerAccount],
-            template=new_template.id,
-        )
+        for userLogin in range(len(template_data["userLogins"])):
+            Template_users_logins.create(
+                name=template_data["userLogins"][userLogin], template=new_template.id
+            )
 
-    for developerLogin in range(len(template_data["developerLogins"])):
-        Template_developers_logins.create(
-            name=template_data["developerLogins"][developerLogin],
-            template=new_template.id,
-        )
+        for developerAccount in range(len(template_data["developerAccounts"])):
+            Template_developers_accounts.create(
+                name=template_data["developerAccounts"][developerAccount],
+                template=new_template.id,
+            )
 
-    for input in range(len(template_data["inputs"])):
-        for type in Input_types.select():
-            if type.name == template_data["inputs"][input]["type"]:
-                Inputs.create(
-                    name=template_data["inputs"][input]["name"],
-                    description=template_data["inputs"][input]["description"],
-                    default=template_data["inputs"][input]["default"],
-                    minVal=template_data["inputs"][input]["minVal"],
-                    maxVal=template_data["inputs"][input]["maxVal"],
-                    regex=template_data["inputs"][input]["regex"],
-                    template=new_template.id,
-                    type=type.id,
-                )
-                break
+        for developerLogin in range(len(template_data["developerLogins"])):
+            Template_developers_logins.create(
+                name=template_data["developerLogins"][developerLogin],
+                template=new_template.id,
+            )
+
+        for input in range(len(template_data["inputs"])):
+            for type in Input_types.select():
+                if type.name == template_data["inputs"][input]["type"]:
+                    Inputs.create(
+                        name=template_data["inputs"][input]["name"],
+                        description=template_data["inputs"][input]["description"],
+                        default_value=template_data["inputs"][input]["defaultValue"],
+                        minVal=template_data["inputs"][input]["minVal"],
+                        maxVal=template_data["inputs"][input]["maxVal"],
+                        regex=template_data["inputs"][input]["regex"],
+                        template=new_template.id,
+                        type=type.id,
+                    )
+                    break
+    except IntegrityError as e:
+        print(f"IntegrityError : {e}")
+        return jsonify({"error": f"{e}"})
 
     return jsonify({"result": "success"})
 
@@ -449,7 +455,9 @@ def template_post(template_data):
                         Inputs.create(
                             name=template_data["inputs"][input]["name"],
                             description=template_data["inputs"][input]["description"],
-                            default=template_data["inputs"][input]["default"],
+                            default_value=template_data["inputs"][input][
+                                "defaultValue"
+                            ],
                             minVal=template_data["inputs"][input]["minVal"],
                             maxVal=template_data["inputs"][input]["maxVal"],
                             regex=template_data["inputs"][input]["regex"],
@@ -469,7 +477,9 @@ def template_post(template_data):
                         inputTest.description = (
                             template_data["inputs"][input]["description"],
                         )
-                        inputTest.default = (template_data["inputs"][input]["default"],)
+                        inputTest.default_value = (
+                            template_data["inputs"][input]["defaultValue"],
+                        )
                         inputTest.minVal = (template_data["inputs"][input]["minVal"],)
                         inputTest.maxVal = (template_data["inputs"][input]["maxVal"],)
                         inputTest.regex = template_data["inputs"][input]["regex"]
