@@ -179,7 +179,7 @@ onMounted(async () => {
           </div>
           <div v-if="templateStore.stagingInput" class="relative mt-2 rounded-md shadow-sm">
             <input
-              v-model="templateStore.stagingInput.default"
+              v-model="templateStore.stagingInput.defaultValue"
               type="text"
               name="default"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"

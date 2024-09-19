@@ -275,7 +275,7 @@ export interface Input {
   id?: string
   name: string
   description: string
-  default: string
+  defaultValue: string
   minVal: string
   maxVal: string
   regex: string
