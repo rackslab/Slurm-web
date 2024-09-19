@@ -67,3 +67,28 @@ List of admitted scopes in the first line of Git commit messages:
 
 The versions numbers of Rackslab software releases follow the
 [semantic versionning specifications](https://semver.org/).
+
+
+# Tests
+
+## Frontend
+
+Use this command to run unit tests for frontend:
+
+```console
+$ cd frontend && npm run test:unit
+```
+
+## Backend
+
+Install tests requirements, typically in a virtual environment
+
+```console
+$ pip install -e .[tests]
+```
+
+Use this command to run unit tests for backend applications:
+
+```console
+$ pytest
+```
