@@ -90,6 +90,7 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
               <button
                 @click="resetForm()"
                 type="button"
+                id="create"
                 class="relative flex w-full flex-col items-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-slurmweb focus:ring-offset-2 sm:w-[400px] md:w-[400px] lg:w-[400px]"
               >
                 <PlusCircleIcon class="h-14 w-14 text-slurmweb" />
