@@ -27,7 +27,10 @@ def version():
 
 
 def info():
-    data = {"cluster": current_app.settings.service.cluster}
+    data = {
+        "cluster": current_app.settings.service.cluster,
+        "infrastructure": current_app.settings.racksdb.infrastructure,
+    }
     return jsonify(data)
 
 

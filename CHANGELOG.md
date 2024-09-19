@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- agent: Return RacksDB infrastructure name in `/info` endpoint in complement of
+  the cluster name.
 - conf: Add `racksdb` > `infrastructure` parameter for the agent.
 
 ### Fixed
