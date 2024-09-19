@@ -18,6 +18,9 @@ db=dev/firehpc/db
 schema=../RacksDB/schemas/racksdb.yml
 drawings_schema=../RacksDB/schemas/drawings.yml
 tags=compute
+{% if infrastructure %}
+infrastructure={{ infrastructure }}
+{% endif %}
 
 [cache]
 enabled={{ cache_enabled }}

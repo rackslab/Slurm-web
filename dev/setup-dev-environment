@@ -219,6 +219,7 @@ class SlurmwebAgent:
                     policy_path=self.policy_path,
                     redis_port=self.forwards["redis"].local,
                     redis_password=redis_password,
+                    infrastructure=self.name if self.ui_name != self.name else None
                 )
             )
 
