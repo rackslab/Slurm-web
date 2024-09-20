@@ -42,6 +42,7 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
     <router-link :to="{ name: 'jobs' }"
       ><button
         type="button"
+        id="backBtn"
         class="mb-16 ml-5 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
       >
         <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -51,8 +52,10 @@ const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
 
     <div class="mt-8 flex flex-col items-center">
       <div class="ml-5 text-left">
-        <p class="text-3xl font-bold tracking-tight text-gray-900">Templates</p>
-        <p class="mt-4 max-w-xl text-sm font-light text-gray-600">Edit or create jobs templates</p>
+        <p id="title" class="text-3xl font-bold tracking-tight text-gray-900">Templates</p>
+        <p id="description" class="mt-4 max-w-xl text-sm font-light text-gray-600">
+          Edit or create jobs templates
+        </p>
 
         <div class="mt-8 flex flex-wrap justify-center gap-6">
           <div
