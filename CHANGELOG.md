@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Fixed
-- agent: fix retrieval of terminated jobs only available in accounting service
-  with an option to ignore 404 for specific slurmrestd requests.
+- agent:
+  - Fix retrieval of terminated jobs only available in accounting service with
+    an option to ignore 404 for specific slurmrestd requests.
+  - Fix compatibility issue with Requests >= 2.32.2 (#350).
 - front: Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite).
 
 ## [3.2.0] - 2024-09-05
