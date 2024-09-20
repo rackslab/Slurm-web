@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   semantic.
 - docs: Update configuration reference documentation.
 
+### Fixed
+- agent: Fix compatibility issue with Requests >= 2.32.2 (#350).
+
 ### Removed
 - docs: remove mention of support of Fedora 39
 
