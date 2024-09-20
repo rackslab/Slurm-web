@@ -46,5 +46,13 @@ class SlurmrestdUnixAdapter(HTTPAdapter):
         super().__init__()
         self.path = path
 
+    # Required by Requests >= 2.32.2. For reference:
+    # https://github.com/psf/requests/pull/6710
+    #
+    # As mentionned by Requests maintainers, this is backwards compatible between
+    # versions of Requests.
+    def get_connection_with_tls_context(self, request, verify, proxies=None, cert=None):
+        return self.get_connection(request.url, proxies)
+
     def get_connection(self, url, proxies=None):
         return SlurmrestdUnixConnectionPool(self.path)
