@@ -22,15 +22,19 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { ref, onMounted } from 'vue'
 import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
 
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
+import router from '@/router'
 
 const gateway = useGatewayAPI()
 const templateStore = useTemplateStore()
 
 const inputTypes: Ref<Array<InputType>> = ref([])
 const constraint = ref('none')
+const missingField = ref(false)
+const missingFieldNames: Ref<Array<string>> = ref([])
 
 const props = defineProps({
   cluster: {
@@ -42,6 +46,24 @@ const props = defineProps({
     required: true
   }
 })
+
+function createInput() {
+  missingField.value = false
+  missingFieldNames.value = []
+  if (templateStore.stagingInput.name == '') {
+    missingField.value = true
+    missingFieldNames.value.push('name')
+  }
+  if (templateStore.stagingInput.type == '') {
+    missingField.value = true
+    missingFieldNames.value.push('types')
+  }
+
+  if (missingField.value == false) {
+    templateStore.addInput()
+    router.push({ name: 'create-template' })
+  }
+}
 
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
@@ -62,6 +84,12 @@ onMounted(async () => {
       { title: 'Create input' }
     ]"
   >
+    <ErrorAlert v-if="missingField"
+      >Missing required fields:
+      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
+        ><br />- {{ name }}</span
+      ></ErrorAlert
+    >
     <button
       @click="templateStore.toggleUnsavedModal('input')"
       type="button"
@@ -274,23 +302,13 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <router-link
-            :to="{
-              name: `${props.createOrEditInput}-template`,
-              params: {
-                ...(props.createOrEditInput === 'edit'
-                  ? { idTemplate: templateStore.idTemplate }
-                  : {})
-              }
-            }"
-            ><button
-              @click="templateStore.addInput()"
-              type="button"
-              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Add
-            </button></router-link
+          <button
+            @click="createInput()"
+            type="button"
+            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
           >
+            Add
+          </button>
         </div>
       </div>
     </div>

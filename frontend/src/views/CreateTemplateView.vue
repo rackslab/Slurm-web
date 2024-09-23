@@ -20,6 +20,9 @@ import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import { useAuthStore } from '@/stores/auth'
+import router from '@/router'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import type { Ref } from 'vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -29,29 +32,67 @@ const isNameValid = ref(true)
 const isBatchScriptValid = ref(true)
 
 const errorMessage = ref<string | undefined>()
+const missingField = ref(false)
+const missingFieldNames: Ref<Array<string>> = ref([])
 
 async function createTemplate(author: string) {
-  const newTemplate: JobTemplate = {
-    name: templateStore.name,
-    description: templateStore.description,
-    userAccounts: templateStore.userAccounts,
-    userLogins: templateStore.userLogins,
-    developerAccounts: templateStore.developerAccounts,
-    developerLogins: templateStore.developerLogins,
-    inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript,
-    author: author
+  missingField.value = false
+  missingFieldNames.value = []
+
+  if (templateStore.name == '') {
+    missingField.value = true
+    missingFieldNames.value.push('name')
   }
-  try {
-    await gateway.create_template(props.cluster, newTemplate)
-    resetForm()
-  } catch (error: any) {
-    console.log(error)
-    if (error instanceof PermissionError) {
-      errorMessage.value = 'Permission denied'
-    } else {
-      errorMessage.value = `Unexpected error ${error}`
+
+  if (templateStore.userAccounts.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('user accounts')
+  }
+
+  if (templateStore.userLogins.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('user logins')
+  }
+
+  if (templateStore.developerAccounts.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('developer accounts')
+  }
+
+  if (templateStore.developerLogins.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('developer logins')
+  }
+
+  if (templateStore.batchScript == '') {
+    missingField.value = true
+    missingFieldNames.value.push('batch script')
+  }
+
+  if (missingField.value == false) {
+    const newTemplate: JobTemplate = {
+      name: templateStore.name,
+      description: templateStore.description,
+      userAccounts: templateStore.userAccounts,
+      userLogins: templateStore.userLogins,
+      developerAccounts: templateStore.developerAccounts,
+      developerLogins: templateStore.developerLogins,
+      inputs: templateStore.inputs,
+      batchScript: templateStore.batchScript,
+      author: author
     }
+    try {
+      await gateway.create_template(props.cluster, newTemplate)
+      resetForm()
+    } catch (error: any) {
+      console.log(error)
+      if (error instanceof PermissionError) {
+        errorMessage.value = 'Permission denied'
+      } else {
+        errorMessage.value = `Unexpected error ${error}`
+      }
+    }
+    router.push({ name: 'templates' })
   }
 }
 
@@ -77,6 +118,12 @@ const props = defineProps({
       { title: 'Create' }
     ]"
   >
+    <ErrorAlert v-if="missingField"
+      >Missing required fields:
+      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
+        ><br />- {{ name }}</span
+      ></ErrorAlert
+    >
     <button
       @click="templateStore.toggleUnsavedModal('template')"
       type="button"
@@ -174,7 +221,7 @@ const props = defineProps({
           <div class="relative mt-2 rounded-md">
             <textarea
               @blur="isBatchScriptValid = templateStore.batchScript.trim() !== ''"
-              :class="{ 'border-red-500 ring-red-500': !isNameValid }"
+              :class="{ 'border-red-500 ring-red-500': !isBatchScriptValid }"
               v-model="templateStore.batchScript"
               name="scriptBatch"
               cols="20"
@@ -196,16 +243,14 @@ const props = defineProps({
               Cancel
             </button>
 
-            <router-link :to="{ name: 'templates' }"
-              ><button
-                v-if="authStore.username"
-                @click="createTemplate(authStore.username)"
-                type="button"
-                class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-              >
-                Create
-              </button></router-link
+            <button
+              v-if="authStore.username"
+              @click="createTemplate(authStore.username)"
+              type="button"
+              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
+              Create
+            </button>
           </div>
           <div>{{ errorMessage }}</div>
         </div>
