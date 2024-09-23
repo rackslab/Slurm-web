@@ -18,34 +18,75 @@ import InputsTable from '@/components/jobs/InputsTable.vue'
 import type { JobTemplate } from '@/composables/GatewayAPI'
 import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
+import router from '@/router'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import type { Ref } from 'vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
 const errorMessage = ref<string | undefined>()
+const missingField = ref(false)
+const missingFieldNames: Ref<Array<string>> = ref([])
 
 async function editTemplate() {
-  const editTemplate: JobTemplate = {
-    idTemplate: Number(props.idTemplate),
-    name: templateStore.name,
-    description: templateStore.description,
-    userAccounts: templateStore.userAccounts,
-    userLogins: templateStore.userLogins,
-    developerAccounts: templateStore.developerAccounts,
-    developerLogins: templateStore.developerLogins,
-    inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript
+  missingField.value = false
+  missingFieldNames.value = []
+
+  if (templateStore.name == '') {
+    missingField.value = true
+    missingFieldNames.value.push('name')
   }
-  try {
-    await gateway.edit_template(props.cluster, editTemplate)
-    resetForm()
-  } catch (error: any) {
-    console.log(error)
-    if (error instanceof PermissionError) {
-      errorMessage.value = 'Permission denied'
-    } else {
-      errorMessage.value = `Unexpected error ${error}`
+
+  if (templateStore.userAccounts.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('user accounts')
+  }
+
+  if (templateStore.userLogins.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('user logins')
+  }
+
+  if (templateStore.developerAccounts.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('developer accounts')
+  }
+
+  if (templateStore.developerLogins.length == 0) {
+    missingField.value = true
+    missingFieldNames.value.push('developer logins')
+  }
+
+  if (templateStore.batchScript == '') {
+    missingField.value = true
+    missingFieldNames.value.push('batch script')
+  }
+
+  if (missingField.value == false) {
+    const editTemplate: JobTemplate = {
+      idTemplate: Number(props.idTemplate),
+      name: templateStore.name,
+      description: templateStore.description,
+      userAccounts: templateStore.userAccounts,
+      userLogins: templateStore.userLogins,
+      developerAccounts: templateStore.developerAccounts,
+      developerLogins: templateStore.developerLogins,
+      inputs: templateStore.inputs,
+      batchScript: templateStore.batchScript
     }
+    try {
+      await gateway.edit_template(props.cluster, editTemplate)
+      resetForm()
+    } catch (error: any) {
+      console.log(error)
+      if (error instanceof PermissionError) {
+        errorMessage.value = 'Permission denied'
+      } else {
+        errorMessage.value = `Unexpected error ${error}`
+      }
+    }
+    router.push({ name: 'templates' })
   }
 }
 
@@ -90,6 +131,12 @@ onMounted(async () => {
       { title: 'Edit' }
     ]"
   >
+    <ErrorAlert v-if="missingField"
+      >Missing required fields:
+      <span v-for="name in missingFieldNames" :key="name" class="font-medium capitalize"
+        ><br />- {{ name }}</span
+      ></ErrorAlert
+    >
     <div class="mt-8 flex items-center justify-between">
       <button
         @click="templateStore.toggleUnsavedModal('template')"
@@ -211,15 +258,13 @@ onMounted(async () => {
               Cancel
             </button>
 
-            <router-link :to="{ name: 'templates' }"
-              ><button
-                @click="editTemplate()"
-                type="button"
-                class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-              >
-                Save
-              </button></router-link
+            <button
+              @click="editTemplate()"
+              type="button"
+              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
             >
+              Save
+            </button>
           </div>
           <div>{{ errorMessage }}</div>
         </div>

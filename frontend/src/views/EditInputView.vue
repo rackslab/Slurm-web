@@ -24,6 +24,8 @@ import {
   RadioGroupOption
 } from '@headlessui/vue'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import router from '@/router'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -31,6 +33,8 @@ const gateway = useGatewayAPI()
 const constraint = ref('none')
 
 const inputTypes: Ref<Array<InputType>> = ref([])
+const missingField = ref(false)
+const missingFieldNames: Ref<Array<string>> = ref([])
 
 const props = defineProps({
   cluster: {
@@ -46,6 +50,33 @@ const props = defineProps({
     required: true
   }
 })
+
+function editInput() {
+  missingField.value = false
+  missingFieldNames.value = []
+  if (templateStore.stagingInput.name == '') {
+    missingField.value = true
+    missingFieldNames.value.push('name')
+  }
+  if (templateStore.stagingInput.type == '') {
+    missingField.value = true
+    missingFieldNames.value.push('types')
+  }
+
+  if (missingField.value == false) {
+    templateStore.editInput(props.indexInput)
+    if (props.createOrEditInput == 'edit') {
+      router.push({
+        name: 'edit-template',
+        params: {
+          idTemplate: templateStore.idTemplate
+        }
+      })
+    } else {
+      router.push({ name: 'create-template' })
+    }
+  }
+}
 
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
@@ -79,6 +110,12 @@ onMounted(async () => {
       { title: `${$props.createOrEditInput} input` }
     ]"
   >
+    <ErrorAlert v-if="missingField"
+      >Missing required fields:
+      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
+        ><br />- {{ name }}</span
+      ></ErrorAlert
+    >
     <button
       @click="templateStore.toggleUnsavedModal('input')"
       type="button"
@@ -288,23 +325,13 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <router-link
-            :to="{
-              name: `${props.createOrEditInput}-template`,
-              params: {
-                ...(props.createOrEditInput === 'edit'
-                  ? { idTemplate: templateStore.idTemplate }
-                  : {})
-              }
-            }"
-            ><button
-              @click="templateStore.editInput(props.indexInput)"
-              type="button"
-              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Save
-            </button></router-link
+          <button
+            @click="editInput()"
+            type="button"
+            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
           >
+            Save
+          </button>
         </div>
       </div>
     </div>
