@@ -25,7 +25,16 @@ function closeUnsavedModal(formType: string) {
   } else {
     templateStore.resetInput()
     templateStore.toggleModal = false
-    router.push({ name: 'create-template' })
+    if (templateStore.idTemplate) {
+      router.push({
+        name: 'edit-template',
+        params: {
+          idTemplate: templateStore.idTemplate
+        }
+      })
+    } else {
+      router.push({ name: 'create-template' })
+    }
   }
 }
 </script>
