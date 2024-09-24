@@ -9,9 +9,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
-import router from '../router'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
+  const router = useRouter()
   const token: Ref<string | null> = ref(localStorage.getItem('token'))
   const username: Ref<string | null> = ref(localStorage.getItem('username'))
   const fullname: Ref<string | null> = ref(localStorage.getItem('fullname'))
