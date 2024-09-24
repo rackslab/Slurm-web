@@ -61,7 +61,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to resources
     </button>
-    <ErrorAlert v-if="unable"
+    <ErrorAlert v-if="unable" :errorRedirect="true"
       >Unable to retrieve node {{ nodeName }} from cluster
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >

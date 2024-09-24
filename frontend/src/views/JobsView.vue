@@ -325,7 +325,7 @@ onMounted(() => {
       </section>
 
       <div class="mt-8 flow-root">
-        <ErrorAlert v-if="unable"
+        <ErrorAlert v-if="unable" :errorRedirect="true"
           >Unable to retrieve jobs from cluster
           <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
         >
