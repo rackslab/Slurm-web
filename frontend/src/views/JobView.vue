@@ -58,7 +58,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
       Back to jobs
     </button>
 
-    <ErrorAlert v-if="unable"
+    <ErrorAlert v-if="unable" :errorRedirect="true"
       >Unable to retrieve job {{ id }} from cluster
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >

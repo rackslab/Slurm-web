@@ -120,7 +120,7 @@ function qosResourcesLimits(qos: ClusterQos) {
       :limit="modalQosLimit"
       @close-help-modal="closeHelpModal"
     />
-    <ErrorAlert v-if="unable"
+    <ErrorAlert v-if="unable" :errorRedirect="true"
       >Unable to retrieve qos from cluster
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >

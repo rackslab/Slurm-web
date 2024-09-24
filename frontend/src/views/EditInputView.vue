@@ -110,7 +110,7 @@ onMounted(async () => {
       { title: `${$props.createOrEditInput} input` }
     ]"
   >
-    <ErrorAlert v-if="missingField"
+    <ErrorAlert v-if="missingField" :errorRedirect="false"
       >Missing required fields:
       <span v-for="name in missingFieldNames" :key="name" class="font-medium"
         ><br />- {{ name }}</span

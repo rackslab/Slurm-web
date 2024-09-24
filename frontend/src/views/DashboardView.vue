@@ -25,7 +25,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
 <template>
   <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'Dashboard' }]">
     <div class="mx-auto max-w-7xl bg-white">
-      <ErrorAlert v-if="unable"
+      <ErrorAlert v-if="unable" :errorRedirect="true"
         >Unable to retrieve statistics from cluster
         <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
       >

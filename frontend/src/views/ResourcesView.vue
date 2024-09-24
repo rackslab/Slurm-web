@@ -187,7 +187,7 @@ onMounted(() => {
       <ResourcesDiagram :cluster="props.cluster" :nodes="filteredNodes" />
       <ResourcesFiltersBar />
 
-      <ErrorAlert v-if="unable"
+      <ErrorAlert v-if="unable" :errorRedirect="true"
         >Unable to retrieve nodes from cluster
         <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
       >

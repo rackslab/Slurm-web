@@ -131,7 +131,7 @@ onMounted(async () => {
       { title: 'Edit' }
     ]"
   >
-    <ErrorAlert v-if="missingField"
+    <ErrorAlert v-if="missingField" :errorRedirect="false"
       >Missing required fields:
       <span v-for="name in missingFieldNames" :key="name" class="font-medium capitalize"
         ><br />- {{ name }}</span

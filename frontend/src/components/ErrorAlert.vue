@@ -8,6 +8,10 @@
 
 <script setup lang="ts">
 import { XCircleIcon } from '@heroicons/vue/20/solid'
+
+const props = defineProps({
+  errorRedirect: Boolean
+})
 </script>
 
 <template>
@@ -20,6 +24,7 @@ import { XCircleIcon } from '@heroicons/vue/20/solid'
         <p class="text-sm text-red-700"><slot></slot></p>
         <p class="mt-3 text-sm md:ml-6 md:mt-0">
           <RouterLink
+            v-if="props.errorRedirect"
             :to="{ name: 'settings-errors' }"
             class="whitespace-nowrap font-medium text-red-700 hover:text-red-600"
           >
