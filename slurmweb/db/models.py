@@ -24,6 +24,9 @@ def create_db(path):
                 Template_users_logins,
             ]
         )
+        Input_types.get_or_create(name="float")
+        Input_types.get_or_create(name="string")
+        Input_types.get_or_create(name="int")
 
 
 class BaseModel(peewee.Model):
