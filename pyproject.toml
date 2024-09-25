@@ -13,20 +13,22 @@ authors = [
     {name = "Rémi Palancher", email = "remi@rackslab.io"},
 ]
 dependencies = [
+    "aiohttp",
     "Flask",
     "requests",
-    "aiohttp",
     "RFL.authentication >= 1.0.3",
     "RFL.core >= 1.0.3",
     "RFL.log",
     "RFL.settings",
     "RFL.web",
+    "setuptools"
 ]
 readme = "README.md"
 
 [project.optional-dependencies]
 dev = [
     "Flask-Cors",
+    "sshtunnel",
 ]
 agent = [
     "RacksDB[web]",
