@@ -3,7 +3,7 @@ import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import { runtimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { httpPlugin } from '@/plugins/http'
 import { setActivePinia, createPinia } from 'pinia'
-import TemplatesView from './TemplatesView.vue'
+import TemplatesView from '@/views/TemplatesView.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 
 describe('TemplatesView.vue', () => {
