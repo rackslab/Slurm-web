@@ -3,6 +3,8 @@ import { mount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
 import { init_plugins } from './common'
 import { useAuthStore } from '@/stores/auth'
+import { useRuntimeStore } from '@/stores/runtime'
+import { AuthenticationError } from '@/composables/HTTPErrors'
 
 const mockGatewayAPI = {
   login: vi.fn()
@@ -78,5 +80,30 @@ describe('LoginView.vue', () => {
     // Check redirect on clusters list
     expect(router.push).toHaveBeenCalledTimes(1)
     expect(router.push).toHaveBeenCalledWith({ name: 'clusters' })
+    // Force logout to clear state for other tests.
+    authStore.logout()
+  })
+  test('authentication failed', async () => {
+    mockGatewayAPI.login.mockImplementationOnce(() => {
+      throw new AuthenticationError('invalid password')
+    })
+    const wrapper = mount(LoginView, {})
+    // Add values in user and passwords inputs.
+    await wrapper.get('input#user').setValue('jdoe')
+    await wrapper.get('input#password').setValue('secret')
+    // Submit login form
+    await wrapper.get('button').trigger('submit')
+    // Check login() method is not called on authStore and user information are
+    // not saved.
+    const authStore = useAuthStore()
+    expect(authStore.login).not.toHaveBeenCalled()
+    expect(authStore.username).toBe(null)
+    // Check authentication error is reported in runtime store.
+    const runtimeStore = useRuntimeStore()
+    expect(runtimeStore.reportError).toHaveBeenCalledWith('Authentication error: invalid password')
+    // Check button is checked to indicate error.
+    expect(wrapper.get('button').classes('animate-horizontal-shake')).toBe(true)
+    // Check not redirected on clusters list but stayed on login page.
+    expect(router.push).toHaveBeenCalledTimes(0)
   })
 })
