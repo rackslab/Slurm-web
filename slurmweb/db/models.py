@@ -10,7 +10,7 @@ db = peewee.SqliteDatabase(None)
 
 
 def create_db(path):
-    db.init(path)
+    db.init(path, pragmas={"foreign_keys": 1})
 
     with db:
         db.create_tables(
