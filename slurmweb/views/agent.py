@@ -489,17 +489,22 @@ def template_post(template_data):
 
 
 def template_delete(id: int):
-    Inputs.delete().where(Inputs.template == id).execute()
-    Template_users_accounts.delete().where(
-        Template_users_accounts.template == id
-    ).execute()
-    Template_users_logins.delete().where(Template_users_logins.template == id).execute()
-    Template_developers_accounts.delete().where(
-        Template_developers_accounts.template == id
-    ).execute()
-    Template_developers_logins.delete().where(
-        Template_developers_logins.template == id
-    ).execute()
-    Templates.delete().where(Templates.id == id).execute()
-
+    try:
+        Inputs.delete().where(Inputs.template == id).execute()
+        Template_users_accounts.delete().where(
+            Template_users_accounts.template == id
+        ).execute()
+        Template_users_logins.delete().where(
+            Template_users_logins.template == id
+        ).execute()
+        Template_developers_accounts.delete().where(
+            Template_developers_accounts.template == id
+        ).execute()
+        Template_developers_logins.delete().where(
+            Template_developers_logins.template == id
+        ).execute()
+        Templates.delete().where(Templates.id == id).execute()
+    except IntegrityError as e:
+        logger.error(f"IntegrityError : {e}")
+        abort(500, f"IntegrityError : {e}")
     return jsonify({"result": "template deleted"})
