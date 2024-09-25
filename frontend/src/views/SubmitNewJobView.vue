@@ -55,7 +55,7 @@ onMounted(async () => {
           <div
             v-for="template in templates"
             :key="template.id"
-            class="flex flex-col rounded-lg border border-gray-200 bg-white shadow sm:w-[400px] md:w-[400px] lg:w-[400px] dark:border-gray-700 dark:bg-gray-800"
+            class="flex flex-col rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 sm:w-[400px] md:w-[400px] lg:w-[400px]"
           >
             <div class="m-10">
               <div class="flex h-fit">
