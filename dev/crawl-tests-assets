@@ -1,0 +1,479 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) 2024 Rackslab
+#
+# This file is part of Slurm-web.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+from typing import Any
+from pathlib import Path
+import sys
+import json
+import getpass
+import socket
+import shlex
+import logging
+
+import requests
+import paramiko
+
+from rfl.log import setup_logger
+from rfl.settings import RuntimeSettings
+from rfl.settings.errors import (
+    SettingsDefinitionError,
+    SettingsOverrideError,
+    SettingsSiteLoaderError,
+)
+from racksdb import RacksDB
+from slurmweb.views import SlurmrestdUnixAdapter
+from slurmweb.version import get_version
+
+logger = logging.getLogger("crawl-tests-assets")
+
+DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
+DEV_HOST = "firehpc.dev.rackslab.io"
+USER = getpass.getuser()
+
+ASSETS = Path(__file__).parent.resolve() / ".." / "slurmweb" / "tests" / "assets"
+
+
+def query_slurmrestd(session: requests.Session, prefix: str, query: str) -> Any:
+    """Send GET HTTP request to slurmrestd and return JSON result. Raise RuntimeError in
+    case of connection error or not JSON result."""
+    try:
+        response = session.get(f"{prefix}/{query}")
+    except requests.exceptions.ConnectionError as err:
+        raise RuntimeError(f"Unable to connect to slurmrestd: {err}")
+
+    content_type = response.headers.get("content-type")
+    if content_type != "application/json":
+        raise RuntimeError(
+            f"Unsupported Content-Type for slurmrestd response {response.url}: "
+            f"{content_type}"
+        )
+    return response.json()
+
+
+def dump_slurmrestd_query(
+    session: requests.Session,
+    prefix: str,
+    query: str,
+    assets_path: Path,
+    asset_name: str,
+    skip_exist=True,
+    limit_dump=0,
+    limit_key=None,
+) -> Any:
+    """Send GET HTTP request to slurmrestd and save JSON result in assets directory."""
+
+    asset = assets_path / f"{asset_name}.json"
+    if asset.exists() and skip_exist:
+        return
+    data = query_slurmrestd(session, prefix, query)
+    if asset.exists():
+        logger.warning("Asset %s already exists, skipping dump", asset)
+    else:
+        with open(asset, "w+") as fh:
+            _data = data
+            if limit_dump and limit_key:
+                _data = data.copy()
+                _data[limit_key] = _data[limit_key][:limit_dump]
+            fh.write(json.dumps(_data, indent=2))
+    return data
+
+
+def crawl_slurmrestd(socket: Path) -> None:
+    """Crawl and save test assets from slurmrestd on the given socket."""
+
+    session = requests.Session()
+    prefix = "http+unix://slurmrestd/"
+    api = "0.0.39"
+    session.mount(prefix, SlurmrestdUnixAdapter(socket))
+
+    # Get Slurm version
+    ping = query_slurmrestd(session, prefix, f"/slurm/v{api}/ping")
+    release = ping["meta"]["Slurm"]["release"]
+    version = release.rsplit(".", 1)[0]
+    logger.info("Slurm version: %s release: %s", version, release)
+
+    # Check assets directory for this version
+    assets_path = ASSETS / "slurmrestd" / version
+    if not assets_path.exists():
+        assets_path.mkdir(parents=True)
+
+    # Download jobs
+    jobs = dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/jobs",
+        assets_path,
+        "slurm-jobs",
+        skip_exist=False,
+        limit_dump=30,
+        limit_key="jobs",
+    )
+
+    def dump_job_state(state: str):
+        if _job["job_state"] == state:
+            dump_slurmrestd_query(
+                session,
+                prefix,
+                f"/slurm/v{api}/job/{_job['job_id']}",
+                assets_path,
+                f"slurm-job-{state.lower()}",
+            )
+            dump_slurmrestd_query(
+                session,
+                prefix,
+                f"/slurmdb/v{api}/job/{_job['job_id']}",
+                assets_path,
+                f"slurmdb-job-{state.lower()}",
+            )
+
+    # Download specific jobs
+
+    lowest_job_id = jobs["jobs"][0]["job_id"]
+
+    for _job in jobs["jobs"]:
+        if _job["job_id"] < lowest_job_id:
+            lowest_job_id = _job["job_id"]
+
+        for state in ["RUNNING", "PENDING", "COMPLETED"]:
+            dump_job_state(state)
+
+    dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/job/{lowest_job_id-1}",
+        assets_path,
+        "slurm-job-archived",
+    )
+    dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurmdb/v{api}/job/{lowest_job_id-1}",
+        assets_path,
+        "slurmdb-job-archived",
+    )
+
+    # Download nodes
+    nodes = dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/nodes",
+        assets_path,
+        "slurm-nodes",
+        skip_exist=False,
+    )
+
+    def dump_node_state():
+        if state in _node["state"]:
+            dump_slurmrestd_query(
+                session,
+                prefix,
+                f"/slurm/v{api}/node/{_node['name']}",
+                assets_path,
+                f"slurm-node-{state.lower()}",
+            )
+
+    # Download specific node
+    for _node in nodes["nodes"]:
+        for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
+            dump_node_state()
+
+    # Download partitions
+    dump_slurmrestd_query(
+        session, prefix, f"/slurm/v{api}/partitions", assets_path, "slurm-partitions"
+    )
+
+    # Download qos
+    dump_slurmrestd_query(
+        session, prefix, f"/slurmdb/v{api}/qos", assets_path, "slurm-qos"
+    )
+
+    # Download accounts
+    dump_slurmrestd_query(
+        session, prefix, f"/slurmdb/v{api}/accounts", assets_path, "slurm-accounts"
+    )
+
+    # Download reservations
+    dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/reservations",
+        assets_path,
+        "slurm-reservations",
+    )
+
+
+def admin_user(cluster: str):
+    """Return name of a user in admin group for the given cluster."""
+    ssh_client = paramiko.SSHClient()
+    ssh_client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
+    logger.info("Connecting to development host %s", DEV_HOST)
+    try:
+        ssh_client.connect(DEV_HOST, username=USER)
+    except socket.gaierror as err:
+        logger.error("Unable to get address of %s: %s", DEV_HOST, str(err))
+        sys.exit(1)
+    except paramiko.ssh_exception.PasswordRequiredException as err:
+        logger.error("Unable to connect on %s@%s: %s", USER, DEV_HOST, str(err))
+        sys.exit(1)
+
+    _, stdout, _ = ssh_client.exec_command(
+        shlex.join(["firehpc", "status", "--cluster", cluster, "--json"])
+    )
+    cluster_status = json.loads(stdout.read())
+
+    for group in cluster_status["groups"]:
+        if group["name"] == "admin":
+            return group["members"][0]
+
+    logger.error("Unable to find user in admin group on cluster %s", cluster)
+    sys.exit(1)
+
+
+def gateway_url(dev_tmp_dir):
+    """Return the gateway URL with service TCP port found in configuration."""
+    # Load gateway configuration
+    try:
+        settings = RuntimeSettings.yaml_definition("conf/vendor/gateway.yml")
+    except SettingsDefinitionError as err:
+        logger.critical(err)
+        sys.exit(1)
+    try:
+        settings.override_ini(dev_tmp_dir / "gateway.ini")
+    except (SettingsSiteLoaderError, SettingsOverrideError) as err:
+        logger.critical(err)
+        sys.exit(1)
+    # Compose and return the URL to the gateway
+    return f"http://localhost:{settings.service.port}"
+
+
+def user_token(url: str, user: str):
+    """Ask user password interactively, authenticate on gateway and return
+    authentication JWT."""
+    password = getpass.getpass(prompt=f"Password for {user} on gateway: ")
+
+    response = requests.post(
+        f"{url}/api/login", json={"user": user, "password": password}
+    )
+    if response.status_code != 200:
+        logger.error(
+            "Authentication failed on gateway: %s", response.json()["description"]
+        )
+        sys.exit(1)
+
+    return response.json()["token"]
+
+
+def dump_component_query(
+    url: str,
+    query: str,
+    headers: str,
+    assets_path: Path,
+    asset_name: str,
+    skip_exist: bool = True,
+) -> Any:
+    """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
+    in assets directory."""
+    asset = assets_path / f"{asset_name}.json"
+    if asset.exists() and skip_exist:
+        return
+    data = requests.get(f"{url}{query}", headers=headers).json()
+    if asset.exists():
+        logger.warning("Asset %s already exists, skipping dump", asset)
+    else:
+        with open(asset, "w+") as fh:
+            fh.write(json.dumps(data, indent=2))
+    return data
+
+
+def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
+    """Crawl and save test assets from Slurm-web gateway component and return
+    authentication JWT."""
+    # Retrieve admin user account to connect
+    user = admin_user(cluster)
+    logger.info("Found user %s in group admin on cluster %s", user, cluster)
+
+    # Get gateway HTTP base URL from configuration
+    url = gateway_url(dev_tmp_dir)
+
+    # Authenticate on gateway and get token
+    token = user_token(url, user)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Check assets directory
+    assets_path = ASSETS / "gateway"
+    if not assets_path.exists():
+        assets_path.mkdir(parents=True)
+
+    dump_component_query(url, "/api/clusters", headers, assets_path, "clusters")
+    dump_component_query(url, "/api/users", headers, assets_path, "users")
+    dump_component_query(
+        url, f"/api/agents/{cluster}/stats", headers, assets_path, "stats"
+    )
+
+    jobs = dump_component_query(
+        url,
+        f"/api/agents/{cluster}/jobs",
+        headers,
+        assets_path,
+        "jobs",
+        skip_exist=False,
+    )
+
+    lowest_job_id = jobs[0]["job_id"]
+
+    def dump_job_state() -> None:
+        if _job["job_state"] == state:
+            dump_component_query(
+                url,
+                f"/api/agents/{cluster}/job/{_job['job_id']}",
+                headers,
+                assets_path,
+                f"job-{state.lower()}",
+            )
+
+    for _job in jobs:
+        if _job["job_id"] < lowest_job_id:
+            lowest_job_id = _job["job_id"]
+        for state in ["PENDING", "RUNNING", "COMPLETED"]:
+            dump_job_state()
+
+    dump_component_query(
+        url,
+        f"/api/agents/{cluster}/job/{lowest_job_id-1}",
+        headers,
+        assets_path,
+        "job-archived",
+    )
+
+    nodes = dump_component_query(
+        url,
+        f"/api/agents/{cluster}/nodes",
+        headers,
+        assets_path,
+        "nodes",
+        skip_exist=False,
+    )
+
+    def dump_node_state() -> None:
+        if state in _node["state"]:
+            dump_component_query(
+                url,
+                f"/api/agents/{cluster}/node/{_node['name']}",
+                headers,
+                assets_path,
+                f"node-{state.lower()}",
+            )
+
+    # Download specific node
+    for _node in nodes:
+        for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
+            dump_node_state()
+
+    dump_component_query(
+        url, f"/api/agents/{cluster}/partitions", headers, assets_path, "partitions"
+    )
+    dump_component_query(url, f"/api/agents/{cluster}/qos", headers, assets_path, "qos")
+    dump_component_query(
+        url, f"/api/agents/{cluster}/reservations", headers, assets_path, "reservations"
+    )
+    dump_component_query(
+        url, f"/api/agents/{cluster}/accounts", headers, assets_path, "accounts"
+    )
+    return token
+
+
+def crawl_agent(port: int, token: str) -> None:
+    """Crawl and save test assets from Slurm-web agent component."""
+    # Compose and return the URL to the gateway
+    url = f"http://localhost:{port}"
+
+    # Check assets directory
+    assets_path = ASSETS / "agent"
+    if not assets_path.exists():
+        assets_path.mkdir(parents=True)
+
+    headers = {"Authorization": f"Bearer {token}"}
+
+    dump_component_query(url, f"/v{get_version()}/info", headers, assets_path, "info")
+    dump_component_query(
+        url, f"/v{get_version()}/permissions", headers, assets_path, "permissions"
+    )
+    dump_component_query(url, f"/v{get_version()}/stats", headers, assets_path, "stats")
+    dump_component_query(url, f"/v{get_version()}/jobs", headers, assets_path, "jobs")
+    dump_component_query(url, f"/v{get_version()}/nodes", headers, assets_path, "nodes")
+    dump_component_query(
+        url, f"/v{get_version()}/partitions", headers, assets_path, "partitions"
+    )
+    dump_component_query(url, f"/v{get_version()}/qos", headers, assets_path, "qos")
+    dump_component_query(
+        url, f"/v{get_version()}/reservations", headers, assets_path, "reservations"
+    )
+    dump_component_query(
+        url, f"/v{get_version()}/accounts", headers, assets_path, "accounts"
+    )
+
+
+def main() -> None:
+    """Crawl and save test assets from Slurm-web gateway, agent and slurmrestd."""
+
+    # Setup logger
+    setup_logger(
+        debug=True,
+        log_flags=["ALL"],
+        debug_flags=DEBUG_FLAGS,
+    )
+
+    # Search for slurm-web development environment temporary directory
+    dev_tmp_dirs = list(Path("/tmp").glob("slurm-web-*"))
+    try:
+        assert len(dev_tmp_dirs) == 1
+    except AssertionError:
+        logger.error(
+            "Unexpectedly found %d Slurm-web development temporary directories",
+            len(dev_tmp_dirs),
+        )
+        sys.exit(1)
+    dev_tmp_dir = dev_tmp_dirs[0]
+    logger.info(
+        "Slurm-web development environment temporary directory: %s", dev_tmp_dir
+    )
+
+    # Load cluster list from RacksDB database
+    db = RacksDB.load(db="dev/firehpc/db", schema="../RacksDB/schemas/racksdb.yml")
+    logger.info("List of clusters: %s", db.infrastructures.keys())
+
+    # Crawl gateway and get bearer token
+    token = crawl_gateway(list(db.infrastructures.keys())[0], dev_tmp_dir)
+
+    for cluster in db.infrastructures.keys():
+        # Load agent configuration
+        try:
+            settings = RuntimeSettings.yaml_definition("conf/vendor/agent.yml")
+        except SettingsDefinitionError as err:
+            logger.critical(err)
+            sys.exit(1)
+        try:
+            settings.override_ini(dev_tmp_dir / f"agent-{cluster}.ini")
+        except (SettingsSiteLoaderError, SettingsOverrideError) as err:
+            logger.critical(err)
+            sys.exit(1)
+
+        # Crawl agent
+        crawl_agent(settings.service.port, token)
+
+        # Crawl slurmrestd
+        try:
+            crawl_slurmrestd(settings.slurmrestd.socket)
+        except RuntimeError as err:
+            logger.error(
+                "Unable to crawl slurmrestd data from cluster %s: %s", cluster, err
+            )
+
+
+if __name__ == "__main__":
+    main()
