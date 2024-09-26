@@ -5,6 +5,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { init_plugins } from './common'
+import stats from '../assets/stats.json'
 
 const mockClusterDataPoller = {
   data: undefined,
@@ -24,17 +25,7 @@ describe('DashboardView.vue', () => {
     ]
   })
   test('should display dashboard with metrics', async () => {
-    mockClusterDataPoller.data = {
-      resources: {
-        nodes: 5,
-        cores: 80
-      },
-      jobs: {
-        running: 10,
-        total: 30
-      },
-      version: '24.5.0'
-    }
+    mockClusterDataPoller.data = stats
     const wrapper = mount(DashboardView, {
       props: {
         cluster: 'foo'
@@ -47,10 +38,10 @@ describe('DashboardView.vue', () => {
       'Running jobs',
       'Total jobs'
     ])
-    expect(wrapper.get('span#metric-nodes').text()).toBe('5')
-    expect(wrapper.get('span#metric-cores').text()).toBe('80')
-    expect(wrapper.get('span#metric-jobs-running').text()).toBe('10')
-    expect(wrapper.get('span#metric-jobs-total').text()).toBe('30')
+    expect(wrapper.get('span#metric-nodes').text()).toBe(stats.resources.nodes.toString())
+    expect(wrapper.get('span#metric-cores').text()).toBe(stats.resources.cores.toString())
+    expect(wrapper.get('span#metric-jobs-running').text()).toBe(stats.jobs.running.toString())
+    expect(wrapper.get('span#metric-jobs-total').text()).toBe(stats.jobs.total.toString())
   })
   test('should display error when unable to get cluster stats', async () => {
     mockClusterDataPoller.unable = true
