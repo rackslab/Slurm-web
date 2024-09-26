@@ -1,7 +1,10 @@
 common_with_devs_repos: true
+common_hpckit_derivatives:
+- main
+- slurm23.11
 slurm_with_jwt: false
 slurm_params:
   PriorityType: priority/multifactor
-  SelectType: select/cons_res
+  SelectType: select/cons_tres
 slurmweb_enabled: true
 redis_enabled: true
