@@ -1,0 +1,5722 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411488046] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 10,
+        "minor": 11
+      },
+      "release": "23.11.10"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "jobs": [
+    {
+      "account": "biology",
+      "accrue_time": 1727355355,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 13,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "cn1",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "ACCRUE_COUNT_CLEARED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 8.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727355355,
+      "end_time": 1727358622,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 58,
+      "job_resources": {
+        "nodes": "cn[1-4]",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 4,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn1",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn2",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn3",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn4",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "COMPLETED",
+      "last_sched_evaluation": 1727358261,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "cgross",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn[1-4]",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358261,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/cgross/slurm-58.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/cgross/slurm-58.out",
+      "submit_time": 1727355355,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=8,mem=1M,node=1,billing=8",
+      "tres_alloc_str": "cpu=8,mem=4M,node=4,billing=8",
+      "user_id": 10005,
+      "user_name": "cgross",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/cgross"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727355715,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 14,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "cn1",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "ACCRUE_COUNT_CLEARED",
+        "JOB_WAS_RUNNING",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 2.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727355715,
+      "end_time": 1727362222,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 59,
+      "job_resources": {
+        "nodes": "cn1",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 1,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn1",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "RUNNING",
+      "last_sched_evaluation": 1727358622,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "clara",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn1",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358622,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/clara/slurm-59.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/clara/slurm-59.out",
+      "submit_time": 1727355715,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
+      "tres_alloc_str": "cpu=2,mem=1M,node=1,billing=2",
+      "user_id": 10006,
+      "user_name": "clara",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/clara"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727355715,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 11,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "cn2",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "ACCRUE_COUNT_CLEARED",
+        "JOB_WAS_RUNNING",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 1.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727355715,
+      "end_time": 1727362223,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 60,
+      "job_resources": {
+        "nodes": "cn2",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 1,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn2",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "RUNNING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "sharrison",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn2",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358623,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/sharrison/slurm-60.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/sharrison/slurm-60.out",
+      "submit_time": 1727355715,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "cpu=1,mem=1M,node=1,billing=1",
+      "user_id": 10003,
+      "user_name": "sharrison",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/sharrison"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727356076,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 14,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "cn3",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "ACCRUE_COUNT_CLEARED",
+        "JOB_WAS_RUNNING",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 1.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356076,
+      "end_time": 1727362223,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 61,
+      "job_resources": {
+        "nodes": "cn3",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 1,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn3",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "RUNNING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "clara",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn3",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358623,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/clara/slurm-61.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/clara/slurm-61.out",
+      "submit_time": 1727356076,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "cpu=1,mem=1M,node=1,billing=1",
+      "user_id": 10006,
+      "user_name": "clara",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/clara"
+    },
+    {
+      "account": "optic",
+      "accrue_time": 1727356076,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 17,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "cn4",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "ACCRUE_COUNT_CLEARED",
+        "JOB_WAS_RUNNING",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 2.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356076,
+      "end_time": 1727362223,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 62,
+      "job_resources": {
+        "nodes": "cn4",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 1,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn4",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 1
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "RUNNING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "jsherman",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn4",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358623,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/jsherman/slurm-62.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/jsherman/slurm-62.out",
+      "submit_time": 1727356076,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
+      "tres_alloc_str": "cpu=2,mem=1M,node=1,billing=2",
+      "user_id": 10009,
+      "user_name": "jsherman",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/jsherman"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727356076,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 10,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356076,
+      "end_time": 1727369040,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 63,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "msummers",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn1",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727365440,
+      "state_description": "",
+      "state_reason": "Resources",
+      "standard_error": "/home/msummers/slurm-63.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/msummers/slurm-63.out",
+      "submit_time": 1727356076,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "",
+      "user_id": 10002,
+      "user_name": "msummers",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/msummers"
+    },
+    {
+      "account": "optic",
+      "accrue_time": 1727356436,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 17,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356436,
+      "end_time": 1727369040,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 64,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "jsherman",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn2",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727365440,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/jsherman/slurm-64.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/jsherman/slurm-64.out",
+      "submit_time": 1727356436,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "",
+      "user_id": 10009,
+      "user_name": "jsherman",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/jsherman"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727356797,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 14,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356797,
+      "end_time": 1727369040,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 65,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "clara",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn3",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727365440,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/clara/slurm-65.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/clara/slurm-65.out",
+      "submit_time": 1727356797,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
+      "tres_alloc_str": "",
+      "user_id": 10006,
+      "user_name": "clara",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/clara"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727356797,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 11,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727356797,
+      "end_time": 1727372640,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 66,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "sharrison",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[1-2]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727369040,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/sharrison/slurm-66.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/sharrison/slurm-66.out",
+      "submit_time": 1727356797,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10003,
+      "user_name": "sharrison",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/sharrison"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727357152,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 16,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357152,
+      "end_time": 1727372640,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 67,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "pkerr",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[3-4]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727369040,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/pkerr/slurm-67.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/pkerr/slurm-67.out",
+      "submit_time": 1727357152,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10008,
+      "user_name": "pkerr",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/pkerr"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727357152,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 14,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357152,
+      "end_time": 1727376240,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 68,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "clara",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn1",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727372640,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/clara/slurm-68.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/clara/slurm-68.out",
+      "submit_time": 1727357152,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "",
+      "user_id": 10006,
+      "user_name": "clara",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/clara"
+    },
+    {
+      "account": "acoustic",
+      "accrue_time": 1727357513,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 16,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357513,
+      "end_time": 1727376240,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 69,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "pkerr",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[2-3]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727372640,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/pkerr/slurm-69.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/pkerr/slurm-69.out",
+      "submit_time": 1727357513,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10008,
+      "user_name": "pkerr",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/pkerr"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727357873,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 12,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357873,
+      "end_time": 1727379840,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 70,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "dshaw",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[1-2]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727376240,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/dshaw/slurm-70.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/dshaw/slurm-70.out",
+      "submit_time": 1727357873,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10004,
+      "user_name": "dshaw",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/dshaw"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727357873,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 13,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357873,
+      "end_time": 1727376240,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 71,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "cgross",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn4",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727372640,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/cgross/slurm-71.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/cgross/slurm-71.out",
+      "submit_time": 1727357873,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_alloc_str": "",
+      "user_id": 10005,
+      "user_name": "cgross",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/cgross"
+    },
+    {
+      "account": "optic",
+      "accrue_time": 1727357874,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 18,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357874,
+      "end_time": 1727379840,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 72,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "jcampbell",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[3-4]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727376240,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/jcampbell/slurm-72.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/jcampbell/slurm-72.out",
+      "submit_time": 1727357874,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10010,
+      "user_name": "jcampbell",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/jcampbell"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727357874,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 10,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727357874,
+      "end_time": 1727383440,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 73,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "msummers",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[1-4]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727379840,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/msummers/slurm-73.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/msummers/slurm-73.out",
+      "submit_time": 1727357874,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=8,mem=1M,node=1,billing=8",
+      "tres_alloc_str": "",
+      "user_id": 10002,
+      "user_name": "msummers",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/msummers"
+    },
+    {
+      "account": "admin",
+      "accrue_time": 1727358234,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 9,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727358234,
+      "end_time": 1727387040,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 74,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "rwallace",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn1",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727383440,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/rwallace/slurm-74.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/rwallace/slurm-74.out",
+      "submit_time": 1727358234,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
+      "tres_alloc_str": "",
+      "user_id": 10001,
+      "user_name": "rwallace",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/rwallace"
+    },
+    {
+      "account": "optic",
+      "accrue_time": 1727358234,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 17,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727358234,
+      "end_time": 1727390640,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 75,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "jsherman",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 8
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[1-4]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727387040,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/jsherman/slurm-75.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/jsherman/slurm-75.out",
+      "submit_time": 1727358234,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=8,mem=1M,node=1,billing=8",
+      "tres_alloc_str": "",
+      "user_id": 10009,
+      "user_name": "jsherman",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/jsherman"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727358234,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 11,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727358234,
+      "end_time": 1727394240,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 76,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "sharrison",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[1-2]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727390640,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/sharrison/slurm-76.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/sharrison/slurm-76.out",
+      "submit_time": 1727358234,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10003,
+      "user_name": "sharrison",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/sharrison"
+    },
+    {
+      "account": "biology",
+      "accrue_time": 1727358595,
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 10,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "",
+      "flags": [
+        "EXACT_TASK_COUNT_REQUESTED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": false,
+        "infinite": false,
+        "number": 0.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727358595,
+      "end_time": 1727394240,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 77,
+      "job_resources": {},
+      "job_size_str": [],
+      "job_state": "PENDING",
+      "last_sched_evaluation": 1727358623,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "msummers",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 2
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 4
+      },
+      "partition": "normal",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "cn[3-4]",
+      "selinux_context": "",
+      "shared": [],
+      "exclusive": [],
+      "oversubscribe": true,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727390640,
+      "state_description": "",
+      "state_reason": "Priority",
+      "standard_error": "/home/msummers/slurm-77.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/msummers/slurm-77.out",
+      "submit_time": 1727358595,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+      "tres_alloc_str": "",
+      "user_id": 10002,
+      "user_name": "msummers",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/msummers"
+    }
+  ]
+}

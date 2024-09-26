@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/dbv0.0.39",
+      "name": "Slurm OpenAPI DB v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 8,
+        "minor": 2
+      },
+      "release": "23.02.8"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "jobs": [
+    {
+      "account": "optic",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 0,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "optic",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "jcampbell"
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": "SUCCESS",
+        "return_code": 0
+      },
+      "time": {
+        "elapsed": 0,
+        "eligible": 1727332586,
+        "end": 0,
+        "start": 0,
+        "submission": 1727332586,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 60
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": "SUCCESS",
+        "return_code": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 326,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "None assigned",
+      "partition": "batch",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "qos": "normal",
+      "required": {
+        "CPUs": 16,
+        "memory_per_cpu": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "memory_per_node": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "memory": 0
+      },
+      "kill_request_user": "",
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "state": {
+        "current": "PENDING",
+        "reason": "None"
+      },
+      "steps": [],
+      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --nodes 16",
+      "tres": {
+        "allocated": [],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 16
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 16
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 16
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 16
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "jcampbell",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/jcampbell"
+    }
+  ]
+}

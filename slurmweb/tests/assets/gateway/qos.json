@@ -1,0 +1,278 @@
+[
+  {
+    "description": "Normal QOS default",
+    "flags": [],
+    "limits": {
+      "factor": 4294967295.0,
+      "grace_time": {
+        "infinite": false,
+        "number": 0,
+        "set": true
+      },
+      "max": {
+        "accruing": {
+          "per": {
+            "account": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            },
+            "user": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            }
+          }
+        },
+        "active_jobs": {
+          "accruing": {
+            "infinite": true,
+            "number": 0,
+            "set": false
+          },
+          "count": {
+            "infinite": true,
+            "number": 0,
+            "set": false
+          }
+        },
+        "jobs": {
+          "active_jobs": {
+            "per": {
+              "account": {
+                "infinite": true,
+                "number": 0,
+                "set": false
+              },
+              "user": {
+                "infinite": true,
+                "number": 0,
+                "set": false
+              }
+            }
+          },
+          "per": {
+            "account": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            },
+            "user": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            }
+          }
+        },
+        "tres": {
+          "minutes": {
+            "per": {
+              "account": [],
+              "job": [],
+              "qos": [],
+              "user": []
+            }
+          },
+          "per": {
+            "account": [],
+            "job": [],
+            "node": [],
+            "user": []
+          },
+          "total": []
+        },
+        "wall_clock": {
+          "per": {
+            "job": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            },
+            "qos": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            }
+          }
+        }
+      },
+      "min": {
+        "priority_threshold": {
+          "infinite": true,
+          "number": 0,
+          "set": false
+        },
+        "tres": {
+          "per": {
+            "job": []
+          }
+        }
+      }
+    },
+    "name": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    }
+  },
+  {
+    "description": "study",
+    "flags": [
+      "OVERRIDE_PARTITION_QOS"
+    ],
+    "limits": {
+      "factor": 4294967295.0,
+      "grace_time": {
+        "infinite": false,
+        "number": 0,
+        "set": true
+      },
+      "max": {
+        "accruing": {
+          "per": {
+            "account": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            },
+            "user": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            }
+          }
+        },
+        "active_jobs": {
+          "accruing": {
+            "infinite": true,
+            "number": 0,
+            "set": false
+          },
+          "count": {
+            "infinite": false,
+            "number": 60,
+            "set": true
+          }
+        },
+        "jobs": {
+          "active_jobs": {
+            "per": {
+              "account": {
+                "infinite": true,
+                "number": 0,
+                "set": false
+              },
+              "user": {
+                "infinite": false,
+                "number": 10,
+                "set": true
+              }
+            }
+          },
+          "per": {
+            "account": {
+              "infinite": false,
+              "number": 30,
+              "set": true
+            },
+            "user": {
+              "infinite": false,
+              "number": 20,
+              "set": true
+            }
+          }
+        },
+        "tres": {
+          "minutes": {
+            "per": {
+              "account": [],
+              "job": [],
+              "qos": [],
+              "user": []
+            }
+          },
+          "per": {
+            "account": [
+              {
+                "count": 15,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              },
+              {
+                "count": 10,
+                "id": 2,
+                "name": "",
+                "type": "mem"
+              }
+            ],
+            "job": [
+              {
+                "count": 48,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              }
+            ],
+            "node": [],
+            "user": [
+              {
+                "count": 10,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              },
+              {
+                "count": 5,
+                "id": 2,
+                "name": "",
+                "type": "mem"
+              }
+            ]
+          },
+          "total": [
+            {
+              "count": 50,
+              "id": 4,
+              "name": "",
+              "type": "node"
+            }
+          ]
+        },
+        "wall_clock": {
+          "per": {
+            "job": {
+              "infinite": false,
+              "number": 480,
+              "set": true
+            },
+            "qos": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            }
+          }
+        }
+      },
+      "min": {
+        "priority_threshold": {
+          "infinite": true,
+          "number": 0,
+          "set": false
+        },
+        "tres": {
+          "per": {
+            "job": []
+          }
+        }
+      }
+    },
+    "name": "study",
+    "priority": {
+      "infinite": false,
+      "number": 100,
+      "set": true
+    }
+  }
+]

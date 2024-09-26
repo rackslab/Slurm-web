@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411898478] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 10,
+        "minor": 11
+      },
+      "release": "23.11.10"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "nodes": [
+    {
+      "architecture": "x86_64",
+      "burstbuffer_network_address": "",
+      "boards": 1,
+      "boot_time": 1725995081,
+      "cluster_name": "",
+      "cores": 1,
+      "specialized_cores": 0,
+      "cpu_binding": 0,
+      "cpu_load": {
+        "set": true,
+        "infinite": false,
+        "number": 49
+      },
+      "free_mem": {
+        "set": true,
+        "infinite": false,
+        "number": 419
+      },
+      "cpus": 2,
+      "effective_cpus": 2,
+      "specialized_cpus": "",
+      "energy": {
+        "average_watts": 0,
+        "base_consumed_energy": 0,
+        "consumed_energy": 0,
+        "current_watts": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "previous_consumed_energy": 0,
+        "last_collected": 0
+      },
+      "external_sensors": {
+        "consumed_energy": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "temperature": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "energy_update_time": 0,
+        "current_watts": 0
+      },
+      "extra": "",
+      "power": {
+        "maximum_watts": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "current_watts": 0,
+        "total_energy": 0,
+        "new_maximum_watts": 0,
+        "peak_watts": 0,
+        "lowest_watts": 0,
+        "new_job_time": 0,
+        "state": 0,
+        "time_start_day": 0
+      },
+      "features": [],
+      "active_features": [],
+      "gres": "",
+      "gres_drained": "N/A",
+      "gres_used": "",
+      "last_busy": 1727358983,
+      "mcs_label": "",
+      "specialized_memory": 0,
+      "name": "cn4",
+      "next_state_after_reboot": [
+        "INVALID"
+      ],
+      "address": "cn4",
+      "hostname": "cn4",
+      "state": [
+        "IDLE",
+        "PLANNED"
+      ],
+      "operating_system": "Linux 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3 (2024-08-26)",
+      "owner": "",
+      "partitions": [
+        "normal"
+      ],
+      "port": 6818,
+      "real_memory": 1,
+      "comment": "",
+      "reason": "",
+      "reason_changed_at": 0,
+      "reason_set_by_user": "",
+      "resume_after": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "reservation": "",
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 2,
+      "tres_used": "",
+      "tres_weighted": 0.0,
+      "slurmd_start_time": 1727345694,
+      "sockets": 2,
+      "threads": 1,
+      "temporary_disk": 0,
+      "weight": 1,
+      "tres": "cpu=2,mem=1M,billing=2",
+      "version": "23.11.10"
+    }
+  ]
+}

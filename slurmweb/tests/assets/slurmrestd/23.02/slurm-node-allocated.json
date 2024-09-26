@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 8,
+        "minor": 2
+      },
+      "release": "23.02.8"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "nodes": [
+    {
+      "architecture": "",
+      "burstbuffer_network_address": "",
+      "boards": 1,
+      "boot_time": 1725995081,
+      "cluster_name": "",
+      "cores": 1,
+      "specialized_cores": 0,
+      "cpu_binding": 0,
+      "cpu_load": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "free_mem": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": 2,
+      "effective_cpus": 2,
+      "specialized_cpus": "",
+      "energy": {
+        "average_watts": 0,
+        "base_consumed_energy": 0,
+        "consumed_energy": 0,
+        "current_watts": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "previous_consumed_energy": 0,
+        "last_collected": 0
+      },
+      "external_sensors": {
+        "consumed_energy": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "temperature": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "energy_update_time": 0,
+        "current_watts": 0
+      },
+      "extra": "",
+      "power": {
+        "maximum_watts": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "current_watts": 0,
+        "total_energy": 0,
+        "new_maximum_watts": 0,
+        "peak_watts": 0,
+        "lowest_watts": 0,
+        "new_job_time": 0,
+        "state": 0,
+        "time_start_day": 0
+      },
+      "features": [],
+      "active_features": [],
+      "gres": "",
+      "gres_drained": "N/A",
+      "gres_used": "",
+      "last_busy": 1727358533,
+      "mcs_label": "",
+      "specialized_memory": 0,
+      "name": "cn001",
+      "next_state_after_reboot": [
+        "INVALID"
+      ],
+      "address": "admin.emulator",
+      "hostname": "admin.emulator",
+      "state": [
+        "ALLOCATED"
+      ],
+      "operating_system": "",
+      "owner": "",
+      "partitions": [
+        "batch"
+      ],
+      "port": 6818,
+      "real_memory": 1,
+      "comment": "",
+      "reason": "",
+      "reason_changed_at": 0,
+      "reason_set_by_user": "",
+      "resume_after": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "reservation": "",
+      "alloc_memory": 0,
+      "alloc_cpus": 2,
+      "alloc_idle_cpus": 0,
+      "tres_used": "cpu=2,mem=1M,billing=2",
+      "tres_weighted": 2.0,
+      "slurmd_start_time": 1726825243,
+      "sockets": 2,
+      "threads": 1,
+      "temporary_disk": 0,
+      "weight": 1,
+      "tres": "cpu=2,mem=1M,billing=2",
+      "version": ""
+    }
+  ]
+}

@@ -1,0 +1,1463 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 8,
+        "minor": 2
+      },
+      "release": "23.02.8"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "jobs": [
+    {
+      "account": "biology",
+      "accrue_time": 1727332584,
+      "admin_comment": "",
+      "allocating_node": "admin",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 12,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "admin.emulator",
+      "flags": [
+        "ACCRUE_COUNT_CLEARED",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 128.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": 0,
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "eligible_time": 1727332584,
+      "end_time": 1727358533,
+      "excluded_nodes": "",
+      "exit_code": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 307,
+      "job_resources": {
+        "nodes": "cn[001-050,052-065]",
+        "allocated_cores": 0,
+        "allocated_cpus": 0,
+        "allocated_hosts": 64,
+        "allocated_nodes": [
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn001",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn002",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn003",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn004",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn005",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn006",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn007",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn008",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn009",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn010",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn011",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn012",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn013",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn014",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn015",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn016",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn017",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn018",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn019",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn020",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn021",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn022",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn023",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn024",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn025",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn026",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn027",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn028",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn029",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn030",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn031",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn032",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn033",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn034",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn035",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn036",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn037",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn038",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn039",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn040",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn041",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn042",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn043",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn044",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn045",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn046",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn047",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn048",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn049",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn050",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn052",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn053",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn054",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn055",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn056",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn057",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn058",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn059",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn060",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn061",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn062",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn063",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn064",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated"
+                }
+              }
+            },
+            "nodename": "cn065",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 0
+          }
+        ]
+      },
+      "job_size_str": [],
+      "job_state": "COMPLETED",
+      "last_sched_evaluation": 1727358173,
+      "licenses": "",
+      "mail_type": [],
+      "mail_user": "dshaw",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "cn[001-050,052-065]",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 128
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 64
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 64
+      },
+      "partition": "batch",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "memory_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": 0,
+      "preemptable_time": 0,
+      "pre_sus_time": 0,
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "minimum_switches": 0,
+      "requeue": true,
+      "resize_time": 0,
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "selinux_context": "",
+      "shared": [
+        "none"
+      ],
+      "exclusive": [
+        "true"
+      ],
+      "oversubscribe": false,
+      "show_flags": [
+        "ALL",
+        "DETAIL",
+        "LOCAL"
+      ],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": 1727358173,
+      "state_description": "",
+      "state_reason": "None",
+      "standard_error": "/home/dshaw/slurm-307.out",
+      "standard_input": "/dev/null",
+      "standard_output": "/home/dshaw/slurm-307.out",
+      "submit_time": 1727332584,
+      "suspend_time": 0,
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 60
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=64,mem=64M,node=64,billing=64",
+      "tres_alloc_str": "cpu=128,node=64,billing=128",
+      "user_id": 10004,
+      "user_name": "dshaw",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/dshaw"
+    }
+  ]
+}

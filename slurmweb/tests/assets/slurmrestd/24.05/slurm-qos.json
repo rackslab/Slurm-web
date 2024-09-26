@@ -1,0 +1,344 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/dbv0.0.39",
+      "name": "Slurm OpenAPI DB v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411489535] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 24,
+        "micro": 3,
+        "minor": 5
+      },
+      "release": "24.05.3"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "qos": [
+    {
+      "description": "Normal QOS default",
+      "flags": [],
+      "id": 1,
+      "limits": {
+        "grace_time": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "max": {
+          "active_jobs": {
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "tres": {
+            "total": [],
+            "minutes": {
+              "per": {
+                "qos": [],
+                "job": [],
+                "account": [],
+                "user": []
+              }
+            },
+            "per": {
+              "account": [],
+              "job": [],
+              "node": [],
+              "user": []
+            }
+          },
+          "wall_clock": {
+            "per": {
+              "qos": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              },
+              "job": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              }
+            }
+          },
+          "jobs": {
+            "active_jobs": {
+              "per": {
+                "account": {
+                  "set": false,
+                  "infinite": true,
+                  "number": 0
+                },
+                "user": {
+                  "set": false,
+                  "infinite": true,
+                  "number": 0
+                }
+              }
+            },
+            "per": {
+              "account": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              },
+              "user": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              }
+            }
+          },
+          "accruing": {
+            "per": {
+              "account": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              },
+              "user": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              }
+            }
+          }
+        },
+        "factor": 4294967295.0,
+        "min": {
+          "priority_threshold": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "tres": {
+            "per": {
+              "job": []
+            }
+          }
+        }
+      },
+      "name": "normal",
+      "preempt": {
+        "list": [],
+        "mode": [
+          "DISABLED"
+        ],
+        "exempt_time": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "usage_factor": {
+        "set": true,
+        "infinite": false,
+        "number": 1.0
+      },
+      "usage_threshold": {
+        "set": false,
+        "infinite": true,
+        "number": 0.0
+      }
+    },
+    {
+      "description": "study",
+      "flags": [
+        "OVERRIDE_PARTITION_QOS"
+      ],
+      "id": 2,
+      "limits": {
+        "grace_time": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "max": {
+          "active_jobs": {
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "count": {
+              "set": true,
+              "infinite": false,
+              "number": 60
+            }
+          },
+          "tres": {
+            "total": [
+              {
+                "type": "node",
+                "name": "",
+                "id": 4,
+                "count": 50
+              }
+            ],
+            "minutes": {
+              "per": {
+                "qos": [],
+                "job": [],
+                "account": [],
+                "user": []
+              }
+            },
+            "per": {
+              "account": [
+                {
+                  "type": "cpu",
+                  "name": "",
+                  "id": 1,
+                  "count": 15
+                },
+                {
+                  "type": "mem",
+                  "name": "",
+                  "id": 2,
+                  "count": 10
+                }
+              ],
+              "job": [
+                {
+                  "type": "cpu",
+                  "name": "",
+                  "id": 1,
+                  "count": 48
+                }
+              ],
+              "node": [],
+              "user": [
+                {
+                  "type": "cpu",
+                  "name": "",
+                  "id": 1,
+                  "count": 10
+                },
+                {
+                  "type": "mem",
+                  "name": "",
+                  "id": 2,
+                  "count": 5
+                }
+              ]
+            }
+          },
+          "wall_clock": {
+            "per": {
+              "qos": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              },
+              "job": {
+                "set": true,
+                "infinite": false,
+                "number": 480
+              }
+            }
+          },
+          "jobs": {
+            "active_jobs": {
+              "per": {
+                "account": {
+                  "set": false,
+                  "infinite": true,
+                  "number": 0
+                },
+                "user": {
+                  "set": true,
+                  "infinite": false,
+                  "number": 10
+                }
+              }
+            },
+            "per": {
+              "account": {
+                "set": true,
+                "infinite": false,
+                "number": 30
+              },
+              "user": {
+                "set": true,
+                "infinite": false,
+                "number": 20
+              }
+            }
+          },
+          "accruing": {
+            "per": {
+              "account": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              },
+              "user": {
+                "set": false,
+                "infinite": true,
+                "number": 0
+              }
+            }
+          }
+        },
+        "factor": 4294967295.0,
+        "min": {
+          "priority_threshold": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "tres": {
+            "per": {
+              "job": []
+            }
+          }
+        }
+      },
+      "name": "study",
+      "preempt": {
+        "list": [],
+        "mode": [
+          "DISABLED"
+        ],
+        "exempt_time": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 100
+      },
+      "usage_factor": {
+        "set": true,
+        "infinite": false,
+        "number": 1.0
+      },
+      "usage_threshold": {
+        "set": false,
+        "infinite": true,
+        "number": 0.0
+      }
+    }
+  ]
+}

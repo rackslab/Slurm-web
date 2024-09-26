@@ -1,0 +1,21 @@
+{
+  "alloc_cpus": 1,
+  "alloc_memory": 1,
+  "architecture": "x86_64",
+  "boot_time": 1725995081,
+  "cores": 1,
+  "cpus": 2,
+  "last_busy": 1727359259,
+  "name": "cn2",
+  "operating_system": "Linux 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3 (2024-08-26)",
+  "partitions": [
+    "normal"
+  ],
+  "real_memory": 1,
+  "reason": "",
+  "sockets": 2,
+  "state": [
+    "MIXED"
+  ],
+  "threads": 1
+}

@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/dbv0.0.39",
+      "name": "Slurm OpenAPI DB v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411494467] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 24,
+        "micro": 3,
+        "minor": 5
+      },
+      "release": "24.05.3"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "accounts": [
+    {
+      "associations": [
+        {
+          "account": "acoustic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        },
+        {
+          "account": "acoustic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "clara"
+        },
+        {
+          "account": "acoustic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "jryan"
+        },
+        {
+          "account": "acoustic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "pkerr"
+        }
+      ],
+      "coordinators": [],
+      "description": "acoustic",
+      "name": "acoustic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "admin",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        },
+        {
+          "account": "admin",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "rwallace"
+        }
+      ],
+      "coordinators": [],
+      "description": "admin",
+      "name": "admin",
+      "organization": "admin",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "biology",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        },
+        {
+          "account": "biology",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "cgross"
+        },
+        {
+          "account": "biology",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "dshaw"
+        },
+        {
+          "account": "biology",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "msummers"
+        },
+        {
+          "account": "biology",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "sharrison"
+        }
+      ],
+      "coordinators": [],
+      "description": "biology",
+      "name": "biology",
+      "organization": "biology",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "optic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        },
+        {
+          "account": "optic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "jcampbell"
+        },
+        {
+          "account": "optic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "jsherman"
+        }
+      ],
+      "coordinators": [],
+      "description": "optic",
+      "name": "optic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "physic",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        }
+      ],
+      "coordinators": [],
+      "description": "physic",
+      "name": "physic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "root",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        },
+        {
+          "account": "root",
+          "cluster": "hpc",
+          "partition": "",
+          "user": "root"
+        }
+      ],
+      "coordinators": [],
+      "description": "default root account",
+      "name": "root",
+      "organization": "root",
+      "flags": []
+    },
+    {
+      "associations": [
+        {
+          "account": "scientists",
+          "cluster": "hpc",
+          "partition": "",
+          "user": ""
+        }
+      ],
+      "coordinators": [],
+      "description": "scientists",
+      "name": "scientists",
+      "organization": "scientists",
+      "flags": []
+    }
+  ]
+}

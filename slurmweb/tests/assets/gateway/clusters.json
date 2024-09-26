@@ -1,0 +1,89 @@
+[
+  {
+    "infrastructure": "tiny",
+    "name": "tiny",
+    "permissions": {
+      "actions": [
+        "view-accounts",
+        "view-jobs",
+        "view-nodes",
+        "view-partitions",
+        "view-reservations",
+        "view-qos",
+        "view-stats"
+      ],
+      "roles": [
+        "admin"
+      ]
+    },
+    "stats": {
+      "jobs": {
+        "running": 1,
+        "total": 13
+      },
+      "resources": {
+        "cores": 4,
+        "nodes": 2
+      },
+      "version": "24.05.3"
+    }
+  },
+  {
+    "infrastructure": "emulator",
+    "name": "atlas",
+    "permissions": {
+      "actions": [
+        "view-jobs",
+        "view-partitions",
+        "view-reservations",
+        "view-qos",
+        "view-stats",
+        "view-accounts",
+        "view-nodes"
+      ],
+      "roles": [
+        "admin"
+      ]
+    },
+    "stats": {
+      "jobs": {
+        "running": 9,
+        "total": 500
+      },
+      "resources": {
+        "cores": 200,
+        "nodes": 100
+      },
+      "version": "23.02.8"
+    }
+  },
+  {
+    "infrastructure": "pocket",
+    "name": "pocket",
+    "permissions": {
+      "actions": [
+        "view-stats",
+        "view-accounts",
+        "view-reservations",
+        "view-jobs",
+        "view-partitions",
+        "view-nodes",
+        "view-qos"
+      ],
+      "roles": [
+        "admin"
+      ]
+    },
+    "stats": {
+      "jobs": {
+        "running": 1,
+        "total": 20
+      },
+      "resources": {
+        "cores": 8,
+        "nodes": 4
+      },
+      "version": "23.11.10"
+    }
+  }
+]

@@ -1,0 +1,317 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/dbv0.0.39",
+      "name": "Slurm OpenAPI DB v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 8,
+        "minor": 2
+      },
+      "release": "23.02.8"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "jobs": [
+    {
+      "account": "biology",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 8,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "biology",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "dshaw"
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": "SUCCESS",
+        "return_code": 0
+      },
+      "time": {
+        "elapsed": 360,
+        "eligible": 1727332583,
+        "end": 1727339422,
+        "start": 1727339062,
+        "submission": 1727332583,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 60
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": "SUCCESS",
+        "return_code": 0
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [
+        "STARTED_ON_BACKFILL"
+      ],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 306,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "cn[081-088]",
+      "partition": "debug",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "qos": "normal",
+      "required": {
+        "CPUs": 8,
+        "memory_per_cpu": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "memory_per_node": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "memory": 0
+      },
+      "kill_request_user": "",
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "state": {
+        "current": "COMPLETED",
+        "reason": "None"
+      },
+      "steps": [
+        {
+          "time": {
+            "elapsed": 360,
+            "end": 1727339422,
+            "start": 1727339062,
+            "suspended": 0,
+            "system": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "total": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "user": {
+              "seconds": 0,
+              "microseconds": 0
+            }
+          },
+          "exit_code": {
+            "status": "SUCCESS",
+            "return_code": 0
+          },
+          "nodes": {
+            "count": 1,
+            "range": "admin.emulator",
+            "list": [
+              "admin.emulator"
+            ]
+          },
+          "tasks": {
+            "count": 1
+          },
+          "pid": "",
+          "CPU": {
+            "requested_frequency": {
+              "min": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              },
+              "max": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            },
+            "governor": "0"
+          },
+          "kill_request_user": "",
+          "state": "COMPLETED",
+          "statistics": {
+            "CPU": {
+              "actual_frequency": 0
+            },
+            "energy": {
+              "consumed": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            }
+          },
+          "step": {
+            "id": {
+              "job_id": 306,
+              "step_id": "batch"
+            },
+            "name": "batch"
+          },
+          "task": {
+            "distribution": "Unknown"
+          },
+          "tres": {
+            "requested": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "consumed": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "allocated": [
+              {
+                "type": "cpu",
+                "name": "",
+                "id": 1,
+                "count": 2
+              },
+              {
+                "type": "mem",
+                "name": "",
+                "id": 2,
+                "count": 0
+              },
+              {
+                "type": "node",
+                "name": "",
+                "id": 4,
+                "count": 1
+              }
+            ]
+          }
+        }
+      ],
+      "submit_line": "sbatch --qos normal --partition debug --time 60 --wrap /usr/bin/sleep 360 --nodes 8",
+      "tres": {
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 16
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 8
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 16
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 8
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 8
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 8
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 8
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "dshaw",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/dshaw"
+    }
+  ]
+}

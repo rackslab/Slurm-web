@@ -1,0 +1,279 @@
+{
+  "accrue_time": 1727355292,
+  "association": {
+    "account": "admin",
+    "cluster": "hpc",
+    "partition": "",
+    "user": "rwallace"
+  },
+  "batch_flag": true,
+  "command": "",
+  "comment": {
+    "administrator": "",
+    "job": "",
+    "system": ""
+  },
+  "cpus": {
+    "infinite": false,
+    "number": 2,
+    "set": true
+  },
+  "current_working_directory": "/home/rwallace",
+  "derived_exit_code": {
+    "return_code": 0,
+    "status": "SUCCESS"
+  },
+  "exclusive": [],
+  "exit_code": {
+    "return_code": 0,
+    "status": "SUCCESS"
+  },
+  "group": "scientists",
+  "last_sched_evaluation": 1727358176,
+  "name": "wrap",
+  "node_count": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "nodes": "cn1",
+  "partition": "normal",
+  "priority": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "qos": "study",
+  "required": {
+    "CPUs": 2,
+    "memory": 0,
+    "memory_per_cpu": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "memory_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    }
+  },
+  "script": "",
+  "standard_error": "/home/rwallace/slurm-99.out",
+  "standard_input": "/dev/null",
+  "standard_output": "/home/rwallace/slurm-99.out",
+  "state": {
+    "current": "COMPLETED",
+    "reason": "None"
+  },
+  "state_reason": "None",
+  "steps": [
+    {
+      "CPU": {
+        "governor": "0",
+        "requested_frequency": {
+          "max": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          },
+          "min": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          }
+        }
+      },
+      "exit_code": {
+        "return_code": 0,
+        "status": "SUCCESS"
+      },
+      "kill_request_user": "",
+      "nodes": {
+        "count": 1,
+        "list": [
+          "cn1"
+        ],
+        "range": "cn1"
+      },
+      "pid": "",
+      "state": "COMPLETED",
+      "statistics": {
+        "CPU": {
+          "actual_frequency": 0
+        },
+        "energy": {
+          "consumed": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          }
+        }
+      },
+      "step": {
+        "id": {
+          "job_id": 99,
+          "step_id": "batch"
+        },
+        "name": "batch"
+      },
+      "task": {
+        "distribution": "Unknown"
+      },
+      "tasks": {
+        "count": 1
+      },
+      "time": {
+        "elapsed": 361,
+        "end": 1727358537,
+        "start": 1727358176,
+        "suspended": 0,
+        "system": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "total": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "user": {
+          "microseconds": 0,
+          "seconds": 0
+        }
+      },
+      "tres": {
+        "allocated": [
+          {
+            "count": 2,
+            "id": 1,
+            "name": "",
+            "type": "cpu"
+          },
+          {
+            "count": 1,
+            "id": 2,
+            "name": "",
+            "type": "mem"
+          },
+          {
+            "count": 1,
+            "id": 4,
+            "name": "",
+            "type": "node"
+          }
+        ],
+        "consumed": {
+          "average": [],
+          "max": [],
+          "min": [],
+          "total": []
+        },
+        "requested": {
+          "average": [],
+          "max": [],
+          "min": [],
+          "total": []
+        }
+      }
+    }
+  ],
+  "submit_line": "sbatch --qos study --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 2",
+  "tasks": {
+    "infinite": false,
+    "number": 2,
+    "set": true
+  },
+  "time": {
+    "elapsed": 361,
+    "eligible": 1727355292,
+    "end": 1727358537,
+    "limit": {
+      "infinite": false,
+      "number": 60,
+      "set": true
+    },
+    "start": 1727358176,
+    "submission": 1727355292,
+    "suspended": 0,
+    "system": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "total": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "user": {
+      "microseconds": 0,
+      "seconds": 0
+    }
+  },
+  "tres": {
+    "allocated": [
+      {
+        "count": 2,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 1,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": -2,
+        "id": 3,
+        "name": "",
+        "type": "energy"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 2,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ],
+    "requested": [
+      {
+        "count": 2,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 1,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 2,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ]
+  },
+  "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
+  "used_gres": "",
+  "user": "rwallace",
+  "wckey": {
+    "flags": [],
+    "wckey": ""
+  },
+  "working_directory": "/home/rwallace"
+}

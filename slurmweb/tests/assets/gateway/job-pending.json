@@ -1,0 +1,139 @@
+{
+  "accrue_time": 1727356012,
+  "association": {
+    "account": "acoustic",
+    "cluster": "hpc",
+    "partition": "",
+    "user": "clara"
+  },
+  "batch_flag": true,
+  "command": "",
+  "comment": {
+    "administrator": "",
+    "job": "",
+    "system": ""
+  },
+  "cpus": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "current_working_directory": "/home/clara",
+  "derived_exit_code": {
+    "return_code": 0,
+    "status": "SUCCESS"
+  },
+  "exclusive": [],
+  "exit_code": {
+    "return_code": 0,
+    "status": "SUCCESS"
+  },
+  "group": "scientists",
+  "last_sched_evaluation": 1727358614,
+  "name": "wrap",
+  "node_count": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "nodes": "None assigned",
+  "partition": "normal",
+  "priority": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "qos": "normal",
+  "required": {
+    "CPUs": 1,
+    "memory": 0,
+    "memory_per_cpu": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "memory_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    }
+  },
+  "script": "",
+  "standard_error": "/home/clara/slurm-102.out",
+  "standard_input": "/dev/null",
+  "standard_output": "/home/clara/slurm-102.out",
+  "state": {
+    "current": "PENDING",
+    "reason": "None"
+  },
+  "state_reason": "Resources",
+  "steps": [],
+  "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 1",
+  "tasks": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "time": {
+    "elapsed": 0,
+    "eligible": 1727356012,
+    "end": 0,
+    "limit": {
+      "infinite": false,
+      "number": 60,
+      "set": true
+    },
+    "start": 0,
+    "submission": 1727356012,
+    "suspended": 0,
+    "system": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "total": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "user": {
+      "microseconds": 0,
+      "seconds": 0
+    }
+  },
+  "tres": {
+    "allocated": [],
+    "requested": [
+      {
+        "count": 1,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 1,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 1,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ]
+  },
+  "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+  "used_gres": "",
+  "user": "clara",
+  "wckey": {
+    "flags": [],
+    "wckey": ""
+  },
+  "working_directory": "/home/clara"
+}

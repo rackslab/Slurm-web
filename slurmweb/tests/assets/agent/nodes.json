@@ -1,0 +1,30 @@
+[
+  {
+    "cores": 1,
+    "cpus": 2,
+    "name": "cn1",
+    "partitions": [
+      "normal"
+    ],
+    "real_memory": 1,
+    "reason": "",
+    "sockets": 2,
+    "state": [
+      "ALLOCATED"
+    ]
+  },
+  {
+    "cores": 1,
+    "cpus": 2,
+    "name": "cn2",
+    "partitions": [
+      "normal"
+    ],
+    "real_memory": 1,
+    "reason": "",
+    "sockets": 2,
+    "state": [
+      "ALLOCATED"
+    ]
+  }
+]
