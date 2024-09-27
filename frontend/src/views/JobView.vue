@@ -13,7 +13,7 @@ import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobStatusLabel from '@/components/jobs/JobStatusLabel.vue'
-import JobSteps from '@/components/jobs/JobSteps.vue'
+import JobProgress from '@/components/jobs/JobProgress.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
@@ -79,7 +79,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
       </div>
       <div class="flex flex-wrap">
         <div class="w-full lg:w-1/3">
-          <JobSteps v-if="data" :job="data" />
+          <JobProgress v-if="data" :job="data" />
         </div>
         <div class="w-full lg:w-2/3">
           <div class="border-t border-gray-100">
