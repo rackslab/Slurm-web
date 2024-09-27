@@ -41,26 +41,26 @@ const current = computed((): [number, boolean] => {
 })
 
 function stepComment(step: string) {
-  if (step === 'Submitted') {
+  if (step === 'submitted') {
     return new Date(props.job.time.submission * 1000).toLocaleString()
   }
-  if (step === 'Eligible') {
+  if (step === 'eligible') {
     return new Date(props.job.time.eligible * 1000).toLocaleString()
   }
-  if (step === 'Scheduling') {
+  if (step === 'scheduling') {
     if (props.job.time.start) {
       return new Date(props.job.time.start * 1000).toLocaleString()
     }
   }
-  if (step === 'Running') {
+  if (step === 'running') {
     if (props.job.time.elapsed) {
       return `${props.job.time.elapsed} seconds elapsed`
     }
   }
-  if (step === 'Completing') {
+  if (step === 'completing') {
     return ''
   }
-  if (step === 'Terminated') {
+  if (step === 'terminated') {
     if (props.job.time.end) {
       return new Date(props.job.time.end * 1000).toLocaleString()
     }
@@ -68,7 +68,11 @@ function stepComment(step: string) {
   return ''
 }
 
-const steps = ['Submitted', 'Eligible', 'Scheduling', 'Running', 'Completing', 'Terminated']
+function capitalize(step: string) {
+  return step.charAt(0).toUpperCase() + step.slice(1)
+}
+
+const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', 'terminated']
 </script>
 
 <template>
@@ -77,6 +81,7 @@ const steps = ['Submitted', 'Eligible', 'Scheduling', 'Running', 'Completing', '
       v-for="(step, stepIdx) in steps"
       :key="step"
       :class="[stepIdx !== steps.length - 1 ? 'pb-10' : '', 'relative']"
+      :id="'step-' + step"
     >
       <template v-if="current[0] >= stepIdx">
         <div
@@ -93,7 +98,7 @@ const steps = ['Submitted', 'Eligible', 'Scheduling', 'Running', 'Completing', '
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-sm font-medium">{{ step }}</span>
+            <span class="text-sm font-medium">{{ capitalize(step) }}</span>
             <span class="text-sm text-gray-500">{{ stepComment(step) }}</span>
           </span>
         </div>
@@ -113,7 +118,7 @@ const steps = ['Submitted', 'Eligible', 'Scheduling', 'Running', 'Completing', '
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-sm font-medium text-slurmweb-dark">{{ step }}</span>
+            <span class="text-sm font-medium text-slurmweb-dark">{{ capitalize(step) }}</span>
             <span class="text-sm text-gray-500">{{ stepComment(step) }}</span>
           </span>
         </div>
@@ -133,7 +138,7 @@ const steps = ['Submitted', 'Eligible', 'Scheduling', 'Running', 'Completing', '
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-sm font-medium text-gray-500">{{ step }}</span>
+            <span class="text-sm font-medium text-gray-500">{{ capitalize(step) }}</span>
             <span class="text-sm text-gray-500">{{ stepComment(step) }}</span>
           </span>
         </div>
