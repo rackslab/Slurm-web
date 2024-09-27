@@ -1,5 +1,6 @@
 import { describe, test, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { StopCircleIcon } from '@heroicons/vue/24/outline'
 import JobProgressComment from '@/components/jobs/JobProgressComment.vue'
 import jobPending from '../../assets/job-pending.json'
 import jobRunning from '../../assets/job-running.json'
@@ -108,7 +109,11 @@ describe('JobProgressComment.vue', () => {
         step: 'completing'
       }
     })
-    expect(wrapper.text().length).toBe(0)
+    // Check there is a stop icon to indicate job time limit with light gray color
+    const icon = wrapper.getComponent(StopCircleIcon)
+    expect(icon.classes('text-gray-400')).toBe(true)
+    // Check the end datetime is present
+    expect(wrapper.text().length).toBeGreaterThan(0)
   })
   test('running job terminated comment', () => {
     const wrapper = mount(JobProgressComment, {
