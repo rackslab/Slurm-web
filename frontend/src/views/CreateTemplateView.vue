@@ -12,87 +12,42 @@ import { ref } from 'vue'
 import { PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { JobTemplate } from '@/composables/GatewayAPI'
-import { PermissionError } from '@/composables/HTTPErrors'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
-
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRuntimeStore } from '@/stores/runtime'
 import router from '@/router'
-import ErrorAlert from '@/components/ErrorAlert.vue'
-import type { Ref } from 'vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 const authStore = useAuthStore()
+const runtimeStore = useRuntimeStore()
+const errorMessage = ref<string | undefined>()
 
 const isNameValid = ref(true)
 const isBatchScriptValid = ref(true)
 
-const errorMessage = ref<string | undefined>()
-const missingField = ref(false)
-const missingFieldNames: Ref<Array<string>> = ref([])
-
 async function createTemplate(author: string) {
-  missingField.value = false
-  missingFieldNames.value = []
-
-  if (templateStore.name == '') {
-    missingField.value = true
-    missingFieldNames.value.push('name')
+  const newTemplate: JobTemplate = {
+    name: templateStore.name,
+    description: templateStore.description,
+    userAccounts: templateStore.userAccounts,
+    userLogins: templateStore.userLogins,
+    developerAccounts: templateStore.developerAccounts,
+    developerLogins: templateStore.developerLogins,
+    inputs: templateStore.inputs,
+    batchScript: templateStore.batchScript,
+    author: author
   }
-
-  if (templateStore.userAccounts.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('user accounts')
-  }
-
-  if (templateStore.userLogins.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('user logins')
-  }
-
-  if (templateStore.developerAccounts.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('developer accounts')
-  }
-
-  if (templateStore.developerLogins.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('developer logins')
-  }
-
-  if (templateStore.batchScript == '') {
-    missingField.value = true
-    missingFieldNames.value.push('batch script')
-  }
-
-  if (missingField.value == false) {
-    const newTemplate: JobTemplate = {
-      name: templateStore.name,
-      description: templateStore.description,
-      userAccounts: templateStore.userAccounts,
-      userLogins: templateStore.userLogins,
-      developerAccounts: templateStore.developerAccounts,
-      developerLogins: templateStore.developerLogins,
-      inputs: templateStore.inputs,
-      batchScript: templateStore.batchScript,
-      author: author
-    }
-    try {
-      await gateway.create_template(props.cluster, newTemplate)
-      resetForm()
-    } catch (error: any) {
-      console.log(error)
-      if (error instanceof PermissionError) {
-        errorMessage.value = 'Permission denied'
-      } else {
-        errorMessage.value = `Unexpected error ${error}`
-      }
-    }
+  try {
+    await gateway.create_template(props.cluster, newTemplate)
+    resetForm()
     router.push({ name: 'templates' })
+  } catch (error: any) {
+    runtimeStore.reportError(`Server error: ${error.message}`)
   }
 }
 
@@ -115,15 +70,9 @@ const props = defineProps({
     :breadcrumb="[
       { title: 'Jobs', routeName: 'jobs' },
       { title: 'Templates', routeName: 'templates' },
-      { title: 'Create' }
+      { title: 'Edit' }
     ]"
   >
-    <ErrorAlert v-if="missingField" :errorRedirect="false"
-      >Missing required fields:
-      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
-        ><br />- {{ name }}</span
-      ></ErrorAlert
-    >
     <button
       @click="templateStore.toggleUnsavedModal('template')"
       type="button"
@@ -152,7 +101,7 @@ const props = defineProps({
               @blur="isNameValid = templateStore.name.trim() !== ''"
               :class="{ 'border-red-500 ring-red-500': !isNameValid }"
               type="text"
-              name="name"
+              name="description"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
               autofocus
             />

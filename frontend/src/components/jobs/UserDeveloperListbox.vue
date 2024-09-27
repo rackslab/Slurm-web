@@ -7,12 +7,13 @@ import {
   ListboxOptions
 } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useTemplateStore } from '@/stores/template'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import type { UserDescription, AccountDescription } from '@/composables/GatewayAPI'
 
 const templateStore = useTemplateStore()
+const isValid = ref(true)
 
 const props = defineProps({
   role: {
@@ -51,6 +52,14 @@ const store = computed({
   },
   set(value) {
     templateStore[templateStoreKeyMap[`${props.role}${props.accountOrLogin}`]] = value
+  }
+})
+
+watch(store, () => {
+  if (store.value.length == 0) {
+    isValid.value = false
+  } else {
+    isValid.value = true
   }
 })
 
@@ -169,6 +178,9 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           </ListboxOptions>
         </div>
       </transition>
+      <p v-if="!isValid" class="mt-1 text-sm text-red-500">
+        {{ props.role }} {{ props.accountOrLogin }} is required
+      </p>
     </div>
   </Listbox>
 </template>

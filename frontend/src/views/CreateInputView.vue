@@ -19,22 +19,20 @@ import {
   RadioGroupOption
 } from '@headlessui/vue'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
-import ErrorAlert from '@/components/ErrorAlert.vue'
 
 import { useTemplateStore } from '@/stores/template'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
-import router from '@/router'
 
 const gateway = useGatewayAPI()
 const templateStore = useTemplateStore()
 
 const inputTypes: Ref<Array<InputType>> = ref([])
 const constraint = ref('none')
-const missingField = ref(false)
-const missingFieldNames: Ref<Array<string>> = ref([])
+const isNameValid = ref(true)
+const isTypeValid = ref(true)
 
 const props = defineProps({
   cluster: {
@@ -47,23 +45,19 @@ const props = defineProps({
   }
 })
 
-function createInput() {
-  missingField.value = false
-  missingFieldNames.value = []
+watch(templateStore.stagingInput, () => {
   if (templateStore.stagingInput.name == '') {
-    missingField.value = true
-    missingFieldNames.value.push('name')
-  }
-  if (templateStore.stagingInput.type == '') {
-    missingField.value = true
-    missingFieldNames.value.push('types')
+    isNameValid.value = false
+  } else {
+    isNameValid.value = true
   }
 
-  if (missingField.value == false) {
-    templateStore.addInput()
-    router.push({ name: 'create-template' })
+  if (templateStore.stagingInput.type == '') {
+    isTypeValid.value == false
+  } else {
+    isTypeValid.value = true
   }
-}
+})
 
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
@@ -84,12 +78,6 @@ onMounted(async () => {
       { title: 'Create input' }
     ]"
   >
-    <ErrorAlert v-if="missingField" :errorRedirect="false"
-      >Missing required fields:
-      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
-        ><br />- {{ name }}</span
-      ></ErrorAlert
-    >
     <button
       @click="templateStore.toggleUnsavedModal('input')"
       type="button"
@@ -119,6 +107,7 @@ onMounted(async () => {
               name="name"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
+            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
           </div>
         </div>
 
@@ -197,6 +186,7 @@ onMounted(async () => {
                 </ListboxOption>
               </ListboxOptions>
             </transition>
+            <p v-if="!isTypeValid" class="mt-1 text-sm text-red-500">Type is required</p>
           </div>
         </Listbox>
 
@@ -302,13 +292,15 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <button
-            @click="createInput()"
-            type="button"
-            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+          <router-link :to="{ name: 'create-template' }">
+            <button
+              @click="templateStore.addInput()"
+              type="button"
+              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            >
+              Add
+            </button></router-link
           >
-            Add
-          </button>
         </div>
       </div>
     </div>

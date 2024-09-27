@@ -11,7 +11,6 @@ import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ref, onMounted } from 'vue'
 import { PlusIcon, ChevronLeftIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { PermissionError } from '@/composables/HTTPErrors'
 import { useTemplateStore } from '@/stores/template'
 import UserDeveloperListbox from '@/components/jobs/UserDeveloperListbox.vue'
 import InputsTable from '@/components/jobs/InputsTable.vue'
@@ -19,74 +18,33 @@ import type { JobTemplate } from '@/composables/GatewayAPI'
 import DeleteModal from '@/components/jobs/DeleteModal.vue'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
 import router from '@/router'
-import ErrorAlert from '@/components/ErrorAlert.vue'
-import type { Ref } from 'vue'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
 const errorMessage = ref<string | undefined>()
-const missingField = ref(false)
-const missingFieldNames: Ref<Array<string>> = ref([])
+const isNameValid = ref(true)
+const isBatchScriptValid = ref(true)
 
 async function editTemplate() {
-  missingField.value = false
-  missingFieldNames.value = []
-
-  if (templateStore.name == '') {
-    missingField.value = true
-    missingFieldNames.value.push('name')
+  const editTemplate: JobTemplate = {
+    idTemplate: Number(props.idTemplate),
+    name: templateStore.name,
+    description: templateStore.description,
+    userAccounts: templateStore.userAccounts,
+    userLogins: templateStore.userLogins,
+    developerAccounts: templateStore.developerAccounts,
+    developerLogins: templateStore.developerLogins,
+    inputs: templateStore.inputs,
+    batchScript: templateStore.batchScript
   }
-
-  if (templateStore.userAccounts.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('user accounts')
-  }
-
-  if (templateStore.userLogins.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('user logins')
-  }
-
-  if (templateStore.developerAccounts.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('developer accounts')
-  }
-
-  if (templateStore.developerLogins.length == 0) {
-    missingField.value = true
-    missingFieldNames.value.push('developer logins')
-  }
-
-  if (templateStore.batchScript == '') {
-    missingField.value = true
-    missingFieldNames.value.push('batch script')
-  }
-
-  if (missingField.value == false) {
-    const editTemplate: JobTemplate = {
-      idTemplate: Number(props.idTemplate),
-      name: templateStore.name,
-      description: templateStore.description,
-      userAccounts: templateStore.userAccounts,
-      userLogins: templateStore.userLogins,
-      developerAccounts: templateStore.developerAccounts,
-      developerLogins: templateStore.developerLogins,
-      inputs: templateStore.inputs,
-      batchScript: templateStore.batchScript
-    }
-    try {
-      await gateway.edit_template(props.cluster, editTemplate)
-      resetForm()
-    } catch (error: any) {
-      console.log(error)
-      if (error instanceof PermissionError) {
-        errorMessage.value = 'Permission denied'
-      } else {
-        errorMessage.value = `Unexpected error ${error}`
-      }
-    }
+  try {
+    await gateway.edit_template(props.cluster, editTemplate)
+    resetForm()
     router.push({ name: 'templates' })
+  } catch (error: any) {
+    console.log(error)
+    //runtime.reportError(`Server error: ${error.message}`)
   }
 }
 
@@ -131,12 +89,6 @@ onMounted(async () => {
       { title: 'Edit' }
     ]"
   >
-    <ErrorAlert v-if="missingField" :errorRedirect="false"
-      >Missing required fields:
-      <span v-for="name in missingFieldNames" :key="name" class="font-medium capitalize"
-        ><br />- {{ name }}</span
-      ></ErrorAlert
-    >
     <div class="mt-8 flex items-center justify-between">
       <button
         @click="templateStore.toggleUnsavedModal('template')"
@@ -170,13 +122,17 @@ onMounted(async () => {
             >
             <p class="mt-1 text-sm text-gray-500">Name of the template</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div class="relative mt-2 rounded-md">
             <input
+              @blur="isNameValid = templateStore.name.trim() !== ''"
+              :class="{ 'border-red-500 ring-red-500': !isNameValid }"
               v-model="templateStore.name"
               type="text"
               name="templateName"
-              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              autofocus
             />
+            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
           </div>
         </div>
 
@@ -238,15 +194,20 @@ onMounted(async () => {
             >
             <p class="mt-1 text-sm text-gray-500">Script executed by the job</p>
           </div>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div class="relative mt-2 rounded-md">
             <textarea
+              @blur="isBatchScriptValid = templateStore.batchScript.trim() !== ''"
+              :class="{ 'border-red-500 ring-red-500': !isBatchScriptValid }"
               v-model="templateStore.batchScript"
               name="scriptBatch"
               cols="20"
               rows="10"
-              class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
+              class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
             >
             </textarea>
+            <p v-if="!isBatchScriptValid" class="mt-1 text-sm text-red-500">
+              Batch Script is required
+            </p>
           </div>
 
           <div class="flex justify-end">

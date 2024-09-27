@@ -10,7 +10,7 @@
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { ChevronLeftIcon, ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { InputType } from '@/composables/GatewayAPI'
 import type { Ref } from 'vue'
 import { useTemplateStore } from '@/stores/template'
@@ -24,8 +24,6 @@ import {
   RadioGroupOption
 } from '@headlessui/vue'
 import UnsavedModal from '@/components/jobs/UnsavedModal.vue'
-import ErrorAlert from '@/components/ErrorAlert.vue'
-import router from '@/router'
 
 const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
@@ -33,8 +31,8 @@ const gateway = useGatewayAPI()
 const constraint = ref('none')
 
 const inputTypes: Ref<Array<InputType>> = ref([])
-const missingField = ref(false)
-const missingFieldNames: Ref<Array<string>> = ref([])
+const isNameValid = ref(true)
+const isTypeValid = ref(true)
 
 const props = defineProps({
   cluster: {
@@ -51,32 +49,19 @@ const props = defineProps({
   }
 })
 
-function editInput() {
-  missingField.value = false
-  missingFieldNames.value = []
+watch(templateStore.stagingInput, () => {
   if (templateStore.stagingInput.name == '') {
-    missingField.value = true
-    missingFieldNames.value.push('name')
-  }
-  if (templateStore.stagingInput.type == '') {
-    missingField.value = true
-    missingFieldNames.value.push('types')
+    isNameValid.value = false
+  } else {
+    isNameValid.value = true
   }
 
-  if (missingField.value == false) {
-    templateStore.editInput(props.indexInput)
-    if (props.createOrEditInput == 'edit') {
-      router.push({
-        name: 'edit-template',
-        params: {
-          idTemplate: templateStore.idTemplate
-        }
-      })
-    } else {
-      router.push({ name: 'create-template' })
-    }
+  if (templateStore.stagingInput.type == '') {
+    isTypeValid.value == false
+  } else {
+    isTypeValid.value = true
   }
-}
+})
 
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
@@ -110,12 +95,6 @@ onMounted(async () => {
       { title: `${$props.createOrEditInput} input` }
     ]"
   >
-    <ErrorAlert v-if="missingField" :errorRedirect="false"
-      >Missing required fields:
-      <span v-for="name in missingFieldNames" :key="name" class="font-medium"
-        ><br />- {{ name }}</span
-      ></ErrorAlert
-    >
     <button
       @click="templateStore.toggleUnsavedModal('input')"
       type="button"
@@ -144,6 +123,7 @@ onMounted(async () => {
               name="name"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
+            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
           </div>
         </div>
 
@@ -222,6 +202,7 @@ onMounted(async () => {
                 </ListboxOption>
               </ListboxOptions>
             </transition>
+            <p v-if="!isTypeValid" class="mt-1 text-sm text-red-500">Type is required</p>
           </div>
         </Listbox>
 
@@ -325,13 +306,24 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <button
-            @click="editInput()"
-            type="button"
-            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+          <router-link
+            :to="{
+              name: `${props.createOrEditInput}-template`,
+              params: {
+                ...(props.createOrEditInput === 'edit'
+                  ? { idTemplate: templateStore.idTemplate }
+                  : {})
+              }
+            }"
           >
-            Save
-          </button>
+            <button
+              @click="templateStore.editInput(props.indexInput)"
+              type="button"
+              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+            >
+              Save
+            </button></router-link
+          >
         </div>
       </div>
     </div>
