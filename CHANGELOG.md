@@ -12,8 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the cluster name.
 - gateway: Return RacksDB infrastructure name of every clusters in
   `/clusters` endpoint.
-- frontend: Request RacksDB with the infrastructure name provided by the
-  gateway (#348).
+- frontend:
+  - Request RacksDB with the infrastructure name provided by the gateway (#348).
+  - Display time limit of running jobs in job details page (#352).
 - conf: Add `racksdb` > `infrastructure` parameter for the agent.
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,
@@ -35,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fix compatibility issue with Requests >= 2.32.2 (#350).
   - Return HTTP/404 not found with meaningful error message when requesting
     unexisting node.
-- front: Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite),
+- frontend: Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite),
   CVE-2024-47068 (rollup).
 
 ## [3.2.0] - 2024-09-05
