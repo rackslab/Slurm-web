@@ -45,6 +45,7 @@ slurm-web-agent = 'slurmweb.exec.agent:SlurmwebExecAgent.run'
 slurm-web-gateway = 'slurmweb.exec.gateway:SlurmwebExecGateway.run'
 slurm-web-ldap-check = 'slurmweb.exec.ldap:SlurmwebExecLDAPCheck.run'
 slurm-web-gen-jwt-key = 'slurmweb.exec.genjwt:SlurmwebExecGenJWT.run'
+slurm-web-show-conf = 'slurmweb.exec.showconf:SlurmwebExecShowConf.run'
 
 [tool.setuptools.packages.find]
 include = ['slurmweb*']
