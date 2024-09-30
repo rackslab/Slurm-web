@@ -1,0 +1,23 @@
+= slurm-web-conf-show(1)
+Rackslab: https://rackslab.io
+:doctype: manpage
+:manmanual: slurm-web-conf-show
+:man-linkstyle: pass:[blue R < >]
+
+== Name
+
+slurm-web-conf-show - Utility to dump Slurm-web components configuration
+settings with their origin by protecting sensible data.
+
+include::../modules/usage/partials/man-show-conf.adoc[]
+
+== Resources
+
+Slurm-web web site: https://github.com/rackslab/slurm-web
+
+== Copying
+
+Copyright (C) 2023-2024 {author}. +
+
+Slurm-web is distributed under the terms of the GNU General Public License v3.0
+or later (GPLv3+).

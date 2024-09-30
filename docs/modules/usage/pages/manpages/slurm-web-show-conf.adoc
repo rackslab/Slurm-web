@@ -1,0 +1,9 @@
+= `slurm-web-show-conf` command
+
+This page describes all `slurm-web-show-conf` command options available. The
+content of the page this also available in `slurm-web-show-conf(1)` manpage
+after installation.
+
+:!example-caption:
+
+include::partial$man-show-conf.adoc[]
