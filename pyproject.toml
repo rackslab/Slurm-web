@@ -19,7 +19,7 @@ dependencies = [
     "RFL.authentication >= 1.0.3",
     "RFL.core >= 1.0.3",
     "RFL.log",
-    "RFL.settings",
+    "RFL.settings >= 1.1.0",
     "RFL.web",
     "setuptools"
 ]
