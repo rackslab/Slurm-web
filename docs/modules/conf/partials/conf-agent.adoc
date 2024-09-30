@@ -723,7 +723,7 @@ _No default value_
 |-
 
 |password
-|str
+|password
 |Password to connect to protected Redis server. When this parameter is
 not defined, Redis server is accessed without password.
 

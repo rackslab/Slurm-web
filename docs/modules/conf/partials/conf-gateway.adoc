@@ -420,7 +420,7 @@ _No default value_
 |-
 
 |bind_password
-|str
+|password
 |Password of bind DN. This parameter is required when `bind_dn` is
 defined.
 
