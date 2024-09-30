@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - docs: Update configuration reference documentation.
+- conf:
+  - Convert `[cache]` > `password` agent parameter from string to password type.
+  - Convert `[ldap]` > `bind_password` gateway parameter from string to password
+    type.
 
 ### Fixed
 - agent:

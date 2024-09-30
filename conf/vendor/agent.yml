@@ -313,7 +313,7 @@ cache:
     default: 6379
     doc: TCP port of Redis cache server
   password:
-    type: str
+    type: password
     doc: |
       Password to connect to protected Redis server. When this parameter is
       not defined, Redis server is accessed without password.

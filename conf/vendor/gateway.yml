@@ -156,7 +156,7 @@ ldap:
       access to LDAP directory is performed anonymously.
     ex: cn=system,ou=people,dc=example,dc=org
   bind_password:
-    type: str
+    type: password
     doc: |
       Password of bind DN. This parameter is required when `bind_dn` is
       defined.
