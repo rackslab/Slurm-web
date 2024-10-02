@@ -33,6 +33,7 @@ dev = [
 agent = [
     "RacksDB[web]",
     "redis",
+    "prometheus-client",
 ]
 tests = [
     "pytest",
