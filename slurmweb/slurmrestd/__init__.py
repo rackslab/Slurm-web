@@ -95,6 +95,32 @@ class Slurmrestd:
     def jobs(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
 
+    def jobs_states(self):
+        jobs = {
+            "running": 0,
+            "completed": 0,
+            "completing": 0,
+            "cancelled": 0,
+            "pending": 0,
+            "unknown": 0,
+        }
+        total = 0
+        for job in self.jobs():
+            if job["job_state"] == "RUNNING":
+                jobs["running"] += 1
+            elif job["job_state"] == "COMPLETED":
+                jobs["completed"] += 1
+            elif job["job_state"] == "COMPLETING":
+                jobs["completing"] += 1
+            elif job["job_state"] == "CANCELLED":
+                jobs["cancelled"] += 1
+            elif job["job_state"] == "PENDING":
+                jobs["pending"] += 1
+            else:
+                jobs["unknown"] += 1
+            total += 1
+        return jobs, total
+
     def _ctldjob(self, job_id: int, **kwargs):
         return self._request(
             f"/slurm/v{self.api_version}/job/{job_id}", "jobs", **kwargs
@@ -107,6 +133,49 @@ class Slurmrestd:
 
     def nodes(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
+
+    def nodes_cores_states(self):
+        nodes_states = {
+            "idle": 0,
+            "mixed": 0,
+            "allocated": 0,
+            "down": 0,
+            "drain": 0,
+            "unknown": 0,
+        }
+        cores_states = {
+            "idle": 0,
+            "mixed": 0,
+            "allocated": 0,
+            "down": 0,
+            "drain": 0,
+            "unknown": 0,
+        }
+        nodes_total = 0
+        cores_total = 0
+        for node in self.nodes():
+            cores = node["cpus"]
+            if "MIXED" in node["state"]:
+                nodes_states["mixed"] += 1
+                cores_states["mixed"] += cores
+            elif "ALLOCATED" in node["state"]:
+                nodes_states["allocated"] += 1
+                cores_states["allocated"] += cores
+            elif "DOWN" in node["state"]:
+                nodes_states["down"] += 1
+                cores_states["down"] += cores
+            elif "DRAIN" in node["state"]:
+                nodes_states["drain"] += 1
+                cores_states["drain"] += cores
+            elif "IDLE" in node["state"]:
+                nodes_states["idle"] += 1
+                cores_states["idle"] += cores
+            else:
+                nodes_states["unknown"] += 1
+                cores_states["unknown"] += cores
+            nodes_total += 1
+            cores_total += cores
+        return nodes_states, cores_states, nodes_total, cores_total
 
     def node(self, node_name: str, **kwargs):
         try:

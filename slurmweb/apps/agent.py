@@ -10,6 +10,7 @@ import logging
 from rfl.web.tokens import RFLTokenizedRBACWebApp
 from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
 from racksdb.web.app import RacksDBWebBlueprint
+from werkzeug.middleware import dispatcher
 
 from . import SlurmwebWebApp
 from ..version import get_version
@@ -104,3 +105,14 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         # Default RacksDB infrastructure is the cluster name.
         if self.settings.racksdb.infrastructure is None:
             self.settings.racksdb.infrastructure = self.settings.service.cluster
+
+        self.metrics = None
+        if self.settings.metrics.enabled:
+            # Lazy load metrics module to avoid failing on missing optional external
+            # dependency when feature is actually disabled.
+            from ..metrics import SlurmWebMetricsCollector, make_wsgi_app
+
+            self.metrics = SlurmWebMetricsCollector(self.slurmrestd)
+            self.wsgi_app = dispatcher.DispatcherMiddleware(
+                self.wsgi_app, {"/metrics": make_wsgi_app()}
+            )
