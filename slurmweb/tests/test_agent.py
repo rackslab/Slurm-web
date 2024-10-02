@@ -92,9 +92,11 @@ class TestAgent(unittest.TestCase):
         response = self.client.get(f"/v{get_version()}/info")
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
-        self.assertEqual(len(response.json.keys()), 1)
+        self.assertEqual(len(response.json.keys()), 2)
         self.assertIn("cluster", response.json)
         self.assertEqual(response.json["cluster"], "test")
+        self.assertIn("infrastructure", response.json)
+        self.assertEqual(response.json["infrastructure"], "test")
 
     def test_permissions(self):
         response = self.client.get(f"/v{get_version()}/permissions")
