@@ -102,6 +102,15 @@ def crawl_slurmrestd(socket: Path) -> None:
     if not assets_path.exists():
         assets_path.mkdir(parents=True)
 
+    # Download ping
+    dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/ping",
+        assets_path,
+        "slurm-ping",
+    )
+
     # Download jobs
     jobs = dump_slurmrestd_query(
         session,
@@ -179,8 +188,17 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     # Download specific node
     for _node in nodes["nodes"]:
-        for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
+        for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAIN"]:
             dump_node_state()
+
+    # Request node not found
+    dump_slurmrestd_query(
+        session,
+        prefix,
+        f"/slurm/v{api}/node/unexisting-node",
+        assets_path,
+        "slurm-node-unfound",
+    )
 
     # Download partitions
     dump_slurmrestd_query(

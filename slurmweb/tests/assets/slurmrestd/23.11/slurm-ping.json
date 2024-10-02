@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[662761510] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 10,
+        "minor": 11
+      },
+      "release": "23.11.10"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "pings": [
+    {
+      "hostname": "admin.pocket",
+      "pinged": "UP",
+      "latency": 1331,
+      "mode": "primary"
+    }
+  ]
+}
