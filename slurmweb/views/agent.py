@@ -8,12 +8,17 @@ from typing import Union, Callable, List, Any, Dict
 import logging
 
 from flask import Response, current_app, jsonify, abort, request
-import requests
 from rfl.web.tokens import rbac_action, check_jwt
 
 from ..version import get_version
-from ..errors import SlurmwebCacheError, SlurmwebRestdError
-from ..slurmrestd.unix import SlurmrestdUnixAdapter
+from ..errors import SlurmwebCacheError
+
+from ..slurmrestd.errors import (
+    SlurmrestdNotFoundError,
+    SlurmrestdInvalidResponseError,
+    SlurmrestConnectionError,
+    SlurmrestdInternalError,
+)
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
@@ -45,70 +50,30 @@ def permissions():
     )
 
 
-def _validate_slurmrestd_response(response, ignore_notfound) -> None:
-    """Validate slurmrestd response or abort agent resquest with error."""
-    _validate_slurmrestd_status(response, ignore_notfound)
-    _validate_slurmrestd_json(response)
-
-
-def _validate_slurmrestd_status(response, ignore_notfound) -> None:
-    """Check response status code is not HTTP/404 or abort"""
-    if ignore_notfound:
-        return
-    if response.status_code != 404:
-        return
-    error = f"URL not found on slurmrestd: {response.url}"
-    logger.error(error)
-    abort(404, error)
-
-
-def _validate_slurmrestd_json(response) -> None:
-    """Check json reponse or abort with HTTP/500"""
-    content_type = response.headers.get("content-type")
-    if content_type != "application/json":
-        error = (
-            f"Unsupported Content-Type for slurmrestd response {response.url}: "
-            f"{content_type}"
-        )
-        logger.error(error)
-        logger.debug("slurmrestd query %s response: %s", response.url, response.text)
-        abort(500, error)
-
-
 def slurmrest(query, key, raise_errors=False, ignore_notfound=False):
-    session = requests.Session()
-    prefix = "http+unix://slurmrestd/"
-    session.mount(prefix, SlurmrestdUnixAdapter(current_app.settings.slurmrestd.socket))
     try:
-        response = session.get(f"{prefix}/{query}")
-    except requests.exceptions.ConnectionError as err:
-        logger.error("Unable to connect to slurmrestd: %s", err)
-        abort(500, f"Unable to connect to slurmrestd: {err}")
-
-    _validate_slurmrestd_response(response, ignore_notfound)
-
-    result = response.json()
-    if len(result["errors"]):
+        return current_app.slurmrestd.request(query, key, ignore_notfound)
+    except SlurmrestdNotFoundError as err:
+        msg = f"URL not found on slurmrestd: {err}"
+        logger.error(msg)
+        abort(404, msg)
+    except SlurmrestdInvalidResponseError as err:
+        msg = f"Invalid response from slurmrestd: {err}"
+        logger.error(msg)
+        abort(500, msg)
+    except SlurmrestConnectionError as err:
+        msg = f"Unable to connect to slurmrestd: {err}"
+        logger.error(msg)
+        abort(500, msg)
+    except SlurmrestdInternalError as err:
         if raise_errors:
-            error = result["errors"][0]
-            raise SlurmwebRestdError(
-                error.get("error", "slurmrestd undefined error"),
-                error.get("error_number", -1),
-                error["description"],
-                error["source"],
-            )
+            raise err
         else:
-            logger.error("slurmrestd query %s errors: %s", query, result["errors"])
-            abort(500, f"slurmrestd errors: {str(result['errors'])}")
-    if "warnings" not in result:
-        logger.error(
-            "Unable to extract warnings from slurmrestd response to %s, unsupported "
-            "Slurm version?",
-            query,
-        )
-    elif len(result["warnings"]):
-        logger.warning("slurmrestd query %s warnings: %s", query, result["warnings"])
-    return result[key]
+            msg = f"{err.description} ({err.source})"
+            if err.error != -1:
+                msg += f" [{err.message}/{err.error}]"
+            logger.error("slurmrestd query %s error: %s", query, msg)
+            abort(500, f"slurmrestd error: {msg}")
 
 
 def filter_item_fields(item: Dict, selection: Union[List[str]]):
@@ -191,7 +156,7 @@ def _get_job(job):
                 True,
             )[0]
         )
-    except SlurmwebRestdError as err:
+    except SlurmrestdInternalError as err:
         if err.error != 2017:
             logger.error("slurmrestd query %s errors: %s", query, err)
             abort(500, f"slurmrestd errors: {str(err)}")
@@ -208,7 +173,7 @@ def _get_node(name):
             "nodes",
             True,
         )[0]
-    except SlurmwebRestdError as err:
+    except SlurmrestdInternalError as err:
         if err.description.startswith("Failure to query node "):
             msg = f"Node {name} not found"
             logger.warning(msg)

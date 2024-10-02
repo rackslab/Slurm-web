@@ -15,6 +15,7 @@ from . import SlurmwebWebApp
 from ..version import get_version
 from ..views import SlurmwebAppRoute
 from ..views import agent as views
+from ..slurmrestd import Slurmrestd
 from ..cache import CachingService
 
 logger = logging.getLogger(__name__)
@@ -64,6 +65,8 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         except RacksDBFormatError as err:
             logger.critical("Unable to load RacksDB database: %s", err)
             sys.exit(1)
+
+        self.slurmrestd = Slurmrestd(self.settings.slurmrestd.socket)
 
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)
