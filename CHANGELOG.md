@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- agent: Return RacksDB infrastructure name in `/info` endpoint in complement of
-  the cluster name.
+- agent:
+  - Return RacksDB infrastructure name in `/info` endpoint in complement of
+    the cluster name.
+  - Add optional `/metrics` endpoint with various Slurm metrics in OpenMetrics
+    format designed to be scraped by Prometheus or compatible (#274).
 - gateway: Return RacksDB infrastructure name of every clusters in
   `/clusters` endpoint.
 - frontend:
