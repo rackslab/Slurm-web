@@ -10,12 +10,14 @@ import logging
 from rfl.web.tokens import RFLTokenizedRBACWebApp
 from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
 from racksdb.web.app import RacksDBWebBlueprint
+from werkzeug.middleware import dispatcher
 
 from . import SlurmwebWebApp
 from ..version import get_version
 from ..views import SlurmwebAppRoute
 from ..views import agent as views
 from ..slurmrestd import SlurmrestdFilteredCached
+from ..metrics import register_collector
 from ..cache import CachingService
 
 logger = logging.getLogger(__name__)
@@ -104,3 +106,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         # Default RacksDB infrastructure is the cluster name.
         if self.settings.racksdb.infrastructure is None:
             self.settings.racksdb.infrastructure = self.settings.service.cluster
+
+        self.wsgi_app = dispatcher.DispatcherMiddleware(
+            self.wsgi_app, {"/metrics": register_collector(self.slurmrestd)}
+        )
