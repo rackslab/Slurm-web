@@ -8,19 +8,24 @@
 import unittest
 from unittest import mock
 import tempfile
-from pathlib import Path
 import os
-import warnings
-import copy
 
-import requests
-import json
 from flask import Blueprint
 from rfl.authentication.user import AuthenticatedUser
 
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
+from slurmweb.slurmrestd.errors import (
+    SlurmrestConnectionError,
+    SlurmrestdInvalidResponseError,
+)
+
+from .utils import (
+    all_slurm_versions,
+    mock_slurmrestd_responses,
+    SlurmwebAssetUnavailable,
+)
 
 CONF = """
 [service]
@@ -34,36 +39,6 @@ definition={policy_defs}
 vendor_roles={policy}
 """
 
-ASSETS = Path(__file__).parent.resolve() / ".." / "tests" / "assets"
-
-
-def slurm_versions():
-    for path in (ASSETS / "slurmrestd").iterdir():
-        yield path.name
-
-
-def load_asset(path: Path):
-    with open(ASSETS / path) as f:
-        return f.read()
-
-
-def load_json_asset(path: Path):
-    with open(ASSETS / path) as f:
-        return json.load(f)
-
-
-def all_slurm_versions(test):
-    """Split test with a subtest for every slurm versions"""
-
-    def inner(self, *args, **kwargs):
-        for slurm_version in slurm_versions():
-            with self.subTest(
-                msg=f"slurm {slurm_version}", slurm_version=slurm_version
-            ):
-                test(self, slurm_version, *args, **kwargs)
-
-    return inner
-
 
 class FakeRacksDBWebBlueprint(Blueprint):
     """Fake RacksDB web blueprint to avoid testing RacksDB in the scope of
@@ -71,59 +46,6 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
     def __init__(self, **kwargs):
         super().__init__("Fake RacksDB web blueprint", __name__)
-
-
-class SlurmwebAssetUnavailable(Exception):
-    pass
-
-
-def mock_slurmrestd_responses(mock_requests_session, slurm_version, assets):
-    responses = []
-    results = []
-
-    with open(ASSETS / f"slurmrestd/{slurm_version}/status.json") as fh:
-        requests_statuses = json.load(fh)
-
-    for asset_name, key in assets:
-        if asset_name not in requests_statuses:
-            warnings.warn(
-                f"Unable to find asset {asset_name} in requests status file for Slurm "
-                f"{slurm_version}"
-            )
-            raise SlurmwebAssetUnavailable()
-
-        is_json = True
-        if requests_statuses[asset_name]["content-type"] == "application/json":
-            asset = load_json_asset(f"slurmrestd/{slurm_version}/{asset_name}.json")
-            # Copy asset as it is modified during test processing and we need to keep
-            # original value for comparison.
-            original = copy.deepcopy(asset)
-        else:
-            is_json = False
-            asset = load_asset(f"slurmrestd/{slurm_version}/{asset_name}.txt")
-            original = asset
-        fake_response = mock.create_autospec(requests.Response)
-        fake_response.url = "/mocked/query"
-        fake_response.status_code = requests_statuses[asset_name]["status"]
-        fake_response.headers = {
-            "content-type": requests_statuses[asset_name]["content-type"]
-        }
-        if is_json:
-            fake_response.json = mock.Mock(return_value=asset)
-        else:
-            fake_response.text = mock.PropertyMock(return_value=asset)
-        responses.append(fake_response)
-        if key is not None:
-            results.append(original[key])
-        else:
-            results.append(original)
-
-    if len(responses) > 1:
-        mock_requests_session.return_value.get.side_effect = responses
-    else:
-        mock_requests_session.return_value.get.return_value = responses[0]
-
-    return results
 
 
 class TestAgent(unittest.TestCase):
@@ -186,6 +108,9 @@ class TestAgent(unittest.TestCase):
     # Generic routes (without slurmrestd requests)
     #
 
+    def mock_slurmrestd_responses(self, slurm_version, assets):
+        return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
+
     def test_version(self):
         response = self.client.get("/version")
         self.assertEqual(response.status_code, 200)
@@ -214,10 +139,9 @@ class TestAgent(unittest.TestCase):
     # General error cases
     #
 
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_slurmrestd_connection_error(self, mock_requests_session):
-        mock_requests_session.return_value.get.side_effect = (
-            requests.exceptions.ConnectionError("connection error")
+    def test_request_slurmrestd_connection_error(self):
+        self.app.slurmrestd.request = mock.Mock(
+            side_effect=SlurmrestConnectionError("connection error")
         )
         response = self.client.get(f"/v{get_version()}/jobs")
         self.assertEqual(response.status_code, 500)
@@ -230,12 +154,25 @@ class TestAgent(unittest.TestCase):
             },
         )
 
+    def test_request_slurmrestd_invalid_type(self):
+        self.app.slurmrestd.request = mock.Mock(
+            side_effect=SlurmrestdInvalidResponseError("invalid type")
+        )
+        response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 500,
+                "description": "Invalid response from slurmrestd: invalid type",
+                "name": "Internal Server Error",
+            },
+        )
+
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_slurmrestd_not_found(self, slurm_version, mock_requests_session):
+    def test_request_slurmrestd_not_found(self, slurm_version):
         try:
-            [slurm_not_found_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurm_not_found_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurm-not-found", None)],
             )
@@ -303,11 +240,10 @@ class TestAgent(unittest.TestCase):
     #
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_jobs(self, slurm_version, mock_requests_session):
+    def test_request_jobs(self, slurm_version):
         try:
-            [jobs_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-jobs", "jobs")]
+            [jobs_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jobs", "jobs")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -319,11 +255,9 @@ class TestAgent(unittest.TestCase):
             self.assertEqual(response.json[idx]["job_id"], jobs_asset[idx]["job_id"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_job_running(self, slurm_version, mock_requests_session):
+    def test_request_job_running(self, slurm_version):
         try:
-            [slurmdb_job_asset, slurm_job_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
             )
@@ -341,11 +275,9 @@ class TestAgent(unittest.TestCase):
         )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_job_pending(self, slurm_version, mock_requests_session):
+    def test_request_job_pending(self, slurm_version):
         try:
-            [slurmdb_job_asset, slurm_job_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-pending", "jobs"), ("slurm-job-pending", "jobs")],
             )
@@ -363,11 +295,9 @@ class TestAgent(unittest.TestCase):
         )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_job_completed(self, slurm_version, mock_requests_session):
+    def test_request_job_completed(self, slurm_version):
         try:
-            [slurmdb_job_asset, slurm_job_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-completed", "jobs"), ("slurm-job-completed", "jobs")],
             )
@@ -385,11 +315,9 @@ class TestAgent(unittest.TestCase):
         )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_job_archived(self, slurm_version, mock_requests_session):
+    def test_request_job_archived(self, slurm_version):
         try:
-            [slurmdb_job_asset, slurm_job_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-archived", "jobs"), ("slurm-job-archived", None)],
             )
@@ -406,11 +334,9 @@ class TestAgent(unittest.TestCase):
         self.assertNotIn("tres_req_str", response.json)
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_job_not_found(self, slurm_version, mock_requests_session):
+    def test_request_job_not_found(self, slurm_version):
         try:
-            [slurmdb_job_asset, slurm_job_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-unfound", "jobs"), ("slurm-job-unfound", None)],
             )
@@ -428,11 +354,10 @@ class TestAgent(unittest.TestCase):
         )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_nodes(self, slurm_version, mock_requests_session):
+    def test_request_nodes(self, slurm_version):
         try:
-            [nodes_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-nodes", "nodes")]
+            [nodes_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-nodes", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -444,11 +369,10 @@ class TestAgent(unittest.TestCase):
             self.assertEqual(response.json[idx]["name"], nodes_asset[idx]["name"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_idle(self, slurm_version, mock_requests_session):
+    def test_request_node_idle(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-idle", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-idle", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -459,11 +383,9 @@ class TestAgent(unittest.TestCase):
         self.assertIn("IDLE", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_allocated(self, slurm_version, mock_requests_session):
+    def test_request_node_allocated(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [node_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurm-node-allocated", "nodes")],
             )
@@ -476,11 +398,10 @@ class TestAgent(unittest.TestCase):
         self.assertIn("ALLOCATED", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_mixed(self, slurm_version, mock_requests_session):
+    def test_request_node_mixed(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-mixed", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-mixed", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -491,11 +412,10 @@ class TestAgent(unittest.TestCase):
         self.assertIn("MIXED", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_down(self, slurm_version, mock_requests_session):
+    def test_request_node_down(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-down", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-down", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -506,11 +426,10 @@ class TestAgent(unittest.TestCase):
         self.assertIn("DOWN", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_drained(self, slurm_version, mock_requests_session):
+    def test_request_node_drained(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-drain", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-drain", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -521,11 +440,10 @@ class TestAgent(unittest.TestCase):
         self.assertIn("DRAIN", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_draining(self, slurm_version, mock_requests_session):
+    def test_request_node_draining(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-draining", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-draining", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -536,11 +454,10 @@ class TestAgent(unittest.TestCase):
         self.assertIn("DRAINING", response.json["state"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_node_not_found(self, slurm_version, mock_requests_session):
+    def test_request_node_not_found(self, slurm_version):
         try:
-            [node_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-node-unfound", "nodes")]
+            [node_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-unfound", "nodes")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -556,11 +473,9 @@ class TestAgent(unittest.TestCase):
         )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_stats(self, slurm_version, mock_requests_session):
+    def test_request_stats(self, slurm_version):
         try:
-            [ping_asset, jobs_asset, nodes_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [ping_asset, jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [
                     ("slurm-ping", "meta"),
@@ -589,11 +504,9 @@ class TestAgent(unittest.TestCase):
         self.assertEqual(response.json["version"], ping_asset["Slurm"]["release"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_partitions(self, slurm_version, mock_requests_session):
+    def test_request_partitions(self, slurm_version):
         try:
-            [partitions_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [partitions_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurm-partitions", "partitions")],
             )
@@ -607,11 +520,10 @@ class TestAgent(unittest.TestCase):
             self.assertEqual(response.json[idx]["name"], partitions_asset[idx]["name"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_qos(self, slurm_version, mock_requests_session):
+    def test_request_qos(self, slurm_version):
         try:
-            [qos_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-qos", "qos")]
+            [qos_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-qos", "qos")]
             )
         except SlurmwebAssetUnavailable:
             return
@@ -623,11 +535,9 @@ class TestAgent(unittest.TestCase):
             self.assertEqual(response.json[idx]["name"], qos_asset[idx]["name"])
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_reservations(self, slurm_version, mock_requests_session):
+    def test_request_reservations(self, slurm_version):
         try:
-            [reservations_asset] = mock_slurmrestd_responses(
-                mock_requests_session,
+            [reservations_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurm-reservations", "reservations")],
             )
@@ -643,11 +553,10 @@ class TestAgent(unittest.TestCase):
             )
 
     @all_slurm_versions
-    @mock.patch("slurmweb.views.agent.requests.Session")
-    def test_request_accounts(self, slurm_version, mock_requests_session):
+    def test_request_accounts(self, slurm_version):
         try:
-            [accounts_asset] = mock_slurmrestd_responses(
-                mock_requests_session, slurm_version, [("slurm-accounts", "accounts")]
+            [accounts_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-accounts", "accounts")]
             )
         except SlurmwebAssetUnavailable:
             return
