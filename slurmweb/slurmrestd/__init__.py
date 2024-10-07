@@ -94,15 +94,15 @@ class Slurmrestd:
     def jobs(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
 
-    def ctldjob(self, job_id: int, **kwargs):
+    def _ctldjob(self, job_id: int, **kwargs):
         return self._request(
             f"/slurm/v{self.api_version}/job/{job_id}", "jobs", **kwargs
-        )
+        )[0]
 
-    def acctjob(self, job_id: int, **kwargs):
+    def _acctjob(self, job_id: int, **kwargs):
         return self._request(
             f"/slurmdb/v{self.api_version}/job/{job_id}", "jobs", **kwargs
-        )
+        )[0]
 
     def nodes(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
@@ -143,7 +143,7 @@ class SlurmrestdFiltered(Slurmrestd):
         self.filters = filters
 
     @staticmethod
-    def filter_item_fields(item: t.Dict, selection: t.Union[t.List[str]]):
+    def filter_item_fields(item: t.Dict, selection: t.Optional[t.List[str]]):
         for key in list(item.keys()):
             if key not in selection:
                 del item[key]
@@ -161,45 +161,55 @@ class SlurmrestdFiltered(Slurmrestd):
                 SlurmrestdFiltered.filter_item_fields(items, selection)
         return items
 
-    def jobs(self, **kwargs):
+    def jobs(self):
+        return SlurmrestdFiltered.filter_fields(super().jobs(), self.filters.jobs)
+
+    def _ctldjob(self, job_id: int, **kwargs):
         return SlurmrestdFiltered.filter_fields(
-            super().jobs(**kwargs), self.filters.jobs
+            super()._ctldjob(job_id, **kwargs), self.filters.ctldjob
         )
 
-    def ctldjob(self, job_id: int, **kwargs):
+    def _acctjob(self, job_id: int, **kwargs):
         return SlurmrestdFiltered.filter_fields(
-            super().ctldjob(job_id, **kwargs), self.filters.ctldjob
+            super()._acctjob(job_id, **kwargs), self.filters.acctjob
         )
 
-    def acctjob(self, job_id: int, **kwargs):
+    def job(self, job_id: int):
+        try:
+            result = self._acctjob(job_id)
+        except IndexError:
+            raise SlurmrestdNotFoundError(f"Job {job_id} not found")
+        # try to enrich result with additional fields from slurmctld
+        try:
+            result.update(self._ctldjob(job_id, ignore_notfound=True))
+        except SlurmrestdInternalError as err:
+            if err.error != 2017:
+                raise err
+            # pass the error, the job is just not available in ctld queue
+        return result
+
+    def nodes(self):
+        return SlurmrestdFiltered.filter_fields(super().nodes(), self.filters.nodes)
+
+    def node(self, node_name: str):
         return SlurmrestdFiltered.filter_fields(
-            super().acctjob(job_id, **kwargs), self.filters.acctjob
+            super().node(node_name), self.filters.node
         )
 
-    def nodes(self, **kwargs):
+    def partitions(self):
         return SlurmrestdFiltered.filter_fields(
-            super().nodes(**kwargs), self.filters.nodes
+            super().partitions(), self.filters.partitions
         )
 
-    def node(self, node_name: str, **kwargs):
+    def accounts(self):
         return SlurmrestdFiltered.filter_fields(
-            super().node(node_name, **kwargs), self.filters.node
+            super().accounts(), self.filters.accounts
         )
 
-    def partitions(self, **kwargs):
+    def reservations(self: str):
         return SlurmrestdFiltered.filter_fields(
-            super().partitions(**kwargs), self.filters.partitions
+            super().reservations(), self.filters.reservations
         )
 
-    def accounts(self, **kwargs):
-        return SlurmrestdFiltered.filter_fields(
-            super().accounts(**kwargs), self.filters.accounts
-        )
-
-    def reservations(self: str, **kwargs):
-        return SlurmrestdFiltered.filter_fields(
-            super().reservations(**kwargs), self.filters.reservations
-        )
-
-    def qos(self: str, **kwargs):
-        return SlurmrestdFiltered.filter_fields(super().qos(**kwargs), self.filters.qos)
+    def qos(self: str):
+        return SlurmrestdFiltered.filter_fields(super().qos(), self.filters.qos)

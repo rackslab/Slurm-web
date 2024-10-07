@@ -50,13 +50,9 @@ def permissions():
     )
 
 
-def slurmrest(
-    method: str, args: Tuple[Any] = (), raise_errors=False, ignore_notfound=False
-):
+def slurmrest(method: str, *args: Tuple[Any, ...]):
     try:
-        return getattr(current_app.slurmrestd, method)(
-            *args, ignore_notfound=ignore_notfound
-        )
+        return getattr(current_app.slurmrestd, method)(*args)
     except SlurmrestdNotFoundError as err:
         msg = f"URL not found on slurmrestd: {err}"
         logger.error(msg)
@@ -70,14 +66,11 @@ def slurmrest(
         logger.error(msg)
         abort(500, msg)
     except SlurmrestdInternalError as err:
-        if raise_errors:
-            raise err
-        else:
-            msg = f"slurmrestd error: {err.description} ({err.source})"
-            if err.error != -1:
-                msg += f" [{err.message}/{err.error}]"
-            logger.error(msg)
-            abort(500, msg)
+        msg = f"slurmrestd error: {err.description} ({err.source})"
+        if err.error != -1:
+            msg += f" [{err.message}/{err.error}]"
+        logger.error(msg)
+        abort(500, msg)
 
 
 def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[Any]):
@@ -112,40 +105,12 @@ def _cached_jobs():
     )
 
 
-def _get_job(job):
-    try:
-        result = slurmrest(
-            "acctjob",
-            (job,),
-        )[0]
-    except IndexError:
-        abort(404, f"Job {job} not found")
-    # try to enrich result with additional fields from slurmctld
-    try:
-        result.update(
-            slurmrest(
-                "ctldjob",
-                (job,),
-                True,
-                True,
-            )[0]
-        )
-    except SlurmrestdInternalError as err:
-        if err.error != 2017:
-            msg = f"slurmrestd error: {err.description} ({err.source})"
-            if err.error != -1:
-                msg += f" [{err.message}/{err.error}]"
-            logger.error(msg)
-            abort(500, msg)
-        # pass the error, the job is just not available in ctld queue
-    return result
-
-
 def _cached_job(job):
     return _cached_data(
         f"job-{job}",
         current_app.settings.cache.job,
-        _get_job,
+        slurmrest,
+        "job",
         job,
     )
 
@@ -165,7 +130,7 @@ def _cached_node(name):
         current_app.settings.cache.node,
         slurmrest,
         "node",
-        (name,),
+        name,
     )
 
 
