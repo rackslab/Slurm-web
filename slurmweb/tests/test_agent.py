@@ -140,7 +140,7 @@ class TestAgent(unittest.TestCase):
     #
 
     def test_request_slurmrestd_connection_error(self):
-        self.app.slurmrestd.request = mock.Mock(
+        self.app.slurmrestd._request = mock.Mock(
             side_effect=SlurmrestConnectionError("connection error")
         )
         response = self.client.get(f"/v{get_version()}/jobs")
@@ -155,7 +155,7 @@ class TestAgent(unittest.TestCase):
         )
 
     def test_request_slurmrestd_invalid_type(self):
-        self.app.slurmrestd.request = mock.Mock(
+        self.app.slurmrestd._request = mock.Mock(
             side_effect=SlurmrestdInvalidResponseError("invalid type")
         )
         response = self.client.get(f"/v{get_version()}/jobs")

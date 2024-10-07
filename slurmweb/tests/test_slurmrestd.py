@@ -27,7 +27,7 @@ from .utils import (
 
 class TestSlurmrestd(unittest.TestCase):
     def setUp(self):
-        self.slurmrestd = Slurmrestd(Path("/dev/null"))
+        self.slurmrestd = Slurmrestd(Path("/dev/null"), "1.0.0")
 
     def mock_slurmrestd_responses(self, slurm_version, assets):
         return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
@@ -41,7 +41,7 @@ class TestSlurmrestd(unittest.TestCase):
             )
         except SlurmwebAssetUnavailable:
             return
-        response = self.slurmrestd.request("/whatever", key="jobs")
+        response = self.slurmrestd._request("/whatever", key="jobs")
         self.assertEqual(response, asset)
 
     def test_request_connection_error(self):
@@ -52,7 +52,7 @@ class TestSlurmrestd(unittest.TestCase):
             SlurmrestConnectionError,
             "^test connection error$",
         ):
-            self.slurmrestd.request("/whatever", key="whatever")
+            self.slurmrestd._request("/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_internal_error(self, slurm_version):
@@ -69,7 +69,7 @@ class TestSlurmrestd(unittest.TestCase):
             r"^SlurwebRestdError\(slurmrestd undefined error, -1, Failure to query "
             r"node unexisting-node, _dump_nodes\)$",
         ):
-            self.slurmrestd.request("/whatever", key="whatever")
+            self.slurmrestd._request("/whatever", key="whatever")
 
     def test_request_slurm_invalid_content_type(self):
         fake_response = requests.Response()
@@ -81,7 +81,7 @@ class TestSlurmrestd(unittest.TestCase):
             SlurmrestdInvalidResponseError,
             "^Unsupported Content-Type for slurmrestd response None: text/plain$",
         ):
-            self.slurmrestd.request("/whatever", key="whatever")
+            self.slurmrestd._request("/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_not_found(self, slurm_version):
@@ -94,4 +94,4 @@ class TestSlurmrestd(unittest.TestCase):
             return
 
         with self.assertRaisesRegex(SlurmrestdNotFoundError, "^/mocked/query$"):
-            self.slurmrestd.request("/whatever", key="whatever")
+            self.slurmrestd._request("/whatever", key="whatever")
