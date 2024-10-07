@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Union, Callable, List, Any, Dict, Tuple
+from typing import Callable, List, Any, Tuple
 import logging
 
 from flask import Response, current_app, jsonify, abort, request
@@ -80,23 +80,6 @@ def slurmrest(
             abort(500, msg)
 
 
-def filter_item_fields(item: Dict, selection: Union[List[str]]):
-    for key in list(item.keys()):
-        if key not in selection:
-            del item[key]
-
-
-def filter_fields(selection: Union[List[str], None], func: Callable, *args: List[Any]):
-    items = func(*args)
-    if selection is not None:
-        if isinstance(items, list):
-            for item in items:
-                filter_item_fields(item, selection)
-        else:
-            filter_item_fields(items, selection)
-    return items
-
-
 def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[Any]):
     if not current_app.settings.cache.enabled:
         return func(*args)
@@ -124,8 +107,6 @@ def _cached_jobs():
     return _cached_data(
         "jobs",
         current_app.settings.cache.jobs,
-        filter_fields,
-        current_app.settings.filters.jobs,
         slurmrest,
         "jobs",
     )
@@ -133,9 +114,7 @@ def _cached_jobs():
 
 def _get_job(job):
     try:
-        result = filter_fields(
-            current_app.settings.filters.acctjob,
-            slurmrest,
+        result = slurmrest(
             "acctjob",
             (job,),
         )[0]
@@ -144,9 +123,7 @@ def _get_job(job):
     # try to enrich result with additional fields from slurmctld
     try:
         result.update(
-            filter_fields(
-                current_app.settings.filters.ctldjob,
-                slurmrest,
+            slurmrest(
                 "ctldjob",
                 (job,),
                 True,
@@ -177,8 +154,6 @@ def _cached_nodes():
     return _cached_data(
         "nodes",
         current_app.settings.cache.nodes,
-        filter_fields,
-        current_app.settings.filters.nodes,
         slurmrest,
         "nodes",
     )
@@ -198,8 +173,6 @@ def _cached_partitions():
     return _cached_data(
         "partitions",
         current_app.settings.cache.partitions,
-        filter_fields,
-        current_app.settings.filters.partitions,
         slurmrest,
         "partitions",
     )
@@ -209,8 +182,6 @@ def _cached_qos():
     return _cached_data(
         "qos",
         current_app.settings.cache.qos,
-        filter_fields,
-        current_app.settings.filters.qos,
         slurmrest,
         "qos",
     )
@@ -220,8 +191,6 @@ def _cached_reservations():
     return _cached_data(
         "reservations",
         current_app.settings.cache.reservations,
-        filter_fields,
-        current_app.settings.filters.reservations,
         slurmrest,
         "reservations",
     )
@@ -231,8 +200,6 @@ def _cached_accounts():
     return _cached_data(
         "accounts",
         current_app.settings.cache.accounts,
-        filter_fields,
-        current_app.settings.filters.accounts,
         slurmrest,
         "accounts",
     )

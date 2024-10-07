@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import typing as t
 from pathlib import Path
 import logging
 
@@ -18,6 +19,9 @@ from .errors import (
 )
 
 logger = logging.getLogger(__name__)
+
+if t.TYPE_CHECKING:
+    from rfl.settings import RuntimeSettings
 
 
 class Slurmrestd:
@@ -130,3 +134,72 @@ class Slurmrestd:
 
     def qos(self: str, **kwargs):
         return self._request(f"/slurmdb/v{self.api_version}/qos", "qos", **kwargs)
+
+
+class SlurmrestdFiltered(Slurmrestd):
+
+    def __init__(self, socket: Path, version: str, filters: "RuntimeSettings"):
+        super().__init__(socket, version)
+        self.filters = filters
+
+    @staticmethod
+    def filter_item_fields(item: t.Dict, selection: t.Union[t.List[str]]):
+        for key in list(item.keys()):
+            if key not in selection:
+                del item[key]
+
+    @staticmethod
+    def filter_fields(
+        items: t.Union[t.List, t.Dict],
+        selection: t.Optional[t.List[str]],
+    ):
+        if selection is not None:
+            if isinstance(items, list):
+                for item in items:
+                    SlurmrestdFiltered.filter_item_fields(item, selection)
+            else:
+                SlurmrestdFiltered.filter_item_fields(items, selection)
+        return items
+
+    def jobs(self, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().jobs(**kwargs), self.filters.jobs
+        )
+
+    def ctldjob(self, job_id: int, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().ctldjob(job_id, **kwargs), self.filters.ctldjob
+        )
+
+    def acctjob(self, job_id: int, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().acctjob(job_id, **kwargs), self.filters.acctjob
+        )
+
+    def nodes(self, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().nodes(**kwargs), self.filters.nodes
+        )
+
+    def node(self, node_name: str, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().node(node_name, **kwargs), self.filters.node
+        )
+
+    def partitions(self, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().partitions(**kwargs), self.filters.partitions
+        )
+
+    def accounts(self, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().accounts(**kwargs), self.filters.accounts
+        )
+
+    def reservations(self: str, **kwargs):
+        return SlurmrestdFiltered.filter_fields(
+            super().reservations(**kwargs), self.filters.reservations
+        )
+
+    def qos(self: str, **kwargs):
+        return SlurmrestdFiltered.filter_fields(super().qos(**kwargs), self.filters.qos)
