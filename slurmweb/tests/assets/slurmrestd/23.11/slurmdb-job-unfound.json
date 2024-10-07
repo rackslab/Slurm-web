@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/dbv0.0.39",
+      "name": "Slurm OpenAPI DB v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[748636193] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 23,
+        "micro": 10,
+        "minor": 11
+      },
+      "release": "23.11.10"
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "description": "slurmdb_jobs_get(0x7fba7c00fdc0) found nothing",
+      "source": "_dump_jobs"
+    }
+  ],
+  "jobs": []
+}

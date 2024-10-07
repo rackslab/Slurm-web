@@ -46,17 +46,12 @@ def query_slurmrestd(session: requests.Session, prefix: str, query: str) -> Any:
     except requests.exceptions.ConnectionError as err:
         raise RuntimeError(f"Unable to connect to slurmrestd: {err}")
 
-    content_type = response.headers.get("content-type")
-    if content_type != "application/json":
-        raise RuntimeError(
-            f"Unsupported Content-Type for slurmrestd response {response.url}: "
-            f"{content_type}"
-        )
-    return response.json()
+    return response.text, response.headers.get("content-type"), response.status_code
 
 
 def dump_slurmrestd_query(
     session: requests.Session,
+    requests_statuses,
     prefix: str,
     query: str,
     assets_path: Path,
@@ -67,19 +62,35 @@ def dump_slurmrestd_query(
 ) -> Any:
     """Send GET HTTP request to slurmrestd and save JSON result in assets directory."""
 
-    asset = assets_path / f"{asset_name}.json"
-    if asset.exists() and skip_exist:
+    if len(list(assets_path.glob(f"{asset_name}.*"))) and skip_exist:
         return
-    data = query_slurmrestd(session, prefix, query)
+
+    text, content_type, status = query_slurmrestd(session, prefix, query)
+
+    if asset_name not in requests_statuses:
+        requests_statuses[asset_name] = {}
+    requests_statuses[asset_name]["content-type"] = content_type
+    requests_statuses[asset_name]["status"] = status
+
+    if content_type == "application/json":
+        asset = assets_path / f"{asset_name}.json"
+        data = json.loads(text)
+    else:
+        asset = assets_path / f"{asset_name}.txt"
+        data = text
+
     if asset.exists():
         logger.warning("Asset %s already exists, skipping dump", asset)
     else:
         with open(asset, "w+") as fh:
-            _data = data
-            if limit_dump and limit_key:
-                _data = data.copy()
-                _data[limit_key] = _data[limit_key][:limit_dump]
-            fh.write(json.dumps(_data, indent=2))
+            if content_type == "application/json":
+                _data = data
+                if limit_dump and limit_key:
+                    _data = data.copy()
+                    _data[limit_key] = _data[limit_key][:limit_dump]
+                json.dump(_data, fh, indent=2)
+            else:
+                fh.write(data)
     return data
 
 
@@ -92,7 +103,8 @@ def crawl_slurmrestd(socket: Path) -> None:
     session.mount(prefix, SlurmrestdUnixAdapter(socket))
 
     # Get Slurm version
-    ping = query_slurmrestd(session, prefix, f"/slurm/v{api}/ping")
+    text, _, _ = query_slurmrestd(session, prefix, f"/slurm/v{api}/ping")
+    ping = json.loads(text)
     release = ping["meta"]["Slurm"]["release"]
     version = release.rsplit(".", 1)[0]
     logger.info("Slurm version: %s release: %s", version, release)
@@ -102,18 +114,47 @@ def crawl_slurmrestd(socket: Path) -> None:
     if not assets_path.exists():
         assets_path.mkdir(parents=True)
 
+    # Save requests status
+    status_file = assets_path / "status.json"
+    if status_file.exists():
+        with open(status_file) as fh:
+            requests_statuses = json.load(fh)
+    else:
+        requests_statuses = {}
+
     # Download ping
     dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
         f"/slurm/v{api}/ping",
         assets_path,
         "slurm-ping",
     )
 
+    # Download URL not found for both slurm and slurmdb
+    dump_slurmrestd_query(
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurm/v{api}/not-found",
+        assets_path,
+        "slurm-not-found",
+    )
+
+    dump_slurmrestd_query(
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurmdb/v{api}/not-found",
+        assets_path,
+        "slurmdb-not-found",
+    )
+
     # Download jobs
     jobs = dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
         f"/slurm/v{api}/jobs",
         assets_path,
@@ -127,6 +168,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         if _job["job_state"] == state:
             dump_slurmrestd_query(
                 session,
+                requests_statuses,
                 prefix,
                 f"/slurm/v{api}/job/{_job['job_id']}",
                 assets_path,
@@ -134,6 +176,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             )
             dump_slurmrestd_query(
                 session,
+                requests_statuses,
                 prefix,
                 f"/slurmdb/v{api}/job/{_job['job_id']}",
                 assets_path,
@@ -142,33 +185,55 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     # Download specific jobs
 
-    lowest_job_id = jobs["jobs"][0]["job_id"]
+    min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
 
     for _job in jobs["jobs"]:
-        if _job["job_id"] < lowest_job_id:
-            lowest_job_id = _job["job_id"]
+        if _job["job_id"] < min_job_id:
+            min_job_id = _job["job_id"]
+        if _job["job_id"] > max_job_id:
+            max_job_id = _job["job_id"]
 
         for state in ["RUNNING", "PENDING", "COMPLETED"]:
             dump_job_state(state)
 
     dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
-        f"/slurm/v{api}/job/{lowest_job_id-1}",
+        f"/slurm/v{api}/job/{min_job_id-1}",
         assets_path,
         "slurm-job-archived",
     )
     dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
-        f"/slurmdb/v{api}/job/{lowest_job_id-1}",
+        f"/slurmdb/v{api}/job/{min_job_id-1}",
         assets_path,
         "slurmdb-job-archived",
+    )
+
+    dump_slurmrestd_query(
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurm/v{api}/job/{max_job_id*2}",
+        assets_path,
+        "slurm-job-unfound",
+    )
+    dump_slurmrestd_query(
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurmdb/v{api}/job/{max_job_id*2}",
+        assets_path,
+        "slurmdb-job-unfound",
     )
 
     # Download nodes
     nodes = dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
         f"/slurm/v{api}/nodes",
         assets_path,
@@ -180,6 +245,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         if state in _node["state"]:
             dump_slurmrestd_query(
                 session,
+                requests_statuses,
                 prefix,
                 f"/slurm/v{api}/node/{_node['name']}",
                 assets_path,
@@ -194,6 +260,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Request node not found
     dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
         f"/slurm/v{api}/node/unexisting-node",
         assets_path,
@@ -202,27 +269,31 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     # Download partitions
     dump_slurmrestd_query(
-        session, prefix, f"/slurm/v{api}/partitions", assets_path, "slurm-partitions"
+        session, requests_statuses, prefix, f"/slurm/v{api}/partitions", assets_path, "slurm-partitions"
     )
 
     # Download qos
     dump_slurmrestd_query(
-        session, prefix, f"/slurmdb/v{api}/qos", assets_path, "slurm-qos"
+        session, requests_statuses, prefix, f"/slurmdb/v{api}/qos", assets_path, "slurm-qos"
     )
 
     # Download accounts
     dump_slurmrestd_query(
-        session, prefix, f"/slurmdb/v{api}/accounts", assets_path, "slurm-accounts"
+        session, requests_statuses, prefix, f"/slurmdb/v{api}/accounts", assets_path, "slurm-accounts"
     )
 
     # Download reservations
     dump_slurmrestd_query(
         session,
+        requests_statuses,
         prefix,
         f"/slurm/v{api}/reservations",
         assets_path,
         "slurm-reservations",
     )
+
+    with open(status_file, "w+") as fh:
+        json.dump(requests_statuses, fh, indent=2)
 
 
 def admin_user(cluster: str):
@@ -327,6 +398,8 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     if not assets_path.exists():
         assets_path.mkdir(parents=True)
 
+    # Save requests status and mimetype
+
     dump_component_query(url, "/api/clusters", headers, assets_path, "clusters")
     dump_component_query(url, "/api/users", headers, assets_path, "users")
     dump_component_query(
@@ -342,7 +415,7 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
         skip_exist=False,
     )
 
-    lowest_job_id = jobs[0]["job_id"]
+    min_job_id = jobs[0]["job_id"]
 
     def dump_job_state() -> None:
         if _job["job_state"] == state:
@@ -355,18 +428,20 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
             )
 
     for _job in jobs:
-        if _job["job_id"] < lowest_job_id:
-            lowest_job_id = _job["job_id"]
+        if _job["job_id"] < min_job_id:
+            min_job_id = _job["job_id"]
         for state in ["PENDING", "RUNNING", "COMPLETED"]:
             dump_job_state()
 
     dump_component_query(
         url,
-        f"/api/agents/{cluster}/job/{lowest_job_id-1}",
+        f"/api/agents/{cluster}/job/{min_job_id-1}",
         headers,
         assets_path,
         "job-archived",
     )
+
+    # FIXME: Download unknown job
 
     nodes = dump_component_query(
         url,
@@ -391,6 +466,8 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     for _node in nodes:
         for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
             dump_node_state()
+
+    # FIXME: download unknown node
 
     dump_component_query(
         url, f"/api/agents/{cluster}/partitions", headers, assets_path, "partitions"
@@ -434,6 +511,8 @@ def crawl_agent(port: int, token: str) -> None:
     dump_component_query(
         url, f"/v{get_version()}/accounts", headers, assets_path, "accounts"
     )
+
+    # FIXME: Download unknown job/node
 
 
 def main() -> None:

@@ -1,0 +1,94 @@
+{
+  "slurm-ping": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-not-found": {
+    "content-type": "text/plain",
+    "status": 404
+  },
+  "slurmdb-not-found": {
+    "content-type": "text/plain",
+    "status": 404
+  },
+  "slurm-jobs": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-archived": {
+    "content-type": "application/json",
+    "status": 404
+  },
+  "slurmdb-job-archived": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-unfound": {
+    "content-type": "application/json",
+    "status": 404
+  },
+  "slurmdb-job-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-partitions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-qos": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-accounts": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-reservations": {
+    "content-type": "application/json",
+    "status": 200
+  }
+}

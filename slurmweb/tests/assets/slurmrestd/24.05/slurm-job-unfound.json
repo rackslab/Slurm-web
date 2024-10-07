@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "plugin": {
+      "type": "openapi/v0.0.39",
+      "name": "Slurm OpenAPI v0.0.39",
+      "data_parser": "v0.0.39"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[748604057] (fd 8)"
+    },
+    "Slurm": {
+      "version": {
+        "major": 24,
+        "micro": 3,
+        "minor": 5
+      },
+      "release": "24.05.3"
+    }
+  },
+  "errors": [
+    {
+      "description": "Unable to query JobId=5304",
+      "error_number": 2017,
+      "error": "Invalid job id specified",
+      "source": "_handle_job_get"
+    }
+  ],
+  "warnings": []
+}
