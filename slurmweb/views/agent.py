@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Union, Callable, List, Any, Dict
+from typing import Union, Callable, List, Any, Dict, Tuple
 import logging
 
 from flask import Response, current_app, jsonify, abort, request
@@ -50,9 +50,13 @@ def permissions():
     )
 
 
-def slurmrest(query, key, raise_errors=False, ignore_notfound=False):
+def slurmrest(
+    method: str, args: Tuple[Any] = (), raise_errors=False, ignore_notfound=False
+):
     try:
-        return current_app.slurmrestd.request(query, key, ignore_notfound)
+        return getattr(current_app.slurmrestd, method)(
+            *args, ignore_notfound=ignore_notfound
+        )
     except SlurmrestdNotFoundError as err:
         msg = f"URL not found on slurmrestd: {err}"
         logger.error(msg)
@@ -69,11 +73,11 @@ def slurmrest(query, key, raise_errors=False, ignore_notfound=False):
         if raise_errors:
             raise err
         else:
-            msg = f"{err.description} ({err.source})"
+            msg = f"slurmrestd error: {err.description} ({err.source})"
             if err.error != -1:
                 msg += f" [{err.message}/{err.error}]"
-            logger.error("slurmrestd query %s error: %s", query, msg)
-            abort(500, f"slurmrestd error: {msg}")
+            logger.error(msg)
+            abort(500, msg)
 
 
 def filter_item_fields(item: Dict, selection: Union[List[str]]):
@@ -107,17 +111,12 @@ def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[An
         abort(500, f"Cache error: {str(err)}")
 
 
-def _get_version():
-    return slurmrest(f"/slurm/v{current_app.settings.slurmrestd.version}/ping", "meta")[
-        "Slurm"
-    ]
-
-
 def _cached_version():
     return _cached_data(
         "version",
         current_app.settings.cache.version,
-        _get_version,
+        slurmrest,
+        "version",
     )
 
 
@@ -128,7 +127,6 @@ def _cached_jobs():
         filter_fields,
         current_app.settings.filters.jobs,
         slurmrest,
-        f"/slurm/v{current_app.settings.slurmrestd.version}/jobs",
         "jobs",
     )
 
@@ -138,28 +136,30 @@ def _get_job(job):
         result = filter_fields(
             current_app.settings.filters.acctjob,
             slurmrest,
-            f"/slurmdb/v{current_app.settings.slurmrestd.version}/job/{job}",
-            "jobs",
+            "acctjob",
+            (job,),
         )[0]
     except IndexError:
         abort(404, f"Job {job} not found")
     # try to enrich result with additional fields from slurmctld
-    query = f"/slurm/v{current_app.settings.slurmrestd.version}/job/{job}"
     try:
         result.update(
             filter_fields(
                 current_app.settings.filters.ctldjob,
                 slurmrest,
-                query,
-                "jobs",
+                "ctldjob",
+                (job,),
                 True,
                 True,
             )[0]
         )
     except SlurmrestdInternalError as err:
         if err.error != 2017:
-            logger.error("slurmrestd query %s errors: %s", query, err)
-            abort(500, f"slurmrestd errors: {str(err)}")
+            msg = f"slurmrestd error: {err.description} ({err.source})"
+            if err.error != -1:
+                msg += f" [{err.message}/{err.error}]"
+            logger.error(msg)
+            abort(500, msg)
         # pass the error, the job is just not available in ctld queue
     return result
 
@@ -169,8 +169,8 @@ def _get_node(name):
         return filter_fields(
             current_app.settings.filters.node,
             slurmrest,
-            f"/slurm/v{current_app.settings.slurmrestd.version}/node/{name}",
-            "nodes",
+            "node",
+            (name,),
             True,
         )[0]
     except SlurmrestdInternalError as err:
@@ -200,7 +200,6 @@ def _cached_nodes():
         filter_fields,
         current_app.settings.filters.nodes,
         slurmrest,
-        f"/slurm/v{current_app.settings.slurmrestd.version}/nodes",
         "nodes",
     )
 
@@ -221,7 +220,6 @@ def _cached_partitions():
         filter_fields,
         current_app.settings.filters.partitions,
         slurmrest,
-        f"/slurm/v{current_app.settings.slurmrestd.version}/partitions",
         "partitions",
     )
 
@@ -233,7 +231,6 @@ def _cached_qos():
         filter_fields,
         current_app.settings.filters.qos,
         slurmrest,
-        f"/slurmdb/v{current_app.settings.slurmrestd.version}/qos",
         "qos",
     )
 
@@ -245,7 +242,6 @@ def _cached_reservations():
         filter_fields,
         current_app.settings.filters.reservations,
         slurmrest,
-        f"/slurm/v{current_app.settings.slurmrestd.version}/reservations",
         "reservations",
     )
 
@@ -257,7 +253,6 @@ def _cached_accounts():
         filter_fields,
         current_app.settings.filters.accounts,
         slurmrest,
-        f"/slurmdb/v{current_app.settings.slurmrestd.version}/accounts",
         "accounts",
     )
 

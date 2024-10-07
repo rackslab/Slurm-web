@@ -66,7 +66,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             logger.critical("Unable to load RacksDB database: %s", err)
             sys.exit(1)
 
-        self.slurmrestd = Slurmrestd(self.settings.slurmrestd.socket)
+        self.slurmrestd = Slurmrestd(
+            self.settings.slurmrestd.socket, self.settings.slurmrestd.version
+        )
 
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)

@@ -22,10 +22,11 @@ logger = logging.getLogger(__name__)
 
 class Slurmrestd:
 
-    def __init__(self, socket: Path):
+    def __init__(self, socket: Path, version: str):
         self.session = requests.Session()
         self.prefix = "http+unix://slurmrestd/"
         self.session.mount(self.prefix, SlurmrestdUnixAdapter(socket))
+        self.api_version = version
 
     def _validate_response(self, response, ignore_notfound) -> None:
         """Validate slurmrestd response or abort agent resquest with error."""
@@ -52,7 +53,7 @@ class Slurmrestd:
                 f"{content_type}"
             )
 
-    def request(self, query, key, ignore_notfound=False):
+    def _request(self, query, key, ignore_notfound=False):
         try:
             response = self.session.get(f"{self.prefix}/{query}")
         except requests.exceptions.ConnectionError as err:
@@ -80,3 +81,47 @@ class Slurmrestd:
                 "slurmrestd query %s warnings: %s", query, result["warnings"]
             )
         return result[key]
+
+    def version(self, **kwargs):
+        return self._request(f"/slurm/v{self.api_version}/ping", "meta", **kwargs)[
+            "Slurm"
+        ]
+
+    def jobs(self, **kwargs):
+        return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
+
+    def ctldjob(self, job_id: int, **kwargs):
+        return self._request(
+            f"/slurm/v{self.api_version}/job/{job_id}", "jobs", **kwargs
+        )
+
+    def acctjob(self, job_id: int, **kwargs):
+        return self._request(
+            f"/slurmdb/v{self.api_version}/job/{job_id}", "jobs", **kwargs
+        )
+
+    def nodes(self, **kwargs):
+        return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
+
+    def node(self, node_name: str, **kwargs):
+        return self._request(
+            f"/slurm/v{self.api_version}/node/{node_name}", "nodes", **kwargs
+        )
+
+    def partitions(self, **kwargs):
+        return self._request(
+            f"/slurm/v{self.api_version}/partitions", "partitions", **kwargs
+        )
+
+    def accounts(self, **kwargs):
+        return self._request(
+            f"/slurmdb/v{self.api_version}/accounts", "accounts", **kwargs
+        )
+
+    def reservations(self: str, **kwargs):
+        return self._request(
+            f"/slurm/v{self.api_version}/reservations", "reservations", **kwargs
+        )
+
+    def qos(self: str, **kwargs):
+        return self._request(f"/slurmdb/v{self.api_version}/qos", "qos", **kwargs)
