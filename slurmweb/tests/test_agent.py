@@ -545,16 +545,13 @@ class TestAgent(unittest.TestCase):
         except SlurmwebAssetUnavailable:
             return
         response = self.client.get(f"/v{get_version()}/node/not-found")
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(
             response.json,
             {
-                "code": 500,
-                "description": (
-                    "slurmrestd errors: [{'description': 'Failure to query node "
-                    "unexisting-node', 'source': '_dump_nodes'}]"
-                ),
-                "name": "Internal Server Error",
+                "code": 404,
+                "description": "Node not-found not found",
+                "name": "Not Found",
             },
         )
 
