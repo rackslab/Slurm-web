@@ -467,7 +467,7 @@ class TestAgent(unittest.TestCase):
             response.json,
             {
                 "code": 404,
-                "description": "Node not-found not found",
+                "description": "URL not found on slurmrestd: Node not-found not found",
                 "name": "Not Found",
             },
         )
