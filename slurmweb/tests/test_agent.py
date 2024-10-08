@@ -348,7 +348,7 @@ class TestAgent(unittest.TestCase):
             response.json,
             {
                 "code": 404,
-                "description": "Job 1 not found",
+                "description": "URL not found on slurmrestd: Job 1 not found",
                 "name": "Not Found",
             },
         )
