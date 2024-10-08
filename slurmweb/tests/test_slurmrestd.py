@@ -95,3 +95,115 @@ class TestSlurmrestd(unittest.TestCase):
 
         with self.assertRaisesRegex(SlurmrestdNotFoundError, "^/mocked/query$"):
             self.slurmrestd._request("/whatever", key="whatever")
+
+    @all_slurm_versions
+    def test_version(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-ping", "meta")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        version = self.slurmrestd.version()
+        self.assertCountEqual(version, asset["Slurm"])
+
+    @all_slurm_versions
+    def test_jobs(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jobs", "jobs")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        jobs = self.slurmrestd.jobs()
+        self.assertCountEqual(jobs, asset)
+
+    @all_slurm_versions
+    def test_nodes(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-nodes", "nodes")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        nodes = self.slurmrestd.nodes()
+        self.assertCountEqual(nodes, asset)
+
+    @all_slurm_versions
+    def test_node(self, slurm_version):
+        # We can use slurm-node-allocated asset for this test.
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-allocated", "nodes")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        node = self.slurmrestd.node("node1")
+        self.assertCountEqual(node, asset[0])
+
+    @all_slurm_versions
+    def test_node_not_found(self, slurm_version):
+        # We can use slurm-node-unfound asset for this test.
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-unfound", None)]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        with self.assertRaisesRegex(
+            SlurmrestdNotFoundError, "^Node unknown not found$"
+        ):
+            self.slurmrestd.node("unknown")
+
+    @all_slurm_versions
+    def test_partitions(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-partitions", "partitions")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        partitions = self.slurmrestd.partitions()
+        self.assertCountEqual(partitions, asset)
+
+    @all_slurm_versions
+    def test_accounts(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-accounts", "accounts")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        accounts = self.slurmrestd.accounts()
+        self.assertCountEqual(accounts, asset)
+
+    @all_slurm_versions
+    def test_reservations(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-reservations", "reservations")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        reservations = self.slurmrestd.reservations()
+        self.assertCountEqual(reservations, asset)
+
+    @all_slurm_versions
+    def test_qos(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-qos", "qos")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        qos = self.slurmrestd.qos()
+        self.assertCountEqual(qos, asset)
