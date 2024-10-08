@@ -104,9 +104,14 @@ class Slurmrestd:
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
 
     def node(self, node_name: str, **kwargs):
-        return self._request(
-            f"/slurm/v{self.api_version}/node/{node_name}", "nodes", **kwargs
-        )
+        try:
+            return self._request(
+                f"/slurm/v{self.api_version}/node/{node_name}", "nodes", **kwargs
+            )[0]
+        except SlurmrestdInternalError as err:
+            if err.description.startswith("Failure to query node "):
+                raise SlurmrestdNotFoundError(f"Node {node_name} not found")
+            raise err
 
     def partitions(self, **kwargs):
         return self._request(

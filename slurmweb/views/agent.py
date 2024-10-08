@@ -164,26 +164,6 @@ def _get_job(job):
     return result
 
 
-def _get_node(name):
-    try:
-        return filter_fields(
-            current_app.settings.filters.node,
-            slurmrest,
-            "node",
-            (name,),
-            True,
-        )[0]
-    except SlurmrestdInternalError as err:
-        if err.description.startswith("Failure to query node "):
-            msg = f"Node {name} not found"
-            logger.warning(msg)
-            abort(404, msg)
-        else:
-            msg = f"slurmrestd errors: {str(err)}"
-            logger.error(msg)
-            abort(500, msg)
-
-
 def _cached_job(job):
     return _cached_data(
         f"job-{job}",
@@ -208,8 +188,9 @@ def _cached_node(name):
     return _cached_data(
         f"node-{name}",
         current_app.settings.cache.node,
-        _get_node,
-        name,
+        slurmrest,
+        "node",
+        (name,),
     )
 
 
