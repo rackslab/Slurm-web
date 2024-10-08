@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Callable, List, Any, Tuple
+from typing import Any, Tuple
 import logging
 
 from flask import Response, current_app, jsonify, abort, request
@@ -71,103 +71,10 @@ def slurmrest(method: str, *args: Tuple[Any, ...]):
             msg += f" [{err.message}/{err.error}]"
         logger.error(msg)
         abort(500, msg)
-
-
-def _cached_data(cache_key: str, expiration: int, func: Callable, *args: List[Any]):
-    if not current_app.settings.cache.enabled:
-        return func(*args)
-    try:
-        data = current_app.cache.get(cache_key)
-        if data is None:
-            data = func(*args)
-            current_app.cache.put(cache_key, data, expiration)
-        return data
     except SlurmwebCacheError as err:
-        logger.error("Cache error: %s", str(err))
-        abort(500, f"Cache error: {str(err)}")
-
-
-def _cached_version():
-    return _cached_data(
-        "version",
-        current_app.settings.cache.version,
-        slurmrest,
-        "version",
-    )
-
-
-def _cached_jobs():
-    return _cached_data(
-        "jobs",
-        current_app.settings.cache.jobs,
-        slurmrest,
-        "jobs",
-    )
-
-
-def _cached_job(job):
-    return _cached_data(
-        f"job-{job}",
-        current_app.settings.cache.job,
-        slurmrest,
-        "job",
-        job,
-    )
-
-
-def _cached_nodes():
-    return _cached_data(
-        "nodes",
-        current_app.settings.cache.nodes,
-        slurmrest,
-        "nodes",
-    )
-
-
-def _cached_node(name):
-    return _cached_data(
-        f"node-{name}",
-        current_app.settings.cache.node,
-        slurmrest,
-        "node",
-        name,
-    )
-
-
-def _cached_partitions():
-    return _cached_data(
-        "partitions",
-        current_app.settings.cache.partitions,
-        slurmrest,
-        "partitions",
-    )
-
-
-def _cached_qos():
-    return _cached_data(
-        "qos",
-        current_app.settings.cache.qos,
-        slurmrest,
-        "qos",
-    )
-
-
-def _cached_reservations():
-    return _cached_data(
-        "reservations",
-        current_app.settings.cache.reservations,
-        slurmrest,
-        "reservations",
-    )
-
-
-def _cached_accounts():
-    return _cached_data(
-        "accounts",
-        current_app.settings.cache.accounts,
-        slurmrest,
-        "accounts",
-    )
+        msg = f"Cache error: {str(err)}"
+        logger.error(msg)
+        abort(500, msg)
 
 
 @rbac_action("view-stats")
@@ -175,7 +82,7 @@ def stats():
     total = 0
     running = 0
 
-    version = _cached_version()
+    version = slurmrest("version")
 
     # Check Slurm version is supported or fail with HTTP/500
     if (
@@ -190,14 +97,14 @@ def stats():
         logger.error(error)
         abort(500, error)
 
-    for job in _cached_jobs():
+    for job in slurmrest("jobs"):
         total += 1
         if "RUNNING" in job["job_state"]:
             running += 1
 
     nodes = 0
     cores = 0
-    for node in _cached_nodes():
+    for node in slurmrest("nodes"):
         nodes += 1
         cores += node["cpus"]
     return jsonify(
@@ -211,39 +118,39 @@ def stats():
 
 @rbac_action("view-jobs")
 def jobs():
-    return jsonify(_cached_jobs())
+    return jsonify(slurmrest("jobs"))
 
 
 @rbac_action("view-jobs")
 def job(job: int):
-    return jsonify(_cached_job(job))
+    return jsonify(slurmrest("job", job))
 
 
 @rbac_action("view-nodes")
 def nodes():
-    return jsonify(_cached_nodes())
+    return jsonify(slurmrest("nodes"))
 
 
 @rbac_action("view-nodes")
 def node(name: str):
-    return jsonify(_cached_node(name))
+    return jsonify(slurmrest("node", name))
 
 
 @rbac_action("view-partitions")
 def partitions():
-    return jsonify(_cached_partitions())
+    return jsonify(slurmrest("partitions"))
 
 
 @rbac_action("view-qos")
 def qos():
-    return jsonify(_cached_qos())
+    return jsonify(slurmrest("qos"))
 
 
 @rbac_action("view-reservations")
 def reservations():
-    return jsonify(_cached_reservations())
+    return jsonify(slurmrest("reservations"))
 
 
 @rbac_action("view-accounts")
 def accounts():
-    return jsonify(_cached_accounts())
+    return jsonify(slurmrest("accounts"))

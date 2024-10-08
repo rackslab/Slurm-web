@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 if t.TYPE_CHECKING:
     from rfl.settings import RuntimeSettings
+    from ..cache import CachingService
 
 
 class Slurmrestd:
@@ -213,3 +214,62 @@ class SlurmrestdFiltered(Slurmrestd):
 
     def qos(self: str):
         return SlurmrestdFiltered.filter_fields(super().qos(), self.filters.qos)
+
+
+class SlurmrestdFilteredCached(SlurmrestdFiltered):
+
+    def __init__(
+        self,
+        socket: Path,
+        version: str,
+        filters: "RuntimeSettings",
+        cache: "RuntimeSettings",
+        service: "CachingService",
+    ):
+        super().__init__(socket, version, filters)
+        self.cache = cache
+        self.service = service
+
+    def _cached(
+        self,
+        cache_key: str,
+        expiration: int,
+        func: t.Callable,
+        *args: t.Tuple[t.Any, ...],
+        **kwargs: t.Dict[str, t.Any],
+    ) -> t.Any:
+        if not self.cache.enabled:
+            return func(*args, **kwargs)
+        data = self.service.get(cache_key)
+        if data is None:
+            data = func(*args, **kwargs)
+            self.service.put(cache_key, data, expiration)
+        return data
+
+    def jobs(self):
+        return self._cached("jobs", self.cache.jobs, super().jobs)
+
+    def job(self, job_id: int):
+        return self._cached(f"job-{job_id}", self.cache.job, super().job, job_id)
+
+    def nodes(self):
+        return self._cached("nodes", self.cache.nodes, super().nodes)
+
+    def node(self, node_name: str):
+        return self._cached(
+            f"node-{node_name}", self.cache.node, super().node, node_name
+        )
+
+    def partitions(self):
+        return self._cached("partitions", self.cache.partitions, super().partitions)
+
+    def accounts(self):
+        return self._cached("accounts", self.cache.accounts, super().accounts)
+
+    def reservations(self: str):
+        return self._cached(
+            "reservations", self.cache.reservations, super().reservations
+        )
+
+    def qos(self: str):
+        return self._cached("qos", self.cache.qos, super().qos)

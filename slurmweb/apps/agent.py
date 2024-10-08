@@ -15,7 +15,7 @@ from . import SlurmwebWebApp
 from ..version import get_version
 from ..views import SlurmwebAppRoute
 from ..views import agent as views
-from ..slurmrestd import SlurmrestdFiltered
+from ..slurmrestd import SlurmrestdFilteredCached
 from ..cache import CachingService
 
 logger = logging.getLogger(__name__)
@@ -66,12 +66,6 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             logger.critical("Unable to load RacksDB database: %s", err)
             sys.exit(1)
 
-        self.slurmrestd = SlurmrestdFiltered(
-            self.settings.slurmrestd.socket,
-            self.settings.slurmrestd.version,
-            self.settings.filters,
-        )
-
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)
             selected_roles_policy_path = self.settings.policy.roles
@@ -98,6 +92,14 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         else:
             logger.warning("Caching is disabled")
             self.cache = None
+
+        self.slurmrestd = SlurmrestdFilteredCached(
+            self.settings.slurmrestd.socket,
+            self.settings.slurmrestd.version,
+            self.settings.filters,
+            self.settings.cache,
+            self.cache,
+        )
 
         # Default RacksDB infrastructure is the cluster name.
         if self.settings.racksdb.infrastructure is None:
