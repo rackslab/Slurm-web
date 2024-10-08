@@ -92,8 +92,8 @@ def slurmrest(query, key, raise_errors=False, ignore_notfound=False):
         if raise_errors:
             error = result["errors"][0]
             raise SlurmwebRestdError(
-                error["error"],
-                error["error_number"],
+                error.get("error", "slurmrestd undefined error"),
+                error.get("error_number", -1),
                 error["description"],
                 error["source"],
             )
@@ -206,9 +206,17 @@ def _get_node(name):
             slurmrest,
             f"/slurm/v{current_app.settings.slurmrestd.version}/node/{name}",
             "nodes",
+            True,
         )[0]
-    except IndexError:
-        abort(404, f"Node {name} not found")
+    except SlurmwebRestdError as err:
+        if err.description.startswith("Failure to query node "):
+            msg = f"Node {name} not found"
+            logger.warning(msg)
+            abort(404, msg)
+        else:
+            msg = f"slurmrestd errors: {str(err)}"
+            logger.error(msg)
+            abort(500, msg)
 
 
 def _cached_job(job):
