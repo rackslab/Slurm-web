@@ -6,7 +6,7 @@
       "data_parser": "v0.0.39"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411490107] (fd 8)"
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[958925898] (fd 8)"
     },
     "Slurm": {
       "version": {
@@ -19,5 +19,43 @@
   },
   "errors": [],
   "warnings": [],
-  "reservations": []
+  "reservations": [
+    {
+      "accounts": "biology",
+      "burst_buffer": "",
+      "core_count": 8,
+      "core_specializations": [],
+      "end_time": 1728745200,
+      "features": "",
+      "flags": [
+        "IGNORE_JOBS",
+        "ANY_NODES",
+        "PART_NODES",
+        "SPEC_NODES",
+        "FLEX"
+      ],
+      "groups": "",
+      "licenses": "",
+      "max_start_delay": 0,
+      "name": "training",
+      "node_count": 4,
+      "node_list": "cn[1-4]",
+      "partition": "normal",
+      "purge_completed": {
+        "time": {
+          "set": true,
+          "infinite": false,
+          "number": 300
+        }
+      },
+      "start_time": 1728633600,
+      "watts": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres": "cpu=8",
+      "users": "cgross,msummers"
+    }
+  ]
 }

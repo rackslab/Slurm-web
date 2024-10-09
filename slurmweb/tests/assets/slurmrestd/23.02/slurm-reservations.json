@@ -19,5 +19,39 @@
   },
   "errors": [],
   "warnings": [],
-  "reservations": []
+  "reservations": [
+    {
+      "accounts": "biology",
+      "burst_buffer": "",
+      "core_count": 20,
+      "core_specializations": [],
+      "end_time": 1728745200,
+      "features": "",
+      "flags": [
+        "IGNORE_JOBS"
+      ],
+      "groups": "",
+      "licenses": "",
+      "max_start_delay": 0,
+      "name": "study",
+      "node_count": 10,
+      "node_list": "cn[001-010]",
+      "partition": "batch",
+      "purge_completed": {
+        "time": {
+          "set": true,
+          "infinite": false,
+          "number": 300
+        }
+      },
+      "start_time": 1728633600,
+      "watts": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres": "cpu=20",
+      "users": "cgross,msummers"
+    }
+  ]
 }
