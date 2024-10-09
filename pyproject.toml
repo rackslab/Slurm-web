@@ -48,6 +48,7 @@ slurm-web-gen-jwt-key = 'slurmweb.exec.genjwt:SlurmwebExecGenJWT.run'
 
 [tool.setuptools.packages.find]
 include = ['slurmweb*']
+exclude = ['slurmweb.tests']
 
 [project.urls]
 "Homepage" = "https://github.com/rackslab/slurm-web"
