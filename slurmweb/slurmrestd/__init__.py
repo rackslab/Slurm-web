@@ -95,6 +95,32 @@ class Slurmrestd:
     def jobs(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
 
+    def jobs_states(self):
+        result = {
+            "running": 0,
+            "completed": 0,
+            "completing": 0,
+            "cancelled": 0,
+            "pending": 0,
+            "unknown": 0,
+            "total": 0,
+        }
+        for job in self.jobs():
+            if job["job_state"] == "RUNNING":
+                result["running"] += 1
+            elif job["job_state"] == "COMPLETED":
+                result["completed"] += 1
+            elif job["job_state"] == "COMPLETING":
+                result["completing"] += 1
+            elif job["job_state"] == "CANCELLED":
+                result["cancelled"] += 1
+            elif job["job_state"] == "PENDING":
+                result["pending"] += 1
+            else:
+                result["unknown"] += 1
+            result["total"] += 1
+        return result
+
     def _ctldjob(self, job_id: int, **kwargs):
         return self._request(
             f"/slurm/v{self.api_version}/job/{job_id}", "jobs", **kwargs
@@ -107,6 +133,32 @@ class Slurmrestd:
 
     def nodes(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
+
+    def nodes_states(self):
+        result = {
+            "idle": 0,
+            "mixed": 0,
+            "allocated": 0,
+            "down": 0,
+            "drain": 0,
+            "unknown": 0,
+            "total": 0,
+        }
+        for node in self.nodes():
+            if "MIXED" in node["state"]:
+                result["mixed"] += 1
+            elif "ALLOCATED" in node["state"]:
+                result["allocated"] += 1
+            elif "DOWN" in node["state"]:
+                result["down"] += 1
+            elif "DRAIN" in node["state"]:
+                result["drain"] += 1
+            elif "IDLE" in node["state"]:
+                result["idle"] += 1
+            else:
+                result["unknown"] += 1
+            result["total"] += 1
+        return result
 
     def node(self, node_name: str, **kwargs):
         try:
