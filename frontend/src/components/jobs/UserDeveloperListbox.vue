@@ -33,6 +33,10 @@ const props = defineProps({
   cluster: {
     type: String,
     required: true
+  },
+  showError: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -178,7 +182,7 @@ const logins = useGatewayDataGetter<UserDescription[]>('users')
           </ListboxOptions>
         </div>
       </transition>
-      <p v-if="!isValid" class="mt-1 text-sm text-red-500">
+      <p v-if="props.showError" class="mt-1 text-sm capitalize text-red-500">
         {{ props.role }} {{ props.accountOrLogin }} is required
       </p>
     </div>

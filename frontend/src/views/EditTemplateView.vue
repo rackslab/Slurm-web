@@ -160,8 +160,18 @@ onMounted(async () => {
         </p>
         <p class="mt-1 text-sm text-gray-500">Users who can use the template</p>
 
-        <UserDeveloperListbox role="user" accountOrLogin="Accounts" :cluster="props.cluster" />
-        <UserDeveloperListbox role="user" accountOrLogin="Logins" :cluster="props.cluster" />
+        <UserDeveloperListbox
+          role="user"
+          accountOrLogin="Accounts"
+          :cluster="props.cluster"
+          :showError="templateStore.showUserAccountsError"
+        />
+        <UserDeveloperListbox
+          role="user"
+          accountOrLogin="Logins"
+          :cluster="props.cluster"
+          :showError="templateStore.showUserLoginsError"
+        />
 
         <hr class="my-5 border-gray-500" />
 
@@ -170,8 +180,18 @@ onMounted(async () => {
         </p>
         <p class="mt-1 text-sm text-gray-500">Developers who can edit the template</p>
 
-        <UserDeveloperListbox role="developer" accountOrLogin="Accounts" :cluster="props.cluster" />
-        <UserDeveloperListbox role="developer" accountOrLogin="Logins" :cluster="props.cluster" />
+        <UserDeveloperListbox
+          role="developer"
+          accountOrLogin="Accounts"
+          :cluster="props.cluster"
+          :showError="templateStore.showDeveloperAccountsError"
+        />
+        <UserDeveloperListbox
+          role="developer"
+          accountOrLogin="Logins"
+          :cluster="props.cluster"
+          :showError="templateStore.showDeveloperLoginsError"
+        />
 
         <div class="pt-14">
           <InputsTable createOrEdit="edit" />
