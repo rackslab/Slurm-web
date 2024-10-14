@@ -292,15 +292,13 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <router-link :to="{ name: 'create-template' }">
-            <button
-              @click="templateStore.addInput()"
-              type="button"
-              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Add
-            </button></router-link
+          <button
+            @click="templateStore.addInput()"
+            type="button"
+            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
           >
+            Add
+          </button>
         </div>
       </div>
     </div>
