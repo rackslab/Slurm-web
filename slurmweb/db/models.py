@@ -35,20 +35,10 @@ class BaseModel(peewee.Model):
 
 
 class Templates(BaseModel):
-    name = peewee.CharField(unique=True)
-    description = peewee.CharField()
-    batchScript = peewee.CharField()
-    author = peewee.CharField()
-
-    class Meta:
-        constraints = [
-            peewee.Check("LENGTH(name) > 0"),
-            peewee.Check("LENGTH(name) <= 50"),
-            peewee.Check("LENGTH(description) <= 100"),
-            peewee.Check("LENGTH(batchScript) > 0"),
-            peewee.Check("LENGTH(batchScript) <= 1000"),
-            peewee.Check("LENGTH(author) <= 50"),
-        ]
+    name = peewee.CharField(max_length=50, unique=True)
+    description = peewee.CharField(max_length=100)
+    batchScript = peewee.CharField(max_length=20000)
+    author = peewee.CharField(max_length=45)
 
 
 class Input_types(BaseModel):
@@ -56,41 +46,31 @@ class Input_types(BaseModel):
 
 
 class Inputs(BaseModel):
-    name = peewee.CharField(unique=True)
-    description = peewee.CharField()
+    name = peewee.CharField(max_length=50, unique=True)
+    description = peewee.CharField(max_length=100)
     default_value = peewee.CharField(null=True, max_length=45)
     minVal = peewee.FloatField(null=True)
     maxVal = peewee.FloatField(null=True)
-    regex = peewee.CharField(null=True)
+    regex = peewee.CharField(max_length=100, null=True)
     template = peewee.ForeignKeyField(Templates, backref="inputs")
     type = peewee.ForeignKeyField(Input_types, backref="inputs", null=False)
 
-    class Meta:
-        constraints = [
-            peewee.Check("LENGTH(name) > 0"),
-            peewee.Check("LENGTH(name) <= 50"),
-            peewee.Check("LENGTH(description) <= 100"),
-            peewee.Check("LENGTH(default_value) <= 45"),
-            peewee.Check("LENGTH(regex) <= 100"),
-            peewee.Check("minVal IS NULL OR maxVal IS NULL OR minVal <= maxVal"),
-        ]
-
 
 class Template_users_logins(BaseModel):
-    name = peewee.CharField()
+    name = peewee.CharField(max_length=50)
     template = peewee.ForeignKeyField(Templates, backref="users_logins")
 
 
 class Template_users_accounts(BaseModel):
-    name = peewee.CharField()
+    name = peewee.CharField(max_length=50)
     template = peewee.ForeignKeyField(Templates, backref="users_accounts")
 
 
 class Template_developers_logins(BaseModel):
-    name = peewee.CharField()
+    name = peewee.CharField(max_length=50)
     template = peewee.ForeignKeyField(Templates, backref="developers_logins")
 
 
 class Template_developers_accounts(BaseModel):
-    name = peewee.CharField()
+    name = peewee.CharField(max_length=50)
     template = peewee.ForeignKeyField(Templates, backref="developers_accounts")
