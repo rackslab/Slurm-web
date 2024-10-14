@@ -15,6 +15,7 @@ import { useAuthStore } from '@/stores/auth'
 
 import { useClusterDataGetter } from '@/composables/DataGetter'
 import { useTemplateStore } from '@/stores/template'
+import { onMounted } from 'vue'
 
 const templateStore = useTemplateStore()
 const authStore = useAuthStore()
@@ -32,6 +33,16 @@ const props = defineProps({
 })
 
 const templates = useClusterDataGetter<Template[]>('templates', props.cluster)
+
+onMounted(() => {
+  templateStore.showNameError = false
+  templateStore.showUserAccountsError = false
+  templateStore.showUserLoginsError = false
+  templateStore.showDeveloperAccountsError = false
+  templateStore.showDeveloperLoginsError = false
+  templateStore.showInputNameError = false
+  templateStore.showInputTypeError = false
+})
 </script>
 
 <template>
