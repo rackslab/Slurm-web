@@ -85,6 +85,7 @@ watch(store, (newValue) => {
     <div class="relative mt-2">
       <ListboxButton
         class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+        :class="{ 'ring-red-500 focus:ring-red-400': props.showError }"
       >
         <span class="flex items-center">
           <span class="block truncate">{{
@@ -92,7 +93,11 @@ watch(store, (newValue) => {
           }}</span>
         </span>
         <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-          <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronUpDownIcon
+            class="h-5 w-5 text-gray-400"
+            :class="{ 'text-red-500': props.showError }"
+            aria-hidden="true"
+          />
         </span>
       </ListboxButton>
 
