@@ -7,13 +7,12 @@ import {
   ListboxOptions
 } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useTemplateStore } from '@/stores/template'
 import { useClusterDataGetter, useGatewayDataGetter } from '@/composables/DataGetter'
 import type { UserDescription, AccountDescription } from '@/composables/GatewayAPI'
 
 const templateStore = useTemplateStore()
-const isValid = ref(true)
 
 const props = defineProps({
   role: {
@@ -59,16 +58,20 @@ const store = computed({
   }
 })
 
-watch(store, () => {
-  if (store.value.length == 0) {
-    isValid.value = false
-  } else {
-    isValid.value = true
-  }
-})
-
 const accounts = useClusterDataGetter<AccountDescription[]>('accounts', props.cluster)
 const logins = useGatewayDataGetter<UserDescription[]>('users')
+
+watch(store, (newValue) => {
+  if (props.accountOrLogin === 'Accounts' && props.role === 'user') {
+    templateStore.showUserAccountsError = newValue.length === 0
+  } else if (props.accountOrLogin === 'Logins' && props.role === 'user') {
+    templateStore.showUserLoginsError = newValue.length === 0
+  } else if (props.accountOrLogin === 'Accounts' && props.role === 'developer') {
+    templateStore.showDeveloperAccountsError = newValue.length === 0
+  } else if (props.accountOrLogin === 'Logins' && props.role === 'developer') {
+    templateStore.showDeveloperLoginsError = newValue.length === 0
+  }
+})
 </script>
 
 <template>
