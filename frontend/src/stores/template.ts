@@ -72,8 +72,19 @@ export const useTemplateStore = defineStore('template', () => {
   }
 
   function addInput() {
-    inputs.value.push(stagingInput.value)
-    resetInput()
+    if (stagingInput.value.name == '' || stagingInput.value.type == '') {
+      if (stagingInput.value.name == '') {
+        showInputNameError.value = true
+      }
+
+      if (stagingInput.value.type == '') {
+        showInputTypeError.value = true
+      }
+    } else {
+      inputs.value.push(stagingInput.value)
+      router.push({ name: 'create-template' })
+      resetInput()
+    }
   }
 
   function editInput(index: string) {
