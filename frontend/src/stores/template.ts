@@ -73,7 +73,7 @@ export const useTemplateStore = defineStore('template', () => {
     showInputTypeError.value = false
   }
 
-  function addInput() {
+  function addInput(formType: string) {
     if (stagingInput.value.name == '' || stagingInput.value.type == '') {
       if (stagingInput.value.name == '') {
         showInputNameError.value = true
@@ -84,14 +84,42 @@ export const useTemplateStore = defineStore('template', () => {
       }
     } else {
       inputs.value.push(stagingInput.value)
-      router.push({ name: 'create-template' })
+      if (formType == 'edit') {
+        console.log(inputs.value)
+        router.push({
+          name: 'edit-template',
+          params: { idTemplate: idTemplate.value }
+        })
+      } else {
+        console.log(inputs.value)
+        router.push({name:'create-template'})
+      }
+
       resetInput()
     }
   }
 
-  function editInput(index: string) {
-    inputs.value[Number(index)] = stagingInput.value
-    resetInput()
+  function editInput(index: string, type: string) {
+    if (stagingInput.value.name == '' || stagingInput.value.type == '') {
+      if (stagingInput.value.name == '') {
+        showInputNameError.value = true
+      }
+
+      if (stagingInput.value.type == '') {
+        showInputTypeError.value = true
+      }
+    } else {
+      inputs.value[Number(index)] = stagingInput.value
+      if (type == 'edit') {
+        router.push({
+          name: 'edit-template',
+          params: { idTemplate: idTemplate.value }
+        })
+      } else {
+        router.push({name:'create-template'})
+      }
+      resetInput()
+    }
   }
 
   function toggleUnsavedModal(form: string) {

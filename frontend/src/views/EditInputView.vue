@@ -317,24 +317,13 @@ onMounted(async () => {
             Cancel
           </button>
 
-          <router-link
-            :to="{
-              name: `${props.createOrEditInput}-template`,
-              params: {
-                ...(props.createOrEditInput === 'edit'
-                  ? { idTemplate: templateStore.idTemplate }
-                  : {})
-              }
-            }"
+          <button
+            @click="templateStore.editInput(props.indexInput, props.createOrEditInput)"
+            type="button"
+            class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
           >
-            <button
-              @click="templateStore.editInput(props.indexInput)"
-              type="button"
-              class="ml-2 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Save
-            </button></router-link
-          >
+            Save
+          </button>
         </div>
       </div>
     </div>
