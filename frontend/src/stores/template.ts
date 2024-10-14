@@ -69,6 +69,8 @@ export const useTemplateStore = defineStore('template', () => {
       regex: '',
       type: ''
     }
+    showInputNameError.value = false
+    showInputTypeError.value = false
   }
 
   function addInput() {
