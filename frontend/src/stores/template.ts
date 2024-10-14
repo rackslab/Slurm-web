@@ -36,6 +36,13 @@ export const useTemplateStore = defineStore('template', () => {
   const formType = ref('')
   const unsavedIsclicked = ref(false)
   const deleteIsClicked = ref(false)
+  const showNameError = ref(false)
+  const showBatchScriptError = ref(false)
+  const showUserAccountsError = ref(false)
+  const showUserLoginsError = ref(false)
+  const showDeveloperAccountsError = ref(false)
+  const showDeveloperLoginsError = ref(false)
+  const showError = ref(false)
 
   function resetTemplate() {
     idTemplate.value = ''
@@ -134,15 +141,22 @@ export const useTemplateStore = defineStore('template', () => {
     inputs,
     batchScript,
     stagingInput,
+    toggleModal,
+    formType,
+    deleteIsClicked,
+    unsavedIsclicked,
+    showNameError,
+    showBatchScriptError,
+    showUserAccountsError,
+    showUserLoginsError,
+    showDeveloperAccountsError,
+    showDeveloperLoginsError,
     resetTemplate,
     resetInput,
     addInput,
+    showError,
     editInput,
-    toggleModal,
     toggleUnsavedModal,
-    toggleDeleteModal,
-    formType,
-    deleteIsClicked,
-    unsavedIsclicked
+    toggleDeleteModal
   }
 })

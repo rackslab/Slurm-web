@@ -124,15 +124,17 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md">
             <input
-              @blur="isNameValid = templateStore.name.trim() !== ''"
-              :class="{ 'border-red-500 ring-red-500': !isNameValid }"
+              @blur="templateStore.showNameError = templateStore.name.trim() == ''"
+              :class="{ 'border-red-500 ring-red-500': templateStore.showNameError }"
               v-model="templateStore.name"
               type="text"
               name="templateName"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
               autofocus
             />
-            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
+            <p v-if="templateStore.showNameError" class="mt-1 text-sm text-red-500">
+              Name is required
+            </p>
           </div>
         </div>
 
@@ -216,8 +218,8 @@ onMounted(async () => {
           </div>
           <div class="relative mt-2 rounded-md">
             <textarea
-              @blur="isBatchScriptValid = templateStore.batchScript.trim() !== ''"
-              :class="{ 'border-red-500 ring-red-500': !isBatchScriptValid }"
+              @blur="templateStore.showBatchScriptError = templateStore.batchScript.trim() == ''"
+              :class="{ 'border-red-500 ring-red-500': templateStore.showBatchScriptError }"
               v-model="templateStore.batchScript"
               name="scriptBatch"
               cols="20"
@@ -225,7 +227,7 @@ onMounted(async () => {
               class="block h-[150px] w-full rounded-md border-0 py-1.5 pr-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6"
             >
             </textarea>
-            <p v-if="!isBatchScriptValid" class="mt-1 text-sm text-red-500">
+            <p v-if="templateStore.showBatchScriptError" class="mt-1 text-sm text-red-500">
               Batch Script is required
             </p>
           </div>
