@@ -100,7 +100,7 @@ const props = defineProps({
     :breadcrumb="[
       { title: 'Jobs', routeName: 'jobs' },
       { title: 'Templates', routeName: 'templates' },
-      { title: 'Edit' }
+      { title: 'Create' }
     ]"
   >
     <button
