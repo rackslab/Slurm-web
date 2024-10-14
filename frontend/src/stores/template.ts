@@ -43,6 +43,8 @@ export const useTemplateStore = defineStore('template', () => {
   const showDeveloperAccountsError = ref(false)
   const showDeveloperLoginsError = ref(false)
   const showError = ref(false)
+  const showInputNameError = ref(false)
+  const showInputTypeError = ref(false)
 
   function resetTemplate() {
     idTemplate.value = ''
@@ -151,10 +153,12 @@ export const useTemplateStore = defineStore('template', () => {
     showUserLoginsError,
     showDeveloperAccountsError,
     showDeveloperLoginsError,
+    showError,
+    showInputNameError,
+    showInputTypeError,
     resetTemplate,
     resetInput,
     addInput,
-    showError,
     editInput,
     toggleUnsavedModal,
     toggleDeleteModal
