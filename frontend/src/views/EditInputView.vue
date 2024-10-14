@@ -119,11 +119,17 @@ onMounted(async () => {
           <div class="relative mt-2 rounded-md shadow-sm">
             <input
               v-model="templateStore.stagingInput.name"
+              @blur="
+                templateStore.showInputNameError = templateStore.stagingInput.name.trim() == ''
+              "
+              :class="{ 'border-red-500 ring-red-500': templateStore.showInputNameError }"
               type="text"
               name="name"
               class="block h-[35px] rounded-md border-0 py-1.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
             />
-            <p v-if="!isNameValid" class="mt-1 text-sm text-red-500">Name is required</p>
+            <p v-if="templateStore.showInputNameError" class="mt-1 text-sm text-red-500">
+              Name is required
+            </p>
           </div>
         </div>
 
@@ -153,11 +159,16 @@ onMounted(async () => {
             <ListboxButton
               v-model="templateStore.stagingInput.type"
               class="relative h-[35px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left capitalize text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-slurmweb sm:text-sm sm:leading-6 lg:w-[400px]"
+              :class="{ 'border-red-500 ring-red-500': templateStore.showInputTypeError }"
               >{{ templateStore.stagingInput.type }}
               <span
                 class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2"
               >
-                <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ChevronUpDownIcon
+                  class="h-5 w-5 text-gray-400"
+                  :class="{ 'text-red-500': templateStore.showInputTypeError }"
+                  aria-hidden="true"
+                />
               </span>
             </ListboxButton>
 
