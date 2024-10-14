@@ -23,28 +23,59 @@ const templateStore = useTemplateStore()
 const gateway = useGatewayAPI()
 
 const errorMessage = ref<string | undefined>()
-const isNameValid = ref(true)
-const isBatchScriptValid = ref(true)
 
 async function editTemplate() {
-  const editTemplate: JobTemplate = {
-    idTemplate: Number(props.idTemplate),
-    name: templateStore.name,
-    description: templateStore.description,
-    userAccounts: templateStore.userAccounts,
-    userLogins: templateStore.userLogins,
-    developerAccounts: templateStore.developerAccounts,
-    developerLogins: templateStore.developerLogins,
-    inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript
-  }
-  try {
-    await gateway.edit_template(props.cluster, editTemplate)
-    resetForm()
-    router.push({ name: 'templates' })
-  } catch (error: any) {
-    console.log(error)
-    //runtime.reportError(`Server error: ${error.message}`)
+  if (
+    templateStore.name == '' ||
+    templateStore.batchScript == '' ||
+    templateStore.userAccounts.length == 0 ||
+    templateStore.userLogins.length == 0 ||
+    templateStore.developerAccounts.length == 0 ||
+    templateStore.developerLogins.length == 0
+  ) {
+    if (templateStore.name.trim() == '') {
+      templateStore.showNameError = true
+    }
+
+    if (templateStore.batchScript.trim() == '') {
+      templateStore.showBatchScriptError = true
+    }
+
+    if (templateStore.userAccounts.length == 0) {
+      templateStore.showUserAccountsError = true
+    }
+
+    if (templateStore.userLogins.length == 0) {
+      templateStore.showUserLoginsError = true
+    }
+
+    if (templateStore.developerAccounts.length == 0) {
+      templateStore.showDeveloperAccountsError = true
+    }
+
+    if (templateStore.developerLogins.length == 0) {
+      templateStore.showDeveloperLoginsError = true
+    }
+  } else {
+    const editTemplate: JobTemplate = {
+      idTemplate: Number(props.idTemplate),
+      name: templateStore.name,
+      description: templateStore.description,
+      userAccounts: templateStore.userAccounts,
+      userLogins: templateStore.userLogins,
+      developerAccounts: templateStore.developerAccounts,
+      developerLogins: templateStore.developerLogins,
+      inputs: templateStore.inputs,
+      batchScript: templateStore.batchScript
+    }
+    try {
+      await gateway.edit_template(props.cluster, editTemplate)
+      resetForm()
+      router.push({ name: 'templates' })
+    } catch (error: any) {
+      console.log(error)
+      //runtime.reportError(`Server error: ${error.message}`)
+    }
   }
 }
 

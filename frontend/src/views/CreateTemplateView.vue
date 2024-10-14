@@ -27,27 +27,57 @@ const authStore = useAuthStore()
 const runtimeStore = useRuntimeStore()
 const errorMessage = ref<string | undefined>()
 
-const isNameValid = ref(true)
-const isBatchScriptValid = ref(true)
-
 async function createTemplate(author: string) {
-  const newTemplate: JobTemplate = {
-    name: templateStore.name,
-    description: templateStore.description,
-    userAccounts: templateStore.userAccounts,
-    userLogins: templateStore.userLogins,
-    developerAccounts: templateStore.developerAccounts,
-    developerLogins: templateStore.developerLogins,
-    inputs: templateStore.inputs,
-    batchScript: templateStore.batchScript,
-    author: author
-  }
-  try {
-    await gateway.create_template(props.cluster, newTemplate)
-    resetForm()
-    router.push({ name: 'templates' })
-  } catch (error: any) {
-    runtimeStore.reportError(`Server error: ${error.message}`)
+  if (
+    templateStore.name == '' ||
+    templateStore.batchScript == '' ||
+    templateStore.userAccounts.length == 0 ||
+    templateStore.userLogins.length == 0 ||
+    templateStore.developerAccounts.length == 0 ||
+    templateStore.developerLogins.length == 0
+  ) {
+    if (templateStore.name.trim() == '') {
+      templateStore.showNameError = true
+    }
+
+    if (templateStore.batchScript.trim() == '') {
+      templateStore.showBatchScriptError = true
+    }
+
+    if (templateStore.userAccounts.length == 0) {
+      templateStore.showUserAccountsError = true
+    }
+
+    if (templateStore.userLogins.length == 0) {
+      templateStore.showUserLoginsError = true
+    }
+
+    if (templateStore.developerAccounts.length == 0) {
+      templateStore.showDeveloperAccountsError = true
+    }
+
+    if (templateStore.developerLogins.length == 0) {
+      templateStore.showDeveloperLoginsError = true
+    }
+  } else {
+    const newTemplate: JobTemplate = {
+      name: templateStore.name,
+      description: templateStore.description,
+      userAccounts: templateStore.userAccounts,
+      userLogins: templateStore.userLogins,
+      developerAccounts: templateStore.developerAccounts,
+      developerLogins: templateStore.developerLogins,
+      inputs: templateStore.inputs,
+      batchScript: templateStore.batchScript,
+      author: author
+    }
+    try {
+      await gateway.create_template(props.cluster, newTemplate)
+      resetForm()
+      router.push({ name: 'templates' })
+    } catch (error: any) {
+      runtimeStore.reportError(`Server error: ${error.message}`)
+    }
   }
 }
 
