@@ -73,7 +73,7 @@ onMounted(() => {
             v-for="template in templates.data.value"
             :key="template.id"
             @click="resetForm()"
-            class="flex flex-col rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 sm:w-[400px] md:w-[400px] lg:w-[400px]"
+            class="flex flex-col rounded-lg border border-gray-200 bg-white shadow sm:w-[400px] md:w-[400px] lg:w-[400px] dark:border-gray-700 dark:bg-gray-800"
           >
             <div class="m-10">
               <div class="flex h-fit">
