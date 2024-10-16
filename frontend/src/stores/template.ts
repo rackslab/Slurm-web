@@ -92,7 +92,7 @@ export const useTemplateStore = defineStore('template', () => {
         })
       } else {
         console.log(inputs.value)
-        router.push({name:'create-template'})
+        router.push({ name: 'create-template' })
       }
 
       resetInput()
@@ -116,7 +116,7 @@ export const useTemplateStore = defineStore('template', () => {
           params: { idTemplate: idTemplate.value }
         })
       } else {
-        router.push({name:'create-template'})
+        router.push({ name: 'create-template' })
       }
       resetInput()
     }
