@@ -20,8 +20,6 @@ from ..slurmrestd.errors import (
     SlurmrestConnectionError,
     SlurmrestdInternalError,
 )
-from ..errors import SlurmwebCacheError, SlurmwebRestdError
-from . import SlurmrestdUnixAdapter
 from ..db.models import (
     Templates,
     Inputs,
