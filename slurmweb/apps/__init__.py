@@ -96,7 +96,7 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
         self.debug_flags = seed.debug_flags
 
         # register generic error handler
-        for error in [401, 403, 404, 500, 501]:
+        for error in [400, 401, 403, 404, 500, 501]:
             self.register_error_handler(error, self._handle_bad_request)
 
     def _handle_bad_request(self, error):
