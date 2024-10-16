@@ -30,7 +30,6 @@ from .utils import (
 
 
 class TestSlurmrestdBase(unittest.TestCase):
-
     def mock_slurmrestd_responses(self, slurm_version, assets):
         return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
 
