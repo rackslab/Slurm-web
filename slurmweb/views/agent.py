@@ -206,6 +206,48 @@ def developer_logins():
 def create_template():
     template_data = json.loads(request.data)
 
+    if len(template_data["name"]) > 50:
+        return abort(400, "Name must not exceed 50 characters")
+
+    if len(template_data["description"]) > 100:
+        return abort(400, "Description must not exceed 100 characters")
+
+    if len(template_data["batchScript"]) > 5000:
+        return abort(400, "Batch script must not exceed 5000 characters")
+
+    for index in range(len(template_data["inputs"])):
+        if len(template_data["inputs"][index]["name"]) > 50:
+            return abort(400, "Input must not exceed 50 characters")
+
+        if len(template_data["inputs"][index]["description"]) > 100:
+            return abort(400, "Input description must not exceed 100 characters")
+
+        if len(template_data["inputs"][index]["defaultValue"]) > 45:
+            return abort(400, "Input default value must not exceed 45 characters")
+
+        if len(template_data["inputs"][index]["regex"]) > 100:
+            return abort(400, "Input regex value must not exceed 45 characters")
+
+        if template_data["inputs"][index]["type"] == "float" or "int":
+            if (
+                template_data["inputs"][index]["minVal"]
+                > template_data["inputs"][index]["maxVal"]
+            ):
+                return abort(400, "Minimum value is higher than the maximum value")
+
+            if float(template_data["inputs"][index]["maxVal"]) <= float(
+                template_data["inputs"][index]["defaultValue"]
+            ):
+                return abort(
+                    400,
+                    "Maximum value cannot be equal to or less than the default value",
+                )
+
+            if float(template_data["inputs"][index]["minVal"]) < float(
+                template_data["inputs"][index]["defaultValue"]
+            ):
+                return abort(400, "Minimal value cannot be less than the default value")
+
     try:
         new_template = Templates.create(
             name=template_data["name"],
