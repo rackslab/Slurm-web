@@ -37,7 +37,7 @@ class BaseModel(peewee.Model):
 class Templates(BaseModel):
     name = peewee.CharField(max_length=50, unique=True)
     description = peewee.CharField(max_length=100)
-    batchScript = peewee.CharField(max_length=5000)
+    batchScript = peewee.CharField()
     author = peewee.CharField(max_length=45)
 
 
