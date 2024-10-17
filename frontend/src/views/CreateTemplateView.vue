@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { PlusIcon, ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { JobTemplate } from '@/composables/GatewayAPI'
@@ -26,6 +26,7 @@ const gateway = useGatewayAPI()
 const authStore = useAuthStore()
 const runtimeStore = useRuntimeStore()
 const errorMessage = ref<string | undefined>()
+const transitionColorButton: Ref<boolean> = ref(false)
 
 async function createTemplate(author: string) {
   if (
@@ -77,6 +78,12 @@ async function createTemplate(author: string) {
       router.push({ name: 'templates' })
     } catch (error: any) {
       runtimeStore.reportError(`Server error: ${error.message}`)
+      errorMessage.value = error.message
+
+      transitionColorButton.value = true
+      setTimeout(() => {
+        transitionColorButton.value = false
+      }, 3000)
     }
   }
 }
@@ -235,25 +242,30 @@ const props = defineProps({
             </p>
           </div>
 
-          <div class="flex justify-end">
-            <button
-              @click="templateStore.toggleUnsavedModal('template')"
-              type="button"
-              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Cancel
-            </button>
+          <div class="flex flex-col">
+            <div class="flex justify-end">
+              <button
+                @click="templateStore.toggleUnsavedModal('template')"
+                type="button"
+                class="ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-gray-300 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+              >
+                Cancel
+              </button>
 
-            <button
-              v-if="authStore.username"
-              @click="createTemplate(authStore.username)"
-              type="button"
-              class="mb-16 ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
-            >
-              Create
-            </button>
+              <button
+                v-if="authStore.username"
+                @click="createTemplate(authStore.username)"
+                type="button"
+                class="ml-5 mt-8 inline-flex w-24 justify-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+                :class="{ 'bg-slurmweb-red hover:bg-slurmweb-darkred': transitionColorButton }"
+              >
+                Create
+              </button>
+            </div>
+            <p v-if="errorMessage" class="my-5 text-right text-sm text-red-500">
+              {{ errorMessage }}
+            </p>
           </div>
-          <div>{{ errorMessage }}</div>
         </div>
       </div>
     </div>
