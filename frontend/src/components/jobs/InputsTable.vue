@@ -64,13 +64,23 @@ const props = defineProps({
     <tbody>
       <tr v-for="(input, index) in templateStore.inputs" :key="input.name">
         <td class="pt-4">{{ input.name }}</td>
-        <td class="pt-4">{{ input.description }}</td>
+        <td class="pt-4">
+          <p>
+            <span v-if="input.description != ''">{{ input.description }}</span>
+            <span v-else>-</span>
+          </p>
+        </td>
         <td class="pt-4">
           <div v-if="input.type == '1' || input.type == 'float'">float</div>
           <div v-if="input.type == '2' || input.type == 'string'">string</div>
           <div v-if="input.type == '3' || input.type == 'int'">int</div>
         </td>
-        <td class="pt-4">{{ input.defaultValue }}</td>
+        <td class="pt-4">
+          <p>
+            <span v-if="input.defaultValue != ''">{{ input.defaultValue }}</span>
+            <span v-else>-</span>
+          </p>
+        </td>
         <td class="pt-4">
           <div v-if="input.type == 'string'">
             <p>
