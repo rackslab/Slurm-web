@@ -14,8 +14,8 @@ import aiohttp
 from rfl.web.tokens import check_jwt
 from rfl.authentication.user import AuthenticatedUser
 from rfl.authentication.errors import LDAPAuthenticationError
+from rfl.core.asyncio import asyncio_run
 
-from ..asyncrun import asyncio_run
 from ..version import get_version
 
 
