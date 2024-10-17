@@ -26,7 +26,7 @@ export const useTemplateStore = defineStore('template', () => {
     id: '',
     name: '',
     description: '',
-    defaultValue: '',
+    default_value: '',
     minVal: '',
     maxVal: '',
     regex: '',
@@ -63,7 +63,7 @@ export const useTemplateStore = defineStore('template', () => {
       id: '',
       name: '',
       description: '',
-      defaultValue: '',
+      default_value: '',
       minVal: '',
       maxVal: '',
       regex: '',
@@ -146,7 +146,7 @@ export const useTemplateStore = defineStore('template', () => {
         stagingInput.value.name != '' ||
         stagingInput.value.description != '' ||
         stagingInput.value.type.length! > 0 ||
-        stagingInput.value.defaultValue != '' ||
+        stagingInput.value.default_value != '' ||
         stagingInput.value.minVal != '' ||
         stagingInput.value.maxVal != '' ||
         stagingInput.value.regex != ''

@@ -222,7 +222,7 @@ def create_template():
         if len(template_data["inputs"][index]["description"]) > 100:
             return abort(400, "Input description must not exceed 100 characters")
 
-        if len(template_data["inputs"][index]["defaultValue"]) > 45:
+        if len(template_data["inputs"][index]["default_value"]) > 45:
             return abort(400, "Input default value must not exceed 45 characters")
 
         if len(template_data["inputs"][index]["regex"]) > 100:
@@ -285,7 +285,7 @@ def create_template():
                     Inputs.create(
                         name=template_data["inputs"][input]["name"],
                         description=template_data["inputs"][input]["description"],
-                        default_value=template_data["inputs"][input]["defaultValue"],
+                        default_value=template_data["inputs"][input]["default_value"],
                         minVal=template_data["inputs"][input]["minVal"],
                         maxVal=template_data["inputs"][input]["maxVal"],
                         regex=template_data["inputs"][input]["regex"],
@@ -496,7 +496,7 @@ def template_post(template_data):
                             name=template_data["inputs"][input]["name"],
                             description=template_data["inputs"][input]["description"],
                             default_value=template_data["inputs"][input][
-                                "defaultValue"
+                                "default_value"
                             ],
                             minVal=template_data["inputs"][input]["minVal"],
                             maxVal=template_data["inputs"][input]["maxVal"],
@@ -518,7 +518,7 @@ def template_post(template_data):
                             template_data["inputs"][input]["description"],
                         )
                         inputTest.default_value = (
-                            template_data["inputs"][input]["defaultValue"],
+                            template_data["inputs"][input]["default_value"],
                         )
                         inputTest.minVal = (template_data["inputs"][input]["minVal"],)
                         inputTest.maxVal = (template_data["inputs"][input]["maxVal"],)

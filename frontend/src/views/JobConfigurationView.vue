@@ -79,7 +79,7 @@ onMounted(async () => {
             class="border-1 ml-5 w-96 rounded-md border-solid bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:border-slurmweb focus:outline-none sm:text-sm sm:leading-6"
             required
           />
-          <p class="mt-1 pl-5 text-sm text-gray-500">{{ input.defaultValue }}</p>
+          <p class="mt-1 pl-5 text-sm text-gray-500">{{ input.default_value }}</p>
         </div>
         <div class="flex justify-end">
           <router-link :to="{ name: 'submit-new-job' }"

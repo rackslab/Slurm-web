@@ -16,7 +16,7 @@ function updateStagingInput(
   name: string,
   description: string,
   type: string,
-  defaultValue: string,
+  default_value: string,
   regex: string,
   minVal: string,
   maxVal: string
@@ -30,7 +30,7 @@ function updateStagingInput(
   } else {
     templateStore.stagingInput.type = 'int'
   }
-  templateStore.stagingInput.defaultValue = defaultValue
+  templateStore.stagingInput.default_value = default_value
 
   if (type == 'string') {
     templateStore.stagingInput.regex = regex
@@ -77,7 +77,7 @@ const props = defineProps({
         </td>
         <td class="pt-4">
           <p>
-            <span v-if="input.defaultValue != ''">{{ input.defaultValue }}</span>
+            <span v-if="input.default_value != ''">{{ input.default_value }}</span>
             <span v-else>-</span>
           </p>
         </td>
@@ -119,7 +119,7 @@ const props = defineProps({
                     input.name,
                     input.description,
                     input.type,
-                    input.defaultValue,
+                    input.default_value,
                     input.regex,
                     input.minVal,
                     input.maxVal
