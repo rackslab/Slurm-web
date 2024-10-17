@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Convert `[cache]` > `password` agent parameter from string to password type.
   - Convert `[ldap]` > `bind_password` gateway parameter from string to password
     type.
-- pkgs: Add requirement on RFL.settings >= 1.1.0.
+- pkgs: Add requirement on RFL.settings and RFL.core >= 1.1.0.
 
 ### Fixed
 - agent:
