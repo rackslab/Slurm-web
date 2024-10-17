@@ -59,12 +59,6 @@ watch(templateStore.stagingInput, () => {
   }
 })
 
-watch(templateStore.stagingInput, () => {
-  if (templateStore.stagingInput.defaultValue != '') {
-    templateStore.stagingInput.minVal = templateStore.stagingInput.defaultValue
-  }
-})
-
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
 })
