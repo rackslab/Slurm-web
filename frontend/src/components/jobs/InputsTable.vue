@@ -23,13 +23,7 @@ function updateStagingInput(
 ) {
   templateStore.stagingInput.name = name
   templateStore.stagingInput.description = description
-  if (type == '1') {
-    templateStore.stagingInput.type = 'float'
-  } else if (type == '2') {
-    templateStore.stagingInput.type = 'string'
-  } else {
-    templateStore.stagingInput.type = 'int'
-  }
+  templateStore.stagingInput.type = type
   templateStore.stagingInput.default_value = default_value
 
   if (type == 'string') {
