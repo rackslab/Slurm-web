@@ -66,6 +66,15 @@ watch(templateStore.stagingInput, () => {
 onMounted(async () => {
   inputTypes.value = await gateway.input_types(props.cluster)
 
+  if (templateStore.stagingInput.type == '1') {
+    templateStore.stagingInput.type = 'float'
+  } else if (templateStore.stagingInput.type == '2') {
+    templateStore.stagingInput.type = 'string'
+  } else {
+    templateStore.stagingInput.type = 'int'
+  }
+
+  console.log(templateStore.stagingInput)
   if (templateStore.stagingInput.type == 'string' && templateStore.stagingInput.regex.length > 0) {
     constraint.value = 'regex'
   } else if (
