@@ -8,6 +8,7 @@ from typing import Any, Tuple
 import logging
 
 import json
+import re
 from flask import Response, current_app, jsonify, abort, request
 from rfl.web.tokens import rbac_action, check_jwt
 
@@ -202,10 +203,7 @@ def developer_logins():
     return jsonify(lstDeveloperLogins)
 
 
-@rbac_action("manage-templates")
-def create_template():
-    template_data = json.loads(request.data)
-
+def validate_constraints(template_data):
     if len(template_data["name"]) > 50:
         return abort(400, "Name must not exceed 50 characters")
 
@@ -228,25 +226,56 @@ def create_template():
         if len(template_data["inputs"][index]["regex"]) > 100:
             return abort(400, "Input regex value must not exceed 45 characters")
 
-        if template_data["inputs"][index]["type"] == "float" or "int":
+        if template_data["inputs"][index]["type"] == "string":
+            if (
+                len(template_data["inputs"][index]["minVal"]) > 0
+                or len(template_data["inputs"][index]["maxVal"]) > 0
+            ):
+                return abort(
+                    400, "Input of type 'string' cannot have mimimal and maximal value"
+                )
+
+        elif (
+            template_data["inputs"][index]["minVal"] != ""
+            and template_data["inputs"][index]["maxVal"] != ""
+        ):
             if (
                 template_data["inputs"][index]["minVal"]
-                > template_data["inputs"][index]["maxVal"]
-            ):
-                return abort(400, "Minimum value is higher than the maximum value")
-
-            if float(template_data["inputs"][index]["maxVal"]) <= float(
-                template_data["inputs"][index]["defaultValue"]
+                >= template_data["inputs"][index]["maxVal"]
             ):
                 return abort(
                     400,
-                    "Maximum value cannot be equal to or less than the default value",
+                    "Minimal value should not be equal or higher than maximal value",
                 )
 
-            if float(template_data["inputs"][index]["minVal"]) < float(
-                template_data["inputs"][index]["defaultValue"]
+            if re.search("[a-zA-Z]+", template_data["inputs"][index]["default_value"]):
+                return abort(
+                    400,
+                    f"Input of type {template_data['inputs'][index]['type']} can contains only digits",
+                )
+
+            if (
+                template_data["inputs"][index]["minVal"]
+                > template_data["inputs"][index]["default_value"]
             ):
-                return abort(400, "Minimal value cannot be less than the default value")
+                return abort(
+                    400, "Default value must be between minimal and maximal value"
+                )
+
+            if (
+                template_data["inputs"][index]["maxVal"]
+                < template_data["inputs"][index]["default_value"]
+            ):
+                return abort(
+                    400, "Default value must be between minimal and maximal value"
+                )
+
+
+@rbac_action("manage-templates")
+def create_template():
+    template_data = json.loads(request.data)
+
+    validate_constraints(template_data)
 
     try:
         new_template = Templates.create(
@@ -360,6 +389,8 @@ def template_get(id: int):
 
 
 def template_post(template_data):
+    validate_constraints(template_data)
+
     template = Templates.get(Templates.id == template_data["idTemplate"])
     template.name = template_data["name"]
     template.description = template_data["description"]
@@ -367,12 +398,13 @@ def template_post(template_data):
     template.save()
 
     # Récupération des comptes utilisateurs de la base de données
-    db_user_accounts = set(
+    db_user_accounts = (
         Template_users_accounts.select(Template_users_accounts.name)
         .where(Template_users_accounts.template == template_data["idTemplate"])
         .dicts()
         .execute()
     )
+
     db_user_account_names = {user["name"] for user in db_user_accounts}
 
     # Convertir les comptes utilisateurs fournis dans le formulaire en set pour des comparaisons plus simples
