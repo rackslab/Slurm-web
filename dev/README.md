@@ -12,7 +12,7 @@ Deploy emulated clusters on development server:
 
 ```console
 $ ssh firehpc.dev.rackslab.io
-$ firehpc deploy --db firehpc/db --cluster tiny --os debian12 --custom firehpc/conf/tiny
+$ firehpc deploy --db firehpc/db --cluster tiny --os debian13 --custom firehpc/conf/tiny
 $ firehpc deploy --db firehpc/db --cluster emulator --os debian12 --custom firehpc/conf/emulator --slurm-emulator --users tiny
 $ firehpc deploy --db firehpc/db --cluster pocket --os rocky8 --custom firehpc/conf/pocket --users tiny
 ```
