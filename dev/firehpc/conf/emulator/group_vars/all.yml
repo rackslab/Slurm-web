@@ -2,6 +2,8 @@ common_with_devs_repos: true
 slurm_with_jwt: false
 slurm_params:
   PriorityType: priority/multifactor
+  PriorityWeightFairshare: 1000
+  PriorityWeightQOS: 100
 slurm_partitions:
 - name: batch
   node: cn[001-080,101-980]

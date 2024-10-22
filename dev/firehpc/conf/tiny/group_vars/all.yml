@@ -5,6 +5,8 @@ common_hpckit_derivatives:
 slurm_with_jwt: false
 slurm_params:
   PriorityType: priority/multifactor
+  PriorityWeightFairshare: 1000
+  PriorityWeightQOS: 100
   SelectType: select/cons_tres
 slurm_qos:
 - name: study
