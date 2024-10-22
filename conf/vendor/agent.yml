@@ -354,3 +354,11 @@ cache:
     type: int
     default: 60
     doc: Expiration delay in seconds for accounts in cache
+
+metrics:
+  enabled:
+    type: bool
+    default: false
+    doc: |
+      Determine if metrics feature and integration with Prometheus (or
+      compatible) is enabled.
