@@ -114,5 +114,5 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
 
             self.metrics = SlurmWebMetricsCollector(self.slurmrestd)
             self.wsgi_app = dispatcher.DispatcherMiddleware(
-                self.wsgi_app, {"/metrics": make_wsgi_app()}
+                self.wsgi_app, {"/metrics": make_wsgi_app(self.settings.metrics)}
             )
