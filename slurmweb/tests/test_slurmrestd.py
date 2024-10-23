@@ -261,7 +261,6 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         job = self.slurmrestd.job(1)
         # Check there are less keys for the item in result than in original asset.
-        print(slurm_asset)
         self.assertLess(len(job.keys()), len(slurm_asset[0].keys()))
         self.assertEqual(job["time"], slurmdb_asset[0]["time"])
         # Check arbitrary key has been filtered out.
