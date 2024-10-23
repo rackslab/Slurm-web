@@ -1,12 +1,12 @@
-= slurm-web-conf-show(1)
+= slurm-web-show-conf(1)
 Rackslab: https://rackslab.io
 :doctype: manpage
-:manmanual: slurm-web-conf-show
+:manmanual: slurm-web-show-conf
 :man-linkstyle: pass:[blue R < >]
 
 == Name
 
-slurm-web-conf-show - Utility to dump Slurm-web components configuration
+slurm-web-show-conf - Utility to dump Slurm-web components configuration
 settings with their origin by protecting sensible data.
 
 include::../modules/usage/partials/man-show-conf.adoc[]
