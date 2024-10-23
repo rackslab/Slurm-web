@@ -362,3 +362,10 @@ metrics:
     doc: |
       Determine if metrics feature and integration with Prometheus (or
       compatible) is enabled.
+  restrict:
+    type: list
+    content: network
+    default:
+    - 127.0.0.0/24
+    doc: |
+      Restricted list of IP networks permitted to request metrics.
