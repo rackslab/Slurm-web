@@ -4,6 +4,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import typing as t
+import ipaddress
 import logging
 
 import prometheus_client
@@ -16,6 +18,9 @@ from .slurmrestd.errors import (
     SlurmrestConnectionError,
     SlurmrestdInternalError,
 )
+
+if t.TYPE_CHECKING:
+    from rfl.settings import RuntimeSettings
 
 logger = logging.getLogger(__name__)
 
@@ -107,5 +112,44 @@ class SlurmWebMetricsCollector(prometheus_client.registry.Collector):
         except SlurmwebCacheError as err:
             logger.error("Unable to collect metrics due to cache error: %s", err)
 
-def make_wsgi_app():
-    return prometheus_client.make_wsgi_app()
+
+def get_client_ipaddress(environ):
+    """Return IP address of the client as found in request environment."""
+    # To properly handle setup in which agent is behind a reverse proxy, first try to
+    # use X-Forwarded-For header if defined. In this header, the original client IP
+    # address the leftmost address in a comma (and optionally whitespaces) separated
+    # list of addresses, followed by the addresses of the intermediate proxies. If
+    # X-Forwarded-For is not defined, use REMOTE_ADDR environment key as fallback.
+    try:
+        ip = environ["HTTP_X_FORWARDED_FOR"].split(",")[0].strip()
+    except KeyError:
+        ip = environ["REMOTE_ADDR"]
+    return ipaddress.ip_address(ip)
+
+
+def make_wsgi_app(settings: "RuntimeSettings"):
+    prometheus_app = prometheus_client.make_wsgi_app()
+
+    def slurmweb_metrics_app(environ, start_response):
+
+        # Check if client IP address is member of restricted networks list. If
+        # not, send response with HTTP/403 status code.
+        ip = get_client_ipaddress(environ)
+        permitted = False
+        for restricted_network in settings.restrict:
+            if ip in restricted_network:
+                permitted = True
+                break
+        if not permitted:
+            status = "403 Forbidden"
+            headers = [("", "")]
+            output = f"IP address {ip} not authorized to request metrics"
+            logger.warning(output)
+            start_response(status, headers)
+            return [(output + "\n").encode()]
+
+        # Client IP address is authorized, return metrics.
+        logger.debug("IP address %s authorized to request metrics", ip)
+        return prometheus_app(environ, start_response)
+
+    return slurmweb_metrics_app
