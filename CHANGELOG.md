@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf:
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.
+  - Add `metrics` > `restrict` parameter for the agent.
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,
   which can either be configuration definition file or site override (#349).
