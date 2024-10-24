@@ -637,6 +637,28 @@ xref:misc:troubleshooting.adoc#wsgi[troubleshooting guide] for help.
 * xref:conf:wsgi/index.adoc[Production HTTP server setup guide].
 ****
 
+== Metrics (optional)
+
+Slurm-web offers the possibility to
+xref:overview:overview.adoc#metrics[export Slurm metrics] in
+https://openmetrics.io/[OpenMetrics] format and integrate with
+https://prometheus.io/[Prometheus]. This feature can be used to store metrics in
+timeseries databases and draw diagrams of historical data.
+
+This feature is disabled by default. It can be enabled with the following lines
+in [.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+----
+
+.More details
+****
+* xref:conf:metrics.adoc[Metrics export configuration documentation].
+****
+
 == Multi-clusters
 
 Slurm-web is designed to support

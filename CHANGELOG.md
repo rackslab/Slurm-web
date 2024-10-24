@@ -25,7 +25,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,
   which can either be configuration definition file or site override (#349).
-- docs: Add manpage for `slurm-web-show-conf` command.
+- docs:
+  - Add manpage for `slurm-web-show-conf` command.
+  - Add metrics export configuration documentation.
+  - Mention metrics export optional feature in quickstart guide.
+  - Mention metrics export feature in overview page.
+  - Mention possible Prometheus integration in architecture page.
 
 ### Changed
 - docs: Update configuration reference documentation.

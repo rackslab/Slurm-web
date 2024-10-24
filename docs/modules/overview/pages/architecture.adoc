@@ -47,8 +47,12 @@ permissions associated to roles and LDAP groups. The component also extracts
 cluster racking topology from xref:racksdb:overview:start.adoc[RacksDB] database
 to generate
 xref:overview.adoc#nodes-status[graphical representation of nodes status] in the
-racks. Finally, it connects to https://redis.io/[Redis] in-memory key/value
-database to save cached data from Slurm.
+racks.
+
+Optionally, the *agent* can connect to https://redis.io/[Redis] in-memory
+key/value database to save cached data from Slurm. It can also
+xref:overview.adoc#metrics[export metrics] to https://prometheus.io/[Prometheus]
+(or compatible) in order to store values in timeseries databases.
 
 [#protocols]
 == Protocols

@@ -6,3 +6,4 @@
 ** xref:conf/gateway.adoc[Gateway]
 ** xref:conf/agent.adoc[Agent]
 * xref:policy.adoc[]
+* xref:metrics.adoc[]
