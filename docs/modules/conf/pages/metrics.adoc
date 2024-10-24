@@ -1,0 +1,121 @@
+= Metrics Export
+
+Slurm-web agent can export metrics in standard OpenMetrics format on `/metrics`
+endpoint. This is designed to be scraped by Prometheus (or compatible) in order
+to store metrics in timeseries databases and draw diagrams of historical data.
+
+This page explains how to enable and secure this feature by
+<<restrict,restricting access>> to specific hosts and
+<<prometheus,configure Prometheus>> to scrap these metrics. It also provides a
+<<reference,reference list of all available metrics>>. 
+
+== Configuration
+
+The metrics export feature is disabled by default. It can be enabled with the
+following lines in [.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+----
+
+.More details
+****
+* xref:conf/agent.adoc#_metrics[Agent configuration metrics section reference documentation].
+****
+
+[#restrict]
+== Host Restriction
+
+For security reasons, Slurm-web agent restrict access to `/metrics` endpoint to
+localhost only. When Prometheus is running on external hosts, you must define
+`restrict` parameter in [.path]#`/etc/slurm-web/agent.ini`# to allow other
+networks explicitely. For example:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+restrict=
+  192.168.1.0/24
+  10.0.0.251/32
+----
+
+In this example, all IP addresses in range `192.168.1.[0-254]` and `10.0.0.251`
+are permitted to request metrics.
+
+.More details
+****
+* xref:conf/agent.adoc#_metrics[Agent configuration reference documentation for metrics section].
+****
+
+[#prometheus]
+== Prometheus Integration
+
+Prometheus must be configured to request `/metrics` endpoint of Slurm-web agent.
+Edit [.path]#`/etc/prometheus/prometheus.yml`# to add one of the following
+configuration snippets depending of your setup:
+
+* Slurm-web agent running as native service (ie. with
+`slurm-web-agent.service`):
+
+[source,yaml]
+----
+scrape_configs:
+  - job_name: slurm
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:5012']
+----
+
+* Slurm-web agent running on xref:wsgi/index.adoc[production HTTP server]:
+
+[source,yaml]
+----
+scrape_configs:
+  - job_name: slurm
+    scrape_interval: 30s
+    metrics_path: /agent/metrics
+    static_configs:
+      - targets: ['localhost:80']
+----
+
+NOTE: You may need to adjust the target hostname, typically if Prometheus is
+running on a remote host, and destination port (for example 443 for HTTPS).
+
+.Reference
+****
+* https://prometheus.io/docs/prometheus/latest/configuration/configuration/[Prometheus Official Configuration Documentation].
+****
+
+[#reference]
+== Available Metrics
+
+This table describes all metrics exported by Slurm-web:
+
+[cols="1l,3a"]
+|===
+|Metric|Description
+
+|slurm_nodes[state]
+|Number of compute nodes in a given state. Supported states are: _idle_,
+_mixed_, _allocated_, _down_, _drain_ and _unknown_.
+
+|slurm_nodes_total
+|Total number of compute nodes managed by Slurm.
+
+|slurm_cores[state]
+|Number of cores of compute nodes in a given state. Supported states are:
+_idle_, _mixed_, _allocated_, _down_, _drain_ and _unknown_.
+
+|slurm_cores_total
+|Total number of cores on compute nodes managed by Slurm.
+
+|slurm_jobs[state]
+|Number of jobs in a given state in Slurm controller queue.  Supported states
+are: _running_, _completed_, _completing_, _cancelled_, _pending_ and _unknown_.
+
+|slurm_jobs_total
+|Total number of jobs in Slurm controller queue.
+|===

@@ -138,6 +138,25 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertCountEqual(jobs, asset)
 
     @all_slurm_versions
+    def test_jobs_states(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jobs", "jobs")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        jobs, total = self.slurmrestd.jobs_states()
+        # Check total value matches the number of jobs in asset
+        self.assertEqual(total, len(asset))
+
+        # Check sum of jobs states matches the total number of jobs
+        jobs_sum = 0
+        for value in jobs.values():
+            jobs_sum += value
+        self.assertEqual(total, jobs_sum)
+
+    @all_slurm_versions
     def test_nodes(self, slurm_version):
         try:
             [asset] = self.mock_slurmrestd_responses(
@@ -148,6 +167,33 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
         nodes = self.slurmrestd.nodes()
         self.assertCountEqual(nodes, asset)
+
+    @all_slurm_versions
+    def test_nodes_cores_states(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-nodes", "nodes")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        nodes_states, cores_states, nodes_total, cores_total = (
+            self.slurmrestd.nodes_cores_states()
+        )
+        # Check total number of nodes matches the number of nodes in asset
+        self.assertEqual(nodes_total, len(asset))
+
+        # Check sum of nodes states matches the total number of nodes
+        nodes_sum = 0
+        for value in nodes_states.values():
+            nodes_sum += value
+        self.assertEqual(nodes_total, nodes_sum)
+
+        # Check sum of cores states matches the total number of cores
+        cores_sum = 0
+        for value in cores_states.values():
+            cores_sum += value
+        self.assertEqual(cores_total, cores_sum)
 
     @all_slurm_versions
     def test_node(self, slurm_version):

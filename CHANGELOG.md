@@ -8,18 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- agent: Return RacksDB infrastructure name in `/info` endpoint in complement of
-  the cluster name.
+- agent:
+  - Return RacksDB infrastructure name in `/info` endpoint in complement of
+    the cluster name.
+  - Add optional `/metrics` endpoint with various Slurm metrics in OpenMetrics
+    format designed to be scraped by Prometheus or compatible (#274).
 - gateway: Return RacksDB infrastructure name of every clusters in
   `/clusters` endpoint.
 - frontend:
   - Request RacksDB with the infrastructure name provided by the gateway (#348).
   - Display time limit of running jobs in job details page (#352).
-- conf: Add `racksdb` > `infrastructure` parameter for the agent.
+- conf:
+  - Add `racksdb` > `infrastructure` parameter for the agent.
+  - Add `metrics` > `enabled` parameter for the agent.
+  - Add `metrics` > `restrict` parameter for the agent.
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,
   which can either be configuration definition file or site override (#349).
-- docs: Add manpage for `slurm-web-show-conf` command.
+- docs:
+  - Add manpage for `slurm-web-show-conf` command.
+  - Add metrics export configuration documentation.
+  - Mention metrics export optional feature in quickstart guide.
+  - Mention metrics export feature in overview page.
+  - Mention possible Prometheus integration in architecture page.
 
 ### Changed
 - docs: Update configuration reference documentation.
@@ -27,7 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Convert `[cache]` > `password` agent parameter from string to password type.
   - Convert `[ldap]` > `bind_password` gateway parameter from string to password
     type.
-- pkgs: Add requirement on RFL.settings and RFL.core >= 1.1.0.
+- pkgs:
+  - Add requirement on RFL.core >= 1.1.0.
+  - Add requirement on RFL.settings >= 1.1.1.
+  - Add dependency on prometheus-client for the agent.
 
 ### Fixed
 - agent:
