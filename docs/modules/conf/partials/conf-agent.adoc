@@ -839,3 +839,44 @@ _No default value_
 |===
 
 
+
+== `metrics`
+
+[cols="2l,1,5a,^1"]
+|===
+|Parameter|Type|Description|Required
+
+
+|enabled
+|bool
+|Determine if metrics feature and integration with Prometheus (or
+compatible) is enabled.
+
+
+
+
+
+*Default:* `False`
+
+|-
+
+|restrict
+|list[network]
+|Restricted list of IP networks permitted to request metrics.
+
+
+
+
+
+*Default:*
+
+
+* `127.0.0.0/24`
+
+
+|-
+
+
+|===
+
+
