@@ -14,7 +14,10 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayGenericAPIKey, GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 
-export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
+export function useGatewayDataGetter<Type>(
+  callback: GatewayGenericAPIKey,
+  customErrorHandler?: (error: Error) => void
+) {
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
@@ -32,7 +35,7 @@ export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
     unable.value = true
   }
 
-  function reportOtherError(error: Error) {
+  function defaultErrorHandler(error: Error) {
     runtime.reportError(`Server error: ${error.message}`)
     unable.value = true
   }
@@ -52,14 +55,18 @@ export function useGatewayDataGetter<Type>(callback: GatewayGenericAPIKey) {
       } else if (error instanceof PermissionError) {
         reportPermissionError(error)
       } else {
-        reportOtherError(error)
+        if (customErrorHandler) {
+          customErrorHandler(error)
+        } else {
+          defaultErrorHandler(error)
+        }
       }
     }
   }
   onMounted(() => {
     get()
   })
-  return { data, unable, loaded }
+  return { data, unable, loaded, defaultErrorHandler }
 }
 
 export function useClusterDataGetter<Type>(

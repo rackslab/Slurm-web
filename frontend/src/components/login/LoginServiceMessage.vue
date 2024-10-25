@@ -10,6 +10,7 @@
 import { computed, ref, watch } from 'vue'
 import { useGatewayDataGetter } from '@/composables/DataGetter'
 import { ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
+import { APIServerError } from '@/composables/HTTPErrors'
 
 /*
  * This component displays the login service message. The message is displayed
@@ -17,8 +18,16 @@ import { ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
  * holds its own style rules that are fully honored in the iframe.
  */
 
-const message = useGatewayDataGetter<string>('message_login')
+const message = useGatewayDataGetter<string>('message_login', reportError)
 const iframe = ref<HTMLIFrameElement | undefined>()
+
+function reportError(error: Error) {
+  // The gateway API returns HTTP/404 is login service message is not defined.
+  // Just ignore the error in the case. For other errrors, report the error
+  // using default error handler provided by GatewayDataGetter.
+  if (error instanceof APIServerError && error.status == 404) return
+  message.defaultErrorHandler(error)
+}
 
 // Use computed value to have a ref that is never undefined.
 const content = computed(() => {
