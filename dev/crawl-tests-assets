@@ -26,7 +26,7 @@ from rfl.settings.errors import (
     SettingsSiteLoaderError,
 )
 from racksdb import RacksDB
-from slurmweb.views import SlurmrestdUnixAdapter
+from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 from slurmweb.version import get_version
 
 logger = logging.getLogger("crawl-tests-assets")
@@ -184,51 +184,54 @@ def crawl_slurmrestd(socket: Path) -> None:
             )
 
     # Download specific jobs
+    if not(len(jobs["jobs"])):
+        logger.warning("No jobs found in queue on socket %s, unable to crawl jobs data", socket)
+    else:
 
-    min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
+        min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
 
-    for _job in jobs["jobs"]:
-        if _job["job_id"] < min_job_id:
-            min_job_id = _job["job_id"]
-        if _job["job_id"] > max_job_id:
-            max_job_id = _job["job_id"]
+        for _job in jobs["jobs"]:
+            if _job["job_id"] < min_job_id:
+                min_job_id = _job["job_id"]
+            if _job["job_id"] > max_job_id:
+                max_job_id = _job["job_id"]
 
-        for state in ["RUNNING", "PENDING", "COMPLETED"]:
-            dump_job_state(state)
+            for state in ["RUNNING", "PENDING", "COMPLETED"]:
+                dump_job_state(state)
 
-    dump_slurmrestd_query(
-        session,
-        requests_statuses,
-        prefix,
-        f"/slurm/v{api}/job/{min_job_id-1}",
-        assets_path,
-        "slurm-job-archived",
-    )
-    dump_slurmrestd_query(
-        session,
-        requests_statuses,
-        prefix,
-        f"/slurmdb/v{api}/job/{min_job_id-1}",
-        assets_path,
-        "slurmdb-job-archived",
-    )
+        dump_slurmrestd_query(
+            session,
+            requests_statuses,
+            prefix,
+            f"/slurm/v{api}/job/{min_job_id-1}",
+            assets_path,
+            "slurm-job-archived",
+        )
+        dump_slurmrestd_query(
+            session,
+            requests_statuses,
+            prefix,
+            f"/slurmdb/v{api}/job/{min_job_id-1}",
+            assets_path,
+            "slurmdb-job-archived",
+        )
 
-    dump_slurmrestd_query(
-        session,
-        requests_statuses,
-        prefix,
-        f"/slurm/v{api}/job/{max_job_id*2}",
-        assets_path,
-        "slurm-job-unfound",
-    )
-    dump_slurmrestd_query(
-        session,
-        requests_statuses,
-        prefix,
-        f"/slurmdb/v{api}/job/{max_job_id*2}",
-        assets_path,
-        "slurmdb-job-unfound",
-    )
+        dump_slurmrestd_query(
+            session,
+            requests_statuses,
+            prefix,
+            f"/slurm/v{api}/job/{max_job_id*2}",
+            assets_path,
+            "slurm-job-unfound",
+        )
+        dump_slurmrestd_query(
+            session,
+            requests_statuses,
+            prefix,
+            f"/slurmdb/v{api}/job/{max_job_id*2}",
+            assets_path,
+            "slurmdb-job-unfound",
+        )
 
     # Download nodes
     nodes = dump_slurmrestd_query(
@@ -294,6 +297,7 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     with open(status_file, "w+") as fh:
         json.dump(requests_statuses, fh, indent=2)
+        fh.write("\n")
 
 
 def admin_user(cluster: str):
@@ -367,15 +371,24 @@ def dump_component_query(
 ) -> Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
-    asset = assets_path / f"{asset_name}.json"
-    if asset.exists() and skip_exist:
+    if len(list(assets_path.glob(f"{asset_name}.*"))) and skip_exist:
         return
-    data = requests.get(f"{url}{query}", headers=headers).json()
+    response = requests.get(f"{url}{query}", headers=headers)
+    if response.headers.get("content-type") == "application/json":
+        asset = assets_path / f"{asset_name}.json"
+        data = json.loads(response.text)
+    else:
+        asset = assets_path / f"{asset_name}.txt"
+        data = response.text
+
     if asset.exists():
         logger.warning("Asset %s already exists, skipping dump", asset)
     else:
         with open(asset, "w+") as fh:
-            fh.write(json.dumps(data, indent=2))
+            if asset.suffix == ".json":
+                fh.write(json.dumps(data, indent=2))
+            else:
+                fh.write(data)
     return data
 
 
@@ -415,31 +428,34 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
         skip_exist=False,
     )
 
-    min_job_id = jobs[0]["job_id"]
+    if not(len(jobs)):
+        logger.warning("No jobs found in queue of cluster %s, unable to crawl jobs data", cluster)
+    else:
+        min_job_id = jobs[0]["job_id"]
 
-    def dump_job_state() -> None:
-        if _job["job_state"] == state:
-            dump_component_query(
-                url,
-                f"/api/agents/{cluster}/job/{_job['job_id']}",
-                headers,
-                assets_path,
-                f"job-{state.lower()}",
-            )
+        def dump_job_state() -> None:
+            if _job["job_state"] == state:
+                dump_component_query(
+                    url,
+                    f"/api/agents/{cluster}/job/{_job['job_id']}",
+                    headers,
+                    assets_path,
+                    f"job-{state.lower()}",
+                )
 
-    for _job in jobs:
-        if _job["job_id"] < min_job_id:
-            min_job_id = _job["job_id"]
-        for state in ["PENDING", "RUNNING", "COMPLETED"]:
-            dump_job_state()
+        for _job in jobs:
+            if _job["job_id"] < min_job_id:
+                min_job_id = _job["job_id"]
+            for state in ["PENDING", "RUNNING", "COMPLETED"]:
+                dump_job_state()
 
-    dump_component_query(
-        url,
-        f"/api/agents/{cluster}/job/{min_job_id-1}",
-        headers,
-        assets_path,
-        "job-archived",
-    )
+        dump_component_query(
+            url,
+            f"/api/agents/{cluster}/job/{min_job_id-1}",
+            headers,
+            assets_path,
+            "job-archived",
+        )
 
     # FIXME: Download unknown job
 
