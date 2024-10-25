@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slurm-web service message</title>
+        <style>
+        /*
+         * The style is defined to match Tailwind UI alert component:
+         * https://tailwindui.com/components/application-ui/feedback/alerts#component-8a099d76389c1c4d6d4e92d69acbc8d2
+         */
+        html {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-size: 0.875rem;
+            color: rgb(133 77 14);
+        }
+        p {
+            line-height: 1.25rem;
+        }
+        body {
+            margin-top: -0.8em;
+            margin-bottom: -0.8em;
+        }
+        :is(h1, h2, h3, h4, h5, h6) {
+            font-size: 1.3rem;
+        }
+        </style>
+    </head>
+    <body>
+    {{ message }}
+    </body>
+</html>
