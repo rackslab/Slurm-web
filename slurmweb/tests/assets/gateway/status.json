@@ -62,5 +62,17 @@
   "accounts": {
     "content-type": "application/json",
     "status": 200
+  },
+  "message_login": {
+    "content-type": "text/html; charset=utf-8",
+    "status": 200
+  },
+  "message_login_not_found": {
+    "content-type": "application/json",
+    "status": 404
+  },
+  "message_login_error": {
+    "content-type": "application/json",
+    "status": 500
   }
 }

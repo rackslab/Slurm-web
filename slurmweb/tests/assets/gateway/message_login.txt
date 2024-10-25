@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slurm-web service message</title>
+        <style>
+        p {
+            line-height: 1.25rem;
+        }
+        </style>
+    </head>
+    <body>
+    <h1>Slurm-web test login service message</h1>
+<p>Hello, World!</p>
+    </body>
+</html>

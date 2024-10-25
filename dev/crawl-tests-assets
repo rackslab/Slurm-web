@@ -385,24 +385,39 @@ def dump_component_query(
     query: str,
     headers: str,
     assets_path: Path,
-    asset_name: str,
+    asset_name: dict[int,str]|str,
     skip_exist: bool = True,
 ) -> Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
-    if len(list(assets_path.glob(f"{asset_name}.*"))) and skip_exist:
-        return
+    if skip_exist:
+        if isinstance(asset_name, dict):
+            all_asset_exist = True
+            for _asset_name in asset_name.values():
+                if not len(list(assets_path.glob(f"{_asset_name}.*"))):
+                    all_asset_exist = False
+                    break
+            if all_asset_exist:
+                return
+        else:
+            assert isinstance(asset_name, str)
+            if len(list(assets_path.glob(f"{asset_name}.*"))):
+                return
     response = requests.get(f"{url}{query}", headers=headers)
+    if isinstance(asset_name, dict):
+        _asset_name = asset_name[response.status_code]
+    else:
+        _asset_name = asset_name
     content_type = response.headers.get("content-type")
-    if asset_name not in requests_statuses:
-        requests_statuses[asset_name] = {}
-    requests_statuses[asset_name]["content-type"] = content_type
-    requests_statuses[asset_name]["status"] = response.status_code
+    if _asset_name not in requests_statuses:
+        requests_statuses[_asset_name] = {}
+    requests_statuses[_asset_name]["content-type"] = content_type
+    requests_statuses[_asset_name]["status"] = response.status_code
     if content_type == "application/json":
-        asset = assets_path / f"{asset_name}.json"
+        asset = assets_path / f"{_asset_name}.json"
         data = json.loads(response.text)
     else:
-        asset = assets_path / f"{asset_name}.txt"
+        asset = assets_path / f"{_asset_name}.txt"
         data = response.text
 
     if asset.exists():
@@ -448,6 +463,18 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     )
     dump_component_query(
         requests_statuses, url, "/api/users", headers, assets_path, "users"
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        "/api/messages/login",
+        headers,
+        assets_path,
+        {
+          200: "message_login",
+          404: "message_login_not_found",
+          500: "message_login_error",
+        },
     )
 
     dump_component_query(

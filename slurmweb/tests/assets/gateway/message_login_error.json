@@ -1,0 +1,5 @@
+{
+  "code": 500,
+  "description": "message template message.html.j2 not found",
+  "name": "Internal Server Error"
+}
