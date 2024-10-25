@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention metrics export optional feature in quickstart guide.
   - Mention metrics export feature in overview page.
   - Mention possible Prometheus integration in architecture page.
+- pkgs:
+  - Introduce `gateway` Python extra package.
+  - Add requirement on markdown external library for `gateway` extra package.
 
 ### Changed
 - docs: Update configuration reference documentation.

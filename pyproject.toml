@@ -13,7 +13,6 @@ authors = [
     {name = "Rémi Palancher", email = "remi@rackslab.io"},
 ]
 dependencies = [
-    "aiohttp",
     "Flask",
     "requests",
     "RFL.authentication >= 1.0.3",
@@ -34,6 +33,10 @@ agent = [
     "RacksDB[web]",
     "redis",
     "prometheus-client",
+]
+gateway = [
+    "aiohttp",
+    "markdown",
 ]
 tests = [
     "pytest",
