@@ -1,0 +1,7 @@
+# Slurm-web development environment
+
+Some groups of users are defined in this environment:
+
+{% for group in groups %}
+* **{{ group.name }}**: {{ group.members|join(', ') }}
+{% endfor %}

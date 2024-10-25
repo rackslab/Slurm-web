@@ -173,13 +173,13 @@ class SlurmwebAgent:
         _, stdout, _ = self.channel.connection.exec_command(
             shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
         )
-        cluster_status = json.loads(stdout.read())
+        self.cluster_status = json.loads(stdout.read())
         with open(self.policy_path, "w+") as fh:
             fh.write(
                 template.render(
                     cluster=self.name,
-                    users=cluster_status["users"],
-                    groups=cluster_status["groups"],
+                    users=self.cluster_status["users"],
+                    groups=self.cluster_status["groups"],
                     anonymous=anonymous,
                 )
             )
@@ -256,6 +256,7 @@ class SlurmwebGateway:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("gateway.ini.j2")
         self.conf_path = tmpdir / "gateway.ini"
+        self.message_path = tmpdir / "message.md"
         with open(self.conf_path, "w+") as fh:
             fh.write(
                 template.render(
@@ -265,9 +266,21 @@ class SlurmwebGateway:
                     ldap_base=agents[0].name,
                     agents=agents,
                     ui=ui,
+                    message=self.message_path,
                     anonymous=anonymous,
                 )
             )
+
+    def render_message(
+        self,
+        tmpdir: Path,
+        users,
+        groups,
+    ):
+        environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
+        template = environment.get_template("message.md.j2")
+        with open(self.message_path, "w+") as fh:
+            fh.write(template.render(users=users, groups=groups))
 
     def launch(self):
         cmd = (
@@ -310,6 +323,12 @@ def main():
         dest="ui",
         type=Path,
         help="Path to frontend application",
+    )
+    parser.add_argument(
+        "--no-service-message",
+        dest="service_message",
+        action="store_false",
+        help="Disable service message",
     )
     parser.add_argument(
         "--anonymous",
@@ -372,6 +391,8 @@ def main():
     # Launch gateway
     gateway = SlurmwebGateway()
     gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui, args.anonymous)
+    if args.service_message:
+        gateway.render_message(tmpdir, agents[0].cluster_status["users"], agents[0].cluster_status["groups"])
     gateway.launch()
 
     logger.info("Development environment is ready, type ^c to stop")
