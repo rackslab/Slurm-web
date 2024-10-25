@@ -59,6 +59,23 @@ ui:
     type: path
     default: /usr/share/slurm-web/frontend
     doc: Path to Slurm-web frontend application
+  templates:
+    type: path
+    default: /usr/share/slurm-web/templates
+    doc: |
+      Path HTML templates folder.
+  message_template:
+    type: path
+    default: message.html.j2
+    doc: |
+      Path to service message HTML template relative to the templates folder.
+  message_login:
+    type: path
+    default: /etc/slurm-web/messages/login.md
+    doc: |
+      Path to service message presented to users below the login form. Slurm-web
+      loads the file if it exists. However, it does not fail if file is not
+      found, it is skipped silently. The content must be formatted in markdown.
   hide_denied:
     type: bool
     default: false
