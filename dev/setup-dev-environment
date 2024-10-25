@@ -34,9 +34,7 @@ DEV_HOST = "firehpc.dev.rackslab.io"
 # Map between infrastructure names and cluster names that are visible in the UI. For
 # infrastructures not present in this mapping dict, infrastructure name is used in the
 # UI. This allows to trivially change cluster names in the UI.
-MAP_CLUSTER_NAMES = {
-    "emulator": "atlas"
-}
+MAP_CLUSTER_NAMES = {"emulator": "atlas"}
 USER = getpass.getuser()
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
@@ -166,7 +164,7 @@ class SlurmwebAgent:
     ):
         forwards = port_allocator.allocate()
         channel = ClusterChannel.connect(host, ssh_client, forwards, name, cluster_id)
-        return cls(name,  ui_name, channel, forwards, 5013 + cluster_id)
+        return cls(name, ui_name, channel, forwards, 5013 + cluster_id)
 
     def render_policy(self, tmpdir: Path, anonymous: bool) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
@@ -219,7 +217,7 @@ class SlurmwebAgent:
                     policy_path=self.policy_path,
                     redis_port=self.forwards["redis"].local,
                     redis_password=redis_password,
-                    infrastructure=self.name if self.ui_name != self.name else None
+                    infrastructure=self.name if self.ui_name != self.name else None,
                 )
             )
 
@@ -353,7 +351,12 @@ def main():
         else:
             ui_name = infrastructure.name
         agent = SlurmwebAgent.init(
-            DEV_HOST, port_allocator, ssh_client, infrastructure.name, ui_name, cluster_id
+            DEV_HOST,
+            port_allocator,
+            ssh_client,
+            infrastructure.name,
+            ui_name,
+            cluster_id,
         )
         # Generate agent configuration file
         agent.render_policy(tmpdir, args.anonymous)
