@@ -1,0 +1,38 @@
+{
+  "info": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "permissions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "stats": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "jobs": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "partitions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "qos": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "reservations": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "accounts": {
+    "content-type": "application/json",
+    "status": 200
+  }
+}

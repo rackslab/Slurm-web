@@ -1,0 +1,66 @@
+{
+  "clusters": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "users": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "stats": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "jobs": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-archived": {
+    "content-type": "application/json",
+    "status": 500
+  },
+  "job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "node-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "node-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "node-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "partitions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "qos": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "reservations": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "accounts": {
+    "content-type": "application/json",
+    "status": 200
+  }
+}

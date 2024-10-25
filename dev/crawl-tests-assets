@@ -184,8 +184,10 @@ def crawl_slurmrestd(socket: Path) -> None:
             )
 
     # Download specific jobs
-    if not(len(jobs["jobs"])):
-        logger.warning("No jobs found in queue on socket %s, unable to crawl jobs data", socket)
+    if not (len(jobs["jobs"])):
+        logger.warning(
+            "No jobs found in queue on socket %s, unable to crawl jobs data", socket
+        )
     else:
 
         min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
@@ -272,17 +274,32 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     # Download partitions
     dump_slurmrestd_query(
-        session, requests_statuses, prefix, f"/slurm/v{api}/partitions", assets_path, "slurm-partitions"
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurm/v{api}/partitions",
+        assets_path,
+        "slurm-partitions",
     )
 
     # Download qos
     dump_slurmrestd_query(
-        session, requests_statuses, prefix, f"/slurmdb/v{api}/qos", assets_path, "slurm-qos"
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurmdb/v{api}/qos",
+        assets_path,
+        "slurm-qos",
     )
 
     # Download accounts
     dump_slurmrestd_query(
-        session, requests_statuses, prefix, f"/slurmdb/v{api}/accounts", assets_path, "slurm-accounts"
+        session,
+        requests_statuses,
+        prefix,
+        f"/slurmdb/v{api}/accounts",
+        assets_path,
+        "slurm-accounts",
     )
 
     # Download reservations
@@ -295,6 +312,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         "slurm-reservations",
     )
 
+    # Save resulting status file
     with open(status_file, "w+") as fh:
         json.dump(requests_statuses, fh, indent=2)
         fh.write("\n")
@@ -362,6 +380,7 @@ def user_token(url: str, user: str):
 
 
 def dump_component_query(
+    requests_statuses,
     url: str,
     query: str,
     headers: str,
@@ -374,7 +393,12 @@ def dump_component_query(
     if len(list(assets_path.glob(f"{asset_name}.*"))) and skip_exist:
         return
     response = requests.get(f"{url}{query}", headers=headers)
-    if response.headers.get("content-type") == "application/json":
+    content_type = response.headers.get("content-type")
+    if asset_name not in requests_statuses:
+        requests_statuses[asset_name] = {}
+    requests_statuses[asset_name]["content-type"] = content_type
+    requests_statuses[asset_name]["status"] = response.status_code
+    if content_type == "application/json":
         asset = assets_path / f"{asset_name}.json"
         data = json.loads(response.text)
     else:
@@ -411,15 +435,32 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     if not assets_path.exists():
         assets_path.mkdir(parents=True)
 
-    # Save requests status and mimetype
+    # Save requests status
+    status_file = assets_path / "status.json"
+    if status_file.exists():
+        with open(status_file) as fh:
+            requests_statuses = json.load(fh)
+    else:
+        requests_statuses = {}
 
-    dump_component_query(url, "/api/clusters", headers, assets_path, "clusters")
-    dump_component_query(url, "/api/users", headers, assets_path, "users")
     dump_component_query(
-        url, f"/api/agents/{cluster}/stats", headers, assets_path, "stats"
+        requests_statuses, url, "/api/clusters", headers, assets_path, "clusters"
+    )
+    dump_component_query(
+        requests_statuses, url, "/api/users", headers, assets_path, "users"
+    )
+
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/stats",
+        headers,
+        assets_path,
+        "stats",
     )
 
     jobs = dump_component_query(
+        requests_statuses,
         url,
         f"/api/agents/{cluster}/jobs",
         headers,
@@ -428,14 +469,17 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
         skip_exist=False,
     )
 
-    if not(len(jobs)):
-        logger.warning("No jobs found in queue of cluster %s, unable to crawl jobs data", cluster)
+    if not (len(jobs)):
+        logger.warning(
+            "No jobs found in queue of cluster %s, unable to crawl jobs data", cluster
+        )
     else:
         min_job_id = jobs[0]["job_id"]
 
         def dump_job_state() -> None:
             if _job["job_state"] == state:
                 dump_component_query(
+                    requests_statuses,
                     url,
                     f"/api/agents/{cluster}/job/{_job['job_id']}",
                     headers,
@@ -450,6 +494,7 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
                 dump_job_state()
 
         dump_component_query(
+            requests_statuses,
             url,
             f"/api/agents/{cluster}/job/{min_job_id-1}",
             headers,
@@ -460,6 +505,7 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     # FIXME: Download unknown job
 
     nodes = dump_component_query(
+        requests_statuses,
         url,
         f"/api/agents/{cluster}/nodes",
         headers,
@@ -471,6 +517,7 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     def dump_node_state() -> None:
         if state in _node["state"]:
             dump_component_query(
+                requests_statuses,
                 url,
                 f"/api/agents/{cluster}/node/{_node['name']}",
                 headers,
@@ -486,15 +533,43 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     # FIXME: download unknown node
 
     dump_component_query(
-        url, f"/api/agents/{cluster}/partitions", headers, assets_path, "partitions"
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/partitions",
+        headers,
+        assets_path,
+        "partitions",
     )
-    dump_component_query(url, f"/api/agents/{cluster}/qos", headers, assets_path, "qos")
     dump_component_query(
-        url, f"/api/agents/{cluster}/reservations", headers, assets_path, "reservations"
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/qos",
+        headers,
+        assets_path,
+        "qos",
     )
     dump_component_query(
-        url, f"/api/agents/{cluster}/accounts", headers, assets_path, "accounts"
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/reservations",
+        headers,
+        assets_path,
+        "reservations",
     )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/accounts",
+        headers,
+        assets_path,
+        "accounts",
+    )
+
+    # Save resulting status file
+    with open(status_file, "w+") as fh:
+        json.dump(requests_statuses, fh, indent=2)
+        fh.write("\n")
+
     return token
 
 
@@ -508,27 +583,79 @@ def crawl_agent(port: int, token: str) -> None:
     if not assets_path.exists():
         assets_path.mkdir(parents=True)
 
+    # Save requests status
+    status_file = assets_path / "status.json"
+    if status_file.exists():
+        with open(status_file) as fh:
+            requests_statuses = json.load(fh)
+    else:
+        requests_statuses = {}
+
     headers = {"Authorization": f"Bearer {token}"}
 
-    dump_component_query(url, f"/v{get_version()}/info", headers, assets_path, "info")
     dump_component_query(
-        url, f"/v{get_version()}/permissions", headers, assets_path, "permissions"
-    )
-    dump_component_query(url, f"/v{get_version()}/stats", headers, assets_path, "stats")
-    dump_component_query(url, f"/v{get_version()}/jobs", headers, assets_path, "jobs")
-    dump_component_query(url, f"/v{get_version()}/nodes", headers, assets_path, "nodes")
-    dump_component_query(
-        url, f"/v{get_version()}/partitions", headers, assets_path, "partitions"
-    )
-    dump_component_query(url, f"/v{get_version()}/qos", headers, assets_path, "qos")
-    dump_component_query(
-        url, f"/v{get_version()}/reservations", headers, assets_path, "reservations"
+        requests_statuses, url, f"/v{get_version()}/info", headers, assets_path, "info"
     )
     dump_component_query(
-        url, f"/v{get_version()}/accounts", headers, assets_path, "accounts"
+        requests_statuses,
+        url,
+        f"/v{get_version()}/permissions",
+        headers,
+        assets_path,
+        "permissions",
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/stats",
+        headers,
+        assets_path,
+        "stats",
+    )
+    dump_component_query(
+        requests_statuses, url, f"/v{get_version()}/jobs", headers, assets_path, "jobs"
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/nodes",
+        headers,
+        assets_path,
+        "nodes",
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/partitions",
+        headers,
+        assets_path,
+        "partitions",
+    )
+    dump_component_query(
+        requests_statuses, url, f"/v{get_version()}/qos", headers, assets_path, "qos"
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/reservations",
+        headers,
+        assets_path,
+        "reservations",
+    )
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/accounts",
+        headers,
+        assets_path,
+        "accounts",
     )
 
     # FIXME: Download unknown job/node
+    # Save resulting status file
+    with open(status_file, "w+") as fh:
+        json.dump(requests_statuses, fh, indent=2)
+        fh.write("\n")
 
 
 def main() -> None:
