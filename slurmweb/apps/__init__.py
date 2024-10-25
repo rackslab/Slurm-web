@@ -10,6 +10,7 @@ from pathlib import Path
 import logging
 
 from flask import Flask, jsonify
+import jinja2
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import (
     SettingsDefinitionError,
@@ -105,6 +106,10 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
             jsonify(code=error.code, name=error.name, description=error.description),
             error.code,
         )
+
+    def set_templates_folder(self, path: Path):
+        """Change application jinja templates folder to look in the given path."""
+        self.jinja_loader = jinja2.FileSystemLoader([path])
 
     def run(self):
         logger.info("Running %s application", self.NAME)

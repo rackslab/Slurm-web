@@ -13,8 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     the cluster name.
   - Add optional `/metrics` endpoint with various Slurm metrics in OpenMetrics
     format designed to be scraped by Prometheus or compatible (#274).
-- gateway: Return RacksDB infrastructure name of every clusters in
-  `/clusters` endpoint.
+- gateway:
+  - Return RacksDB infrastructure name of every clusters in `/clusters`
+    endpoint.
+  - Return optional markdown login service message as rendered HTML page with
+    `/messages/login` enpoint.
 - frontend:
   - Request RacksDB with the infrastructure name provided by the gateway (#348).
   - Display time limit of running jobs in job details page (#352).

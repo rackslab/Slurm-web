@@ -44,6 +44,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         SlurmwebAppRoute("/api/version", views.version),
         SlurmwebAppRoute("/api/login", views.login, methods=["POST"]),
         SlurmwebAppRoute("/api/anonymous", views.anonymous),
+        SlurmwebAppRoute("/api/messages/login", views.message_login),
         SlurmwebAppRoute("/api/clusters", views.clusters),
         SlurmwebAppRoute("/api/users", views.users),
         SlurmwebAppRoute("/api/agents/<cluster>/stats", views.stats),
@@ -107,6 +108,9 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
 
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
+
+        # Use templates in UI templates folder
+        self.set_templates_folder(self.settings.ui.templates)
 
         # Setup authentifier
         if self.settings.authentication.enabled:

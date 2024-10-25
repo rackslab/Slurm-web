@@ -9,13 +9,15 @@ import logging
 from functools import wraps
 import asyncio
 
-from flask import Response, current_app, jsonify, request, abort
+import jinja2
+from flask import Response, current_app, jsonify, request, abort, render_template
 import aiohttp
 from rfl.web.tokens import check_jwt
 from rfl.authentication.user import AuthenticatedUser
 from rfl.authentication.errors import LDAPAuthenticationError
 from rfl.core.asyncio import asyncio_run
 
+from ..markdown import render_html
 from ..version import get_version
 
 
@@ -90,6 +92,27 @@ def anonymous():
         result="Successful anonymous access",
         token=token,
     )
+
+
+def message_login():
+    """Return markdown login service message rendered as HTML page. Return HTTP/404 if
+    markdown file is not found, and HTTP/500 if template is not found."""
+    try:
+        message = render_html(current_app.settings.ui.message_login)
+    except FileNotFoundError:
+        logger.debug(
+            "Login service markdown file %s not found",
+            current_app.settings.ui.message_login,
+        )
+        abort(404, "login service message not found")
+    try:
+        return render_template(
+            str(current_app.settings.ui.message_template), message=message
+        )
+    except jinja2.exceptions.TemplateNotFound:
+        msg = f"message template {current_app.settings.ui.message_template} not found"
+        logger.error(msg)
+        abort(500, msg)
 
 
 async def get_cluster(agent):
