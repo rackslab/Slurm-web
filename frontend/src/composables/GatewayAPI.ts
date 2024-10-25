@@ -342,7 +342,7 @@ export function renderWalltime(value: ClusterOptionalNumber): string {
 export type RacksDBAPIImage = ImageBitmapSource
 export type RacksDBAPIResult = RacksDBAPIImage
 export type RacksDBInfrastructureCoordinates = Record<string, [number, number, number, number]>
-const GatewayGenericAPIKeys = ['clusters', 'users'] as const
+const GatewayGenericAPIKeys = ['clusters', 'users', 'message_login'] as const
 export type GatewayGenericAPIKey = (typeof GatewayGenericAPIKeys)[number]
 const GatewayClusterAPIKeys = [
   'stats',
@@ -477,6 +477,10 @@ export function useGatewayAPI() {
     }
   }
 
+  async function message_login(): Promise<string> {
+    return await get<string>(`/messages/login`)
+  }
+
   async function clusters(): Promise<Array<ClusterDescription>> {
     return await get<ClusterDescription[]>(`/clusters`)
   }
@@ -583,6 +587,7 @@ export function useGatewayAPI() {
   return {
     login,
     anonymousLogin,
+    message_login,
     clusters,
     users,
     stats,

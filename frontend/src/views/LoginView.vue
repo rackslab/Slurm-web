@@ -13,6 +13,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
+import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
 
 const gateway = useGatewayAPI()
 
@@ -139,6 +140,7 @@ async function submitLogin() {
             </form>
           </div>
         </div>
+        <LoginServiceMessage />
       </div>
     </section>
   </main>
