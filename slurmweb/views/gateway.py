@@ -105,6 +105,13 @@ def message_login():
             current_app.settings.ui.message_login,
         )
         abort(404, "login service message not found")
+    except PermissionError:
+        msg = (
+            "Permission error on login service markdown file "
+            f"{current_app.settings.ui.message_login}"
+        )
+        logger.error(msg)
+        abort(500, msg)
     try:
         return render_template(
             str(current_app.settings.ui.message_template), message=message
