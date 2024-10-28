@@ -97,8 +97,32 @@ class TestGateway(unittest.TestCase):
             self.assertEqual(
                 cm.output,
                 [
-                    f"DEBUG:slurmweb.views.gateway:Login service markdown file {tmpdir}/not-found.md not found"
+                    "DEBUG:slurmweb.views.gateway:Login service markdown file "
+                    f"{self.app.settings.ui.message_login} not found"
                 ],
+            )
+
+    def test_message_permission_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # copy templates from vendor path
+            tmpdir_templates = os.path.join(tmpdir, "templates")
+            shutil.copytree(
+                os.path.join(self.vendor_path, "templates"), tmpdir_templates
+            )
+            self.app.set_templates_folder(tmpdir_templates)
+
+            # generate test markdown file w/o read permission
+            self.app.settings.ui.message_login = os.path.join(tmpdir, "message.md")
+            with open(self.app.settings.ui.message_login, "w+") as fh:
+                fh.write("Hello, *world*!")
+            os.chmod(self.app.settings.ui.message_login, 0o200)
+
+            response = self.client.get("/api/messages/login")
+            self.assertEqual(response.status_code, 500)
+            self.assertEqual(
+                response.json["description"],
+                "Permission error on login service markdown file "
+                f"{self.app.settings.ui.message_login}",
             )
 
     def test_message_template_not_found(self):
