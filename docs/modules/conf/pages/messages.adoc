@@ -1,0 +1,35 @@
+# Service Messages
+
+Slurm-web offers the possibility to display custom service message below the
+login form. This can be used to communicate information to all users very
+efficiently.
+
+To use this feature, just create file
+[.path]#`/etc/slurm-web/messages/login.md`# and write your custom message in
+markdown format (with links, emphasis, lists, etc…). It is then automatically
+rendered and displayed to all unauthenticated users.
+
+For exemple, consider the following message:
+
+[source,markdown]
+----
+# _Welcome_ to **Big Corp** HPC Clusters!
+
+Access is restricted to:
+
+* *engineers*
+* *researchers*
+
+Login with your **enterprise login** and **password**.
+
+Read [documentation](https://docs.bigcorp.com) to get more information.
+----
+
+This example is rendered like this:
+
+image::overview:screenshot_login_service_message.png[]
+
+CAUTION: This login service message is available to everyone who has network
+access to the web interface, including users who are not members of
+xref:conf/gateway.adoc#_ldap[LDAP restricted groups]. Take care to avoid
+disclosing too much sensitive information in this message.

@@ -115,6 +115,19 @@ image::screenshot_rbac.png[width=80%]
 * xref:conf:policy.adoc[Authorization Policy reference documentation]
 --
 
+== Custom Service Messages
+
+Integrate custom service message directly in Slurm-web interface to communicate
+efficiently with users:
+
+image::screenshot_login_service_message.png[]
+
+[sidebar]
+--
+.More links
+* xref:conf:messages.adoc[Service Messages configuration documentation]
+--
+
 [#cache]
 == Transparent Caching
 
