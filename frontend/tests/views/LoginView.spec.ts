@@ -1,10 +1,11 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
 import { init_plugins } from './common'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
 import { AuthenticationError } from '@/composables/HTTPErrors'
+import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
 
 const mockGatewayAPI = {
   login: vi.fn()
@@ -21,7 +22,7 @@ describe('LoginView.vue', () => {
     router = init_plugins()
   })
   test('should display login form', () => {
-    const wrapper = mount(LoginView, {})
+    const wrapper = shallowMount(LoginView, {})
     // Check presence of the logo and its source.
     const image = wrapper.get('img')
     expect(image.attributes('src')).toBe('/logo/slurm-web_logo.png')
@@ -30,10 +31,12 @@ describe('LoginView.vue', () => {
     wrapper.get('input#password')
     // Check presence and type of submit button.
     const button = wrapper.get('button')
+    // Check presence of login service message component
+    wrapper.getComponent(LoginServiceMessage)
     expect(button.attributes('type')).toBe('submit')
   })
   test('error on login form submission with empty user input', async () => {
-    const wrapper = mount(LoginView, {})
+    const wrapper = shallowMount(LoginView, {})
     const button = wrapper.get('button')
     const user_input = wrapper.get('input#user')
     const password_input = wrapper.get('input#password')
@@ -44,7 +47,7 @@ describe('LoginView.vue', () => {
     expect(password_input.classes('bg-gray-50')).toBe(true)
   })
   test('error on login form submission with empty password input', async () => {
-    const wrapper = mount(LoginView, {})
+    const wrapper = shallowMount(LoginView, {})
     const button = wrapper.get('button')
     // Add value in user input.
     const user_input = wrapper.get('input#user')
@@ -65,7 +68,7 @@ describe('LoginView.vue', () => {
         groups: ['scientists']
       })
     )
-    const wrapper = mount(LoginView, {})
+    const wrapper = shallowMount(LoginView, {})
     // Add values in user and passwords inputs.
     await wrapper.get('input#user').setValue('jdoe')
     await wrapper.get('input#password').setValue('secret')
@@ -87,7 +90,7 @@ describe('LoginView.vue', () => {
     mockGatewayAPI.login.mockImplementationOnce(() => {
       throw new AuthenticationError('invalid password')
     })
-    const wrapper = mount(LoginView, {})
+    const wrapper = shallowMount(LoginView, {})
     // Add values in user and passwords inputs.
     await wrapper.get('input#user').setValue('jdoe')
     await wrapper.get('input#password').setValue('secret')
