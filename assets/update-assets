@@ -31,7 +31,10 @@ def main():
 
     branding = Path("branding") / "branding.svg"
     for element in [
-        (f"logo{logo_background[0]}_{logo_background[1]}", f"slurm-web{logo_background[0]}_{logo_background[1]}")
+        (
+            f"logo{logo_background[0]}_{logo_background[1]}",
+            f"slurm-web{logo_background[0]}_{logo_background[1]}",
+        )
         for logo_background in itertools.product(LOGOS, BACKGROUNDS)
     ]:
 
@@ -78,9 +81,8 @@ def main():
             png = Path(LOGO_DIR) / BITMAPS_DIR / f"{svg.stem}_{size}.png"
             builder.build(outputs=[png], rule=f"png-{size}", inputs=[svg])
 
-    with open(Path(SCREENSHOTS_DIR)/ "build.yaml") as fh:
+    with open(Path(SCREENSHOTS_DIR) / "build.yaml") as fh:
         rules = yaml.safe_load(fh.read())
-
 
     assemblies = rules["assemblies"]
     for assembly_s, sizes in assemblies.items():
@@ -89,15 +91,14 @@ def main():
             png = assembly.parent / BITMAPS_DIR / f"{assembly.stem}-{size}.png"
             builder.build(outputs=[png], rule=f"png-{size}", inputs=[assembly])
 
-
     builder.rule(
         name="shadow",
         command=(
             "convert $in -gravity 'northwest' -background 'rgba(255,255,255,0)' "
             "-splice '10x10' "
-            "\( +clone -background black -shadow \"30x3-1-1\" \) +swap "
-            "-background none -mosaic +repage \( +clone "
-            "-background black -shadow \"30x8+5+5\" \) +swap "
+            r'\( +clone -background black -shadow "30x3-1-1" \) +swap '
+            r"-background none -mosaic +repage \( +clone "
+            r'-background black -shadow "30x8+5+5" \) +swap '
             "-background none -mosaic +repage $out"
         ),
     )
