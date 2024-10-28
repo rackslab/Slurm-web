@@ -159,6 +159,44 @@ _No default value_
 
 |-
 
+|templates
+|path
+|Path HTML templates folder.
+
+
+
+
+
+*Default:* `/usr/share/slurm-web/templates`
+
+|-
+
+|message_template
+|path
+|Path to service message HTML template relative to the templates folder.
+
+
+
+
+
+*Default:* `message.html.j2`
+
+|-
+
+|message_login
+|path
+|Path to service message presented to users below the login form. Slurm-web
+loads the file if it exists. However, it does not fail if file is not
+found, it is skipped silently. The content must be formatted in markdown.
+
+
+
+
+
+*Default:* `/etc/slurm-web/messages/login.md`
+
+|-
+
 |hide_denied
 |bool
 |Control if users can see the list of denied clusters, ie. clusters on
