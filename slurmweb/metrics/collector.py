@@ -11,8 +11,8 @@ import logging
 import prometheus_client
 import prometheus_client.core
 
-from .errors import SlurmwebCacheError
-from .slurmrestd.errors import (
+from ..errors import SlurmwebCacheError
+from ..slurmrestd.errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
