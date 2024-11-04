@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Request RacksDB with the infrastructure name provided by the gateway (#348).
   - Display time limit of running jobs in job details page (#352).
   - Display service message below login form if defined (#253).
+  - Add dependency on _charts.js_ and _luxon_ adapter to draw charts with
+    timeseries metrics.
 - conf:
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.
