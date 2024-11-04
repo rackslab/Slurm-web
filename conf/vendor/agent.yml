@@ -148,6 +148,8 @@ filters:
     - state
     - reason
     - partitions
+    - alloc_cpus
+    - alloc_idle_cpus
     doc: |
       List of nodes fields selected in slurmrestd API, all other fields are
       filtered out.
@@ -169,6 +171,7 @@ filters:
     - reason
     - partitions
     - alloc_cpus
+    - alloc_idle_cpus
     - alloc_memory
     doc: |
       List of invidual node fields selected in slurmrestd API, all other fields

@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add `metrics` > `restrict` parameter for the agent.
   - Add `ui` > `templates`, `message_template`, `message_login` parameters for
     the gateway.
+  - Select `alloc_cpus` and `alloc_idle_cpus` nodes fields on `slurmrestd`
+    `/slurm/*/nodes` and `/slurm/*/node/<node>` endpoints.
   - Introduce service message template.
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,
