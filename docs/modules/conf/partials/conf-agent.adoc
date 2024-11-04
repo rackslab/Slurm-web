@@ -884,6 +884,29 @@ compatible) is enabled.
 
 |-
 
+|host
+|uri
+|URL of Prometheus server (or compatible) to requests metrics with PromQL.
+
+
+
+
+
+*Default:* `http://localhost:9090`
+
+|-
+
+|job
+|str
+|Name of Prometheus job which scrapes Slurm-web metrics.
+
+
+
+
+*Default:* `slurm`
+
+|-
+
 
 |===
 
