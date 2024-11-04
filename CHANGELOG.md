@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.
   - Add `metrics` > `restrict` parameter for the agent.
+  - Add `metrics` > `host` parameter for the agent.
   - Add `ui` > `templates`, `message_template`, `message_login` parameters for
     the gateway.
   - Select `alloc_cpus` and `alloc_idle_cpus` nodes fields on `slurmrestd`

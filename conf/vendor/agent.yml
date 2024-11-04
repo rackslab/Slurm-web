@@ -373,3 +373,8 @@ metrics:
     - ::1/128
     doc: |
       Restricted list of IP networks permitted to request metrics.
+  host:
+    type: uri
+    default: http://localhost:9090
+    doc: |
+      URL of Prometheus server (or compatible) to requests metrics with PromQL.
