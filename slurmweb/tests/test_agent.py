@@ -663,8 +663,8 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "WARNING:slurmweb.metrics:IP address 127.0.0.1 not authorized to "
-                "request metrics"
+                "WARNING:slurmweb.metrics.collector:IP address 127.0.0.1 not "
+                "authorized to request metrics"
             ],
         )
 
@@ -681,8 +681,8 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.metrics:Unable to collect metrics due to slurmrestd "
-                "connection error: connection error"
+                "ERROR:slurmweb.metrics.collector:Unable to collect metrics due to "
+                "slurmrestd connection error: connection error"
             ],
         )
 
@@ -699,8 +699,8 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.metrics:Unable to collect metrics due to slurmrestd "
-                "invalid response: invalid type"
+                "ERROR:slurmweb.metrics.collector:Unable to collect metrics due to "
+                "slurmrestd invalid response: invalid type"
             ],
         )
 
@@ -722,8 +722,8 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.metrics:Unable to collect metrics due to slurmrestd "
-                "internal error: fake error description (fake error source)"
+                "ERROR:slurmweb.metrics.collector:Unable to collect metrics due to "
+                "slurmrestd internal error: fake error description (fake error source)"
             ],
         )
 
@@ -741,8 +741,8 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.metrics:Unable to collect metrics due to URL not found "
-                "on slurmrestd: /unfound"
+                "ERROR:slurmweb.metrics.collector:Unable to collect metrics due to URL "
+                "not found on slurmrestd: /unfound"
             ],
         )
 
@@ -762,7 +762,7 @@ class TestAgentMetrics(TestAgentBase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.metrics:Unable to collect metrics due to cache error: "
-                "fake error"
+                "ERROR:slurmweb.metrics.collector:Unable to collect metrics due to "
+                "cache error: fake error"
             ],
         )
