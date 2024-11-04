@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add optional `/metrics` endpoint with various Slurm metrics in OpenMetrics
     format designed to be scraped by Prometheus or compatible (#274).
 - gateway:
-  - Return RacksDB infrastructure name of every clusters in `/clusters`
-    endpoint.
+  - Return RacksDB infrastructure name and boolean metrics feature flag of every
+    clusters in `/clusters` endpoint.
   - Return optional markdown login service message as rendered HTML page with
     `/messages/login` enpoint.
 - frontend:

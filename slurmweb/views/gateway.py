@@ -148,6 +148,7 @@ async def get_cluster(agent):
         cluster = {
             "name": agent.cluster,
             "infrastructure": agent.infrastructure,
+            "metrics": agent.metrics,
             "permissions": permissions,
         }
 
