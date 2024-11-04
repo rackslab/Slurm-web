@@ -145,7 +145,6 @@ class Slurmrestd:
         }
         cores_states = {
             "idle": 0,
-            "mixed": 0,
             "allocated": 0,
             "down": 0,
             "drain": 0,
@@ -157,7 +156,9 @@ class Slurmrestd:
             cores = node["cpus"]
             if "MIXED" in node["state"]:
                 nodes_states["mixed"] += 1
-                cores_states["mixed"] += cores
+                # Look at number of actually allocated/idle cores
+                cores_states["allocated"] += node["alloc_cpus"]
+                cores_states["idle"] += node["alloc_idle_cpus"]
             elif "ALLOCATED" in node["state"]:
                 nodes_states["allocated"] += 1
                 cores_states["allocated"] += cores
