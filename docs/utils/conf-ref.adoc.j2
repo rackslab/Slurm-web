@@ -43,7 +43,12 @@
 * `{{ default }}`
 {% endfor %}
 {% else %}
-*Default:* `{{ parameter.default }}`
+{%- if parameter._type == "uri" %}
+{%- set default = parameter.default.geturl() %}
+{%- else %}
+{%- set default = parameter.default %}
+{%- endif %}
+*Default:* `{{ default }}`
 {% endif %}
 {%- else %}
 _No default value_
