@@ -222,6 +222,8 @@ def request_agent(
             )
         else:
             url = f"{current_app.agents[cluster].url}/{query}"
+        if len(request.query_string):
+            url += f"?{request.query_string.decode()}"
         if request.method == "GET":
             return session.get(url, headers=headers)
         elif request.method == "POST":
@@ -324,8 +326,7 @@ def accounts(cluster: str):
 def racksdb(cluster: str, query: str):
     return proxy_agent(
         cluster,
-        f"racksdb/v{current_app.settings.agents.racksdb_version}/{query}"
-        f"{'?' if len(request.query_string) else '' }{request.query_string.decode()}",
+        f"racksdb/v{current_app.settings.agents.racksdb_version}/{query}",
         request.token,
         json=False,
         with_version=False,
