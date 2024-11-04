@@ -14,13 +14,25 @@ slurm_qos:
   - Flags=OverPartQOS
   - GrpTRES=node=50
   - GrpJobs=60
-  - MaxTRES=cpu=48
+  - MaxTRES=cpu=128
   - MaxWall=8:00:00
-  - MaxTRESPU=cpu=10,mem=5
-  - MaxTRESPA=cpu=15,mem=10
+  - MaxTRESPU=cpu=10,mem=65536
+  - MaxTRESPA=cpu=15,mem=131072
   - MaxJobsPU=10
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
   - Priority=100
+slurm_partitions:
+- name: normal
+  nodes: cn[1-2]
+  default: yes
+  params:
+    MaxTime: "2:0:0"
+    State: UP
+    DefMemPerCPU: 512
 slurmweb_enabled: true
+slurmweb_agent_settings:
+  metrics:
+    enabled: true
 redis_enabled: true
+metrics_enabled: true

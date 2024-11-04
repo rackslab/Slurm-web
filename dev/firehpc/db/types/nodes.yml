@@ -3,12 +3,12 @@
   height: 1u
   width: full
   cpu:
-    cores: 8
+    cores: 32
     model: Emulated CPU
-    sockets: 1
+    sockets: 2
   ram:
-    dimm: 2
-    size: 8GB
+    dimm: 8
+    size: 16GB
   storage:
   - model: Samsung 980 Pro
     size: 256GB
@@ -21,11 +21,11 @@
   height: 3u
   width: 1/12
   cpu:
-    cores: 8
+    cores: 24
     model: Emulated CPU
-    sockets: 1
+    sockets: 2
   ram:
-    dimm: 2
+    dimm: 8
     size: 8GB
   storage:
   - model: Samsung 980 Pro
@@ -39,9 +39,9 @@
   height: 2u
   width: 1
   cpu:
-    cores: 8
+    cores: 16
     model: Emulated CPU
-    sockets: 1
+    sockets: 2
   gpu:
   - model: Nvidia H100
     memory: 80GB
@@ -52,8 +52,8 @@
   - model: Nvidia H100
     memory: 80GB
   ram:
-    dimm: 2
-    size: 8GB
+    dimm: 16
+    size: 32GB
   storage:
   - model: Samsung 980 Pro
     size: 256GB

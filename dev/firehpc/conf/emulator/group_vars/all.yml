@@ -7,24 +7,33 @@ slurm_params:
   PriorityType: priority/multifactor
   PriorityWeightFairshare: 1000
   PriorityWeightQOS: 100
+  SelectType: select/cons_tres
 slurm_partitions:
 - name: batch
-  node: cn[001-080,101-980]
+  nodes: cn[001-080,101-980]
   default: yes
-  maxtime: INFINITE
-  state: UP
+  params:
+    MaxTime: INFINITE
+    State: UP
+    DefMemPerCPU: 512
 - name: debug
-  node: cn[081-099]
-  maxtime: "1:0:0"
-  state: UP
+  nodes: cn[081-099]
+  params:
+    MaxTime: "1:0:0"
+    State: UP
+    DefMemPerCPU: 512
 - name: interactive
-  node: cn100
-  maxtime: "10:00"
-  state: UP
+  nodes: cn100
+  params:
+    MaxTime: "10:00"
+    State: UP
+    DefMemPerCPU: 512
 - name: ia
-  node: gn[01-40]
-  maxtime: "10:00"
-  state: UP
+  nodes: gn[01-40]
+  params:
+    MaxTime: "10:00"
+    State: UP
+    DefMemPerCPU: 512
 slurm_qos:
 - name: critical
   args:
@@ -35,4 +44,8 @@ slurm_qos:
   - MaxSubmitJobsPA=30
   - Priority=200
 slurmweb_enabled: true
+slurmweb_agent_settings:
+  metrics:
+    enabled: true
 redis_enabled: true
+metrics_enabled: true
