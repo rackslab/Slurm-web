@@ -367,5 +367,6 @@ metrics:
     content: network
     default:
     - 127.0.0.0/24
+    - ::1/128
     doc: |
       Restricted list of IP networks permitted to request metrics.
