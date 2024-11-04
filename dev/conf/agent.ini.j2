@@ -27,5 +27,8 @@ enabled={{ cache_enabled }}
 port={{ redis_port }}
 password={{ redis_password }}
 
+{% if cluster_name != "pocket" %}
 [metrics]
 enabled=yes
+host=http://localhost:{{ prometheus_port }}
+{% endif %}
