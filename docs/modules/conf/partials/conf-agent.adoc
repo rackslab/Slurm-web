@@ -340,6 +340,10 @@ filtered out.
 
 * `partitions`
 
+* `alloc_cpus`
+
+* `alloc_idle_cpus`
+
 
 |-
 
@@ -382,6 +386,8 @@ are filtered out.
 * `partitions`
 
 * `alloc_cpus`
+
+* `alloc_idle_cpus`
 
 * `alloc_memory`
 
