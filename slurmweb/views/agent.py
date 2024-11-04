@@ -35,6 +35,7 @@ def info():
     data = {
         "cluster": current_app.settings.service.cluster,
         "infrastructure": current_app.settings.racksdb.infrastructure,
+        "metrics": current_app.settings.metrics.enabled,
     }
     return jsonify(data)
 
