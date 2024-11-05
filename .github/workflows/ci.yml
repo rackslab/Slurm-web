@@ -42,9 +42,7 @@ jobs:
       # script provided by RFL.build package is copied and executed.
       #
       # Some dependencies are pre-installed to add version constraints, in order
-      # to force installation of old versions compatible with Python 3.6. Note
-      # that version of Werkzeug is fixed to 2.1.* to have TestResponse.text
-      # property used by some tests.
+      # to force installation of old versions compatible with Python 3.6.
       #
       # Some Slurm-web optional dependencies are declared in extra packages.
       # This is not supported by setup.py script from RFL.build. As a workaround
