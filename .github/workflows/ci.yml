@@ -1,0 +1,96 @@
+---
+name: Automated Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  python_tests:
+    name: Python tests
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        include:
+          - os: "ubuntu-20.04"
+            python-version: "3.6"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install tests dependencies
+        run: |
+          sudo apt-get install -y build-essential python3-dev libldap2-dev libsasl2-dev libcairo2-dev libgirepository1.0-dev libpango1.0-dev
+          python -m pip install --upgrade pip
+
+      - name: Install application with its dependencies
+        if: ${{ matrix.python-version != '3.6' }}
+        run: |
+          pip install . .[agent] .[gateway] .[tests]
+
+      # Unfortunately, pip and setuptools in Python 3.6 do not fully support
+      # PEP517 pyproject.toml. As a workaround for this version, the setup.py
+      # script provided by RFL.build package is copied and executed.
+      #
+      # Some dependencies are pre-installed to add version constraints, in order
+      # to force installation of old versions compatible with Python 3.6. Note
+      # that version of Werkzeug is fixed to 2.1.* to have TestResponse.text
+      # property used by some tests.
+      #
+      # Some Slurm-web optional dependencies are declared in extra packages.
+      # This is not supported by setup.py script from RFL.build. As a workaround
+      # these dependencies are installed manually afterwhile.
+      - name: Install application with its dependencies (Python 3.6)
+        if: ${{ matrix.python-version == '3.6' }}
+        run: |
+          echo "::notice::Installing RFL.build"
+          pip install RFL.build
+          echo "::notice::Installing PyYAML (old version)"
+          pip install PyYAML==5.4.1
+          echo "::notice::Installing PyJWT (old version)"
+          pip install PyJWT==2.4.0
+          echo "::notice::Installing Flask (old version)"
+          pip install "flask<2.1.0"
+          echo "::notice::Installing requests (old version)"
+          pip install "requests<2.26.0"
+          echo "::notice::Installing pyasn1 (old version)"
+          pip install "pyasn1<0.6.0"
+
+          cp -v ${Python3_ROOT_DIR}/lib/python3.6/site-packages/rfl/build/scripts/setup setup.py
+          python3 setup.py install
+
+          echo "::notice::Installing optional dependencies required for tests"
+          pip install pytest RacksDB[web] redis prometheus-client markdown aiohttp
+
+      # The cached_property decorator is integrated in Python 3.8+. For older versions,
+      # install cached_property external library.
+      - if: ${{ matrix.python-version == '3.6' || matrix.python-version == '3.7' }}
+        run: pip install cached_property
+
+      - name: Run tests
+        run: pytest
+
+  vuejs_tests:
+    name: Vue.js tests
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install npm packages
+        run: cd frontend && npm ci
+      - name: Run tests
+        run: cd frontend && npm run test:unit
