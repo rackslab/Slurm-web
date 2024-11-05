@@ -378,3 +378,7 @@ metrics:
     default: http://localhost:9090
     doc: |
       URL of Prometheus server (or compatible) to requests metrics with PromQL.
+  job:
+    type: str
+    default: slurm
+    doc: Name of Prometheus job which scrapes Slurm-web metrics.
