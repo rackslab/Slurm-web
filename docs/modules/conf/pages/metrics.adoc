@@ -84,6 +84,52 @@ scrape_configs:
 NOTE: You may need to adjust the target hostname, typically if Prometheus is
 running on a remote host, and destination port (for example 443 for HTTPS).
 
+Check prometheus the scraping job is running properly with this command:
+
+[source,console]
+----
+$ curl -s http://localhost:9090/api/v1/targets?scrapePool=slurm | jq
+----
+
+This command reports the status of the Prometheus scraping job, for example:
+
+[source,json]
+----
+{
+  "status": "success",
+  "data": {
+    "activeTargets": [
+      {
+        "discoveredLabels": {
+          "__address__": "localhost:80",
+          "__metrics_path__": "/agent/metrics",
+          "__scheme__": "http",
+          "__scrape_interval__": "30s",
+          "__scrape_timeout__": "10s",
+          "job": "slurm"
+        },
+        "labels": {
+          "instance": "localhost:80",
+          "job": "slurm"
+        },
+        "scrapePool": "slurm",
+        "scrapeUrl": "http://localhost:80/agent/metrics",
+        "globalUrl": "http://localhost:80/agent/metrics",
+        "lastError": "", <1>
+        "lastScrape": "2024-10-30T12:08:41.494167925+01:00",
+        "lastScrapeDuration": 0.107884764,
+        "health": "up", <2>
+        "scrapeInterval": "30s",
+        "scrapeTimeout": "10s"
+      }
+    ],
+    "droppedTargets": []
+  }
+}
+----
+<1> `lastError` field must be empty.
+<2> `health` must be `up`.
+
 .Reference
 ****
 * https://prometheus.io/docs/prometheus/latest/configuration/configuration/[Prometheus Official Configuration Documentation].
