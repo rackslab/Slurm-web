@@ -614,7 +614,7 @@ class TestAgentMetrics(TestAgentBase):
         )
 
     def tearDown(self):
-        self.app.metrics.unregister()
+        self.app.metrics_collector.unregister()
 
     @all_slurm_versions
     def test_request_metrics(self, slurm_version):
