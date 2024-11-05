@@ -11,7 +11,36 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { RouteLocation } from 'vue-router'
 import { getNodeMainState } from '@/composables/GatewayAPI'
-import type { ClusterDescription, ClusterJob, ClusterNode } from '@/composables/GatewayAPI'
+import type {
+  ClusterDescription,
+  ClusterJob,
+  ClusterNode,
+  MetricRange
+} from '@/composables/GatewayAPI'
+
+/*
+ * Dashboard view settings
+ */
+
+interface DashboardQueryParameters {
+  range?: string
+  cores?: boolean
+}
+
+class DashboardViewSettings {
+  range: MetricRange = 'hour'
+  coresToggle = false
+  query() {
+    const result: DashboardQueryParameters = {}
+    if (this.range != 'hour') {
+      result.range = this.range
+    }
+    if (this.coresToggle) {
+      result.cores = this.coresToggle
+    }
+    return result
+  }
+}
 
 /*
  * Jobs view settings
@@ -277,6 +306,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
   const routePath: Ref<string> = ref('/')
   const beforeSettingsRoute: Ref<RouteLocation | undefined> = ref(undefined)
 
+  const dashboard = ref<DashboardViewSettings>(new DashboardViewSettings())
   const jobs: Ref<JobsViewSettings> = ref(new JobsViewSettings())
   const resources: Ref<ResourcesViewSettings> = ref(new ResourcesViewSettings())
 
@@ -336,6 +366,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
     navigation,
     routePath,
     beforeSettingsRoute,
+    dashboard,
     jobs,
     resources,
     errors,

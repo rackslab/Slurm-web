@@ -24,6 +24,7 @@ interface loginIdents {
 export interface ClusterDescription {
   name: string
   infrastructure: string
+  metrics: boolean
   permissions: ClusterPermissions
   stats?: ClusterStats
 }
@@ -255,6 +256,22 @@ export interface ClusterReservation {
   flags: string[]
 }
 
+export type MetricValue = [number, number]
+const MetricRanges = ['week', 'day', 'hour'] as const
+export type MetricRange = (typeof MetricRanges)[number]
+export type MetricResourceState = 'idle' | 'down' | 'mixed' | 'allocated' | 'drain' | 'unknown'
+export type MetricJobState =
+  | 'unknown'
+  | 'cancelled'
+  | 'completed'
+  | 'completing'
+  | 'running'
+  | 'pending'
+
+export function isMetricRange(range: unknown): range is MetricRange {
+  return typeof range === 'string' && MetricRanges.includes(range as MetricRange)
+}
+
 export function renderClusterOptionalNumber(optionalNumber: ClusterOptionalNumber): string {
   if (!optionalNumber.set) {
     return '-'
@@ -356,7 +373,12 @@ const GatewayClusterAPIKeys = [
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
 export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
-const GatewayClusterWithStringAPIKeys = ['node'] as const
+const GatewayClusterWithStringAPIKeys = [
+  'node',
+  'metrics_nodes',
+  'metrics_cores',
+  'metrics_jobs'
+] as const
 export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
 export type GatewayAnyClusterApiKey =
   | GatewayClusterAPIKey
@@ -525,6 +547,33 @@ export function useGatewayAPI() {
     return await get<AccountDescription[]>(`/agents/${cluster}/accounts`)
   }
 
+  async function metrics_nodes(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricResourceState, MetricValue[]>> {
+    return await get<Record<MetricResourceState, MetricValue[]>>(
+      `/agents/${cluster}/metrics/nodes?range=${last}`
+    )
+  }
+
+  async function metrics_cores(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricResourceState, MetricValue[]>> {
+    return await get<Record<MetricResourceState, MetricValue[]>>(
+      `/agents/${cluster}/metrics/cores?range=${last}`
+    )
+  }
+
+  async function metrics_jobs(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricResourceState, MetricValue[]>> {
+    return await get<Record<MetricResourceState, MetricValue[]>>(
+      `/agents/${cluster}/metrics/jobs?range=${last}`
+    )
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     infrastructure: string,
@@ -599,6 +648,9 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    metrics_nodes,
+    metrics_cores,
+    metrics_jobs,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,

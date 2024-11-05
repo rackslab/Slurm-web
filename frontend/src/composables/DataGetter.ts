@@ -70,9 +70,11 @@ export function useGatewayDataGetter<Type>(
 }
 
 export function useClusterDataGetter<Type>(
-  callback: GatewayAnyClusterApiKey,
-  otherParam?: string | number
+  initialCallback: GatewayAnyClusterApiKey,
+  initialOtherParam?: string | number
 ) {
+  let callback = initialCallback
+  let otherParam = initialOtherParam
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
@@ -98,7 +100,6 @@ export function useClusterDataGetter<Type>(
   async function get(cluster: string) {
     try {
       unable.value = false
-
       if (gateway.isValidGatewayClusterWithStringAPIKey(callback)) {
         data.value = (await gateway[callback](cluster, otherParam as string)) as Type
       } else if (gateway.isValidGatewayClusterWithNumberAPIKey(callback)) {
@@ -124,6 +125,22 @@ export function useClusterDataGetter<Type>(
     }
   }
 
+  function setCallback(newCallback: GatewayAnyClusterApiKey) {
+    callback = newCallback
+    loaded.value = false
+    if (runtime.currentCluster) {
+      get(runtime.currentCluster.name)
+    }
+  }
+
+  function setParam(newOtherParam: string | number) {
+    otherParam = newOtherParam
+    loaded.value = false
+    if (runtime.currentCluster) {
+      get(runtime.currentCluster.name)
+    }
+  }
+
   watch(
     () => runtime.currentCluster,
     (newCluster, oldCluster) => {
@@ -141,5 +158,5 @@ export function useClusterDataGetter<Type>(
       get(runtime.currentCluster.name)
     }
   })
-  return { data, unable, loaded }
+  return { data, unable, loaded, setCallback, setParam }
 }

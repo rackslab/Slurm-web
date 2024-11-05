@@ -8,9 +8,13 @@
 
 <script setup lang="ts">
 import type { ClusterStats } from '@/composables/GatewayAPI'
+import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
+import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+
+const runtimeStore = useRuntimeStore()
 
 const props = defineProps({
   cluster: {
@@ -83,6 +87,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
       </div>
+      <DashboardCharts v-if="runtimeStore.getCluster(props.cluster).metrics"></DashboardCharts>
     </div>
   </ClusterMainLayout>
 </template>

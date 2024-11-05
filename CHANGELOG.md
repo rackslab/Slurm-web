@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Display service message below login form if defined (#253).
   - Add dependency on _charts.js_ and _luxon_ adapter to draw charts with
     timeseries metrics.
+  - Display charts of resources (nodes/cores) status and jobs queue in dashboard
+    page based on metrics from Prometheus (#275).
 - conf:
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.

@@ -14,17 +14,21 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 
-type ClusterDataPoller<Type> = {
-  data: Ref<Type | undefined>
+export interface ClusterDataPoller<ResponseType> {
+  data: Ref<ResponseType | undefined>
   unable: Ref<boolean>
   loaded: Ref<boolean>
+  setCallback: (newCallback: GatewayAnyClusterApiKey) => void
+  setParam: (newOtherParam: string | number) => void
 }
 
 export function useClusterDataPoller<Type>(
-  callback: GatewayAnyClusterApiKey,
+  initialCallback: GatewayAnyClusterApiKey,
   timeout: number,
-  otherParam?: number | string
+  initialOtherParam?: number | string
 ): ClusterDataPoller<Type> {
+  let callback = initialCallback
+  let otherParam = initialOtherParam
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
@@ -95,6 +99,24 @@ export function useClusterDataPoller<Type>(
     gateway.abort()
   }
 
+  function setCallback(newCallback: GatewayAnyClusterApiKey) {
+    if (runtime.currentCluster) stop(runtime.currentCluster.name)
+    callback = newCallback
+    loaded.value = false
+    if (runtime.currentCluster) {
+      start(runtime.currentCluster.name)
+    }
+  }
+
+  function setParam(newOtherParam: string | number) {
+    if (runtime.currentCluster) stop(runtime.currentCluster.name)
+    otherParam = newOtherParam
+    loaded.value = false
+    if (runtime.currentCluster) {
+      start(runtime.currentCluster.name)
+    }
+  }
+
   watch(
     () => runtime.currentCluster,
     (newCluster, oldCluster) => {
@@ -123,5 +145,5 @@ export function useClusterDataPoller<Type>(
     }
   })
 
-  return { data, unable, loaded }
+  return { data, unable, loaded, setCallback, setParam }
 }
