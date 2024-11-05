@@ -12,6 +12,7 @@ import json
 import copy
 
 import requests
+import flask
 
 ASSETS = Path(__file__).parent.resolve() / ".." / "tests" / "assets"
 
@@ -95,3 +96,12 @@ def mock_slurmrestd_responses(slurmrestd, slurm_version, assets):
         slurmrestd.session.get = mock.Mock(return_value=responses[0])
 
     return results
+
+
+class SlurmwebCustomTestResponse(flask.Response):
+    """Custom flask Response class to backport text property of
+    werkzeug.test.TestResponse class on werkzeug < 2.1 on Python 3.6."""
+
+    @property
+    def text(self):
+        return self.get_data(as_text=True)

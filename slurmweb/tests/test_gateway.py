@@ -7,11 +7,14 @@
 import unittest
 import tempfile
 import os
+import sys
 import shutil
 
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
+
+from .utils import SlurmwebCustomTestResponse
 
 CONF = """
 [agents]
@@ -57,6 +60,10 @@ class TestGateway(unittest.TestCase):
                 "TESTING": True,
             }
         )
+        # On Python 3.6, use custom test response class to backport text property of
+        # werkzeug.test.TestResponse in werkzeug 2.1.
+        if sys.version_info.major == 3 and sys.version_info.minor <= 7:
+            self.app.response_class = SlurmwebCustomTestResponse
         self.client = self.app.test_client()
 
     def test_version(self):

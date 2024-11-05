@@ -9,6 +9,7 @@ import unittest
 from unittest import mock
 import tempfile
 import os
+import sys
 import textwrap
 import ipaddress
 
@@ -31,6 +32,7 @@ from .utils import (
     all_slurm_versions,
     mock_slurmrestd_responses,
     SlurmwebAssetUnavailable,
+    SlurmwebCustomTestResponse,
 )
 
 CONF = """
@@ -113,6 +115,10 @@ class TestAgentBase(unittest.TestCase):
             ),
             duration=3600,
         )
+        # On Python 3.6, use custom test response class to backport text property of
+        # werkzeug.test.TestResponse in werkzeug 2.1.
+        if sys.version_info.major == 3 and sys.version_info.minor <= 7:
+            self.app.response_class = SlurmwebCustomTestResponse
         self.client = self.app.test_client()
         self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
 
