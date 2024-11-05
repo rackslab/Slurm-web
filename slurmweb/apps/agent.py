@@ -40,6 +40,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/qos", views.qos),
         SlurmwebAppRoute(f"/v{get_version()}/reservations", views.reservations),
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
+        SlurmwebAppRoute(f"/v{get_version()}/metrics/<metric>", views.metrics),
     }
 
     def __init__(self, seed):
@@ -110,9 +111,13 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         if self.settings.metrics.enabled:
             # Lazy load metrics module to avoid failing on missing optional external
             # dependency when feature is actually disabled.
-            from ..metrics import SlurmWebMetricsCollector, make_wsgi_app
+            from ..metrics.collector import SlurmWebMetricsCollector, make_wsgi_app
+            from ..metrics.db import SlurmwebMetricsDB
 
-            self.metrics = SlurmWebMetricsCollector(self.slurmrestd)
+            self.metrics_collector = SlurmWebMetricsCollector(self.slurmrestd)
             self.wsgi_app = dispatcher.DispatcherMiddleware(
                 self.wsgi_app, {"/metrics": make_wsgi_app(self.settings.metrics)}
+            )
+            self.metrics_db = SlurmwebMetricsDB(
+                self.settings.metrics.host, self.settings.metrics.job
             )

@@ -11,7 +11,7 @@ from flask import Response, current_app, jsonify, abort, request
 from rfl.web.tokens import rbac_action, check_jwt
 
 from ..version import get_version
-from ..errors import SlurmwebCacheError
+from ..errors import SlurmwebCacheError, SlurmwebMetricsDBError
 
 from ..slurmrestd.errors import (
     SlurmrestdNotFoundError,
@@ -155,3 +155,37 @@ def reservations():
 @rbac_action("view-accounts")
 def accounts():
     return jsonify(slurmrest("accounts"))
+
+
+@check_jwt
+def metrics(metric):
+    # Dictionnary of metrics and required policy actions associations
+    metrics_policy_actions = {
+        "nodes": "view-nodes",
+        "cores": "view-nodes",
+        "jobs": "view-jobs",
+    }
+
+    # Check metric is supported or send HTTP/404
+    if metric not in metrics_policy_actions.keys():
+        abort(404, f"Metric {metric} not found")
+
+    # Check permission to request metric or send HTTP/403
+    action = metrics_policy_actions[metric]
+    if not current_app.policy.allowed_user_action(request.user, action):
+        logger.warning(
+            "Unauthorized access from user %s to %s metric (missing permission on %s)",
+            request.user,
+            metric,
+            action,
+        )
+        abort(403, f"Access to {metric} metric not permitted")
+
+    # Send metrics from DB
+
+    try:
+        return jsonify(
+            current_app.metrics_db.request(metric, request.args.get("range", "hour"))
+        )
+    except SlurmwebMetricsDBError as err:
+        abort(500, str(err))

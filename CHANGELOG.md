@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     feature is enabled in `/info` endpoint, in addition to the cluster name.
   - Add optional `/metrics` endpoint with various Slurm metrics in OpenMetrics
     format designed to be scraped by Prometheus or compatible (#274).
+  - Add possibility to query metrics from Prometheus database with
+    `/v<version>/metrics/<metric>` endpoint.
 - gateway:
   - Return RacksDB infrastructure name and boolean metrics feature flag of every
     clusters in `/clusters` endpoint.

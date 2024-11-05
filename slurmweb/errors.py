@@ -23,3 +23,7 @@ class SlurmwebAuthenticationError(Exception):
 
 class SlurmwebCacheError(Exception):
     pass
+
+
+class SlurmwebMetricsDBError(Exception):
+    pass
