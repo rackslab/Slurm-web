@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Return RacksDB infrastructure name and boolean metrics feature flag of every
     clusters in `/clusters` endpoint.
   - Return optional markdown login service message as rendered HTML page with
-    `/messages/login` enpoint.
+    `/messages/login` endpoint.
+  - Proxy metrics requests to agent through
+    `/api/agents/<cluster>/metrics/<metric>` endpoint.
 - frontend:
   - Request RacksDB with the infrastructure name provided by the gateway (#348).
   - Display time limit of running jobs in job details page (#352).
