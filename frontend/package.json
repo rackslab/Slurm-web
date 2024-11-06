@@ -39,6 +39,7 @@
     "autoprefixer": "^10.4.15",
     "eslint": "^8.46.0",
     "eslint-plugin-vue": "^9.16.1",
+    "jest-canvas-mock": "^2.5.2",
     "jsdom": "^24.1.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.29",
