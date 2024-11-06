@@ -392,7 +392,11 @@ def main():
     gateway = SlurmwebGateway()
     gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui, args.anonymous)
     if args.service_message:
-        gateway.render_message(tmpdir, agents[0].cluster_status["users"], agents[0].cluster_status["groups"])
+        gateway.render_message(
+            tmpdir,
+            agents[0].cluster_status["users"],
+            agents[0].cluster_status["groups"],
+        )
     gateway.launch()
 
     logger.info("Development environment is ready, type ^c to stop")
