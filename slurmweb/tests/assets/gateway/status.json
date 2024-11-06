@@ -74,5 +74,17 @@
   "message_login_error": {
     "content-type": "application/json",
     "status": 500
+  },
+  "metrics-nodes-hour": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "metrics-cores-hour": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "metrics-jobs-hour": {
+    "content-type": "application/json",
+    "status": 200
   }
 }

@@ -27,6 +27,7 @@ from rfl.settings.errors import (
 )
 from racksdb import RacksDB
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
+from slurmweb.metrics.db import SlurmwebMetricsDB
 from slurmweb.version import get_version
 
 logger = logging.getLogger("crawl-tests-assets")
@@ -34,8 +35,74 @@ logger = logging.getLogger("crawl-tests-assets")
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
+METRICS_PREFERRED_CLUSTER = "emulator"
+# Map between infrastructure names and cluster names that are visible in Slurm-web.
+MAP_CLUSTER_NAMES = {"emulator": "atlas"}
+
+
+def slurmweb_cluster_name(infrastructure: str):
+    if infrastructure in MAP_CLUSTER_NAMES:
+        return MAP_CLUSTER_NAMES[infrastructure]
+    return infrastructure
+
 
 ASSETS = Path(__file__).parent.resolve() / ".." / "slurmweb" / "tests" / "assets"
+
+
+def crawl_prometheus(url: str, job: str) -> None:
+    """Crawl and save test assets from Prometheus."""
+    # Check assets directory
+    assets_path = ASSETS / "prometheus"
+    if not assets_path.exists():
+        assets_path.mkdir(parents=True)
+
+    # Save requests status
+    status_file = assets_path / "status.json"
+    if status_file.exists():
+        with open(status_file) as fh:
+            requests_statuses = json.load(fh)
+    else:
+        requests_statuses = {}
+
+    headers = {}
+    db = SlurmwebMetricsDB(url, job)
+
+    for metric in ["nodes", "cores", "jobs"]:
+        for _range in ["hour"]:
+            dump_component_query(
+                requests_statuses,
+                url,
+                f"{db.REQUEST_BASE_PATH}{db._query(metric, _range)}",
+                headers,
+                assets_path,
+                f"{metric}-{_range}",
+                prettify=False,
+            )
+
+    # query unexisting metric
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"{db.REQUEST_BASE_PATH}{db._query('fail', 'hour')}",
+        headers,
+        assets_path,
+        "unknown-metric",
+    )
+
+    # query unknown API path
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"{db.REQUEST_BASE_PATH}/fail",
+        headers,
+        assets_path,
+        "unknown-path",
+    )
+
+    # Save resulting status file
+    with open(status_file, "w+") as fh:
+        json.dump(requests_statuses, fh, indent=2)
+        fh.write("\n")
 
 
 def query_slurmrestd(session: requests.Session, prefix: str, query: str) -> Any:
@@ -385,8 +452,9 @@ def dump_component_query(
     query: str,
     headers: str,
     assets_path: Path,
-    asset_name: dict[int,str]|str,
+    asset_name: dict[int, str] | str,
     skip_exist: bool = True,
+    prettify: bool = True,
 ) -> Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
@@ -425,17 +493,17 @@ def dump_component_query(
     else:
         with open(asset, "w+") as fh:
             if asset.suffix == ".json":
-                fh.write(json.dumps(data, indent=2))
+                fh.write(json.dumps(data, indent=2 if prettify else None))
             else:
                 fh.write(data)
     return data
 
 
-def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
+def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
     """Crawl and save test assets from Slurm-web gateway component and return
     authentication JWT."""
     # Retrieve admin user account to connect
-    user = admin_user(cluster)
+    user = admin_user(infrastructure)
     logger.info("Found user %s in group admin on cluster %s", user, cluster)
 
     # Get gateway HTTP base URL from configuration
@@ -471,9 +539,9 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
         headers,
         assets_path,
         {
-          200: "message_login",
-          404: "message_login_not_found",
-          500: "message_login_error",
+            200: "message_login",
+            404: "message_login_not_found",
+            500: "message_login_error",
         },
     )
 
@@ -592,6 +660,19 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
         "accounts",
     )
 
+    # metrics
+    for metric in ["nodes", "cores", "jobs"]:
+        for _range in ["hour"]:
+            dump_component_query(
+                requests_statuses,
+                url,
+                f"/api/agents/{cluster}/metrics/{metric}?range={_range}",
+                headers,
+                assets_path,
+                f"metrics-{metric}-{_range}",
+                prettify=False,
+            )
+
     # Save resulting status file
     with open(status_file, "w+") as fh:
         json.dump(requests_statuses, fh, indent=2)
@@ -600,7 +681,7 @@ def crawl_gateway(cluster: str, dev_tmp_dir: Path) -> str:
     return token
 
 
-def crawl_agent(port: int, token: str) -> None:
+def crawl_agent(port: int, token: str, metrics: bool) -> None:
     """Crawl and save test assets from Slurm-web agent component."""
     # Compose and return the URL to the gateway
     url = f"http://localhost:{port}"
@@ -678,6 +759,20 @@ def crawl_agent(port: int, token: str) -> None:
         "accounts",
     )
 
+    # metrics
+    if metrics:
+        for metric in ["nodes", "cores", "jobs"]:
+            for _range in ["hour"]:
+                dump_component_query(
+                    requests_statuses,
+                    url,
+                    f"/v{get_version()}/metrics/{metric}?range={_range}",
+                    headers,
+                    assets_path,
+                    f"metrics-{metric}-{_range}",
+                    prettify=False,
+                )
+
     # FIXME: Download unknown job/node
     # Save resulting status file
     with open(status_file, "w+") as fh:
@@ -714,8 +809,16 @@ def main() -> None:
     db = RacksDB.load(db="dev/firehpc/db", schema="../RacksDB/schemas/racksdb.yml")
     logger.info("List of clusters: %s", db.infrastructures.keys())
 
+    gateway_infrastructure = list(
+        db.infrastructures.filter(name=METRICS_PREFERRED_CLUSTER)
+    )[0].name
+
     # Crawl gateway and get bearer token
-    token = crawl_gateway(list(db.infrastructures.keys())[0], dev_tmp_dir)
+    token = crawl_gateway(
+        slurmweb_cluster_name(gateway_infrastructure),
+        gateway_infrastructure,
+        dev_tmp_dir,
+    )
 
     for cluster in db.infrastructures.keys():
         # Load agent configuration
@@ -730,8 +833,14 @@ def main() -> None:
             logger.critical(err)
             sys.exit(1)
 
+        crawl_metrics = cluster == METRICS_PREFERRED_CLUSTER
+
         # Crawl agent
-        crawl_agent(settings.service.port, token)
+        crawl_agent(settings.service.port, token, metrics=crawl_metrics)
+
+        # Crawl prometheus
+        if crawl_metrics:
+            crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
 
         # Crawl slurmrestd
         try:

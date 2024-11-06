@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "errorType": "bad_data",
+  "error": "invalid parameter \"query\": 1:1: parse error: unexpected <op:/>"
+}
