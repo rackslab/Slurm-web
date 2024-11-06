@@ -1,15 +1,11 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import JobView from '@/views/JobView.vue'
-import { init_plugins } from './common'
+import { init_plugins, getMockClusterDataPoller } from './common'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import jobRunning from '../assets/job-running.json'
 
-const mockClusterDataPoller = {
-  data: undefined,
-  unable: false,
-  loaded: true
-} as { data: ClusterIndividualJob | undefined; unable: boolean; loaded: boolean }
+const mockClusterDataPoller = getMockClusterDataPoller<ClusterIndividualJob>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -20,7 +16,7 @@ describe('JobView.vue', () => {
     init_plugins()
   })
   test('display job details', () => {
-    mockClusterDataPoller.data = jobRunning
+    mockClusterDataPoller.data.value = jobRunning
     const wrapper = mount(JobView, {
       props: {
         cluster: 'foo',

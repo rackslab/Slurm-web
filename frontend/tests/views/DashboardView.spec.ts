@@ -4,14 +4,11 @@ import DashboardView from '@/views/DashboardView.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import { init_plugins } from './common'
+import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
+import { init_plugins, getMockClusterDataPoller } from './common'
 import stats from '../assets/stats.json'
 
-const mockClusterDataPoller = {
-  data: undefined,
-  unable: false,
-  loaded: true
-} as { data: ClusterStats | undefined; unable: boolean; loaded: boolean }
+const mockClusterDataPoller = getMockClusterDataPoller<ClusterStats>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -21,14 +18,19 @@ describe('DashboardView.vue', () => {
   beforeEach(() => {
     init_plugins()
     useRuntimeStore().availableClusters = [
-      { name: 'foo', permissions: { roles: [], actions: [] }, infrastructure: 'foo' }
+      { name: 'foo', permissions: { roles: [], actions: [] }, infrastructure: 'foo', metrics: true }
     ]
   })
-  test('should display dashboard with metrics', async () => {
-    mockClusterDataPoller.data = stats
+  test('should display dashboard with metrics', () => {
+    mockClusterDataPoller.data.value = stats
     const wrapper = mount(DashboardView, {
       props: {
         cluster: 'foo'
+      },
+      global: {
+        stubs: {
+          DashboardCharts: true
+        }
       }
     })
     // Check presence of metrics and values.
@@ -42,12 +44,35 @@ describe('DashboardView.vue', () => {
     expect(wrapper.get('span#metric-cores').text()).toBe(stats.resources.cores.toString())
     expect(wrapper.get('span#metric-jobs-running').text()).toBe(stats.jobs.running.toString())
     expect(wrapper.get('span#metric-jobs-total').text()).toBe(stats.jobs.total.toString())
+    // Check presence of login service message component
+    wrapper.getComponent(DashboardCharts)
   })
-  test('should display error when unable to get cluster stats', async () => {
-    mockClusterDataPoller.unable = true
+  test('should not display charts when metrics are disabled', () => {
+    // Disable metrics on clusterfoo
+    useRuntimeStore().availableClusters[0].metrics = false
     const wrapper = mount(DashboardView, {
       props: {
         cluster: 'foo'
+      },
+      global: {
+        stubs: {
+          DashboardCharts: true
+        }
+      }
+    })
+    // Check absence of charts component
+    expect(wrapper.findComponent(DashboardCharts).exists()).toBe(false)
+  })
+  test('should display error when unable to get cluster stats', () => {
+    mockClusterDataPoller.unable.value = true
+    const wrapper = mount(DashboardView, {
+      props: {
+        cluster: 'foo'
+      },
+      global: {
+        stubs: {
+          DashboardCharts: true
+        }
       }
     })
     // Check error is displayed when data poller is unable to retrieved data.
