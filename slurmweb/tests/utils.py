@@ -105,3 +105,57 @@ class SlurmwebCustomTestResponse(flask.Response):
     @property
     def text(self):
         return self.get_data(as_text=True)
+
+
+def mock_prometheus_response(asset_name):
+    """Return mocked requests Response corresponding to the given Prometheus asset."""
+    with open(ASSETS / "prometheus/status.json") as fh:
+        requests_statuses = json.load(fh)
+
+    if asset_name not in requests_statuses:
+        warnings.warn(
+            f"Unable to find asset {asset_name} in Prometheus requests status file"
+        )
+        raise SlurmwebAssetUnavailable()
+
+    is_json = True
+    if requests_statuses[asset_name]["content-type"] == "application/json":
+        asset = load_json_asset(f"prometheus/{asset_name}.json")
+    else:
+        is_json = False
+        asset = load_asset(f"prometheus/{asset_name}.txt")
+    response = mock.create_autospec(requests.Response)
+    response.url = "/mocked/query"
+    response.status_code = requests_statuses[asset_name]["status"]
+    response.headers = {"content-type": requests_statuses[asset_name]["content-type"]}
+    if is_json:
+        response.json = mock.Mock(return_value=asset)
+    else:
+        response.text = mock.PropertyMock(return_value=asset)
+
+    return response
+
+
+class RemoveActionInPolicy:
+    """Context manager to temporarily remove an action from a role in policy."""
+
+    def __init__(self, policy, role, action):
+        self.policy = policy
+        self.role = role
+        self.action = action
+        self.removed_in_anonymous = False
+
+    def __enter__(self):
+        for _role in self.policy.loader.roles:
+            if _role.name == self.role:
+                _role.actions.remove(self.action)
+            if _role.name == "anonymous" and self.action in _role.actions:
+                _role.actions.remove(self.action)
+                self.removed_in_anonymous = True
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for _role in self.policy.loader.roles:
+            if _role.name == self.role:
+                _role.actions.add(self.action)
+            if _role.name == "anonymous" and self.removed_in_anonymous:
+                _role.actions.add(self.action)
