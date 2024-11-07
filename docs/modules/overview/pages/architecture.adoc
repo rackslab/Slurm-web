@@ -50,9 +50,11 @@ xref:overview.adoc#nodes-status[graphical representation of nodes status] in the
 racks.
 
 Optionally, the *agent* can connect to https://redis.io/[Redis] in-memory
-key/value database to save cached data from Slurm. It can also
-xref:overview.adoc#metrics[export metrics] to https://prometheus.io/[Prometheus]
-(or compatible) in order to store values in timeseries databases.
+key/value database to save cached data from Slurm. It can also integrate with
+https://prometheus.io/[Prometheus] (or compatible) by exporting
+xref:overview.adoc#metrics[various Slurm metrics] for storage in timeseries
+database. The agent can then query this database to get historical values of
+these metrics.
 
 [#protocols]
 == Protocols

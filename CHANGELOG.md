@@ -46,9 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   which can either be configuration definition file or site override (#349).
 - docs:
   - Add manpage for `slurm-web-show-conf` command.
-  - Add metrics export configuration documentation.
-  - Mention metrics export optional feature in quickstart guide.
-  - Mention metrics export feature in overview page.
+  - Add metrics feature configuration documentation page.
+  - Mention metrics optional feature in quickstart guide.
+  - Mention metrics export and charts feature in overview page.
   - Mention possible Prometheus integration in architecture page.
   - Mention login service message feature in overview page.
   - Add page to document _Service Messages_ configuration.
@@ -57,7 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add requirement on markdown external library for `gateway` extra package.
 
 ### Changed
-- docs: Update configuration reference documentation.
+- docs:
+  - Update configuration reference documentation.
+  - Update dashboard screenshot in overview page with example of resource chart.
 - conf:
   - Convert `[cache]` > `password` agent parameter from string to password type.
   - Convert `[ldap]` > `bind_password` gateway parameter from string to password

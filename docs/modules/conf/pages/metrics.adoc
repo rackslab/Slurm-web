@@ -1,18 +1,28 @@
-= Metrics Export
+= Metrics
 
-Slurm-web agent can export metrics in standard OpenMetrics format on `/metrics`
-endpoint. This is designed to be scraped by Prometheus (or compatible) in order
-to store metrics in timeseries databases and draw diagrams of historical data.
+Slurm-web can be integrated with https://prometheus.io/[Prometheus] (or any
+compatible solution) to manage Slurm metrics.
 
-This page explains how to enable and secure this feature by
-<<restrict,restricting access>> to specific hosts and
-<<prometheus,configure Prometheus>> to scrap these metrics. It also provides a
+image::overview:slurm-web_metrics.png[]
+
+When this feature is enabled, Slurm-web agent exports these metrics in standard
+OpenMetrics format on `/metrics` endpoint. This is designed to be collected by
+Prometheus (or compatible) in order to store these metrics in timeseries
+database. The agent can then query this database, so the frontend can produce
+charts with historical values.
+
+This first section explains how to <<start,enable this metrics feature>>. For
+security reasons, access to exported metrics can be
+<<restrict,restricted to specific hosts>>. Next section explains how to
+<<prometheus,configure Prometheus>> to collect Slurm-web metrics. Then
+<<query,metrics query settings>> are explained and the last section provides a
 <<reference,reference list of all available metrics>>. 
 
-== Configuration
+[#start]
+== Get Started
 
-The metrics export feature is disabled by default. It can be enabled with the
-following lines in [.path]#`/etc/slurm-web/agent.ini`#:
+The metrics feature is disabled by default. It can be enabled with the following
+lines in [.path]#`/etc/slurm-web/agent.ini`#:
 
 [source,ini]
 ----
@@ -26,9 +36,9 @@ enabled=yes
 ****
 
 [#restrict]
-== Host Restriction
+== Access Restriction
 
-For security reasons, Slurm-web agent restrict access to `/metrics` endpoint to
+For security reasons, Slurm-web agent restricts access to `/metrics` endpoint to
 localhost only. When Prometheus is running on external hosts, you must define
 `restrict` parameter in [.path]#`/etc/slurm-web/agent.ini`# to allow other
 networks explicitely. For example:
@@ -135,6 +145,32 @@ This command reports the status of the Prometheus scraping job, for example:
 * https://prometheus.io/docs/prometheus/latest/configuration/configuration/[Prometheus Official Configuration Documentation].
 ****
 
+[#query]
+== Query Settings
+
+In order to query Prometheus database, Slurm-web must know:
+
+* The *URL* to access Prometheus HTTP API,
+* The name of Prometheus *job* that scrapes Slurm-web metrics. This corresponds
+  to `job_name` field in [.path]#`/etc/prometheus/prometheus.yml`#.
+
+By default, Slurm-web uses `http://localhost:9090` and `slurm` values
+respectively. This can be changed with the following settings in
+[.path]#`/etc/slurm-web/agent.ini`#, for example:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+host=https://metrics.company.ltd
+job=slurmweb
+----
+
+.More details
+****
+* xref:conf/agent.adoc#_metrics[Agent configuration reference documentation for metrics section].
+****
+
 [#reference]
 == Available Metrics
 
@@ -165,3 +201,6 @@ are: _running_, _completed_, _completing_, _cancelled_, _pending_ and _unknown_.
 |slurm_jobs_total
 |Total number of jobs in Slurm controller queue.
 |===
+
+TIP: Do want more Slurm metrics exported by Slurm-web?
+https://rackslab.io/en/contact/[Contact us] to tell your needs.
