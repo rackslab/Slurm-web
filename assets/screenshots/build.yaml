@@ -12,6 +12,8 @@ assemblies:
   - large
   slurm-web_responsive.svg:
   - large
+  slurm-web_charts.svg:
+  - medium
 # List raw screenshots for which versions with dropped shadow must be generated.
 shadowed:
 - screenshot_auth.png
