@@ -112,6 +112,12 @@ export interface ClusterJobStep {
   step: { id: { job_id: number; step_id: string }; name: string }
 }
 
+export interface ClusterJobComment {
+  administrator: string
+  job: string
+  system: string
+}
+
 export interface ClusterJobExitCode {
   return_code: number
   status: string
@@ -122,7 +128,7 @@ export interface ClusterIndividualJob {
   association: { account: string; cluster: string; partition: string; user: string }
   batch_flag: boolean
   command: string
-  comment: { administrator: string; job: string; system: string }
+  comment: ClusterJobComment
   cpus: ClusterOptionalNumber
   current_working_directory: string
   derived_exit_code: ClusterJobExitCode

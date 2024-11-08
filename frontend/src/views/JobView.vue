@@ -7,6 +7,7 @@
 -->
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
@@ -18,6 +19,10 @@ import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
+import JobFieldComment from '@/components/job/JobFieldComment.vue'
+import JobFieldExitCode from '@/components/job/JobFieldExitCode.vue'
+import JobFieldTRES from '@/components/job/JobFieldTRES.vue'
 
 const props = defineProps({
   cluster: {
@@ -42,6 +47,78 @@ function backToJobs() {
 }
 
 const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, props.id)
+
+const jobFields = computed(() => {
+  if (!data.value) return []
+  return [
+    { id: 'user', label: 'User', component: JobFieldRaw, props: { field: data.value.user } },
+    { id: 'group', label: 'Group', component: JobFieldRaw, props: { field: data.value.group } },
+    {
+      id: 'account',
+      label: 'Account',
+      component: JobFieldRaw,
+      props: { field: data.value.association.account }
+    },
+    {
+      id: 'wckeys',
+      label: 'Wckeys',
+      component: JobFieldRaw,
+      props: { field: data.value.wckey.wckey }
+    },
+    {
+      id: 'priority',
+      label: 'Priority',
+      component: JobFieldRaw,
+      props: { field: data.value.priority.number }
+    },
+    { id: 'name', label: 'Name', component: JobFieldRaw, props: { field: data.value.name } },
+    {
+      id: 'comments',
+      label: 'Comments',
+      component: JobFieldComment,
+      props: { comment: data.value.comment }
+    },
+    {
+      id: 'submit-line',
+      label: 'Submit line',
+      component: JobFieldRaw,
+      props: { field: data.value.submit_line, monospace: true }
+    },
+    { id: 'script', label: 'Script', component: JobFieldRaw, props: { field: data.value.script } },
+    {
+      id: 'workdir',
+      label: 'Working directory',
+      component: JobFieldRaw,
+      props: { field: data.value.working_directory, monospace: true }
+    },
+    {
+      id: 'exit-code',
+      label: 'Exit Code',
+      component: JobFieldExitCode,
+      props: { exit_code: data.value.exit_code }
+    },
+    { id: 'nodes', label: 'Nodes', component: JobFieldRaw, props: { field: data.value.nodes } },
+    {
+      id: 'partition',
+      label: 'Partition',
+      component: JobFieldRaw,
+      props: { field: data.value.partition }
+    },
+    { id: 'qos', label: 'QOS', component: JobFieldRaw, props: { field: data.value.qos } },
+    {
+      id: 'tres-requested',
+      label: 'Requested',
+      component: JobFieldTRES,
+      props: { tres: data.value.tres.requested }
+    },
+    {
+      id: 'tres-allocated',
+      label: 'Allocated',
+      component: JobFieldTRES,
+      props: { tres: data.value.tres.allocated }
+    }
+  ]
+})
 </script>
 
 <template>
@@ -84,133 +161,15 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job
         <div class="w-full lg:w-2/3">
           <div class="border-t border-gray-100">
             <dl class="divide-y divide-gray-100">
-              <!-- Association -->
-              <div id="job-user" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">User</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.user }}
-                </dd>
-              </div>
-              <div id="job-group" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Group</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.group }}
-                </dd>
-              </div>
-              <div id="job-account" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Account</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.association.account }}
-                </dd>
-              </div>
-              <div id="job-wckey" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Wckeys</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.wckey.wckey }}
-                </dd>
-              </div>
-              <!-- General information -->
-              <div id="job-priority" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Priority</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.priority.number }}
-                </dd>
-              </div>
-              <div id="job-name" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Name</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.name }}
-                </dd>
-              </div>
-              <div id="job-comments" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Comments</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <p v-if="data.comment.administrator">
-                    <span class="italic">(administrator)</span> {{ data.comment.administrator }}
-                  </p>
-                  <p v-if="data.comment.system">
-                    <span class="italic">(system)</span> {{ data.comment.system }}
-                  </p>
-                  <p v-if="data.comment.job">
-                    <span class="italic">(job)</span> {{ data.comment.job }}
-                  </p>
-                </dd>
-              </div>
-              <div id="job-submit-line" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Submit line</dt>
-                <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.submit_line }}
-                </dd>
-              </div>
-              <div id="job-script" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Script</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.script }}
-                </dd>
-              </div>
-              <div id="job-workdir" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Working directory</dt>
-                <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.working_directory }}
-                </dd>
-              </div>
-              <div id="job-exit-code" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Exit Code</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.exit_code.status }} ({{ data.exit_code.return_code }})
-                </dd>
-              </div>
-              <!-- Resources -->
-              <div id="job-nodes" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Nodes</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.nodes }}
-                </dd>
-              </div>
-              <div id="job-partition" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">Partition</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.partition }}
-                </dd>
-              </div>
-              <div id="job-qos" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt class="text-sm font-medium leading-6 text-gray-900">QOS</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.qos }}
-                </dd>
-              </div>
               <div
-                id="job-tres-requested"
+                v-for="field in jobFields"
+                :key="field.id"
+                :id="`job-${field.id}`"
                 class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
               >
-                <dt class="text-sm font-medium leading-6 text-gray-900">Requested</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <ul>
-                    <li v-for="tres in data.tres.requested" :key="tres.id">
-                      {{ tres.type }}: {{ tres.count }}
-                    </li>
-                  </ul>
-                </dd>
+                <dt class="text-sm font-medium leading-6 text-gray-900">{{ field.label }}</dt>
+                <component :is="field.component" v-bind="field.props" />
               </div>
-              <div
-                id="job-tres-allocated"
-                class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
-              >
-                <dt class="text-sm font-medium leading-6 text-gray-900">Allocated</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <ul>
-                    <li v-for="tres in data.tres.allocated" :key="tres.id">
-                      {{ tres.type }}: {{ tres.count }}
-                    </li>
-                  </ul>
-                </dd>
-              </div>
-              <!--
-                <div v-for="(value, property) in data" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt class="text-sm font-medium leading-6 text-gray-900">{{  property }}</dt>
-                  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"> {{ value }}</dd>
-                </div>
-              -->
             </dl>
           </div>
         </div>
