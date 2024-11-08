@@ -7,8 +7,9 @@ import { httpPlugin } from '@/plugins/http'
 import { createTestingPinia } from '@pinia/testing'
 import { config, RouterLinkStub } from '@vue/test-utils'
 import { createRouterMock, injectRouterMock } from 'vue-router-mock'
+import type { RouterMock } from 'vue-router-mock'
 
-export function init_plugins() {
+export function init_plugins(): RouterMock {
   config.global.plugins = [
     [
       runtimeConfiguration,
