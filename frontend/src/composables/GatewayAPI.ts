@@ -363,7 +363,6 @@ const GatewayGenericAPIKeys = ['clusters', 'users', 'message_login'] as const
 export type GatewayGenericAPIKey = (typeof GatewayGenericAPIKeys)[number]
 const GatewayClusterAPIKeys = [
   'stats',
-  'jobs',
   'nodes',
   'partitions',
   'qos',
@@ -375,6 +374,7 @@ const GatewayClusterWithNumberAPIKeys = ['job'] as const
 export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
 const GatewayClusterWithStringAPIKeys = [
   'node',
+  'jobs',
   'metrics_nodes',
   'metrics_cores',
   'metrics_jobs'
@@ -515,7 +515,8 @@ export function useGatewayAPI() {
     return await get<ClusterStats>(`/agents/${cluster}/stats`)
   }
 
-  async function jobs(cluster: string): Promise<ClusterJob[]> {
+  async function jobs(cluster: string, node?: string): Promise<ClusterJob[]> {
+    if (node) return await get<ClusterJob[]>(`/agents/${cluster}/jobs?node=${node}`)
     return await get<ClusterJob[]>(`/agents/${cluster}/jobs`)
   }
 

@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     timeseries metrics.
   - Display charts of resources (nodes/cores) status and jobs queue in dashboard
     page based on metrics from Prometheus (#275).
+  - Display list of jobs which have resources allocated on the node in node
+    details page (#292).
 - conf:
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.

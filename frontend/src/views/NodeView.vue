@@ -7,14 +7,16 @@
 -->
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterIndividualNode } from '@/composables/GatewayAPI'
+import type { ClusterDataPoller  } from '@/composables/DataPoller'
+import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
+import JobStatusLabel from '@/components/jobs/JobStatusLabel.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
@@ -41,11 +43,13 @@ function backToResources() {
   })
 }
 
-const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
-  'node',
-  5000,
-  props.nodeName
-)
+const node = useClusterDataPoller<ClusterIndividualNode>('node', 5000, props.nodeName)
+
+/* Poll jobs on current nodes if user has permission on view-jobs action. */
+let jobs: ClusterDataPoller<ClusterJob[]> | undefined
+if (runtimeStore.hasPermission('view-jobs')) {
+  jobs = useClusterDataPoller<ClusterJob[]>('jobs', 10000, props.nodeName)
+}
 </script>
 
 <template>
@@ -61,15 +65,15 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to resources
     </button>
-    <ErrorAlert v-if="unable"
+    <ErrorAlert v-if="node.unable.value"
       >Unable to retrieve node {{ nodeName }} from cluster
       <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
     >
-    <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
+    <div v-else-if="!node.loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
       <LoadingSpinner :size="5" />
       Loading node {{ nodeName }}
     </div>
-    <div v-else-if="data">
+    <div v-else-if="node.data.value">
       <div class="flex justify-between">
         <div class="px-4 pb-8 sm:px-0">
           <h3 class="text-base font-semibold leading-7 text-gray-900">Node {{ nodeName }}</h3>
@@ -83,30 +87,58 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
               <div id="status" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Node status</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <NodeMainState :node="data" />
-                  <span v-if="data.reason" class="pl-4 text-gray-500"
-                    >reason: {{ data.reason }}</span
+                  <NodeMainState :node="node.data.value" />
+                  <span v-if="node.data.value.reason" class="pl-4 text-gray-500"
+                    >reason: {{ node.data.value.reason }}</span
                   >
                 </dd>
               </div>
               <div id="allocation" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Allocation status</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <NodeAllocationState :node="data" />
+                  <NodeAllocationState :node="node.data.value" />
                   <ul class="list-disc pl-4 pt-4">
                     <li>
-                      CPU: {{ data.alloc_cpus }} / {{ data.cpus }}
+                      CPU: {{ node.data.value.alloc_cpus }} / {{ node.data.value.cpus }}
                       <span class="italic text-gray-400"
-                        >({{ (data.alloc_cpus / data.cpus) * 100 }}%)</span
+                        >({{ (node.data.value.alloc_cpus / node.data.value.cpus) * 100 }}%)</span
                       >
                     </li>
                     <li>
-                      Memory: {{ data.alloc_memory }} / {{ data.real_memory }}
+                      Memory: {{ node.data.value.alloc_memory }} / {{ node.data.value.real_memory }}
                       <span class="italic text-gray-400"
-                        >({{ (data.alloc_memory / data.real_memory) * 100 }}%)</span
+                        >({{ (node.data.value.alloc_memory / node.data.value.real_memory) * 100 }}%)</span
                       >
                     </li>
                   </ul>
+                </dd>
+              </div>
+              <div v-if="jobs" id="jobs" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">
+                  Current Jobs
+                  <span
+                    v-if="jobs.data.value"
+                    class="ml-1 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-slurmweb md:inline-block"
+                    >{{ jobs.data.value.length }}</span
+                  >
+                </dt>
+                <dd class="text-sm leading-6 text-gray-700 sm:col-span-2">
+                  <template v-if="jobs.data.value">
+                    <ul v-if="jobs.data.value.length">
+                      <li v-for="job in jobs.data.value" :key="job.job_id" class="inline">
+                        <RouterLink
+                          :to="{ name: 'job', params: { cluster: props.cluster, id: job.job_id } }"
+                        >
+                          <JobStatusLabel
+                            :status="job.job_state"
+                            :label="job.job_id.toString()"
+                            class="mr-1"
+                          />
+                        </RouterLink>
+                      </li>
+                    </ul>
+                    <span v-else class="text-gray-400">∅</span>
+                  </template>
                 </dd>
               </div>
               <div id="cpu" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -114,32 +146,32 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                   CPU (socket x cores/socket)
                 </dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.sockets }} x {{ data.cores }} = {{ data.cpus }}
+                  {{ node.data.value.sockets }} x {{ node.data.value.cores }} = {{ node.data.value.cpus }}
                 </dd>
               </div>
               <div id="threads" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Threads/core</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.threads }}
+                  {{ node.data.value.threads }}
                 </dd>
               </div>
               <div id="arch" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Architecture</dt>
                 <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.architecture }}
+                  {{ node.data.value.architecture }}
                 </dd>
               </div>
               <div id="memory" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Memory</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.real_memory }}MB
+                  {{ node.data.value.real_memory }}MB
                 </dd>
               </div>
               <div id="partitions" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Partitions</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <span
-                    v-for="partition in data.partitions"
+                    v-for="partition in node.data.value.partitions"
                     :key="partition"
                     class="rounded bg-gray-500 px-2 py-1 font-medium text-white"
                     >{{ partition }}</span
@@ -149,19 +181,19 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
               <div id="kernel" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">OS Kernel</dt>
                 <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ data.operating_system }}
+                  {{ node.data.value.operating_system }}
                 </dd>
               </div>
               <div id="reboot" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Reboot</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ new Date(data.boot_time * 10 ** 3).toLocaleString() }}
+                  {{ new Date(node.data.value.boot_time * 10 ** 3).toLocaleString() }}
                 </dd>
               </div>
               <div id="last" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Last busy</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ new Date(data.last_busy * 10 ** 3).toLocaleString() }}
+                  {{ new Date(node.data.value.last_busy * 10 ** 3).toLocaleString() }}
                 </dd>
               </div>
               <!--
