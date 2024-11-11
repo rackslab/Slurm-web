@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     format designed to be scraped by Prometheus or compatible (#274).
   - Add possibility to query metrics from Prometheus database with
     `/v<version>/metrics/<metric>` endpoint.
+  - Add possibility to filter jobs which are allocated a specific node with node
+    query parameter on `/v<version>/jobs` endpoint.
 - gateway:
   - Return RacksDB infrastructure name and boolean metrics feature flag of every
     clusters in `/clusters` endpoint.

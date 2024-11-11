@@ -9,6 +9,7 @@ from pathlib import Path
 import logging
 
 import requests
+import ClusterShell
 
 from .unix import SlurmrestdUnixAdapter
 from .errors import (
@@ -94,6 +95,20 @@ class Slurmrestd:
 
     def jobs(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
+
+    def jobs_by_node(self, node: str):
+        """Select jobs not completed which are allocated the given node."""
+
+        def on_node(job):
+            if job["nodes"] == "":
+                return False
+            return node in ClusterShell.NodeSet.NodeSet(job["nodes"])
+
+        return [
+            job
+            for job in self.jobs()
+            if on_node(job) and job["job_state"] != "COMPLETED"
+        ]
 
     def jobs_states(self):
         jobs = {

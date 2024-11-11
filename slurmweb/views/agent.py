@@ -119,7 +119,11 @@ def stats():
 
 @rbac_action("view-jobs")
 def jobs():
-    return jsonify(slurmrest("jobs"))
+    node = request.args.get("node")
+    if node:
+        return jsonify(slurmrest("jobs_by_node", node))
+    else:
+        return jsonify(slurmrest("jobs"))
 
 
 @rbac_action("view-jobs")
