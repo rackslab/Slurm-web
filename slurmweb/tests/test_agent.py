@@ -12,9 +12,11 @@ import os
 import sys
 import textwrap
 import ipaddress
+import random
 
 from flask import Blueprint
 from rfl.authentication.user import AuthenticatedUser
+import ClusterShell
 from prometheus_client.parser import text_string_to_metric_families
 
 from slurmweb.version import get_version
@@ -281,6 +283,37 @@ class TestAgent(TestAgentBase):
         self.assertEqual(len(response.json), len(jobs_asset))
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["job_id"], jobs_asset[idx]["job_id"])
+
+    @all_slurm_versions
+    def test_request_jobs_node(self, slurm_version):
+        try:
+            [jobs_asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jobs", "jobs")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        # Select random busy node on cluster
+        busy_nodes = ClusterShell.NodeSet.NodeSet()
+        for job in jobs_asset:
+            busy_nodes.update(job["nodes"])
+        random_busy_node = random.choice(busy_nodes)
+
+        response = self.client.get(f"/v{get_version()}/jobs?node={random_busy_node}")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, list)
+
+        # Check we have results but less that full list of jobs.
+        self.assertNotEqual(len(response.json), 0)
+        self.assertLess(len(response.json), len(jobs_asset))
+
+        # Check all jobs are not completed and have the random busy node allocated.
+        for job in response.json:
+            self.assertNotEqual(job["job_state"], "COMPLETED")
+            self.assertIn(
+                random_busy_node,
+                ClusterShell.NodeSet.NodeSet(job["nodes"]),
+            )
 
     @all_slurm_versions
     def test_request_job_running(self, slurm_version):

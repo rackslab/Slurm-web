@@ -7,9 +7,11 @@
 import unittest
 from unittest import mock
 from pathlib import Path
+import random
 import os
 
 import requests
+import ClusterShell
 
 from rfl.settings import RuntimeSettings
 from slurmweb.slurmrestd import Slurmrestd, SlurmrestdFiltered, SlurmrestdFilteredCached
@@ -136,6 +138,40 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
         jobs = self.slurmrestd.jobs()
         self.assertCountEqual(jobs, asset)
+
+    @all_slurm_versions
+    def test_jobs_by_node(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jobs", "jobs")]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        # Select random busy node on cluster
+        busy_nodes = ClusterShell.NodeSet.NodeSet()
+        for job in asset:
+            busy_nodes.update(job["nodes"])
+        random_busy_node = random.choice(busy_nodes)
+
+        jobs = self.slurmrestd.jobs_by_node(random_busy_node)
+
+        # Check we have results in list but less that full list of jobs.
+        self.assertIsInstance(jobs, list)
+        self.assertNotEqual(len(jobs), 0)
+        self.assertLess(len(jobs), len(asset))
+
+        # Check all jobs are not completed and have the random busy node allocated.
+        for job in jobs:
+            self.assertNotEqual(job["job_state"], "COMPLETED")
+            self.assertIn(
+                random_busy_node,
+                ClusterShell.NodeSet.NodeSet(job["nodes"]),
+            )
+
+        # Test get jobs on nonexistent node.
+        jobs = self.slurmrestd.jobs_by_node("fail")
+        self.assertEqual(jobs, [])
 
     @all_slurm_versions
     def test_jobs_states(self, slurm_version):
