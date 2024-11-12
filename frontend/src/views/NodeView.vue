@@ -80,7 +80,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
         <div class="w-full">
           <div class="border-t border-gray-100">
             <dl class="divide-y divide-gray-100">
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="status" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Node status</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <NodeMainState :node="data" />
@@ -89,7 +89,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                   >
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="allocation" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Allocation status</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <NodeAllocationState :node="data" />
@@ -109,7 +109,7 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                   </ul>
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="cpu" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">
                   CPU (socket x cores/socket)
                 </dt>
@@ -117,25 +117,25 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                   {{ data.sockets }} x {{ data.cores }} = {{ data.cpus }}
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="threads" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Threads/core</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.threads }}
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="arch" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Architecture</dt>
                 <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.architecture }}
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="memory" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Memory</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.real_memory }}MB
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="partitions" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Partitions</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <span
@@ -146,19 +146,19 @@ const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualNode>(
                   >
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="kernel" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">OS Kernel</dt>
                 <dd class="mt-1 font-mono text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ data.operating_system }}
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="reboot" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Reboot</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ new Date(data.boot_time * 10 ** 3).toLocaleString() }}
                 </dd>
               </div>
-              <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div id="last" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Last busy</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ new Date(data.last_busy * 10 ** 3).toLocaleString() }}
