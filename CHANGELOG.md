@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     the gateway.
   - Select `alloc_cpus` and `alloc_idle_cpus` nodes fields on `slurmrestd`
     `/slurm/*/nodes` and `/slurm/*/node/<node>` endpoints.
+  - Select `nodes` jobs field on `slurmrestd` `/slurm/*/jobs` endpoint.
   - Introduce service message template.
 - show-conf: Introduce `slurm-web-show-conf` utility to dump current
   configuration settings of gateway and agent components with their origin,

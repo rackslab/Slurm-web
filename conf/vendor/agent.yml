@@ -83,6 +83,7 @@ filters:
     - qos
     - cpus
     - node_count
+    - nodes
     doc: |
       List of jobs fields selected in slurmrestd API when retrieving a list of
       jobs, all other fields arefiltered out.
