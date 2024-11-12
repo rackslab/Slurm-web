@@ -30,9 +30,10 @@ dev = [
     "sshtunnel",
 ]
 agent = [
+    "ClusterShell",
+    "prometheus-client",
     "RacksDB[web]",
     "redis",
-    "prometheus-client",
 ]
 gateway = [
     "aiohttp",
