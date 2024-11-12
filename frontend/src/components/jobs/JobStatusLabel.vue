@@ -12,6 +12,9 @@ const props = defineProps({
   large: {
     type: Boolean,
     default: false
+  },
+  label: {
+    type: String
   }
 })
 
@@ -61,6 +64,11 @@ function getStatusColor(status: string): JobLabelColors {
     >
       <circle cx="3" cy="3" r="3" />
     </svg>
-    {{ props.status }}
+    <template v-if="label">
+      {{ label }}
+    </template>
+    <template v-else>
+      {{ props.status }}
+    </template>
   </span>
 </template>
