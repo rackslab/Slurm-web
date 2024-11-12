@@ -1,0 +1,127 @@
+[
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 4096,
+      "set": true
+    },
+    "job_id": 428511,
+    "job_state": "PENDING",
+    "node_count": {
+      "infinite": false,
+      "number": 86,
+      "set": true
+    },
+    "nodes": "cn[542-627]",
+    "partition": "batch",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "FrontEndDown",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "job_id": 429741,
+    "job_state": "RUNNING",
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn584",
+    "partition": "batch",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 429804,
+    "job_state": "RUNNING",
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn584",
+    "partition": "batch",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 429814,
+    "job_state": "RUNNING",
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn584",
+    "partition": "batch",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "job_id": 429830,
+    "job_state": "RUNNING",
+    "node_count": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "nodes": "cn[584-587]",
+    "partition": "batch",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  }
+]

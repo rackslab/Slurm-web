@@ -13,6 +13,7 @@ import json
 import getpass
 import socket
 import shlex
+import random
 import logging
 
 import requests
@@ -47,6 +48,11 @@ def slurmweb_cluster_name(infrastructure: str):
 
 
 ASSETS = Path(__file__).parent.resolve() / ".." / "slurmweb" / "tests" / "assets"
+
+
+def busy_node(node):
+    """Return True if the given node is busy."""
+    return "ALLOCATED" in node["state"] or "MIXED" in node["state"]
 
 
 def crawl_prometheus(url: str, job: str) -> None:
@@ -609,6 +615,21 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         skip_exist=False,
     )
 
+    # Get jobs which have resources on any of the busy nodes
+    try:
+        random_busy_node = random.choice(list(filter(busy_node, nodes)))["name"]
+
+        dump_component_query(
+            requests_statuses,
+            url,
+            f"/api/agents/{cluster}/jobs?node={random_busy_node}",
+            headers,
+            assets_path,
+            "jobs-node",
+        )
+    except IndexError:
+        logger.warning("Unable to find busy node on gateway for cluster %s", cluster)
+
     def dump_node_state() -> None:
         if state in _node["state"]:
             dump_component_query(
@@ -723,14 +744,30 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
     dump_component_query(
         requests_statuses, url, f"/v{get_version()}/jobs", headers, assets_path, "jobs"
     )
-    dump_component_query(
+    nodes = dump_component_query(
         requests_statuses,
         url,
         f"/v{get_version()}/nodes",
         headers,
         assets_path,
         "nodes",
+        skip_exist=False,
     )
+
+    # Get jobs which have resources on any of the busy nodes
+    try:
+        random_busy_node = random.choice(list(filter(busy_node, nodes)))["name"]
+        dump_component_query(
+            requests_statuses,
+            url,
+            f"/v{get_version()}/jobs?node={random_busy_node}",
+            headers,
+            assets_path,
+            "jobs-node",
+        )
+    except IndexError:
+        logger.warning("Unable to find busy node on agent")
+
     dump_component_query(
         requests_statuses,
         url,
