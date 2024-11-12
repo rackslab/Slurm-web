@@ -3,14 +3,18 @@ import { mount } from '@vue/test-utils'
 import NodeView from '@/views/NodeView.vue'
 import { init_plugins, getMockClusterDataPoller } from './common'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterNode } from '@/composables/GatewayAPI'
+import type { ClusterJob, ClusterNode } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import nodeAllocated from '../assets/node-allocated.json'
+import jobsNode from '../assets/jobs-node.json'
 import { nextTick } from 'vue'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterNode>()
+const mockNodeDataPoller = getMockClusterDataPoller<ClusterNode>()
+const mockJobsDataPoller = getMockClusterDataPoller<ClusterJob[]>()
+
+const useClusterDataPoller = vi.hoisted(() => vi.fn())
 vi.mock('@/composables/DataPoller', () => ({
-  useClusterDataPoller: () => mockClusterDataPoller
+  useClusterDataPoller
 }))
 
 describe('NodeView.vue', () => {
@@ -21,7 +25,10 @@ describe('NodeView.vue', () => {
     ]
   })
   test('display node details', async () => {
-    mockClusterDataPoller.data.value = nodeAllocated
+    useClusterDataPoller.mockReturnValueOnce(mockNodeDataPoller)
+    useClusterDataPoller.mockReturnValueOnce(mockJobsDataPoller)
+    mockNodeDataPoller.data.value = nodeAllocated
+    mockJobsDataPoller.data.value = jobsNode
     const wrapper = mount(NodeView, {
       props: {
         cluster: 'foo',
@@ -33,6 +40,9 @@ describe('NodeView.vue', () => {
     expect(wrapper.get('dl div#status dd').getComponent(NodeMainState).props()).toStrictEqual({
       node: nodeAllocated
     })
+    // Check list of jobs has the same number of items than the number of jobs running
+    // on the node.
+    expect(wrapper.get('dl div#jobs dd').findAll("li").length).toBe(jobsNode.length)
     expect(wrapper.get('dl div#cpu dd').text()).toBe(
       `${nodeAllocated.sockets} x ${nodeAllocated.cores} = ${nodeAllocated.cpus}`
     )
