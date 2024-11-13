@@ -85,8 +85,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                 logger.info("Retrieving info from agent at url %s", url.geturl())
                 agent = self._agent_info(url.geturl())
             except (
-                requests.exceptions.ConnectionError,
-                requests.exceptions.JSONDecodeError,
+                requests.exceptions.RequestException,
                 SlurmwebAgentError,
             ) as err:
                 logger.error(
