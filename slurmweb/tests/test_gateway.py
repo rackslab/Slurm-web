@@ -97,8 +97,8 @@ class TestGatewayApp(TestGatewayBase):
             cm.output,
             [
                 "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
-                "http://localhost: [SlurmwebAgentError] Unable to retrieve cluster "
-                "name from agent"
+                "http://localhost: [SlurmwebAgentError] Unable to parse cluster info "
+                "fields from agent"
             ],
         )
 
