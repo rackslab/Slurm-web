@@ -15,7 +15,11 @@ import requests
 from . import SlurmwebWebApp
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
-from ..errors import SlurmwebConfigurationError, SlurmwebAgentError
+from ..errors import (
+    SlurmwebConfigurationError,
+    SlurmwebCompatJSONDecodeError,
+    SlurmwebAgentError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -124,6 +128,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                 agent = self._agent_info(url.geturl())
             except (
                 requests.exceptions.RequestException,
+                SlurmwebCompatJSONDecodeError,
                 SlurmwebAgentError,
             ) as err:
                 logger.error(

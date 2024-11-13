@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Catch generic `requests.exceptions.RequestException` when retrieving
     information from agents to avoid `AttributeError` with more specific
     exceptions on old versions on _Requests_ library (#391).
+  - Catch `JSONDecodeError` from _simpleson_ external library and _json_
+    standard library module not managed by Requests < 2.27.
 - frontend:
   - Missing bearer token in RacksDB infrastructure diagram request (#471).
   - Remove workaround for Firefox to avoid blurry lines in racks canvas, fixed
