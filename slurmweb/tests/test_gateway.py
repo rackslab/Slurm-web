@@ -5,16 +5,19 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import unittest
+from unittest import mock
 import tempfile
 import os
 import sys
 import shutil
 
+import requests
+
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebConfSeed
-from slurmweb.apps.gateway import SlurmwebAppGateway
+from slurmweb.apps.gateway import SlurmwebAppGateway, SlurmwebAgent
 
-from .utils import SlurmwebCustomTestResponse
+from .utils import SlurmwebCustomTestResponse, mock_agent_response, fake_text_response
 
 CONF = """
 [agents]
@@ -25,8 +28,9 @@ key={key}
 """
 
 
-class TestGateway(unittest.TestCase):
-    def setUp(self):
+class TestGatewayBase(unittest.TestCase):
+
+    def setup_app(self):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")
         key.write("hey")
@@ -60,6 +64,93 @@ class TestGateway(unittest.TestCase):
                 "TESTING": True,
             }
         )
+
+
+class TestGatewayApp(TestGatewayBase):
+    def setUp(self):
+        self.setup_app()
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents(self, mock_requests_get):
+        agent_info, mock_requests_get.return_value = mock_agent_response("info")
+        agents = self.app.agents
+        # Check presence of cluster name returned by agent in agents dict property.
+        self.assertIn(agent_info["cluster"], agents)
+        # Check SlurmwebAgent object is instanciated with all its attributes.
+        agent = agents[agent_info["cluster"]]
+        self.assertIsInstance(agent, SlurmwebAgent)
+        self.assertEqual(len(vars(agent)), 4)
+        self.assertEqual(agent.cluster, agent_info["cluster"])
+        self.assertEqual(agent.infrastructure, agent_info["infrastructure"])
+        self.assertEqual(agent.metrics, agent_info["metrics"])
+        self.assertEqual(agent.url, self.app.settings.agents.url[0].geturl())
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_missing_key(self, mock_requests_get):
+        agent_info, mock_requests_get.return_value = mock_agent_response(
+            "info", remove_key="infrastructure"
+        )
+        with self.assertLogs("slurmweb", level="ERROR") as cm:
+            agents = self.app.agents
+        self.assertEqual(agents, {})
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
+                "http://localhost: [SlurmwebAgentError] Unable to retrieve cluster "
+                "name from agent"
+            ],
+        )
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_json_error(self, mock_requests_get):
+        _, mock_requests_get.return_value = fake_text_response()
+        with self.assertLogs("slurmweb", level="ERROR") as cm:
+            agents = self.app.agents
+        self.assertEqual(agents, {})
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
+                "http://localhost: [JSONDecodeError] Expecting value: line 1 column 1 "
+                "(char 0)"
+            ],
+        )
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_ssl_error(self, mock_requests_get):
+        mock_requests_get.side_effect = requests.exceptions.SSLError("fake SSL error")
+        with self.assertLogs("slurmweb", level="ERROR") as cm:
+            agents = self.app.agents
+        self.assertEqual(agents, {})
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
+                "http://localhost: [SSLError] fake SSL error"
+            ],
+        )
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_connection_error(self, mock_requests_get):
+        mock_requests_get.side_effect = requests.exceptions.ConnectionError(
+            "fake connection error"
+        )
+        with self.assertLogs("slurmweb", level="ERROR") as cm:
+            agents = self.app.agents
+        self.assertEqual(agents, {})
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
+                "http://localhost: [ConnectionError] fake connection error"
+            ],
+        )
+
+
+class TestGatewayViews(TestGatewayBase):
+    def setUp(self):
+        self.setup_app()
         # On Python 3.6, use custom test response class to backport text property of
         # werkzeug.test.TestResponse in werkzeug 2.1.
         if sys.version_info.major == 3 and sys.version_info.minor <= 7:

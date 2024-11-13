@@ -107,6 +107,53 @@ class SlurmwebCustomTestResponse(flask.Response):
         return self.get_data(as_text=True)
 
 
+def fake_text_response():
+    """Return a real requests.Response() initialized with fake text content, designed
+    to fail when parsed in JSON."""
+    response = requests.Response()
+    text = "fake content"
+    response.url = "/mocked/query"
+    response.status_code = 200
+    response.headers = {"content-type": "text/plain"}
+    response._content = text.encode()
+    return text, response
+
+
+def mock_agent_response(asset_name, remove_key=None):
+    """Return mocked requests Response corresponding to the given agent asset."""
+    with open(ASSETS / "agent/status.json") as fh:
+        requests_statuses = json.load(fh)
+
+    if asset_name not in requests_statuses:
+        warnings.warn(
+            f"Unable to find asset {asset_name} in agent requests status file"
+        )
+        raise SlurmwebAssetUnavailable()
+
+    is_json = True
+    if requests_statuses[asset_name]["content-type"] == "application/json":
+        asset = load_json_asset(f"agent/{asset_name}.json")
+    else:
+        is_json = False
+        asset = load_asset(f"agent/{asset_name}.txt")
+
+    # Remove specific key from asset, if JSON asset and key to remove is specified. This
+    # is useful to test some error case.
+    if is_json and remove_key:
+        del asset[remove_key]
+
+    response = mock.create_autospec(requests.Response)
+    response.url = "/mocked/query"
+    response.status_code = requests_statuses[asset_name]["status"]
+    response.headers = {"content-type": requests_statuses[asset_name]["content-type"]}
+    if is_json:
+        response.json = mock.Mock(return_value=asset)
+    else:
+        response.text = mock.PropertyMock(return_value=asset)
+
+    return asset, response
+
+
 def mock_prometheus_response(asset_name):
     """Return mocked requests Response corresponding to the given Prometheus asset."""
     with open(ASSETS / "prometheus/status.json") as fh:
