@@ -36,7 +36,7 @@ class SlurmwebAgent:
             return cls(data["cluster"], data["infrastructure"], data["metrics"], url)
         except KeyError as err:
             raise SlurmwebAgentError(
-                "Unable to retrieve cluster name from agent"
+                "Unable to parse cluster info fields from agent"
             ) from err
 
 
