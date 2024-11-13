@@ -76,9 +76,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fix compatibility issue with Requests >= 2.32.2 (#350).
   - Return HTTP/404 not found with meaningful error message when requesting
     unexisting node.
-- gateway: catch generic `requests.exceptions.RequestException` when retrieving
-  information from agents to avoid `AttributeError` with more specific
-  exceptions on old versions on _Requests_ library (#391).
+- gateway:
+  - Catch generic `requests.exceptions.RequestException` when retrieving
+    information from agents to avoid `AttributeError` with more specific
+    exceptions on old versions on _Requests_ library (#391).
+  - Catch `JSONDecodeError` from _simpleson_ external library and _json_
+    standard library module not managed by Requests < 2.27.
 - frontend: Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite),
   CVE-2024-47068 (rollup).
 
