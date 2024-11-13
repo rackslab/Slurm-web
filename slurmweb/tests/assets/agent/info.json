@@ -1,4 +1,5 @@
 {
   "cluster": "tiny",
-  "infrastructure": "tiny"
+  "infrastructure": "tiny",
+  "metrics": true
 }
