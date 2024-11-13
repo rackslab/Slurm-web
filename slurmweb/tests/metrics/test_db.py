@@ -25,12 +25,12 @@ class TestSlurmwebMetricsDB(unittest.TestCase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("nodes-hour")
+        _, mock_requests_get.return_value = mock_prometheus_response("nodes-hour")
         self.db.request("nodes", "hour")
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_empty_result(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("unknown-metric")
+        _, mock_requests_get.return_value = mock_prometheus_response("unknown-metric")
         with self.assertRaisesRegex(
             SlurmwebMetricsDBError, "^Empty result for query .*$"
         ):
@@ -38,7 +38,7 @@ class TestSlurmwebMetricsDB(unittest.TestCase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_unknown_path(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("unknown-path")
+        _, mock_requests_get.return_value = mock_prometheus_response("unknown-path")
         with self.assertRaisesRegex(
             SlurmwebMetricsDBError, "^Prometheus error for query .*$"
         ):

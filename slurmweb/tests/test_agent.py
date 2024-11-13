@@ -803,7 +803,7 @@ class TestAgentMetricsRequest(TestAgentBase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_metrics_nodes(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("nodes-hour")
+        _, mock_requests_get.return_value = mock_prometheus_response("nodes-hour")
         response = self.client.get(f"/v{get_version()}/metrics/nodes")
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(
@@ -813,7 +813,7 @@ class TestAgentMetricsRequest(TestAgentBase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_metrics_cores(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("cores-hour")
+        _, mock_requests_get.return_value = mock_prometheus_response("cores-hour")
         response = self.client.get(f"/v{get_version()}/metrics/cores")
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(
@@ -823,7 +823,7 @@ class TestAgentMetricsRequest(TestAgentBase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_metrics_jobs(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("jobs-hour")
+        _, mock_requests_get.return_value = mock_prometheus_response("jobs-hour")
         response = self.client.get(f"/v{get_version()}/metrics/jobs")
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(
@@ -896,7 +896,7 @@ class TestAgentMetricsRequest(TestAgentBase):
 
     @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_metrics_unexpected(self, mock_requests_get):
-        mock_requests_get.return_value = mock_prometheus_response("unknown-metric")
+        _, mock_requests_get.return_value = mock_prometheus_response("unknown-metric")
         response = self.client.get(f"/v{get_version()}/metrics/jobs")
         self.assertEqual(response.status_code, 500)
         self.assertRegex(response.json["description"], "^Empty result for query .*$")
