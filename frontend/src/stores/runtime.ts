@@ -273,7 +273,7 @@ export class ResourcesViewSettings {
 
 type NotificationType = 'INFO' | 'ERROR'
 
-class Notification {
+export class Notification {
   id: number
   type: NotificationType
   message: string

@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import NotificationsPanel from './components/NotificationsPanel.vue'
+import NotificationsPanel from './components/notifications/NotificationsPanel.vue'
 </script>
 
 <template>
