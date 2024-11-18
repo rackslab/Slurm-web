@@ -296,7 +296,8 @@ class TestAgent(TestAgentBase):
         # Select random busy node on cluster
         busy_nodes = ClusterShell.NodeSet.NodeSet()
         for job in jobs_asset:
-            busy_nodes.update(job["nodes"])
+            if job["job_state"] != "COMPLETED":
+                busy_nodes.update(job["nodes"])
         random_busy_node = random.choice(busy_nodes)
 
         response = self.client.get(f"/v{get_version()}/jobs?node={random_busy_node}")
