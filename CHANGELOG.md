@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Convert `[cache]` > `password` agent parameter from string to password type.
   - Convert `[ldap]` > `bind_password` gateway parameter from string to password
     type.
+  - Bump `[slurmrestd]` > `version` default value from `0.0.39` to `0.0.40` in
+    agent configuration for compatibility with Slurm 24.11.
 - pkgs:
   - Add requirement on RFL.core >= 1.1.0.
   - Add requirement on RFL.settings >= 1.1.1.

@@ -59,7 +59,7 @@ slurmrestd:
     doc: Path to slurmrestd UNIX socket
   version:
     type: str
-    default: '0.0.39'
+    default: '0.0.40'
     doc: |
       Slurm REST API version.
 
