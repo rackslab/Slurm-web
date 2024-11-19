@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add requirement on markdown external library for `gateway` extra package.
 
 ### Changed
+- agent: Bump minimal required Slurm version from 23.02.0 to 23.11.0.
 - gateway: Change error message when unable to parse agent info fields.
 - docs:
   - Update configuration reference documentation.

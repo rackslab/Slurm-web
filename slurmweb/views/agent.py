@@ -22,7 +22,7 @@ from ..slurmrestd.errors import (
 
 # Tuple used for comparaison with Slurm version retrieved from slurmrestd and
 # check for minimal supported version.
-MINIMAL_SLURM_VERSION = (23, 2, 0)
+MINIMAL_SLURM_VERSION = (23, 11, 0)
 
 logger = logging.getLogger(__name__)
 
