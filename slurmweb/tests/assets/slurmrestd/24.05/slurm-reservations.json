@@ -1,31 +1,15 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[958919194] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "reservations": [
     {
       "accounts": "biology",
       "burst_buffer": "",
-      "core_count": 4,
+      "core_count": 47360,
       "core_specializations": [],
-      "end_time": 1728745200,
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732982400
+      },
       "features": "",
       "flags": [
         "IGNORE_JOBS",
@@ -38,9 +22,9 @@
       "licenses": "",
       "max_start_delay": 0,
       "name": "training",
-      "node_count": 2,
-      "node_list": "cn[1-2]",
-      "partition": "normal",
+      "node_count": 960,
+      "node_list": "cn[001-080,101-980]",
+      "partition": "batch",
       "purge_completed": {
         "time": {
           "set": true,
@@ -48,10 +32,44 @@
           "number": 300
         }
       },
-      "start_time": 1728633600,
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732957200
+      },
       "watts": {},
-      "tres": "cpu=4",
-      "users": "cgross,msummers"
+      "tres": "cpu=47360",
+      "users": "dshaw,sharrison"
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732097140
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[190164066] (fd 27)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

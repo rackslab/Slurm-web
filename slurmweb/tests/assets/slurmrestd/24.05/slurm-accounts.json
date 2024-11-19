@@ -1,52 +1,7 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411494467] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "accounts": [
     {
-      "associations": [
-        {
-          "account": "acoustic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        },
-        {
-          "account": "acoustic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "clara"
-        },
-        {
-          "account": "acoustic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "jryan"
-        },
-        {
-          "account": "acoustic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "pkerr"
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "acoustic",
       "name": "acoustic",
@@ -54,20 +9,7 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "admin",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        },
-        {
-          "account": "admin",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "rwallace"
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "admin",
       "name": "admin",
@@ -75,38 +17,7 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "biology",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        },
-        {
-          "account": "biology",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "cgross"
-        },
-        {
-          "account": "biology",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "dshaw"
-        },
-        {
-          "account": "biology",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "msummers"
-        },
-        {
-          "account": "biology",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "sharrison"
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "biology",
       "name": "biology",
@@ -114,26 +25,7 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "optic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        },
-        {
-          "account": "optic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "jcampbell"
-        },
-        {
-          "account": "optic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "jsherman"
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "optic",
       "name": "optic",
@@ -141,14 +33,7 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "physic",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "physic",
       "name": "physic",
@@ -156,20 +41,7 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "root",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        },
-        {
-          "account": "root",
-          "cluster": "hpc",
-          "partition": "",
-          "user": "root"
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "default root account",
       "name": "root",
@@ -177,19 +49,37 @@
       "flags": []
     },
     {
-      "associations": [
-        {
-          "account": "scientists",
-          "cluster": "hpc",
-          "partition": "",
-          "user": ""
-        }
-      ],
+      "associations": [],
       "coordinators": [],
       "description": "scientists",
       "name": "scientists",
       "organization": "scientists",
       "flags": []
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93501115] (fd 8)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

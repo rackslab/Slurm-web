@@ -1,46 +1,26 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 8,
-        "minor": 2
-      },
-      "release": "23.02.8"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "nodes": [
     {
-      "architecture": "",
+      "architecture": "x86_64",
       "burstbuffer_network_address": "",
       "boards": 1,
-      "boot_time": 1725995081,
+      "boot_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731514097
+      },
       "cluster_name": "",
-      "cores": 1,
+      "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": {
-        "set": false,
-        "infinite": false,
-        "number": 0
-      },
+      "cpu_load": 0,
       "free_mem": {
-        "set": false,
+        "set": true,
         "infinite": false,
-        "number": 0
+        "number": 617
       },
-      "cpus": 2,
-      "effective_cpus": 2,
+      "cpus": 64,
+      "effective_cpus": 64,
       "specialized_cpus": "",
       "energy": {
         "average_watts": 0,
@@ -80,7 +60,11 @@
         "new_maximum_watts": 0,
         "peak_watts": 0,
         "lowest_watts": 0,
-        "new_job_time": 0,
+        "new_job_time": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
         "state": 0,
         "time_start_day": 0
       },
@@ -89,29 +73,39 @@
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
-      "last_busy": 1727343027,
+      "instance_id": "",
+      "instance_type": "",
+      "last_busy": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027904
+      },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn051",
+      "name": "cn2",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "admin.emulator",
-      "hostname": "admin.emulator",
+      "address": "cn2",
+      "hostname": "cn2",
       "state": [
-        "IDLE",
+        "DOWN",
         "DRAIN"
       ],
-      "operating_system": "",
+      "operating_system": "Linux 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30)",
       "owner": "",
       "partitions": [
-        "batch"
+        "normal"
       ],
       "port": 6818,
-      "real_memory": 1,
+      "real_memory": 131072,
       "comment": "",
-      "reason": "ECC memory error",
-      "reason_changed_at": 1727343318,
+      "reason": "Network dead",
+      "reason_changed_at": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027904
+      },
       "reason_set_by_user": "root",
       "resume_after": {
         "set": true,
@@ -121,16 +115,50 @@
       "reservation": "",
       "alloc_memory": 0,
       "alloc_cpus": 0,
-      "alloc_idle_cpus": 2,
+      "alloc_idle_cpus": 64,
       "tres_used": "",
       "tres_weighted": 0.0,
-      "slurmd_start_time": 1726825243,
+      "slurmd_start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732025127
+      },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=2,mem=1M,billing=2",
-      "version": ""
+      "tres": "cpu=64,mem=128G,billing=64",
+      "version": "23.11.10"
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027942
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[94917640] (fd 10)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

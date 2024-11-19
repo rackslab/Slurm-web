@@ -1,35 +1,11 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411498742] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 10,
-        "minor": 11
-      },
-      "release": "23.11.10"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "qos": [
     {
       "description": "Normal QOS default",
       "flags": [],
       "id": 1,
       "limits": {
-        "grace_time": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
+        "grace_time": 0,
         "max": {
           "active_jobs": {
             "accruing": {
@@ -117,7 +93,11 @@
             }
           }
         },
-        "factor": 4294967295.0,
+        "factor": {
+          "set": false,
+          "infinite": true,
+          "number": 0.0
+        },
         "min": {
           "priority_threshold": {
             "set": false,
@@ -159,5 +139,30 @@
         "number": 0.0
       }
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93501891] (fd 10)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

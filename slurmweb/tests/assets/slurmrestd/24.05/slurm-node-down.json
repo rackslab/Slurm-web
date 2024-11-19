@@ -1,46 +1,26 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 8,
-        "minor": 2
-      },
-      "release": "23.02.8"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "nodes": [
     {
       "architecture": "",
       "burstbuffer_network_address": "",
       "boards": 1,
-      "boot_time": 1725995081,
+      "boot_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731514097
+      },
       "cluster_name": "",
-      "cores": 1,
+      "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": {
-        "set": false,
-        "infinite": false,
-        "number": 0
-      },
+      "cpu_load": 0,
       "free_mem": {
         "set": false,
         "infinite": false,
         "number": 0
       },
-      "cpus": 2,
-      "effective_cpus": 2,
+      "cpus": 64,
+      "effective_cpus": 64,
       "specialized_cpus": "",
       "energy": {
         "average_watts": 0,
@@ -54,42 +34,21 @@
         "previous_consumed_energy": 0,
         "last_collected": 0
       },
-      "external_sensors": {
-        "consumed_energy": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        },
-        "temperature": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        },
-        "energy_update_time": 0,
-        "current_watts": 0
-      },
+      "external_sensors": {},
       "extra": "",
-      "power": {
-        "maximum_watts": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        },
-        "current_watts": 0,
-        "total_energy": 0,
-        "new_maximum_watts": 0,
-        "peak_watts": 0,
-        "lowest_watts": 0,
-        "new_job_time": 0,
-        "state": 0,
-        "time_start_day": 0
-      },
+      "power": {},
       "features": [],
       "active_features": [],
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
-      "last_busy": 1727343324,
+      "instance_id": "",
+      "instance_type": "",
+      "last_busy": {
+        "set": true,
+        "infinite": false,
+        "number": 1732026980
+      },
       "mcs_label": "",
       "specialized_memory": 0,
       "name": "cn084",
@@ -107,10 +66,14 @@
         "batch"
       ],
       "port": 6818,
-      "real_memory": 1,
+      "real_memory": 131072,
       "comment": "",
       "reason": "CPU dead",
-      "reason_changed_at": 1727343324,
+      "reason_changed_at": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027524
+      },
       "reason_set_by_user": "root",
       "resume_after": {
         "set": true,
@@ -120,16 +83,50 @@
       "reservation": "",
       "alloc_memory": 0,
       "alloc_cpus": 0,
-      "alloc_idle_cpus": 2,
+      "alloc_idle_cpus": 64,
       "tres_used": "",
       "tres_weighted": 0.0,
-      "slurmd_start_time": 1726825243,
+      "slurmd_start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731527197
+      },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=2,mem=1M,billing=2",
+      "tres": "cpu=64,mem=128G,billing=64",
       "version": ""
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027595
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[94383963] (fd 8)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

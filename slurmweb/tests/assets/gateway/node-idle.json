@@ -1,21 +1,31 @@
 {
   "alloc_cpus": 0,
+  "alloc_idle_cpus": 64,
   "alloc_memory": 0,
-  "architecture": "x86_64",
-  "boot_time": 1725995081,
-  "cores": 1,
-  "cpus": 2,
-  "last_busy": 1727872614,
-  "name": "cn2",
-  "operating_system": "Linux 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3 (2024-08-26)",
+  "architecture": "",
+  "boot_time": {
+    "infinite": false,
+    "number": 1731514096,
+    "set": true
+  },
+  "cores": 32,
+  "cpus": 64,
+  "last_busy": {
+    "infinite": false,
+    "number": 1731527304,
+    "set": true
+  },
+  "name": "cn001",
+  "operating_system": "",
   "partitions": [
-    "normal"
+    "batch"
   ],
-  "real_memory": 1,
+  "real_memory": 131072,
   "reason": "",
   "sockets": 2,
   "state": [
     "IDLE",
+    "COMPLETING",
     "PLANNED"
   ],
   "threads": 1

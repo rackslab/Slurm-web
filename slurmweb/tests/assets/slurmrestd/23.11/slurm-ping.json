@@ -1,30 +1,35 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[662761510] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 10,
-        "minor": 11
-      },
-      "release": "23.11.10"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "pings": [
     {
       "hostname": "admin.pocket",
       "pinged": "UP",
-      "latency": 1331,
+      "latency": 1724,
       "mode": "primary"
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93501849] (fd 10)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

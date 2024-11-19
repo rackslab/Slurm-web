@@ -1,10 +1,15 @@
 {
-  "accrue_time": 1727356012,
+  "accrue_time": {
+    "infinite": false,
+    "number": 1732087171,
+    "set": true
+  },
   "association": {
     "account": "acoustic",
     "cluster": "hpc",
+    "id": 15,
     "partition": "",
-    "user": "clara"
+    "user": "jryan"
   },
   "batch_flag": true,
   "command": "",
@@ -15,68 +20,101 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 1,
+    "number": 256,
     "set": true
   },
-  "current_working_directory": "/home/clara",
+  "current_working_directory": "/home/jryan",
   "derived_exit_code": {
-    "return_code": 0,
-    "status": "SUCCESS"
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
   },
   "exclusive": [],
   "exit_code": {
-    "return_code": 0,
-    "status": "SUCCESS"
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
   },
   "group": "scientists",
-  "last_sched_evaluation": 1727358614,
+  "last_sched_evaluation": {
+    "infinite": false,
+    "number": 1732093406,
+    "set": true
+  },
   "name": "wrap",
   "node_count": {
     "infinite": false,
-    "number": 1,
+    "number": 4,
     "set": true
   },
   "nodes": "None assigned",
-  "partition": "normal",
+  "partition": "batch",
   "priority": {
     "infinite": false,
-    "number": 1,
+    "number": 90,
     "set": true
   },
   "qos": "normal",
   "required": {
-    "CPUs": 1,
-    "memory": 0,
+    "CPUs": 256,
     "memory_per_cpu": {
       "infinite": false,
-      "number": 0,
-      "set": false
+      "number": 512,
+      "set": true
     },
     "memory_per_node": {
       "infinite": false,
       "number": 0,
-      "set": true
+      "set": false
     }
   },
   "script": "",
-  "standard_error": "/home/clara/slurm-102.out",
+  "standard_error": "/home/jryan/slurm-509448.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/clara/slurm-102.out",
+  "standard_output": "/home/jryan/slurm-509448.out",
   "state": {
-    "current": "PENDING",
+    "current": [
+      "PENDING"
+    ],
     "reason": "None"
   },
-  "state_reason": "Resources",
+  "state_reason": "Priority",
   "steps": [],
-  "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 1",
+  "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 256",
   "tasks": {
     "infinite": false,
-    "number": 1,
+    "number": 256,
     "set": true
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1727356012,
+    "eligible": 1732087171,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -84,7 +122,7 @@
       "set": true
     },
     "start": 0,
-    "submission": 1727356012,
+    "submission": 1732087171,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -103,13 +141,13 @@
     "allocated": [],
     "requested": [
       {
-        "count": 1,
+        "count": 256,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 1,
+        "count": 131072,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -121,19 +159,19 @@
         "type": "node"
       },
       {
-        "count": 1,
+        "count": 256,
         "id": 5,
         "name": "",
         "type": "billing"
       }
     ]
   },
-  "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+  "tres_req_str": "cpu=256,mem=128G,node=1,billing=256",
   "used_gres": "",
-  "user": "clara",
+  "user": "jryan",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/clara"
+  "working_directory": "/home/jryan"
 }

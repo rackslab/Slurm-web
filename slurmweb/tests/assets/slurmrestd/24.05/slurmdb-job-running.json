@@ -1,33 +1,13 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411481739] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 2,
+      "allocation_nodes": 6,
       "array": {
         "job_id": 0,
         "limits": {
@@ -45,25 +25,40 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jsherman"
+        "user": "pkerr",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
       "derived_exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "PENDING"
+        ],
+        "return_code": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "time": {
-        "elapsed": 85,
-        "eligible": 1727355652,
-        "end": 0,
-        "start": 1727358537,
-        "submission": 1727355652,
+        "elapsed": 26,
+        "eligible": 1731027429,
+        "end": 1731425596,
+        "start": 1731425570,
+        "submission": 1731027429,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -84,13 +79,27 @@
         }
       },
       "exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_SCHEDULE",
+        "STARTED_ON_BACKFILL",
         "START_RECEIVED"
       ],
       "group": "scientists",
@@ -102,34 +111,33 @@
           "number": 0
         }
       },
-      "job_id": 101,
+      "job_id": 424855,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn[1-2]",
-      "partition": "normal",
+      "nodes": "cn[612-617]",
+      "partition": "batch",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 181
       },
       "qos": "normal",
       "required": {
-        "CPUs": 4,
+        "CPUs": 256,
         "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
           "set": false,
           "infinite": false,
           "number": 0
-        },
-        "memory_per_node": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "memory": 0
+        }
       },
       "kill_request_user": "",
       "reservation": {
@@ -138,15 +146,25 @@
       },
       "script": "",
       "state": {
-        "current": "RUNNING",
-        "reason": "None"
+        "current": [
+          "NODE_FAIL"
+        ],
+        "reason": "FrontEndDown"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 85,
-            "end": 0,
-            "start": 1727358537,
+            "elapsed": 368250,
+            "end": {
+              "set": true,
+              "infinite": false,
+              "number": 1731425596
+            },
+            "start": {
+              "set": true,
+              "infinite": false,
+              "number": 1731057346
+            },
             "suspended": 0,
             "system": {
               "seconds": 0,
@@ -162,14 +180,28 @@
             }
           },
           "exit_code": {
-            "status": "SUCCESS",
-            "return_code": 0
+            "status": [
+              "PENDING"
+            ],
+            "return_code": {
+              "set": false,
+              "infinite": false,
+              "number": 0
+            },
+            "signal": {
+              "id": {
+                "set": false,
+                "infinite": false,
+                "number": 0
+              },
+              "name": ""
+            }
           },
           "nodes": {
             "count": 1,
-            "range": "cn1",
+            "range": "admin.emulator",
             "list": [
-              "cn1"
+              "admin.emulator"
             ]
           },
           "tasks": {
@@ -192,7 +224,9 @@
             "governor": "0"
           },
           "kill_request_user": "",
-          "state": "RUNNING",
+          "state": [
+            "CANCELLED"
+          ],
           "statistics": {
             "CPU": {
               "actual_frequency": 0
@@ -206,10 +240,7 @@
             }
           },
           "step": {
-            "id": {
-              "job_id": 101,
-              "step_id": "batch"
-            },
+            "id": "424855.batch",
             "name": "batch"
           },
           "task": {
@@ -233,13 +264,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 2
+                "count": 16
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 1
+                "count": 8192
               },
               {
                 "type": "node",
@@ -251,20 +282,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 4",
+      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 256",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 4
+            "count": 256
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 2
+            "count": 131072
           },
           {
             "type": "energy",
@@ -276,13 +307,13 @@
             "type": "node",
             "name": "",
             "id": 4,
-            "count": 2
+            "count": 6
           },
           {
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 4
+            "count": 256
           }
         ],
         "requested": [
@@ -290,13 +321,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 4
+            "count": 256
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 1
+            "count": 131072
           },
           {
             "type": "node",
@@ -308,17 +339,394 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 4
+            "count": 256
           }
         ]
       },
       "used_gres": "",
-      "user": "jsherman",
+      "user": "pkerr",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jsherman"
+      "working_directory": "/home/pkerr"
+    },
+    {
+      "account": "acoustic",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 6,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "acoustic",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "pkerr",
+        "id": 16
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "time": {
+        "elapsed": 0,
+        "eligible": 1731425717,
+        "end": 1731425605,
+        "start": 1731425605,
+        "submission": 1731425596,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 60
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [
+        "STARTED_ON_SCHEDULE",
+        "STARTED_ON_BACKFILL",
+        "START_RECEIVED"
+      ],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 424855,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "cn[975-980]",
+      "partition": "batch",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 272
+      },
+      "qos": "normal",
+      "required": {
+        "CPUs": 256,
+        "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "kill_request_user": "",
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "state": {
+        "current": [
+          "NODE_FAIL"
+        ],
+        "reason": "FrontEndDown"
+      },
+      "steps": [
+        {
+          "time": {
+            "elapsed": 0,
+            "end": {
+              "set": true,
+              "infinite": false,
+              "number": 1731425605
+            },
+            "start": {
+              "set": true,
+              "infinite": false,
+              "number": 1732027016
+            },
+            "suspended": 0,
+            "system": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "total": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "user": {
+              "seconds": 0,
+              "microseconds": 0
+            }
+          },
+          "exit_code": {
+            "status": [
+              "SUCCESS"
+            ],
+            "return_code": {
+              "set": true,
+              "infinite": false,
+              "number": 0
+            },
+            "signal": {
+              "id": {
+                "set": false,
+                "infinite": false,
+                "number": 0
+              },
+              "name": ""
+            }
+          },
+          "nodes": {
+            "count": 1,
+            "range": "admin.emulator",
+            "list": [
+              "admin.emulator"
+            ]
+          },
+          "tasks": {
+            "count": 1
+          },
+          "pid": "",
+          "CPU": {
+            "requested_frequency": {
+              "min": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              },
+              "max": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            },
+            "governor": "0"
+          },
+          "kill_request_user": "",
+          "state": [
+            "NODE_FAIL"
+          ],
+          "statistics": {
+            "CPU": {
+              "actual_frequency": 0
+            },
+            "energy": {
+              "consumed": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            }
+          },
+          "step": {
+            "id": "424855.batch",
+            "name": "batch"
+          },
+          "task": {
+            "distribution": "Unknown"
+          },
+          "tres": {
+            "requested": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "consumed": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "allocated": [
+              {
+                "type": "cpu",
+                "name": "",
+                "id": 1,
+                "count": 32
+              },
+              {
+                "type": "mem",
+                "name": "",
+                "id": 2,
+                "count": 16384
+              },
+              {
+                "type": "node",
+                "name": "",
+                "id": 4,
+                "count": 1
+              }
+            ]
+          }
+        }
+      ],
+      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 256",
+      "tres": {
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 256
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 131072
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 6
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 256
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 256
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 131072
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 256
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "pkerr",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/pkerr"
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93963339] (fd 8)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

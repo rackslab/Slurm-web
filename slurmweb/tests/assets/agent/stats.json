@@ -1,11 +1,11 @@
 {
   "jobs": {
-    "running": 1,
-    "total": 13
+    "running": 37,
+    "total": 73
   },
   "resources": {
-    "cores": 4,
+    "cores": 128,
     "nodes": 2
   },
-  "version": "24.05.3"
+  "version": "24.11.0-0rc2"
 }

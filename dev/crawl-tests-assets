@@ -172,13 +172,13 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     session = requests.Session()
     prefix = "http+unix://slurmrestd/"
-    api = "0.0.39"
+    api = "0.0.40"
     session.mount(prefix, SlurmrestdUnixAdapter(socket))
 
     # Get Slurm version
     text, _, _ = query_slurmrestd(session, prefix, f"/slurm/v{api}/ping")
     ping = json.loads(text)
-    release = ping["meta"]["Slurm"]["release"]
+    release = ping["meta"]["slurm"]["release"]
     version = release.rsplit(".", 1)[0]
     logger.info("Slurm version: %s release: %s", version, release)
 
@@ -238,7 +238,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     )
 
     def dump_job_state(state: str):
-        if _job["job_state"] == state:
+        if state in _job["job_state"]:
             dump_slurmrestd_query(
                 session,
                 requests_statuses,
@@ -317,6 +317,8 @@ def crawl_slurmrestd(socket: Path) -> None:
         assets_path,
         "slurm-nodes",
         skip_exist=False,
+        limit_dump=100,
+        limit_key="nodes",
     )
 
     def dump_node_state():
@@ -387,7 +389,7 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     # Save resulting status file
     with open(status_file, "w+") as fh:
-        json.dump(requests_statuses, fh, indent=2)
+        json.dump(requests_statuses, fh, indent=2, sort_keys=True)
         fh.write("\n")
 
 
@@ -461,6 +463,7 @@ def dump_component_query(
     asset_name: dict[int, str] | str,
     skip_exist: bool = True,
     prettify: bool = True,
+    limit_dump=0,
 ) -> Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
@@ -499,7 +502,10 @@ def dump_component_query(
     else:
         with open(asset, "w+") as fh:
             if asset.suffix == ".json":
-                fh.write(json.dumps(data, indent=2 if prettify else None))
+                _data = data
+                if limit_dump:
+                    _data = _data[:limit_dump]
+                fh.write(json.dumps(_data, indent=2 if prettify else None))
             else:
                 fh.write(data)
     return data
@@ -568,6 +574,7 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         assets_path,
         "jobs",
         skip_exist=False,
+        limit_dump=100,
     )
 
     if not (len(jobs)):
@@ -578,7 +585,7 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         min_job_id = jobs[0]["job_id"]
 
         def dump_job_state() -> None:
-            if _job["job_state"] == state:
+            if state in _job["job_state"]:
                 dump_component_query(
                     requests_statuses,
                     url,
@@ -696,7 +703,7 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
 
     # Save resulting status file
     with open(status_file, "w+") as fh:
-        json.dump(requests_statuses, fh, indent=2)
+        json.dump(requests_statuses, fh, indent=2, sort_keys=True)
         fh.write("\n")
 
     return token
@@ -742,7 +749,13 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
         "stats",
     )
     dump_component_query(
-        requests_statuses, url, f"/v{get_version()}/jobs", headers, assets_path, "jobs"
+        requests_statuses,
+        url,
+        f"/v{get_version()}/jobs",
+        headers,
+        assets_path,
+        "jobs",
+        limit_dump=100,
     )
     nodes = dump_component_query(
         requests_statuses,
@@ -813,7 +826,7 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
     # FIXME: Download unknown job/node
     # Save resulting status file
     with open(status_file, "w+") as fh:
-        json.dump(requests_statuses, fh, indent=2)
+        json.dump(requests_statuses, fh, indent=2, sort_keys=True)
         fh.write("\n")
 
 

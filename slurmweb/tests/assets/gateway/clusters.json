@@ -1,89 +1,59 @@
 [
   {
     "infrastructure": "tiny",
+    "metrics": true,
     "name": "tiny",
     "permissions": {
       "actions": [
-        "view-accounts",
-        "view-jobs",
-        "view-nodes",
-        "view-partitions",
-        "view-reservations",
-        "view-qos",
-        "view-stats"
-      ],
-      "roles": [
-        "admin"
-      ]
-    },
-    "stats": {
-      "jobs": {
-        "running": 1,
-        "total": 13
-      },
-      "resources": {
-        "cores": 4,
-        "nodes": 2
-      },
-      "version": "24.05.3"
-    }
-  },
-  {
-    "infrastructure": "emulator",
-    "name": "atlas",
-    "permissions": {
-      "actions": [
-        "view-jobs",
         "view-partitions",
         "view-reservations",
         "view-qos",
         "view-stats",
+        "view-jobs",
         "view-accounts",
         "view-nodes"
       ],
       "roles": [
         "admin"
       ]
-    },
-    "stats": {
-      "jobs": {
-        "running": 9,
-        "total": 500
-      },
-      "resources": {
-        "cores": 200,
-        "nodes": 100
-      },
-      "version": "23.02.8"
     }
   },
   {
-    "infrastructure": "pocket",
-    "name": "pocket",
+    "infrastructure": "emulator",
+    "metrics": true,
+    "name": "atlas",
     "permissions": {
       "actions": [
-        "view-stats",
-        "view-accounts",
-        "view-reservations",
-        "view-jobs",
-        "view-partitions",
         "view-nodes",
-        "view-qos"
+        "view-accounts",
+        "view-qos",
+        "view-stats",
+        "view-reservations",
+        "view-partitions",
+        "view-jobs"
       ],
       "roles": [
         "admin"
       ]
-    },
-    "stats": {
-      "jobs": {
-        "running": 1,
-        "total": 20
-      },
-      "resources": {
-        "cores": 8,
-        "nodes": 4
-      },
-      "version": "23.11.10"
+    }
+  },
+  {
+    "infrastructure": "pocket",
+    "metrics": false,
+    "name": "pocket",
+    "permissions": {
+      "actions": [
+        "view-jobs",
+        "view-nodes",
+        "view-reservations",
+        "view-partitions",
+        "view-qos",
+        "view-stats",
+        "view-accounts"
+      ],
+      "roles": [
+        "admin"
+      ]
     }
   }
 ]

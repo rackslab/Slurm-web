@@ -1,30 +1,14 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411479565] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
       "account": "acoustic",
-      "accrue_time": 1727356012,
+      "accrue_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "admin_comment": "",
-      "allocating_node": "login",
+      "allocating_node": "admin",
       "array_job_id": {
         "set": true,
         "infinite": false,
@@ -41,16 +25,14 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 14,
+      "association_id": 16,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "USING_DEFAULT_ACCOUNT",
-        "USING_DEFAULT_WCKEY",
-        "BACKFILL_ATTEMPTED",
-        "SCHEDULING_ATTEMPTED"
+        "USING_DEFAULT_WCKEY"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -69,9 +51,9 @@
         "number": 0
       },
       "billable_tres": {
-        "set": false,
+        "set": true,
         "infinite": false,
-        "number": 0.0
+        "number": 16.0
       },
       "cpus_per_task": {
         "set": true,
@@ -95,7 +77,11 @@
       },
       "cpus_per_tres": "",
       "cron": "",
-      "deadline": 0,
+      "deadline": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "delay_boot": {
         "set": true,
         "infinite": false,
@@ -103,17 +89,51 @@
       },
       "dependency": "",
       "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "eligible_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731021472
+      },
+      "end_time": {
         "set": true,
         "infinite": false,
         "number": 0
       },
-      "eligible_time": 1727356012,
-      "end_time": 1727365737,
       "excluded_nodes": "",
       "exit_code": {
-        "set": true,
-        "infinite": false,
-        "number": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
@@ -135,14 +155,20 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 102,
+      "job_id": 408956,
       "job_resources": {},
       "job_size_str": [],
-      "job_state": "PENDING",
-      "last_sched_evaluation": 1727358614,
+      "job_state": [
+        "PENDING"
+      ],
+      "last_sched_evaluation": {
+        "set": true,
+        "infinite": false,
+        "number": 1731021325
+      },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "clara",
+      "mail_user": "pkerr",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -187,7 +213,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 16
       },
       "node_count": {
         "set": true,
@@ -197,17 +223,17 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 16
       },
-      "partition": "normal",
+      "partition": "batch",
       "prefer": "",
       "memory_per_cpu": {
-        "set": false,
+        "set": true,
         "infinite": false,
-        "number": 0
+        "number": 512
       },
       "memory_per_node": {
-        "set": true,
+        "set": false,
         "infinite": false,
         "number": 0
       },
@@ -224,14 +250,26 @@
       "power": {
         "flags": []
       },
-      "preempt_time": 0,
-      "preemptable_time": 0,
-      "pre_sus_time": 0,
-      "hold": false,
+      "preempt_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "preemptable_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "pre_sus_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "hold": true,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 0
       },
       "profile": [
         "NOT_SET"
@@ -241,10 +279,14 @@
       "required_nodes": "",
       "minimum_switches": 0,
       "requeue": true,
-      "resize_time": 0,
-      "restart_cnt": 0,
+      "resize_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "restart_cnt": 1,
       "resv_name": "",
-      "scheduled_nodes": "cn1",
+      "scheduled_nodes": "",
       "selinux_context": "",
       "shared": [],
       "exclusive": [],
@@ -260,14 +302,26 @@
         "infinite": false,
         "number": 0
       },
-      "start_time": 1727362137,
-      "state_description": "",
-      "state_reason": "Resources",
-      "standard_error": "/home/clara/slurm-102.out",
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "state_description": "launch failed requeued held",
+      "state_reason": "JobHeldUser",
+      "standard_error": "/home/pkerr/slurm-408956.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/clara/slurm-102.out",
-      "submit_time": 1727356012,
-      "suspend_time": 0,
+      "standard_output": "/home/pkerr/slurm-408956.out",
+      "submit_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731021351
+      },
+      "suspend_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "system_comment": "",
       "time_limit": {
         "set": true,
@@ -290,13 +344,48 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=1,mem=1M,node=1,billing=1",
+      "tres_req_str": "cpu=16,mem=8G,node=1,billing=16",
       "tres_alloc_str": "",
-      "user_id": 10006,
-      "user_name": "clara",
+      "user_id": 10008,
+      "user_name": "pkerr",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/clara"
+      "current_working_directory": "/home/pkerr"
     }
-  ]
+  ],
+  "last_backfill": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027248
+  },
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027274
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93954562] (fd 8)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

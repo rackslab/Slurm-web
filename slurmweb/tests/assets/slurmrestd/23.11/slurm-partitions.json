@@ -1,24 +1,4 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411505686] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 10,
-        "minor": 11
-      },
-      "release": "23.11.10"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "partitions": [
     {
       "nodes": {
@@ -41,15 +21,25 @@
       "alternate": "",
       "tres": {
         "billing_weights": "",
-        "configured": "cpu=8,mem=4M,node=4,billing=8"
+        "configured": "cpu=256,mem=512G,node=4,billing=256"
       },
       "cluster": "",
       "cpus": {
         "task_binding": 0,
-        "total": 8
+        "total": 256
       },
       "defaults": {
         "memory_per_cpu": 0,
+        "partition_memory_per_cpu": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "partition_memory_per_node": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
         "time": {
           "set": false,
           "infinite": false,
@@ -70,12 +60,26 @@
           "number": 0
         },
         "memory_per_cpu": 0,
+        "partition_memory_per_cpu": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "partition_memory_per_node": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
         "nodes": {
           "set": false,
           "infinite": true,
           "number": 0
         },
         "shares": 1,
+        "oversubscribe": {
+          "jobs": 1,
+          "flags": []
+        },
         "time": {
           "set": false,
           "infinite": true,
@@ -108,11 +112,46 @@
           "number": 0
         }
       },
+      "partition": {
+        "state": [
+          "UP"
+        ]
+      },
       "suspend_time": {
         "set": false,
         "infinite": false,
         "number": 0
       }
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732026870
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93506124] (fd 10)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

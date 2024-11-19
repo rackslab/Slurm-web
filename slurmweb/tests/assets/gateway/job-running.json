@@ -1,10 +1,15 @@
 {
-  "accrue_time": 1727355652,
+  "accrue_time": {
+    "infinite": false,
+    "number": 1732085460,
+    "set": true
+  },
   "association": {
-    "account": "optic",
+    "account": "acoustic",
     "cluster": "hpc",
+    "id": 15,
     "partition": "",
-    "user": "jsherman"
+    "user": "jryan"
   },
   "batch_flag": true,
   "command": "",
@@ -15,55 +20,88 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 4,
+    "number": 4096,
     "set": true
   },
-  "current_working_directory": "/home/jsherman",
+  "current_working_directory": "/home/jryan",
   "derived_exit_code": {
-    "return_code": 0,
-    "status": "SUCCESS"
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
   },
   "exclusive": [],
   "exit_code": {
-    "return_code": 0,
-    "status": "SUCCESS"
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
   },
   "group": "scientists",
-  "last_sched_evaluation": 1727358537,
+  "last_sched_evaluation": {
+    "infinite": false,
+    "number": 1732093237,
+    "set": true
+  },
   "name": "wrap",
   "node_count": {
     "infinite": false,
-    "number": 2,
+    "number": 89,
     "set": true
   },
-  "nodes": "cn[1-2]",
-  "partition": "normal",
+  "nodes": "cn[718-806]",
+  "partition": "batch",
   "priority": {
     "infinite": false,
-    "number": 1,
+    "number": 90,
     "set": true
   },
   "qos": "normal",
   "required": {
-    "CPUs": 4,
-    "memory": 0,
+    "CPUs": 4096,
     "memory_per_cpu": {
       "infinite": false,
-      "number": 0,
-      "set": false
+      "number": 512,
+      "set": true
     },
     "memory_per_node": {
       "infinite": false,
       "number": 0,
-      "set": true
+      "set": false
     }
   },
   "script": "",
-  "standard_error": "/home/jsherman/slurm-101.out",
+  "standard_error": "/home/jryan/slurm-507479.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/jsherman/slurm-101.out",
+  "standard_output": "/home/jryan/slurm-507479.out",
   "state": {
-    "current": "RUNNING",
+    "current": [
+      "RUNNING"
+    ],
     "reason": "None"
   },
   "state_reason": "None",
@@ -85,19 +123,35 @@
         }
       },
       "exit_code": {
-        "return_code": 0,
-        "status": "SUCCESS"
+        "return_code": {
+          "infinite": false,
+          "number": 0,
+          "set": true
+        },
+        "signal": {
+          "id": {
+            "infinite": false,
+            "number": 0,
+            "set": false
+          },
+          "name": ""
+        },
+        "status": [
+          "SUCCESS"
+        ]
       },
       "kill_request_user": "",
       "nodes": {
         "count": 1,
         "list": [
-          "cn1"
+          "admin.emulator"
         ],
-        "range": "cn1"
+        "range": "admin.emulator"
       },
       "pid": "",
-      "state": "RUNNING",
+      "state": [
+        "RUNNING"
+      ],
       "statistics": {
         "CPU": {
           "actual_frequency": 0
@@ -111,10 +165,7 @@
         }
       },
       "step": {
-        "id": {
-          "job_id": 101,
-          "step_id": "batch"
-        },
+        "id": "507479.batch",
         "name": "batch"
       },
       "task": {
@@ -124,9 +175,17 @@
         "count": 1
       },
       "time": {
-        "elapsed": 84,
-        "end": 0,
-        "start": 1727358537,
+        "elapsed": 167,
+        "end": {
+          "infinite": false,
+          "number": 0,
+          "set": true
+        },
+        "start": {
+          "infinite": false,
+          "number": 1732093237,
+          "set": true
+        },
         "suspended": 0,
         "system": {
           "microseconds": 0,
@@ -144,13 +203,13 @@
       "tres": {
         "allocated": [
           {
-            "count": 2,
+            "count": 16,
             "id": 1,
             "name": "",
             "type": "cpu"
           },
           {
-            "count": 1,
+            "count": 8192,
             "id": 2,
             "name": "",
             "type": "mem"
@@ -177,23 +236,23 @@
       }
     }
   ],
-  "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 4",
+  "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 4096",
   "tasks": {
     "infinite": false,
-    "number": 4,
+    "number": 4096,
     "set": true
   },
   "time": {
-    "elapsed": 84,
-    "eligible": 1727355652,
+    "elapsed": 167,
+    "eligible": 1732085460,
     "end": 0,
     "limit": {
       "infinite": false,
       "number": 60,
       "set": true
     },
-    "start": 1727358537,
-    "submission": 1727355652,
+    "start": 1732093237,
+    "submission": 1732085460,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -211,13 +270,13 @@
   "tres": {
     "allocated": [
       {
-        "count": 4,
+        "count": 4096,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 2,
+        "count": 2097152,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -229,13 +288,13 @@
         "type": "energy"
       },
       {
-        "count": 2,
+        "count": 89,
         "id": 4,
         "name": "",
         "type": "node"
       },
       {
-        "count": 4,
+        "count": 4096,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -243,13 +302,13 @@
     ],
     "requested": [
       {
-        "count": 4,
+        "count": 4096,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 1,
+        "count": 2097152,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -261,19 +320,19 @@
         "type": "node"
       },
       {
-        "count": 4,
+        "count": 4096,
         "id": 5,
         "name": "",
         "type": "billing"
       }
     ]
   },
-  "tres_req_str": "cpu=4,mem=1M,node=1,billing=4",
+  "tres_req_str": "cpu=4096,mem=2T,node=1,billing=4096",
   "used_gres": "",
-  "user": "jsherman",
+  "user": "jryan",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jsherman"
+  "working_directory": "/home/jryan"
 }

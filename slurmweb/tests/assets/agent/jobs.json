@@ -1,27 +1,57 @@
 [
   {
-    "account": "admin",
+    "account": "acoustic",
     "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "job_id": 5105,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
       "infinite": false,
       "number": 2,
       "set": true
     },
-    "job_id": 99,
-    "job_state": "COMPLETED",
+    "nodes": "cn[1-2]",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5108,
+    "job_state": [
+      "COMPLETED"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 1,
+      "number": 90,
       "set": true
     },
-    "qos": "study",
+    "qos": "normal",
     "state_reason": "None",
-    "user_name": "rwallace"
+    "user_name": "clara"
   },
   {
     "account": "acoustic",
@@ -30,17 +60,209 @@
       "number": 1,
       "set": true
     },
-    "job_id": 100,
-    "job_state": "COMPLETED",
+    "job_id": 5136,
+    "job_state": [
+      "COMPLETED"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "clara"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5137,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
       "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5151,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "nodes": "cn[1-2]",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 281,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5152,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5157,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5158,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5162,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5163,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
       "set": true
     },
     "qos": "normal",
@@ -54,17 +276,1289 @@
       "number": 4,
       "set": true
     },
-    "job_id": 101,
-    "job_state": "RUNNING",
+    "job_id": 5164,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 463,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5166,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5167,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5168,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5169,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5170,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5171,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "clara"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5172,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 190,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "clara"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5173,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 827,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5174,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 554,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5175,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5176,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5177,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 818,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5178,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 372,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5179,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5180,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5181,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5182,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5183,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5184,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 818,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5185,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5186,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5187,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5188,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5189,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 818,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "job_id": 5190,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 2,
       "set": true
     },
+    "nodes": "cn[1-2]",
     "partition": "normal",
     "priority": {
       "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5191,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
       "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5192,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5193,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5194,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5195,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5196,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5197,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 636,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "cgross"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5198,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5199,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 190,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "clara"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5200,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 918,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5201,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 918,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5202,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 636,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "cgross"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5203,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 736,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "cgross"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5204,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5205,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5206,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5207,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5208,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 281,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "jryan"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5209,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5210,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 918,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "sharrison"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5211,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5212,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
       "set": true
     },
     "qos": "normal",
@@ -78,69 +1572,294 @@
       "number": 1,
       "set": true
     },
-    "job_id": 102,
-    "job_state": "PENDING",
+    "job_id": 5213,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn1",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 1,
+      "number": 281,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Resources",
-    "user_name": "clara"
-  },
-  {
-    "account": "biology",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "job_id": 103,
-    "job_state": "PENDING",
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "msummers"
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "jryan"
   },
   {
     "account": "admin",
     "cpus": {
       "infinite": false,
-      "number": 2,
+      "number": 8,
       "set": true
     },
-    "job_id": 104,
-    "job_state": "PENDING",
+    "job_id": 5214,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn1",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "rwallace"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 8,
+      "set": true
+    },
+    "job_id": 5215,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 827,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5216,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5217,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "job_id": 5218,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 463,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "Priority",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5219,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
     "qos": "normal",
     "state_reason": "Priority",
+    "user_name": "jsherman"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5220,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "Priority",
+    "user_name": "pkerr"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5221,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "Priority",
+    "user_name": "clara"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "job_id": 5222,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 463,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "Priority",
+    "user_name": "jcampbell"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5223,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1009,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
     "user_name": "rwallace"
   },
   {
@@ -150,22 +1869,52 @@
       "number": 1,
       "set": true
     },
-    "job_id": 105,
-    "job_state": "PENDING",
+    "job_id": 5224,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "msummers"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "job_id": 5225,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "cgross"
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
   },
   {
     "account": "acoustic",
@@ -174,22 +1923,25 @@
       "number": 1,
       "set": true
     },
-    "job_id": 106,
-    "job_state": "PENDING",
+    "job_id": 5226,
+    "job_state": [
+      "PENDING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 1,
+      "number": 190,
       "set": true
     },
     "qos": "study",
     "state_reason": "Priority",
-    "user_name": "pkerr"
+    "user_name": "clara"
   },
   {
     "account": "acoustic",
@@ -198,22 +1950,106 @@
       "number": 1,
       "set": true
     },
-    "job_id": 107,
-    "job_state": "PENDING",
+    "job_id": 5227,
+    "job_state": [
+      "PENDING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 281,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "Priority",
+    "user_name": "jryan"
+  },
+  {
+    "account": "biology",
+    "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "job_id": 5228,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 645,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5229,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 545,
+      "set": true
+    },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "job_id": 5230,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "msummers"
   },
   {
     "account": "biology",
@@ -222,46 +2058,79 @@
       "number": 2,
       "set": true
     },
-    "job_id": 108,
-    "job_state": "PENDING",
+    "job_id": 5231,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 545,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "user_name": "dshaw"
+  },
+  {
+    "account": "biology",
+    "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Priority",
+    "job_id": 5232,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 827,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "None",
     "user_name": "msummers"
   },
   {
-    "account": "optic",
+    "account": "acoustic",
     "cpus": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "job_id": 109,
-    "job_state": "PENDING",
+    "job_id": 5233,
+    "job_state": [
+      "PENDING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 1,
+      "number": 281,
       "set": true
     },
-    "qos": "normal",
+    "qos": "study",
     "state_reason": "Priority",
-    "user_name": "jcampbell"
+    "user_name": "jryan"
   },
   {
     "account": "acoustic",
@@ -270,17 +2139,47 @@
       "number": 4,
       "set": true
     },
-    "job_id": 110,
-    "job_state": "PENDING",
+    "job_id": 5234,
+    "job_state": [
+      "PENDING"
+    ],
     "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "Priority",
+    "user_name": "jryan"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
       "infinite": false,
       "number": 2,
       "set": true
     },
+    "job_id": 5235,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 1,
+      "number": 181,
       "set": true
     },
     "qos": "normal",
@@ -291,24 +2190,54 @@
     "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "job_id": 111,
-    "job_state": "PENDING",
+    "job_id": 5236,
+    "job_state": [
+      "PENDING"
+    ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
+    "nodes": "",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 827,
+      "set": true
+    },
+    "qos": "study",
+    "state_reason": "Resources",
+    "user_name": "msummers"
+  },
+  {
+    "account": "optic",
+    "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "qos": "study",
+    "job_id": 5237,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
     "state_reason": "Priority",
-    "user_name": "sharrison"
+    "user_name": "jcampbell"
   }
 ]

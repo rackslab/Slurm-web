@@ -1,35 +1,11 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411489535] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "qos": [
     {
       "description": "Normal QOS default",
       "flags": [],
       "id": 1,
       "limits": {
-        "grace_time": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
+        "grace_time": 0,
         "max": {
           "active_jobs": {
             "accruing": {
@@ -117,7 +93,11 @@
             }
           }
         },
-        "factor": 4294967295.0,
+        "factor": {
+          "set": false,
+          "infinite": true,
+          "number": 0.0
+        },
         "min": {
           "priority_threshold": {
             "set": false,
@@ -160,17 +140,11 @@
       }
     },
     {
-      "description": "study",
-      "flags": [
-        "OVERRIDE_PARTITION_QOS"
-      ],
+      "description": "critical",
+      "flags": [],
       "id": 2,
       "limits": {
-        "grace_time": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
+        "grace_time": 0,
         "max": {
           "active_jobs": {
             "accruing": {
@@ -181,18 +155,11 @@
             "count": {
               "set": true,
               "infinite": false,
-              "number": 60
+              "number": 300
             }
           },
           "tres": {
-            "total": [
-              {
-                "type": "node",
-                "name": "",
-                "id": 4,
-                "count": 50
-              }
-            ],
+            "total": [],
             "minutes": {
               "per": {
                 "qos": [],
@@ -202,43 +169,10 @@
               }
             },
             "per": {
-              "account": [
-                {
-                  "type": "cpu",
-                  "name": "",
-                  "id": 1,
-                  "count": 15
-                },
-                {
-                  "type": "mem",
-                  "name": "",
-                  "id": 2,
-                  "count": 10
-                }
-              ],
-              "job": [
-                {
-                  "type": "cpu",
-                  "name": "",
-                  "id": 1,
-                  "count": 48
-                }
-              ],
+              "account": [],
+              "job": [],
               "node": [],
-              "user": [
-                {
-                  "type": "cpu",
-                  "name": "",
-                  "id": 1,
-                  "count": 10
-                },
-                {
-                  "type": "mem",
-                  "name": "",
-                  "id": 2,
-                  "count": 5
-                }
-              ]
+              "user": []
             }
           },
           "wall_clock": {
@@ -251,7 +185,7 @@
               "job": {
                 "set": true,
                 "infinite": false,
-                "number": 480
+                "number": 2880
               }
             }
           },
@@ -298,7 +232,11 @@
             }
           }
         },
-        "factor": 4294967295.0,
+        "factor": {
+          "set": false,
+          "infinite": true,
+          "number": 0.0
+        },
         "min": {
           "priority_threshold": {
             "set": false,
@@ -312,7 +250,7 @@
           }
         }
       },
-      "name": "study",
+      "name": "critical",
       "preempt": {
         "list": [],
         "mode": [
@@ -327,7 +265,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 100
+        "number": 200
       },
       "usage_factor": {
         "set": true,
@@ -340,5 +278,30 @@
         "number": 0.0
       }
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93506057] (fd 8)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

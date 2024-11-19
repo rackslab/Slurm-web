@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "accounts": "biology",
+    "end_time": {
+      "infinite": false,
+      "number": 1732982400,
+      "set": true
+    },
+    "flags": [
+      "IGNORE_JOBS",
+      "ANY_NODES",
+      "PART_NODES",
+      "SPEC_NODES",
+      "FLEX"
+    ],
+    "name": "training",
+    "node_count": 2,
+    "node_list": "cn[1-2]",
+    "start_time": {
+      "infinite": false,
+      "number": 1732957200,
+      "set": true
+    },
+    "users": "dshaw,sharrison"
+  }
+]

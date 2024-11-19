@@ -1,46 +1,26 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411891913] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "nodes": [
     {
-      "architecture": "x86_64",
+      "architecture": "",
       "burstbuffer_network_address": "",
       "boards": 1,
-      "boot_time": 1725995081,
+      "boot_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731514097
+      },
       "cluster_name": "",
-      "cores": 1,
+      "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": {
-        "set": true,
-        "infinite": false,
-        "number": 50
-      },
+      "cpu_load": 0,
       "free_mem": {
-        "set": true,
+        "set": false,
         "infinite": false,
-        "number": 440
+        "number": 0
       },
-      "cpus": 2,
-      "effective_cpus": 2,
+      "cpus": 64,
+      "effective_cpus": 64,
       "specialized_cpus": "",
       "energy": {
         "average_watts": 0,
@@ -62,28 +42,38 @@
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
-      "last_busy": 1727359259,
+      "instance_id": "",
+      "instance_type": "",
+      "last_busy": {
+        "set": true,
+        "infinite": false,
+        "number": 1732026980
+      },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn2",
+      "name": "cn081",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "cn2",
-      "hostname": "cn2",
+      "address": "admin.emulator",
+      "hostname": "admin.emulator",
       "state": [
         "MIXED"
       ],
-      "operating_system": "Linux 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3 (2024-08-26)",
+      "operating_system": "",
       "owner": "",
       "partitions": [
-        "normal"
+        "batch"
       ],
       "port": 6818,
-      "real_memory": 1,
+      "real_memory": 131072,
       "comment": "",
       "reason": "",
-      "reason_changed_at": 0,
+      "reason_changed_at": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "reason_set_by_user": "",
       "resume_after": {
         "set": true,
@@ -91,18 +81,52 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 1,
-      "alloc_cpus": 1,
-      "alloc_idle_cpus": 1,
-      "tres_used": "cpu=1,mem=1M",
-      "tres_weighted": 1.0,
-      "slurmd_start_time": 1727280726,
+      "alloc_memory": 6656,
+      "alloc_cpus": 13,
+      "alloc_idle_cpus": 51,
+      "tres_used": "cpu=13,mem=6.50G",
+      "tres_weighted": 13.0,
+      "slurmd_start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731527197
+      },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=2,mem=1M,billing=2",
-      "version": "24.05.3"
+      "tres": "cpu=64,mem=128G,billing=64",
+      "version": ""
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027042
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93680588] (fd 8)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

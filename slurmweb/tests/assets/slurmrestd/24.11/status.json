@@ -1,41 +1,5 @@
 {
-  "slurm-ping": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurm-not-found": {
-    "content-type": "text/plain",
-    "status": 404
-  },
-  "slurmdb-not-found": {
-    "content-type": "text/plain",
-    "status": 404
-  },
-  "slurm-jobs": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurm-job-completed": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurmdb-job-completed": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurm-job-running": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurmdb-job-running": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurm-job-pending": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurmdb-job-pending": {
+  "slurm-accounts": {
     "content-type": "application/json",
     "status": 200
   },
@@ -43,7 +7,15 @@
     "content-type": "application/json",
     "status": 404
   },
-  "slurmdb-job-archived": {
+  "slurm-job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-running": {
     "content-type": "application/json",
     "status": 200
   },
@@ -51,11 +23,7 @@
     "content-type": "application/json",
     "status": 404
   },
-  "slurmdb-job-unfound": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "slurm-nodes": {
+  "slurm-jobs": {
     "content-type": "application/json",
     "status": 200
   },
@@ -63,7 +31,7 @@
     "content-type": "application/json",
     "status": 200
   },
-  "slurm-node-idle": {
+  "slurm-node-down": {
     "content-type": "application/json",
     "status": 200
   },
@@ -71,7 +39,11 @@
     "content-type": "application/json",
     "status": 200
   },
-  "slurm-node-down": {
+  "slurm-node-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-mixed": {
     "content-type": "application/json",
     "status": 200
   },
@@ -79,7 +51,19 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-not-found": {
+    "content-type": "text/plain",
+    "status": 404
+  },
   "slurm-partitions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-ping": {
     "content-type": "application/json",
     "status": 200
   },
@@ -87,12 +71,32 @@
     "content-type": "application/json",
     "status": 200
   },
-  "slurm-accounts": {
-    "content-type": "application/json",
-    "status": 200
-  },
   "slurm-reservations": {
     "content-type": "application/json",
     "status": 200
+  },
+  "slurmdb-job-archived": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-not-found": {
+    "content-type": "text/plain",
+    "status": 404
   }
 }

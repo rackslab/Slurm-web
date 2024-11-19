@@ -1,0 +1,35 @@
+{
+  "pings": [
+    {
+      "hostname": "admin.tiny",
+      "pinged": "UP",
+      "latency": 2850,
+      "mode": "primary"
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "24.11.0-0rc2",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

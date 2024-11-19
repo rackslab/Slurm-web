@@ -1,127 +1,29 @@
 [
   {
-    "account": "acoustic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 4096,
+      "number": 16384,
       "set": true
     },
-    "job_id": 428511,
-    "job_state": "PENDING",
+    "job_id": 519463,
+    "job_state": [
+      "RUNNING"
+    ],
     "node_count": {
       "infinite": false,
-      "number": 86,
+      "number": 341,
       "set": true
     },
-    "nodes": "cn[542-627]",
+    "nodes": "cn[001-006,035-050,052-080,277-324,326-338,379-460,463-528,582-588,609-617,716-718,823,839-880,945-946,955,965-980]",
     "partition": "batch",
     "priority": {
       "infinite": false,
-      "number": 272,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "FrontEndDown",
-    "user_name": "pkerr"
-  },
-  {
-    "account": "optic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "job_id": 429741,
-    "job_state": "RUNNING",
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "cn584",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 454,
+      "number": 545,
       "set": true
     },
     "qos": "normal",
     "state_reason": "None",
-    "user_name": "jsherman"
-  },
-  {
-    "account": "optic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "job_id": 429804,
-    "job_state": "RUNNING",
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "cn584",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 454,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "None",
-    "user_name": "jsherman"
-  },
-  {
-    "account": "optic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "job_id": 429814,
-    "job_state": "RUNNING",
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "cn584",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 454,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "None",
-    "user_name": "jsherman"
-  },
-  {
-    "account": "optic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "job_id": 429830,
-    "job_state": "RUNNING",
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "cn[584-587]",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 454,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "None",
-    "user_name": "jsherman"
+    "user_name": "cgross"
   }
 ]

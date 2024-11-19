@@ -1,31 +1,15 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[958925898] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 10,
-        "minor": 11
-      },
-      "release": "23.11.10"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "reservations": [
     {
       "accounts": "biology",
       "burst_buffer": "",
-      "core_count": 8,
+      "core_count": 256,
       "core_specializations": [],
-      "end_time": 1728745200,
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732982400
+      },
       "features": "",
       "flags": [
         "IGNORE_JOBS",
@@ -48,14 +32,48 @@
           "number": 300
         }
       },
-      "start_time": 1728633600,
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732957200
+      },
       "watts": {
         "set": false,
         "infinite": false,
         "number": 0
       },
-      "tres": "cpu=8",
-      "users": "cgross,msummers"
+      "tres": "cpu=256",
+      "users": "dshaw,sharrison"
     }
-  ]
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732097141
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[190157130] (fd 10)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

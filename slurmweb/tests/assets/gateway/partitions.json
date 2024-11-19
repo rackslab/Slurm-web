@@ -1,6 +1,18 @@
 [
   {
-    "name": "normal",
+    "name": "batch",
+    "node_sets": ""
+  },
+  {
+    "name": "debug",
+    "node_sets": ""
+  },
+  {
+    "name": "interactive",
+    "node_sets": ""
+  },
+  {
+    "name": "ia",
     "node_sets": ""
   }
 ]

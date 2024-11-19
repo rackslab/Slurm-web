@@ -1,30 +1,14 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411498713] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 10,
-        "minor": 11
-      },
-      "release": "23.11.10"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
       "account": "acoustic",
-      "accrue_time": 1727355715,
+      "accrue_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731491531
+      },
       "admin_comment": "",
-      "allocating_node": "login",
+      "allocating_node": "192.168.243.217",
       "array_job_id": {
         "set": true,
         "infinite": false,
@@ -41,10 +25,10 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 14,
+      "association_id": 16,
       "batch_features": "",
       "batch_flag": true,
-      "batch_host": "cn1",
+      "batch_host": "cn4",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
@@ -71,7 +55,7 @@
       "billable_tres": {
         "set": true,
         "infinite": false,
-        "number": 2.0
+        "number": 4.0
       },
       "cpus_per_task": {
         "set": true,
@@ -95,7 +79,11 @@
       },
       "cpus_per_tres": "",
       "cron": "",
-      "deadline": 0,
+      "deadline": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "delay_boot": {
         "set": true,
         "infinite": false,
@@ -103,17 +91,51 @@
       },
       "dependency": "",
       "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1731491531
       },
-      "eligible_time": 1727355715,
-      "end_time": 1727362222,
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732030568
+      },
       "excluded_nodes": "",
       "exit_code": {
-        "set": true,
-        "infinite": false,
-        "number": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
@@ -135,9 +157,9 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 59,
+      "job_id": 760,
       "job_resources": {
-        "nodes": "cn1",
+        "nodes": "cn4",
         "allocated_cores": 0,
         "allocated_cpus": 0,
         "allocated_hosts": 1,
@@ -146,28 +168,36 @@
             "sockets": {
               "0": {
                 "cores": {
-                  "0": "allocated"
+                  "0": "allocated",
+                  "1": "allocated"
                 }
               },
               "1": {
                 "cores": {
-                  "0": "allocated"
+                  "0": "allocated",
+                  "1": "allocated"
                 }
               }
             },
-            "nodename": "cn1",
+            "nodename": "cn4",
             "cpus_used": 0,
             "memory_used": 0,
-            "memory_allocated": 1
+            "memory_allocated": 131072
           }
         ]
       },
       "job_size_str": [],
-      "job_state": "RUNNING",
-      "last_sched_evaluation": 1727358622,
+      "job_state": [
+        "RUNNING"
+      ],
+      "last_sched_evaluation": {
+        "set": true,
+        "infinite": false,
+        "number": 1732026968
+      },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "clara",
+      "mail_user": "pkerr",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -182,7 +212,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn1",
+      "nodes": "cn4",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -212,7 +242,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 4
       },
       "node_count": {
         "set": true,
@@ -222,7 +252,7 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 4
       },
       "partition": "normal",
       "prefer": "",
@@ -249,14 +279,26 @@
       "power": {
         "flags": []
       },
-      "preempt_time": 0,
-      "preemptable_time": 0,
-      "pre_sus_time": 0,
+      "preempt_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "preemptable_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "pre_sus_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 181
       },
       "profile": [
         "NOT_SET"
@@ -266,7 +308,11 @@
       "required_nodes": "",
       "minimum_switches": 0,
       "requeue": true,
-      "resize_time": 0,
+      "resize_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "restart_cnt": 0,
       "resv_name": "",
       "scheduled_nodes": "",
@@ -285,14 +331,26 @@
         "infinite": false,
         "number": 0
       },
-      "start_time": 1727358622,
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732026968
+      },
       "state_description": "",
       "state_reason": "None",
-      "standard_error": "/home/clara/slurm-59.out",
+      "standard_error": "/home/pkerr/slurm-760.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/clara/slurm-59.out",
-      "submit_time": 1727355715,
-      "suspend_time": 0,
+      "standard_output": "/home/pkerr/slurm-760.out",
+      "submit_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731491531
+      },
+      "suspend_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "system_comment": "",
       "time_limit": {
         "set": true,
@@ -315,13 +373,48 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
-      "tres_alloc_str": "cpu=2,mem=1M,node=1,billing=2",
-      "user_id": 10006,
-      "user_name": "clara",
+      "tres_req_str": "cpu=4,mem=128G,node=1,billing=4",
+      "tres_alloc_str": "cpu=4,mem=128G,node=1,billing=4",
+      "user_id": 10008,
+      "user_name": "pkerr",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/clara"
+      "current_working_directory": "/home/pkerr"
     }
-  ]
+  ],
+  "last_backfill": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027273
+  },
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027277
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93956916] (fd 10)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "23",
+        "micro": "10",
+        "minor": "11"
+      },
+      "release": "23.11.10",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

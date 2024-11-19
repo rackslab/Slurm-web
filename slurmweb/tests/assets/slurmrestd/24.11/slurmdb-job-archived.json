@@ -1,33 +1,13 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 8,
-        "minor": 2
-      },
-      "release": "23.02.8"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 8,
+      "allocation_nodes": 1,
       "array": {
         "job_id": 0,
         "limits": {
@@ -45,25 +25,40 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "dshaw"
+        "user": "clara",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
       "derived_exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "time": {
         "elapsed": 360,
-        "eligible": 1727332583,
-        "end": 1727339422,
-        "start": 1727339062,
-        "submission": 1727332583,
+        "eligible": 1732036372,
+        "end": 1732036734,
+        "start": 1732036374,
+        "submission": 1732036372,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 120
         },
         "total": {
           "seconds": 0,
@@ -84,13 +79,28 @@
         }
       },
       "exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_BACKFILL"
+        "STARTED_ON_SCHEDULE",
+        "START_RECEIVED"
       ],
       "group": "scientists",
       "het": {
@@ -101,34 +111,33 @@
           "number": 0
         }
       },
-      "job_id": 306,
+      "job_id": 622,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn[081-088]",
-      "partition": "debug",
+      "nodes": "cn2",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 372
       },
-      "qos": "normal",
+      "qos": "study",
       "required": {
-        "CPUs": 8,
+        "CPUs": 1,
         "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
           "set": false,
           "infinite": false,
           "number": 0
-        },
-        "memory_per_node": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "memory": 0
+        }
       },
       "kill_request_user": "",
       "reservation": {
@@ -137,15 +146,25 @@
       },
       "script": "",
       "state": {
-        "current": "COMPLETED",
+        "current": [
+          "COMPLETED"
+        ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
             "elapsed": 360,
-            "end": 1727339422,
-            "start": 1727339062,
+            "end": {
+              "set": true,
+              "infinite": false,
+              "number": 1732036734
+            },
+            "start": {
+              "set": true,
+              "infinite": false,
+              "number": 1732036374
+            },
             "suspended": 0,
             "system": {
               "seconds": 0,
@@ -161,14 +180,28 @@
             }
           },
           "exit_code": {
-            "status": "SUCCESS",
-            "return_code": 0
+            "status": [
+              "SUCCESS"
+            ],
+            "return_code": {
+              "set": true,
+              "infinite": false,
+              "number": 0
+            },
+            "signal": {
+              "id": {
+                "set": false,
+                "infinite": false,
+                "number": 0
+              },
+              "name": ""
+            }
           },
           "nodes": {
             "count": 1,
-            "range": "admin.emulator",
+            "range": "cn2",
             "list": [
-              "admin.emulator"
+              "cn2"
             ]
           },
           "tasks": {
@@ -191,7 +224,9 @@
             "governor": "0"
           },
           "kill_request_user": "",
-          "state": "COMPLETED",
+          "state": [
+            "COMPLETED"
+          ],
           "statistics": {
             "CPU": {
               "actual_frequency": 0
@@ -205,10 +240,7 @@
             }
           },
           "step": {
-            "id": {
-              "job_id": 306,
-              "step_id": "batch"
-            },
+            "id": "622.batch",
             "name": "batch"
           },
           "task": {
@@ -232,13 +264,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 2
+                "count": 1
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 0
+                "count": 512
               },
               {
                 "type": "node",
@@ -250,14 +282,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos normal --partition debug --time 60 --wrap /usr/bin/sleep 360 --nodes 8",
+      "submit_line": "sbatch --qos study --partition normal --time 120 --wrap /usr/bin/sleep 360 --ntasks 1",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 16
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
           },
           {
             "type": "energy",
@@ -269,13 +307,13 @@
             "type": "node",
             "name": "",
             "id": 4,
-            "count": 8
+            "count": 1
           },
           {
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 16
+            "count": 1
           }
         ],
         "requested": [
@@ -283,35 +321,60 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 8
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 8
+            "count": 512
           },
           {
             "type": "node",
             "name": "",
             "id": 4,
-            "count": 8
+            "count": 1
           },
           {
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 8
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "dshaw",
+      "user": "clara",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/dshaw"
+      "working_directory": "/home/clara"
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "24.11.0-0rc2",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

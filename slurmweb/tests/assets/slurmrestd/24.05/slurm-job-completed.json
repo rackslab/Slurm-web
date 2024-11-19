@@ -1,30 +1,14 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411476699] (fd 8)"
-    },
-    "Slurm": {
-      "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
-      },
-      "release": "24.05.3"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
-      "account": "admin",
-      "accrue_time": 1727355292,
+      "account": "acoustic",
+      "accrue_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731027433
+      },
       "admin_comment": "",
-      "allocating_node": "login",
+      "allocating_node": "admin",
       "array_job_id": {
         "set": true,
         "infinite": false,
@@ -41,15 +25,16 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 9,
+      "association_id": 16,
       "batch_features": "",
       "batch_flag": true,
-      "batch_host": "cn1",
+      "batch_host": "admin.emulator",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
         "USING_DEFAULT_ACCOUNT",
-        "USING_DEFAULT_WCKEY"
+        "USING_DEFAULT_WCKEY",
+        "BACKFILL_ATTEMPTED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -70,7 +55,7 @@
       "billable_tres": {
         "set": true,
         "infinite": false,
-        "number": 2.0
+        "number": 256.0
       },
       "cpus_per_task": {
         "set": true,
@@ -94,7 +79,11 @@
       },
       "cpus_per_tres": "",
       "cron": "",
-      "deadline": 0,
+      "deadline": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "delay_boot": {
         "set": true,
         "infinite": false,
@@ -102,17 +91,51 @@
       },
       "dependency": "",
       "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1731027433
       },
-      "eligible_time": 1727355292,
-      "end_time": 1727358537,
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027368
+      },
       "excluded_nodes": "",
       "exit_code": {
-        "set": true,
-        "infinite": false,
-        "number": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
@@ -134,39 +157,379 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 99,
+      "job_id": 424876,
       "job_resources": {
-        "nodes": "cn1",
-        "allocated_cores": 2,
+        "nodes": "cn[488-493]",
+        "allocated_cores": 256,
         "allocated_cpus": 0,
-        "allocated_hosts": 1,
+        "allocated_hosts": 6,
         "allocated_nodes": [
           {
             "sockets": {
               "0": {
                 "cores": {
-                  "0": "allocated"
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
                 }
               },
               "1": {
                 "cores": {
-                  "0": "allocated"
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
                 }
               }
             },
-            "nodename": "cn1",
+            "nodename": "cn488",
             "cpus_used": 0,
             "memory_used": 0,
-            "memory_allocated": 1
+            "memory_allocated": 8192
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              }
+            },
+            "nodename": "cn489",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 24576
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              }
+            },
+            "nodename": "cn490",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 24576
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              }
+            },
+            "nodename": "cn491",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 24576
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              }
+            },
+            "nodename": "cn492",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 24576
+          },
+          {
+            "sockets": {
+              "0": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              },
+              "1": {
+                "cores": {
+                  "0": "allocated",
+                  "1": "allocated",
+                  "2": "allocated",
+                  "3": "allocated",
+                  "4": "allocated",
+                  "5": "allocated",
+                  "6": "allocated",
+                  "7": "allocated",
+                  "8": "allocated",
+                  "9": "allocated",
+                  "10": "allocated",
+                  "11": "allocated",
+                  "12": "allocated",
+                  "13": "allocated",
+                  "14": "allocated",
+                  "15": "allocated",
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated"
+                }
+              }
+            },
+            "nodename": "cn493",
+            "cpus_used": 0,
+            "memory_used": 0,
+            "memory_allocated": 24576
           }
         ]
       },
       "job_size_str": [],
-      "job_state": "COMPLETED",
-      "last_sched_evaluation": 1727358176,
+      "job_state": [
+        "COMPLETED"
+      ],
+      "last_sched_evaluation": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027007
+      },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "rwallace",
+      "mail_user": "pkerr",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -181,7 +544,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn1",
+      "nodes": "cn[488-493]",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -211,27 +574,27 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 256
       },
       "node_count": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 6
       },
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 256
       },
-      "partition": "normal",
+      "partition": "batch",
       "prefer": "",
       "memory_per_cpu": {
-        "set": false,
+        "set": true,
         "infinite": false,
-        "number": 0
+        "number": 512
       },
       "memory_per_node": {
-        "set": true,
+        "set": false,
         "infinite": false,
         "number": 0
       },
@@ -248,25 +611,41 @@
       "power": {
         "flags": []
       },
-      "preempt_time": 0,
-      "preemptable_time": 0,
-      "pre_sus_time": 0,
+      "preempt_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "preemptable_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "pre_sus_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 272
       },
       "profile": [
         "NOT_SET"
       ],
-      "qos": "study",
+      "qos": "normal",
       "reboot": false,
       "required_nodes": "",
       "minimum_switches": 0,
       "requeue": true,
-      "resize_time": 0,
-      "restart_cnt": 0,
+      "resize_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "restart_cnt": 3,
       "resv_name": "",
       "scheduled_nodes": "",
       "selinux_context": "",
@@ -284,14 +663,26 @@
         "infinite": false,
         "number": 0
       },
-      "start_time": 1727358176,
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1732027007
+      },
       "state_description": "",
       "state_reason": "None",
-      "standard_error": "/home/rwallace/slurm-99.out",
+      "standard_error": "/home/pkerr/slurm-424876.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/rwallace/slurm-99.out",
-      "submit_time": 1727355292,
-      "suspend_time": 0,
+      "standard_output": "/home/pkerr/slurm-424876.out",
+      "submit_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1731027433
+      },
+      "suspend_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
       "system_comment": "",
       "time_limit": {
         "set": true,
@@ -314,13 +705,48 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=2,mem=1M,node=1,billing=2",
-      "tres_alloc_str": "cpu=2,mem=1M,node=1,billing=2",
-      "user_id": 10001,
-      "user_name": "rwallace",
+      "tres_req_str": "cpu=256,mem=128G,node=4,billing=256",
+      "tres_alloc_str": "cpu=256,mem=128G,node=6,billing=256",
+      "user_id": 10008,
+      "user_name": "pkerr",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/rwallace"
+      "current_working_directory": "/home/pkerr"
     }
-  ]
+  ],
+  "last_backfill": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027360
+  },
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1732027386
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[94136403] (fd 8)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
+      },
+      "release": "24.05.3",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }

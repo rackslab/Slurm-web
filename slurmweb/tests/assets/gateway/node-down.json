@@ -1,0 +1,30 @@
+{
+  "alloc_cpus": 0,
+  "alloc_idle_cpus": 64,
+  "alloc_memory": 0,
+  "architecture": "",
+  "boot_time": {
+    "infinite": false,
+    "number": 1731514097,
+    "set": true
+  },
+  "cores": 32,
+  "cpus": 64,
+  "last_busy": {
+    "infinite": false,
+    "number": 1732026980,
+    "set": true
+  },
+  "name": "cn084",
+  "operating_system": "",
+  "partitions": [
+    "batch"
+  ],
+  "real_memory": 131072,
+  "reason": "CPU dead",
+  "sockets": 2,
+  "state": [
+    "DOWN"
+  ],
+  "threads": 1
+}

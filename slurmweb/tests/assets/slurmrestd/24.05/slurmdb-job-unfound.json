@@ -1,28 +1,33 @@
 {
+  "jobs": [],
   "meta": {
     "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[748606206] (fd 8)"
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93493584] (fd 8)",
+      "user": "",
+      "group": ""
     },
-    "Slurm": {
+    "command": [],
+    "slurm": {
       "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
       },
-      "release": "24.05.3"
+      "release": "24.05.3",
+      "cluster": "hpc"
     }
   },
   "errors": [],
   "warnings": [
     {
-      "description": "slurmdb_jobs_get(0x7fd7fc005250) found nothing",
+      "description": "slurmdb_jobs_get(0x7f85b422fe00) found nothing",
       "source": "_dump_jobs"
     }
-  ],
-  "jobs": []
+  ]
 }

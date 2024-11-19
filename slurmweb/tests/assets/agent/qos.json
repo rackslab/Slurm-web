@@ -3,12 +3,12 @@
     "description": "Normal QOS default",
     "flags": [],
     "limits": {
-      "factor": 4294967295.0,
-      "grace_time": {
-        "infinite": false,
-        "number": 0,
-        "set": true
+      "factor": {
+        "infinite": true,
+        "number": 0.0,
+        "set": false
       },
+      "grace_time": 0,
       "max": {
         "accruing": {
           "per": {
@@ -122,12 +122,12 @@
       "OVERRIDE_PARTITION_QOS"
     ],
     "limits": {
-      "factor": 4294967295.0,
-      "grace_time": {
-        "infinite": false,
-        "number": 0,
-        "set": true
+      "factor": {
+        "infinite": true,
+        "number": 0.0,
+        "set": false
       },
+      "grace_time": 0,
       "max": {
         "accruing": {
           "per": {
@@ -195,13 +195,13 @@
           "per": {
             "account": [
               {
-                "count": 15,
+                "count": 196,
                 "id": 1,
                 "name": "",
                 "type": "cpu"
               },
               {
-                "count": 10,
+                "count": 131072,
                 "id": 2,
                 "name": "",
                 "type": "mem"
@@ -209,7 +209,7 @@
             ],
             "job": [
               {
-                "count": 48,
+                "count": 128,
                 "id": 1,
                 "name": "",
                 "type": "cpu"
@@ -218,13 +218,13 @@
             "node": [],
             "user": [
               {
-                "count": 10,
+                "count": 128,
                 "id": 1,
                 "name": "",
                 "type": "cpu"
               },
               {
-                "count": 5,
+                "count": 65536,
                 "id": 2,
                 "name": "",
                 "type": "mem"

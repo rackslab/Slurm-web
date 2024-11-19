@@ -1,21 +1,17 @@
 {
+  "accounts": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "clusters": {
     "content-type": "application/json",
     "status": 200
   },
-  "users": {
+  "job-archived": {
     "content-type": "application/json",
     "status": 200
   },
-  "stats": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "jobs": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "job-running": {
+  "job-completed": {
     "content-type": "application/json",
     "status": 200
   },
@@ -23,19 +19,47 @@
     "content-type": "application/json",
     "status": 200
   },
-  "job-archived": {
-    "content-type": "application/json",
-    "status": 500
-  },
-  "job-completed": {
+  "job-running": {
     "content-type": "application/json",
     "status": 200
   },
-  "nodes": {
+  "jobs": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "jobs-node": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "message_login": {
+    "content-type": "text/html; charset=utf-8",
+    "status": 200
+  },
+  "message_login_error": {
+    "content-type": "application/json",
+    "status": 500
+  },
+  "message_login_not_found": {
+    "content-type": "application/json",
+    "status": 404
+  },
+  "metrics-cores-hour": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "metrics-jobs-hour": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "metrics-nodes-hour": {
     "content-type": "application/json",
     "status": 200
   },
   "node-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "node-down": {
     "content-type": "application/json",
     "status": 200
   },
@@ -44,6 +68,10 @@
     "status": 200
   },
   "node-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "nodes": {
     "content-type": "application/json",
     "status": 200
   },
@@ -59,35 +87,11 @@
     "content-type": "application/json",
     "status": 200
   },
-  "accounts": {
+  "stats": {
     "content-type": "application/json",
     "status": 200
   },
-  "message_login": {
-    "content-type": "text/html; charset=utf-8",
-    "status": 200
-  },
-  "message_login_not_found": {
-    "content-type": "application/json",
-    "status": 404
-  },
-  "message_login_error": {
-    "content-type": "application/json",
-    "status": 500
-  },
-  "metrics-nodes-hour": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "metrics-cores-hour": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "metrics-jobs-hour": {
-    "content-type": "application/json",
-    "status": 200
-  },
-  "jobs-node": {
+  "users": {
     "content-type": "application/json",
     "status": 200
   }

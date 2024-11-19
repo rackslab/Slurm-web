@@ -1,25 +1,41 @@
 {
+  "jobs": [],
+  "last_backfill": {
+    "set": true,
+    "infinite": false,
+    "number": 0
+  },
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 0
+  },
   "meta": {
     "plugin": {
-      "type": "openapi/v0.0.39",
-      "name": "Slurm OpenAPI v0.0.39",
-      "data_parser": "v0.0.39"
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[411477886] (fd 8)"
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93492567] (fd 8)",
+      "user": "root",
+      "group": "root"
     },
-    "Slurm": {
+    "command": [],
+    "slurm": {
       "version": {
-        "major": 24,
-        "micro": 3,
-        "minor": 5
+        "major": "24",
+        "micro": "3",
+        "minor": "05"
       },
-      "release": "24.05.3"
+      "release": "24.05.3",
+      "cluster": "hpc"
     }
   },
   "errors": [
     {
-      "description": "Unable to query JobId=98",
+      "description": "Unable to query JobId=408955",
       "error_number": 2017,
       "error": "Invalid job id specified",
       "source": "_handle_job_get"

@@ -1,24 +1,4 @@
 {
-  "meta": {
-    "plugin": {
-      "type": "openapi/dbv0.0.39",
-      "name": "Slurm OpenAPI DB v0.0.39",
-      "data_parser": "v0.0.39"
-    },
-    "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->fd:8"
-    },
-    "Slurm": {
-      "version": {
-        "major": 23,
-        "micro": 8,
-        "minor": 2
-      },
-      "release": "23.02.8"
-    }
-  },
-  "errors": [],
-  "warnings": [],
   "jobs": [
     {
       "account": "optic",
@@ -48,22 +28,37 @@
         "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jcampbell"
+        "user": "jsherman",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
       "derived_exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1727332586,
+        "eligible": 1732026955,
         "end": 0,
         "start": 0,
-        "submission": 1727332586,
+        "submission": 1732026955,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 120
         },
         "total": {
           "seconds": 0,
@@ -84,12 +79,28 @@
         }
       },
       "exit_code": {
-        "status": "SUCCESS",
-        "return_code": 0
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
       },
       "extra": "",
       "failed_node": "",
-      "flags": [],
+      "flags": [
+        "START_RECEIVED"
+      ],
       "group": "scientists",
       "het": {
         "job_id": 0,
@@ -99,34 +110,33 @@
           "number": 0
         }
       },
-      "job_id": 326,
+      "job_id": 109,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "batch",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 281
       },
-      "qos": "normal",
+      "qos": "study",
       "required": {
-        "CPUs": 16,
+        "CPUs": 2,
         "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
           "set": false,
           "infinite": false,
           "number": 0
-        },
-        "memory_per_node": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "memory": 0
+        }
       },
       "kill_request_user": "",
       "reservation": {
@@ -135,11 +145,13 @@
       },
       "script": "",
       "state": {
-        "current": "PENDING",
+        "current": [
+          "PENDING"
+        ],
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --nodes 16",
+      "submit_line": "sbatch --qos study --partition normal --time 120 --wrap /usr/bin/sleep 360 --ntasks 2",
       "tres": {
         "allocated": [],
         "requested": [
@@ -147,35 +159,60 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 16
+            "count": 2
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16
+            "count": 1024
           },
           {
             "type": "node",
             "name": "",
             "id": 4,
-            "count": 16
+            "count": 1
           },
           {
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 16
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "jcampbell",
+      "user": "jsherman",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jcampbell"
+      "working_directory": "/home/jsherman"
     }
-  ]
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "24.11.0-0rc2",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
 }
