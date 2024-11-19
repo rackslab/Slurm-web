@@ -90,7 +90,7 @@ class Slurmrestd:
 
     def version(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/ping", "meta", **kwargs)[
-            "Slurm"
+            "slurm"
         ]
 
     def jobs(self, **kwargs):
