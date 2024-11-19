@@ -518,8 +518,8 @@ class TestAgent(TestAgentBase):
     @all_slurm_versions
     def test_request_node_not_found(self, slurm_version):
         try:
-            [node_asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-node-unfound", "nodes")]
+            self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-unfound", None)]
             )
         except SlurmwebAssetUnavailable:
             return

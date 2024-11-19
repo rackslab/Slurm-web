@@ -77,16 +77,16 @@ class TestSlurmrestd(TestSlurmrestdBase):
     def test_request_slurm_internal_error(self, slurm_version):
         # We can use slurm-node-unfound asset for this test.
         try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-node-unfound", "nodes")]
+            self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-node-unfound", None)]
             )
         except SlurmwebAssetUnavailable:
             return
 
         with self.assertRaisesRegex(
             SlurmrestdInternalError,
-            r"^SlurwebRestdError\(slurmrestd undefined error, -1, Failure to query "
-            r"node unexisting-node, _dump_nodes\)$",
+            r"^SlurwebRestdError\(No error, 0, Failure to query node unexisting-node, "
+            r"_dump_nodes\)$",
         ):
             self.slurmrestd._request("/whatever", key="whatever")
 
