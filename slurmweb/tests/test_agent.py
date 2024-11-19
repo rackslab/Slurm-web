@@ -563,7 +563,7 @@ class TestAgent(TestAgentBase):
             response.json["resources"]["cores"],
             sum([node["cpus"] for node in nodes_asset]),
         )
-        self.assertEqual(response.json["version"], ping_asset["Slurm"]["release"])
+        self.assertEqual(response.json["version"], ping_asset["slurm"]["release"])
 
     @all_slurm_versions
     def test_request_partitions(self, slurm_version):

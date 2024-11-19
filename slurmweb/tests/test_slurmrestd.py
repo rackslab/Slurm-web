@@ -125,7 +125,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
             return
 
         version = self.slurmrestd.version()
-        self.assertCountEqual(version, asset["Slurm"])
+        self.assertCountEqual(version, asset["slurm"])
 
     @all_slurm_versions
     def test_jobs(self, slurm_version):
