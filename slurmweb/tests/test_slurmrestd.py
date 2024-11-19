@@ -151,7 +151,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         # Select random busy node on cluster
         busy_nodes = ClusterShell.NodeSet.NodeSet()
         for job in asset:
-            if job["job_state"] != "COMPLETED":
+            if "COMPLETED" not in job["job_state"]:
                 busy_nodes.update(job["nodes"])
         random_busy_node = random.choice(busy_nodes)
 
