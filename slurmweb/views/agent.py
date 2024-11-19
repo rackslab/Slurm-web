@@ -88,9 +88,9 @@ def stats():
     # Check Slurm version is supported or fail with HTTP/500
     if (
         not (
-            version["version"]["major"],
-            version["version"]["minor"],
-            version["version"]["micro"],
+            int(version["version"]["major"]),
+            int(version["version"]["minor"]),
+            int(version["version"]["micro"]),
         )
         >= MINIMAL_SLURM_VERSION
     ):
