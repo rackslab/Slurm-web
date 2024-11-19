@@ -1,7 +1,7 @@
 common_with_devs_repos: true
 common_hpckit_derivatives:
 - main
-- slurm24.05
+- slurm24.11
 slurm_with_jwt: false
 slurm_params:
   PriorityType: priority/multifactor
