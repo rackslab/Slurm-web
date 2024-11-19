@@ -107,7 +107,7 @@ class Slurmrestd:
         return [
             job
             for job in self.jobs()
-            if on_node(job) and job["job_state"] != "COMPLETED"
+            if on_node(job) and "COMPLETED" not in job["job_state"]
         ]
 
     def jobs_states(self):
@@ -121,15 +121,15 @@ class Slurmrestd:
         }
         total = 0
         for job in self.jobs():
-            if job["job_state"] == "RUNNING":
+            if "RUNNING" in job["job_state"]:
                 jobs["running"] += 1
-            elif job["job_state"] == "COMPLETED":
+            elif "COMPLETED" in job["job_state"]:
                 jobs["completed"] += 1
-            elif job["job_state"] == "COMPLETING":
+            elif "COMPLETING" in job["job_state"]:
                 jobs["completing"] += 1
-            elif job["job_state"] == "CANCELLED":
+            elif "CANCELLED" in job["job_state"]:
                 jobs["cancelled"] += 1
-            elif job["job_state"] == "PENDING":
+            elif "PENDING" in job["job_state"]:
                 jobs["pending"] += 1
             else:
                 jobs["unknown"] += 1
