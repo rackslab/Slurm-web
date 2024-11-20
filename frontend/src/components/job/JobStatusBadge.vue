@@ -10,7 +10,10 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  status: String,
+  status: {
+    type: Array<String>,
+    required: true
+  },
   large: {
     type: Boolean,
     default: false
@@ -26,28 +29,34 @@ interface JobLabelColors {
 }
 
 const statusColor = computed<JobLabelColors>(() => {
-  switch (props.status) {
-    case 'RUNNING':
-      return {
-        span: 'bg-green-100 text-green-700',
-        circle: 'fill-green-500'
-      }
-    case 'PENDING':
-      return {
-        span: 'bg-yellow-100 text-yellow-800',
-        circle: 'fill-yellow-500'
-      }
-    case 'CANCELLED':
-      return {
-        span: 'bg-purple-100 text-purple-700',
-        circle: 'fill-purple-500'
-      }
-    default:
-      return {
-        span: 'bg-gray-100 text-gray-600',
-        circle: 'fill-gray-400'
-      }
-  }
+  if (props.status.includes('RUNNING'))
+    return {
+      span: 'bg-green-100 text-green-700',
+      circle: 'fill-green-500'
+    }
+  else if (props.status.includes('PENDING'))
+    return {
+      span: 'bg-yellow-100 text-yellow-800',
+      circle: 'fill-yellow-500'
+    }
+  else if (props.status.includes('CANCELLED'))
+    return {
+      span: 'bg-purple-100 text-purple-700',
+      circle: 'fill-purple-500'
+    }
+  else
+    return {
+      span: 'bg-gray-100 text-gray-600',
+      circle: 'fill-gray-400'
+    }
+})
+
+const mainStatus = computed<string>(() => {
+  if (props.status.includes('RUNNING')) return 'RUNNING'
+  else if (props.status.includes('PENDING')) return 'PENDING'
+  else if (props.status.includes('CANCELLED')) return 'CANCELLED'
+  else if (props.status.includes('COMPLETED')) return 'COMPLETED'
+  else return props.status[0] as string
 })
 </script>
 
@@ -66,7 +75,7 @@ const statusColor = computed<JobLabelColors>(() => {
       {{ label }}
     </template>
     <template v-else>
-      {{ props.status }}
+      {{ mainStatus }}
     </template>
   </span>
 </template>

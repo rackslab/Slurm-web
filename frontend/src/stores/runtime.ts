@@ -127,7 +127,9 @@ export class JobsViewSettings {
     if (this.filters.states.length != 0) {
       if (
         !this.filters.states.some((state) => {
-          return state.toLocaleLowerCase() == job.job_state.toLocaleLowerCase()
+          return job.job_state
+            .map((_state) => _state.toLocaleLowerCase())
+            .includes(state.toLocaleLowerCase())
         })
       ) {
         return false
