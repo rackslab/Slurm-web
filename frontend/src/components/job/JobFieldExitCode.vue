@@ -20,6 +20,6 @@ defineProps({
 
 <template>
   <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-    {{ exit_code.status }} ({{ exit_code.return_code }})
+    {{ exit_code.status[0] }} ({{ exit_code.return_code.number }})
   </dd>
 </template>
