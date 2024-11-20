@@ -65,16 +65,17 @@ export interface ClusterStats {
 }
 
 export interface ClusterJob {
-  job_id: number
-  user_name: string
   account: string
-  job_state: string
-  state_reason: string
+  cpus: ClusterOptionalNumber
+  job_id: number
+  job_state: string[]
+  node_count: ClusterOptionalNumber
+  nodes: string
   partition: string
   priority: ClusterOptionalNumber
   qos: string
-  cpus: ClusterOptionalNumber
-  node_count: ClusterOptionalNumber
+  state_reason: string
+  user_name: string
 }
 
 export interface ClusterTRES {
@@ -108,8 +109,41 @@ export interface ClusterJobTime {
   user: ClusterPreciseTime
 }
 
+interface ClusterAccountedResources {
+  average: ClusterTRES[]
+  max: ClusterTRES[]
+  min: ClusterTRES[]
+  total: ClusterTRES[]
+}
+
 export interface ClusterJobStep {
-  step: { id: { job_id: number; step_id: string }; name: string }
+  CPU: {
+    governor: string
+    requested_frequency: { max: ClusterOptionalNumber; min: ClusterOptionalNumber }
+  }
+  exit_code: ClusterJobExitCode
+  kill_request_user: string
+  nodes: { count: number; list: string[]; range: string }
+  pid: string
+  state: string[]
+  statistics: { CPU: { actual_frequency: number }; energy: { consumed: ClusterOptionalNumber } }
+  step: { id: string; name: string }
+  task: { distribution: string }
+  tasks: { count: number }
+  time: {
+    elapsed: number
+    end: ClusterOptionalNumber
+    start: ClusterOptionalNumber
+    suspended: number
+    system: ClusterPreciseTime
+    total: ClusterPreciseTime
+    user: ClusterPreciseTime
+  }
+  tres: {
+    allocated: ClusterTRES[]
+    consumed: ClusterAccountedResources
+    requested: ClusterAccountedResources
+  }
 }
 
 export interface ClusterJobComment {
@@ -119,13 +153,14 @@ export interface ClusterJobComment {
 }
 
 export interface ClusterJobExitCode {
-  return_code: number
-  status: string
+  return_code: ClusterOptionalNumber
+  signal: { id: ClusterOptionalNumber; name: string }
+  status: string[]
 }
 
 export interface ClusterIndividualJob {
-  accrue_time: number
-  association: { account: string; cluster: string; partition: string; user: string }
+  accrue_time: ClusterOptionalNumber
+  association: { account: string; cluster: string; id: number; partition: string; user: string }
   batch_flag: boolean
   command: string
   comment: ClusterJobComment
@@ -135,7 +170,7 @@ export interface ClusterIndividualJob {
   exclusive: string[]
   exit_code: ClusterJobExitCode
   group: string
-  last_sched_evaluation: number
+  last_sched_evaluation: ClusterOptionalNumber
   name: string
   node_count: ClusterOptionalNumber
   nodes: string
@@ -146,7 +181,7 @@ export interface ClusterIndividualJob {
   standard_error: string
   standard_input: string
   standard_output: string
-  state: { current: string; reason: string }
+  state: { current: string[]; reason: string }
   steps: ClusterJobStep[]
   submit_line: string
   tasks: ClusterOptionalNumber
