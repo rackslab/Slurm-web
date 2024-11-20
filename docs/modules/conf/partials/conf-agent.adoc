@@ -159,7 +159,7 @@ the default value only.
 
 
 
-*Default:* `0.0.39`
+*Default:* `0.0.40`
 
 |-
 
@@ -207,6 +207,8 @@ jobs, all other fields arefiltered out.
 
 * `node_count`
 
+* `nodes`
+
 
 |-
 
@@ -241,8 +243,6 @@ unique job, all other fields are filtered out.
 * `priority`
 
 * `qos`
-
-* `required`
 
 * `script`
 
@@ -302,8 +302,6 @@ unique job, all other fields are filtered out.
 * `standard_input`
 
 * `standard_output`
-
-* `state_reason`
 
 * `tasks`
 
