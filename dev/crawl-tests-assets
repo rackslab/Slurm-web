@@ -14,6 +14,7 @@ import getpass
 import socket
 import shlex
 import random
+import os
 import logging
 
 import requests
@@ -39,6 +40,7 @@ USER = getpass.getuser()
 METRICS_PREFERRED_CLUSTER = "emulator"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
 MAP_CLUSTER_NAMES = {"emulator": "atlas"}
+ADMIN_PASSWORD_ENV_VAR = "SLURMWEB_DEV_ADMIN_PASSWORD"
 
 
 def slurmweb_cluster_name(infrastructure: str):
@@ -440,7 +442,15 @@ def gateway_url(dev_tmp_dir):
 def user_token(url: str, user: str):
     """Ask user password interactively, authenticate on gateway and return
     authentication JWT."""
-    password = getpass.getpass(prompt=f"Password for {user} on gateway: ")
+
+    try:
+        password = os.environ[ADMIN_PASSWORD_ENV_VAR]
+    except KeyError:
+        logger.info(
+            "Unable to read admin password from environment, opening interactive "
+            "prompt."
+        )
+        password = getpass.getpass(prompt=f"Password for {user} on gateway: ")
 
     response = requests.post(
         f"{url}/api/login", json={"user": user, "password": password}
