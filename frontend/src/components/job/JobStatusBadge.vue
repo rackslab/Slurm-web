@@ -44,6 +44,21 @@ const statusColor = computed<JobLabelColors>(() => {
       span: 'bg-purple-100 text-purple-700',
       circle: 'fill-purple-500'
     }
+  else if (props.status.includes('COMPLETED'))
+    return {
+      span: 'bg-gray-100 text-gray-600',
+      circle: 'fill-green-500'
+    }
+  else if (props.status.includes('FAILED'))
+    return {
+      span: 'bg-gray-100 text-gray-600',
+      circle: 'fill-red-500'
+    }
+  else if (props.status.includes('TIMEOUT'))
+    return {
+      span: 'bg-gray-100 text-gray-600',
+      circle: 'fill-orange-600'
+    }
   else
     return {
       span: 'bg-gray-100 text-gray-600',

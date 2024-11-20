@@ -37,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     details page (#292).
   - Display hash near all jobs fields in job details page to generate link to
     highlight specific field (#251).
+  - Represent terminated jobs with colored bullet in job status badge, using
+    respectively green for completed (ie. successful) jobs, red for failed jobs
+    and dark orange for timeout jobs (#354).
 - conf:
   - Add `racksdb` > `infrastructure` parameter for the agent.
   - Add `metrics` > `enabled` parameter for the agent.
