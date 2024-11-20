@@ -221,23 +221,24 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
   }
 }
 export interface ClusterNode {
-  name: string
-  sockets: number
+  alloc_cpus: number
+  alloc_idle_cpus: number
   cores: number
   cpus: number
+  name: string
+  partitions: Array<string>
   real_memory: number
+  sockets: number
   state: Array<string>
   reason: string
-  partitions: Array<string>
 }
 
 export interface ClusterIndividualNode extends ClusterNode {
   architecture: string
   operating_system: string
-  boot_time: number
-  last_busy: number
+  boot_time: ClusterOptionalNumber
+  last_busy: ClusterOptionalNumber
   threads: number
-  alloc_cpus: number
   alloc_memory: number
 }
 
