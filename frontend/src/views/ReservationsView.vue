@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterReservation } from '@/composables/GatewayAPI'
+import type { ClusterReservation, ClusterOptionalNumber } from '@/composables/GatewayAPI'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 
@@ -24,8 +24,10 @@ const props = defineProps({
 
 const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservations', 10000)
 
-function representDuration(start: number, end: number): string {
-  let duration = end - start
+function representDuration(start: ClusterOptionalNumber, end: ClusterOptionalNumber): string {
+  if (!start.set || !end.set) return '-'
+
+  let duration = end.number - start.number
 
   let result = ''
   if (duration > 3600 * 24) {
@@ -123,11 +125,14 @@ function representDuration(start: number, end: number): string {
                 <td class="table-cell px-3 text-sm 2xl:hidden">{{ reservation.node_count }}</td>
                 <td class="whitespace-nowrap px-3 text-sm">
                   <p class="hidden xl:block">
-                    {{ new Date(reservation.start_time * 10 ** 3).toLocaleString() }}
+                    <template v-if="reservation.start_time.set">
+                      {{ new Date(reservation.start_time.number * 10 ** 3).toLocaleString() }}
+                    </template>
+                    <template v-else>-</template>
                   </p>
-                  <p class="hidden xl:block">
+                  <p v-if="reservation.end_time.set" class="hidden xl:block">
                     <span class="font-bold">→</span>
-                    {{ new Date(reservation.end_time * 10 ** 3).toLocaleString() }}
+                    {{ new Date(reservation.end_time.number * 10 ** 3).toLocaleString() }}
                   </p>
                   <p class="xl:italic xl:text-gray-500">
                     {{ representDuration(reservation.start_time, reservation.end_time) }}
