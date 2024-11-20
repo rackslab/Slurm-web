@@ -190,13 +190,19 @@ if (runtimeStore.hasPermission('view-jobs')) {
               <div id="reboot" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Reboot</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ new Date(node.data.value.boot_time * 10 ** 3).toLocaleString() }}
+                  <template v-if="node.data.value.boot_time.set">
+                    {{ new Date(node.data.value.boot_time.number * 10 ** 3).toLocaleString() }}
+                  </template>
+                  <template v-else>N/A</template>
                 </dd>
               </div>
               <div id="last" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">Last busy</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ new Date(node.data.value.last_busy * 10 ** 3).toLocaleString() }}
+                  <template v-if="node.data.value.last_busy.set">
+                    {{ new Date(node.data.value.last_busy.number * 10 ** 3).toLocaleString() }}
+                  </template>
+                  <template v-else>N/A</template>
                 </dd>
               </div>
               <!--
