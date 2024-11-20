@@ -101,7 +101,6 @@ filters:
     - partition
     - priority
     - qos
-    - required
     - script
     - state
     - steps
@@ -131,7 +130,6 @@ filters:
     - standard_error
     - standard_input
     - standard_output
-    - state_reason
     - tasks
     - tres_req_str
     doc: |

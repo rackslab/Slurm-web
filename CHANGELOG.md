@@ -96,6 +96,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite),
     CVE-2024-47068 (rollup), CVE-2024-21538 (cross-spawn).
 
+### Removed
+- conf:
+  - Remove unused `required` from default selected jobs field on `slurmrestd`
+    `/slurm/*/jobs` endpoint.
+  - Remove unused `state_reason` from default selected job field on `slurmrestd`
+    `/slurm/*/job/<id>` endpoint.
+
 ## [3.2.0] - 2024-09-05
 
 ### Added
