@@ -132,16 +132,18 @@ Enable and start `slurmrestd` service:
 
 To check `slurmrestd` daemon is properly running, run this command:
 
-[source,console]
+[source,console,subs=attributes]
 ----
-# curl --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v0.0.39/diag
+# curl --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v{api_version}/diag
 {
    "meta": {
      "plugin": {
-       "type": "openapi\/v0.0.39",
-       "name": "Slurm OpenAPI v0.0.39",
-       "data_parser": "v0.0.39"
-     },
+      "type": "openapi\/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser\/v{api_version}",
+      "accounting_storage": "accounting_storage\/slurmdbd"
+    },
+   }
   …
 }
 ----

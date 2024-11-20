@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update configuration reference documentation.
   - Update dashboard screenshot in overview page with example of resource chart.
+  - Replace mention of Slurm REST API version v0.0.39 by v0.0.40.
 - conf:
   - Convert `[cache]` > `password` agent parameter from string to password type.
   - Convert `[ldap]` > `bind_password` gateway parameter from string to password
