@@ -12,7 +12,7 @@ import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterDataPoller  } from '@/composables/DataPoller'
+import type { ClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -107,7 +107,9 @@ if (runtimeStore.hasPermission('view-jobs')) {
                     <li>
                       Memory: {{ node.data.value.alloc_memory }} / {{ node.data.value.real_memory }}
                       <span class="italic text-gray-400"
-                        >({{ (node.data.value.alloc_memory / node.data.value.real_memory) * 100 }}%)</span
+                        >({{
+                          (node.data.value.alloc_memory / node.data.value.real_memory) * 100
+                        }}%)</span
                       >
                     </li>
                   </ul>
@@ -146,7 +148,8 @@ if (runtimeStore.hasPermission('view-jobs')) {
                   CPU (socket x cores/socket)
                 </dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ node.data.value.sockets }} x {{ node.data.value.cores }} = {{ node.data.value.cpus }}
+                  {{ node.data.value.sockets }} x {{ node.data.value.cores }} =
+                  {{ node.data.value.cpus }}
                 </dd>
               </div>
               <div id="threads" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

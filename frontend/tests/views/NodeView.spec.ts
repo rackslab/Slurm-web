@@ -42,7 +42,7 @@ describe('NodeView.vue', () => {
     })
     // Check list of jobs has the same number of items than the number of jobs running
     // on the node.
-    expect(wrapper.get('dl div#jobs dd').findAll("li").length).toBe(jobsNode.length)
+    expect(wrapper.get('dl div#jobs dd').findAll('li').length).toBe(jobsNode.length)
     expect(wrapper.get('dl div#cpu dd').text()).toBe(
       `${nodeAllocated.sockets} x ${nodeAllocated.cores} = ${nodeAllocated.cpus}`
     )
