@@ -192,6 +192,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         for value in jobs.values():
             jobs_sum += value
         self.assertEqual(total, jobs_sum)
+        self.assertEqual(jobs["unknown"], 0)
 
     @all_slurm_versions
     def test_nodes(self, slurm_version):
@@ -219,6 +220,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         )
         # Check total number of nodes matches the number of nodes in asset
         self.assertEqual(nodes_total, len(asset))
+        self.assertEqual(nodes_states["unknown"], 0)
 
         # Check sum of nodes states matches the total number of nodes
         nodes_sum = 0
@@ -231,6 +233,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         for value in cores_states.values():
             cores_sum += value
         self.assertEqual(cores_total, cores_sum)
+        self.assertEqual(cores_states["unknown"], 0)
 
     @all_slurm_versions
     def test_node(self, slurm_version):
