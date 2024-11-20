@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- Support Slurm 24.11 and Slurm REST API v0.0.40 (#366 → #400).
 - agent:
   - Return RacksDB infrastructure name and a boolean to indicate if metrics
     feature is enabled in `/info` endpoint, in addition to the cluster name.
@@ -102,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     CVE-2024-47068 (rollup), CVE-2024-21538 (cross-spawn).
 
 ### Removed
+- Support of Slurm 23.02 and Slurm REST API v0.0.39.
 - conf:
   - Remove unused `required` from default selected jobs field on `slurmrestd`
     `/slurm/*/jobs` endpoint.
