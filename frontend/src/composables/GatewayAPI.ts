@@ -248,28 +248,21 @@ export interface ClusterPartition {
 }
 
 export interface ClusterQos {
-  name: string
   description: string
-  priority: ClusterOptionalNumber
   flags: string[]
   limits: {
+    factor: ClusterOptionalNumber
+    grace_time: number
     max: {
+      accruing: {
+        per: {
+          account: ClusterOptionalNumber // MaxJobsAccruePerAccount
+          user: ClusterOptionalNumber // MaxJobsAccruePerUser
+        }
+      }
       active_jobs: {
+        accruing: ClusterOptionalNumber // GrpJobsAccrue
         count: ClusterOptionalNumber // GrpJobs
-      }
-      tres: {
-        total: ClusterTRES[] // GrpTRES
-        per: {
-          account: ClusterTRES[] // MaxTRESPA
-          job: ClusterTRES[] // MaxTRES
-          node: ClusterTRES[] // MaxTRESPerNode
-          user: ClusterTRES[] // MaxTRESPerUser
-        }
-      }
-      wall_clock: {
-        per: {
-          job: ClusterOptionalNumber // MaxWall, in minutes
-        }
       }
       jobs: {
         active_jobs: {
@@ -283,19 +276,52 @@ export interface ClusterQos {
           user: ClusterOptionalNumber // MaxJobsSubmitPerUser
         }
       }
+      tres: {
+        minutes: {
+          per: {
+            account: ClusterTRES[] // MaxTRESRunMinsPerAccount
+            job: ClusterTRES[] // MaxTRESMinsPerJob
+            qos: ClusterTRES[] // GrpTRESMins
+            user: ClusterTRES[] // MaxTRESRunMinsPerUser
+          }
+        }
+        per: {
+          account: ClusterTRES[] // MaxTRESPA
+          job: ClusterTRES[] // MaxTRES
+          node: ClusterTRES[] // MaxTRESPerNode
+          user: ClusterTRES[] // MaxTRESPerUser
+        }
+        total: ClusterTRES[] // GrpTRES
+      }
+      wall_clock: {
+        per: {
+          job: ClusterOptionalNumber // MaxWall, in minutes
+          qos: ClusterOptionalNumber // GrpWall
+        }
+      }
+    }
+    min: {
+      priority_threshold: ClusterOptionalNumber // MinPrioThreshold
+      tres: {
+        per: {
+          job: ClusterTRES[] // MinTRES
+        }
+      }
     }
   }
+  name: string
+  priority: ClusterOptionalNumber
 }
 
 export interface ClusterReservation {
-  name: string
-  users: string
   accounts: string
-  node_list: string
-  start_time: number
-  node_count: number
-  end_time: number
+  end_time: ClusterOptionalNumber
   flags: string[]
+  name: string
+  node_count: number
+  node_list: string
+  start_time: ClusterOptionalNumber
+  users: string
 }
 
 export type MetricValue = [number, number]
