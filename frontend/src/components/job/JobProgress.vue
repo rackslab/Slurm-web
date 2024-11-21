@@ -10,7 +10,7 @@
 import { computed } from 'vue'
 import type { PropType } from 'vue'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
-import JobProgressComment from '@/components/jobs/JobProgressComment.vue'
+import JobProgressComment from '@/components/job/JobProgressComment.vue'
 import { CheckIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
