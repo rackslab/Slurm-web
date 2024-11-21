@@ -4,6 +4,8 @@ import JobProgress from '@/components/job/JobProgress.vue'
 import jobPending from '../../assets/job-pending.json'
 import jobRunning from '../../assets/job-running.json'
 import jobCompleted from '../../assets/job-completed.json'
+import jobFailed from '../../assets/job-failed.json'
+import jobTimeout from '../../assets/job-timeout.json'
 
 describe('JobProgress.vue', () => {
   test('display job progress of pending job', () => {
@@ -80,6 +82,60 @@ describe('JobProgress.vue', () => {
     const wrapper = mount(JobProgress, {
       props: {
         job: jobCompleted
+      }
+    })
+    // Must have all 6 bullets in blue
+    expect(wrapper.findAll('span.bg-slurmweb').length).toBe(6)
+
+    const submittedSpans = wrapper.get('li#step-submitted').findAll('span')
+    expect(submittedSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const eligibleSpans = wrapper.get('li#step-eligible').findAll('span')
+    expect(eligibleSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const schedulingSpans = wrapper.get('li#step-scheduling').findAll('span')
+    expect(schedulingSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const runningSpans = wrapper.get('li#step-running').findAll('span')
+    expect(runningSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const completingSpans = wrapper.get('li#step-completing').findAll('span')
+    expect(completingSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const terminatedSpans = wrapper.get('li#step-terminated').findAll('span')
+    expect(terminatedSpans[1].classes('bg-slurmweb')).toBe(true)
+  })
+  test('display job progress of failed job', () => {
+    const wrapper = mount(JobProgress, {
+      props: {
+        job: jobFailed
+      }
+    })
+    // Must have all 6 bullets in blue
+    expect(wrapper.findAll('span.bg-slurmweb').length).toBe(6)
+
+    const submittedSpans = wrapper.get('li#step-submitted').findAll('span')
+    expect(submittedSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const eligibleSpans = wrapper.get('li#step-eligible').findAll('span')
+    expect(eligibleSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const schedulingSpans = wrapper.get('li#step-scheduling').findAll('span')
+    expect(schedulingSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const runningSpans = wrapper.get('li#step-running').findAll('span')
+    expect(runningSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const completingSpans = wrapper.get('li#step-completing').findAll('span')
+    expect(completingSpans[1].classes('bg-slurmweb')).toBe(true)
+
+    const terminatedSpans = wrapper.get('li#step-terminated').findAll('span')
+    expect(terminatedSpans[1].classes('bg-slurmweb')).toBe(true)
+  })
+  test('display job progress of timeout job', () => {
+    const wrapper = mount(JobProgress, {
+      props: {
+        job: jobTimeout
       }
     })
     // Must have all 6 bullets in blue
