@@ -16,7 +16,7 @@ import type { ClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
-import JobStatusLabel from '@/components/job/JobStatusLabel.vue'
+import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
@@ -131,7 +131,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
                         <RouterLink
                           :to="{ name: 'job', params: { cluster: props.cluster, id: job.job_id } }"
                         >
-                          <JobStatusLabel
+                          <JobStatusBadge
                             :status="job.job_state"
                             :label="job.job_id.toString()"
                             class="mr-1"

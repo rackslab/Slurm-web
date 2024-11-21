@@ -14,7 +14,7 @@ import type { LocationQueryRaw } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
-import JobStatusLabel from '@/components/job/JobStatusLabel.vue'
+import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import JobProgress from '@/components/job/JobProgress.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
@@ -221,7 +221,7 @@ onMounted(() => {
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All job settings</p>
         </div>
         <div>
-          <JobStatusLabel :status="data.state.current" :large="true" />
+          <JobStatusBadge :status="data.state.current" :large="true" />
           <span v-if="data.state.reason != 'None'">{{ data.state.reason }}</span>
         </div>
       </div>

@@ -15,7 +15,7 @@ import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterJob } from '@/composables/GatewayAPI'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
-import JobStatusLabel from '@/components/job/JobStatusLabel.vue'
+import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
@@ -359,7 +359,7 @@ onMounted(() => {
                     {{ job.job_id }}
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <JobStatusLabel :status="job.job_state" />
+                    <JobStatusBadge :status="job.job_state" />
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {{ job.user_name }} ({{ job.account }})
