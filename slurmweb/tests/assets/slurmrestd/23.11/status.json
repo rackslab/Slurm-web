@@ -11,11 +11,19 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-failed": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-pending": {
     "content-type": "application/json",
     "status": 200
   },
   "slurm-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-timeout": {
     "content-type": "application/json",
     "status": 200
   },
@@ -83,11 +91,19 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-job-failed": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-job-pending": {
     "content-type": "application/json",
     "status": 200
   },
   "slurmdb-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-timeout": {
     "content-type": "application/json",
     "status": 200
   },

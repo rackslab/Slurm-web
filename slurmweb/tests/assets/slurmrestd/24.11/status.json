@@ -11,6 +11,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-failed": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-pending": {
     "content-type": "application/json",
     "status": 200
@@ -80,6 +84,10 @@
     "status": 200
   },
   "slurmdb-job-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-failed": {
     "content-type": "application/json",
     "status": 200
   },

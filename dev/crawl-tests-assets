@@ -273,7 +273,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             if _job["job_id"] > max_job_id:
                 max_job_id = _job["job_id"]
 
-            for state in ["RUNNING", "PENDING", "COMPLETED"]:
+            for state in ["RUNNING", "PENDING", "COMPLETED", "FAILED", "TIMEOUT"]:
                 dump_job_state(state)
 
         dump_slurmrestd_query(
@@ -608,7 +608,7 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         for _job in jobs:
             if _job["job_id"] < min_job_id:
                 min_job_id = _job["job_id"]
-            for state in ["PENDING", "RUNNING", "COMPLETED"]:
+            for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
                 dump_job_state()
 
         dump_component_query(
