@@ -19,6 +19,8 @@ const statesColors: Record<MetricJobState, string> = {
   pending: 'rgba(255, 204, 0, 0.7)', // yellow
   completing: 'rgba(204, 153, 0, 0.7)', // dark yellow
   completed: 'rgb(192, 191, 188, 0.7)', // grey
+  failed: 'rgb(199, 40, 43, 0.7)', // red
+  timeout: 'rgb(214, 93, 11, 0.7)', // dark orange
   cancelled: 'rgb(204, 0, 153, 0.7)', // purple
   unknown: 'rgb(30, 30, 30, 0.7)' // dark grey
 }
@@ -27,6 +29,8 @@ const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCan
   'unknown',
   'cancelled',
   'completed',
+  'failed',
+  'timeout',
   'completing',
   'running',
   'pending'

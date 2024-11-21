@@ -332,6 +332,8 @@ export type MetricJobState =
   | 'unknown'
   | 'cancelled'
   | 'completed'
+  | 'failed'
+  | 'timeout'
   | 'completing'
   | 'running'
   | 'pending'
