@@ -7,6 +7,8 @@
 -->
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const props = defineProps({
   status: String,
   large: {
@@ -23,8 +25,8 @@ interface JobLabelColors {
   circle: string
 }
 
-function getStatusColor(status: string): JobLabelColors {
-  switch (status) {
+const statusColor = computed<JobLabelColors>(() => {
+  switch (props.status) {
     case 'RUNNING':
       return {
         span: 'bg-green-100 text-green-700',
@@ -46,7 +48,7 @@ function getStatusColor(status: string): JobLabelColors {
         circle: 'fill-gray-400'
       }
   }
-}
+})
 </script>
 
 <template>
@@ -54,14 +56,10 @@ function getStatusColor(status: string): JobLabelColors {
     :class="[
       props.large ? 'max-h-10 text-sm' : 'max-h-6 text-xs',
       'inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 font-medium',
-      getStatusColor(props.status as string).span
+      statusColor.span
     ]"
   >
-    <svg
-      :class="['h-1.5 w-1.5', getStatusColor(props.status as string).circle]"
-      viewBox="0 0 6 6"
-      aria-hidden="true"
-    >
+    <svg :class="['h-1.5 w-1.5', statusColor.circle]" viewBox="0 0 6 6" aria-hidden="true">
       <circle cx="3" cy="3" r="3" />
     </svg>
     <template v-if="label">
