@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from 'vitest'
+import { describe, test, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { StopCircleIcon } from '@heroicons/vue/24/outline'
 import JobProgressComment from '@/components/job/JobProgressComment.vue'
