@@ -4,6 +4,8 @@ import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import jobRunning from '../../assets/job-running.json'
 import jobPending from '../../assets/job-pending.json'
 import jobCompleted from '../../assets/job-completed.json'
+import jobFailed from '../../assets/job-failed.json'
+import jobTimeout from '../../assets/job-timeout.json'
 import jobArchived from '../../assets/job-archived.json'
 
 describe('JobStatusBadge.vue', () => {
@@ -37,8 +39,30 @@ describe('JobStatusBadge.vue', () => {
     })
     expect(wrapper.get('span').classes('bg-gray-100')).toBe(true)
     expect(wrapper.get('span').classes('text-gray-600')).toBe(true)
-    expect(wrapper.get('svg').classes('fill-gray-400')).toBe(true)
+    expect(wrapper.get('svg').classes('fill-green-500')).toBe(true)
     expect(wrapper.get('span').text()).toBe('COMPLETED')
+  })
+  test('badge failed job', () => {
+    const wrapper = mount(JobStatusBadge, {
+      props: {
+        status: jobFailed.state.current
+      }
+    })
+    expect(wrapper.get('span').classes('bg-gray-100')).toBe(true)
+    expect(wrapper.get('span').classes('text-gray-600')).toBe(true)
+    expect(wrapper.get('svg').classes('fill-red-500')).toBe(true)
+    expect(wrapper.get('span').text()).toBe('FAILED')
+  })
+  test('badge timeout job', () => {
+    const wrapper = mount(JobStatusBadge, {
+      props: {
+        status: jobTimeout.state.current
+      }
+    })
+    expect(wrapper.get('span').classes('bg-gray-100')).toBe(true)
+    expect(wrapper.get('span').classes('text-gray-600')).toBe(true)
+    expect(wrapper.get('svg').classes('fill-orange-600')).toBe(true)
+    expect(wrapper.get('span').text()).toBe('TIMEOUT')
   })
   test('badge archived job', () => {
     const wrapper = mount(JobStatusBadge, {
@@ -48,7 +72,7 @@ describe('JobStatusBadge.vue', () => {
     })
     expect(wrapper.get('span').classes('bg-gray-100')).toBe(true)
     expect(wrapper.get('span').classes('text-gray-600')).toBe(true)
-    expect(wrapper.get('svg').classes('fill-gray-400')).toBe(true)
+    expect(wrapper.get('svg').classes('fill-green-500')).toBe(true)
     expect(wrapper.get('span').text()).toBe('COMPLETED')
   })
   test('job badge large', () => {
