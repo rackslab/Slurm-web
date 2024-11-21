@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import JobProgress from '@/components/jobs/JobProgress.vue'
+import JobProgress from '@/components/job/JobProgress.vue'
 import jobPending from '../../assets/job-pending.json'
 import jobRunning from '../../assets/job-running.json'
 import jobCompleted from '../../assets/job-completed.json'

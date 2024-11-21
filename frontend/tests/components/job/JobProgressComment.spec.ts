@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { StopCircleIcon } from '@heroicons/vue/24/outline'
-import JobProgressComment from '@/components/jobs/JobProgressComment.vue'
+import JobProgressComment from '@/components/job/JobProgressComment.vue'
 import jobPending from '../../assets/job-pending.json'
 import jobRunning from '../../assets/job-running.json'
 import jobCompleted from '../../assets/job-completed.json'
