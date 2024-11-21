@@ -100,20 +100,26 @@ class Slurmrestd:
         """Select jobs not completed which are allocated the given node."""
 
         def on_node(job):
+            """Return True if job is allocated this node."""
             if job["nodes"] == "":
                 return False
             return node in ClusterShell.NodeSet.NodeSet(job["nodes"])
 
-        return [
-            job
-            for job in self.jobs()
-            if on_node(job) and "COMPLETED" not in job["job_state"]
-        ]
+        def terminated(job):
+            """Return True if job is terminated."""
+            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
+                if terminated_state in job["job_state"]:
+                    return True
+            return False
+
+        return [job for job in self.jobs() if on_node(job) and not terminated(job)]
 
     def jobs_states(self):
         jobs = {
             "running": 0,
             "completed": 0,
+            "failed": 0,
+            "timeout": 0,
             "completing": 0,
             "cancelled": 0,
             "pending": 0,
@@ -125,6 +131,10 @@ class Slurmrestd:
                 jobs["running"] += 1
             elif "COMPLETED" in job["job_state"]:
                 jobs["completed"] += 1
+            elif "FAILED" in job["job_state"]:
+                jobs["failed"] += 1
+            elif "TIMEOUT" in job["job_state"]:
+                jobs["timeout"] += 1
             elif "COMPLETING" in job["job_state"]:
                 jobs["completing"] += 1
             elif "CANCELLED" in job["job_state"]:
