@@ -293,10 +293,16 @@ class TestAgent(TestAgentBase):
         except SlurmwebAssetUnavailable:
             return
 
+        def terminated(job):
+            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
+                if terminated_state in job["job_state"]:
+                    return True
+            return False
+
         # Select random busy node on cluster
         busy_nodes = ClusterShell.NodeSet.NodeSet()
         for job in jobs_asset:
-            if job["job_state"] != "COMPLETED":
+            if not terminated(job):
                 busy_nodes.update(job["nodes"])
         random_busy_node = random.choice(busy_nodes)
 
@@ -310,7 +316,7 @@ class TestAgent(TestAgentBase):
 
         # Check all jobs are not completed and have the random busy node allocated.
         for job in response.json:
-            self.assertNotEqual(job["job_state"], "COMPLETED")
+            self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
             self.assertIn(
                 random_busy_node,
                 ClusterShell.NodeSet.NodeSet(job["nodes"]),
@@ -362,6 +368,46 @@ class TestAgent(TestAgentBase):
             [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
                 slurm_version,
                 [("slurmdb-job-completed", "jobs"), ("slurm-job-completed", "jobs")],
+            )
+        except SlurmwebAssetUnavailable:
+            return
+        response = self.client.get(f"/v{get_version()}/job/1")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, dict)
+        self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(
+            response.json["association"], slurmdb_job_asset[0]["association"]
+        )
+        self.assertEqual(
+            response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
+        )
+
+    @all_slurm_versions
+    def test_request_job_failed(self, slurm_version):
+        try:
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
+                slurm_version,
+                [("slurmdb-job-failed", "jobs"), ("slurm-job-failed", "jobs")],
+            )
+        except SlurmwebAssetUnavailable:
+            return
+        response = self.client.get(f"/v{get_version()}/job/1")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, dict)
+        self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(
+            response.json["association"], slurmdb_job_asset[0]["association"]
+        )
+        self.assertEqual(
+            response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
+        )
+
+    @all_slurm_versions
+    def test_request_job_timeout(self, slurm_version):
+        try:
+            [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
+                slurm_version,
+                [("slurmdb-job-timeout", "jobs"), ("slurm-job-timeout", "jobs")],
             )
         except SlurmwebAssetUnavailable:
             return
@@ -862,7 +908,16 @@ class TestAgentMetricsRequest(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(
             response.json.keys(),
-            ["cancelled", "completed", "completing", "pending", "running", "unknown"],
+            [
+                "cancelled",
+                "completed",
+                "completing",
+                "failed",
+                "timeout",
+                "pending",
+                "running",
+                "unknown",
+            ],
         )
 
     def test_request_metrics_nodes_denied(self):

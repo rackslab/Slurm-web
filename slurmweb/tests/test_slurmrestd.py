@@ -148,10 +148,16 @@ class TestSlurmrestd(TestSlurmrestdBase):
         except SlurmwebAssetUnavailable:
             return
 
+        def terminated(job):
+            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
+                if terminated_state in job["job_state"]:
+                    return True
+            return False
+
         # Select random busy node on cluster
         busy_nodes = ClusterShell.NodeSet.NodeSet()
         for job in asset:
-            if "COMPLETED" not in job["job_state"]:
+            if not terminated(job):
                 busy_nodes.update(job["nodes"])
         random_busy_node = random.choice(busy_nodes)
 
@@ -164,7 +170,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
         # Check all jobs are not completed and have the random busy node allocated.
         for job in jobs:
-            self.assertNotEqual(job["job_state"], "COMPLETED")
+            self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
             self.assertIn(
                 random_busy_node,
                 ClusterShell.NodeSet.NodeSet(job["nodes"]),
