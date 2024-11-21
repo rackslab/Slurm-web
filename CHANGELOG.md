@@ -94,7 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Notifications not visible when browser is not at the top (#367).
   - Update dependencies to fix CVE-2024-45812 and CVE-2024-45811 (vite),
-    CVE-2024-47068 (rollup).
+    CVE-2024-47068 (rollup), CVE-2024-21538 (cross-spawn).
 
 ## [3.2.0] - 2024-09-05
 
