@@ -8,9 +8,9 @@ import unittest
 from unittest import mock
 import tempfile
 import os
-import sys
 import shutil
 
+import werkzeug
 import requests
 
 from slurmweb.version import get_version
@@ -151,9 +151,12 @@ class TestGatewayApp(TestGatewayBase):
 class TestGatewayViews(TestGatewayBase):
     def setUp(self):
         self.setup_app()
-        # On Python 3.6, use custom test response class to backport text property of
-        # werkzeug.test.TestResponse in werkzeug 2.1.
-        if sys.version_info.major == 3 and sys.version_info.minor <= 7:
+        # werkzeug.test.TestResponse class does not have text property in
+        # werkzeug <= 2.1. When such version is installed, use custom test
+        # response class to backport this text property.
+        try:
+            getattr(werkzeug.test.TestResponse, 'text')
+        except AttributeError:
             self.app.response_class = SlurmwebCustomTestResponse
         self.client = self.app.test_client()
 
