@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention metrics export and charts feature in overview page.
   - Mention possible Prometheus integration in architecture page.
   - Mention login service message feature in overview page.
+  - Mention jobs badges to visualize job status in overview page.
   - Add page to document _Service Messages_ configuration.
 - pkgs:
   - Introduce `gateway` Python extra package.

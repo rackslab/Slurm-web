@@ -21,6 +21,22 @@ compare there statuses:
 
 image::screenshot_cluster_change.png[width=600]
 
+== Jobs Status
+
+[.float-group]
+--
+image::screenshot_job_badges.png[float=left]
+
+{empty} +
+
+Easily visualize jobs status with colored badges and quickly spot possible
+failures.
+
+Slurm-web represents Slurm jobs status with a visual colored badge. This really
+helps to figure out status of the jobs queue at a glance. Never miss errors when
+they occur!
+--
+
 == Jobs filters and sorting
 
 Jobs queue can be filtered by many criteria (job state, user, account, QOS,
