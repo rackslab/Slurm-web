@@ -204,6 +204,8 @@ class TestGatewayViews(TestGatewayBase):
             )
 
     def test_message_permission_error(self):
+        if os.geteuid() == 0:
+            self.skipTest("Cannot test permission error as root")
         with tempfile.TemporaryDirectory() as tmpdir:
             # copy templates from vendor path
             tmpdir_templates = os.path.join(tmpdir, "templates")
