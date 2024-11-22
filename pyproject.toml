@@ -54,7 +54,6 @@ slurm-web-show-conf = 'slurmweb.exec.showconf:SlurmwebExecShowConf.run'
 
 [tool.setuptools.packages.find]
 include = ['slurmweb*']
-exclude = ['slurmweb.tests']
 
 [project.urls]
 "Homepage" = "https://github.com/rackslab/slurm-web"
