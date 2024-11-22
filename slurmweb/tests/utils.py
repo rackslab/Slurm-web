@@ -14,7 +14,7 @@ import copy
 import requests
 import flask
 
-ASSETS = Path(__file__).parent.resolve() / ".." / "tests" / "assets"
+ASSETS = Path(__file__).parent.resolve() / ".." / ".." / "tests" / "assets"
 
 
 def slurm_versions():

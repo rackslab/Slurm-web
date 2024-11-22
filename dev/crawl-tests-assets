@@ -49,7 +49,7 @@ def slurmweb_cluster_name(infrastructure: str):
     return infrastructure
 
 
-ASSETS = Path(__file__).parent.resolve() / ".." / "slurmweb" / "tests" / "assets"
+ASSETS = Path(__file__).parent.resolve() / ".." / "tests" / "assets"
 
 
 def busy_node(node):
