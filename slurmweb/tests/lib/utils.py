@@ -14,7 +14,7 @@ import copy
 import requests
 import flask
 
-ASSETS = Path(__file__).parent.resolve() / ".." / ".." / "tests" / "assets"
+ASSETS = Path(__file__).parent.resolve() / ".." / ".." / ".." / "tests" / "assets"
 
 
 def slurm_versions():
@@ -162,28 +162,3 @@ def mock_agent_response(asset_name, remove_key=None):
 def mock_prometheus_response(asset_name):
     """Return mocked requests Response corresponding to the given Prometheus asset."""
     return mock_component_response("prometheus", asset_name)
-
-
-class RemoveActionInPolicy:
-    """Context manager to temporarily remove an action from a role in policy."""
-
-    def __init__(self, policy, role, action):
-        self.policy = policy
-        self.role = role
-        self.action = action
-        self.removed_in_anonymous = False
-
-    def __enter__(self):
-        for _role in self.policy.loader.roles:
-            if _role.name == self.role:
-                _role.actions.remove(self.action)
-            if _role.name == "anonymous" and self.action in _role.actions:
-                _role.actions.remove(self.action)
-                self.removed_in_anonymous = True
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        for _role in self.policy.loader.roles:
-            if _role.name == self.role:
-                _role.actions.add(self.action)
-            if _role.name == "anonymous" and self.removed_in_anonymous:
-                _role.actions.add(self.action)

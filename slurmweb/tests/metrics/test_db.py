@@ -13,7 +13,7 @@ import requests
 from slurmweb.metrics.db import SlurmwebMetricsDB
 from slurmweb.errors import SlurmwebMetricsDBError
 
-from ..utils import mock_prometheus_response
+from ..lib.utils import mock_prometheus_response
 
 
 class TestSlurmwebMetricsDB(unittest.TestCase):
