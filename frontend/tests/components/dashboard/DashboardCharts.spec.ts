@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import { init_plugins } from '../../views/common'
+import { init_plugins } from '../../lib/common'
 import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
 import ChartJobsHistogram from '@/components/dashboard/ChartJobsHistogram.vue'
 import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistogram.vue'

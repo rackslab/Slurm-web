@@ -3,7 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
 import messageLoginNotFound from '../../assets/message_login_not_found.json'
 import messageLoginError from '../../assets/message_login_error.json'
-import { init_plugins } from '../../views/common'
+import { init_plugins } from '../../lib/common'
 import { APIServerError } from '@/composables/HTTPErrors'
 import { useRuntimeStore } from '@/stores/runtime'
 

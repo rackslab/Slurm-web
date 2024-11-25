@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import { init_plugins, getMockClusterDataPoller } from '../../views/common'
+import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistogram.vue'
 import metricsNodesHour from '../../assets/metrics-nodes-hour.json'
 import type { MetricResourceState, MetricValue } from '@/composables/GatewayAPI'

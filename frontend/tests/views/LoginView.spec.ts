@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
-import { init_plugins } from './common'
+import { init_plugins } from '../lib/common'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
 import { AuthenticationError } from '@/composables/HTTPErrors'

@@ -5,7 +5,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
-import { init_plugins, getMockClusterDataPoller } from './common'
+import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import stats from '../assets/stats.json'
 
 const mockClusterDataPoller = getMockClusterDataPoller<ClusterStats>()

@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import { init_plugins } from '../views/common'
+import { init_plugins } from '../lib/common'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel.vue'
 import Notification from '@/components/notifications/Notification.vue'
 import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistogram.vue'
