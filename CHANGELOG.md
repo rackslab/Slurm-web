@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention login service message feature in overview page.
   - Mention jobs badges to visualize job status in overview page.
   - Add page to document _Service Messages_ configuration.
+  - Mention support of Fedora 41/
 - pkgs:
   - Introduce `gateway` Python extra package.
   - Add requirement on markdown external library for `gateway` extra package.
@@ -113,6 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `/slurm/*/jobs` endpoint.
   - Remove unused `state_reason` from default selected job field on `slurmrestd`
     `/slurm/*/job/<id>` endpoint.
+- docs: Remove mention of Fedora 39 support.
 
 ## [3.2.0] - 2024-09-05
 
