@@ -96,7 +96,7 @@ agents:
     - https://cluster2/agent
   version:
     type: str
-    default: 3.2.0
+    default: 4.0.0
     doc: Version of Slurm-web agent API
   racksdb_version:
     type: str

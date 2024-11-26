@@ -1,7 +1,6 @@
 name: slurm-web
 title: Slurm-web
 version: v4
-prerelease: true
 start_page: overview:start.adoc
 asciidoc:
   attributes:
