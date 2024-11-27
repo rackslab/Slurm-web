@@ -1,3 +1,13 @@
+Create preferences file `/etc/apt/preferences.d/rackslab` with this content to
+install Slurm-web packages from _{pkgs-derivative}_ component in priority:
+
+[source,console,subs=attributes]
+----
+Package: *
+Pin: release c={pkgs-derivative}
+Pin-Priority: 900
+----
+
 Update packages repositories metadata:
 
 [source,console]

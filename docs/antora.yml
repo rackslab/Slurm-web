@@ -7,6 +7,7 @@ asciidoc:
     source-language: asciidoc@
     table-caption: false
     version: 3.2.0
+    pkgs-derivative: slurmweb-3
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc
