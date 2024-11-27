@@ -56,7 +56,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(len(response.json.keys()), 2)
         self.assertIn("actions", response.json)
         self.assertIn("roles", response.json)
-        self.assertCountEqual(response.json["roles"], ["user", "anonymous"])
+        self.assertCountEqual(response.json["roles"], ["user"])
 
     #
     # General error cases
