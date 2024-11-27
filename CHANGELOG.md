@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-## Added
+### Added
 - docs: Mention support of Fedora 42.
 
-## Removed
+### Changed
+- docs: Update package repository settings to install Slurm-web 4 with
+  _slurmweb-4_ packages repository derivative.
+
+### Removed
 - docs: Drop support of Fedora 40.
 
 ## [4.2.0] - 2025-04-29

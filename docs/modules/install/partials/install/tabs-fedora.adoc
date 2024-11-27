@@ -1,14 +1,18 @@
 Fedora 41::
 +
 ====
-[source]
+[source,subs=attributes]
 ----
 [rackslab]
 name=Rackslab
 baseurl=https://pkgs.rackslab.io/rpm/fc41/main/$basearch/
 gpgcheck=1
-enabled=1
-countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-{pkgs-derivative}]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/fc41/{pkgs-derivative}/$basearch/
+gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
@@ -16,14 +20,18 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 Fedora 42::
 +
 ====
-[source]
+[source,subs=attributes]
 ----
 [rackslab]
 name=Rackslab
 baseurl=https://pkgs.rackslab.io/rpm/fc42/main/$basearch/
 gpgcheck=1
-enabled=1
-countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-{pkgs-derivative}]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/fc42/{pkgs-derivative}/$basearch/
+gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====

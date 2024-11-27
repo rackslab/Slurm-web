@@ -8,6 +8,7 @@ asciidoc:
     table-caption: false
     version: 4.2.0
     api_version: 0.0.40
+    pkgs-derivative: slurmweb-4
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc

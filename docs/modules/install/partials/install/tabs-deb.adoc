@@ -1,12 +1,12 @@
 Debian 12 _« bookworm »_::
 +
 ====
-[source]
+[source,subs=attributes]
 ----
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: bookworm
-Components: main
+Components: main {pkgs-derivative}
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -15,12 +15,12 @@ Signed-By: /usr/share/keyrings/rackslab.gpg
 Debian 13 _« trixie »_::
 +
 ====
-[source]
+[source,subs=attributes]
 ----
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: trixie
-Components: main
+Components: main {pkgs-derivative}
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -29,12 +29,12 @@ Signed-By: /usr/share/keyrings/rackslab.gpg
 Debian unstable _« sid »_::
 +
 ====
-[source]
+[source,subs=attributes]
 ----
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: sid
-Components: main
+Components: main {pkgs-derivative}
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----

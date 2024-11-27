@@ -1,7 +1,7 @@
 = Debian Source Packages
 
 Slurm-web Debian source packages are available at this URL:
-https://pkgs.rackslab.io/deb/pool/main/s/slurm-web
+https://pkgs.rackslab.io/deb/pool/{pkgs-derivative}/s/slurm-web
 
 Select version of `*.dsc` file at your convenience and copy its URL.
 
@@ -9,7 +9,7 @@ Then run this command, for example with `slurm-web_{version}-1.deb12.dsc`:
 
 [source,console,subs=attributes]
 ----
-$ dget -ux https://pkgs.rackslab.io/deb/pool/main/s/slurm-web/slurm-web_{version}-1.deb12.dsc
+$ dget -ux https://pkgs.rackslab.io/deb/pool/{pkgs-derivative}/s/slurm-web/slurm-web_{version}-1.deb12.dsc
 ----
 
 Move into the source folder:
