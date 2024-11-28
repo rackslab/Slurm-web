@@ -64,10 +64,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention login service message feature in overview page.
   - Mention jobs badges to visualize job status in overview page.
   - Add page to document _Service Messages_ configuration.
-  - Mention support of Fedora 41/
+  - Mention support of Fedora 41.
 - pkgs:
   - Introduce `gateway` Python extra package.
   - Add requirement on markdown external library for `gateway` extra package.
+  - Add dependency on prometheus-client for the agent.
+  - Add direct dependency on ClusterShell for the agent.
 
 ### Changed
 - agent: Bump minimal required Slurm version from 23.02.0 to 23.11.0.
@@ -86,8 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Add requirement on RFL.core >= 1.1.0.
   - Add requirement on RFL.settings >= 1.1.1.
-  - Add dependency on prometheus-client for the agent.
-  - Add direct dependency on ClusterShell for the agent.
 
 ### Fixed
 - agent:
