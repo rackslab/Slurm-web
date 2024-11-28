@@ -28,14 +28,17 @@ devices.
 
 Many features in a reactive & responsive web UI:
 
+* Dashboard with interactive charts of resources and jobs status
 * Instant jobs filtering and sorting
 * Live jobs status update
+* Colored badges to visualize job status at a glance
 * Advanced visualization of node status with racking topology
 * Intuitive visualization of QOS and advanced reservations
 * Multi-clusters support
-* LDAP authentication
+* LDAP authentication (including Active Directory support)
 * Advanced RBAC permissions management
 * Transparent caching
+* Integration with Prometheus to collect and chart timeseries metrics of Slurm
 
 Get more details in
 [Slurm-web advanced features overview](https://docs.rackslab.io/slurm-web/overview/overview.html).
