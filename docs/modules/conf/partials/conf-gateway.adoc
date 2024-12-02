@@ -211,7 +211,13 @@ _No default value_
 
 |racksdb_version
 |str
-|Version of RacksDB API
+|Minimal supported version of RacksDB API
+
+CAUTION: You SHOULD NOT change this parameter unless you really know what
+you are doing. This parameter is more intented for Slurm-web developers
+rather than end users. Slurm-web is officially tested and validated with
+the default value only.
+
 
 
 
