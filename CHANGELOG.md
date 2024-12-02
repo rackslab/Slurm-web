@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - agent: Return local RacksDB version in `/info` endpoint.
 
+### Changed
+- gateway: Check RacksDB version executed by agent is greater or equal to the
+  minimal supported version specified in gateway configuration settings
+  (#415→#417).
+
 ## [4.0.0] - 2024-11-28
 
 ### Added
