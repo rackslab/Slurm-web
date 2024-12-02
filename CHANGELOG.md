@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Mention support of Fedora 41
 
 ### Changed
+- gateway: Check RacksDB version executed by agent is greater or equal to the
+  minimal supported version specified in gateway configuration settings (#415).
 - docs: Update package repository settings to install Slurm-web 3 despite
   Slurm-web 4 release with _slurmweb-3_ packages repository derivative and
   higher priority to avoid upgrade.

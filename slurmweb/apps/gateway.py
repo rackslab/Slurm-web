@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import time
+import collections
 import logging
 
 from rfl.web.tokens import RFLTokenizedWebApp
@@ -19,19 +20,40 @@ from ..errors import SlurmwebConfigurationError, SlurmwebAgentError
 logger = logging.getLogger(__name__)
 
 
+SlurmwebAgentRacksDBSettings = collections.namedtuple(
+    "SlurmwebAgentRacksDBSettings", ["version"]
+)
+
+
 class SlurmwebAgent:
-    def __init__(self, cluster, url):
+    def __init__(
+        self, cluster: str, racksdb: SlurmwebAgentRacksDBSettings, url
+    ):
         self.cluster = cluster
+        self.racksdb = racksdb
         self.url = url
 
     @classmethod
     def from_json(cls, url, data):
         try:
-            return cls(data["cluster"], url)
+            return cls(
+                data["cluster"],
+                SlurmwebAgentRacksDBSettings(**data["racksdb"]),
+                url,
+            )
         except KeyError as err:
             raise SlurmwebAgentError(
                 "Unable to retrieve cluster name from agent"
             ) from err
+
+
+def version_greater_or_equal(reference: str, version: str) -> bool:
+    """Return True if provided version is greater or equal than reference version."""
+
+    def version_tuple(version):
+        return tuple(int(part) for part in version.split("."))
+
+    return version_tuple(version) >= version_tuple(reference)
 
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
@@ -92,6 +114,18 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     str(err),
                 )
             else:
+                # Check version of RacksDB on agent is greater or equal than minimal
+                # version specified in configuration.
+                if not version_greater_or_equal(
+                    self.settings.agents.racksdb_version, agent.racksdb.version
+                ):
+                    logger.error(
+                        "Unsupported RacksDB API version %s on agent %s, discarding "
+                        "this agent",
+                        agent.racksdb.version,
+                        agent.cluster,
+                    )
+                    continue
                 logger.debug(
                     "Discovered available agent for cluster %s at url %s",
                     agent.cluster,
