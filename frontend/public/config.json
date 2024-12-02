@@ -1,4 +1,6 @@
 {
   "API_SERVER": "http://localhost:5012",
-  "AUTHENTICATION": true
+  "AUTHENTICATION": true,
+  "RACKSDB_ROWS_LABELS": false,
+  "RACKSDB_RACKS_LABELS": false
 }

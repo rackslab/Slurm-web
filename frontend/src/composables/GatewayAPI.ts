@@ -8,6 +8,7 @@
 
 import { useRESTAPI } from '@/composables/RESTAPI'
 import type { AxiosResponse } from 'axios'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { AuthenticationError, APIServerError } from '@/composables/HTTPErrors'
 import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime'
 
@@ -535,6 +536,7 @@ export type GatewayAnyClusterApiKey =
 
 export function useGatewayAPI() {
   const restAPI = useRESTAPI()
+  const runtimeConfiguration = useRuntimeConfiguration()
 
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
@@ -647,7 +649,9 @@ export function useGatewayAPI() {
       {
         general: { pixel_perfect: true },
         dimensions: { width: width, height: height },
-        infrastructure: { equipment_labels: false, ghost_unselected: true }
+        infrastructure: { equipment_labels: false, ghost_unselected: true },
+        row: { labels: runtimeConfiguration.racksdb_rows_labels },
+        rack: { labels: runtimeConfiguration.racksdb_racks_labels }
       },
       true,
       'arraybuffer'
