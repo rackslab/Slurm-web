@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Update package repository settings to install Slurm-web 3 despite
   Slurm-web 4 release with _slurmweb-3_ packages repository derivative and
   higher priority to avoid upgrade.
+- conf: Update description of `agent` > `racksdb_version` to describe its new
+  semantic.
 
 ### Removed
 - docs: remove mention of support of Fedora 39
