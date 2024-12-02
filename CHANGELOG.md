@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway: Check RacksDB version executed by agent is greater or equal to the
   minimal supported version specified in gateway configuration settings
   (#415→#417).
+- conf: Update description of `agent` > `racksdb_version` to describe its new
+  semantic.
 
 ## [4.0.0] - 2024-11-28
 
