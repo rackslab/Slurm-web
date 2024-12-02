@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- agent: Return local RacksDB version in `/info` endpoint.
 - docs: Mention support of Fedora 41
 
 ### Changed
