@@ -289,7 +289,7 @@ def accounts(cluster: str):
 def racksdb(cluster: str, query: str):
     return proxy_agent(
         cluster,
-        f"racksdb/v{current_app.settings.agents.racksdb_version}/{query}"
+        f"racksdb/v{current_app.agents[cluster].racksdb.version}/{query}"
         f"{'?' if len(request.query_string) else '' }{request.query_string.decode()}",
         request.token,
         json=False,
