@@ -12,6 +12,8 @@ import { inject } from 'vue'
 export interface RuntimeConfiguration {
   api_server: string
   authentication: boolean
+  racksdb_rows_labels: boolean
+  racksdb_racks_labels: boolean
 }
 
 const injectionKey = Symbol('rc')
@@ -34,7 +36,9 @@ export const initRuntimeConfiguration = async (): Promise<RuntimeConfiguration> 
 
   return {
     api_server: value.API_SERVER,
-    authentication: value.AUTHENTICATION
+    authentication: value.AUTHENTICATION,
+    racksdb_rows_labels: value.RACKSDB_ROWS_LABELS,
+    racksdb_racks_labels: value.RACKSDB_RACKS_LABELS
   } as RuntimeConfiguration
 }
 
