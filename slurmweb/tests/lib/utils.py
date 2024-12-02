@@ -119,7 +119,7 @@ def fake_text_response():
     return text, response
 
 
-def mock_component_response(component, asset_name, remove_key=None):
+def mock_component_response(component, asset_name):
     """Return mocked requests Response corresponding to the given component asset."""
     with open(ASSETS / component / "status.json") as fh:
         requests_statuses = json.load(fh)
@@ -137,11 +137,6 @@ def mock_component_response(component, asset_name, remove_key=None):
         is_json = False
         asset = load_asset(f"{component}/{asset_name}.txt")
 
-    # Remove specific key from asset, if JSON asset and key to remove is specified. This
-    # is useful to test some error case.
-    if is_json and remove_key:
-        del asset[remove_key]
-
     response = mock.create_autospec(requests.Response)
     response.url = "/mocked/query"
     response.status_code = requests_statuses[asset_name]["status"]
@@ -154,9 +149,9 @@ def mock_component_response(component, asset_name, remove_key=None):
     return asset, response
 
 
-def mock_agent_response(asset_name, remove_key=None):
+def mock_agent_response(asset_name):
     """Return mocked requests Response corresponding to the given agent asset."""
-    return mock_component_response("agent", asset_name, remove_key)
+    return mock_component_response("agent", asset_name)
 
 
 def mock_prometheus_response(asset_name):

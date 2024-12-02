@@ -58,8 +58,6 @@
 {%- endif %}
 {%- if parameter._type == "bool" %}
 {%- set value = "yes" if value == True else "no" %}
-{%- elif parameter._type == "uri" %}
-{%- set value = value.geturl() %}
 {%- endif %}
 {%- if value.__class__.__name__ == 'list' %}
 {%- set value = "\n  " + value | join('\n  ') %}

@@ -4,14 +4,26 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import unittest
 from unittest import mock
 
 import requests
 
 from ..lib.gateway import TestGatewayBase
-from slurmweb.apps.gateway import SlurmwebAgent
+from slurmweb.apps.gateway import SlurmwebAgent, version_greater_or_equal
 
 from ..lib.utils import mock_agent_response, fake_text_response
+
+class TestVersionComparaison(unittest.TestCase):
+
+    def test_version_greater_or_equal(self):
+        self.assertTrue(version_greater_or_equal("1.0.0", "1.0.0"))
+        self.assertTrue(version_greater_or_equal("1.0.0", "2.0.0"))
+        self.assertTrue(version_greater_or_equal("1.0.0", "1.1.0"))
+        self.assertTrue(version_greater_or_equal("1.0.0", "1.0.1"))
+        self.assertFalse(version_greater_or_equal("1.0.0", "0.9"))
+        self.assertFalse(version_greater_or_equal("1.0.0", "0.9.9"))
+        self.assertFalse(version_greater_or_equal("1.0.0", "0.200.100"))
 
 
 class TestGatewayApp(TestGatewayBase):
@@ -29,15 +41,17 @@ class TestGatewayApp(TestGatewayBase):
         self.assertIsInstance(agent, SlurmwebAgent)
         self.assertEqual(len(vars(agent)), 4)
         self.assertEqual(agent.cluster, agent_info["cluster"])
-        self.assertEqual(agent.infrastructure, agent_info["infrastructure"])
+        self.assertEqual(agent.racksdb.version, agent_info["racksdb"]["version"])
+        self.assertEqual(agent.racksdb.infrastructure, agent_info["racksdb"]["infrastructure"])
         self.assertEqual(agent.metrics, agent_info["metrics"])
         self.assertEqual(agent.url, self.app.settings.agents.url[0].geturl())
 
     @mock.patch("slurmweb.apps.gateway.requests.get")
     def test_agents_missing_key(self, mock_requests_get):
         agent_info, mock_requests_get.return_value = mock_agent_response(
-            "info", remove_key="infrastructure"
+            "info"
         )
+        del agent_info["metrics"]
         with self.assertLogs("slurmweb", level="ERROR") as cm:
             agents = self.app.agents
         self.assertEqual(agents, {})
@@ -47,6 +61,23 @@ class TestGatewayApp(TestGatewayBase):
                 "ERROR:slurmweb.apps.gateway:Unable to retrieve agent info from url "
                 "http://localhost: [SlurmwebAgentError] Unable to parse cluster info "
                 "fields from agent"
+            ],
+        )
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_unsupported_racksdb_version(self, mock_requests_get):
+        agent_info, mock_requests_get.return_value = mock_agent_response(
+            "info"
+        )
+        agent_info["racksdb"]["version"] = "0.3.0"
+        with self.assertLogs("slurmweb", level="ERROR") as cm:
+            agents = self.app.agents
+        self.assertEqual(agents, {})
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.gateway:Unsupported RacksDB API version 0.3.0 on "
+                f"agent {agent_info['cluster']}, discarding this agent"
             ],
         )
 

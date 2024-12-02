@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+### Added
+- agent: Return local RacksDB version in `/info` endpoint.
+
+### Changed
+- gateway: Check RacksDB version executed by agent is greater or equal to the
+  minimal supported version specified in gateway configuration settings
+  (#415→#417).
+- conf: Update description of `agent` > `racksdb_version` to describe its new
+  semantic.
+- docs: Update configuration reference documentation.
+
 ## [4.0.0] - 2024-11-28
 
 ### Added

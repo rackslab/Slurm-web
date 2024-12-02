@@ -147,7 +147,7 @@ async def get_cluster(agent):
 
         cluster = {
             "name": agent.cluster,
-            "infrastructure": agent.infrastructure,
+            "infrastructure": agent.racksdb.infrastructure,
             "metrics": agent.metrics,
             "permissions": permissions,
         }
@@ -332,7 +332,7 @@ def metrics(cluster: str, metric: str):
 def racksdb(cluster: str, query: str):
     return proxy_agent(
         cluster,
-        f"racksdb/v{current_app.settings.agents.racksdb_version}/{query}",
+        f"racksdb/v{current_app.agents[cluster].racksdb.version}/{query}",
         request.token,
         json=False,
         with_version=False,
