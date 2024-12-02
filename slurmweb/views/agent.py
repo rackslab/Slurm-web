@@ -9,6 +9,7 @@ import logging
 
 from flask import Response, current_app, jsonify, abort, request
 from rfl.web.tokens import rbac_action, check_jwt
+from racksdb.version import get_version as racksdb_get_version
 
 from ..version import get_version
 from ..errors import SlurmwebCacheError, SlurmwebMetricsDBError
@@ -34,8 +35,11 @@ def version():
 def info():
     data = {
         "cluster": current_app.settings.service.cluster,
-        "infrastructure": current_app.settings.racksdb.infrastructure,
         "metrics": current_app.settings.metrics.enabled,
+        "racksdb": {
+            "version": racksdb_get_version(),
+            "infrastructure": current_app.settings.racksdb.infrastructure,
+        },
     }
     return jsonify(data)
 
