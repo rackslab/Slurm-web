@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   higher priority to avoid upgrade.
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
+- docs: Update configuration reference documentation.
 
 ### Removed
 - docs: remove mention of support of Fedora 39
