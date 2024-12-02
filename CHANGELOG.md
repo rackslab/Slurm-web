@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (#415→#417).
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
+- docs: Update configuration reference documentation.
 
 ## [4.0.0] - 2024-11-28
 
