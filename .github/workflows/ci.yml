@@ -58,8 +58,10 @@ jobs:
           pip install PyYAML==5.4.1
           echo "::notice::Installing PyJWT (old version)"
           pip install PyJWT==2.4.0
+          echo "::notice::Installing Werkzeug (old version)"
+          pip install "Werkzeug<0.13"
           echo "::notice::Installing Flask (old version)"
-          pip install "flask<2.1.0"
+          pip install "flask<1.0"
           echo "::notice::Installing requests (old version)"
           pip install "requests<2.26.0"
           echo "::notice::Installing pyasn1 (old version)"
