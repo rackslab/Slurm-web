@@ -100,11 +100,17 @@ def mock_slurmrestd_responses(slurmrestd, slurm_version, assets):
 
 class SlurmwebCustomTestResponse(flask.Response):
     """Custom flask Response class to backport text property of
-    werkzeug.test.TestResponse class on werkzeug < 2.1 on Python 3.6."""
+    werkzeug.test.TestResponse class on werkzeug < 0.15."""
 
     @property
     def text(self):
         return self.get_data(as_text=True)
+
+    @property
+    def json(self):
+        if self.mimetype != "application/json":
+            return None
+        return json.loads(self.text)
 
 
 def fake_text_response():
