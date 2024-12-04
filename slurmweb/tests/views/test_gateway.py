@@ -19,11 +19,12 @@ from ..lib.utils import SlurmwebCustomTestResponse
 class TestGatewayViews(TestGatewayBase):
     def setUp(self):
         self.setup_app()
-        # werkzeug.test.TestResponse class does not have text property in
-        # werkzeug <= 2.1. When such version is installed, use custom test
-        # response class to backport this text property.
+        # werkzeug.test.TestResponse class does not have text and json
+        # properties in werkzeug <= 0.15. When such version is installed, use
+        # custom test response class to backport these text and json properties.
         try:
             getattr(werkzeug.test.TestResponse, "text")
+            getattr(werkzeug.test.TestResponse, "json")
         except AttributeError:
             self.app.response_class = SlurmwebCustomTestResponse
         self.client = self.app.test_client()
