@@ -10,7 +10,15 @@ import logging
 from rfl.web.tokens import RFLTokenizedRBACWebApp
 from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
 from racksdb.web.app import RacksDBWebBlueprint
-from werkzeug.middleware import dispatcher
+
+try:
+    from werkzeug.middleware import dispatcher
+except ModuleNotFoundError:
+    # In Werkzeug < 0.15, dispatcher was not in a dedicated module, it was included in a
+    # big wsgi module. This old version of werkzeug must be fully supported because it
+    # is included in el8. See https://github.com/rackslab/Slurm-web/issues/419 for
+    # reference.
+    from werkzeug import wsgi as dispatcher
 
 from . import SlurmwebWebApp
 from ..version import get_version
