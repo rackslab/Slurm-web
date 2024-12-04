@@ -10,7 +10,12 @@ import logging
 from rfl.web.tokens import RFLTokenizedRBACWebApp
 from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
 from racksdb.web.app import RacksDBWebBlueprint
-from werkzeug.middleware import dispatcher
+
+try:
+    from werkzeug.middleware import dispatcher
+except ModuleNotFoundError:
+    # Tentative fix for #419
+    from werkzeug import wsgi as dispatcher
 
 from . import SlurmwebWebApp
 from ..version import get_version
