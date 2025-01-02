@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   semantic.
 - docs: Update configuration reference documentation.
 
+### Fixed
+- frontend: Update dependencies to fix CVE-2024-55565 (nanoid).
+
 ## [4.0.0] - 2024-11-28
 
 ### Added
