@@ -14,6 +14,7 @@ from slurmweb.apps.gateway import SlurmwebAgent, version_greater_or_equal
 
 from ..lib.utils import mock_agent_response, fake_text_response
 
+
 class TestVersionComparaison(unittest.TestCase):
 
     def test_version_greater_or_equal(self):
@@ -42,15 +43,15 @@ class TestGatewayApp(TestGatewayBase):
         self.assertEqual(len(vars(agent)), 4)
         self.assertEqual(agent.cluster, agent_info["cluster"])
         self.assertEqual(agent.racksdb.version, agent_info["racksdb"]["version"])
-        self.assertEqual(agent.racksdb.infrastructure, agent_info["racksdb"]["infrastructure"])
+        self.assertEqual(
+            agent.racksdb.infrastructure, agent_info["racksdb"]["infrastructure"]
+        )
         self.assertEqual(agent.metrics, agent_info["metrics"])
         self.assertEqual(agent.url, self.app.settings.agents.url[0].geturl())
 
     @mock.patch("slurmweb.apps.gateway.requests.get")
     def test_agents_missing_key(self, mock_requests_get):
-        agent_info, mock_requests_get.return_value = mock_agent_response(
-            "info"
-        )
+        agent_info, mock_requests_get.return_value = mock_agent_response("info")
         del agent_info["metrics"]
         with self.assertLogs("slurmweb", level="ERROR") as cm:
             agents = self.app.agents
@@ -66,9 +67,7 @@ class TestGatewayApp(TestGatewayBase):
 
     @mock.patch("slurmweb.apps.gateway.requests.get")
     def test_agents_unsupported_racksdb_version(self, mock_requests_get):
-        agent_info, mock_requests_get.return_value = mock_agent_response(
-            "info"
-        )
+        agent_info, mock_requests_get.return_value = mock_agent_response("info")
         agent_info["racksdb"]["version"] = "0.3.0"
         with self.assertLogs("slurmweb", level="ERROR") as cm:
             agents = self.app.agents
