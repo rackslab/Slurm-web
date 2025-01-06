@@ -6,7 +6,7 @@
   SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, defineModel } from 'vue'
+import { onMounted, onUnmounted, ref, watch, defineModel, nextTick } from 'vue'
 import type { Ref, PropType } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
@@ -296,10 +296,13 @@ function updateCanvasDimensions() {
  */
 watch(
   () => props.cluster,
-  () => {
+  async () => {
+    unable.value = false
     currentNode.value = undefined
     previousPath = undefined
     allNodesPaths = {}
+    // Wait for canvas element to be rendered in DOM.
+    await nextTick()
     updateCanvas()
   }
 )

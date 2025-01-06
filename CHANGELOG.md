@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Do not show fullscreen button on thumbnail when unable to retrieve
     infrastructure graphical representation from RacksDB.
+  - Restore infrastructure graphical representation canvas on cluster change in
+    resources page when coming from cluster on which RacksDB failed.
   - Update dependencies to fix CVE-2024-55565 (nanoid).
 
 ## [4.0.0] - 2024-11-28
