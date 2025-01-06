@@ -20,7 +20,13 @@ describe('QosView.vue', () => {
   beforeEach(() => {
     init_plugins()
     useRuntimeStore().availableClusters = [
-      { name: 'foo', permissions: { roles: [], actions: [] }, infrastructure: 'foo', metrics: true }
+      {
+        name: 'foo',
+        permissions: { roles: [], actions: [] },
+        racksdb: true,
+        infrastructure: 'foo',
+        metrics: true
+      }
     ]
     // Reset mockClusterDataPoller unable to its default value before every tests.
     mockClusterDataPoller.unable.value = false

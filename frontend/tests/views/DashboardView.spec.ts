@@ -18,7 +18,13 @@ describe('DashboardView.vue', () => {
   beforeEach(() => {
     init_plugins()
     useRuntimeStore().availableClusters = [
-      { name: 'foo', permissions: { roles: [], actions: [] }, infrastructure: 'foo', metrics: true }
+      {
+        name: 'foo',
+        permissions: { roles: [], actions: [] },
+        racksdb: true,
+        infrastructure: 'foo',
+        metrics: true
+      }
     ]
   })
   test('should display dashboard with metrics', () => {

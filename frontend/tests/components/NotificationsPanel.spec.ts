@@ -11,6 +11,7 @@ describe('DashboardCharts.vue', () => {
     const cluster = {
       name: 'foo',
       permissions: { roles: ['admin'], actions: ['view-nodes', 'view-jobs'] },
+      racksdb: true,
       infrastructure: 'foo',
       metrics: true
     }
