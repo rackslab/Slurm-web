@@ -42,6 +42,7 @@ class TestGatewayApp(TestGatewayBase):
         self.assertIsInstance(agent, SlurmwebAgent)
         self.assertEqual(len(vars(agent)), 4)
         self.assertEqual(agent.cluster, agent_info["cluster"])
+        self.assertEqual(agent.racksdb.enabled, agent_info["racksdb"]["enabled"])
         self.assertEqual(agent.racksdb.version, agent_info["racksdb"]["version"])
         self.assertEqual(
             agent.racksdb.infrastructure, agent_info["racksdb"]["infrastructure"]
