@@ -608,6 +608,19 @@ permitted actions
 |Parameter|Type|Description|Required
 
 
+|enabled
+|bool
+|Control if RacksDB integration feature for advanced visualization of
+resources is enabled.
+
+
+
+
+
+*Default:* `True`
+
+|-
+
 |db
 |path
 |Path to RacksDB database
