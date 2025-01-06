@@ -23,6 +23,7 @@ interface loginIdents {
 
 export interface ClusterDescription {
   name: string
+  racksdb: boolean
   infrastructure: string
   metrics: boolean
   permissions: ClusterPermissions

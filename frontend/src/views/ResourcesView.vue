@@ -183,7 +183,11 @@ onMounted(() => {
         </div>
       </div>
 
-      <ResourcesDiagram :cluster="props.cluster" :nodes="filteredNodes" />
+      <ResourcesDiagram
+        v-if="runtimeStore.getCluster(props.cluster).racksdb"
+        :cluster="props.cluster"
+        :nodes="filteredNodes"
+      />
       <ResourcesFiltersBar />
 
       <ErrorAlert v-if="unable"

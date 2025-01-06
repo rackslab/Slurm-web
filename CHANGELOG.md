@@ -17,8 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway: Check RacksDB version executed by agent is greater or equal to the
   minimal supported version specified in gateway configuration settings
   (#415→#417).
-- frontend: Reduce height of error message container when unable to retrieve
-  infrastructure graphical representation from RacksDB in resources page.
+- frontend:
+  - Reduce height of error message container when unable to retrieve
+    infrastructure graphical representation from RacksDB in resources page.
+  - Do not display infrastructure advanced graphical representation canvas in
+    resources page when RacksDB is disabled in agent configuration for a
+    cluster (#418→#434).
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
 - docs: Update configuration reference documentation.
