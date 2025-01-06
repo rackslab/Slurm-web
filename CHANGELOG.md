@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - agent: Return local RacksDB enabled boolean and version in `/info` endpoint.
+- gateway: Return RacksDB enabled boolean feature flag of every clusters in
+  `/clusters` endpoint.
 - conf: Add `racksdb` > `enabled` parameter for the agent.
 
 ### Changed

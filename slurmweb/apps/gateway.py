@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 SlurmwebAgentRacksDBSettings = collections.namedtuple(
-    "SlurmwebAgentRacksDBSettings", ["version", "infrastructure"]
+    "SlurmwebAgentRacksDBSettings", ["enabled", "version", "infrastructure"]
 )
 
 
