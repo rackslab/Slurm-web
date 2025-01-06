@@ -14,6 +14,9 @@ definition=conf/vendor/policy.yml
 roles={{ policy_path }}
 
 [racksdb]
+{% if cluster_name == 'pocket' %}
+enabled=no
+{% endif %}
 db=dev/firehpc/db
 schema=../RacksDB/schemas/racksdb.yml
 drawings_schema=../RacksDB/schemas/drawings.yml
