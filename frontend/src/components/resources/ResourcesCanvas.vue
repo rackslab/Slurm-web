@@ -329,7 +329,10 @@ onUnmounted(() => {
 <template>
   <div
     ref="container"
-    :class="[fullscreen ? 'grow' : 'h-96', 'flex min-w-full items-center justify-center']"
+    :class="[
+      fullscreen ? 'grow' : unable ? 'h-8' : 'h-96',
+      'flex min-w-full items-center justify-center'
+    ]"
   >
     <span v-if="unable" class="text-sm text-gray-500">{{ errorMessage }}</span>
     <template v-else>
