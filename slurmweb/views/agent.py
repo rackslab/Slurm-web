@@ -37,6 +37,7 @@ def info():
         "cluster": current_app.settings.service.cluster,
         "metrics": current_app.settings.metrics.enabled,
         "racksdb": {
+            "enabled": current_app.settings.racksdb.enabled,
             "version": racksdb_get_version(),
             "infrastructure": current_app.settings.racksdb.infrastructure,
         },

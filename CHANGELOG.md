@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- agent: Return local RacksDB version in `/info` endpoint.
+- agent: Return local RacksDB enabled boolean and version in `/info` endpoint.
 - conf: Add `racksdb` > `enabled` parameter for the agent.
 
 ### Changed
