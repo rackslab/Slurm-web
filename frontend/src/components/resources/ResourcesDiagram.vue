@@ -28,6 +28,7 @@ const props = defineProps({
 const fullscreen: Ref<boolean> = ref(false)
 const fullscreenButton: Ref<HTMLDivElement | null> = ref(null)
 const displayFullscreenButton: Ref<boolean> = ref(false)
+const unable = ref(false)
 
 function toggleFullScreen() {
   fullscreen.value = !fullscreen.value
@@ -38,12 +39,16 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
     fullscreenButton.value.style.left = (x_shift + canvas_width).toString() + 'px'
   }
 }
+
+function mouseOverThumbnail() {
+  if (!unable.value) displayFullscreenButton.value = true
+}
 </script>
 
 <template>
   <div
     v-if="!fullscreen"
-    @mouseover="displayFullscreenButton = true"
+    @mouseover="mouseOverThumbnail()"
     @mouseleave="displayFullscreenButton = false"
     class="relative"
   >
@@ -61,6 +66,7 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
       :nodes="props.nodes"
       :fullscreen="fullscreen"
       @image-size="positionFullscreenButton"
+      v-model="unable"
     />
   </div>
 
@@ -114,6 +120,7 @@ function positionFullscreenButton(x_shift: number, canvas_width: number) {
                   :cluster="props.cluster"
                   :nodes="props.nodes"
                   :fullscreen="fullscreen"
+                  v-model="unable"
                 />
               </div>
             </DialogPanel>

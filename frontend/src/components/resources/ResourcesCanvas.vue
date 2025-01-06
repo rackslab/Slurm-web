@@ -6,7 +6,7 @@
   SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch, defineModel } from 'vue'
 import type { Ref, PropType } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
@@ -34,6 +34,7 @@ const props = defineProps({
 
 const isFirefox = navigator.userAgent.includes('Firefox')
 const emit = defineEmits(['imageSize'])
+const unable = defineModel({ required: true, default: false })
 
 const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
@@ -44,7 +45,6 @@ const canvas: Ref<HTMLCanvasElement | null> = ref(null)
 const nodeTooltip: Ref<HTMLDivElement | null> = ref(null)
 const nodeTooltipOpen: Ref<boolean> = ref(false)
 const errorMessage: Ref<string | undefined> = ref()
-const unable: Ref<boolean> = ref(false)
 let timeout: number = -1 // holder for timeout id
 const delay = 250 // delay after event is "complete" to run callback
 let allNodesPaths: Record<

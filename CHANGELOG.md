@@ -23,7 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - agent: Fix No module named 'werkzeug.middleware' ModuleNotFoundError with
   Werkzeug < 0.15 (#419→420).
-- frontend: Update dependencies to fix CVE-2024-55565 (nanoid).
+- frontend:
+  - Do not show fullscreen button on thumbnail when unable to retrieve
+    infrastructure graphical representation from RacksDB.
+  - Update dependencies to fix CVE-2024-55565 (nanoid).
 
 ## [4.0.0] - 2024-11-28
 
