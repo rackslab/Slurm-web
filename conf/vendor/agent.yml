@@ -270,6 +270,12 @@ jwt:
       Audience defined in generated JWT and expected in JWT provided by clients
 
 racksdb:
+  enabled:
+    type: bool
+    default: true
+    doc: |
+      Control if RacksDB integration feature for advanced visualization of
+      resources is enabled.
   # The default values in this section must be synchronized with RacksDB library
   # defaults.
   db:

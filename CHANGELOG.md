@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - agent: Return local RacksDB version in `/info` endpoint.
+- conf: Add `racksdb` > `enabled` parameter for the agent.
 
 ### Changed
 - gateway: Check RacksDB version executed by agent is greater or equal to the
