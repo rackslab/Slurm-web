@@ -573,9 +573,12 @@ export function useGatewayAPI() {
     const multipart = await new Response(response.data, {
       headers: response.headers as HeadersInit
     }).formData()
-    const image = multipart.get('image')
+    const image = multipart.get('image') as File
     const coordinates = JSON.parse(await (multipart.get('coordinates') as File)?.text())
-    return [image as RacksDBAPIImage, coordinates as RacksDBInfrastructureCoordinates]
+    return [
+      new Blob([image], { type: image.type }) as RacksDBAPIImage,
+      coordinates as RacksDBInfrastructureCoordinates
+    ]
   }
 
   function abort() {
