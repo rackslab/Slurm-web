@@ -101,7 +101,6 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
 })
 
 function updateQueryParameters() {
-  console.log('Updating query parameters')
   router.push({ name: 'resources', query: runtimeStore.resources.query() as LocationQueryRaw })
 }
 

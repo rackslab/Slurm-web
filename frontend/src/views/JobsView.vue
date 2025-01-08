@@ -124,7 +124,6 @@ function sortJobs() {
 }
 
 function updateQueryParameters() {
-  console.log('Updating query parameters')
   router.push({ name: 'jobs', query: runtimeStore.jobs.query() as LocationQueryRaw })
 }
 
