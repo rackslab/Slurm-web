@@ -91,6 +91,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "racksdb-draw-coordinates": {
+    "content-type": "multipart/form-data; boundary=504493dbb844492c9de020e4069d7914",
+    "status": 200
+  },
   "reservations": {
     "content-type": "application/json",
     "status": 200

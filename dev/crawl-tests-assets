@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any
+from typing import Any, Optional, Dict
 from pathlib import Path
 import sys
 import json
@@ -474,6 +474,8 @@ def dump_component_query(
     skip_exist: bool = True,
     prettify: bool = True,
     limit_dump=0,
+    method: str = "GET",
+    content: Optional[Dict] = None,
 ) -> Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
@@ -490,7 +492,15 @@ def dump_component_query(
             assert isinstance(asset_name, str)
             if len(list(assets_path.glob(f"{asset_name}.*"))):
                 return
-    response = requests.get(f"{url}{query}", headers=headers)
+    if method == "GET":
+        response = requests.get(f"{url}{query}", headers=headers)
+    elif method == "POST":
+        kwargs = {}
+        if content:
+            kwargs["json"] = content
+        response = requests.post(f"{url}{query}", headers=headers, **kwargs)
+    else:
+        raise RuntimeError(f"Unsupport request method {method}")
     if isinstance(asset_name, dict):
         _asset_name = asset_name[response.status_code]
     else:
@@ -698,6 +708,23 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         "accounts",
     )
 
+    # RacksDB infrastructure diagram
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/api/agents/{cluster}/racksdb/draw/infrastructure/{infrastructure}.png?coordinates",
+        headers,
+        assets_path,
+        "racksdb-draw-coordinates",
+        method="POST",
+        content={
+            # FIXME: Retrieve these RacksDB request parameters from Slurm-web code base
+            # to avoid duplication.
+            "general": {"pixel_perfect": True},
+            "dimensions": {"width": 1000, "height": 300},
+            "infrastructure": {"equipment_labels": False, "ghost_unselected": True},
+        },
+    )
     # metrics
     for metric in ["nodes", "cores", "jobs"]:
         for _range in ["hour"]:
