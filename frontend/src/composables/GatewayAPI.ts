@@ -6,15 +6,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { useHttp } from '@/plugins/http'
-import { useAuthStore } from '@/stores/auth'
-import type { ResponseType, AxiosResponse, AxiosRequestConfig } from 'axios'
-import {
-  AuthenticationError,
-  PermissionError,
-  APIServerError,
-  RequestError
-} from '@/composables/HTTPErrors'
+import { useRESTAPI } from '@/composables/RESTAPI'
+import type { AxiosResponse } from 'axios'
+import { AuthenticationError, APIServerError } from '@/composables/HTTPErrors'
 
 interface loginIdents {
   user: string
@@ -457,98 +451,11 @@ export type GatewayAnyClusterApiKey =
   | GatewayClusterWithStringAPIKey
 
 export function useGatewayAPI() {
-  const http = useHttp()
-  const authStore = useAuthStore()
-  let controller = new AbortController()
-
-  function requestConfig(
-    withToken: boolean = true,
-    responseType: ResponseType = 'json'
-  ): AxiosRequestConfig {
-    const config: AxiosRequestConfig = {
-      responseType: responseType,
-      signal: controller.signal
-    }
-    if (withToken === true) {
-      config.headers = { Authorization: `Bearer ${authStore.token}` }
-    }
-    return config
-  }
-
-  async function requestServer(func: Function): Promise<AxiosResponse> {
-    try {
-      return await func()
-    } catch (error: any) {
-      if (error.response) {
-        /* Server replied with error status code.
-         *
-         * If the reponse body is an arraybuffer instead of JSON, convert it
-         * to JSON first.
-         */
-        if (error.response.data instanceof ArrayBuffer) {
-          error.response.data = JSON.parse(
-            new TextDecoder().decode(error.response.data as ArrayBuffer)
-          )
-        }
-        if (error.response.status == 401) {
-          throw new AuthenticationError(error.response.data.description)
-        } else if (error.response.status == 403) {
-          throw new PermissionError(error.message)
-        } else {
-          throw new APIServerError(error.response.status, error.response.data.description)
-        }
-      } else if (error.request) {
-        /* No reply from server */
-        throw new RequestError(`Request error: ${error.message}`)
-      } else {
-        /* Something else happening when setting up the request */
-        throw new RequestError(`Setting up request error: ${error.message}`)
-      }
-    }
-  }
-
-  async function get<CType>(
-    resource: string,
-    withToken: boolean = true,
-    responseType: ResponseType = 'json'
-  ): Promise<CType> {
-    console.log(`Slurm-web gateway API get ${resource}`)
-    return (
-      await requestServer(() => {
-        return http.get(resource, requestConfig(withToken, responseType))
-      })
-    ).data as CType
-  }
-
-  async function post<CType>(
-    resource: string,
-    data: any,
-    withToken: boolean = true,
-    responseType: ResponseType = 'json'
-  ): Promise<CType> {
-    console.log(`Slurm-web gateway API post ${resource}`)
-    return (
-      await requestServer(() => {
-        return http.post(resource, data, requestConfig(withToken, responseType))
-      })
-    ).data as CType
-  }
-
-  async function postRaw<CType>(
-    resource: string,
-    data: any,
-    withToken: boolean = true,
-    responseType: ResponseType = 'json'
-  ): Promise<CType> {
-    console.log(`Slurm-web gateway API post ${resource}`)
-    return (await requestServer(() => {
-      return http.post(resource, data, requestConfig(withToken, responseType))
-    })) as CType
-  }
+  const restAPI = useRESTAPI()
 
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
-      return (await post('/login', idents)) as GatewayLoginResponse
+      return (await restAPI.post('/login', idents)) as GatewayLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -560,7 +467,7 @@ export function useGatewayAPI() {
 
   async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
     try {
-      return (await get('/anonymous')) as GatewayAnonymousLoginResponse
+      return (await restAPI.get('/anonymous')) as GatewayAnonymousLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -571,59 +478,59 @@ export function useGatewayAPI() {
   }
 
   async function message_login(): Promise<string> {
-    return await get<string>(`/messages/login`)
+    return await restAPI.get<string>(`/messages/login`)
   }
 
   async function clusters(): Promise<Array<ClusterDescription>> {
-    return await get<ClusterDescription[]>(`/clusters`)
+    return await restAPI.get<ClusterDescription[]>(`/clusters`)
   }
 
   async function users(): Promise<Array<UserDescription>> {
-    return await get<UserDescription[]>(`/users`)
+    return await restAPI.get<UserDescription[]>(`/users`)
   }
 
   async function stats(cluster: string): Promise<ClusterStats> {
-    return await get<ClusterStats>(`/agents/${cluster}/stats`)
+    return await restAPI.get<ClusterStats>(`/agents/${cluster}/stats`)
   }
 
   async function jobs(cluster: string, node?: string): Promise<ClusterJob[]> {
-    if (node) return await get<ClusterJob[]>(`/agents/${cluster}/jobs?node=${node}`)
-    return await get<ClusterJob[]>(`/agents/${cluster}/jobs`)
+    if (node) return await restAPI.get<ClusterJob[]>(`/agents/${cluster}/jobs?node=${node}`)
+    return await restAPI.get<ClusterJob[]>(`/agents/${cluster}/jobs`)
   }
 
   async function job(cluster: string, job: number): Promise<ClusterIndividualJob> {
-    return await get<ClusterIndividualJob>(`/agents/${cluster}/job/${job}`)
+    return await restAPI.get<ClusterIndividualJob>(`/agents/${cluster}/job/${job}`)
   }
 
   async function nodes(cluster: string): Promise<ClusterNode[]> {
-    return await get<ClusterNode[]>(`/agents/${cluster}/nodes`)
+    return await restAPI.get<ClusterNode[]>(`/agents/${cluster}/nodes`)
   }
 
   async function node(cluster: string, nodeName: string): Promise<ClusterIndividualNode> {
-    return await get<ClusterIndividualNode>(`/agents/${cluster}/node/${nodeName}`)
+    return await restAPI.get<ClusterIndividualNode>(`/agents/${cluster}/node/${nodeName}`)
   }
 
   async function partitions(cluster: string): Promise<ClusterPartition[]> {
-    return await get<ClusterPartition[]>(`/agents/${cluster}/partitions`)
+    return await restAPI.get<ClusterPartition[]>(`/agents/${cluster}/partitions`)
   }
 
   async function qos(cluster: string): Promise<ClusterQos[]> {
-    return await get<ClusterQos[]>(`/agents/${cluster}/qos`)
+    return await restAPI.get<ClusterQos[]>(`/agents/${cluster}/qos`)
   }
 
   async function reservations(cluster: string): Promise<ClusterQos[]> {
-    return await get<ClusterQos[]>(`/agents/${cluster}/reservations`)
+    return await restAPI.get<ClusterQos[]>(`/agents/${cluster}/reservations`)
   }
 
   async function accounts(cluster: string): Promise<Array<AccountDescription>> {
-    return await get<AccountDescription[]>(`/agents/${cluster}/accounts`)
+    return await restAPI.get<AccountDescription[]>(`/agents/${cluster}/accounts`)
   }
 
   async function metrics_nodes(
     cluster: string,
     last: string
   ): Promise<Record<MetricResourceState, MetricValue[]>> {
-    return await get<Record<MetricResourceState, MetricValue[]>>(
+    return await restAPI.get<Record<MetricResourceState, MetricValue[]>>(
       `/agents/${cluster}/metrics/nodes?range=${last}`
     )
   }
@@ -632,7 +539,7 @@ export function useGatewayAPI() {
     cluster: string,
     last: string
   ): Promise<Record<MetricResourceState, MetricValue[]>> {
-    return await get<Record<MetricResourceState, MetricValue[]>>(
+    return await restAPI.get<Record<MetricResourceState, MetricValue[]>>(
       `/agents/${cluster}/metrics/cores?range=${last}`
     )
   }
@@ -641,7 +548,7 @@ export function useGatewayAPI() {
     cluster: string,
     last: string
   ): Promise<Record<MetricResourceState, MetricValue[]>> {
-    return await get<Record<MetricResourceState, MetricValue[]>>(
+    return await restAPI.get<Record<MetricResourceState, MetricValue[]>>(
       `/agents/${cluster}/metrics/jobs?range=${last}`
     )
   }
@@ -652,7 +559,7 @@ export function useGatewayAPI() {
     width: number,
     height: number
   ): Promise<[RacksDBAPIImage, RacksDBInfrastructureCoordinates]> {
-    const response = await postRaw<AxiosResponse>(
+    const response = await restAPI.postRaw<AxiosResponse>(
       `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.png?coordinates`,
       {
         general: { pixel_perfect: true },
@@ -674,8 +581,7 @@ export function useGatewayAPI() {
   function abort() {
     /* Abort all pending requests */
     console.log('Aborting requests')
-    controller.abort()
-    controller = new AbortController()
+    restAPI.abortController()
   }
 
   /*
