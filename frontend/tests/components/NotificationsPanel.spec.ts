@@ -4,8 +4,6 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { init_plugins } from '../lib/common'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel.vue'
 import Notification from '@/components/notifications/Notification.vue'
-import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistogram.vue'
-import { nextTick } from 'vue'
 
 describe('DashboardCharts.vue', () => {
   beforeEach(() => {
