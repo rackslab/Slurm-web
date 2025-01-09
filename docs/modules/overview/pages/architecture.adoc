@@ -43,18 +43,20 @@ OpenLDAP, FreeIPA and Active Directory with legacy NIS and RFC 2307 bis schemas.
 
 The *agent* component reads the
 xref:conf:policy.adoc[RBAC autorization policy] from a plain INI file with
-permissions associated to roles and LDAP groups. The component also extracts
-cluster racking topology from xref:racksdb:overview:start.adoc[RacksDB] database
-to generate
-xref:overview.adoc#nodes-status[graphical representation of nodes status] in the
-racks.
+permissions associated to roles and LDAP groups.
 
-Optionally, the *agent* can connect to https://redis.io/[Redis] in-memory
-key/value database to save cached data from Slurm. It can also integrate with
-https://prometheus.io/[Prometheus] (or compatible) by exporting
-xref:overview.adoc#metrics[various Slurm metrics] for storage in timeseries
-database. The agent can then query this database to get historical values of
-these metrics.
+Optionally, the *agent* can also:
+
+- Extract cluster racking topology from
+  xref:racksdb:overview:start.adoc[RacksDB] database to generate
+  xref:overview.adoc#nodes-status[interactive graphical representation of nodes status]
+  in the racks.
+- Connect to https://redis.io/[Redis] in-memory key/value database to
+  xref:overview.adoc#cache[save cached data] from Slurm.
+- Integrate with https://prometheus.io/[Prometheus] (or compatible) by exporting
+  xref:overview.adoc#metrics[various Slurm metrics] for storage in timeseries
+  database. The agent can then query this database to get historical values of
+  these metrics.
 
 [#protocols]
 == Protocols

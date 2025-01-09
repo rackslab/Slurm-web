@@ -287,43 +287,6 @@ INFO ⸬ Setting read permission on key for slurm user
 * xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
 --
 
-[#racksdb]
-== RacksDB database
-
-Slurm-web uses xref:racksdb:overview:start.adoc[RacksDB] to generate graphical
-representation of datacenters racks with the compute nodes. RacksDB database
-must be defined with your HPC cluster infrastructure. This is actually quick and
-easy easy based on
-xref:racksdb:install:quickstart.adoc#examples[the examples provided].
-
-Some requirements must be fulfilled in this database:
-
-* The infrastructure must have the same name as the cluster
-  <<_initial_setup,previously declared>> in _agent_ configuration file.
-* The _compute_ tag must be assigned to all compute nodes declared in Slurm
-  configuration.
-
-[NOTE]
-====
-You can choose other tag name but you will have to declare this tag in
-xref:conf:conf/agent.adoc#_racksdb[`racksdb` section of agent configuration],
-for example:
-
-[source,ini]
-----
-[racksdb]
-tags=blade
-----
-====
-
-[sidebar]
---
-.More links
-* xref:racksdb:overview:start.adoc[RacksDB reference documentation]
-* xref:racksdb:install:quickstart.adoc[RacksDB quickstart guide]
-* xref:racksdb:db:structure.adoc[RacksDB database structure reference]
---
-
 == First Access
 
 Slurm-web is now ready to start! Enable and start the _agent_ and _gateway_
@@ -638,6 +601,58 @@ xref:misc:troubleshooting.adoc#wsgi[troubleshooting guide] for help.
 ****
 * xref:conf:wsgi/index.adoc[Production HTTP server setup guide].
 ****
+
+[#racksdb]
+== RacksDB database (optional)
+
+Slurm-web can use xref:racksdb:overview:start.adoc[RacksDB] to generate
+xref:overview:overview.adoc#nodes-status[advanced interactive graphical representations]
+of datacenters racks with the compute nodes. For this feature, RacksDB database
+must be defined with your HPC cluster infrastructure. This is actually quick and
+easy easy based on
+xref:racksdb:install:quickstart.adoc#examples[the examples provided].
+
+Some requirements must be fulfilled in this database:
+
+* The infrastructure must have the same name as the cluster
+  <<_initial_setup,previously declared>> in _agent_ configuration file.
+* The _compute_ tag must be assigned to all compute nodes declared in Slurm
+  configuration.
+
+[NOTE]
+====
+You can choose other tag name but you will have to declare this tag in
+xref:conf:conf/agent.adoc#_racksdb[`racksdb` section of agent configuration],
+for example:
+
+[source,ini]
+----
+[racksdb]
+tags=blade
+----
+====
+
+[NOTE]
+====
+If you don't need this
+xref:overview:overview.adoc#nodes-status[advanced interactive graphical representations]
+feature, RacksDB integration can be completely disabled with the following lines
+in [.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[racksdb]
+enabled=no
+----
+====
+
+[sidebar]
+--
+.More links
+* xref:racksdb:overview:start.adoc[RacksDB reference documentation]
+* xref:racksdb:install:quickstart.adoc[RacksDB quickstart guide]
+* xref:racksdb:db:structure.adoc[RacksDB database structure reference]
+--
 
 == Metrics (optional)
 

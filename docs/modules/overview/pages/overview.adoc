@@ -60,8 +60,10 @@ Watch your jobs running with visual representation of their progress.
 [#nodes-status]
 == Nodes Status
 
-Live status of the compute nodes is displayed in a graphical representation of
-the racks. Just move the mouse pointer over a specific node to get all details:
+Live status of the compute nodes can be visualized in an advanced interactive
+graphical representation of the racks based on data extracted from
+xref:racksdb:overview:start.adoc[RacksDB]. Just move the mouse pointer over a
+specific node to get all details:
 
 image::screenshot_nodes_hovering.png[]
 

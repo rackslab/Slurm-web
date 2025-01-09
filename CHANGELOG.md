@@ -25,7 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     cluster (#418→#434).
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
-- docs: Update configuration reference documentation.
+- docs:
+  - Explain RacksDB is now optional in quickstart guide, with method to disable
+    integration feature in side note, and in overview and architecture pages.
+  - Update configuration reference documentation.
 
 ### Fixed
 - agent: Fix No module named 'werkzeug.middleware' ModuleNotFoundError with
