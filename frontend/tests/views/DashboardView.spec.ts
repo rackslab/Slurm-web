@@ -48,7 +48,7 @@ describe('DashboardView.vue', () => {
     wrapper.getComponent(DashboardCharts)
   })
   test('should not display charts when metrics are disabled', () => {
-    // Disable metrics on clusterfoo
+    // Disable metrics on cluster foo
     useRuntimeStore().availableClusters[0].metrics = false
     const wrapper = mount(DashboardView, {
       props: {
