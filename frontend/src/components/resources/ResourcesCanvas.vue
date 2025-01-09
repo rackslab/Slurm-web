@@ -40,7 +40,7 @@ const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
 const container: Ref<HTMLDivElement | null> = ref(null)
-const loading: Ref<HTMLSpanElement | null> = ref(null)
+const loading: Ref<boolean> = ref(true)
 const canvas: Ref<HTMLCanvasElement | null> = ref(null)
 const nodeTooltip: Ref<HTMLDivElement | null> = ref(null)
 const nodeTooltipOpen: Ref<boolean> = ref(false)
@@ -122,8 +122,9 @@ function drawNodeHoverRing(ctx: CanvasRenderingContext2D, nodePath: Path2D): voi
 }
 
 async function updateCanvas(fullUpdate: boolean = true) {
-  if (container.value !== null && loading.value !== null && canvas.value !== null) {
+  if (container.value !== null && canvas.value !== null) {
     if (fullUpdate) {
+      loading.value = true
       /* Resize canvas to fill parent container size */
       canvas.value.width = container.value.clientWidth
       canvas.value.height = container.value.clientHeight
@@ -155,9 +156,7 @@ async function updateCanvas(fullUpdate: boolean = true) {
         ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
         ctx.drawImage(bitmap, x_shift, y_shift, bitmap.width, bitmap.height)
       }
-      loading.value.style.display = 'none'
-      canvas.value.style.display = 'block'
-
+      loading.value = false
       // Draw all nodes using their coordinates
       for (const [nodeName, nodeCoordinates] of Object.entries(coordinates)) {
         const nodePath = new Path2D()
@@ -274,9 +273,8 @@ function setMouseEventHandler() {
 
 // window.resize event listener
 function updateCanvasDimensions() {
-  if (loading.value !== null && canvas.value !== null) {
-    loading.value.style.display = 'block'
-    canvas.value.style.display = 'none'
+  if (canvas.value !== null) {
+    loading.value = true
     currentNode.value = undefined
     previousPath = undefined
     /*
@@ -339,7 +337,7 @@ onUnmounted(() => {
   >
     <span v-if="unable" class="text-sm text-gray-500">{{ errorMessage }}</span>
     <template v-else>
-      <div ref="loading" class="h-1/2 text-slurmweb">
+      <div v-show="loading" class="h-1/2 text-slurmweb">
         <LoadingSpinner :size="8" />
       </div>
 
@@ -362,7 +360,7 @@ onUnmounted(() => {
         ></div>
       </aside>
 
-      <canvas ref="canvas">Cluster canvas</canvas>
+      <canvas v-show="!loading" ref="canvas">Cluster canvas</canvas>
     </template>
   </div>
 </template>
