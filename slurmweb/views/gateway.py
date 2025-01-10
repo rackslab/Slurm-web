@@ -124,8 +124,7 @@ def message_login():
 
 async def get_cluster(agent):
     """Return dict with cluster information, for the cluster managed by the given agent.
-    The dict contains permissions on the cluster for the request token and high-level
-    stats, provided the token has permission to get these stats. Return None if
+    The dict contains permissions on the cluster for the request token. Return None if
     request to get permissions failed."""
     async with aiohttp.ClientSession() as session:
         async with request_agent(
@@ -153,25 +152,11 @@ async def get_cluster(agent):
             "permissions": permissions,
         }
 
-        # If view-stats action is permitted on cluster, enrich response with
-        # cluster stats.
-        if "view-stats" in permissions["actions"]:
-            async with await request_agent(
-                session, agent.cluster, "stats", request.token
-            ) as response:
-                if response.status != 200:
-                    logger.error(
-                        "Unable to retrieve stats from cluster %s: %d",
-                        agent.cluster,
-                        response.status,
-                    )
-                else:
-                    cluster.update({"stats": await response.json()})
     return cluster
 
 
 async def get_clusters():
-    """Return the list of available clusters with permissions/stats. Clusters on which
+    """Return the list of available clusters with permissions. Clusters on which
     request to get permissions failed are filtered out."""
     return [
         cluster
