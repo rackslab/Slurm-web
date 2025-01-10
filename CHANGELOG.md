@@ -14,9 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf: Add `racksdb` > `enabled` parameter for the agent.
 
 ### Changed
-- gateway: Check RacksDB version executed by agent is greater or equal to the
-  minimal supported version specified in gateway configuration settings
-  (#415→#417).
+- gateway:
+  - Check RacksDB version executed by agent is greater or equal to the minimal
+    supported version specified in gateway configuration settings (#415→#417).
+  - Do not return clusters global stats in `/clusters` endpoint anymore.
 - agent: Skip registering of RacksDB API endpoints when disabled (#440).
 - frontend:
   - Reduce height of error message container when unable to retrieve
