@@ -122,9 +122,9 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     str(err),
                 )
             else:
-                # Check version of RacksDB on agent is greater or equal than minimal
-                # version specified in configuration.
-                if not version_greater_or_equal(
+                # If RacksDB is enabled on agent, check its version is greater or equal
+                # than minimal version specified in configuration.
+                if agent.racksdb.enabled and not version_greater_or_equal(
                     self.settings.agents.racksdb_version, agent.racksdb.version
                 ):
                     logger.error(
