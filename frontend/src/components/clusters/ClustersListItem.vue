@@ -36,6 +36,10 @@ const gateway = useGatewayAPI()
 const router = useRouter()
 
 async function getClusterStats() {
+  if (!runtimeStore.hasClusterPermission(cluster.name, 'view-stats')) {
+    loading.value = false
+    return
+  }
   try {
     cluster.stats = await gateway.stats(cluster.name)
   } catch (error: any) {

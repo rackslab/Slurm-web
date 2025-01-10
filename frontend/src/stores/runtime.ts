@@ -341,6 +341,12 @@ export const useRuntimeStore = defineStore('runtime', () => {
     )
   }
 
+  function hasClusterPermission(clusterName: string, permission: string): boolean {
+    const cluster = getCluster(clusterName)
+    if (!cluster) return false
+    return cluster.permissions.actions.includes(permission)
+  }
+
   function addNotification(notification: Notification) {
     notifications.value.push(notification)
     setTimeout(removeNotification, notification.timeout * 1000, notification)
@@ -380,6 +386,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
     getCluster,
     checkClusterAvailable,
     hasPermission,
+    hasClusterPermission,
     addNotification,
     removeNotification,
     reportError,

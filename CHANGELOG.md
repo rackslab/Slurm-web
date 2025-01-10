@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     separate _vendor_ chunk (#414→#441).
   - Remove workaround for Firefox to avoid blurry lines in racks canvas, fixed
     in Firefox ESR >= 128 and Firefox >= 133 (#443).
+  - Do not report ongoing issue when users do not have permission on
+    `view-stats` action on a cluster in clusters list page.
   - Update dependencies to fix CVE-2024-55565 (nanoid) and CVE-2025-24010
     (vite).
 
