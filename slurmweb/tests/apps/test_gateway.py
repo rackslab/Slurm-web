@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import sys
 import unittest
 from unittest import mock
 
@@ -80,6 +81,22 @@ class TestGatewayApp(TestGatewayBase):
                 f"agent {agent_info['cluster']}, discarding this agent"
             ],
         )
+
+    @mock.patch("slurmweb.apps.gateway.requests.get")
+    def test_agents_ignore_unsupported_racksdb_version(self, mock_requests_get):
+        agent_info, mock_requests_get.return_value = mock_agent_response("info")
+        agent_info["racksdb"]["enabled"] = False
+        agent_info["racksdb"]["version"] = "0.3.0"
+        # Version of RacksDB is not supported and it is also disabled. No error log
+        # must be emitted in this case. Note that assertNoLogs is available starting
+        # from Python 3.10. For versions below, absence of logs is not checked.
+        if sys.version_info < (3, 10):
+            agents = self.app.agents
+        else:
+            with self.assertNoLogs("slurmweb", level="ERROR"):
+                agents = self.app.agents
+        # Check presence of cluster name returned by agent in agents dict property.
+        self.assertIn(agent_info["cluster"], agents)
 
     @mock.patch("slurmweb.apps.gateway.requests.get")
     def test_agents_json_error(self, mock_requests_get):
