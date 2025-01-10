@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     resources page when coming from cluster on which RacksDB failed.
   - Reduce size of JS chunk by moving _chart.js_ and _luxon_ libraries in
     separate _vendor_ chunk (#414→#441).
+  - Do not report ongoing issue when users do not have permission on
+    `view-stats` action on a cluster in clusters list page.
   - Update dependencies to fix CVE-2024-55565 (nanoid).
 
 ## [4.0.0] - 2024-11-28
