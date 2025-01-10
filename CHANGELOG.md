@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Do not display infrastructure advanced graphical representation canvas in
     resources page when RacksDB is disabled in agent configuration for a
     cluster (#418→#434).
+  - Retrieve clusters stats asynchronously after the clusters list with
+    their permissions (#428→#435).
   - Bump Vue.js to version 3.5.13 (#397→#450).
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
