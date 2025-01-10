@@ -26,6 +26,7 @@ const router = useRouter()
 const clusters: Ref<Array<ClusterDescription>> = ref([])
 const loaded: Ref<Boolean> = ref(false)
 const unable: Ref<Boolean> = ref(false)
+const clustersErrors = ref<Record<string, boolean>>({})
 
 function reportAuthenticationError(error: AuthenticationError) {
   runtimeStore.reportError(`Authentication error: ${error.message}`)
@@ -34,7 +35,6 @@ function reportAuthenticationError(error: AuthenticationError) {
 
 function reportOtherError(error: Error) {
   runtimeStore.reportError(`Server error: ${error.message}`)
-  unable.value = true
 }
 
 async function getClustersDescriptions() {
@@ -45,6 +45,7 @@ async function getClustersDescriptions() {
       if (element.permissions.actions.length > 0) {
         runtimeStore.addCluster(element)
       }
+      clustersErrors.value[element.name] = false
     })
     loaded.value = true
   } catch (error: any) {
@@ -52,12 +53,32 @@ async function getClustersDescriptions() {
       reportAuthenticationError(error)
     } else {
       reportOtherError(error)
+      unable.value = true
     }
   }
 }
 
-onMounted(() => {
-  getClustersDescriptions()
+function getClustersStats() {
+  runtimeStore.availableClusters.forEach((cluster) => {
+    gateway
+      .stats(cluster.name)
+      .then((result) => {
+        cluster.stats = result
+      })
+      .catch((error: any) => {
+        if (error instanceof AuthenticationError) {
+          reportAuthenticationError(error)
+        } else {
+          reportOtherError(error)
+          clustersErrors.value[cluster.name] = true
+        }
+      })
+  })
+}
+
+onMounted(async () => {
+  await getClustersDescriptions()
+  getClustersStats()
 })
 </script>
 
@@ -172,11 +193,24 @@ onMounted(() => {
                   </div>
                   <p class="text-xs leading-5 text-gray-500">Denied</p>
                 </div>
-                <div v-else-if="!('stats' in cluster)" class="mt-1 flex items-center gap-x-1.5">
+                <div
+                  v-else-if="cluster.name in clustersErrors && clustersErrors[cluster.name]"
+                  class="mt-1 flex items-center gap-x-1.5"
+                >
                   <div class="flex-none rounded-full bg-orange-500/20 p-1">
                     <div class="h-1.5 w-1.5 rounded-full bg-orange-500" />
                   </div>
                   <p class="text-xs leading-5 text-gray-500">Ongoing issue</p>
+                  <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                </div>
+                <div
+                  v-else-if="!cluster.stats"
+                  class="mt-1 flex items-center gap-x-1.5"
+                >
+                  <div class="flex-none rounded-full bg-gray-500/20 p-1">
+                    <div class="h-1.5 w-1.5 rounded-full bg-gray-500" />
+                  </div>
+                  <p class="text-xs leading-5 text-gray-500">Loading</p>
                   <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                 </div>
                 <div v-else class="mt-1 flex items-center gap-x-1.5">
