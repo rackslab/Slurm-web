@@ -15,6 +15,7 @@ import { AuthenticationError } from '@/composables/HTTPErrors'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { TagIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const { cluster } = defineProps<{ cluster: ClusterDescription }>()
 
@@ -83,7 +84,8 @@ onMounted(() => {
         Slurm {{ cluster.stats.version }}
       </span>
     </span>
-    <span v-if="cluster.stats" class="hidden text-center md:flex">
+    <LoadingSpinner v-if="loading" class="animate-pulse text-gray-400" :size="5" />
+    <span v-else-if="cluster.stats" class="hidden text-center md:flex">
       <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
         <ServerIcon class="h-6 w-full" />
         <p class="w-full">
