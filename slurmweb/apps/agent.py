@@ -54,27 +54,30 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
 
-        # Load RacksDB blueprint and fail with error if unable to load schema or
-        # database.
-        try:
-            self.register_blueprint(
-                RacksDBWebBlueprint(
-                    db=self.settings.racksdb.db,
-                    ext=self.settings.racksdb.extensions,
-                    schema=self.settings.racksdb.schema,
-                    drawings_schema=self.settings.racksdb.drawings_schema,
-                    default_drawing_parameters={
-                        "infrastructure": {"equipment_tags": self.settings.racksdb.tags}
-                    },
-                ),
-                url_prefix="/racksdb",
-            )
-        except RacksDBSchemaError as err:
-            logger.critical("Unable to load RacksDB schema: %s", err)
-            sys.exit(1)
-        except RacksDBFormatError as err:
-            logger.critical("Unable to load RacksDB database: %s", err)
-            sys.exit(1)
+        # If enabled, load RacksDB blueprint and fail with error if unable to load
+        # schema or database.
+        if self.settings.racksdb.enabled:
+            try:
+                self.register_blueprint(
+                    RacksDBWebBlueprint(
+                        db=self.settings.racksdb.db,
+                        ext=self.settings.racksdb.extensions,
+                        schema=self.settings.racksdb.schema,
+                        drawings_schema=self.settings.racksdb.drawings_schema,
+                        default_drawing_parameters={
+                            "infrastructure": {
+                                "equipment_tags": self.settings.racksdb.tags
+                            }
+                        },
+                    ),
+                    url_prefix="/racksdb",
+                )
+            except RacksDBSchemaError as err:
+                logger.critical("Unable to load RacksDB schema: %s", err)
+                sys.exit(1)
+            except RacksDBFormatError as err:
+                logger.critical("Unable to load RacksDB database: %s", err)
+                sys.exit(1)
 
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)
