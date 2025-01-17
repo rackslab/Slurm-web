@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Rackslab
+ * Copyright (c) 2023-2025 Rackslab
  *
  * This file is part of Slurm-web.
  *
@@ -26,6 +26,14 @@ export default defineConfig({
     }
   },
   build: {
-    target: 'esnext'  // required for top-level await used by runtimeConfiguration plugin
+    target: 'esnext',  // required for top-level await used by runtimeConfiguration plugin
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['chart.js', 'luxon'],
+        }
+      }
+    }
+
   }
 })
