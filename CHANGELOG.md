@@ -14,9 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf: Add `racksdb` > `enabled` parameter for the agent.
 
 ### Changed
-- gateway: Check RacksDB version executed by agent is greater or equal to the
-  minimal supported version specified in gateway configuration settings
-  (#415→#417).
+- gateway:
+  - Check RacksDB version executed by agent is greater or equal to the minimal
+    supported version specified in gateway configuration settings (#415→#417).
+  - Do not return clusters global stats in `/clusters` endpoint anymore.
 - agent: Skip registering of RacksDB API endpoints when disabled (#440).
 - frontend:
   - Reduce height of error message container when unable to retrieve
@@ -24,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Do not display infrastructure advanced graphical representation canvas in
     resources page when RacksDB is disabled in agent configuration for a
     cluster (#418→#434).
+  - Retrieve clusters stats asynchronously after the clusters list with
+    their permissions (#428→#435).
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
 - docs:
@@ -41,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     resources page when coming from cluster on which RacksDB failed.
   - Reduce size of JS chunk by moving _chart.js_ and _luxon_ libraries in
     separate _vendor_ chunk (#414→#441).
+  - Do not report ongoing issue when users do not have permission on
+    `view-stats` action on a cluster in clusters list page.
   - Update dependencies to fix CVE-2024-55565 (nanoid).
 
 ## [4.0.0] - 2024-11-28
