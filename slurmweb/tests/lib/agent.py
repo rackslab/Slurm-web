@@ -11,7 +11,7 @@ import os
 
 
 import werkzeug
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 from rfl.authentication.user import AuthenticatedUser
 from slurmweb.apps import SlurmwebConfSeed
@@ -42,6 +42,10 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
     def __init__(self, **kwargs):
         super().__init__("Fake RacksDB web blueprint", __name__)
+        self.add_url_rule("/fake", view_func=self.basic)
+
+    def basic(self):
+        return jsonify({"test": "ok"})
 
 
 class TestAgentBase(unittest.TestCase):

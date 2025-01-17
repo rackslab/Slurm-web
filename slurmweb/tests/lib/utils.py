@@ -45,6 +45,32 @@ def all_slurm_versions(test):
     return inner
 
 
+def flask_version():
+    """Return version of Flask package as a tuple of integers."""
+    import importlib
+
+    try:
+        version = importlib.metadata.version("flask")
+    except AttributeError:
+        version = flask.__version__
+    return tuple([int(digit) for digit in version.split(".")])
+
+
+# Flask 404 description message has changed in recent versions (one space has been
+# removed). Some tests check this message is used, they use this variable which is
+# defined depending on the version of Flask package found in the environment.
+if flask_version() < (1, 0, 0):
+    flask_404_description = (
+        "The requested URL was not found on the server.  If you entered the URL "
+        "manually please check your spelling and try again."
+    )
+else:
+    flask_404_description = (
+        "The requested URL was not found on the server. If you entered the URL "
+        "manually please check your spelling and try again."
+    )
+
+
 class SlurmwebAssetUnavailable(Exception):
     pass
 
