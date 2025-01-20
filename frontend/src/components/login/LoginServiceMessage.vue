@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, useTemplateRef, watch } from 'vue'
 import { useGatewayDataGetter } from '@/composables/DataGetter'
 import { ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
 import { APIServerError } from '@/composables/HTTPErrors'
@@ -19,7 +19,7 @@ import { APIServerError } from '@/composables/HTTPErrors'
  */
 
 const message = useGatewayDataGetter<string>('message_login', reportError)
-const iframe = ref<HTMLIFrameElement | undefined>()
+const iframe = useTemplateRef<HTMLIFrameElement>('iframe')
 
 function reportError(error: Error) {
   // The gateway API returns HTTP/404 is login service message is not defined.

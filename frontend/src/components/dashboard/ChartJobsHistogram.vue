@@ -7,12 +7,12 @@
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
 import type { MetricJobState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 
-const chartCanvas = ref<HTMLCanvasElement | null>(null)
+const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
 const statesColors: Record<MetricJobState, string> = {
   running: 'rgb(51, 204, 51, 0.7)', // green

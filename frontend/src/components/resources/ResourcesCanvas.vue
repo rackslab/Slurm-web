@@ -6,7 +6,7 @@
   SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, defineModel, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef, watch, defineModel, nextTick } from 'vue'
 import type { Ref, PropType } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
@@ -38,10 +38,10 @@ const unable = defineModel({ required: true, default: false })
 const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
-const container: Ref<HTMLDivElement | null> = ref(null)
+const container = useTemplateRef<HTMLDivElement>('container')
 const loading: Ref<boolean> = ref(true)
-const canvas: Ref<HTMLCanvasElement | null> = ref(null)
-const nodeTooltip: Ref<HTMLDivElement | null> = ref(null)
+const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
+const nodeTooltip = useTemplateRef<HTMLDivElement>('nodeTooltip')
 const nodeTooltipOpen: Ref<boolean> = ref(false)
 const errorMessage: Ref<string | undefined> = ref()
 let timeout: number = -1 // holder for timeout id

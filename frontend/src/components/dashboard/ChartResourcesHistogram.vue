@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from 'vue'
+import { onBeforeMount, useTemplateRef, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -19,7 +19,7 @@ import { Switch } from '@headlessui/vue'
 const router = useRouter()
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
-const chartCanvas = ref<HTMLCanvasElement | null>(null)
+const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
 const statesColors: Record<MetricResourceState, string> = {
   idle: 'rgb(51, 204, 51, 0.7)', // green

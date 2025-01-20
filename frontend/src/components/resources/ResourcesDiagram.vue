@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import type { PropType, Ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon, ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
@@ -26,7 +26,7 @@ const props = defineProps({
 })
 
 const fullscreen: Ref<boolean> = ref(false)
-const fullscreenButton: Ref<HTMLDivElement | null> = ref(null)
+const fullscreenButton = useTemplateRef<HTMLDivElement>('fullscreenButton')
 const displayFullscreenButton: Ref<boolean> = ref(false)
 const unable = ref(false)
 
