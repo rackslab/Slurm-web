@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Do not display infrastructure advanced graphical representation canvas in
     resources page when RacksDB is disabled in agent configuration for a
     cluster (#418→#434).
+  - Remove workaround for Firefox to avoid blurry lines in racks canvas, fixed
+    in Firefox ESR >= 128 and Firefox >= 133.
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
 - docs:
