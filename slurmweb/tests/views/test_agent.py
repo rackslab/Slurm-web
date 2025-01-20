@@ -19,6 +19,7 @@ from slurmweb.slurmrestd.errors import (
 from ..lib.agent import TestAgentBase
 from ..lib.utils import (
     all_slurm_versions,
+    flask_404_description,
     SlurmwebAssetUnavailable,
 )
 
@@ -119,14 +120,14 @@ class TestAgentViews(TestAgentBase):
     def test_request_agent_not_found(self):
         response = self.client.get("/fail")
         self.assertEqual(response.status_code, 404)
-
-        self.assertEqual(response.json["code"], 404)
-        self.assertRegex(
-            response.json["description"],
-            r"^The requested URL was not found on the server.\s? If you entered the "
-            r"URL manually please check your spelling and try again.$",
+        self.assertEqual(
+            response.json,
+            {
+                "code": 404,
+                "description": flask_404_description,
+                "name": "Not Found",
+            },
         )
-        self.assertEqual(response.json["name"], "Not Found")
 
     def test_access_denied(self):
         # Test agent permission denied with @rbac_action decorator by calling /accounts

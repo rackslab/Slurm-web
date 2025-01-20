@@ -84,5 +84,4 @@ describe('ResourcesView.vue', () => {
     // Check absence of main table
     expect(wrapper.find('main table').exists()).toBeFalsy()
   })
-
 })
