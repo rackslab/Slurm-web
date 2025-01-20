@@ -330,7 +330,7 @@ onUnmounted(() => {
   <div
     ref="container"
     :class="[
-      fullscreen ? 'grow' : unable ? 'h-8' : 'h-96',
+      props.fullscreen ? 'grow' : unable ? 'h-8' : 'h-96',
       'flex min-w-full items-center justify-center'
     ]"
   >
