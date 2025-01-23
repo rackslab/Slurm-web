@@ -6,7 +6,7 @@
   SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useTemplateRef, watch, defineModel, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef, watch, nextTick } from 'vue'
 import type { Ref } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
