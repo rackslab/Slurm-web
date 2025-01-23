@@ -7,7 +7,6 @@
 -->
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -15,12 +14,7 @@ import type { Notification } from '@/stores/runtime'
 
 const runtimeStore = useRuntimeStore()
 
-const props = defineProps({
-  notification: {
-    type: Object as PropType<Notification>,
-    required: true
-  }
-})
+const { notification } = defineProps<{ notification: Notification }>()
 </script>
 
 <template>

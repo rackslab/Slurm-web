@@ -8,16 +8,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import type { Ref, PropType } from 'vue'
+import type { Ref } from 'vue'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import { getNodeAllocationState } from '@/composables/GatewayAPI'
 
-const props = defineProps({
-  node: {
-    type: Object as PropType<ClusterNode>,
-    required: true
-  }
-})
+const { node } = defineProps<{ node: ClusterNode }>()
 
 interface NodeAllocationLabelColors {
   label: string
@@ -27,7 +22,7 @@ interface NodeAllocationLabelColors {
 const nodeAllocationLabelColor: Ref<NodeAllocationLabelColors | undefined> = ref()
 
 function getStatusColor(): NodeAllocationLabelColors {
-  switch (getNodeAllocationState(props.node)) {
+  switch (getNodeAllocationState(node)) {
     case 'allocated':
       return {
         label: 'allocated',
@@ -52,7 +47,7 @@ function getStatusColor(): NodeAllocationLabelColors {
 }
 
 watch(
-  () => props.node,
+  () => node,
   () => {
     nodeAllocationLabelColor.value = getStatusColor()
   }

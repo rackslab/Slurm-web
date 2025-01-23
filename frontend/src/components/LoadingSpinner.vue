@@ -7,16 +7,13 @@
 -->
 
 <script setup lang="ts">
-const props = defineProps({
-  size: {
-    type: Number,
-    required: true
-  }
-})
+const { size } = defineProps<{
+  size: number
+}>()
 </script>
 <template>
   <svg
-    :class="`animate-spin h-${props.size} w-${props.size} mx-2 -ml-2 inline-block`"
+    :class="`animate-spin h-${size} w-${size} mx-2 -ml-2 inline-block`"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

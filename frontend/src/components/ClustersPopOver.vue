@@ -13,12 +13,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon } from '@heroicons/vue/24/outline'
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
@@ -31,7 +26,7 @@ const runtimeStore = useRuntimeStore()
         class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-transparent hover:bg-slurmweb-light hover:text-gray-400"
       >
         <ChevronDownIcon class="h-5 w-5" aria-hidden="true" />
-        <span class="text-gray-700 hover:text-gray-900">{{ props.cluster }}</span>
+        <span class="text-gray-700 hover:text-gray-900">{{ cluster }}</span>
       </PopoverButton>
 
       <transition
@@ -104,6 +99,6 @@ const runtimeStore = useRuntimeStore()
     v-else
     class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-gray-700"
   >
-    {{ props.cluster }}
+    {{ cluster }}
   </span>
 </template>

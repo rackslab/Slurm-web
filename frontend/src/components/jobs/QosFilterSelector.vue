@@ -21,12 +21,7 @@ import {
   ComboboxOptions
 } from '@headlessui/vue'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const runtimeStore = useRuntimeStore()
 const query = ref('')
@@ -48,7 +43,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterQos[]>('qos', props.cluster)
+const { data } = useClusterDataGetter<ClusterQos[]>('qos', cluster)
 </script>
 
 <template>

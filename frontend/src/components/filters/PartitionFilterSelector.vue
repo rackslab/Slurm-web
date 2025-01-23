@@ -21,12 +21,7 @@ import {
   ComboboxOptions
 } from '@headlessui/vue'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const model = defineModel<string[]>({ required: true })
 
@@ -52,7 +47,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterPartition[]>('partitions', props.cluster)
+const { data } = useClusterDataGetter<ClusterPartition[]>('partitions', cluster)
 </script>
 
 <template>

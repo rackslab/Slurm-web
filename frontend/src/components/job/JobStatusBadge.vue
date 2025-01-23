@@ -9,19 +9,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  status: {
-    type: Array<String>,
-    required: true
-  },
-  large: {
-    type: Boolean,
-    default: false
-  },
-  label: {
-    type: String
-  }
-})
+const {
+  status,
+  large = false,
+  label
+} = defineProps<{
+  status: string[]
+  large?: boolean
+  label?: string
+}>()
 
 interface JobLabelColors {
   span: string
@@ -29,32 +25,32 @@ interface JobLabelColors {
 }
 
 const statusColor = computed<JobLabelColors>(() => {
-  if (props.status.includes('RUNNING'))
+  if (status.includes('RUNNING'))
     return {
       span: 'bg-green-100 text-green-700',
       circle: 'fill-green-500'
     }
-  else if (props.status.includes('PENDING'))
+  else if (status.includes('PENDING'))
     return {
       span: 'bg-yellow-100 text-yellow-800',
       circle: 'fill-yellow-500'
     }
-  else if (props.status.includes('CANCELLED'))
+  else if (status.includes('CANCELLED'))
     return {
       span: 'bg-purple-100 text-purple-700',
       circle: 'fill-purple-500'
     }
-  else if (props.status.includes('COMPLETED'))
+  else if (status.includes('COMPLETED'))
     return {
       span: 'bg-gray-100 text-gray-600',
       circle: 'fill-green-500'
     }
-  else if (props.status.includes('FAILED'))
+  else if (status.includes('FAILED'))
     return {
       span: 'bg-gray-100 text-gray-600',
       circle: 'fill-red-500'
     }
-  else if (props.status.includes('TIMEOUT'))
+  else if (status.includes('TIMEOUT'))
     return {
       span: 'bg-gray-100 text-gray-600',
       circle: 'fill-orange-600'
@@ -67,18 +63,18 @@ const statusColor = computed<JobLabelColors>(() => {
 })
 
 const mainStatus = computed<string>(() => {
-  if (props.status.includes('RUNNING')) return 'RUNNING'
-  else if (props.status.includes('PENDING')) return 'PENDING'
-  else if (props.status.includes('CANCELLED')) return 'CANCELLED'
-  else if (props.status.includes('COMPLETED')) return 'COMPLETED'
-  else return props.status[0] as string
+  if (status.includes('RUNNING')) return 'RUNNING'
+  else if (status.includes('PENDING')) return 'PENDING'
+  else if (status.includes('CANCELLED')) return 'CANCELLED'
+  else if (status.includes('COMPLETED')) return 'COMPLETED'
+  else return status[0] as string
 })
 </script>
 
 <template>
   <span
     :class="[
-      props.large ? 'max-h-10 text-sm' : 'max-h-6 text-xs',
+      large ? 'max-h-10 text-sm' : 'max-h-6 text-xs',
       'inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 font-medium',
       statusColor.span
     ]"

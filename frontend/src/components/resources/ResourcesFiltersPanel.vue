@@ -21,16 +21,7 @@ import {
 import { ChevronDownIcon, BoltIcon, RectangleGroupIcon } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  nbNodes: {
-    type: Number,
-    required: true
-  }
-})
+const { cluster, nbNodes } = defineProps<{ cluster: string; nbNodes: number }>()
 
 const runtimeStore = useRuntimeStore()
 </script>
@@ -68,7 +59,7 @@ const runtimeStore = useRuntimeStore()
                 Filters
                 <span
                   class="ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-slurmweb md:inline-block"
-                  >{{ props.nbNodes }}</span
+                  >{{ nbNodes }}</span
                 >
               </h2>
               <button
@@ -153,7 +144,7 @@ const runtimeStore = useRuntimeStore()
                 </h3>
                 <DisclosurePanel class="pt-6">
                   <PartitionFilterSelector
-                    :cluster="props.cluster"
+                    :cluster="cluster"
                     v-model="runtimeStore.resources.filters.partitions"
                   />
                 </DisclosurePanel>

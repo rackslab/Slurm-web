@@ -23,16 +23,10 @@ type BreadcrumbPart = {
   routeName?: string
 }
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  breadcrumb: {
-    type: Array<BreadcrumbPart>,
-    required: true
-  }
-})
+const { cluster, breadcrumb } = defineProps<{
+  cluster: string
+  breadcrumb: BreadcrumbPart[]
+}>()
 
 const clusterNotFound: Ref<boolean> = ref(false)
 const runtimeStore = useRuntimeStore()
@@ -40,7 +34,7 @@ const runtimeConfiguration = useRuntimeConfiguration()
 const authStore = useAuthStore()
 
 onMounted(() => {
-  if (!runtimeStore.checkClusterAvailable(props.cluster)) {
+  if (!runtimeStore.checkClusterAvailable(cluster)) {
     clusterNotFound.value = true
   }
 })
@@ -66,8 +60,8 @@ onMounted(() => {
 
       <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <div class="relative mt-1 flex flex-1 items-center">
-          <ClustersPopOver :cluster="props.cluster" />
-          <span v-for="breadcrumbPart in props.breadcrumb" :key="breadcrumbPart.title" class="flex">
+          <ClustersPopOver :cluster="cluster" />
+          <span v-for="breadcrumbPart in breadcrumb" :key="breadcrumbPart.title" class="flex">
             <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
             <router-link v-if="breadcrumbPart.routeName" :to="{ name: breadcrumbPart.routeName }">{{
               breadcrumbPart.title

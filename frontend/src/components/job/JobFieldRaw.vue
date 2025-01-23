@@ -7,15 +7,10 @@
 -->
 
 <script setup lang="ts">
-const props = defineProps({
-  field: {
-    required: true
-  },
-  monospace: {
-    type: Boolean,
-    def: false
-  }
-})
+const { field, monospace = false } = defineProps<{
+  field: string | number
+  monospace?: boolean
+}>()
 </script>
 
 <template>

@@ -7,15 +7,9 @@
 -->
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { ClusterTRES } from '@/composables/GatewayAPI'
 
-defineProps({
-  tres: {
-    type: Object as PropType<ClusterTRES[]>,
-    required: true
-  }
-})
+const { tres } = defineProps<{ tres: ClusterTRES[] }>()
 </script>
 
 <template>

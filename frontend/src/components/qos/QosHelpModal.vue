@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { PropType, Ref } from 'vue'
+import type { Ref } from 'vue'
 import {
   renderClusterOptionalNumber,
   renderClusterTRESHuman,
@@ -24,18 +24,13 @@ export interface QosModalLimitDescription {
   value: ClusterOptionalNumber | ClusterTRES[]
 }
 
-const props = defineProps({
-  helpModalShow: {
-    type: Boolean,
-    required: true
-  },
-  limit: {
-    type: Object as PropType<QosModalLimitDescription>
-  }
-})
+const { helpModalShow, limit } = defineProps<{
+  helpModalShow: boolean
+  limit?: QosModalLimitDescription
+}>()
 
 const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
-  if (!props.limit) {
+  if (!limit) {
     return {
       title: 'Undefined',
       message: 'Undefined message'
@@ -47,38 +42,36 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
   }
 
   function ifValueDefined(message: string): string {
-    if (!props.limit) {
+    if (!limit) {
       return 'N/A'
     }
-    if (isClusterTRES(props.limit.value)) {
-      return props.limit.value.length
+    if (isClusterTRES(limit.value)) {
+      return limit.value.length
         ? message
-        : `Slurm does not enforce this limit with QOS ${props.limit.qos}.`
+        : `Slurm does not enforce this limit with QOS ${limit.qos}.`
     } else {
-      return props.limit.value.set
-        ? message
-        : `Slurm does not enforce this limit with QOS ${props.limit.qos}.`
+      return limit.value.set ? message : `Slurm does not enforce this limit with QOS ${limit.qos}.`
     }
   }
 
   function renderValue(): string {
-    if (!props.limit) {
+    if (!limit) {
       return 'N/A'
     }
-    if (isClusterTRES(props.limit.value)) {
-      return renderClusterTRESHuman(props.limit.value)
+    if (isClusterTRES(limit.value)) {
+      return renderClusterTRESHuman(limit.value)
     } else {
-      return renderClusterOptionalNumber(props.limit.value)
+      return renderClusterOptionalNumber(limit.value)
     }
   }
 
-  switch (props.limit.id) {
+  switch (limit.id) {
     case 'GrpJobs':
       return {
         title: 'Maximum number of running jobs',
         message: ifValueDefined(
           `Slurm does not execute simultaneously more than ${renderValue()} jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           }.`
         )
       }
@@ -87,7 +80,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum number of jobs submitted per user',
         message: ifValueDefined(
           `Slurm does not accept a single user to submit more than ${renderValue()} jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } in cluster queue.`
         )
       }
@@ -96,7 +89,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum number of jobs submitted per account',
         message: ifValueDefined(
           `Slurm does not accept submission of more than ${renderValue()} jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } per account in cluster queue.`
         )
       }
@@ -105,7 +98,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum number of running jobs per user',
         message: ifValueDefined(
           `Slurm does not execute simultaneously more than ${renderValue()} jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } per single user.`
         )
       }
@@ -114,7 +107,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum number of running jobs per account',
         message: ifValueDefined(
           `Slurm does not execute simultaneously more than ${renderValue()} jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } per account.`
         )
       }
@@ -123,7 +116,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum quantity of resources allocated to jobs',
         message: ifValueDefined(
           `Slurm does not allocate simultaneously more than ${renderValue()} to jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           }.`
         )
       }
@@ -132,7 +125,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum quantity of resources allocated to jobs per user',
         message: ifValueDefined(
           `Slurm does not allocate simultaneously more than ${renderValue()} to jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } per single user.`
         )
       }
@@ -141,7 +134,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum quantity of resources allocated to jobs per account',
         message: ifValueDefined(
           `Slurm does not allocate simultaneously more than ${renderValue()} to jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           } per account.`
         )
       }
@@ -150,7 +143,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum quantity of resources allocated per job',
         message: ifValueDefined(
           `Slurm does not allocate more than ${renderValue()} per job associated with this QOS ${
-            props.limit.qos
+            limit.qos
           }.`
         )
       }
@@ -159,7 +152,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum quantity of resources allocated per node',
         message: ifValueDefined(
           `Slurm does not allocate more than ${renderValue()} per node to jobs associated with this QOS ${
-            props.limit.qos
+            limit.qos
           }.`
         )
       }
@@ -168,8 +161,8 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum jobs time limit',
         message: ifValueDefined(
           `Slurm does not allow jobs requiring more than ${
-            isClusterTRES(props.limit.value) ? 'N/A' : renderWalltime(props.limit.value)
-          } with this QOS ${props.limit.qos}.`
+            isClusterTRES(limit.value) ? 'N/A' : renderWalltime(limit.value)
+          } with this QOS ${limit.qos}.`
         )
       }
     default:
@@ -182,7 +175,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
 </script>
 
 <template>
-  <TransitionRoot as="template" :show="props.helpModalShow">
+  <TransitionRoot as="template" :show="helpModalShow">
     <Dialog as="div" class="relative z-50" @close="$emit('closeHelpModal')">
       <TransitionChild
         as="template"

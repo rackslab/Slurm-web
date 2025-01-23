@@ -24,12 +24,7 @@ import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { ChevronRightIcon, MagnifyingGlassPlusIcon } from '@heroicons/vue/20/solid'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
 const runtimeStore = useRuntimeStore()
@@ -165,9 +160,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'Resources' }]">
+  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Resources' }]">
     <div class="bg-white">
-      <ResourcesFiltersPanel :cluster="props.cluster" :nbNodes="filteredNodes.length" />
+      <ResourcesFiltersPanel :cluster="cluster" :nbNodes="filteredNodes.length" />
 
       <div class="mx-auto flex items-center justify-between px-4 py-16 sm:px-6 lg:px-8">
         <div>
@@ -184,15 +179,15 @@ onMounted(() => {
       </div>
 
       <ResourcesDiagram
-        v-if="runtimeStore.getCluster(props.cluster).racksdb"
-        :cluster="props.cluster"
+        v-if="runtimeStore.getCluster(cluster).racksdb"
+        :cluster="cluster"
         :nodes="filteredNodes"
       />
       <ResourcesFiltersBar />
 
       <ErrorAlert v-if="unable"
         >Unable to retrieve nodes from cluster
-        <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+        <span class="font-medium">{{ cluster }}</span></ErrorAlert
       >
       <div v-else class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

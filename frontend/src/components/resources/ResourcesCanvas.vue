@@ -7,7 +7,7 @@
 -->
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useTemplateRef, watch, defineModel, nextTick } from 'vue'
-import type { Ref, PropType } from 'vue'
+import type { Ref } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
@@ -17,20 +17,11 @@ import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import router from '@/router'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  nodes: {
-    type: Array as PropType<ClusterNode[]>,
-    required: true
-  },
-  fullscreen: {
-    type: Boolean,
-    required: true
-  }
-})
+const { cluster, nodes, fullscreen } = defineProps<{
+  cluster: string
+  nodes: ClusterNode[]
+  fullscreen: boolean
+}>()
 
 const emit = defineEmits(['imageSize'])
 const unable = defineModel({ required: true, default: false })
@@ -60,7 +51,7 @@ let y_shift: number = 1
 
 function getClusterNode(nodeName: string): ClusterNode | undefined {
   try {
-    return props.nodes.filter((node) => node.name == nodeName)[0]
+    return nodes.filter((node) => node.name == nodeName)[0]
   } catch (error: any) {
     console.log(`Error ${error.name} in getClusterNode(${nodeName}): ${error.message}`)
     return undefined
@@ -129,8 +120,8 @@ async function updateCanvas(fullUpdate: boolean = true) {
       canvas.value.height = container.value.clientHeight
       try {
         ;[image, coordinates] = await gateway.infrastructureImagePng(
-          props.cluster,
-          runtimeStore.getCluster(props.cluster).infrastructure,
+          cluster,
+          runtimeStore.getCluster(cluster).infrastructure,
           canvas.value.width,
           canvas.value.height
         )
@@ -264,7 +255,7 @@ function setMouseEventHandler() {
     for (const [nodeName, nodePath] of Object.entries(allNodesPaths)) {
       const isPointInPath = ctx.isPointInPath(nodePath.path, event.offsetX, event.offsetY)
       if (isPointInPath) {
-        router.push({ name: 'node', params: { cluster: props.cluster, nodeName: nodeName } })
+        router.push({ name: 'node', params: { cluster: cluster, nodeName: nodeName } })
       }
     }
   })
@@ -292,7 +283,7 @@ function updateCanvasDimensions() {
  * If cluster changes, reset everything and fully redraw canvas.
  */
 watch(
-  () => props.cluster,
+  () => cluster,
   async () => {
     unable.value = false
     currentNode.value = undefined
@@ -309,7 +300,7 @@ watch(
  * image/coordinates).
  */
 watch(
-  () => props.nodes,
+  () => nodes,
   () => {
     allNodesPaths = {}
     updateCanvas(false)
@@ -330,7 +321,7 @@ onUnmounted(() => {
   <div
     ref="container"
     :class="[
-      props.fullscreen ? 'grow' : unable ? 'h-8' : 'h-96',
+      fullscreen ? 'grow' : unable ? 'h-8' : 'h-96',
       'flex min-w-full items-center justify-center'
     ]"
   >

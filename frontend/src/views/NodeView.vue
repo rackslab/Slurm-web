@@ -21,16 +21,7 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  nodeName: {
-    type: String,
-    required: true
-  }
-})
+const { cluster, nodeName } = defineProps<{ cluster: string; nodeName: string }>()
 
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
@@ -43,12 +34,12 @@ function backToResources() {
   })
 }
 
-const node = useClusterDataPoller<ClusterIndividualNode>('node', 5000, props.nodeName)
+const node = useClusterDataPoller<ClusterIndividualNode>('node', 5000, nodeName)
 
 /* Poll jobs on current nodes if user has permission on view-jobs action. */
 let jobs: ClusterDataPoller<ClusterJob[]> | undefined
 if (runtimeStore.hasPermission('view-jobs')) {
-  jobs = useClusterDataPoller<ClusterJob[]>('jobs', 10000, props.nodeName)
+  jobs = useClusterDataPoller<ClusterJob[]>('jobs', 10000, nodeName)
 }
 </script>
 
@@ -67,7 +58,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
     </button>
     <ErrorAlert v-if="node.unable.value"
       >Unable to retrieve node {{ nodeName }} from cluster
-      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+      <span class="font-medium">{{ cluster }}</span></ErrorAlert
     >
     <div v-else-if="!node.loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
       <LoadingSpinner :size="5" />
@@ -129,7 +120,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
                     <ul v-if="jobs.data.value.length">
                       <li v-for="job in jobs.data.value" :key="job.job_id" class="inline">
                         <RouterLink
-                          :to="{ name: 'job', params: { cluster: props.cluster, id: job.job_id } }"
+                          :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
                         >
                           <JobStatusBadge
                             :status="job.job_state"

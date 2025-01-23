@@ -26,16 +26,7 @@ import JobFieldComment from '@/components/job/JobFieldComment.vue'
 import JobFieldExitCode from '@/components/job/JobFieldExitCode.vue'
 import JobFieldTRES from '@/components/job/JobFieldTRES.vue'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  id: {
-    type: Number,
-    required: true
-  }
-})
+const { cluster, id } = defineProps<{ cluster: string; id: number }>()
 
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
@@ -73,7 +64,7 @@ function isValidJobField(key: string): key is JobField {
   return typeof key === 'string' && JobsFields.includes(key as JobField)
 }
 
-const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, props.id)
+const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, id)
 
 const displayTags = ref<Record<JobField, { show: boolean; highlight: boolean }>>({
   user: { show: false, highlight: false },
@@ -208,7 +199,7 @@ onMounted(() => {
 
     <ErrorAlert v-if="unable"
       >Unable to retrieve job {{ id }} from cluster
-      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+      <span class="font-medium">{{ cluster }}</span></ErrorAlert
     >
     <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
       <LoadingSpinner :size="5" />

@@ -15,18 +15,13 @@ import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservations', 10000)
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'Reservations' }]">
+  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Reservations' }]">
     <div class="mx-auto flex items-center justify-between">
       <div class="px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">Reservations</h1>
@@ -37,11 +32,10 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
     </div>
     <ErrorAlert v-if="unable"
       >Unable to retrieve reservations from cluster
-      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+      <span class="font-medium">{{ cluster }}</span></ErrorAlert
     >
     <InfoAlert v-else-if="data?.length == 0"
-      >No reservation defined on cluster
-      <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+      >No reservation defined on cluster <span class="font-medium">{{ cluster }}</span></InfoAlert
     >
     <div v-else class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

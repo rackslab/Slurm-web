@@ -7,15 +7,9 @@
 -->
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { ClusterJobComment } from '@/composables/GatewayAPI'
 
-const props = defineProps({
-  comment: {
-    type: Object as PropType<ClusterJobComment>,
-    required: true
-  }
-})
+const { comment } = defineProps<{ comment: ClusterJobComment }>()
 </script>
 
 <template>

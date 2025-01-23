@@ -24,12 +24,7 @@ import QosHelpModal from '@/components/qos/QosHelpModal.vue'
 import type { QosModalLimitDescription } from '@/components/qos/QosHelpModal.vue'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const { data, unable } = useClusterDataPoller<ClusterQos[]>('qos', 10000)
 
@@ -108,7 +103,7 @@ function qosResourcesLimits(qos: ClusterQos) {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'QOS' }]">
+  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'QOS' }]">
     <div class="mx-auto flex items-center justify-between">
       <div class="px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">QOS</h1>
@@ -122,10 +117,10 @@ function qosResourcesLimits(qos: ClusterQos) {
     />
     <ErrorAlert v-if="unable"
       >Unable to retrieve qos from cluster
-      <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+      <span class="font-medium">{{ cluster }}</span></ErrorAlert
     >
     <InfoAlert v-else-if="data?.length == 0"
-      >No qos defined on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+      >No qos defined on cluster <span class="font-medium">{{ cluster }}</span></InfoAlert
     >
     <div v-else class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -259,7 +254,7 @@ function qosResourcesLimits(qos: ClusterQos) {
                   <RouterLink
                     :to="{
                       name: 'jobs',
-                      params: { cluster: props.cluster },
+                      params: { cluster: cluster },
                       query: { qos: qos.name }
                     }"
                     class="font-bold text-slurmweb hover:text-slurmweb-dark"

@@ -8,16 +8,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import type { Ref, PropType } from 'vue'
+import type { Ref } from 'vue'
 import { getNodeMainState } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 
-const props = defineProps({
-  node: {
-    type: Object as PropType<ClusterNode>,
-    required: true
-  }
-})
+const { node } = defineProps<{ node: ClusterNode }>()
 
 interface NodeMainLabelColors {
   span: string
@@ -28,7 +23,7 @@ interface NodeMainLabelColors {
 const nodeMainLabelColors: Ref<NodeMainLabelColors | undefined> = ref()
 
 function getStatusColor(): NodeMainLabelColors {
-  switch (getNodeMainState(props.node)) {
+  switch (getNodeMainState(node)) {
     case 'down':
       return {
         span: 'bg-red-100 text-red-700',
@@ -56,7 +51,7 @@ function getStatusColor(): NodeMainLabelColors {
   }
 }
 watch(
-  () => props.node,
+  () => node,
   () => {
     nodeMainLabelColors.value = getStatusColor()
   }

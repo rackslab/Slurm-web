@@ -16,22 +16,17 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 
 const runtimeStore = useRuntimeStore()
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'Dashboard' }]">
+  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Dashboard' }]">
     <div class="mx-auto max-w-7xl bg-white">
       <ErrorAlert v-if="unable"
         >Unable to retrieve statistics from cluster
-        <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+        <span class="font-medium">{{ cluster }}</span></ErrorAlert
       >
       <div v-else class="grid grid-cols-1 gap-px bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
@@ -87,7 +82,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
       </div>
-      <DashboardCharts v-if="runtimeStore.getCluster(props.cluster).metrics"></DashboardCharts>
+      <DashboardCharts v-if="runtimeStore.getCluster(cluster).metrics"></DashboardCharts>
     </div>
   </ClusterMainLayout>
 </template>

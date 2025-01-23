@@ -26,12 +26,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon, CpuChipIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  }
-})
+const { cluster } = defineProps<{ cluster: string }>()
 
 const route = useRoute()
 const { data, unable, loaded } = useClusterDataPoller<ClusterJob[]>('jobs', 5000)
@@ -267,9 +262,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="props.cluster" :breadcrumb="[{ title: 'Jobs' }]">
+  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Jobs' }]">
     <div class="bg-white">
-      <JobsFiltersPanel :cluster="props.cluster" :nb-jobs="sortedJobs.length" />
+      <JobsFiltersPanel :cluster="cluster" :nb-jobs="sortedJobs.length" />
       <div class="mx-auto flex items-center justify-between">
         <div class="px-4 py-16 sm:px-6 lg:px-8">
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">Jobs</h1>
@@ -307,14 +302,14 @@ onMounted(() => {
       <div class="mt-8 flow-root">
         <ErrorAlert v-if="unable"
           >Unable to retrieve jobs from cluster
-          <span class="font-medium">{{ props.cluster }}</span></ErrorAlert
+          <span class="font-medium">{{ cluster }}</span></ErrorAlert
         >
         <div v-else-if="!loaded" class="text-gray-400 sm:pl-6 lg:pl-8">
           <LoadingSpinner :size="5" />
           Loading jobs…
         </div>
         <InfoAlert v-else-if="data?.length == 0"
-          >No jobs found on cluster <span class="font-medium">{{ props.cluster }}</span></InfoAlert
+          >No jobs found on cluster <span class="font-medium">{{ cluster }}</span></InfoAlert
         >
         <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">

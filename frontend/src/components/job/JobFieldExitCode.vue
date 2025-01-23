@@ -7,15 +7,9 @@
 -->
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { ClusterJobExitCode } from '@/composables/GatewayAPI'
 
-defineProps({
-  exit_code: {
-    type: Object as PropType<ClusterJobExitCode>,
-    required: true
-  }
-})
+const { exit_code } = defineProps<{ exit_code: ClusterJobExitCode }>()
 </script>
 
 <template>

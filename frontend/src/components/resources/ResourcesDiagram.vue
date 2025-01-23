@@ -8,22 +8,16 @@
 
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
-import type { PropType, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon, ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  nodes: {
-    type: Array as PropType<ClusterNode[]>,
-    required: true
-  }
-})
+const { cluster, nodes } = defineProps<{
+  cluster: string
+  nodes: ClusterNode[]
+}>()
 
 const fullscreen: Ref<boolean> = ref(false)
 const fullscreenButton = useTemplateRef<HTMLDivElement>('fullscreenButton')
@@ -62,8 +56,8 @@ function mouseOverThumbnail() {
       <ArrowsPointingOutIcon class="h-6 w-6" aria-hidden="true" />
     </button>
     <ResourcesCanvas
-      :cluster="props.cluster"
-      :nodes="props.nodes"
+      :cluster="cluster"
+      :nodes="nodes"
       :fullscreen="fullscreen"
       @image-size="positionFullscreenButton"
       v-model="unable"
@@ -114,11 +108,11 @@ function mouseOverThumbnail() {
                 <DialogTitle
                   as="h3"
                   class="flex p-6 text-base font-semibold leading-6 text-gray-900"
-                  >Cluster {{ props.cluster }}</DialogTitle
+                  >Cluster {{ cluster }}</DialogTitle
                 >
                 <ResourcesCanvas
-                  :cluster="props.cluster"
-                  :nodes="props.nodes"
+                  :cluster="cluster"
+                  :nodes="nodes"
                   :fullscreen="fullscreen"
                   v-model="unable"
                 />

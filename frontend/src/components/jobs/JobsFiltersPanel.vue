@@ -33,16 +33,7 @@ import {
 } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
-  cluster: {
-    type: String,
-    required: true
-  },
-  nbJobs: {
-    type: Number,
-    required: true
-  }
-})
+const { cluster, nbJobs } = defineProps<{ cluster: string; nbJobs: number }>()
 
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
@@ -204,7 +195,7 @@ const state_filters = [
                   </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                  <AccountFilterSelector :cluster="props.cluster" />
+                  <AccountFilterSelector :cluster="cluster" />
                 </DisclosurePanel>
               </Disclosure>
               <Disclosure
@@ -232,7 +223,7 @@ const state_filters = [
                   </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                  <QosFilterSelector :cluster="props.cluster" />
+                  <QosFilterSelector :cluster="cluster" />
                 </DisclosurePanel>
               </Disclosure>
               <Disclosure
@@ -261,7 +252,7 @@ const state_filters = [
                 </h3>
                 <DisclosurePanel class="pt-6">
                   <PartitionFilterSelector
-                    :cluster="props.cluster"
+                    :cluster="cluster"
                     v-model="runtimeStore.jobs.filters.partitions"
                   />
                 </DisclosurePanel>

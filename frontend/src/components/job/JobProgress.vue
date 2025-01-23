@@ -8,34 +8,28 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { PropType } from 'vue'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobProgressComment from '@/components/job/JobProgressComment.vue'
 import { CheckIcon } from '@heroicons/vue/20/solid'
 
-const props = defineProps({
-  job: {
-    type: Object as PropType<ClusterIndividualJob>,
-    required: true
-  }
-})
+const { job } = defineProps<{ job: ClusterIndividualJob }>()
 
 const current = computed((): [number, boolean] => {
   const now = new Date()
-  if (props.job.time.end && new Date(props.job.time.end * 1000) < now) {
+  if (job.time.end && new Date(job.time.end * 1000) < now) {
     return [5, false]
   }
-  if (props.job.time.start) {
-    if (new Date(props.job.time.start * 1000) < now) {
+  if (job.time.start) {
+    if (new Date(job.time.start * 1000) < now) {
       return [2, true]
     } else {
       return [2, false]
     }
   }
-  if (props.job.time.eligible && new Date(props.job.time.eligible * 1000) < now) {
+  if (job.time.eligible && new Date(job.time.eligible * 1000) < now) {
     return [1, true]
   }
-  if (props.job.time.submission && new Date(props.job.time.submission * 1000) < now) {
+  if (job.time.submission && new Date(job.time.submission * 1000) < now) {
     return [0, true]
   }
   return [0, false]
@@ -72,7 +66,7 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
             <span class="text-sm font-medium">{{ capitalize(step) }}</span>
-            <JobProgressComment :job="props.job" :step="step" />
+            <JobProgressComment :job="job" :step="step" />
           </span>
         </div>
       </template>
@@ -92,7 +86,7 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
             <span class="text-sm font-medium text-slurmweb-dark">{{ capitalize(step) }}</span>
-            <JobProgressComment :job="props.job" :step="step" />
+            <JobProgressComment :job="job" :step="step" />
           </span>
         </div>
       </template>
@@ -112,7 +106,7 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
             <span class="text-sm font-medium text-gray-500">{{ capitalize(step) }}</span>
-            <JobProgressComment :job="props.job" :step="step" />
+            <JobProgressComment :job="job" :step="step" />
           </span>
         </div>
       </template>
