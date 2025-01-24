@@ -31,6 +31,7 @@ jobs:
 
       - name: Install tests dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install -y build-essential python3-dev libldap2-dev libsasl2-dev libcairo2-dev libgirepository1.0-dev libpango1.0-dev
           python -m pip install --upgrade pip
 
