@@ -16,6 +16,7 @@ from flask import Blueprint, jsonify
 from rfl.authentication.user import AuthenticatedUser
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
+from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
 
 from .utils import (
     mock_slurmrestd_responses,
@@ -50,7 +51,12 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 class TestAgentBase(unittest.TestCase):
 
-    def setup_client(self, additional_conf=None):
+    def setup_client(
+        self,
+        additional_conf=None,
+        racksdb_format_error=False,
+        racksdb_schema_error=False,
+    ):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")
         key.write("hey")
@@ -81,7 +87,12 @@ class TestAgentBase(unittest.TestCase):
 
         # Start the app with mocked RacksDB web blueprint
         with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
-            m.return_value = FakeRacksDBWebBlueprint()
+            if racksdb_format_error:
+                m.side_effect = RacksDBFormatError("fake db format error")
+            elif racksdb_schema_error:
+                m.side_effect = RacksDBSchemaError("fake db schema error")
+            else:
+                m.return_value = FakeRacksDBWebBlueprint()
             self.app = SlurmwebAppAgent(
                 SlurmwebConfSeed(
                     debug=False,

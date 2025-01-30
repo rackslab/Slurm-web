@@ -26,6 +26,26 @@ class TestAgentRacksDBEnabledRequest(TestAgentBase):
         )
 
 
+class TestAgentRacksDBUnabledRequest(TestAgentBase):
+
+    def setUp(self):
+        self.setup_client(racksdb_format_error=True)
+
+    def test_request_racksdb(self):
+        # Check FakeRacksDBWebBlueprint is not registered when racksdb is unable to load
+        # database.
+        response = self.client.get("/racksdb/fake")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 404,
+                "description": flask_404_description,
+                "name": "Not Found",
+            },
+        )
+
+
 class TestAgentRacksDBDisabledRequest(TestAgentBase):
 
     def setUp(self):
