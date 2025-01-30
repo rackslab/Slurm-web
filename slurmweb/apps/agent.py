@@ -73,11 +73,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                     url_prefix="/racksdb",
                 )
             except RacksDBSchemaError as err:
-                logger.critical("Unable to load RacksDB schema: %s", err)
-                sys.exit(1)
+                logger.error("Unable to load RacksDB schema: %s", err)
             except RacksDBFormatError as err:
-                logger.critical("Unable to load RacksDB database: %s", err)
-                sys.exit(1)
+                logger.error("Unable to load RacksDB database: %s", err)
 
         if self.settings.policy.roles.exists():
             logger.debug("Select RBAC site roles policy %s", self.settings.policy.roles)
