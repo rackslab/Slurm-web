@@ -249,7 +249,7 @@ onMounted(() => {
                         class="inline-flex text-white hover:font-bold hover:text-gray-500"
                         :to="{
                           name: 'node',
-                          params: { cluster: $props.cluster, nodeName: node.name }
+                          params: { cluster: cluster, nodeName: node.name }
                         }"
                       >
                         <span class="pr-4 font-mono text-black">{{ node.name }}</span>
