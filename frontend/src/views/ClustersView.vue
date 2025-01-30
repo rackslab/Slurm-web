@@ -42,6 +42,10 @@ async function getClustersDescriptions() {
     clusters.value = await gateway.clusters()
     runtimeStore.availableClusters = []
     clusters.value.forEach((element) => {
+      /* Consider this cluster does not have error at this stage. It could be
+       * set to true if stats retrieval fail later on.
+       */
+      element.error = false
       if (element.permissions.actions.length > 0) {
         runtimeStore.addCluster(element)
       }

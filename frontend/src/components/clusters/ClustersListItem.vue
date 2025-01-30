@@ -20,7 +20,6 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const { cluster } = defineProps<{ cluster: ClusterDescription }>()
 
 const runtimeStore = useRuntimeStore()
-const clusterError = ref<boolean>(false)
 const loading = ref<boolean>(true)
 
 function reportAuthenticationError(error: AuthenticationError) {
@@ -30,7 +29,7 @@ function reportAuthenticationError(error: AuthenticationError) {
 
 function reportOtherError(error: Error) {
   runtimeStore.reportError(`Server error: ${error.message}`)
-  clusterError.value = true
+  cluster.error = true
 }
 
 const gateway = useGatewayAPI()
@@ -48,7 +47,7 @@ async function getClusterStats() {
       reportAuthenticationError(error)
     } else {
       reportOtherError(error)
-      clusterError.value = true
+      cluster.error = true
     }
   }
   loading.value = false
@@ -117,7 +116,7 @@ onMounted(() => {
           </div>
           <p class="text-xs leading-5 text-gray-500">Denied</p>
         </div>
-        <div v-else-if="clusterError" class="mt-1 flex items-center gap-x-1.5">
+        <div v-else-if="cluster.error" class="mt-1 flex items-center gap-x-1.5">
           <div class="flex-none rounded-full bg-orange-500/20 p-1">
             <div class="h-1.5 w-1.5 rounded-full bg-orange-500" />
           </div>

@@ -22,6 +22,7 @@ export interface ClusterDescription {
   metrics: boolean
   permissions: ClusterPermissions
   stats?: ClusterStats
+  error?: boolean
 }
 
 interface ClusterPermissions {

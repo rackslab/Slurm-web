@@ -56,14 +56,14 @@ const runtimeStore = useRuntimeStore()
                 >
                   <div
                     :class="[
-                      cluster.stats ? 'bg-emerald-500/20' : 'bg-orange-500/20',
-                      'flex-none rounded-full  p-1'
+                      cluster.error ? 'bg-orange-500/20' : 'bg-emerald-500/20',
+                      'flex-none rounded-full p-1'
                     ]"
                   >
                     <div
                       :class="[
-                        cluster.stats ? 'bg-emerald-500' : 'bg-orange-500',
-                        'h-1.5 w-1.5 rounded-full bg-emerald-500'
+                        cluster.error ? 'bg-orange-500' : 'bg-emerald-500',
+                        'h-1.5 w-1.5 rounded-full'
                       ]"
                     />
                   </div>
