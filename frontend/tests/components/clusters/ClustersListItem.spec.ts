@@ -4,6 +4,7 @@ import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import stats from '../../assets/stats.json'
 import { init_plugins } from '../../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
+import { APIServerError } from '@/composables/HTTPErrors'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const mockGatewayAPI = {
@@ -50,6 +51,31 @@ describe('ClustersListItem.vue', () => {
     expect(statsElements[1].text()).toContain('jobs')
     // Check cluster status is available
     expect(wrapper.get('div div p').text()).toBe('Available')
+    // Check error flag is false
+    expect(useRuntimeStore().getCluster('foo').error).toBeFalsy()
+  })
+  test('cluster error', async () => {
+    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    mockGatewayAPI.stats.mockImplementationOnce(() => {
+      throw new APIServerError(500, 'fake error')
+    })
+    const wrapper = shallowMount(ClusterListItem, {
+      props: {
+        cluster: useRuntimeStore().availableClusters[0]
+      }
+    })
+    // Wait for result of clusters requests
+    await flushPromises()
+    // assert stats have been retrieved
+    expect(mockGatewayAPI.stats).toBeCalled()
+    // Check Slurm version is absent
+    expect(wrapper.find('span span').exists()).toBeFalsy()
+    // Check there is only one paragraph for cluster status, not for stats
+    expect(wrapper.findAll('p').length).toBe(1)
+    // Check cluster status informs about ongoing issue
+    expect(wrapper.get('div div p').text()).toBe('Ongoing issue')
+    // Check error flag is true
+    expect(useRuntimeStore().getCluster('foo').error).toBeTruthy()
   })
   test('cluster loading', async () => {
     useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
