@@ -13,7 +13,7 @@ import jinja2
 from flask import Response, current_app, jsonify, request, abort, render_template
 import aiohttp
 from rfl.web.tokens import check_jwt
-from rfl.authentication.user import AuthenticatedUser
+from rfl.authentication.user import AnonymousUser
 from rfl.authentication.errors import LDAPAuthenticationError
 from rfl.core.asyncio import asyncio_run
 
@@ -85,7 +85,7 @@ def anonymous():
         abort(401, "Unauthorized anonymous access")
     # Generate token
     token = current_app.jwt.generate(
-        user=AuthenticatedUser(login="anonymous", fullname="anonymous", groups=[]),
+        user=AnonymousUser(),
         duration=current_app.settings.jwt.duration,
     )
     return jsonify(
