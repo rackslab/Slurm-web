@@ -10,7 +10,7 @@ import os
 
 import werkzeug
 
-from rfl.authentication.user import AuthenticatedUser
+from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 
@@ -65,9 +65,7 @@ class TestGatewayBase(unittest.TestCase):
         # Get token valid to get user role with all permissions as defined in
         # default policy.
         if anonymous_user:
-            self.user = AuthenticatedUser(
-                login="anonymous", fullname="anonymous", groups=[]
-            )
+            self.user = AnonymousUser()
         else:
             self.user = AuthenticatedUser(
                 login="test", fullname="Testing User", groups=["group"]
