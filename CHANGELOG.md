@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `view-stats` action on a cluster in clusters list page.
   - Update dependencies to fix CVE-2024-55565 (nanoid) and CVE-2025-24010
     (vite).
+- pkgs: Bump dependency to RFL.web 1.3.0 to fix access to restricted endpoints
+  with anonymous token or no token (#460,#462→#461).
 
 ## [4.0.0] - 2024-11-28
 
