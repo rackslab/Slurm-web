@@ -161,7 +161,7 @@ class RemoveActionInPolicy:
         for _role in self.policy.loader.roles:
             if _role.name == self.role:
                 _role.actions.remove(self.action)
-            if _role.name == "anonymous" and self.action in _role.actions:
+            if _role.name == ANONYMOUS_ROLE and self.action in _role.actions:
                 _role.actions.remove(self.action)
                 self.removed_in_anonymous = True
 
@@ -169,5 +169,5 @@ class RemoveActionInPolicy:
         for _role in self.policy.loader.roles:
             if _role.name == self.role:
                 _role.actions.add(self.action)
-            if _role.name == "anonymous" and self.removed_in_anonymous:
+            if _role.name == ANONYMOUS_ROLE and self.removed_in_anonymous:
                 _role.actions.add(self.action)
