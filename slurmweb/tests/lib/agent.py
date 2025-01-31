@@ -14,6 +14,7 @@ import werkzeug
 from flask import Blueprint, jsonify
 
 from rfl.authentication.user import AuthenticatedUser
+from rfl.permissions.rbac import ANONYMOUS_ROLE
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
 from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
@@ -56,6 +57,8 @@ class TestAgentBase(unittest.TestCase):
         additional_conf=None,
         racksdb_format_error=False,
         racksdb_schema_error=False,
+        anonymous_user=False,
+        anonymous_enabled=True,
     ):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")
@@ -102,6 +105,11 @@ class TestAgentBase(unittest.TestCase):
                     conf=conf.name,
                 )
             )
+        if not anonymous_enabled:
+            for role in self.app.policy.loader.roles.copy():
+                if role.name == ANONYMOUS_ROLE:
+                    self.app.policy.loader.roles.remove(role)
+
         conf.close()
         key.close()
         self.app.config.update(
@@ -112,12 +120,19 @@ class TestAgentBase(unittest.TestCase):
 
         # Get token valid to get user role with all permissions as defined in
         # default policy.
-        token = self.app.jwt.generate(
-            user=AuthenticatedUser(
+        if anonymous_user:
+            self.user = AuthenticatedUser(
+                login="anonymous", fullname="anonymous", groups=[]
+            )
+        else:
+            self.user = AuthenticatedUser(
                 login="test", fullname="Testing User", groups=["group"]
-            ),
+            )
+        token = self.app.jwt.generate(
+            user=self.user,
             duration=3600,
         )
+
         # werkzeug.test.TestResponse class does not have text and json
         # properties in werkzeug <= 0.15. When such version is installed, use
         # custom test response class to backport these text and json properties.

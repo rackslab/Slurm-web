@@ -54,15 +54,6 @@ class TestAgentViews(TestAgentBase):
         self.assertIn("metrics", response.json)
         self.assertIsInstance(response.json["metrics"], bool)
 
-    def test_permissions(self):
-        response = self.client.get(f"/v{get_version()}/permissions")
-        self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.json, dict)
-        self.assertEqual(len(response.json.keys()), 2)
-        self.assertIn("actions", response.json)
-        self.assertIn("roles", response.json)
-        self.assertCountEqual(response.json["roles"], ["user"])
-
     #
     # General error cases
     #
