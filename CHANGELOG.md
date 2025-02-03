@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update configuration reference documentation.
 
 ### Fixed
+- backend: Remove `en_US.UTF-8` locale requirement for uwsgi services
+  (#432→#463).
 - agent: Fix No module named 'werkzeug.middleware' ModuleNotFoundError with
   Werkzeug < 0.15 (#419→420).
 - frontend:
