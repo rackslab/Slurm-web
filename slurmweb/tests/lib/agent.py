@@ -107,9 +107,7 @@ class TestAgentBase(unittest.TestCase):
                 )
             )
         if not anonymous_enabled:
-            for role in self.app.policy.loader.roles.copy():
-                if role.name == ANONYMOUS_ROLE:
-                    self.app.policy.loader.roles.remove(role)
+            self.app.policy.disable_anonymous()
 
         conf.close()
         key.close()
