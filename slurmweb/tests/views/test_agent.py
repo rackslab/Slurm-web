@@ -120,37 +120,6 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
-    def test_access_denied(self):
-        # Test agent permission denied with @rbac_action decorator by calling /accounts
-        # without authentication token, ie. as anonymous who is denied to access this
-        # route in Slurm-web default authorization policy.
-        del self.client.environ_base["HTTP_AUTHORIZATION"]
-        response = self.client.get(f"/v{get_version()}/accounts")
-        self.assertEqual(response.status_code, 403)
-        self.assertEqual(
-            response.json,
-            {
-                "code": 403,
-                "description": (
-                    "Anonymous role is not allowed to perform action view-accounts"
-                ),
-                "name": "Forbidden",
-            },
-        )
-
-    def test_invalid_token(self):
-        self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer failed"
-        response = self.client.get(f"/v{get_version()}/jobs")
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(
-            response.json,
-            {
-                "code": 401,
-                "description": "Unable to decode token: Not enough segments",
-                "name": "Unauthorized",
-            },
-        )
-
     #
     # slurmrestd ressources
     #

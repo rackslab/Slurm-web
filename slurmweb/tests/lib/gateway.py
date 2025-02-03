@@ -8,9 +8,13 @@ import unittest
 import tempfile
 import os
 
+import werkzeug
+
+from rfl.authentication.user import AuthenticatedUser
 from slurmweb.apps import SlurmwebConfSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 
+from .utils import SlurmwebCustomTestResponse
 
 CONF = """
 [agents]
@@ -23,7 +27,7 @@ key={key}
 
 class TestGatewayBase(unittest.TestCase):
 
-    def setup_app(self):
+    def setup_app(self, anonymous_user=False, use_token=True):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")
         key.write("hey")
@@ -57,3 +61,31 @@ class TestGatewayBase(unittest.TestCase):
                 "TESTING": True,
             }
         )
+
+        # Get token valid to get user role with all permissions as defined in
+        # default policy.
+        if anonymous_user:
+            self.user = AuthenticatedUser(
+                login="anonymous", fullname="anonymous", groups=[]
+            )
+        else:
+            self.user = AuthenticatedUser(
+                login="test", fullname="Testing User", groups=["group"]
+            )
+
+        # werkzeug.test.TestResponse class does not have text and json
+        # properties in werkzeug <= 0.15. When such version is installed, use
+        # custom test response class to backport these text and json properties.
+        try:
+            getattr(werkzeug.test.TestResponse, "text")
+            getattr(werkzeug.test.TestResponse, "json")
+        except AttributeError:
+            self.app.response_class = SlurmwebCustomTestResponse
+
+        self.client = self.app.test_client()
+        if use_token:
+            token = self.app.jwt.generate(
+                user=self.user,
+                duration=3600,
+            )
+            self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token

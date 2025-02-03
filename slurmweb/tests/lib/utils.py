@@ -45,6 +45,17 @@ def all_slurm_versions(test):
     return inner
 
 
+def any_slurm_version(test):
+    """Return test with first slurm version"""
+
+    def inner(self, *args, **kwargs):
+        for slurm_version in slurm_versions():
+            test(self, slurm_version, *args, **kwargs)
+            break
+
+    return inner
+
+
 def flask_version():
     """Return version of Flask package as a tuple of integers."""
     import importlib

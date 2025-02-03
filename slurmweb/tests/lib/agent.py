@@ -59,6 +59,7 @@ class TestAgentBase(unittest.TestCase):
         racksdb_schema_error=False,
         anonymous_user=False,
         anonymous_enabled=True,
+        use_token=True,
     ):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")
@@ -128,10 +129,6 @@ class TestAgentBase(unittest.TestCase):
             self.user = AuthenticatedUser(
                 login="test", fullname="Testing User", groups=["group"]
             )
-        token = self.app.jwt.generate(
-            user=self.user,
-            duration=3600,
-        )
 
         # werkzeug.test.TestResponse class does not have text and json
         # properties in werkzeug <= 0.15. When such version is installed, use
@@ -142,7 +139,12 @@ class TestAgentBase(unittest.TestCase):
         except AttributeError:
             self.app.response_class = SlurmwebCustomTestResponse
         self.client = self.app.test_client()
-        self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
+        if use_token:
+            token = self.app.jwt.generate(
+                user=self.user,
+                duration=3600,
+            )
+            self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
 
     def mock_slurmrestd_responses(self, slurm_version, assets):
         return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
