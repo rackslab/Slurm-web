@@ -171,6 +171,16 @@ ldap:
     - posixGroup
     - groupOfNames
     doc: List of LDAP object classes for groups
+  lookup_user_dn:
+    type: bool
+    default: true
+    doc: |
+      Lookup user DN in the scope of user base subtree. If disable, LDAP
+      directory is not requested to search for the user in the subtree before
+      authentication, and the user DN are considered to be in the form of
+      `<user_name_attribute>=$login,<user_base>` (ex:
+      `uid=$login,ou=people,dc=example,dc=org`). This notably implies all
+      users entries to be at the first level under the user base in the tree.
   bind_dn:
     type: str
     doc: |
