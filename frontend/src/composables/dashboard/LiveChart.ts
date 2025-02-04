@@ -50,6 +50,7 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
         return
       }
 
+      const newSuggestedMin = suggestedMin()
       for (const state of possibleStates) {
         /* If current state is not present in poller data keys, skip it. */
         if (!(state in metrics.data.value)) continue
@@ -72,28 +73,26 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
           })
           continue
         } else {
+          /* First remove all values older than new suggested minimal timestamp. */
+          matching_datasets[0].data = matching_datasets[0].data.filter(
+            (value) => (value as Point).x > newSuggestedMin
+          )
           /* If matching dataset has been found, get the timestamp of the last
            * datapoint. */
           const last_timestamp = (matching_datasets[0].data.slice(-1)[0] as Point).x
           /* Iterate over new data to insert in the dataset only the datapoints
            * with a timestamp after the timestamp of the last datapoint in
            * current dataset, and count inserted values. */
-          let nb_new_values = 0
           new_data.forEach((item) => {
             if (item.x > last_timestamp) {
               matching_datasets[0].data.push(item)
-              nb_new_values += 1
             }
           })
-          /* Remove n datapoints from the beginning of the dataset, where n is
-           * the number of the inserted points, in order to keep a consistent
-           * number of datapoints. */
-          matching_datasets[0].data.splice(0, nb_new_values)
         }
       }
       /* Update suggested min and unit of x-axis. */
       if (chart.options.scales && chart.options.scales.x) {
-        chart.options.scales.x.suggestedMin = suggestedMin()
+        chart.options.scales.x.suggestedMin = newSuggestedMin
         ;(chart.options.scales.x as TimeScaleOptions).time.unit = timeframeUnit()
       }
       /* Finally update the chart. */

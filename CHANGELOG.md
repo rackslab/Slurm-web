@@ -54,6 +54,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     in Firefox ESR >= 128 and Firefox >= 133 (#443).
   - Do not report ongoing issue when users do not have permission on
     `view-stats` action on a cluster in clusters list page.
+  - Remove old values from dashboard timeseries charts only if their associated
+    timestamps is older than the new suggested minimal timestamp on update
+    (#454→#466).
   - Update dependencies to fix CVE-2024-55565 (nanoid) and CVE-2025-24010
     (vite).
 - pkgs: Bump dependency to RFL.web 1.3.0 to fix access to restricted endpoints
