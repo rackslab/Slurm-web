@@ -2,8 +2,7 @@ Copy examples of uWSGI services provided in Slurm-web packages and reload units:
 
 [source,console]
 ----
-# cp -v /usr/share/slurm-web/wsgi/agent/slurm-web-{gateway,agent}-uwsgi.service \
-  /etc/systemd/system/
+# cp -v /usr/share/slurm-web/wsgi/*/slurm-web-{agent,gateway}-uwsgi.service /etc/systemd/system/
 # systemctl daemon-reload
 ----
 

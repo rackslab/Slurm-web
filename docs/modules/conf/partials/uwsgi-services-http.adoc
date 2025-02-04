@@ -2,7 +2,7 @@ Copy examples of uWSGI services provided in Slurm-web packages:
 
 [source,console]
 ----
-# cp -v /usr/share/slurm-web/wsgi/agent/slurm-web-{agent,gateway}-uwsgi.service /etc/systemd/system/
+# cp -v /usr/share/slurm-web/wsgi/*/slurm-web-{agent,gateway}-uwsgi.service /etc/systemd/system/
 ----
 
 Edit [.path]#`/etc/systemd/system/slurm-web-gateway-uwsgi.service`# to force

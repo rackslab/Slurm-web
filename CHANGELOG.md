@@ -58,6 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (vite).
 - pkgs: Bump dependency to RFL.web 1.3.0 to fix access to restricted endpoints
   with anonymous token or no token (#460,#462→#461).
+- docs: Fix cp command to copy examples of uWSGI services provided in Slurm-web
+  packages (#448→#465).
 
 ## [4.0.0] - 2024-11-28
 
