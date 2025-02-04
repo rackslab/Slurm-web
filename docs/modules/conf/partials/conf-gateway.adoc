@@ -449,6 +449,23 @@ _No default value_
 
 |-
 
+|lookup_user_dn
+|bool
+|Lookup user DN in the scope of user base subtree. If disable, LDAP
+directory is not requested to search for the user in the subtree before
+authentication, and the user DN are considered to be in the form of
+`<user_name_attribute>=$login,<user_base>` (ex:
+`uid=$login,ou=people,dc=example,dc=org`). This notably implies all
+users entries to be at the first level under the user base in the tree.
+
+
+
+
+
+*Default:* `True`
+
+|-
+
 |bind_dn
 |str
 |DN used to bind to the LDAP server. When this parameter is not defined,
