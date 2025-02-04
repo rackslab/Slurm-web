@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
 import logging
 
 from rfl.web.tokens import RFLTokenizedRBACWebApp
