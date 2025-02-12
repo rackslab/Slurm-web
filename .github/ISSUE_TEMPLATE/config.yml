@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Community Support
+    url: https://github.com/rackslab/Slurm-web/discussions/categories/q-a
+    about: Please ask your questions in Q&A section of GitHub Discussions.
+  - name: Professional Support
+    url: https://rackslab.io/en/contact/
+    about: For entreprise professional support with SLA, request a quote from Rackslab.
