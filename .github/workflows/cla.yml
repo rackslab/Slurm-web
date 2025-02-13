@@ -27,6 +27,6 @@ jobs:
           path-to-signatures: 'Slurm-web/version1/cla.json'
           path-to-document: 'https://rackslab.io/cla'
           branch: 'main'
-          allowlist: rezib,florianLSP
+          allowlist: rezib,dependabot[bot]
           remote-organization-name: rackslab
           remote-repository-name: cla-signatures
