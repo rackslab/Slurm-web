@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Fixed
-- front: missing bearer token in RacksDB infrastructure diagram request (#471).
+- front:
+  - Missing bearer token in RacksDB infrastructure diagram request (#471).
+  - Update dependencies to fix CVE-2025-24964 (vitest).
 
 ## [4.1.0] - 2025-02-05
 
