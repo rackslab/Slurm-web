@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - agent: Fix compatibility issue with Requests >= 2.32.2 (#350).
+- front: missing bearer token in RacksDB infrastructure diagram request (#471).
 
 ### Removed
 - docs: remove mention of support of Fedora 39

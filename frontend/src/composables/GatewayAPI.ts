@@ -454,7 +454,7 @@ export function useGatewayAPI() {
 
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
-      return (await post('/login', idents)) as GatewayLoginResponse
+      return (await post('/login', idents, false)) as GatewayLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -466,7 +466,7 @@ export function useGatewayAPI() {
 
   async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
     try {
-      return (await get('/anonymous')) as GatewayAnonymousLoginResponse
+      return (await get('/anonymous', false)) as GatewayAnonymousLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -532,7 +532,7 @@ export function useGatewayAPI() {
         dimensions: { width: width, height: height },
         infrastructure: { equipment_labels: false, ghost_unselected: true }
       },
-      false,
+      true,
       'arraybuffer'
     )
     // parse multipart response with Response.formData()
