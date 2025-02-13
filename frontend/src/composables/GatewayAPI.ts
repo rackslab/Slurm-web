@@ -456,7 +456,7 @@ export function useGatewayAPI() {
 
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
-      return (await restAPI.post('/login', idents)) as GatewayLoginResponse
+      return (await restAPI.post('/login', idents, false)) as GatewayLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -468,7 +468,7 @@ export function useGatewayAPI() {
 
   async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
     try {
-      return (await restAPI.get('/anonymous')) as GatewayAnonymousLoginResponse
+      return (await restAPI.get('/anonymous', false)) as GatewayAnonymousLoginResponse
     } catch (error: any) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
@@ -479,7 +479,7 @@ export function useGatewayAPI() {
   }
 
   async function message_login(): Promise<string> {
-    return await restAPI.get<string>(`/messages/login`)
+    return await restAPI.get<string>('/messages/login', false)
   }
 
   async function clusters(): Promise<Array<ClusterDescription>> {
@@ -567,7 +567,7 @@ export function useGatewayAPI() {
         dimensions: { width: width, height: height },
         infrastructure: { equipment_labels: false, ghost_unselected: true }
       },
-      false,
+      true,
       'arraybuffer'
     )
     // parse multipart response with Response.formData()
