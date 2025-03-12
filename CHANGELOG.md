@@ -20,8 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf: Update description of `agent` > `racksdb_version` to describe its new
   semantic.
 - docs: Update configuration reference documentation.
+- pkgs: Add dependency on `importlib_metadata` external library on Python < 3.8.
 
 ### Fixed
+- Fix _DeprecationWarning_ with setuptools `pkg_resources` being used as an API.
 - agent: Fix compatibility issue with Requests >= 2.32.2 (#350).
 - frontend:
   - Missing bearer token in RacksDB infrastructure diagram request (#471).
