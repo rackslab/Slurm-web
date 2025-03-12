@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     supported version specified in gateway configuration settings (#415→#417).
   - Do not return clusters global stats in `/clusters` endpoint anymore.
   - Lookup user DN in the scope of user base subtree before authentication on
-    LDAP directory by default (#446,447→464). This can be reverted to the
+    LDAP directory by default (#446,#447→#464). This can be reverted to the
     previous behavior by setting `lookup_user_dn=no` in `[ldap]` section of the
     gateway configuration.
 - agent:
