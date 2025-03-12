@@ -4,8 +4,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import pkg_resources
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata
 
 
 def get_version():
-    return pkg_resources.get_distribution("slurm-web").version
+    return metadata.version("slurm-web")
