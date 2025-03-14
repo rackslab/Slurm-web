@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Missing bearer token in RacksDB infrastructure diagram request (#471).
   - Remove workaround for Firefox to avoid blurry lines in racks canvas, fixed
     in Firefox ESR >= 128 and Firefox >= 133 (#443).
+  - Update dependencies to fix CVE-2024-45812, CVE-2024-45811 and CVE-2025-24010
+    (vite), CVE-2025-24964 (vitest), CVE-2025-27152 (axios), GHSA-67mh-4wv8-2f99
+    (esbuild), CVE-2024-47068 (rollup), CVE-2024-21538 (cross-spawn) and
+    CVE-2024-55565 (nanoid).
 
 ### Removed
 - docs: remove mention of support of Fedora 39
