@@ -24,8 +24,11 @@ class TestVersionComparaison(unittest.TestCase):
         self.assertTrue(version_greater_or_equal("1.0.0", "1.1.0"))
         self.assertTrue(version_greater_or_equal("1.0.0", "1.0.1"))
         self.assertFalse(version_greater_or_equal("1.0.0", "0.9"))
+        self.assertFalse(version_greater_or_equal("1.0.0", "1.0"))
         self.assertFalse(version_greater_or_equal("1.0.0", "0.9.9"))
         self.assertFalse(version_greater_or_equal("1.0.0", "0.200.100"))
+        self.assertTrue(version_greater_or_equal("1.0.0", "1.0.0+beta2"))
+        self.assertFalse(version_greater_or_equal("1.0.0", "0.9.0~dev1"))
 
 
 class TestGatewayApp(TestGatewayBase):
