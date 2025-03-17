@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix _DeprecationWarning_ with setuptools `pkg_resources` being used as an API.
+- gateway: Add support of strings in RacksDB/agent version parts comparison
+  logic.
 - frontend:
   - Missing bearer token in RacksDB infrastructure diagram request (#471).
   - Update dependencies to fix CVE-2025-24964 (vitest), CVE-2025-27152 (axios)
