@@ -47,13 +47,33 @@ class SlurmwebAgent:
             ) from err
 
 
-def version_greater_or_equal(reference: str, version: str) -> bool:
+def version_greater_or_equal(reference_s: str, version_s: str) -> bool:
     """Return True if provided version is greater or equal than reference version."""
 
-    def version_tuple(version):
-        return tuple(int(part) for part in version.split("."))
+    def int_or_str(part):
+        try:
+            return int(part)
+        except ValueError:
+            return part
 
-    return version_tuple(version) >= version_tuple(reference)
+    def version_tuple(version):
+        return tuple(int_or_str(part) for part in version.split("."))
+
+    def compare(reference, version):
+        comparable_parts = min(len(reference), len(version))
+        n = 0
+        # skip identical parts
+        while (n<comparable_parts and reference[n] == version[n]):
+            n += 1
+        if n == comparable_parts:
+            if len(version) >= len(reference):
+                return True
+            return False
+        if isinstance(reference[n], int) and isinstance(version[n], int):
+            return version[n] >= reference[n]
+        return str(version[n]) >= str(reference[n])
+
+    return compare(version_tuple(reference_s), version_tuple(version_s))
 
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
