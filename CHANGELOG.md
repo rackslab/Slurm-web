@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix _DeprecationWarning_ with setuptools `pkg_resources` being used as an API.
 - agent: Fix compatibility issue with Requests >= 2.32.2 (#350).
+- gateway: Add support of strings in RacksDB/agent version parts comparison
+  logic.
 - frontend:
   - Missing bearer token in RacksDB infrastructure diagram request (#471).
   - Remove workaround for Firefox to avoid blurry lines in racks canvas, fixed
