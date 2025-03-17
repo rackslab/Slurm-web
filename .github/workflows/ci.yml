@@ -72,6 +72,8 @@ jobs:
           pip install "requests<2.26.0"
           echo "::notice::Installing pyasn1 (old version)"
           pip install "pyasn1<0.6.0"
+          echo "::notice::Installing markdown (old version)"
+          pip install "markdown<3"
 
           cp -v ${Python3_ROOT_DIR}/lib/python3.6/site-packages/rfl/build/scripts/setup setup.py
           python3 setup.py install
@@ -79,10 +81,14 @@ jobs:
           echo "::notice::Installing optional dependencies required for tests"
           pip install pytest RacksDB[web] redis prometheus-client markdown aiohttp
 
-      # The cached_property decorator is integrated in Python 3.8+. For older versions,
-      # install cached_property external library.
+      # The cached_property decorator is integrated in Python 3.8+. For older
+      # versions, install cached_property external library.
+      # On Python 3.8+, Slurm-web uses importlib.metadata in standard library to
+      # retrieve the version of the package. For older versions, install
+      # importlib_metadata external backport library, and explicitely force the
+      # old version available in RHEL8.
       - if: ${{ matrix.python-version == '3.6' || matrix.python-version == '3.7' }}
-        run: pip install cached_property
+        run: pip install cached_property "importlib-metadata==0.23"
 
       - name: Run tests
         run: pytest
