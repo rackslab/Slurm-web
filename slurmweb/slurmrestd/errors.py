@@ -26,4 +26,7 @@ class SlurmrestdInternalError(Exception):
         self.source = source
 
     def __str__(self):
-        return f"SlurwebRestdError({self.message}, {self.error}, {self.description}, {self.source})"
+        return (
+            f"SlurwebRestdError({self.message}, {self.error}, {self.description}, "
+            f"{self.source})"
+        )

@@ -32,7 +32,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         jobs = self.slurmrestd.jobs()
         for idx in range(len(jobs)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(jobs[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(jobs[idx]["job_id"], asset[idx]["job_id"])
             # Check arbitrary key has been filtered out.
@@ -66,7 +67,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         nodes = self.slurmrestd.nodes()
         for idx in range(len(nodes)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(nodes[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(nodes[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
@@ -99,7 +101,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         partitions = self.slurmrestd.partitions()
         for idx in range(len(partitions)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(partitions[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(partitions[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
@@ -116,7 +119,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         accounts = self.slurmrestd.accounts()
         for idx in range(len(accounts)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(accounts[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(accounts[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
@@ -133,7 +137,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         reservations = self.slurmrestd.reservations()
         for idx in range(len(reservations)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(reservations[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(reservations[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
@@ -150,7 +155,8 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             return
         qos = self.slurmrestd.qos()
         for idx in range(len(qos)):
-            # Check there are less keys for the 1st item in result than in original asset.
+            # Check there are less keys for the 1st item in result than in original
+            # asset.
             self.assertLess(len(qos[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(qos[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
