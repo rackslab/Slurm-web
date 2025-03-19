@@ -20,7 +20,6 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAppGenJWT(SlurmwebGenericApp):
-
     NAME = "slurm-web-gen-jwt-key"
 
     def run(self):

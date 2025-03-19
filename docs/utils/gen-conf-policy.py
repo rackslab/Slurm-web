@@ -11,6 +11,7 @@
   $ python3 docs/utils/gen-conf-policy.py conf/vendor/policy.yml > \
     docs/modules/conf/partials/policy-actions.adoc
 """
+
 import sys
 from pathlib import Path
 
@@ -24,7 +25,6 @@ def bases(obj):
 
 
 def main():
-
     with open(sys.argv[1]) as fh:
         content = yaml.safe_load(fh)
     # Render template

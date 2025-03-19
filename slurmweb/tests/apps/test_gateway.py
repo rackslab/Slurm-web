@@ -17,7 +17,6 @@ from ..lib.utils import mock_agent_response, fake_text_response
 
 
 class TestVersionComparaison(unittest.TestCase):
-
     def test_version_greater_or_equal(self):
         self.assertTrue(version_greater_or_equal("1.0.0", "1.0.0"))
         self.assertTrue(version_greater_or_equal("1.0.0", "2.0.0"))

@@ -37,7 +37,6 @@ def main():
         )
         for logo_background in itertools.product(LOGOS, BACKGROUNDS)
     ]:
-
         builder.rule(
             name=f"svg-plain-{element[0]}",
             command=(

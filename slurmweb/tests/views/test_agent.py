@@ -25,7 +25,6 @@ from ..lib.utils import (
 
 
 class TestAgentViews(TestAgentBase):
-
     def setUp(self):
         self.setup_client()
 

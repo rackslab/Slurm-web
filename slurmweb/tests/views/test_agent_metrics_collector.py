@@ -27,7 +27,6 @@ from ..lib.utils import (
 
 
 class TestAgentMetricsCollector(TestAgentBase):
-
     def setUp(self):
         self.setup_client(
             additional_conf=textwrap.dedent(

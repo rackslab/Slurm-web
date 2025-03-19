@@ -17,7 +17,6 @@ from ..lib.utils import mock_prometheus_response
 
 
 class TestSlurmwebMetricsDB(unittest.TestCase):
-
     def setUp(self):
         self.db = SlurmwebMetricsDB(
             urllib.parse.urlparse("http://localhost:9090"), "slurm"

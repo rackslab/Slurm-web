@@ -27,7 +27,6 @@ if t.TYPE_CHECKING:
 
 
 class Slurmrestd:
-
     def __init__(self, socket: Path, version: str):
         self.session = requests.Session()
         self.prefix = "http+unix://slurmrestd/"
@@ -233,7 +232,6 @@ class Slurmrestd:
 
 
 class SlurmrestdFiltered(Slurmrestd):
-
     def __init__(self, socket: Path, version: str, filters: "RuntimeSettings"):
         super().__init__(socket, version)
         self.filters = filters
@@ -312,7 +310,6 @@ class SlurmrestdFiltered(Slurmrestd):
 
 
 class SlurmrestdFilteredCached(SlurmrestdFiltered):
-
     def __init__(
         self,
         socket: Path,

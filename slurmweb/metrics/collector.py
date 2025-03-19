@@ -131,7 +131,6 @@ def make_wsgi_app(settings: "RuntimeSettings"):
     prometheus_app = prometheus_client.make_wsgi_app()
 
     def slurmweb_metrics_app(environ, start_response):
-
         # Check if client IP address is member of restricted networks list. If
         # not, send response with HTTP/403 status code.
         ip = get_client_ipaddress(environ)

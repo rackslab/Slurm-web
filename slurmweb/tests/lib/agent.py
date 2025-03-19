@@ -51,7 +51,6 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 
 class TestAgentBase(unittest.TestCase):
-
     def setup_client(
         self,
         additional_conf=None,
