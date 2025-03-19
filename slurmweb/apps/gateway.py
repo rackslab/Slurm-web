@@ -193,7 +193,8 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                 )
             else:
                 raise SlurmwebConfigurationError(
-                    f"Unsupport authentication method {self.settings.authentication.method}"
+                    "Unsupport authentication method "
+                    f"{self.settings.authentication.method}"
                 )
         else:
             self.authentifier = None

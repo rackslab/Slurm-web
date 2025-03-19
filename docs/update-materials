@@ -57,7 +57,8 @@ def main():
     builder.rule(
         name="manpage",
         command=(
-            f"asciidoctor --backend manpage --attribute mansource='{MANPAGE_SOURCE}' $in"
+            f"asciidoctor --backend manpage --attribute mansource='{MANPAGE_SOURCE}' "
+            "$in"
         ),
     )
 

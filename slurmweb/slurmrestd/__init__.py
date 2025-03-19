@@ -77,8 +77,8 @@ class Slurmrestd:
             )
         if "warnings" not in result:
             logger.error(
-                "Unable to extract warnings from slurmrestd response to %s, unsupported "
-                "Slurm version?",
+                "Unable to extract warnings from slurmrestd response to %s, "
+                "unsupported Slurm version?",
                 query,
             )
         elif len(result["warnings"]):

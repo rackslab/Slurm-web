@@ -68,8 +68,8 @@ def main():
         builder.rule(
             name=f"png-{size}",
             command=(
-                f"inkscape $in {INKSCAPE_COMMON_OPTS} --export-type=png --export-dpi={dpi} "
-                "--export-filename=$out"
+                f"inkscape $in {INKSCAPE_COMMON_OPTS} --export-type=png "
+                f"--export-dpi={dpi} --export-filename=$out"
             ),
         )
 
