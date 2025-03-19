@@ -11,7 +11,6 @@ from slurmweb.markdown import render_html
 
 
 class TestMessage(unittest.TestCase):
-
     def test_service_message(self):
         with tempfile.NamedTemporaryFile(mode="w+") as fh:
             fh.write("Hello, *world*!")

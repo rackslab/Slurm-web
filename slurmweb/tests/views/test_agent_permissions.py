@@ -11,7 +11,6 @@ from ..lib.utils import any_slurm_version
 
 
 class TestAgentPermissions(TestAgentBase):
-
     def test_permissions_user(self):
         self.setup_client()
         response = self.client.get(f"/v{get_version()}/permissions")

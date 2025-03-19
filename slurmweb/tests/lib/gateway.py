@@ -26,7 +26,6 @@ key={key}
 
 
 class TestGatewayBase(unittest.TestCase):
-
     def setup_app(self, anonymous_user=False, use_token=True):
         # Generate JWT signing key
         key = tempfile.NamedTemporaryFile(mode="w+")

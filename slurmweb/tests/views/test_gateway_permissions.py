@@ -13,7 +13,6 @@ from ..lib.gateway import TestGatewayBase
 
 
 class TestGatewayPermissions(TestGatewayBase):
-
     def test_access_auth(self):
         self.setup_app()
         response = self.client.get("/api/version")

@@ -11,6 +11,7 @@
   $ python3 docs/utils/gen-conf-ex.py conf/vendor/gateway.yml > \
     docs/modules/admin/examples/conf-gateway.ini
 """
+
 import sys
 from pathlib import Path
 
@@ -20,7 +21,6 @@ from rfl.settings.definition import SettingsDefinition, SettingsDefinitionLoader
 
 
 def main():
-
     definition = SettingsDefinition(SettingsDefinitionLoaderYaml(path=sys.argv[1]))
     # Render template
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(Path(__file__).parent))

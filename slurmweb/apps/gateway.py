@@ -69,7 +69,7 @@ def version_greater_or_equal(reference_s: str, version_s: str) -> bool:
         comparable_parts = min(len(reference), len(version))
         n = 0
         # skip identical parts
-        while (n<comparable_parts and reference[n] == version[n]):
+        while n < comparable_parts and reference[n] == version[n]:
             n += 1
         if n == comparable_parts:
             if len(version) >= len(reference):
@@ -83,7 +83,6 @@ def version_greater_or_equal(reference_s: str, version_s: str) -> bool:
 
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
-
     NAME = "slurm-web-gateway"
     SITE_CONFIGURATION = "/etc/slurm-web/gateway.ini"
     SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/gateway.yml"

@@ -264,7 +264,6 @@ def crawl_slurmrestd(socket: Path) -> None:
             "No jobs found in queue on socket %s, unable to crawl jobs data", socket
         )
     else:
-
         min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
 
         for _job in jobs["jobs"]:
@@ -280,7 +279,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             session,
             requests_statuses,
             prefix,
-            f"/slurm/v{api}/job/{min_job_id-1}",
+            f"/slurm/v{api}/job/{min_job_id - 1}",
             assets_path,
             "slurm-job-archived",
         )
@@ -288,7 +287,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             session,
             requests_statuses,
             prefix,
-            f"/slurmdb/v{api}/job/{min_job_id-1}",
+            f"/slurmdb/v{api}/job/{min_job_id - 1}",
             assets_path,
             "slurmdb-job-archived",
         )
@@ -297,7 +296,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             session,
             requests_statuses,
             prefix,
-            f"/slurm/v{api}/job/{max_job_id*2}",
+            f"/slurm/v{api}/job/{max_job_id * 2}",
             assets_path,
             "slurm-job-unfound",
         )
@@ -305,7 +304,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             session,
             requests_statuses,
             prefix,
-            f"/slurmdb/v{api}/job/{max_job_id*2}",
+            f"/slurmdb/v{api}/job/{max_job_id * 2}",
             assets_path,
             "slurmdb-job-unfound",
         )
@@ -624,7 +623,7 @@ def crawl_gateway(cluster: str, infrastructure: str, dev_tmp_dir: Path) -> str:
         dump_component_query(
             requests_statuses,
             url,
-            f"/api/agents/{cluster}/job/{min_job_id-1}",
+            f"/api/agents/{cluster}/job/{min_job_id - 1}",
             headers,
             assets_path,
             "job-archived",

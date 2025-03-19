@@ -16,7 +16,6 @@ from ..lib.utils import mock_prometheus_response
 
 
 class TestAgentMetricsRequest(TestAgentBase):
-
     def setUp(self):
         self.setup_client(
             additional_conf=textwrap.dedent(

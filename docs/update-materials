@@ -15,7 +15,6 @@ MANPAGE_SOURCE = f"Slurm-web {project_version()}"
 
 
 def main():
-
     targets = sys.argv[1:]
 
     if any([target not in TARGETS for target in targets]):

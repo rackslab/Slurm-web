@@ -12,7 +12,6 @@ from ..lib.utils import flask_404_description
 
 
 class TestAgentRacksDBEnabledRequest(TestAgentBase):
-
     def setUp(self):
         self.setup_client()
 
@@ -27,7 +26,6 @@ class TestAgentRacksDBEnabledRequest(TestAgentBase):
 
 
 class TestAgentRacksDBUnabledRequest(TestAgentBase):
-
     def setUp(self):
         self.setup_client(racksdb_format_error=True)
 
@@ -47,7 +45,6 @@ class TestAgentRacksDBUnabledRequest(TestAgentBase):
 
 
 class TestAgentRacksDBDisabledRequest(TestAgentBase):
-
     def setUp(self):
         self.setup_client(
             additional_conf=textwrap.dedent(

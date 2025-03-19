@@ -9,7 +9,6 @@ from ..lib.agent import TestAgentBase
 
 
 class TestAgentApp(TestAgentBase):
-
     def test_app_loaded(self):
         # No error log must be emitted in this case. Note that assertNoLogs is available
         # starting from Python 3.10. For versions below, absence of logs is not checked.
