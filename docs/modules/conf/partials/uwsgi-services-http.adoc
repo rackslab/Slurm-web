@@ -18,7 +18,7 @@ HTTP protocol:
  RuntimeDirectory=slurm-web-gateway
 -ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/gateway/slurm-web-gateway.ini
 +ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/gateway/slurm-web-gateway.ini --protocol http
- 
+
  [Install]
  WantedBy=multi-user.target
 ----
@@ -35,7 +35,7 @@ And also in [.path]#`/etc/systemd/system/slurm-web-gateway-uwsgi.service`#:
  RuntimeDirectory=slurm-web-agent
 -ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
 +ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini --protocol http
- 
+
  [Install]
  WantedBy=multi-user.target
 ----

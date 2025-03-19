@@ -10,4 +10,3 @@ ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.i
 
 [Install]
 WantedBy=multi-user.target
-

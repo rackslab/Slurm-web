@@ -920,5 +920,3 @@ compatible) is enabled.
 
 
 |===
-
-

@@ -143,7 +143,7 @@ Run this utility with this command:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-ldap-check 
+# /usr/libexec/slurm-web/slurm-web-ldap-check
 INFO ⸬ Running slurm-web-ldap-check
 Found 10 user(s) in LDAP directory:
 - sstevenson (Scott Stevenson) [users, admin]

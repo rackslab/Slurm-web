@@ -16,7 +16,7 @@ security reasons, access to exported metrics can be
 <<restrict,restricted to specific hosts>>. Next section explains how to
 <<prometheus,configure Prometheus>> to collect Slurm-web metrics. Then
 <<query,metrics query settings>> are explained and the last section provides a
-<<reference,reference list of all available metrics>>. 
+<<reference,reference list of all available metrics>>.
 
 [#start]
 == Get Started
