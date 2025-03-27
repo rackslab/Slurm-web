@@ -17,7 +17,8 @@ const sortOptions = [
   { name: '#ID', type: 'id' },
   { name: 'State', type: 'state' },
   { name: 'User', type: 'user' },
-  { name: 'Priority', type: 'priority' }
+  { name: 'Priority', type: 'priority' },
+  { name: 'Resources', type: 'resources' }
 ]
 
 const emit = defineEmits(['sort'])

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- frontend: Add possibility to sort jobs by quantity of resources (#453).
+
 ### Changed
 - pkgs: Add dependency on `importlib_metadata` external library on Python < 3.8.
 

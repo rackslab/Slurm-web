@@ -67,7 +67,7 @@ interface JobsQueryParameters {
 
 const JobSortOrders = ['asc', 'desc'] as const
 export type JobSortOrder = (typeof JobSortOrders)[number]
-const JobSortCriteria = ['id', 'user', 'state', 'priority'] as const
+const JobSortCriteria = ['id', 'user', 'state', 'priority', 'resources'] as const
 export type JobSortCriterion = (typeof JobSortCriteria)[number]
 
 export class JobsViewSettings {
