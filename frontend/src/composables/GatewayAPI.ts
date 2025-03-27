@@ -9,6 +9,7 @@
 import { useRESTAPI } from '@/composables/RESTAPI'
 import type { AxiosResponse } from 'axios'
 import { AuthenticationError, APIServerError } from '@/composables/HTTPErrors'
+import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime'
 
 interface loginIdents {
   user: string
@@ -85,6 +86,42 @@ export interface ClusterOptionalNumber {
   infinite: boolean
   number: number
   set: boolean
+}
+
+/* Compare two ClusterOptionalNumber a and b.
+ * Return 0 if a and b are equal. On ascending order, return 1 if a is over b
+ * else -1. Values are inverted in descending order. */
+function compareClusterOptionalNumberOrder(
+  a: ClusterOptionalNumber,
+  b: ClusterOptionalNumber,
+  order: JobSortOrder
+): number {
+  /* Check both values are set */
+  if (!a.set) {
+    if (b.set) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  }
+  if (!b.set) {
+    return order == 'asc' ? 1 : -1
+  }
+  /* Check infinite values */
+  if (a.infinite) {
+    if (!b.infinite) {
+      return order == 'asc' ? 1 : -1
+    }
+    return 0
+  }
+  /* Check number values */
+  if (a.number > b.number) {
+    return order == 'asc' ? 1 : -1
+  }
+  if (a.number < b.number) {
+    return order == 'asc' ? -1 : 1
+  }
+  /* Both values are equal */
+  return 0
 }
 
 export interface ClusterPreciseTime {
@@ -188,6 +225,51 @@ export interface ClusterIndividualJob {
   user: string
   wckey: { flags: string[]; wckey: string }
   working_directory: string
+}
+
+/* Compare two ClusterJob a and b on JobSortCriterion.
+ * Return 0 if a and b are equal. On ascending order, return 1 if a is over b
+ * else -1. Values are inverted in descending order. */
+export function compareClusterJobSortOrder(
+  a: ClusterJob,
+  b: ClusterJob,
+  sort: JobSortCriterion,
+  order: JobSortOrder
+): number {
+  if (sort == 'user') {
+    if (a.user_name > b.user_name) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (a.user_name < b.user_name) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else if (sort == 'state') {
+    if (a.job_state > b.job_state) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (a.job_state < b.job_state) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else if (sort == 'priority') {
+    return compareClusterOptionalNumberOrder(a.priority, b.priority, order)
+  } else if (sort == 'resources') {
+    const cmp = compareClusterOptionalNumberOrder(a.node_count, b.node_count, order)
+    // if node count is different, return the value of the comparison
+    if (cmp) return cmp
+    // else return the comparison of cpus count
+    return compareClusterOptionalNumberOrder(a.cpus, b.cpus, order)
+  } else {
+    // by default, sort by id
+    if (a.job_id > b.job_id) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (a.job_id < b.job_id) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  }
 }
 
 export type ClusterNodeMainState = 'down' | 'drain' | 'draining' | 'up'

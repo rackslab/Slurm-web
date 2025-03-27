@@ -13,6 +13,7 @@ import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
+import { compareClusterJobSortOrder } from '@/composables/GatewayAPI'
 import type { ClusterJob } from '@/composables/GatewayAPI'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
@@ -31,6 +32,10 @@ const { cluster } = defineProps<{ cluster: string }>()
 const route = useRoute()
 const { data, unable, loaded } = useClusterDataPoller<ClusterJob[]>('jobs', 5000)
 
+function compareClusterJob(a: ClusterJob, b: ClusterJob): number {
+  return compareClusterJobSortOrder(a, b, runtimeStore.jobs.sort, runtimeStore.jobs.order)
+}
+
 const sortedJobs = computed(() => {
   console.log(`Computing sorted jobs by ${runtimeStore.jobs.sort}`)
   if (data.value) {
@@ -38,58 +43,7 @@ const sortedJobs = computed(() => {
     let result = [...data.value].filter((job) => {
       return runtimeStore.jobs.matchesFilters(job)
     })
-    result = result.sort((a, b) => {
-      if (runtimeStore.jobs.sort == 'user') {
-        if (a.user_name > b.user_name) {
-          return runtimeStore.jobs.order == 'asc' ? 1 : -1
-        }
-        if (a.user_name < b.user_name) {
-          return runtimeStore.jobs.order == 'asc' ? -1 : 1
-        }
-        return 0
-      } else if (runtimeStore.jobs.sort == 'state') {
-        if (a.job_state > b.job_state) {
-          return runtimeStore.jobs.order == 'asc' ? 1 : -1
-        }
-        if (a.job_state < b.job_state) {
-          return runtimeStore.jobs.order == 'asc' ? -1 : 1
-        }
-        return 0
-      } else if (runtimeStore.jobs.sort == 'priority') {
-        if (!a.priority.set) {
-          if (b.priority.set) {
-            return runtimeStore.jobs.order == 'asc' ? -1 : 1
-          }
-          return 0
-        }
-        if (!b.priority.set) {
-          return runtimeStore.jobs.order == 'asc' ? 1 : -1
-        }
-        if (a.priority.infinite) {
-          if (!b.priority.infinite) {
-            return runtimeStore.jobs.order == 'asc' ? 1 : -1
-          }
-          return 0
-        }
-        if (a.priority.number > b.priority.number) {
-          return runtimeStore.jobs.order == 'asc' ? 1 : -1
-        }
-        if (a.priority.number < b.priority.number) {
-          return runtimeStore.jobs.order == 'asc' ? -1 : 1
-        }
-        return 0
-      } else {
-        // by default, sort by id
-        if (a.job_id > b.job_id) {
-          return runtimeStore.jobs.order == 'asc' ? 1 : -1
-        }
-        if (a.job_id < b.job_id) {
-          return runtimeStore.jobs.order == 'asc' ? -1 : 1
-        }
-        return 0
-      }
-    })
-    return result
+    return result.sort(compareClusterJob)
   } else {
     return []
   }
