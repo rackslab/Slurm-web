@@ -9,7 +9,7 @@
 import { ref, onUnmounted, onMounted, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
+import { AuthenticationError, PermissionError, CanceledRequestError } from '@/composables/HTTPErrors'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -76,7 +76,8 @@ export function useClusterDataPoller<Type>(
           reportAuthenticationError(error)
         } else if (error instanceof PermissionError) {
           reportPermissionError(error, cluster)
-        } else {
+        } else if (!(error instanceof CanceledRequestError)) {
+          /* Ignore canceled requests errors */
           reportOtherError(error)
         }
       }
