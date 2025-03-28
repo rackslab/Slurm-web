@@ -25,7 +25,7 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ServerIcon, CpuChipIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
+import { ServerIcon, CpuChipIcon, PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
@@ -356,15 +356,13 @@ onMounted(() => {
                       {{ job.state_reason }}
                     </template>
                   </td>
-                  <td
-                    class="max-w-fit whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8"
-                  >
+                  <td class="max-w-fit whitespace-nowrap text-right text-sm font-medium">
                     <RouterLink
                       :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
-                      class="text-slurmweb hover:text-slurmweb-dark"
+                      class="text-gray-500 hover:text-slurmweb-dark"
                     >
-                      View
-                      <span class="sr-only">, {{ job.job_id }}</span>
+                      <WindowIcon class="h-5 w-5" aria-hidden="true" />
+                      <span class="sr-only">View {{ job.job_id }}</span>
                     </RouterLink>
                   </td>
                 </tr>
