@@ -9,7 +9,7 @@
 import { ref, watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
+import { AuthenticationError, PermissionError, CanceledRequestError } from '@/composables/HTTPErrors'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayGenericAPIKey, GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -54,7 +54,8 @@ export function useGatewayDataGetter<Type>(
         reportAuthenticationError(error)
       } else if (error instanceof PermissionError) {
         reportPermissionError(error)
-      } else {
+      } else if (!(error instanceof CanceledRequestError)) {
+        /* Ignore canceled requests errors */
         if (customErrorHandler) {
           customErrorHandler(error)
         } else {

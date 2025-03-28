@@ -31,3 +31,9 @@ export class RequestError extends Error {
     super(message)
   }
 }
+
+export class CanceledRequestError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
