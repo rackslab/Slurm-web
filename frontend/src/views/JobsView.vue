@@ -63,6 +63,17 @@ const router = useRouter()
 
 const runtimeStore = useRuntimeStore()
 
+function jobPriority(job: ClusterJob): string {
+  if (!job.job_state.includes('PENDING')) return '-'
+  if (job.priority.set) {
+    if (job.priority.infinite) {
+      return '∞'
+    }
+    return job.priority.number.toString()
+  }
+  return '∅'
+}
+
 function sortJobs() {
   /*
    * Triggered by sort emit of JobsSorter component to update route and resort
@@ -305,6 +316,12 @@ onMounted(() => {
                   </th>
                   <th
                     scope="col"
+                    class="hidden px-3 py-3.5 text-center text-sm font-semibold text-gray-900 sm:table-cell"
+                  >
+                    Priority
+                  </th>
+                  <th
+                    scope="col"
                     class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 2xl:table-cell 2xl:min-w-[100px]"
                   >
                     Reason
@@ -348,6 +365,11 @@ onMounted(() => {
                     class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 xl:table-cell"
                   >
                     {{ job.qos }}
+                  </td>
+                  <td
+                    class="hidden whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500 sm:table-cell"
+                  >
+                    {{ jobPriority(job) }}
                   </td>
                   <td
                     class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 2xl:table-cell"
