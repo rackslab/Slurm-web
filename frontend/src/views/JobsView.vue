@@ -276,22 +276,37 @@ onMounted(() => {
                   >
                     #ID
                   </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  <th
+                    scope="col"
+                    class="w-16 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
                     State
                   </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     User (account)
                   </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  <th
+                    scope="col"
+                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                  >
                     Resources
                   </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  <th
+                    scope="col"
+                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 xl:table-cell"
+                  >
                     Partition
                   </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  <th
+                    scope="col"
+                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 xl:table-cell"
+                  >
                     QOS
                   </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  <th
+                    scope="col"
+                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 2xl:table-cell 2xl:min-w-[100px]"
+                  >
                     Reason
                   </th>
                   <th scope="col" class="max-w-fit py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
@@ -312,7 +327,9 @@ onMounted(() => {
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {{ job.user_name }} ({{ job.account }})
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td
+                    class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell"
+                  >
                     <span class="mr-2 inline-flex">
                       <ServerIcon class="mr-0.5 h-5 w-5" aria-hidden="true" />
                       {{ job.node_count.number }}
@@ -322,13 +339,19 @@ onMounted(() => {
                       {{ job.cpus.number }}
                     </span>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td
+                    class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 xl:table-cell"
+                  >
                     {{ job.partition }}
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td
+                    class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 xl:table-cell"
+                  >
                     {{ job.qos }}
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <td
+                    class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 2xl:table-cell"
+                  >
                     <template v-if="job.state_reason != 'None'">
                       {{ job.state_reason }}
                     </template>
