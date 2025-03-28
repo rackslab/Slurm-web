@@ -70,8 +70,8 @@ jobs:
           pip install "flask<1.0"
           echo "::notice::Installing requests (old version)"
           pip install "requests<2.26.0"
-          echo "::notice::Installing pyasn1 (old version)"
-          pip install "pyasn1<0.6.0"
+          echo "::notice::Installing python-ldap (old version)"
+          pip install "python-ldap<3.4"
           echo "::notice::Installing markdown (old version)"
           pip install "markdown<3"
 
