@@ -212,6 +212,31 @@ are hidden to these users.
 
 |-
 
+|racksdb_rows_labels
+|bool
+|Enable racks rows labels in RacksDB infrastructure graphical
+representations.
+
+
+
+
+
+*Default:* `False`
+
+|-
+
+|racksdb_racks_labels
+|bool
+|Enable racks labels in RacksDB infrastructure graphical representations.
+
+
+
+
+
+*Default:* `False`
+
+|-
+
 
 |===
 
