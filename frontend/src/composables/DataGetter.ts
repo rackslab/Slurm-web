@@ -9,7 +9,11 @@
 import { ref, watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AuthenticationError, PermissionError, CanceledRequestError } from '@/composables/HTTPErrors'
+import {
+  AuthenticationError,
+  PermissionError,
+  CanceledRequestError
+} from '@/composables/HTTPErrors'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayGenericAPIKey, GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
