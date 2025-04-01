@@ -58,8 +58,7 @@ export function useRESTAPI() {
       } else if (error.request) {
         /* No reply from server */
         //console.log(error)
-        if (error.code == "ERR_CANCELED")
-          throw new CanceledRequestError('Canceled request')
+        if (error.code == 'ERR_CANCELED') throw new CanceledRequestError('Canceled request')
         throw new RequestError(`Request error: ${error.message}`)
       } else {
         /* Something else happening when setting up the request */
