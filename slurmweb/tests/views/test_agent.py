@@ -10,6 +10,8 @@ import random
 
 import ClusterShell
 
+from racksdb.version import get_version as racksdb_get_version
+
 from slurmweb.version import get_version
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
@@ -47,7 +49,7 @@ class TestAgentViews(TestAgentBase):
         self.assertIn("racksdb", response.json)
         self.assertIsInstance(response.json["racksdb"], dict)
         self.assertIn("version", response.json["racksdb"])
-        self.assertEqual(response.json["racksdb"]["version"], "0.4.0")
+        self.assertEqual(response.json["racksdb"]["version"], racksdb_get_version())
         self.assertIn("infrastructure", response.json["racksdb"])
         self.assertEqual(response.json["racksdb"]["infrastructure"], "test")
         self.assertIn("metrics", response.json)
