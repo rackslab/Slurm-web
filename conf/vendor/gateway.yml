@@ -84,6 +84,17 @@ ui:
       which they do not have any permission. When false, these clusters are
       visible and marked as denied for these users. When true, these clusters
       are hidden to these users.
+  racksdb_rows_labels:
+    type: bool
+    default: false
+    doc: |
+      Enable racks rows labels in RacksDB infrastructure graphical
+      representations.
+  racksdb_racks_labels:
+    type: bool
+    default: false
+    doc: |
+      Enable racks labels in RacksDB infrastructure graphical representations.
 
 agents:
   url:

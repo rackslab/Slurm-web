@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Add possibility to sort jobs by quantity of resources (#453).
   - Add priority in jobs list (#452).
+- conf: Introduce `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
 
 ### Changed
 - pkgs: Add dependency on `importlib_metadata` external library on Python < 3.8.
