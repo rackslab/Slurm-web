@@ -334,6 +334,8 @@ def ui_config():
                 else f"http://localhost:{current_app.settings.service.port}"
             ),
             "AUTHENTICATION": current_app.settings.authentication.enabled,
+            "RACKSDB_ROWS_LABELS": current_app.settings.ui.racksdb_rows_labels,
+            "RACKSDB_RACKS_LABELS": current_app.settings.ui.racksdb_racks_labels,
         }
     )
 
