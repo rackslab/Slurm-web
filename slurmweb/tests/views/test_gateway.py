@@ -113,3 +113,16 @@ class TestGatewayViews(TestGatewayBase):
                 response.json["description"],
                 "message template message.html.j2 not found",
             )
+
+    def test_ui_config(self):
+        response = self.client.get("/config.json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json,
+            {
+                "API_SERVER": "http://localhost:5011",
+                "AUTHENTICATION": False,
+                "RACKSDB_RACKS_LABELS": False,
+                "RACKSDB_ROWS_LABELS": False,
+            },
+        )
