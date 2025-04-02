@@ -27,20 +27,25 @@ interface DashboardQueryParameters {
   cores?: boolean
 }
 
-class DashboardViewSettings {
-  range: MetricRange = 'hour'
-  coresToggle = false
-  query() {
+const useDashboardRuntimeStore = defineStore('dashboardRuntime', () => {
+  const range = ref<MetricRange>('hour')
+  const coresToggle = ref(false)
+  function query() {
     const result: DashboardQueryParameters = {}
-    if (this.range != 'hour') {
-      result.range = this.range
+    if (range.value != 'hour') {
+      result.range = range.value
     }
-    if (this.coresToggle) {
-      result.cores = this.coresToggle
+    if (coresToggle.value) {
+      result.cores = coresToggle.value
     }
     return result
   }
-}
+  return {
+    range,
+    coresToggle,
+    query
+  }
+})
 
 /*
  * Jobs view settings
@@ -308,7 +313,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
   const routePath: Ref<string> = ref('/')
   const beforeSettingsRoute: Ref<RouteLocation | undefined> = ref(undefined)
 
-  const dashboard = ref<DashboardViewSettings>(new DashboardViewSettings())
+  const dashboard = useDashboardRuntimeStore()
   const jobs: Ref<JobsViewSettings> = ref(new JobsViewSettings())
   const resources: Ref<ResourcesViewSettings> = ref(new ResourcesViewSettings())
 
