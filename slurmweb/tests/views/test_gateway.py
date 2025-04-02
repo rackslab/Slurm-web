@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from unittest import mock
 import tempfile
 import os
 import shutil
@@ -126,3 +127,29 @@ class TestGatewayViews(TestGatewayBase):
                 "RACKSDB_ROWS_LABELS": False,
             },
         )
+
+    @mock.patch("slurmweb.views.gateway.get_version")
+    def test_unexpected_generic_exception(self, mock_version):
+        # By default in development and testing mode, Flask propagate exceptions
+        # occuring in views. Disable this behavior temporarily despite testing
+        # mode in order to emulate production mode.
+        self.app.config["PROPAGATE_EXCEPTIONS"] = False
+        # Arbitrary generate KeyError in version view, to emulate generic
+        # exception catched by Flask exception handler.
+        mock_version.side_effect = KeyError("fake key error")
+        response = self.client.get("/api/version")
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 500,
+                "description": (
+                    "The server encountered an internal error and was unable to "
+                    "complete your request. Either the server is overloaded or there "
+                    "is an error in the application."
+                ),
+                "name": "Internal Server Error",
+            },
+        )
+        # Restore default exceptions propagation mode.
+        self.app.config["PROPAGATE_EXCEPTIONS"] = None
