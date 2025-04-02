@@ -254,49 +254,58 @@ export const resourcesStates = [
   { value: 'down', label: 'Down' }
 ]
 
-export class ResourcesViewSettings {
-  openFiltersPanel: boolean = false
-  filters: ResourcesViewFilters = { states: [], partitions: [] }
-  removeStateFilter(state: string) {
-    this.filters.states = this.filters.states.filter((element) => element != state)
-  }
+const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
+  const openFiltersPanel = ref(false)
+  const filters = ref<ResourcesViewFilters>({ states: [], partitions: [] })
 
-  removePartitionFilter(partition: string) {
-    this.filters.partitions = this.filters.partitions.filter((element) => element != partition)
+  function removeStateFilter(state: string) {
+    filters.value.states = filters.value.states.filter((element) => element != state)
   }
-  emptyFilters(): boolean {
-    return this.filters.states.length == 0 && this.filters.partitions.length == 0
+  function removePartitionFilter(partition: string) {
+    filters.value.partitions = filters.value.partitions.filter((element) => element != partition)
   }
-  matchesFilters(node: ClusterNode): boolean {
-    if (this.emptyFilters()) {
+  function emptyFilters(): boolean {
+    return filters.value.states.length == 0 && filters.value.partitions.length == 0
+  }
+  function matchesFilters(node: ClusterNode): boolean {
+    if (emptyFilters()) {
       return true
     }
-    if (this.filters.states.length != 0) {
+    if (filters.value.states.length != 0) {
       if (
-        !this.filters.states.some((state) => state.toLocaleLowerCase() == getNodeMainState(node))
+        !filters.value.states.some((state) => state.toLocaleLowerCase() == getNodeMainState(node))
       ) {
         return false
       }
     }
-    if (this.filters.partitions.length != 0) {
-      if (!this.filters.partitions.some((partition) => node.partitions.includes(partition))) {
+    if (filters.value.partitions.length != 0) {
+      if (!filters.value.partitions.some((partition) => node.partitions.includes(partition))) {
         return false
       }
     }
 
     return true
   }
-  query(): ResourcesQueryParameters {
+  function query(): ResourcesQueryParameters {
     const result: ResourcesQueryParameters = {}
-    if (this.filters.states.length > 0) {
-      result.states = this.filters.states.join()
+    if (filters.value.states.length > 0) {
+      result.states = filters.value.states.join()
     }
-    if (this.filters.partitions.length > 0) {
-      result.partitions = this.filters.partitions.join()
+    if (filters.value.partitions.length > 0) {
+      result.partitions = filters.value.partitions.join()
     }
     return result
   }
-}
+  return {
+    openFiltersPanel,
+    filters,
+    removeStateFilter,
+    removePartitionFilter,
+    emptyFilters,
+    matchesFilters,
+    query
+  }
+})
 
 /*
  * Shared settings
@@ -339,7 +348,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
 
   const dashboard = useDashboardRuntimeStore()
   const jobs = useJobsRuntimeStore()
-  const resources: Ref<ResourcesViewSettings> = ref(new ResourcesViewSettings())
+  const resources = useResourcesRuntimeStore()
 
   const errors: Ref<Array<RuntimeError>> = ref([])
   const notifications: Ref<Array<Notification>> = ref([])
