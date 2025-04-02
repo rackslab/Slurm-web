@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import type { FunctionalComponent } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { JobsViewFilters, JobsViewSettings } from '@/stores/runtime'
+import type { JobsViewFilters } from '@/stores/runtime'
 import {
   FunnelIcon,
   BoltIcon,
@@ -25,7 +25,7 @@ const activeFiltersGroups: Array<{
   group: string
   list: keyof JobsViewFilters
   icon: FunctionalComponent
-  removeCallback: (this: JobsViewSettings, filter: string) => void
+  removeCallback: (this: typeof runtimeStore.jobs, filter: string) => void
   colors: { badge: string; button: string }
 }> = [
   {
