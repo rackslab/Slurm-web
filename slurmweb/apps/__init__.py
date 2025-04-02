@@ -10,6 +10,7 @@ from pathlib import Path
 import logging
 
 from flask import Flask, jsonify
+from werkzeug.exceptions import HTTPException
 import jinja2
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import (
@@ -101,6 +102,14 @@ class SlurmwebWebApp(SlurmwebGenericApp, Flask):
             self.register_error_handler(error, self._handle_bad_request)
 
     def _handle_bad_request(self, error):
+        # In Flask < 1.1.0, this handler can receive any kind of exception
+        # captured by Flask. Check error is a werkzeug HTTP exception. If not,
+        # return HTTP/500 with description of the exception.
+        if not isinstance(error, HTTPException):
+            return (
+                jsonify(code=500, name=type(error).__name__, description=str(error)),
+                500,
+            )
         return (
             jsonify(code=error.code, name=error.name, description=error.description),
             error.code,
