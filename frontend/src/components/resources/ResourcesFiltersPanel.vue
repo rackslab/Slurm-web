@@ -7,7 +7,8 @@
 -->
 
 <script setup lang="ts">
-import { useRuntimeStore, resourcesStates } from '@/stores/runtime'
+import { useRuntimeStore } from '@/stores/runtime'
+import { resourcesStates } from '@/stores/runtime/resources'
 import PartitionFilterSelector from '@/components/filters/PartitionFilterSelector.vue'
 import {
   Dialog,
