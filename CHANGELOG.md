@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix _DeprecationWarning_ with setuptools `pkg_resources` being used as an API.
+- Fix handling of generic Python exceptions in registered error handler with
+  Flask < 1.1.0 to return JSON description of this exception (#497).
 - gateway: Add support of strings in RacksDB/agent version parts comparison
   logic.
 - frontend:
