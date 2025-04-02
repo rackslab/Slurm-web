@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import type { FunctionalComponent } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { JobsViewFilters } from '@/stores/runtime'
+import type { JobsViewFilters } from '@/stores/runtime/jobs'
 import {
   FunnelIcon,
   BoltIcon,

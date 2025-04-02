@@ -10,7 +10,7 @@ import { useRESTAPI } from '@/composables/RESTAPI'
 import type { AxiosResponse } from 'axios'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { AuthenticationError, APIServerError } from '@/composables/HTTPErrors'
-import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime'
+import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime/jobs'
 
 interface loginIdents {
   user: string

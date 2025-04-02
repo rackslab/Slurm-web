@@ -9,7 +9,8 @@
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/vue/20/solid'
-import { useRuntimeStore, type JobSortCriterion } from '@/stores/runtime'
+import { useRuntimeStore } from '@/stores/runtime'
+import type { JobSortCriterion } from '@/stores/runtime/jobs'
 
 const runtimeStore = useRuntimeStore()
 

@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import type { FunctionalComponent } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ResourcesViewFilters } from '@/stores/runtime'
+import type { ResourcesViewFilters } from '@/stores/runtime/resources'
 import { FunnelIcon, BoltIcon, RectangleGroupIcon } from '@heroicons/vue/20/solid'
 import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 
