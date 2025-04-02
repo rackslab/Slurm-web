@@ -75,63 +75,69 @@ export type JobSortOrder = (typeof JobSortOrders)[number]
 const JobSortCriteria = ['id', 'user', 'state', 'priority', 'resources'] as const
 export type JobSortCriterion = (typeof JobSortCriteria)[number]
 
-export class JobsViewSettings {
-  sort: JobSortCriterion = 'id'
-  order: JobSortOrder = 'asc'
-  page: number = 1
-  openFiltersPanel: boolean = false
-  filters: JobsViewFilters = { states: [], users: [], accounts: [], qos: [], partitions: [] }
+const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
+  const sort = ref<JobSortCriterion>('id')
+  const order = ref<JobSortOrder>('asc')
+  const page = ref(1)
+  const openFiltersPanel = ref(false)
+  const filters = ref<JobsViewFilters>({
+    states: [],
+    users: [],
+    accounts: [],
+    qos: [],
+    partitions: []
+  })
 
-  restoreSortDefault(): void {
-    this.sort = 'id'
+  function restoreSortDefault(): void {
+    sort.value = 'id'
   }
-  isValidSortOrder(order: unknown) {
+  function isValidSortOrder(order: unknown) {
     if (typeof order === 'string' && JobSortOrders.includes(order as JobSortOrder)) {
       return true
     }
     return false
   }
-  isValidSortCriterion(criterion: unknown) {
+  function isValidSortCriterion(criterion: unknown) {
     if (typeof criterion === 'string' && JobSortCriteria.includes(criterion as JobSortCriterion)) {
       return true
     }
     return false
   }
-  removeStateFilter(state: string) {
-    this.filters.states = this.filters.states.filter((element) => element != state)
+  function removeStateFilter(state: string) {
+    filters.value.states = filters.value.states.filter((element) => element != state)
   }
 
-  removeUserFilter(user: string) {
-    this.filters.users = this.filters.users.filter((element) => element != user)
+  function removeUserFilter(user: string) {
+    filters.value.users = filters.value.users.filter((element) => element != user)
   }
 
-  removeAccountFilter(account: string) {
-    this.filters.accounts = this.filters.accounts.filter((element) => element != account)
+  function removeAccountFilter(account: string) {
+    filters.value.accounts = filters.value.accounts.filter((element) => element != account)
   }
 
-  removeQosFilter(qos: string) {
-    this.filters.qos = this.filters.qos.filter((element) => element != qos)
+  function removeQosFilter(qos: string) {
+    filters.value.qos = filters.value.qos.filter((element) => element != qos)
   }
 
-  removePartitionFilter(partition: string) {
-    this.filters.partitions = this.filters.partitions.filter((element) => element != partition)
+  function removePartitionFilter(partition: string) {
+    filters.value.partitions = filters.value.partitions.filter((element) => element != partition)
   }
-  emptyFilters(): boolean {
+  function emptyFilters(): boolean {
     return (
-      this.filters.states.length == 0 &&
-      this.filters.users.length == 0 &&
-      this.filters.accounts.length == 0 &&
-      this.filters.qos.length == 0 &&
-      this.filters.partitions.length == 0
+      filters.value.states.length == 0 &&
+      filters.value.users.length == 0 &&
+      filters.value.accounts.length == 0 &&
+      filters.value.qos.length == 0 &&
+      filters.value.partitions.length == 0
     )
   }
-  matchesFilters(job: ClusterJob): boolean {
-    if (this.emptyFilters()) {
+  function matchesFilters(job: ClusterJob): boolean {
+    if (emptyFilters()) {
       return true
     }
-    if (this.filters.states.length != 0) {
+    if (filters.value.states.length != 0) {
       if (
-        !this.filters.states.some((state) => {
+        !filters.value.states.some((state) => {
           return job.job_state
             .map((_state) => _state.toLocaleLowerCase())
             .includes(state.toLocaleLowerCase())
@@ -140,36 +146,36 @@ export class JobsViewSettings {
         return false
       }
     }
-    if (this.filters.users.length != 0) {
+    if (filters.value.users.length != 0) {
       if (
-        !this.filters.users.some((user) => {
+        !filters.value.users.some((user) => {
           return user.toLocaleLowerCase() == job.user_name.toLocaleLowerCase()
         })
       ) {
         return false
       }
     }
-    if (this.filters.accounts.length != 0) {
+    if (filters.value.accounts.length != 0) {
       if (
-        !this.filters.accounts.some((account) => {
+        !filters.value.accounts.some((account) => {
           return account.toLocaleLowerCase() == job.account.toLocaleLowerCase()
         })
       ) {
         return false
       }
     }
-    if (this.filters.qos.length != 0) {
+    if (filters.value.qos.length != 0) {
       if (
-        !this.filters.qos.some((qos) => {
+        !filters.value.qos.some((qos) => {
           return qos.toLocaleLowerCase() == job.qos.toLocaleLowerCase()
         })
       ) {
         return false
       }
     }
-    if (this.filters.partitions.length != 0) {
+    if (filters.value.partitions.length != 0) {
       if (
-        !this.filters.partitions.some((partition) => {
+        !filters.value.partitions.some((partition) => {
           return partition.toLocaleLowerCase() == job.partition.toLocaleLowerCase()
         })
       ) {
@@ -179,35 +185,53 @@ export class JobsViewSettings {
 
     return true
   }
-  query(): JobsQueryParameters {
+  function query(): JobsQueryParameters {
     const result: JobsQueryParameters = {}
-    if (this.page != 1) {
-      result.page = this.page
+    if (page.value != 1) {
+      result.page = page.value
     }
-    if (this.sort != 'id') {
-      result.sort = this.sort
+    if (sort.value != 'id') {
+      result.sort = sort.value
     }
-    if (this.order != 'asc') {
-      result.order = this.order
+    if (order.value != 'asc') {
+      result.order = order.value
     }
-    if (this.filters.states.length > 0) {
-      result.states = this.filters.states.join()
+    if (filters.value.states.length > 0) {
+      result.states = filters.value.states.join()
     }
-    if (this.filters.users.length > 0) {
-      result.users = this.filters.users.join()
+    if (filters.value.users.length > 0) {
+      result.users = filters.value.users.join()
     }
-    if (this.filters.accounts.length > 0) {
-      result.accounts = this.filters.accounts.join()
+    if (filters.value.accounts.length > 0) {
+      result.accounts = filters.value.accounts.join()
     }
-    if (this.filters.qos.length > 0) {
-      result.qos = this.filters.qos.join()
+    if (filters.value.qos.length > 0) {
+      result.qos = filters.value.qos.join()
     }
-    if (this.filters.partitions.length > 0) {
-      result.partitions = this.filters.partitions.join()
+    if (filters.value.partitions.length > 0) {
+      result.partitions = filters.value.partitions.join()
     }
     return result
   }
-}
+  return {
+    sort,
+    order,
+    page,
+    openFiltersPanel,
+    filters,
+    restoreSortDefault,
+    isValidSortOrder,
+    isValidSortCriterion,
+    removeStateFilter,
+    removeUserFilter,
+    removeAccountFilter,
+    removeQosFilter,
+    removePartitionFilter,
+    emptyFilters,
+    matchesFilters,
+    query
+  }
+})
 
 /*
  * Resources view settings
@@ -314,7 +338,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
   const beforeSettingsRoute: Ref<RouteLocation | undefined> = ref(undefined)
 
   const dashboard = useDashboardRuntimeStore()
-  const jobs: Ref<JobsViewSettings> = ref(new JobsViewSettings())
+  const jobs = useJobsRuntimeStore()
   const resources: Ref<ResourcesViewSettings> = ref(new ResourcesViewSettings())
 
   const errors: Ref<Array<RuntimeError>> = ref([])
