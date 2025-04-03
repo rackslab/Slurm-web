@@ -92,19 +92,13 @@ const router = createRouter({
           path: 'dashboard',
           name: 'dashboard',
           component: DashboardView,
-          props: true,
-          meta: {
-            entry: 'dashboard'
-          }
+          props: true
         },
         {
           path: 'jobs',
           name: 'jobs',
           component: JobsView,
-          props: true,
-          meta: {
-            entry: 'jobs'
-          }
+          props: true
         },
         {
           path: 'job/:id',
@@ -113,46 +107,31 @@ const router = createRouter({
           props: (route: RouteLocation) => ({
             cluster: route.params.cluster,
             id: parseInt(route.params.id as string)
-          }),
-          meta: {
-            entry: 'jobs'
-          }
+          })
         },
         {
           path: 'resources',
           name: 'resources',
           component: ResourcesView,
-          props: true,
-          meta: {
-            entry: 'resources'
-          }
+          props: true
         },
         {
           path: 'node/:nodeName',
           name: 'node',
           component: NodeView,
-          props: true,
-          meta: {
-            entry: 'resources'
-          }
+          props: true
         },
         {
           path: 'qos',
           name: 'qos',
           component: QosView,
-          props: true,
-          meta: {
-            entry: 'qos'
-          }
+          props: true
         },
         {
           path: 'reservations',
           name: 'reservations',
           component: ReservationsView,
-          props: true,
-          meta: {
-            entry: 'reservations'
-          }
+          props: true
         }
       ]
     }
@@ -179,7 +158,6 @@ router.beforeEach(async (to, from) => {
       return '/anonymous'
     }
   }
-  runtime.navigation = to.meta.entry as string
   runtime.routePath = to.path as string
   runtime.sidebarOpen = false
 

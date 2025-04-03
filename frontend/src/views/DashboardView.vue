@@ -22,7 +22,11 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Dashboard' }]">
+  <ClusterMainLayout
+    menu-entry="dashboard"
+    :cluster="cluster"
+    :breadcrumb="[{ title: 'Dashboard' }]"
+  >
     <div class="mx-auto max-w-7xl bg-white">
       <ErrorAlert v-if="unable"
         >Unable to retrieve statistics from cluster

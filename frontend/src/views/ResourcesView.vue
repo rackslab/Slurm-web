@@ -160,7 +160,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClusterMainLayout :cluster="cluster" :breadcrumb="[{ title: 'Resources' }]">
+  <ClusterMainLayout
+    menu-entry="resources"
+    :cluster="cluster"
+    :breadcrumb="[{ title: 'Resources' }]"
+  >
     <div class="bg-white">
       <ResourcesFiltersPanel :cluster="cluster" :nbNodes="filteredNodes.length" />
 

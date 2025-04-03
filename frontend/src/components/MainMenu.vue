@@ -21,6 +21,10 @@ import {
 
 import { useRuntimeStore } from '@/stores/runtime'
 
+const { entry } = defineProps<{
+  entry: string
+}>()
+
 const runtimeStore = useRuntimeStore()
 const navigation = [
   { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permission: 'view-stats' },
@@ -97,7 +101,7 @@ const navigation = [
                           v-if="runtimeStore.hasPermission(item.permission)"
                           :to="{ name: item.route }"
                           :class="[
-                            item.route == runtimeStore.navigation
+                            item.route == entry
                               ? 'bg-slurmweb-dark text-white'
                               : 'text-slurmweb-font-disabled hover:text-white',
                             'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
@@ -106,7 +110,7 @@ const navigation = [
                           <component
                             :is="item.icon"
                             :class="[
-                              item.route == runtimeStore.navigation
+                              item.route == entry
                                 ? 'text-white'
                                 : 'text-slurmweb-font-disabled group-hover:text-white',
                               'h-6 w-6 shrink-0'
@@ -155,7 +159,7 @@ const navigation = [
                   v-if="runtimeStore.hasPermission(item.permission)"
                   :to="{ name: item.route }"
                   :class="[
-                    item.route == runtimeStore.navigation
+                    item.route == entry
                       ? 'bg-slurmweb-dark text-white'
                       : 'hover:slurmweb-dark text-slurmweb-font-disabled hover:text-white',
                     'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'

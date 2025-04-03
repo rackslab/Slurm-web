@@ -53,7 +53,6 @@ export interface RuntimeStore {
 }
 
 export const useRuntimeStore = defineStore('runtime', () => {
-  const navigation: Ref<string> = ref('home')
   const routePath: Ref<string> = ref('/')
   const beforeSettingsRoute: Ref<RouteLocation | undefined> = ref(undefined)
 
@@ -120,7 +119,6 @@ export const useRuntimeStore = defineStore('runtime', () => {
     addNotification(new Notification('INFO', message, 5))
   }
   return {
-    navigation,
     routePath,
     beforeSettingsRoute,
     dashboard,
