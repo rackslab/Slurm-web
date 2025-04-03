@@ -120,7 +120,11 @@ onMounted(() => {
           role="list"
           class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-900/5 lg:rounded-xl"
         >
-          <ClusterListItem v-for="cluster in clusters" :key="cluster.name" :cluster="cluster" />
+          <ClusterListItem
+            v-for="cluster in clusters"
+            :key="cluster.name"
+            :cluster-name="cluster.name"
+          />
         </ul>
       </div>
     </section>

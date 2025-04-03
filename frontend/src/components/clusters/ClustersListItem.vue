@@ -10,16 +10,17 @@ import { onMounted, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { ClusterDescription } from '@/composables/GatewayAPI'
+import type { ClusterDescription, ClusterStats } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { TagIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const { cluster } = defineProps<{ cluster: ClusterDescription }>()
+const { clusterName } = defineProps<{ clusterName: string }>()
 
 const runtimeStore = useRuntimeStore()
+const cluster = runtimeStore.getCluster(clusterName)
 const loading = ref<boolean>(true)
 
 function reportAuthenticationError(error: AuthenticationError) {
