@@ -45,6 +45,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
 
 <template>
   <ClusterMainLayout
+    menu-entry="resources"
     :cluster="cluster"
     :breadcrumb="[{ title: 'Resources', routeName: 'resources' }, { title: `Node ${nodeName}` }]"
   >

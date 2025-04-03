@@ -185,6 +185,7 @@ onMounted(() => {
 
 <template>
   <ClusterMainLayout
+    menu-entry="jobs"
     :cluster="cluster"
     :breadcrumb="[{ title: 'Jobs', routeName: 'jobs' }, { title: `Job ${id}` }]"
   >
