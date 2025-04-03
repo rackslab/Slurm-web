@@ -159,7 +159,6 @@ router.beforeEach(async (to, from) => {
     }
   }
   runtime.routePath = to.path as string
-  runtime.sidebarOpen = false
 
   if (to.params.cluster) {
     if (!runtime.currentCluster || to.params.cluster !== runtime.currentCluster.name) {

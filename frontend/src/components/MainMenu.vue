@@ -25,6 +25,8 @@ const { entry } = defineProps<{
   entry: string
 }>()
 
+const sidebarOpen = defineModel<boolean>()
+
 const runtimeStore = useRuntimeStore()
 const navigation = [
   { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permission: 'view-stats' },
@@ -41,8 +43,8 @@ const navigation = [
 </script>
 
 <template>
-  <TransitionRoot as="template" :show="runtimeStore.sidebarOpen">
-    <Dialog as="div" class="relative z-50 lg:hidden" @close="runtimeStore.sidebarOpen = false">
+  <TransitionRoot as="template" :show="sidebarOpen">
+    <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
       <TransitionChild
         as="template"
         enter="transition-opacity ease-linear duration-300"
@@ -79,7 +81,7 @@ const navigation = [
                 <button
                   type="button"
                   class="-m-2.5 p-2.5"
-                  @click="runtimeStore.sidebarOpen = false"
+                  @click="sidebarOpen = false"
                 >
                   <span class="sr-only">Close sidebar</span>
                   <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
@@ -106,6 +108,7 @@ const navigation = [
                               : 'text-slurmweb-font-disabled hover:text-white',
                             'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
                           ]"
+                          @click="sidebarOpen = false"
                         >
                           <component
                             :is="item.icon"
