@@ -14,6 +14,7 @@ import DashboardView from '@/views/DashboardView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AnonymousView from '@/views/AnonymousView.vue'
 import SignoutView from '@/views/SignoutView.vue'
+import SettingsLayout from '@/components/settings/SettingsLayout.vue'
 import SettingsMainView from '@/views/settings/SettingsMain.vue'
 import SettingsErrorsView from '@/views/settings/SettingsErrors.vue'
 import SettingsAccountView from '@/views/settings/SettingsAccount.vue'
@@ -56,27 +57,33 @@ const router = createRouter({
     },
     {
       path: '/settings',
-      name: 'settings',
-      component: SettingsMainView,
-      meta: {
-        settings: true
-      }
-    },
-    {
-      path: '/settings/errors',
-      name: 'settings-errors',
-      component: SettingsErrorsView,
-      meta: {
-        settings: true
-      }
-    },
-    {
-      path: '/settings/account',
-      name: 'settings-account',
-      component: SettingsAccountView,
-      meta: {
-        settings: true
-      }
+      component: SettingsLayout,
+      children: [
+        {
+          path: '',
+          name: 'settings',
+          component: SettingsMainView,
+          meta: {
+            settings: true
+          }
+        },
+        {
+          path: 'errors',
+          name: 'settings-errors',
+          component: SettingsErrorsView,
+          meta: {
+            settings: true
+          }
+        },
+        {
+          path: '/settings/account',
+          name: 'settings-account',
+          component: SettingsAccountView,
+          meta: {
+            settings: true
+          }
+        }
+      ]
     },
     {
       path: '/:cluster',

@@ -7,11 +7,12 @@
 -->
 
 <script setup lang="ts">
+import { RouterView } from 'vue-router'
 import LeaveSettingsButton from '@/components/settings/LeaveSettingsButton.vue'
 </script>
 <template>
   <div class="mx-16">
     <LeaveSettingsButton />
-    <slot></slot>
+    <RouterView />
   </div>
 </template>
