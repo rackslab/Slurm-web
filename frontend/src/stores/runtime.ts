@@ -62,7 +62,6 @@ export const useRuntimeStore = defineStore('runtime', () => {
 
   const errors: Ref<Array<RuntimeError>> = ref([])
   const notifications: Ref<Array<Notification>> = ref([])
-  const sidebarOpen: Ref<boolean> = ref(false)
 
   const availableClusters: Ref<Array<ClusterDescription>> = ref(
     JSON.parse(localStorage.getItem('availableClusters') || '[]') as ClusterDescription[]
@@ -126,7 +125,6 @@ export const useRuntimeStore = defineStore('runtime', () => {
     resources,
     errors,
     notifications,
-    sidebarOpen,
     availableClusters,
     currentCluster,
     addCluster,
