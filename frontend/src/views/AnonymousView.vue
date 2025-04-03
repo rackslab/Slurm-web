@@ -32,7 +32,7 @@ onMounted(async () => {
     msg.value = 'Anonymous access is blocked because authentication is enabled.'
   } else {
     try {
-      let response = await gateway.anonymousLogin()
+      const response = await gateway.anonymousLogin()
       authStore.anonymousLogin(response.token)
     } catch (error: any) {
       if (error instanceof AuthenticationError) {
