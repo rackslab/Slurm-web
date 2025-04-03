@@ -86,7 +86,7 @@ const displayTags = ref<Record<JobField, { show: boolean; highlight: boolean }>>
 })
 
 const jobFieldsContent = computed(
-  (): { id: JobField; label: string; component: Component; props: Object }[] => {
+  (): { id: JobField; label: string; component: Component; props: object }[] => {
     if (!data.value) return []
     return [
       { id: 'user', label: 'User', component: JobFieldRaw, props: { field: data.value.user } },

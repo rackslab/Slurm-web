@@ -40,7 +40,7 @@ const sortedJobs = computed(() => {
   console.log(`Computing sorted jobs by ${runtimeStore.jobs.sort}`)
   if (data.value) {
     // https://vuejs.org/guide/essentials/list.html#displaying-filtered-sorted-results
-    let result = [...data.value].filter((job) => {
+    const result = [...data.value].filter((job) => {
       return runtimeStore.jobs.matchesFilters(job)
     })
     return result.sort(compareClusterJob)
@@ -149,7 +149,7 @@ interface Page {
 }
 
 function jobsPages(): Page[] {
-  let result: Page[] = Array()
+  const result: Page[] = []
   let ellipsis = false
   range(1, lastpage.value, 1).forEach((page) => {
     if (

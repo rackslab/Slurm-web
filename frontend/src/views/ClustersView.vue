@@ -24,8 +24,8 @@ const runtimeConfiguration = useRuntimeConfiguration()
 const gateway = useGatewayAPI()
 const router = useRouter()
 const clusters: Ref<Array<ClusterDescription>> = ref([])
-const loaded: Ref<Boolean> = ref(false)
-const unable: Ref<Boolean> = ref(false)
+const loaded: Ref<boolean> = ref(false)
+const unable: Ref<boolean> = ref(false)
 
 function reportAuthenticationError(error: AuthenticationError) {
   runtimeStore.reportError(`Authentication error: ${error.message}`)

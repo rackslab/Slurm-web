@@ -53,7 +53,7 @@ async function submitLogin() {
   }
   try {
     disableSubmission.value = true
-    let response = await gateway.login({ user: username.value, password: password.value })
+    const response = await gateway.login({ user: username.value, password: password.value })
     authStore.login(response.token, username.value, response.fullname, response.groups)
   } catch (error: any) {
     if (error instanceof AuthenticationError) {

@@ -16,7 +16,7 @@ const router = useRouter()
 
 function leaveSettings() {
   if (runtimeStore.beforeSettingsRoute) {
-    let from = runtimeStore.beforeSettingsRoute
+    const from = runtimeStore.beforeSettingsRoute
     runtimeStore.beforeSettingsRoute = undefined
     router.push(from)
   } else {
