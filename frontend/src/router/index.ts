@@ -79,70 +79,75 @@ const router = createRouter({
       }
     },
     {
-      path: '/:cluster/dashboard',
-      name: 'dashboard',
-      component: DashboardView,
-      props: true,
-      meta: {
-        entry: 'dashboard'
-      }
-    },
-    {
-      path: '/:cluster/jobs',
-      name: 'jobs',
-      component: JobsView,
-      props: true,
-      meta: {
-        entry: 'jobs'
-      }
-    },
-    {
-      path: '/:cluster/job/:id',
-      name: 'job',
-      component: JobView,
-      props: (route: RouteLocation) => ({
-        cluster: route.params.cluster,
-        id: parseInt(route.params.id as string)
-      }),
-      meta: {
-        entry: 'jobs'
-      }
-    },
-    {
-      path: '/:cluster/resources',
-      name: 'resources',
-      component: ResourcesView,
-      props: true,
-      meta: {
-        entry: 'resources'
-      }
-    },
-    {
-      path: '/:cluster/node/:nodeName',
-      name: 'node',
-      component: NodeView,
-      props: true,
-      meta: {
-        entry: 'resources'
-      }
-    },
-    {
-      path: '/:cluster/qos',
-      name: 'qos',
-      component: QosView,
-      props: true,
-      meta: {
-        entry: 'qos'
-      }
-    },
-    {
-      path: '/:cluster/reservations',
-      name: 'reservations',
-      component: ReservationsView,
-      props: true,
-      meta: {
-        entry: 'reservations'
-      }
+      path: '/:cluster',
+      children: [
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component: DashboardView,
+          props: true,
+          meta: {
+            entry: 'dashboard'
+          }
+        },
+        {
+          path: 'jobs',
+          name: 'jobs',
+          component: JobsView,
+          props: true,
+          meta: {
+            entry: 'jobs'
+          }
+        },
+        {
+          path: 'job/:id',
+          name: 'job',
+          component: JobView,
+          props: (route: RouteLocation) => ({
+            cluster: route.params.cluster,
+            id: parseInt(route.params.id as string)
+          }),
+          meta: {
+            entry: 'jobs'
+          }
+        },
+        {
+          path: 'resources',
+          name: 'resources',
+          component: ResourcesView,
+          props: true,
+          meta: {
+            entry: 'resources'
+          }
+        },
+        {
+          path: 'node/:nodeName',
+          name: 'node',
+          component: NodeView,
+          props: true,
+          meta: {
+            entry: 'resources'
+          }
+        },
+        {
+          path: 'qos',
+          name: 'qos',
+          component: QosView,
+          props: true,
+          meta: {
+            entry: 'qos'
+          }
+        },
+        {
+          path: 'reservations',
+          name: 'reservations',
+          component: ReservationsView,
+          props: true,
+          meta: {
+            entry: 'reservations'
+          }
+        }
+      ]
     }
   ]
 })
