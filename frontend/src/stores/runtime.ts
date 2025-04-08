@@ -12,11 +12,8 @@ import type { Ref } from 'vue'
 import type { RouteLocation } from 'vue-router'
 import type { ClusterDescription } from '@/composables/GatewayAPI'
 import { useDashboardRuntimeStore } from './runtime/dashboard'
-import type { DashboardQueryParameters } from './runtime/dashboard'
 import { useJobsRuntimeStore } from './runtime/jobs'
-import type { JobsQueryParameters } from './runtime/jobs'
 import { useResourcesRuntimeStore } from './runtime/resources'
-import type { ResourcesQueryParameters } from './runtime/resources'
 
 /*
  * Shared settings
