@@ -92,7 +92,7 @@ const activeFiltersGroups: Array<{
 
       <div aria-hidden="true" class="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block" />
 
-      <div class="mt-2 sm:ml-4 sm:mt-0">
+      <div class="mt-2 sm:mt-0 sm:ml-4">
         <div class="-m-1 flex flex-wrap items-center">
           <template v-for="activeFilterGroup in activeFiltersGroups" :key="activeFilterGroup.group">
             <span
@@ -100,7 +100,7 @@ const activeFiltersGroups: Array<{
               :key="activeFilter"
               :class="[
                 activeFilterGroup.colors.badge,
-                'm-1 inline-flex items-center rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium text-white'
+                'm-1 inline-flex items-center rounded-full border py-1.5 pr-2 pl-3 text-xs font-medium text-white'
               ]"
             >
               <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4"></component>
@@ -109,7 +109,7 @@ const activeFiltersGroups: Array<{
                 type="button"
                 :class="[
                   activeFilterGroup.colors.button,
-                  'ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1'
+                  'ml-1 inline-flex h-4 w-4 shrink-0 rounded-full p-1'
                 ]"
                 @click="activeFilterGroup.removeCallback.call(runtimeStore.jobs, activeFilter)"
               >

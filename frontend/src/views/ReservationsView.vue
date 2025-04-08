@@ -89,12 +89,12 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr v-for="reservation in data" :key="reservation.name">
                 <td class="pr-3 sm:pl-6 lg:pl-8">{{ reservation.name }}</td>
-                <td class="hidden break-all px-3 text-sm 2xl:table-cell">
+                <td class="hidden px-3 text-sm break-all 2xl:table-cell">
                   <p class="font-mono text-xs">{{ reservation.node_list }}</p>
                   <p class="text-gray-500">→ {{ reservation.node_count }} nodes</p>
                 </td>
                 <td class="table-cell px-3 text-sm 2xl:hidden">{{ reservation.node_count }}</td>
-                <td class="whitespace-nowrap px-3 text-sm">
+                <td class="px-3 text-sm whitespace-nowrap">
                   <p class="hidden xl:block">
                     <template v-if="reservation.start_time.set">
                       {{ new Date(reservation.start_time.number * 10 ** 3).toLocaleString() }}
@@ -105,7 +105,7 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
                     <span class="font-bold">→</span>
                     {{ new Date(reservation.end_time.number * 10 ** 3).toLocaleString() }}
                   </p>
-                  <p class="xl:italic xl:text-gray-500">
+                  <p class="xl:text-gray-500 xl:italic">
                     {{ representDuration(reservation.start_time, reservation.end_time) }}
                   </p>
                 </td>
@@ -135,7 +135,7 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
                   <span
                     v-for="flag in reservation.flags"
                     :key="flag"
-                    class="m-1 inline-flex items-center rounded-md bg-slurmweb-light/50 px-2 py-1 text-xs font-medium text-slurmweb-dark ring-1 ring-inset ring-slurmweb-dark/10"
+                    class="bg-slurmweb-light/50 text-slurmweb-dark ring-slurmweb-dark/10 m-1 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
                     >{{ flag }}</span
                   >
                 </td>
