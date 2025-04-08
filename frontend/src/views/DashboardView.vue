@@ -34,7 +34,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
       >
       <div v-else class="grid grid-cols-1 gap-px bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
-          <p class="text-sm font-medium leading-6 text-gray-400">Nodes</p>
+          <p class="text-sm leading-6 font-medium text-gray-400">Nodes</p>
           <span
             v-if="data"
             id="metric-nodes"
@@ -47,7 +47,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
-          <p class="text-sm font-medium leading-6 text-gray-400">Cores</p>
+          <p class="text-sm leading-6 font-medium text-gray-400">Cores</p>
           <span
             v-if="data"
             id="metric-cores"
@@ -60,7 +60,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
-          <p class="text-sm font-medium leading-6 text-gray-400">Running jobs</p>
+          <p class="text-sm leading-6 font-medium text-gray-400">Running jobs</p>
           <span
             v-if="data"
             id="metric-jobs-running"
@@ -73,7 +73,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
-          <p class="text-sm font-medium leading-6 text-gray-400">Total jobs</p>
+          <p class="text-sm leading-6 font-medium text-gray-400">Total jobs</p>
           <span
             v-if="data"
             id="metric-jobs-total"

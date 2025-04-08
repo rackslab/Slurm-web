@@ -327,7 +327,7 @@ onUnmounted(() => {
   >
     <span v-if="unable" class="text-sm text-gray-500">{{ errorMessage }}</span>
     <template v-else>
-      <div v-show="loading" class="h-1/2 text-slurmweb">
+      <div v-show="loading" class="text-slurmweb h-1/2">
         <LoadingSpinner :size="8" />
       </div>
 
@@ -346,7 +346,7 @@ onUnmounted(() => {
           </ul>
         </div>
         <div
-          class="absolute left-0 right-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
+          class="absolute right-0 left-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
         ></div>
       </aside>
 

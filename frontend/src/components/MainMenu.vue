@@ -77,12 +77,8 @@ const navigation = [
               leave-from="opacity-100"
               leave-to="opacity-0"
             >
-              <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                <button
-                  type="button"
-                  class="-m-2.5 p-2.5"
-                  @click="sidebarOpen = false"
-                >
+              <div class="absolute top-0 left-full flex w-16 justify-center pt-5">
+                <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
                   <span class="sr-only">Close sidebar</span>
                   <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
                 </button>
@@ -90,7 +86,7 @@ const navigation = [
             </TransitionChild>
 
             <!-- Sidebar component -->
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-slurmweb px-6 pb-4">
+            <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
               <div class="flex h-16 shrink-0 items-center justify-center">
                 <img class="flex h-12" src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
               </div>
@@ -106,7 +102,7 @@ const navigation = [
                             item.route == entry
                               ? 'bg-slurmweb-dark text-white'
                               : 'text-slurmweb-font-disabled hover:text-white',
-                            'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
+                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                           ]"
                           @click="sidebarOpen = false"
                         >
@@ -128,10 +124,10 @@ const navigation = [
                   <li class="mt-auto">
                     <RouterLink
                       :to="{ name: 'settings' }"
-                      class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slurmweb-font-disabled hover:bg-slurmweb-dark hover:text-white"
+                      class="group text-slurmweb-font-disabled hover:bg-slurmweb-dark -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
                     >
                       <Cog6ToothIcon
-                        class="h-6 w-6 shrink-0 text-slurmweb-font-disabled group-hover:text-white"
+                        class="text-slurmweb-font-disabled h-6 w-6 shrink-0 group-hover:text-white"
                         aria-hidden="true"
                       />
                       Settings
@@ -149,7 +145,7 @@ const navigation = [
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-slurmweb px-6 pb-4">
+    <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
       <div class="flex h-24 shrink-0 items-center">
         <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
       </div>
@@ -165,7 +161,7 @@ const navigation = [
                     item.route == entry
                       ? 'bg-slurmweb-dark text-white'
                       : 'hover:slurmweb-dark text-slurmweb-font-disabled hover:text-white',
-                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
+                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                   ]"
                 >
                   <component :is="item.icon" :class="['h-6 w-6 shrink-0']" aria-hidden="true" />
@@ -177,7 +173,7 @@ const navigation = [
           <li class="mt-auto">
             <RouterLink
               :to="{ name: 'settings' }"
-              class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slurmweb-light hover:bg-slurmweb-dark hover:text-white"
+              class="group text-slurmweb-light hover:bg-slurmweb-dark -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
             >
               <Cog6ToothIcon class="h-6 w-6 shrink-0" aria-hidden="true" />
               Settings

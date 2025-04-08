@@ -247,7 +247,7 @@ onMounted(() => {
                         />
                       </button>
                     </td>
-                    <td class="whitespace-nowrap py-4 text-sm text-gray-900">
+                    <td class="py-4 text-sm whitespace-nowrap text-gray-900">
                       <RouterLink
                         v-if="node.number == 1"
                         class="inline-flex text-white hover:font-bold hover:text-gray-500"
@@ -266,28 +266,28 @@ onMounted(() => {
                       >
                         <span class="sr-only">Toggle folded nodes {{ node.name }}</span>
                         <span class="font-mono">{{ node.name }}</span>
-                        <span class="px-1 font-normal italic text-gray-500"
+                        <span class="px-1 font-normal text-gray-500 italic"
                           >({{ node.number }})</span
                         >
                       </button>
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <NodeMainState :node="node" />
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <NodeAllocationState :node="node" />
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       {{ node.sockets }} x {{ node.cores }}
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       {{ node.real_memory }}MB
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <span
                         v-for="partition in node.partitions"
                         :key="partition"
-                        class="rounded bg-gray-500 px-2 py-1 font-medium text-white"
+                        class="rounded-sm bg-gray-500 px-2 py-1 font-medium text-white"
                         >{{ partition }}</span
                       >
                     </td>
@@ -305,12 +305,12 @@ onMounted(() => {
                         <td colspan="7" class="z-0 bg-gray-300">
                           <ul
                             role="list"
-                            class="lg:grid-cols-16 m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4"
+                            class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4 lg:grid-cols-16"
                           >
                             <li
                               v-for="_node in expandNodeset(node.name)"
                               :key="_node"
-                              class="col-span-1 flex rounded-md border-gray-200 bg-white text-left font-mono text-xs text-gray-500 shadow-sm transition-transform hover:scale-105"
+                              class="col-span-1 flex rounded-md border-gray-200 bg-white text-left font-mono text-xs text-gray-500 shadow-xs transition-transform hover:scale-105"
                             >
                               <button
                                 class="inline-flex w-full px-4 py-2 text-white hover:text-gray-500"

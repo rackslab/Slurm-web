@@ -23,7 +23,7 @@ const runtimeStore = useRuntimeStore()
   <template v-if="runtimeStore.availableClusters.length > 1">
     <Popover class="relative">
       <PopoverButton
-        class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-transparent hover:bg-slurmweb-light hover:text-gray-400"
+        class="hover:bg-slurmweb-light inline-flex items-center gap-x-1 rounded-sm p-3 leading-6 font-bold text-transparent hover:text-gray-400"
       >
         <ChevronDownIcon class="h-5 w-5" aria-hidden="true" />
         <span class="text-gray-700 hover:text-gray-900">{{ cluster }}</span>
@@ -75,14 +75,14 @@ const runtimeStore = useRuntimeStore()
                     params: { cluster: cluster.name },
                     query: route.query
                   }"
-                  class="flex flex-grow font-semibold text-gray-900"
+                  class="flex grow font-semibold text-gray-900"
                   @click="close()"
                 >
                   {{ cluster.name }}
                   <span class="absolute inset-0" />
                 </RouterLink>
 
-                <span v-if="cluster.stats" class="w-30 mt-1 flex text-xs leading-5 text-gray-500">
+                <span v-if="cluster.stats" class="mt-1 flex w-30 text-xs leading-5 text-gray-500">
                   <ServerIcon class="mx-1 h-5" />
                   {{ cluster.stats.resources.nodes }} node{{
                     cluster.stats.resources.nodes > 1 ? 's' : ''
@@ -97,7 +97,7 @@ const runtimeStore = useRuntimeStore()
   </template>
   <span
     v-else
-    class="inline-flex items-center gap-x-1 rounded p-3 font-bold leading-6 text-gray-700"
+    class="inline-flex items-center gap-x-1 rounded-sm p-3 leading-6 font-bold text-gray-700"
   >
     {{ cluster }}
   </span>
