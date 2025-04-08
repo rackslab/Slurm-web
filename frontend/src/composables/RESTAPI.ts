@@ -33,7 +33,7 @@ export function useRESTAPI() {
     return config
   }
 
-  async function requestServer(func: Function): Promise<AxiosResponse> {
+  async function requestServer(func: () => Promise<AxiosResponse>): Promise<AxiosResponse> {
     try {
       return await func()
     } catch (error: any) {
