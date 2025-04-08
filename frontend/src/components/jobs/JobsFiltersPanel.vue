@@ -51,14 +51,14 @@ const state_filters = [
     <Dialog as="div" class="relative z-40" @close="runtimeStore.jobs.openFiltersPanel = false">
       <TransitionChild
         as="template"
-        enter="transition-opacity ease-linear duration-300"
+        enter="ease-in-out duration-500"
         enter-from="opacity-0"
         enter-to="opacity-100"
-        leave="transition-opacity ease-linear duration-300"
+        leave="ease-in-out duration-500"
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="bg-opacity-25 fixed inset-0 bg-black" />
+        <div class="fixed inset-0 bg-gray-400/50 transition-opacity" />
       </TransitionChild>
 
       <div class="fixed inset-0 z-40 flex">
