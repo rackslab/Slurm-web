@@ -82,7 +82,7 @@ export function foldNodeset(nodeNames: string[]): string {
   nodeNames.sort().forEach((nodeName) => {
     const all = [...nodeName.matchAll(re)]
     let node_pattern = String()
-    const node_ids = []
+    const node_ids: string[] = []
     all.forEach((match) => {
       if (match[1].length) {
         node_pattern += match[1]
