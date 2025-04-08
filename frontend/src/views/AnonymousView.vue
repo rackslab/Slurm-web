@@ -34,10 +34,10 @@ onMounted(async () => {
     try {
       const response = await gateway.anonymousLogin()
       authStore.anonymousLogin(response.token)
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof AuthenticationError) {
         reportAuthenticationError(error.message)
-      } else {
+      } else if (error instanceof Error) {
         runtimeStore.reportError(`Other error: ${error.message}`)
       }
     }

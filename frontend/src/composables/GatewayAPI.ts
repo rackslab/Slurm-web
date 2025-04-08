@@ -541,7 +541,7 @@ export function useGatewayAPI() {
   async function login(idents: loginIdents): Promise<GatewayLoginResponse> {
     try {
       return (await restAPI.post('/login', idents, false)) as GatewayLoginResponse
-    } catch (error: any) {
+    } catch (error) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
         throw new AuthenticationError(error.message)
@@ -553,7 +553,7 @@ export function useGatewayAPI() {
   async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
     try {
       return (await restAPI.get('/anonymous', false)) as GatewayAnonymousLoginResponse
-    } catch (error: any) {
+    } catch (error) {
       /* Translate 401 APIServerError into AuthenticationError */
       if (error instanceof APIServerError && error.status == 401) {
         throw new AuthenticationError(error.message)

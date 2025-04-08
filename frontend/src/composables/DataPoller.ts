@@ -70,7 +70,7 @@ export function useClusterDataPoller<Type>(
       }
 
       loaded.value = true
-    } catch (error: any) {
+    } catch (error) {
       /*
        * Skip errors received lately from other clusters, after the view cluster
        * parameter has changed.
@@ -80,7 +80,7 @@ export function useClusterDataPoller<Type>(
           reportAuthenticationError(error)
         } else if (error instanceof PermissionError) {
           reportPermissionError(error, cluster)
-        } else if (!(error instanceof CanceledRequestError)) {
+        } else if (!(error instanceof CanceledRequestError) && error instanceof Error) {
           /* Ignore canceled requests errors */
           reportOtherError(error)
         }

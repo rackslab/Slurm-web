@@ -55,10 +55,10 @@ async function submitLogin() {
     disableSubmission.value = true
     const response = await gateway.login({ user: username.value, password: password.value })
     authStore.login(response.token, username.value, response.fullname, response.groups)
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error.message)
-    } else {
+    } else if (error instanceof Error) {
       runtimeStore.reportError(`Other error: ${error.message}`)
     }
   }
