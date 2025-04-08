@@ -169,14 +169,14 @@ function qosResourcesLimits(qos: ClusterQos) {
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr v-for="qos in data" :key="qos.name" class="bg-white">
-                <td class="whitespace-nowrap py-4 pr-3 text-sm text-gray-900 sm:pl-6 lg:pl-8">
+                <td class="py-4 pr-3 text-sm whitespace-nowrap text-gray-900 sm:pl-6 lg:pl-8">
                   <p class="text-base font-medium">{{ qos.name }}</p>
                   <p class="text-gray-500">{{ qos.description }}</p>
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                   {{ qos.priority.number }}
                 </td>
-                <td class="hidden whitespace-nowrap px-3 py-4 text-sm lg:table-cell">
+                <td class="hidden px-3 py-4 text-sm whitespace-nowrap lg:table-cell">
                   <dl>
                     <div
                       v-for="limit in qosJobLimits(qos)"
@@ -188,9 +188,9 @@ function qosResourcesLimits(qos: ClusterQos) {
                     >
                       <button
                         @click="openHelpModal(qos.name, limit.id, limit.value)"
-                        class="-ml-5 mr-1"
+                        class="mr-1 -ml-5"
                       >
-                        <QuestionMarkCircleIcon class="h-5 w-5 text-slurmweb" />
+                        <QuestionMarkCircleIcon class="text-slurmweb h-5 w-5" />
                       </button>
                       <dt class="visible">{{ limit.label }}:</dt>
                       <dd class="visible ml-2">
@@ -199,7 +199,7 @@ function qosResourcesLimits(qos: ClusterQos) {
                     </div>
                   </dl>
                 </td>
-                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 lg:table-cell">
                   <dl>
                     <div
                       v-for="limit in qosResourcesLimits(qos)"
@@ -211,9 +211,9 @@ function qosResourcesLimits(qos: ClusterQos) {
                     >
                       <button
                         @click="openHelpModal(qos.name, limit.id, limit.value)"
-                        class="-ml-5 mr-1 self-center"
+                        class="mr-1 -ml-5 self-center"
                       >
-                        <QuestionMarkCircleIcon class="h-5 w-5 text-slurmweb" />
+                        <QuestionMarkCircleIcon class="text-slurmweb h-5 w-5" />
                       </button>
                       <dt class="visible">{{ limit.label }}:</dt>
                       <dd class="visible ml-2 font-mono text-xs">
@@ -222,7 +222,7 @@ function qosResourcesLimits(qos: ClusterQos) {
                     </div>
                   </dl>
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                   <div
                     :class="[
                       qos.limits.max.wall_clock.per.job.set ? 'text-gray-800' : 'text-gray-400',
@@ -231,9 +231,9 @@ function qosResourcesLimits(qos: ClusterQos) {
                   >
                     <button
                       @click="openHelpModal(qos.name, 'MaxWall', qos.limits.max.wall_clock.per.job)"
-                      class="-ml-5 mr-1 self-center"
+                      class="mr-1 -ml-5 self-center"
                     >
-                      <QuestionMarkCircleIcon class="h-5 w-5 text-slurmweb" />
+                      <QuestionMarkCircleIcon class="text-slurmweb h-5 w-5" />
                     </button>
                     <span class="visible">
                       {{ renderWalltime(qos.limits.max.wall_clock.per.job) }}
@@ -244,12 +244,12 @@ function qosResourcesLimits(qos: ClusterQos) {
                   <span
                     v-for="flag in qos.flags"
                     :key="flag"
-                    class="m-1 inline-flex items-center rounded-md bg-slurmweb-light/50 px-2 py-1 text-xs font-medium text-slurmweb-dark ring-1 ring-inset ring-slurmweb-dark/10"
+                    class="bg-slurmweb-light/50 text-slurmweb-dark ring-slurmweb-dark/10 m-1 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
                     >{{ renderQosFlag(flag) }}</span
                   >
                 </td>
                 <td
-                  class="whitespace-nowrap py-4 pl-3 text-right text-sm text-gray-500 sm:pr-6 lg:pr-8"
+                  class="py-4 pl-3 text-right text-sm whitespace-nowrap text-gray-500 sm:pr-6 lg:pr-8"
                 >
                   <RouterLink
                     :to="{
@@ -257,7 +257,7 @@ function qosResourcesLimits(qos: ClusterQos) {
                       params: { cluster: cluster },
                       query: { qos: qos.name }
                     }"
-                    class="font-bold text-slurmweb hover:text-slurmweb-dark"
+                    class="text-slurmweb hover:text-slurmweb-dark font-bold"
                     >View jobs</RouterLink
                   >
                 </td>

@@ -83,11 +83,11 @@ onMounted(() => {
       </button>
     </RouterLink>
     <section
-      class="flex h-screen items-center justify-center gap-y-6 bg-slurmweb-light dark:bg-gray-900"
+      class="bg-slurmweb-light flex h-screen items-center justify-center gap-y-6 dark:bg-gray-900"
     >
       <div v-if="unable" class="w-full rounded-md bg-red-50 p-4 lg:w-[60%]">
         <div class="flex">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
           </div>
           <div class="ml-3">
@@ -105,7 +105,7 @@ onMounted(() => {
       </div>
       <div v-else-if="!clusters.length" class="w-full rounded-md bg-blue-50 p-4 lg:w-[60%]">
         <div class="flex">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <XCircleIcon class="h-5 w-5 text-blue-400" aria-hidden="true" />
           </div>
           <div class="ml-3">
@@ -118,7 +118,7 @@ onMounted(() => {
         <h1 class="flex px-4 text-left text-lg font-medium text-gray-700">Select a cluster</h1>
         <ul
           role="list"
-          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 lg:rounded-xl"
+          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-900/5 lg:rounded-xl"
         >
           <ClusterListItem
             v-for="cluster in clusters"

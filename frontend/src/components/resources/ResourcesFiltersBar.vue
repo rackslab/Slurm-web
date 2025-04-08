@@ -53,7 +53,7 @@ const activeFiltersGroups: Array<{
       <div class="flex justify-end px-4 sm:px-6 lg:px-8">
         <button
           type="button"
-          class="inline-flex gap-x-1.5 rounded-md bg-slurmweb px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-darker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb"
+          class="bg-slurmweb hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           @click="runtimeStore.resources.openFiltersPanel = true"
         >
           <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -72,7 +72,7 @@ const activeFiltersGroups: Array<{
 
         <div aria-hidden="true" class="hidden h-5 w-px bg-gray-300 sm:ml-4 sm:block" />
 
-        <div class="mt-2 sm:ml-4 sm:mt-0">
+        <div class="mt-2 sm:mt-0 sm:ml-4">
           <div class="-m-1 flex flex-wrap items-center">
             <template
               v-for="activeFilterGroup in activeFiltersGroups"
@@ -83,7 +83,7 @@ const activeFiltersGroups: Array<{
                 :key="activeFilter"
                 :class="[
                   activeFilterGroup.colors.badge,
-                  'm-1 inline-flex items-center rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium text-white'
+                  'm-1 inline-flex items-center rounded-full border py-1.5 pr-2 pl-3 text-xs font-medium text-white'
                 ]"
               >
                 <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4"></component>
@@ -92,7 +92,7 @@ const activeFiltersGroups: Array<{
                   type="button"
                   :class="[
                     activeFilterGroup.colors.button,
-                    'ml-1 inline-flex h-4 w-4 flex-shrink-0 rounded-full p-1'
+                    'ml-1 inline-flex h-4 w-4 shrink-0 rounded-full p-1'
                   ]"
                   @click="
                     activeFilterGroup.removeCallback.call(runtimeStore.resources, activeFilter)

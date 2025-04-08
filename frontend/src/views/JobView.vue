@@ -192,7 +192,7 @@ onMounted(() => {
     <button
       @click="backToJobs()"
       type="button"
-      class="mb-16 mt-8 inline-flex items-center gap-x-2 rounded-md bg-slurmweb px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slurmweb-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slurmweb-dark"
+      class="bg-slurmweb hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark mt-8 mb-16 inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
     >
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to jobs
@@ -209,7 +209,7 @@ onMounted(() => {
     <div v-else-if="data">
       <div class="flex justify-between">
         <div class="px-4 pb-8 sm:px-0">
-          <h3 class="text-base font-semibold leading-7 text-gray-900">Job {{ id }}</h3>
+          <h3 class="text-base leading-7 font-semibold text-gray-900">Job {{ id }}</h3>
           <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All job settings</p>
         </div>
         <div>
@@ -230,10 +230,10 @@ onMounted(() => {
                 :id="`${field.id}`"
                 :class="[
                   displayTags[field.id].highlight ? 'bg-slurmweb-light' : '',
-                  ' px-4 py-2 transition-colors duration-700 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'
+                  'px-4 py-2 transition-colors duration-700 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'
                 ]"
               >
-                <dt class="text-sm font-medium leading-6 text-gray-900">
+                <dt class="text-sm leading-6 font-medium text-gray-900">
                   <a :href="`#${field.id}`">
                     <span
                       class="flex items-center"
@@ -242,7 +242,7 @@ onMounted(() => {
                     >
                       <HashtagIcon
                         v-show="displayTags[field.id].show"
-                        class="-ml-5 mr-2 h-3 w-3 text-gray-500"
+                        class="mr-2 -ml-5 h-3 w-3 text-gray-500"
                         aria-hidden="true"
                       />
                       {{ field.label }}
