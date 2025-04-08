@@ -1,5 +1,6 @@
 import { useHttp } from '@/plugins/http'
 import { useAuthStore } from '@/stores/auth'
+import { isAxiosError } from 'axios'
 import type { ResponseType, AxiosResponse, AxiosRequestConfig } from 'axios'
 import {
   AuthenticationError,
@@ -36,7 +37,8 @@ export function useRESTAPI() {
   async function requestServer(func: () => Promise<AxiosResponse>): Promise<AxiosResponse> {
     try {
       return await func()
-    } catch (error: any) {
+    } catch (error) {
+      if (!isAxiosError(error)) throw new RequestError(`Unknown error: ${error}`)
       if (error.response) {
         /* Server replied with error status code.
          *
@@ -82,7 +84,7 @@ export function useRESTAPI() {
 
   async function post<CType>(
     resource: string,
-    data: any,
+    data: unknown,
     withToken: boolean = true,
     responseType: ResponseType = 'json'
   ): Promise<CType> {
@@ -96,7 +98,7 @@ export function useRESTAPI() {
 
   async function postRaw<CType>(
     resource: string,
-    data: any,
+    data: unknown,
     withToken: boolean = true,
     responseType: ResponseType = 'json'
   ): Promise<CType> {

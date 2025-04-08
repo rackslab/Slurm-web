@@ -52,8 +52,9 @@ let y_shift: number = 1
 function getClusterNode(nodeName: string): ClusterNode | undefined {
   try {
     return nodes.filter((node) => node.name == nodeName)[0]
-  } catch (error: any) {
-    console.log(`Error ${error.name} in getClusterNode(${nodeName}): ${error.message}`)
+  } catch (error) {
+    if (error instanceof Error)
+      console.log(`Error ${error.name} in getClusterNode(${nodeName}): ${error.message}`)
     return undefined
   }
 }
@@ -125,10 +126,10 @@ async function updateCanvas(fullUpdate: boolean = true) {
           canvas.value.width,
           canvas.value.height
         )
-      } catch (error: any) {
+      } catch (error) {
         if (error instanceof APIServerError) {
           reportAPIServerError(error)
-        } else {
+        } else if (error instanceof Error) {
           reportOtherError(error)
         }
         return

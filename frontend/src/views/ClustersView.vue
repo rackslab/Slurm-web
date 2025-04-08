@@ -51,10 +51,10 @@ async function getClustersDescriptions() {
       }
     })
     loaded.value = true
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
-    } else {
+    } else if (error instanceof Error) {
       reportOtherError(error)
     }
   }

@@ -43,10 +43,10 @@ async function getClusterStats() {
   }
   try {
     cluster.stats = await gateway.stats(cluster.name)
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
-    } else {
+    } else if (error instanceof Error) {
       reportOtherError(error)
       cluster.error = true
     }

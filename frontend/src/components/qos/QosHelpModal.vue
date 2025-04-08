@@ -37,7 +37,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
     }
   }
 
-  function isClusterTRES(value: any): value is ClusterTRES[] {
+  function isClusterTRES(value: unknown): value is ClusterTRES[] {
     return Array.isArray(value)
   }
 
