@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - docs: Mention support of Fedora 42.
 
+## Changed
+- frontend: Migrate to Tailwind CSS v4 (#449). Note this breaks support of old
+  browsers versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.
+
 ### Fixed
 - agent: Fix `AttributeError` with `prometheus_client.registry.Collector` on el8
   (#548).

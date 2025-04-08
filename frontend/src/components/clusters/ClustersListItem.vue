@@ -64,14 +64,14 @@ onMounted(() => {
       cluster.permissions.actions.length > 0
         ? 'cursor-pointer hover:bg-gray-50'
         : 'cursor-not-allowed bg-gray-100',
-      'relative flex h-20 items-center justify-between px-4 py-5  sm:px-6'
+      'relative flex h-20 items-center justify-between px-4 py-5 sm:px-6'
     ]"
     @click="
       cluster.permissions.actions.length > 0 &&
         router.push({ name: 'dashboard', params: { cluster: cluster.name } })
     "
   >
-    <span class="w-64 text-sm font-semibold leading-6 text-gray-900">
+    <span class="w-64 text-sm leading-6 font-semibold text-gray-900">
       <RouterLink :to="{ name: 'dashboard', params: { cluster: cluster.name } }">
         <span class="inset-x-0 -top-px bottom-0" />
         {{ cluster.name }}

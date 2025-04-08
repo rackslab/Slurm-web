@@ -46,7 +46,7 @@ onMounted(() => {
   <MainMenu :entry="menuEntry" v-model="sidebarOpen" />
   <div class="lg:pl-72">
     <div
-      class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-sm sm:gap-x-6 lg:px-4"
+      class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white shadow-xs sm:gap-x-6 lg:px-4"
     >
       <button
         type="button"
@@ -64,7 +64,7 @@ onMounted(() => {
         <div class="relative mt-1 flex flex-1 items-center">
           <ClustersPopOver :cluster="cluster" />
           <span v-for="breadcrumbPart in breadcrumb" :key="breadcrumbPart.title" class="flex">
-            <ChevronRightIcon class="h-5 w-10 flex-shrink-0 text-gray-400" aria-hidden="true" />
+            <ChevronRightIcon class="h-5 w-10 shrink-0 text-gray-400" aria-hidden="true" />
             <router-link v-if="breadcrumbPart.routeName" :to="{ name: breadcrumbPart.routeName }">{{
               breadcrumbPart.title
             }}</router-link>
@@ -88,7 +88,7 @@ onMounted(() => {
 
           <!-- Profile -->
           <span v-if="runtimeConfiguration.authentication" class="hidden lg:flex lg:items-center">
-            <span class="m-2 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
+            <span class="m-2 text-sm leading-6 font-semibold text-gray-900" aria-hidden="true">
               {{ authStore.fullname }}
             </span>
           </span>

@@ -75,7 +75,7 @@ function mouseOverThumbnail() {
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        <div class="bg-opacity-75 fixed inset-0 bg-gray-500 transition-opacity" />
       </TransitionChild>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -92,7 +92,7 @@ function mouseOverThumbnail() {
             <DialogPanel
               class="relative min-h-screen min-w-full transform overflow-hidden bg-white px-4 text-left shadow-xl transition-all"
             >
-              <div class="absolute right-0 top-0 z-50 pr-4 pt-4 sm:block">
+              <div class="absolute top-0 right-0 z-50 pt-4 pr-4 sm:block">
                 <button
                   type="button"
                   class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
@@ -103,11 +103,11 @@ function mouseOverThumbnail() {
                 </button>
               </div>
               <div
-                class="relative mt-3 flex min-h-screen flex-col text-center sm:ml-4 sm:mt-0 sm:text-left"
+                class="relative mt-3 flex min-h-screen flex-col text-center sm:mt-0 sm:ml-4 sm:text-left"
               >
                 <DialogTitle
                   as="h3"
-                  class="flex p-6 text-base font-semibold leading-6 text-gray-900"
+                  class="flex p-6 text-base leading-6 font-semibold text-gray-900"
                   >Cluster {{ cluster }}</DialogTitle
                 >
                 <ResourcesCanvas
