@@ -36,7 +36,7 @@ describe('ClustersListItem.vue', () => {
     mockGatewayAPI.stats.mockReturnValueOnce(Promise.resolve(stats))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
-        cluster: useRuntimeStore().availableClusters[0]
+        clusterName: useRuntimeStore().availableClusters[0].name
       }
     })
     // Wait for result of clusters requests
@@ -61,7 +61,7 @@ describe('ClustersListItem.vue', () => {
     })
     const wrapper = shallowMount(ClusterListItem, {
       props: {
-        cluster: useRuntimeStore().availableClusters[0]
+        clusterName: useRuntimeStore().availableClusters[0].name
       }
     })
     // Wait for result of clusters requests
@@ -82,7 +82,7 @@ describe('ClustersListItem.vue', () => {
     mockGatewayAPI.stats.mockReturnValueOnce(Promise.resolve(stats))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
-        cluster: useRuntimeStore().availableClusters[0]
+        clusterName: useRuntimeStore().availableClusters[0].name
       }
     })
     // assert stats are being retrieved
@@ -96,7 +96,7 @@ describe('ClustersListItem.vue', () => {
     mockGatewayAPI.stats.mockReturnValueOnce(Promise.resolve(stats))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
-        cluster: useRuntimeStore().availableClusters[0]
+        clusterName: useRuntimeStore().availableClusters[0].name
       }
     })
     // Wait for result of clusters requests
@@ -113,7 +113,7 @@ describe('ClustersListItem.vue', () => {
     useRuntimeStore().availableClusters[0].permissions.actions = ['view-jobs']
     const wrapper = shallowMount(ClusterListItem, {
       props: {
-        cluster: useRuntimeStore().availableClusters[0]
+        clusterName: useRuntimeStore().availableClusters[0].name
       }
     })
     await flushPromises()
