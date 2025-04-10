@@ -120,7 +120,10 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                 self.settings.slurmrestd.uri,
                 SlurmrestdAuthentifier(
                     self.settings.slurmrestd.auth,
+                    self.settings.slurmrestd.jwt_mode,
                     self.settings.slurmrestd.jwt_user,
+                    self.settings.slurmrestd.jwt_key,
+                    self.settings.slurmrestd.jwt_lifespan,
                     self.settings.slurmrestd.jwt_token,
                 ),
                 self.settings.slurmrestd.version,

@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `[slurmrestd]` > `auth`, `jwt_mode`, `jwt_user`, `jwt_lifespan`,
     `jwt_key` and `jwt_token` agent parameters.
 - agent:
- - Support JWT authentication on `slurmrestd`.
+ - Support JWT authentication on `slurmrestd` in _static_ and _auto_ modes.
  - Support access to `slurmrestd` on TCP/IP socket (#313).
 - docs: Mention `--log-component` option in manpages.
 
