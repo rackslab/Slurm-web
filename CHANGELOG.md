@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Add dependency on `importlib_metadata` external library on Python < 3.8.
   - Bump minimal version of `RFL.log` to v1.4.0.
+  - Bump minimal version of `RFL.settings` to v1.4.0.
 - frontend: Replace _view_ job link by a window icon in jobs list.
 - docs: Update configuration reference documentation.
 
