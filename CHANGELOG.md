@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway: Add `RACKSDB_{ROWS,RACKS}_LABELS` in configuration file generated for
   frontend component.
 - conf: Introduce `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
+- docs: Mention `--log-component` option in manpages.
 
 ### Changed
 - pkgs:
