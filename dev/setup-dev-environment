@@ -225,7 +225,13 @@ class SlurmwebAgent:
 
     def launch(self) -> None:
         cmd = (
-            ["slurm-web-agent", "--debug", "--debug-flags"]
+            [
+                "slurm-web-agent",
+                "--log-component",
+                f"agent-{self.name}",
+                "--debug",
+                "--debug-flags",
+            ]
             + DEBUG_FLAGS
             + [
                 "--conf-defs",
@@ -286,7 +292,13 @@ class SlurmwebGateway:
 
     def launch(self):
         cmd = (
-            ["slurm-web-gateway", "--debug", "--debug-flags"]
+            [
+                "slurm-web-gateway",
+                "--log-component",
+                "gateway",
+                "--debug",
+                "--debug-flags",
+            ]
             + DEBUG_FLAGS
             + [
                 "--conf-defs",
