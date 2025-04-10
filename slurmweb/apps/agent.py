@@ -26,6 +26,7 @@ from ..version import get_version
 from ..views import SlurmwebAppRoute
 from ..views import agent as views
 from ..slurmrestd import SlurmrestdFilteredCached
+from ..slurmrestd.auth import SlurmrestdAuthentifier
 from ..cache import CachingService
 from ..errors import SlurmwebConfigurationError
 
@@ -117,9 +118,11 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         try:
             self.slurmrestd = SlurmrestdFilteredCached(
                 self.settings.slurmrestd.uri,
-                self.settings.slurmrestd.auth,
-                self.settings.slurmrestd.jwt_user,
-                self.settings.slurmrestd.jwt_token,
+                SlurmrestdAuthentifier(
+                    self.settings.slurmrestd.auth,
+                    self.settings.slurmrestd.jwt_user,
+                    self.settings.slurmrestd.jwt_token,
+                ),
                 self.settings.slurmrestd.version,
                 self.settings.filters,
                 self.settings.cache,
