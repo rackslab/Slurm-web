@@ -4,6 +4,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import sys
+import urllib
 import logging
 
 from rfl.web.tokens import RFLTokenizedRBACWebApp
@@ -25,6 +27,7 @@ from ..views import SlurmwebAppRoute
 from ..views import agent as views
 from ..slurmrestd import SlurmrestdFilteredCached
 from ..cache import CachingService
+from ..errors import SlurmwebConfigurationError
 
 logger = logging.getLogger(__name__)
 
@@ -102,16 +105,29 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             logger.warning("Caching is disabled")
             self.cache = None
 
-        self.slurmrestd = SlurmrestdFilteredCached(
-            self.settings.slurmrestd.socket,
-            self.settings.slurmrestd.auth,
-            self.settings.slurmrestd.jwt_user,
-            self.settings.slurmrestd.jwt_token,
-            self.settings.slurmrestd.version,
-            self.settings.filters,
-            self.settings.cache,
-            self.cache,
-        )
+        if self.settings.slurmrestd.socket:
+            logger.warning(
+                "Using deprecated parameter [slurmrestd]>socket to define "
+                "[slurmrest]>uri, update your site agent configuration file"
+            )
+            self.settings.slurmrestd.uri = urllib.parse.urlparse(
+                f"unix://{self.settings.slurmrestd.socket}"
+            )
+
+        try:
+            self.slurmrestd = SlurmrestdFilteredCached(
+                self.settings.slurmrestd.uri,
+                self.settings.slurmrestd.auth,
+                self.settings.slurmrestd.jwt_user,
+                self.settings.slurmrestd.jwt_token,
+                self.settings.slurmrestd.version,
+                self.settings.filters,
+                self.settings.cache,
+                self.cache,
+            )
+        except SlurmwebConfigurationError as err:
+            logger.critical("Configuration error: %s", err)
+            sys.exit(1)
 
         # Default RacksDB infrastructure is the cluster name.
         if self.settings.racksdb.infrastructure is None:
