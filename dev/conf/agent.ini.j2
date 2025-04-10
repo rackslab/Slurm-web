@@ -7,7 +7,12 @@ port={{ service_port }}
 key={{ jwt_key }}
 
 [slurmrestd]
-socket={{ slurmrestd_socket }}
+uri={{ slurmrestd_uri }}
+{% if slurmrestd_auth == "jwt" %}
+auth=jwt
+jwt_user=slurm
+jwt_token={{ slurmrestd_token }}
+{% endif %}
 
 [policy]
 definition=conf/vendor/policy.yml
