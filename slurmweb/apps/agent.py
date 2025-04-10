@@ -104,6 +104,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
 
         self.slurmrestd = SlurmrestdFilteredCached(
             self.settings.slurmrestd.socket,
+            self.settings.slurmrestd.auth,
+            self.settings.slurmrestd.jwt_user,
+            self.settings.slurmrestd.jwt_token,
             self.settings.slurmrestd.version,
             self.settings.filters,
             self.settings.cache,
