@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Mention `--log-component` option in manpages.
 
 ### Changed
+- conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed
+  to support TCP/IP socket.
 - pkgs:
   - Add dependency on `importlib_metadata` external library on Python < 3.8.
   - Bump minimal version of `RFL.log` to v1.4.0.
