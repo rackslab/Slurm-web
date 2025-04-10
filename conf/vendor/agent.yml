@@ -57,6 +57,27 @@ slurmrestd:
     type: path
     default: /run/slurmrestd/slurmrestd.socket
     doc: Path to slurmrestd UNIX socket
+  auth:
+    type: str
+    choices:
+    - local
+    - jwt
+    default: local
+    doc: |
+      Authentication method with slurmrestd. Local authentication is only
+      supported with Unix socket. With this method, Slurm-web agent must run
+      with the same UID as slurmrestd service (eg. slurm system user). JWT
+      authentication is supported by both TCP/IP and Unix sockets. With this
+      method, `jwt_token` parameter must be set.
+  jwt_user:
+    type: str
+    default: slurm
+    doc: The user name used used in HTTP headers with JWT authentication.
+  jwt_token:
+    type: password
+    doc: |
+      The JSON Web Token (JWT) used in HTTP headers with JWT authentication.
+      This token can be generated with `scontrol token`.
   version:
     type: str
     default: '0.0.40'
