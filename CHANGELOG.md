@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
   - Introduce `[slurmrestd]` > `auth`, `jwt_user` and `jwt_token` agent
     parameters.
+- agent: Support JWT authentication on `slurmrestd`.
 - docs: Mention `--log-component` option in manpages.
 
 ### Changed

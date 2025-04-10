@@ -27,11 +27,26 @@ if t.TYPE_CHECKING:
 
 
 class Slurmrestd:
-    def __init__(self, socket: Path, version: str):
+    def __init__(
+        self,
+        socket: Path,
+        auth: str,
+        jwt_user: str,
+        jwt_token: t.Optional[str],
+        version: str,
+    ):
         self.session = requests.Session()
         self.prefix = "http+unix://slurmrestd/"
         self.session.mount(self.prefix, SlurmrestdUnixAdapter(socket))
         self.api_version = version
+
+        if auth == "jwt":
+            self.headers = {
+                "X-SLURM-USER-NAME": jwt_user,
+                "X-SLURM-USER-TOKEN": jwt_token,
+            }
+        else:
+            self.headers = None
 
     def _validate_response(self, response, ignore_notfound) -> None:
         """Validate slurmrestd response or abort agent resquest with error."""
@@ -60,7 +75,7 @@ class Slurmrestd:
 
     def _request(self, query, key, ignore_notfound=False):
         try:
-            response = self.session.get(f"{self.prefix}/{query}")
+            response = self.session.get(f"{self.prefix}{query}", headers=self.headers)
         except requests.exceptions.ConnectionError as err:
             raise SlurmrestConnectionError(str(err))
 
@@ -232,8 +247,16 @@ class Slurmrestd:
 
 
 class SlurmrestdFiltered(Slurmrestd):
-    def __init__(self, socket: Path, version: str, filters: "RuntimeSettings"):
-        super().__init__(socket, version)
+    def __init__(
+        self,
+        socket: Path,
+        auth: str,
+        jwt_user: str,
+        jwt_token: t.Optional[str],
+        version: str,
+        filters: "RuntimeSettings",
+    ):
+        super().__init__(socket, auth, jwt_user, jwt_token, version)
         self.filters = filters
 
     @staticmethod
@@ -313,12 +336,15 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
     def __init__(
         self,
         socket: Path,
+        auth: str,
+        jwt_user: str,
+        jwt_token: t.Optional[str],
         version: str,
         filters: "RuntimeSettings",
         cache: "RuntimeSettings",
         service: "CachingService",
     ):
-        super().__init__(socket, version, filters)
+        super().__init__(socket, auth, jwt_user, jwt_token, version, filters)
         self.cache = cache
         self.service = service
 
