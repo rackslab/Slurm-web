@@ -25,6 +25,9 @@ charge of sending requests to slurmrestd, enforcing RBAC policy and caching.
   Special value *ALL* enable logs for all libraries. Default value is *ALL*.
   This option can be used to filter out logs of too verbose libraries.
 
+[.cli-opt]#*--log-component*=#[.cli-optval]##_COMPONENT_##::
+  Add _COMPONENT_ as prefix of all log entries.
+
 [.cli-opt]#*--debug-flags*=#[.cli-optval]##_FLAGS_##::
   Libraries for which debug logs are enabled when [.cli-opt]#`--debug`#
   option is used. Multiple values can be selected among _slurmweb_, _rfl_,
