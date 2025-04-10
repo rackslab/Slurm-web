@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
-from typing import List
+import typing as t
 from pathlib import Path
 import logging
 
@@ -28,13 +28,15 @@ class SlurmwebConfSeed:
     def __init__(
         self,
         debug: bool,
-        log_flags: List[str],
-        debug_flags: List[str],
+        log_flags: t.List[str],
+        log_component: t.Optional[str],
+        debug_flags: t.List[str],
         conf_defs: Path,
         conf: Path,
     ):
         self.debug = debug
         self.log_flags = log_flags
+        self.log_component = log_component
         self.debug_flags = debug_flags
         self.conf_defs = conf_defs
         self.conf = conf
@@ -42,7 +44,12 @@ class SlurmwebConfSeed:
     @classmethod
     def from_args(cls, args):
         return cls(
-            args.debug, args.log_flags, args.debug_flags, args.conf_defs, args.conf
+            args.debug,
+            args.log_flags,
+            args.log_component,
+            args.debug_flags,
+            args.conf_defs,
+            args.conf,
         )
 
 
@@ -57,6 +64,7 @@ class SlurmwebGenericApp:
             debug=seed.debug,
             log_flags=seed.log_flags,
             debug_flags=seed.debug_flags,
+            component=seed.log_component,
         )
         try:
             self.settings = RuntimeSettings.yaml_definition(seed.conf_defs)

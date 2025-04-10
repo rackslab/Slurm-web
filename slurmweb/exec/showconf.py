@@ -40,6 +40,10 @@ class SlurmwebExecShowConf:
             choices=["slurmweb", "rfl", "racksdb", "werkzeug", "urllib3", "ALL"],
         )
         parser.add_argument(
+            "--log-component",
+            help="Optional component name in logs prefix",
+        )
+        parser.add_argument(
             "--debug-flags",
             help="Debug flags (default: %(default)s)",
             default="slurmweb",

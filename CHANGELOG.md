@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- Add `--log-component` option on every commands to prefix all log entries with
+  a component name.
 - frontend:
   - Add possibility to sort jobs by quantity of resources (#453).
   - Add priority in jobs list (#452).
