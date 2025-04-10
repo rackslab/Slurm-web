@@ -53,10 +53,19 @@ service:
       flags.
 
 slurmrestd:
+  uri:
+    type: uri
+    default: unix:///run/slurmrestd/slurmrestd.socket
+    doc: |
+      URI to slurmrestd HTTP server. It can either be in the form
+      http://host:port for TCP/IP server or unix:///path/to/slurmrestd.socket
+      for Unix socket.
   socket:
     type: path
-    default: /run/slurmrestd/slurmrestd.socket
-    doc: Path to slurmrestd UNIX socket
+    deprecated:
+      section: slurmrestd
+      parameter: uri
+    doc: Path to slurmrestd Unix socket.
   auth:
     type: str
     choices:
