@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import typing as t
-from pathlib import Path
+import urllib
 import logging
 
 import requests
@@ -18,6 +18,7 @@ from .errors import (
     SlurmrestConnectionError,
     SlurmrestdInternalError,
 )
+from ..errors import SlurmwebConfigurationError
 
 logger = logging.getLogger(__name__)
 
@@ -29,15 +30,26 @@ if t.TYPE_CHECKING:
 class Slurmrestd:
     def __init__(
         self,
-        socket: Path,
+        uri: urllib.parse.ParseResult,
         auth: str,
         jwt_user: str,
         jwt_token: t.Optional[str],
         version: str,
     ):
         self.session = requests.Session()
-        self.prefix = "http+unix://slurmrestd/"
-        self.session.mount(self.prefix, SlurmrestdUnixAdapter(socket))
+
+        # When using local authenciation, ensure slurmrestd URI is a Unix socket. For
+        # authentication on TCP/IP socket, JWT authentication is required.
+        if auth == "local" and uri.scheme != "unix":
+            raise SlurmwebConfigurationError(
+                "slurmrestd local authentication is only supported with unix socket URI"
+            )
+
+        if uri.scheme == "unix":
+            self.prefix = "http+unix://slurmrestd"
+            self.session.mount(self.prefix, SlurmrestdUnixAdapter(uri.path))
+        else:
+            self.prefix = uri.geturl()
         self.api_version = version
 
         if auth == "jwt":
@@ -249,14 +261,14 @@ class Slurmrestd:
 class SlurmrestdFiltered(Slurmrestd):
     def __init__(
         self,
-        socket: Path,
+        uri: urllib.parse.ParseResult,
         auth: str,
         jwt_user: str,
         jwt_token: t.Optional[str],
         version: str,
         filters: "RuntimeSettings",
     ):
-        super().__init__(socket, auth, jwt_user, jwt_token, version)
+        super().__init__(uri, auth, jwt_user, jwt_token, version)
         self.filters = filters
 
     @staticmethod
@@ -335,7 +347,7 @@ class SlurmrestdFiltered(Slurmrestd):
 class SlurmrestdFilteredCached(SlurmrestdFiltered):
     def __init__(
         self,
-        socket: Path,
+        uri: urllib.parse.ParseResult,
         auth: str,
         jwt_user: str,
         jwt_token: t.Optional[str],
@@ -344,7 +356,7 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
         cache: "RuntimeSettings",
         service: "CachingService",
     ):
-        super().__init__(socket, auth, jwt_user, jwt_token, version, filters)
+        super().__init__(uri, auth, jwt_user, jwt_token, version, filters)
         self.cache = cache
         self.service = service
 
