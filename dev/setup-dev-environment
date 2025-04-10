@@ -31,10 +31,17 @@ from racksdb import RacksDB
 logger = logging.getLogger(__name__)
 
 DEV_HOST = "firehpc.dev.rackslab.io"
-# Map between infrastructure names and cluster names that are visible in the UI. For
-# infrastructures not present in this mapping dict, infrastructure name is used in the
-# UI. This allows to trivially change cluster names in the UI.
-MAP_CLUSTER_NAMES = {"emulator": "atlas"}
+# Dict of clusters settings to control cluster names in UI, slurmrestd access
+# (TCP/IP or Unix socket) and authentication.
+CLUSTERS = {
+    "tiny": {"auth": "local"},
+    "emulator": {
+        "name": "atlas",  # cluster name in UI
+        "auth": "jwt",
+        "mode": "static",
+    },
+    "pocket": {"auth": "jwt", "scheme": "http"},
+}
 USER = getpass.getuser()
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
@@ -60,7 +67,7 @@ class PortAllocator:
         self.current = initial - 1
         self.forwards = {
             "ldap": PortForward(389, 3389),  # LDAP
-            "slurmrestd": PortForward(2375, 2375),  # slurmrestd
+            "slurmrestd": PortForward(6820, 6820),  # slurmrestd
             "redis": PortForward(6379, 6379),  # redis
             "prometheus": PortForward(9090, 9090),  # prometheus
         }
@@ -109,27 +116,30 @@ class ClusterChannel:
         )
         forwarder.start()
 
-        # run socat to forward slurmrestd UNIX socket
-        cmd = shlex.join(
-            [
-                "firehpc",
-                "ssh",
-                f"admin.{cluster}",
-                "socat",
-                f"TCP-LISTEN:{forwards['slurmrestd'].remote},fork",
-                "UNIX-CONNECT:/run/slurmrestd/slurmrestd.socket",
-            ]
-        )
-        logger.info("Running command on development server: %s", cmd)
-        ssh_client.exec_command(cmd)
+        process = None
+        if CLUSTERS[cluster].get("scheme", "unix") == "unix":
+            # run socat to forward slurmrestd UNIX socket
+            cmd = shlex.join(
+                [
+                    "firehpc",
+                    "ssh",
+                    f"admin.{cluster}",
+                    "socat",
+                    f"TCP-LISTEN:{forwards['slurmrestd'].remote},fork",
+                    "UNIX-CONNECT:/run/slurmrestd/slurmrestd.socket",
+                ]
+            )
+            logger.info("Running command on development server: %s", cmd)
+            ssh_client.exec_command(cmd)
 
-        cmd = [
-            "socat",
-            f"UNIX-LISTEN:/tmp/slurmrestd-{cluster}.socket,fork",
-            f"TCP-CONNECT:localhost:{forwards['slurmrestd'].local}",
-        ]
-        logger.info("Running command locally: %s", shlex.join(cmd))
-        process = runcmd(cmd)
+            cmd = [
+                "socat",
+                f"UNIX-LISTEN:/tmp/slurmrestd-{cluster}.socket,fork",
+                f"TCP-CONNECT:localhost:{forwards['slurmrestd'].local}",
+            ]
+            logger.info("Running command locally: %s", shlex.join(cmd))
+            process = runcmd(cmd)
+
         return cls(cluster, ssh_client, forwarder, process)
 
     def stop(self) -> None:
@@ -138,8 +148,9 @@ class ClusterChannel:
         self.connection.exec_command(cmd)
         logger.info("Stopping %s forwarder", self.name)
         self.forwarder.stop()
-        logger.info("Stopping %s socat process", self.name)
-        self.process.kill()
+        if self.process:
+            logger.info("Stopping %s socat process", self.name)
+            self.process.kill()
 
 
 @dataclass
@@ -196,7 +207,7 @@ class SlurmwebAgent:
         if cache_enabled:
             try:
                 with sftp.open(
-                    f".local/state/firehpc/{self.name}/redis/redis.password"
+                    f".local/state/firehpc/clusters/{self.name}/redis/redis.password"
                 ) as fh:
                     redis_password = fh.read().decode()
             except FileNotFoundError:
@@ -206,13 +217,55 @@ class SlurmwebAgent:
                     self.name,
                 )
                 cache_enabled = False
+
+        slurmrestd_token = None
+        slurmrestd_jwt_key = None
+        if CLUSTERS[self.name]["auth"] == "jwt":
+            if CLUSTERS[self.name].get("mode") == "static":
+                # get infinite token for slurm user
+                cmd = shlex.join(
+                    [
+                        "firehpc",
+                        "ssh",
+                        f"admin.{self.name}",
+                        "scontrol",
+                        "token",
+                        "lifespan=infinite",
+                        "username=slurm",
+                    ]
+                )
+                _, stdout, _ = self.channel.connection.exec_command(cmd)
+                slurmrestd_token = stdout.read().decode().split("=")[1]
+            else:
+                try:
+                    with sftp.open(
+                        f".local/state/firehpc/clusters/{self.name}/slurm/jwt_hs256.key"
+                    ) as fh:
+                        slurm_jwt_key = fh.read()
+                    slurmrestd_jwt_key = tmpdir / f"{self.name}_jwt_hs256.key"
+                    with open(slurmrestd_jwt_key, "wb+") as fh:
+                        fh.write(slurm_jwt_key)
+                except FileNotFoundError:
+                    logger.warning(
+                        "Remote Slurm JWT signature key not found for cluster %s",
+                        self.name,
+                    )
+        if CLUSTERS[self.name].get("scheme", "unix") == "unix":
+            slurmrestd_uri = f"unix:///tmp/slurmrestd-{self.name}.socket"
+        else:
+            slurmrestd_uri = f"http://localhost:{self.forwards['slurmrestd'].local}"
+
         self.conf_path = tmpdir / f"agent-{self.name}.ini"
         with open(self.conf_path, "w+") as fh:
             fh.write(
                 template.render(
                     cluster_name=self.ui_name,
                     service_port=self.service_port,
-                    slurmrestd_socket=f"/tmp/slurmrestd-{self.name}.socket",
+                    slurmrestd_auth=CLUSTERS[self.name]["auth"],
+                    slurmrestd_uri=slurmrestd_uri,
+                    slurmrestd_jwt_mode=CLUSTERS[self.name].get("mode"),
+                    slurmrestd_jwt_key=slurmrestd_jwt_key,
+                    slurmrestd_token=slurmrestd_token,
                     jwt_key=jwt_key_path,
                     cache_enabled=cache_enabled,
                     policy_path=self.policy_path,
@@ -379,8 +432,8 @@ def main():
     agents = []
     port_allocator = PortAllocator()
     for infrastructure in db.infrastructures:
-        if infrastructure.name in MAP_CLUSTER_NAMES:
-            ui_name = MAP_CLUSTER_NAMES[infrastructure.name]
+        if "name" in CLUSTERS[infrastructure.name]:
+            ui_name = CLUSTERS[infrastructure.name]["name"]
         else:
             ui_name = infrastructure.name
         agent = SlurmwebAgent.init(
