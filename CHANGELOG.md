@@ -20,8 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   frontend component.
 - conf:
   - Introduce `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
-  - Introduce `[slurmrestd]` > `auth`, `jwt_user` and `jwt_token` agent
-    parameters.
+  - Introduce `[slurmrestd]` > `auth`, `jwt_mode`, `jwt_user`, `jwt_lifespan`,
+    `jwt_key` and `jwt_token` agent parameters.
 - agent:
  - Support JWT authentication on `slurmrestd`.
  - Support access to `slurmrestd` on TCP/IP socket (#313).
