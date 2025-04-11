@@ -5,8 +5,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from unittest import mock
-from pathlib import Path
 import random
+import urllib
 
 import requests
 import ClusterShell
@@ -23,12 +23,16 @@ from ..lib.utils import (
     SlurmwebAssetUnavailable,
     mock_slurmrestd_responses,
 )
-from ..lib.slurmrestd import TestSlurmrestdBase
+from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
 class TestSlurmrestd(TestSlurmrestdBase):
     def setUp(self):
-        self.slurmrestd = Slurmrestd(Path("/dev/null"), "1.0.0")
+        self.slurmrestd = Slurmrestd(
+            urllib.parse.urlparse("unix:///dev/null"),
+            basic_authentifier(),
+            "1.0.0",
+        )
 
     def mock_slurmrestd_responses(self, slurm_version, assets):
         return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
