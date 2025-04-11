@@ -19,10 +19,8 @@ jobs:
         include:
           - os: "ubuntu-22.04"
             python-version: "3.7"
-          # ubuntu-20.04 runners are disabled in GitHub actions, Python 3.6 must
-          # be disabled until we find a solution.
-          #- os: "ubuntu-20.04"
-          #  python-version: "3.6"
+          - os: "ubuntu-20.04"
+            python-version: "3.6"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
