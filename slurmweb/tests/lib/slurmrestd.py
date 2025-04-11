@@ -6,10 +6,23 @@
 
 import unittest
 import os
+from pathlib import Path
 
 from rfl.settings import RuntimeSettings
 
 from .utils import mock_slurmrestd_responses
+from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
+
+
+def basic_authentifier():
+    return SlurmrestdAuthentifier(
+        "local",
+        "auto",
+        "slurm",
+        Path("/var/lib/slurm-web/slurmrestd.key"),
+        3600,
+        None,
+    )
 
 
 class TestSlurmrestdBase(unittest.TestCase):

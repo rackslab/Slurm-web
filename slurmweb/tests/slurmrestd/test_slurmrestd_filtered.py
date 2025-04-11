@@ -4,22 +4,24 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from pathlib import Path
+import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
-
 from ..lib.utils import (
     all_slurm_versions,
     SlurmwebAssetUnavailable,
 )
-from ..lib.slurmrestd import TestSlurmrestdBase
+from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
 class TestSlurmrestdFiltered(TestSlurmrestdBase):
     def setUp(self):
         self.settings = self.load_agent_settings_definition()
         self.slurmrestd = SlurmrestdFiltered(
-            Path("/dev/null"), "1.0.0", self.settings.filters
+            urllib.parse.urlparse("unix:///dev/null"),
+            basic_authentifier(),
+            "1.0.0",
+            self.settings.filters,
         )
 
     @all_slurm_versions
