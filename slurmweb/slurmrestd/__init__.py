@@ -45,7 +45,7 @@ class Slurmrestd:
             )
 
         if uri.scheme == "unix":
-            self.prefix = "http+unix://slurmrestd/"
+            self.prefix = "http+unix://slurmrestd"
             self.session.mount(self.prefix, SlurmrestdUnixAdapter(uri.path))
         else:
             self.prefix = uri.geturl()
