@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
 - gateway: Add `RACKSDB_{ROWS,RACKS}_LABELS` in configuration file generated for
   frontend component.
+- agent: Support JWT authentication on `slurmrestd`.
 - conf: Introduce `[ui]` > `racksdb_{rows,racks}_labels` gateway parameters.
 - docs: Mention `--log-component` option in manpages.
 
@@ -25,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Add dependency on `importlib_metadata` external library on Python < 3.8.
   - Bump minimal version of `RFL.log` to v1.4.0.
+  - Bump minimal version of `RFL.settings` to v1.4.0.
+  - Bump minimal version of `RFL.authentication` to v1.4.0.
 - frontend: Replace _view_ job link by a window icon in jobs list.
 - docs: Update configuration reference documentation.
 

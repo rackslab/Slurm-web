@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from unittest import mock
-from pathlib import Path
+import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFilteredCached
 from slurmweb.cache import CachingService
@@ -15,7 +15,7 @@ from ..lib.utils import (
     all_slurm_versions,
     SlurmwebAssetUnavailable,
 )
-from ..lib.slurmrestd import TestSlurmrestdBase
+from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
 class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
@@ -28,7 +28,8 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
             self.settings.cache.password,
         )
         self.slurmrestd = SlurmrestdFilteredCached(
-            Path("/dev/null"),
+            urllib.parse.urlparse("unix:///dev/null"),
+            basic_authentifier(),
             "1.0.0",
             self.settings.filters,
             self.settings.cache,

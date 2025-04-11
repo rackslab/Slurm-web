@@ -5,19 +5,21 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import typing as t
-from pathlib import Path
+import urllib
 import logging
 
 import requests
 import ClusterShell
 
 from .unix import SlurmrestdUnixAdapter
+from .auth import SlurmrestdAuthentifier
 from .errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
     SlurmrestdInternalError,
 )
+from ..errors import SlurmwebConfigurationError
 
 logger = logging.getLogger(__name__)
 
@@ -27,11 +29,29 @@ if t.TYPE_CHECKING:
 
 
 class Slurmrestd:
-    def __init__(self, socket: Path, version: str):
+    def __init__(
+        self,
+        uri: urllib.parse.ParseResult,
+        auth: SlurmrestdAuthentifier,
+        version: str,
+    ):
         self.session = requests.Session()
-        self.prefix = "http+unix://slurmrestd/"
-        self.session.mount(self.prefix, SlurmrestdUnixAdapter(socket))
+
+        # When using local authenciation, ensure slurmrestd URI is a Unix socket. For
+        # authentication on TCP/IP socket, JWT authentication is required.
+        if auth.method == "local" and uri.scheme != "unix":
+            raise SlurmwebConfigurationError(
+                "slurmrestd local authentication is only supported with unix socket URI"
+            )
+
+        if uri.scheme == "unix":
+            self.prefix = "http+unix://slurmrestd"
+            self.session.mount(self.prefix, SlurmrestdUnixAdapter(uri.path))
+        else:
+            self.prefix = uri.geturl()
         self.api_version = version
+
+        self.auth = auth
 
     def _validate_response(self, response, ignore_notfound) -> None:
         """Validate slurmrestd response or abort agent resquest with error."""
@@ -60,7 +80,9 @@ class Slurmrestd:
 
     def _request(self, query, key, ignore_notfound=False):
         try:
-            response = self.session.get(f"{self.prefix}/{query}")
+            response = self.session.get(
+                f"{self.prefix}{query}", headers=self.auth.headers()
+            )
         except requests.exceptions.ConnectionError as err:
             raise SlurmrestConnectionError(str(err))
 
@@ -232,8 +254,14 @@ class Slurmrestd:
 
 
 class SlurmrestdFiltered(Slurmrestd):
-    def __init__(self, socket: Path, version: str, filters: "RuntimeSettings"):
-        super().__init__(socket, version)
+    def __init__(
+        self,
+        uri: urllib.parse.ParseResult,
+        auth: SlurmrestdAuthentifier,
+        version: str,
+        filters: "RuntimeSettings",
+    ):
+        super().__init__(uri, auth, version)
         self.filters = filters
 
     @staticmethod
@@ -312,13 +340,14 @@ class SlurmrestdFiltered(Slurmrestd):
 class SlurmrestdFilteredCached(SlurmrestdFiltered):
     def __init__(
         self,
-        socket: Path,
+        uri: urllib.parse.ParseResult,
+        auth: SlurmrestdAuthentifier,
         version: str,
         filters: "RuntimeSettings",
         cache: "RuntimeSettings",
         service: "CachingService",
     ):
-        super().__init__(socket, version, filters)
+        super().__init__(uri, auth, version, filters)
         self.cache = cache
         self.service = service
 
