@@ -14,7 +14,7 @@ from rfl.authentication.jwt import (
     JWTBaseManager,
     JWTPrivateKeyFileLoader,
 )
-from rfl.authentication.errors import JWTDecodeError
+from rfl.authentication.errors import JWTDecodeError, JWTPrivateKeyLoaderError
 
 from ..errors import SlurmwebConfigurationError
 
@@ -63,15 +63,22 @@ class SlurmrestdAuthentifier:
             return
 
         # In auto mode, initialize JWT manager to generate tokens dynamically.
-        self.jwt_manager = JWTBaseManager(
-            "HS256", JWTPrivateKeyFileLoader(path=self.jwt_key)
-        )
+        try:
+            self.jwt_manager = JWTBaseManager(
+                "HS256", JWTPrivateKeyFileLoader(path=self.jwt_key)
+            )
+        except JWTPrivateKeyLoaderError as err:
+            raise SlurmwebConfigurationError(
+                f"Unable to load JWT key for slurmrestd authentication: {err}"
+            ) from err
 
     def _generate_token(self) -> str:
         """Generate and return token with Slurm shared JWT signature key in auto
         mode."""
         self.expiration = int(time.time()) + self.jwt_lifespan
-        return self.jwt_manager.generate(self.jwt_lifespan, {"sun": self.jwt_user})
+        return self.jwt_manager.generate(
+            duration=self.jwt_lifespan / 86400, claimset={"sun": self.jwt_user}
+        )
 
     def headers(self) -> t.Dict[str, str]:
         """Return dictionary of HTTP headers for authentication to slurmrestd"""
