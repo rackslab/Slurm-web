@@ -55,6 +55,13 @@ jobs:
       # Some Slurm-web optional dependencies are declared in extra packages.
       # This is not supported by setup.py script from RFL.build. As a workaround
       # these dependencies are installed manually afterwhile.
+      #
+      # Latest version of setuptools build wheels following PEP-491 naming
+      # conventions (eg. RFL.core becomes rfl-core) published with this name on
+      # PyPI but old versions of setuptools do not support this naming
+      # equivalence. For this reason, RFL dependencies are renamed with sed in
+      # pyproject.toml so old versions of setuptools can find the wheels on
+      # PyPI.
       - name: Install application with its dependencies (Python 3.6)
         if: ${{ matrix.python-version == '3.6' }}
         run: |
@@ -75,6 +82,7 @@ jobs:
           echo "::notice::Installing markdown (old version)"
           pip install "markdown<3"
 
+          sed -i 's/RFL\./rfl-/' pyproject.toml
           cp -v ${Python3_ROOT_DIR}/lib/python3.6/site-packages/rfl/build/scripts/setup setup.py
           python3 setup.py install
 
