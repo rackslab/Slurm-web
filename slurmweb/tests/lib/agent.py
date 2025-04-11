@@ -100,6 +100,7 @@ class TestAgentBase(unittest.TestCase):
                 SlurmwebConfSeed(
                     debug=False,
                     log_flags=["ALL"],
+                    log_component=None,
                     debug_flags=[],
                     conf_defs=conf_defs,
                     conf=conf.name,
