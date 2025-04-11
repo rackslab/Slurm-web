@@ -24,7 +24,9 @@
 |{{ parameter.name }}
 |{{ parameter._type }}{% if parameter.content %}[{{ parameter.content }}]{% endif %}
 |{{ parameter.doc }}
-
+{% if parameter.deprecated %}
+WARNING: This parameter is *deprecated* in favor of `[{{ parameter.deprecated.section }}]` > `{{ parameter.deprecated.parameter }}`.
+{% endif %}
 {% if parameter.example != None %}
 *Example:* `{{ parameter.example }}`
 {% endif %}
