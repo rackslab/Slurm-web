@@ -10,6 +10,7 @@ import time
 from pathlib import Path
 
 from rfl.authentication.jwt import JWTBaseManager, JWTPrivateKeyFileLoader, jwt_gen_key
+
 from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 from slurmweb.errors import SlurmwebConfigurationError
 
