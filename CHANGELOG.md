@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Responsive layout in jobs view by removing some columns on smaller screens.
   - Do not display canceled request errors (#507).
   - Update dependencies to fix CVE-2025-24964 (vitest), CVE-2025-27152 (axios)
-    CVE-2025-30208, CVE-2025-31125, CVE-2025-31486 (vite) and
+    CVE-2025-30208, CVE-2025-31125, CVE-2025-31486, CVE-2025-32395 (vite) and
     GHSA-67mh-4wv8-2f99 (esbuild).
 
 ## [4.1.0] - 2025-02-05
