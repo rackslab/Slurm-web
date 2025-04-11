@@ -38,6 +38,7 @@ CLUSTERS = {
     "emulator": {
         "name": "atlas",  # cluster name in UI
         "auth": "jwt",
+        "mode": "static",
     },
     "pocket": {"auth": "jwt", "scheme": "http"},
 }
@@ -206,7 +207,7 @@ class SlurmwebAgent:
         if cache_enabled:
             try:
                 with sftp.open(
-                    f".local/state/firehpc/{self.name}/redis/redis.password"
+                    f".local/state/firehpc/clusters/{self.name}/redis/redis.password"
                 ) as fh:
                     redis_password = fh.read().decode()
             except FileNotFoundError:
@@ -218,22 +219,37 @@ class SlurmwebAgent:
                 cache_enabled = False
 
         slurmrestd_token = None
+        slurmrestd_jwt_key = None
         if CLUSTERS[self.name]["auth"] == "jwt":
-            # get infinite token for slurm user
-            cmd = shlex.join(
-                [
-                    "firehpc",
-                    "ssh",
-                    f"admin.{self.name}",
-                    "scontrol",
-                    "token",
-                    "lifespan=infinite",
-                    "username=slurm",
-                ]
-            )
-            _, stdout, _ = self.channel.connection.exec_command(cmd)
-            slurmrestd_token = stdout.read().decode().split("=")[1]
-
+            if CLUSTERS[self.name].get("mode") == "static":
+                # get infinite token for slurm user
+                cmd = shlex.join(
+                    [
+                        "firehpc",
+                        "ssh",
+                        f"admin.{self.name}",
+                        "scontrol",
+                        "token",
+                        "lifespan=infinite",
+                        "username=slurm",
+                    ]
+                )
+                _, stdout, _ = self.channel.connection.exec_command(cmd)
+                slurmrestd_token = stdout.read().decode().split("=")[1]
+            else:
+                try:
+                    with sftp.open(
+                        f".local/state/firehpc/clusters/{self.name}/slurm/jwt_hs256.key"
+                    ) as fh:
+                        slurm_jwt_key = fh.read()
+                    slurmrestd_jwt_key = tmpdir / f"{self.name}_jwt_hs256.key"
+                    with open(slurmrestd_jwt_key, "wb+") as fh:
+                        fh.write(slurm_jwt_key)
+                except FileNotFoundError:
+                    logger.warning(
+                        "Remote Slurm JWT signature key not found for cluster %s",
+                        self.name,
+                    )
         if CLUSTERS[self.name].get("scheme", "unix") == "unix":
             slurmrestd_uri = f"unix:///tmp/slurmrestd-{self.name}.socket"
         else:
@@ -247,6 +263,8 @@ class SlurmwebAgent:
                     service_port=self.service_port,
                     slurmrestd_auth=CLUSTERS[self.name]["auth"],
                     slurmrestd_uri=slurmrestd_uri,
+                    slurmrestd_jwt_mode=CLUSTERS[self.name].get("mode"),
+                    slurmrestd_jwt_key=slurmrestd_jwt_key,
                     slurmrestd_token=slurmrestd_token,
                     jwt_key=jwt_key_path,
                     cache_enabled=cache_enabled,
