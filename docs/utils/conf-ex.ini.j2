@@ -20,7 +20,7 @@
 {%- for section in definition.sections %}
 
 [{{ section.name }}]
-{%- for parameter in section.parameters %}
+{%- for parameter in section.parameters if not parameter.deprecated %}
 
 # {{ parameter.doc | wordwrap(wrapstring='\n# ')}}
 {%- if parameter.choices %}
@@ -55,6 +55,9 @@
 {%- set value = parameter.example %}
 {%- else %}
 {%- set value = parameter.default %}
+{%- if parameter._type == "uri" %}
+{%- set value = value.geturl() %}
+{%- endif %}
 {%- endif %}
 {%- if parameter._type == "bool" %}
 {%- set value = "yes" if value == True else "no" %}
