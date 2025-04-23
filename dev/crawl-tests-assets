@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any, Optional, Dict
+import typing as t
 from pathlib import Path
 import sys
 import json
@@ -15,6 +15,7 @@ import socket
 import shlex
 import random
 import os
+import urllib
 import logging
 
 import requests
@@ -29,6 +30,7 @@ from rfl.settings.errors import (
 )
 from racksdb import RacksDB
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
+from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 from slurmweb.metrics.db import SlurmwebMetricsDB
 from slurmweb.version import get_version
 
@@ -113,11 +115,13 @@ def crawl_prometheus(url: str, job: str) -> None:
         fh.write("\n")
 
 
-def query_slurmrestd(session: requests.Session, prefix: str, query: str) -> Any:
+def query_slurmrestd(
+    session: requests.Session, headers: t.Dict[str, str], prefix: str, query: str
+) -> t.Any:
     """Send GET HTTP request to slurmrestd and return JSON result. Raise RuntimeError in
     case of connection error or not JSON result."""
     try:
-        response = session.get(f"{prefix}/{query}")
+        response = session.get(f"{prefix}/{query}", headers=headers)
     except requests.exceptions.ConnectionError as err:
         raise RuntimeError(f"Unable to connect to slurmrestd: {err}")
 
@@ -126,6 +130,7 @@ def query_slurmrestd(session: requests.Session, prefix: str, query: str) -> Any:
 
 def dump_slurmrestd_query(
     session: requests.Session,
+    headers: t.Dict[str, str],
     requests_statuses,
     prefix: str,
     query: str,
@@ -134,13 +139,13 @@ def dump_slurmrestd_query(
     skip_exist=True,
     limit_dump=0,
     limit_key=None,
-) -> Any:
+) -> t.Any:
     """Send GET HTTP request to slurmrestd and save JSON result in assets directory."""
 
     if len(list(assets_path.glob(f"{asset_name}.*"))) and skip_exist:
         return
 
-    text, content_type, status = query_slurmrestd(session, prefix, query)
+    text, content_type, status = query_slurmrestd(session, headers, prefix, query)
 
     if asset_name not in requests_statuses:
         requests_statuses[asset_name] = {}
@@ -169,16 +174,25 @@ def dump_slurmrestd_query(
     return data
 
 
-def crawl_slurmrestd(socket: Path) -> None:
+def crawl_slurmrestd(
+    uri: urllib.parse.ParseResult, auth: SlurmrestdAuthentifier
+) -> None:
     """Crawl and save test assets from slurmrestd on the given socket."""
 
     session = requests.Session()
-    prefix = "http+unix://slurmrestd/"
+
+    if uri.scheme == "unix":
+        prefix = "http+unix://slurmrestd"
+        session.mount(prefix, SlurmrestdUnixAdapter(uri.path))
+    else:
+        prefix = uri.geturl()
+
     api = "0.0.40"
-    session.mount(prefix, SlurmrestdUnixAdapter(socket))
 
     # Get Slurm version
-    text, _, _ = query_slurmrestd(session, prefix, f"/slurm/v{api}/ping")
+    text, _, _ = query_slurmrestd(
+        session, auth.headers(), prefix, f"/slurm/v{api}/ping"
+    )
     ping = json.loads(text)
     release = ping["meta"]["slurm"]["release"]
     version = release.rsplit(".", 1)[0]
@@ -200,6 +214,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download ping
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/ping",
@@ -210,6 +225,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download URL not found for both slurm and slurmdb
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/not-found",
@@ -219,6 +235,7 @@ def crawl_slurmrestd(socket: Path) -> None:
 
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurmdb/v{api}/not-found",
@@ -226,9 +243,58 @@ def crawl_slurmrestd(socket: Path) -> None:
         "slurmdb-not-found",
     )
 
+    if auth.method == "jwt":
+        # if JWT auth, test missing headers
+        dump_slurmrestd_query(
+            session,
+            {},
+            requests_statuses,
+            prefix,
+            f"/slurm/v{api}/jobs",
+            assets_path,
+            "slurm-jwt-missing-headers",
+        )
+        # if JWT auth, test invalid headers
+        dump_slurmrestd_query(
+            session,
+            {"X-SLURM-USER-FAIL": "tail"},
+            requests_statuses,
+            prefix,
+            f"/slurm/v{api}/jobs",
+            assets_path,
+            "slurm-jwt-invalid-headers",
+        )
+        # if JWT auth, test invalid token
+        dump_slurmrestd_query(
+            session,
+            {"X-SLURM-USER-NAME": auth.jwt_user, "X-SLURM-USER-TOKEN": "fail"},
+            requests_statuses,
+            prefix,
+            f"/slurm/v{api}/jobs",
+            assets_path,
+            "slurm-jwt-invalid-token",
+        )
+        # if JWT auth and ability to generate token, test expired token
+        if auth.jwt_mode == "auto":
+            dump_slurmrestd_query(
+                session,
+                {
+                    "X-SLURM-USER-NAME": auth.jwt_user,
+                    "X-SLURM-USER-TOKEN": auth.jwt_manager.generate(
+                        duration=-1, claimset={"sun": auth.jwt_user}
+                    ),
+                },
+                requests_statuses,
+                prefix,
+                f"/slurm/v{api}/jobs",
+                assets_path,
+                "slurm-jwt-expired-token",
+            )
+
     # Download jobs
     jobs = dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/jobs",
@@ -243,6 +309,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         if state in _job["job_state"]:
             dump_slurmrestd_query(
                 session,
+                auth.headers(),
                 requests_statuses,
                 prefix,
                 f"/slurm/v{api}/job/{_job['job_id']}",
@@ -251,6 +318,7 @@ def crawl_slurmrestd(socket: Path) -> None:
             )
             dump_slurmrestd_query(
                 session,
+                auth.headers(),
                 requests_statuses,
                 prefix,
                 f"/slurmdb/v{api}/job/{_job['job_id']}",
@@ -277,6 +345,7 @@ def crawl_slurmrestd(socket: Path) -> None:
 
         dump_slurmrestd_query(
             session,
+            auth.headers(),
             requests_statuses,
             prefix,
             f"/slurm/v{api}/job/{min_job_id - 1}",
@@ -285,6 +354,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         )
         dump_slurmrestd_query(
             session,
+            auth.headers(),
             requests_statuses,
             prefix,
             f"/slurmdb/v{api}/job/{min_job_id - 1}",
@@ -294,6 +364,7 @@ def crawl_slurmrestd(socket: Path) -> None:
 
         dump_slurmrestd_query(
             session,
+            auth.headers(),
             requests_statuses,
             prefix,
             f"/slurm/v{api}/job/{max_job_id * 2}",
@@ -302,6 +373,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         )
         dump_slurmrestd_query(
             session,
+            auth.headers(),
             requests_statuses,
             prefix,
             f"/slurmdb/v{api}/job/{max_job_id * 2}",
@@ -312,6 +384,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download nodes
     nodes = dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/nodes",
@@ -326,6 +399,7 @@ def crawl_slurmrestd(socket: Path) -> None:
         if state in _node["state"]:
             dump_slurmrestd_query(
                 session,
+                auth.headers(),
                 requests_statuses,
                 prefix,
                 f"/slurm/v{api}/node/{_node['name']}",
@@ -341,6 +415,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Request node not found
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/node/unexisting-node",
@@ -351,6 +426,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download partitions
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/partitions",
@@ -361,6 +437,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download qos
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurmdb/v{api}/qos",
@@ -371,6 +448,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download accounts
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurmdb/v{api}/accounts",
@@ -381,6 +459,7 @@ def crawl_slurmrestd(socket: Path) -> None:
     # Download reservations
     dump_slurmrestd_query(
         session,
+        auth.headers(),
         requests_statuses,
         prefix,
         f"/slurm/v{api}/reservations",
@@ -474,8 +553,8 @@ def dump_component_query(
     prettify: bool = True,
     limit_dump=0,
     method: str = "GET",
-    content: Optional[Dict] = None,
-) -> Any:
+    content: t.Optional[t.Dict] = None,
+) -> t.Any:
     """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
     in assets directory."""
     if skip_exist:
@@ -928,9 +1007,18 @@ def main() -> None:
         if crawl_metrics:
             crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
 
+        auth = SlurmrestdAuthentifier(
+            settings.slurmrestd.auth,
+            settings.slurmrestd.jwt_mode,
+            settings.slurmrestd.jwt_user,
+            settings.slurmrestd.jwt_key,
+            settings.slurmrestd.jwt_lifespan,
+            settings.slurmrestd.jwt_token,
+        )
+
         # Crawl slurmrestd
         try:
-            crawl_slurmrestd(settings.slurmrestd.socket)
+            crawl_slurmrestd(settings.slurmrestd.uri, auth)
         except RuntimeError as err:
             logger.error(
                 "Unable to crawl slurmrestd data from cluster %s: %s", cluster, err
