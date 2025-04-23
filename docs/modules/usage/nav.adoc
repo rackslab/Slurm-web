@@ -4,3 +4,4 @@
 * xref:manpages/slurm-web-ldap-check.adoc[`slurm-web-ldap-check`]
 * xref:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key`]
 * xref:manpages/slurm-web-show-conf.adoc[`slurm-web-show-conf`]
+* xref:manpages/slurm-web-connect-check.adoc[`slurm-web-connect-check`]

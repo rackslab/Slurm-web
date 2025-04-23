@@ -1,0 +1,9 @@
+= `slurm-web-connect-check` command
+
+This page describes all `slurm-web-connect-check` command options available. The
+content of the page this also available in `slurm-web-connect-check(1)` manpage
+after installation.
+
+:!example-caption:
+
+include::partial$man-connect-check.adoc[]

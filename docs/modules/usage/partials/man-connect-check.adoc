@@ -1,0 +1,19 @@
+== Synopsis
+
+[.cli-opt]#*slurm-web-connect-check*# `[_GENERAL OPTIONS_]`
+
+== Description
+
+Slurm-web is a web dashboard for Slurm HPC cluster. Its architecture is based on
+two components: the gateway and agents. This command is a utility to check
+Slurm-web agent connection parameters to `slurmrestd` service.
+
+include::agent-opts.adoc[]
+
+== Exit status
+
+*0*::
+  `slurm-web-connect-check` has processed command with success.
+
+*1*::
+  `slurm-web-connect-check` encountered an error.

@@ -27,7 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent:
  - Support JWT authentication on `slurmrestd` in _static_ and _auto_ modes.
  - Support access to `slurmrestd` on TCP/IP socket (#313).
-- docs: Mention `--log-component` option in manpages.
+- docs:
+  - Mention `--log-component` option in manpages.
+  - Add manpage for `slurm-web-connect-check` utility.
 
 ### Changed
 - conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed
