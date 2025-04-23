@@ -38,6 +38,36 @@ vendor_roles={policy}
 """
 
 
+def setup_agent_conf(additional_conf=None):
+    # Generate JWT signing key
+    key = tempfile.NamedTemporaryFile(mode="w+")
+    key.write("hey")
+    key.seek(0)
+
+    vendor_path = os.path.join(
+        os.path.dirname(__file__), "..", "..", "..", "conf", "vendor"
+    )
+
+    # Policy definition path
+    policy_defs = os.path.join(vendor_path, "policy.yml")
+
+    # Policy path
+    policy = os.path.join(vendor_path, "policy.ini")
+
+    # Generate configuration file
+    conf = tempfile.NamedTemporaryFile(mode="w+")
+    conf_content = CONF
+    if additional_conf is not None:
+        conf_content += additional_conf
+    conf.write(
+        conf_content.format(key=key.name, policy_defs=policy_defs, policy=policy)
+    )
+    conf.seek(0)
+
+    # Configuration definition path
+    return key, conf, os.path.join(vendor_path, "agent.yml")
+
+
 class FakeRacksDBWebBlueprint(Blueprint):
     """Fake RacksDB web blueprint to avoid testing RacksDB in the scope of
     Slurm-web test cases."""
@@ -50,7 +80,12 @@ class FakeRacksDBWebBlueprint(Blueprint):
         return jsonify({"test": "ok"})
 
 
-class TestAgentBase(unittest.TestCase):
+class TestSlurmrestdClient(unittest.TestCase):
+    def mock_slurmrestd_responses(self, slurm_version, assets):
+        return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
+
+
+class TestAgentBase(TestSlurmrestdClient):
     def setup_client(
         self,
         additional_conf=None,
@@ -60,33 +95,7 @@ class TestAgentBase(unittest.TestCase):
         anonymous_enabled=True,
         use_token=True,
     ):
-        # Generate JWT signing key
-        key = tempfile.NamedTemporaryFile(mode="w+")
-        key.write("hey")
-        key.seek(0)
-
-        vendor_path = os.path.join(
-            os.path.dirname(__file__), "..", "..", "..", "conf", "vendor"
-        )
-
-        # Policy definition path
-        policy_defs = os.path.join(vendor_path, "policy.yml")
-
-        # Policy path
-        policy = os.path.join(vendor_path, "policy.ini")
-
-        # Generate configuration file
-        conf = tempfile.NamedTemporaryFile(mode="w+")
-        conf_content = CONF
-        if additional_conf is not None:
-            conf_content += additional_conf
-        conf.write(
-            conf_content.format(key=key.name, policy_defs=policy_defs, policy=policy)
-        )
-        conf.seek(0)
-
-        # Configuration definition path
-        conf_defs = os.path.join(vendor_path, "agent.yml")
+        key, conf, conf_defs = setup_agent_conf(additional_conf)
 
         # Start the app with mocked RacksDB web blueprint
         with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
@@ -141,9 +150,6 @@ class TestAgentBase(unittest.TestCase):
                 duration=3600,
             )
             self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
-
-    def mock_slurmrestd_responses(self, slurm_version, assets):
-        return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
 
 
 class RemoveActionInPolicy:
