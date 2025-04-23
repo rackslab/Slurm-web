@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add `--log-component` option on every commands to prefix all log entries with
   a component name.
+- Introduce `slurm-web-connect-check` utility to test access to `slurmrestd`
+  service with agent configuration parameters.
 - frontend:
   - Add possibility to sort jobs by quantity of resources (#453).
   - Add priority in jobs list (#452).
