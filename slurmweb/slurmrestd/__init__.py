@@ -17,6 +17,7 @@ from .errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
+    SlurmrestdAuthenticationError,
     SlurmrestdInternalError,
 )
 from ..errors import SlurmwebConfigurationError
@@ -53,18 +54,19 @@ class Slurmrestd:
 
         self.auth = auth
 
-    def _validate_response(self, response, ignore_notfound) -> None:
+    def _validate_response(self, response, ignore_notfound: bool) -> None:
         """Validate slurmrestd response or abort agent resquest with error."""
         self._validate_status(response, ignore_notfound)
         self._validate_json(response)
 
-    def _validate_status(self, response, ignore_notfound) -> None:
-        """Check response status code is not HTTP/404 or abort"""
-        if ignore_notfound:
-            return
-        if response.status_code != 404:
-            return
-        raise SlurmrestdNotFoundError(response.url)
+    def _validate_status(self, response, ignore_notfound: bool) -> None:
+        """Check response status code. When HTTP/401, raise
+        SlurmrestdAuthenticationError. When HTTP/404 and ignore_notfound is False, raise
+        SlurmrestdNotFoundError."""
+        if response.status_code == 401:
+            raise SlurmrestdAuthenticationError(response.url)
+        if not ignore_notfound and response.status_code == 404:
+            raise SlurmrestdNotFoundError(response.url)
 
     def _validate_json(self, response) -> None:
         """Check json reponse or abort with HTTP/500"""

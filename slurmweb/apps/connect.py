@@ -16,6 +16,7 @@ from ..slurmrestd.errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
+    SlurmrestdAuthenticationError,
     SlurmrestdInternalError,
 )
 from ..errors import SlurmwebConfigurationError
@@ -84,6 +85,8 @@ class SlurmwebAppConnectCheck(SlurmwebGenericApp):
             fail(f"Invalid response from slurmrestd: {err}")
         except SlurmrestConnectionError as err:
             fail(f"Unable to connect to slurmrestd: {err}")
+        except SlurmrestdAuthenticationError as err:
+            fail(f"Authentication error on slurmrestd: {err}")
         except SlurmrestdInternalError as err:
             msg = f"slurmrestd error: {err.description} ({err.source})"
             if err.error != -1:
