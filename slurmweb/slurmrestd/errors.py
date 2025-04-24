@@ -9,6 +9,10 @@ class SlurmrestConnectionError(Exception):
     pass
 
 
+class SlurmrestdAuthenticationError(Exception):
+    pass
+
+
 class SlurmrestdNotFoundError(Exception):
     pass
 

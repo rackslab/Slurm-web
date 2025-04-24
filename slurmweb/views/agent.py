@@ -18,6 +18,7 @@ from ..slurmrestd.errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
+    SlurmrestdAuthenticationError,
     SlurmrestdInternalError,
 )
 
@@ -71,6 +72,10 @@ def slurmrest(method: str, *args: Tuple[Any, ...]):
         msg = f"Unable to connect to slurmrestd: {err}"
         logger.error(msg)
         abort(500, msg)
+    except SlurmrestdAuthenticationError as err:
+        msg = f"Authentication error on slurmrestd: {err}"
+        logger.error(msg)
+        abort(401, msg)
     except SlurmrestdInternalError as err:
         msg = f"slurmrestd error: {err.description} ({err.source})"
         if err.error != -1:
