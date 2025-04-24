@@ -109,6 +109,26 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
+    @all_slurm_versions
+    def test_request_slurmrestd_authentication_error(self, slurm_version):
+        try:
+            [slurm_not_found_asset] = self.mock_slurmrestd_responses(
+                slurm_version,
+                [("slurm-jwt-invalid-headers", None)],
+            )
+        except SlurmwebAssetUnavailable:
+            return
+        response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 401,
+                "description": "Authentication error on slurmrestd: /mocked/query",
+                "name": "Unauthorized",
+            },
+        )
+
     def test_request_agent_not_found(self):
         response = self.client.get("/fail")
         self.assertEqual(response.status_code, 404)
