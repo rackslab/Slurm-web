@@ -9,6 +9,7 @@ from unittest import mock
 from slurmweb.errors import SlurmwebConfigurationError
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
+    SlurmrestdAuthenticationError,
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
     SlurmrestdInternalError,
@@ -72,6 +73,22 @@ class TestConnectCheckApp(TestConnectCheckAppBase):
             [
                 "ERROR:slurmweb.apps.connect:Unable to connect to slurmrestd: fake "
                 "connection error"
+            ],
+        )
+
+    def test_app_slurmrestd_authentication_error(self):
+        self.setup()
+        self.app.slurmrestd._request = mock.Mock(
+            side_effect=SlurmrestdAuthenticationError("fake authentication error")
+        )
+        with self.assertRaisesRegex(SystemExit, "1"):
+            with self.assertLogs("slurmweb", level="ERROR") as cm:
+                self.app.run()
+        self.assertEqual(
+            cm.output,
+            [
+                "ERROR:slurmweb.apps.connect:Authentication error on slurmrestd: fake "
+                "authentication error"
             ],
         )
 

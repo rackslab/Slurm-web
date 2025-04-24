@@ -14,6 +14,7 @@ import ClusterShell
 from slurmweb.slurmrestd import Slurmrestd
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
+    SlurmrestdAuthenticationError,
     SlurmrestdInternalError,
     SlurmrestdInvalidResponseError,
     SlurmrestdNotFoundError,
@@ -99,6 +100,58 @@ class TestSlurmrestd(TestSlurmrestdBase):
             return
 
         with self.assertRaisesRegex(SlurmrestdNotFoundError, "^/mocked/query$"):
+            self.slurmrestd._request("/whatever", key="whatever")
+
+    @all_slurm_versions
+    def test_request_slurm_jwt_missing_headers(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jwt-missing-headers", None)]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        with self.assertRaisesRegex(SlurmrestdAuthenticationError, "^/mocked/query$"):
+            self.slurmrestd._request("/whatever", key="whatever")
+
+    @all_slurm_versions
+    def test_request_slurm_jwt_invalid_headers(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jwt-invalid-headers", None)]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        with self.assertRaisesRegex(SlurmrestdAuthenticationError, "^/mocked/query$"):
+            self.slurmrestd._request("/whatever", key="whatever")
+
+    @all_slurm_versions
+    def test_request_slurm_jwt_invalid_token(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jwt-invalid-token", None)]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        with self.assertRaisesRegex(
+            SlurmrestdInternalError, "^SlurwebRestdError\(.*\)$"
+        ):
+            self.slurmrestd._request("/whatever", key="whatever")
+
+    @all_slurm_versions
+    def test_request_slurm_jwt_expired_token(self, slurm_version):
+        try:
+            [asset] = self.mock_slurmrestd_responses(
+                slurm_version, [("slurm-jwt-expired-token", None)]
+            )
+        except SlurmwebAssetUnavailable:
+            return
+
+        with self.assertRaisesRegex(
+            SlurmrestdInternalError, "^SlurwebRestdError\(.*\)$"
+        ):
             self.slurmrestd._request("/whatever", key="whatever")
 
     @all_slurm_versions
