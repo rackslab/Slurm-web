@@ -89,7 +89,7 @@ On clusters deployed with RPM packages from {debian}[Debian community], install
 == Setup `slurmrestd`
 
 Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
-drop-in configuration override for `slurmrestd` daemon:
+drop-in configuration override for `slurmrestd` service:
 
 [source,ini]
 ----
@@ -99,22 +99,17 @@ ExecStart=
 Environment=
 # Disable slurm user security check
 Environment=SLURMRESTD_SECURITY=disable_user_check
-ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS unix:/run/slurmrestd/slurmrestd.socket
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/local unix:/run/slurmrestd/slurmrestd.socket
 RuntimeDirectory=slurmrestd
 RuntimeDirectoryMode=0755
 User=slurm
 Group=slurm
 ----
 
-NOTE: This configuration file makes `slurmrestd` listen for incoming connections
-on Unix socket accessible by Slurm-web. In this configuration `slurmrestd` is
-executed with special `slurm` user to get more permissions on Slurm cluster.
-This is normally not permitted by `slurmrestd` unless
-`SLURMRESTD_SECURITY=disable_user_check` environment variable is defined. This
-is a security measure that is relevant in many use-cases but not for Slurm-web.
-Indeed, Slurm-web has its own internal security
-xref:conf:policy.adoc[autorization policy] to control users permissions and
-enforce security.
+NOTE: With this configuration, `slurmrestd` listens for incoming connections on
+Unix socket with _local_ authentication method. It is also possible to configure
+`slurmrestd` to listen on TCP/IP with JWT authentication, please refer to
+xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
 
 Make `systemd` reload units changes on disk:
 
