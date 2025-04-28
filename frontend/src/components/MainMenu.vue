@@ -78,11 +78,7 @@ const navigation = [
               leave-to="opacity-0"
             >
               <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                <button
-                  type="button"
-                  class="-m-2.5 p-2.5"
-                  @click="sidebarOpen = false"
-                >
+                <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
                   <span class="sr-only">Close sidebar</span>
                   <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
                 </button>
