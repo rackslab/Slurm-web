@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Mention `--log-component` option in manpages.
   - Add manpage for `slurm-web-connect-check` utility.
+  - Add _Slurmrestd Access_ page with guides to setup Slurm and agent in all
+    supported configurations.
 
 ### Changed
 - conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed

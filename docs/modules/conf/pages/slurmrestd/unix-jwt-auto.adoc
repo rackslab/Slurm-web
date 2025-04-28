@@ -1,0 +1,30 @@
+= Slurmrestd Access
+
+****
+This page describes how-to setup Slurm `slurmrestd` service and Slurm-web agent
+with:
+
+* *Unix* socket,
+* *JWT* authentication,
+* *auto* token management mode.
+
+xref:slurmrestd.adoc#slurmrestd-conf-options[< back to all `slurmrestd` setups]
+****
+
+image::slurmrestd/slurmrestd_access_modes_unix_jwt_auto.png[]
+
+== Setup Slurm
+
+:slurmrestd_uri: unix:/run/slurmrestd/slurmrestd.socket
+
+include::partial$slurm-jwt.adoc[]
+
+:!slurmrestd_uri:
+
+== Setup Agent
+
+include::partial$agent-jwt-auto.adoc[]
+
+include::partial$agent-unprivileged.adoc[]
+
+include::partial$slurmrestd-test.adoc[]

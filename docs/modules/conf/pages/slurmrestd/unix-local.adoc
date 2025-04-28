@@ -1,0 +1,59 @@
+= Slurmrestd Access
+
+****
+This page describes how-to setup Slurm `slurmrestd` service and Slurm-web agent
+with:
+
+* *Unix* socket,
+* *local* authentication.
+
+xref:slurmrestd.adoc#slurmrestd-conf-options[< back to all `slurmrestd` setups]
+****
+
+image::slurmrestd/slurmrestd_access_modes_unix_local.png[]
+
+With _local_ authentication method, `slurmrestd` service authenticates the user
+with UID/GID of the client process, which must match UID/GID of `slurmrestd`
+service itself.
+
+In this configuration, both `slurmrestd` service and Slurm-web *agent* must run
+as special `slurm` administrator user to get full permissions on Slurm cluster.
+This is usually not recommended but it can be considered safe in this case
+because Slurm-web has its own internal security
+xref:conf:policy.adoc[autorization policy] to control users permissions and
+enforce security.
+
+== Setup Slurm
+
+Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
+drop-in configuration override for `slurmrestd` service:
+
+[source,ini]
+----
+[Service]
+# Unset vendor unit ExecStart to avoid cumulative definition
+ExecStart=
+Environment=
+# Disable slurm user security check
+Environment=SLURMRESTD_SECURITY=disable_user_check
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/local unix:/run/slurmrestd/slurmrestd.socket
+RuntimeDirectory=slurmrestd
+RuntimeDirectoryMode=0755
+User=slurm
+Group=slurm
+----
+
+NOTE: The environment variable `SLURMRESTD_SECURITY=disable_user_check` is
+defined to force `slurmrestd` run as _slurm_ administrator user.
+
+Reload systemd units and enable the service:
+
+[source,console]
+----
+# systemctl daemon-reload && systemctl enable --now slurmrestd.service
+----
+
+NOTE: There is nothing more to configure as it is the configuration expected by
+default by Slurm-web agent.
+
+include::partial$slurmrestd-test.adoc[]

@@ -1,0 +1,54 @@
+= Slurmrestd Access
+
+Slurm `slurmrestd` supports incoming HTTP requests on:
+
+* *Unix socket*: In this configuration, Slurm-web agent must be collocated with
+`slurmrestd` service on the same host.
+* *TCP/IP socket*: HTTP requests can be sent on the network, Slurm-web agent and
+`slurmrestd` service can be hosted on separate hosts.
+
+Slurm also supports two authentication methods for `slurmrestd` service:
+
+* *local* (Unix socket only): based on UID/GID of client process.
+* *jwt*: based on tokens in HTTP request headers.
+
+Slurm-web also supports two tokens management modes for JWT authentication:
+
+* *auto*: Slurm-web agent has access to a copy of Slurm JWT signing key. It
+  generates tokens automatically with a short lifespan when required.
+* *static*: Token is generated manually by the administrator and set in agent
+  configuration. This implies generating tokens with a long lifespan to avoid
+  updating the token too often.
+
+[[slurmrestd-conf-options]]
+
+All these options are represented in this diagram:
+
+image::slurmrestd/slurmrestd_access_modes.png[]
+
+All supported configuration are listed in the table below:
+
+[cols="1,1,1,1",width=60%]
+|===
+|Socket|Authentication|Mode|
+
+.3+|Unix
+|local
+|-
+^|xref:slurmrestd/unix-local.adoc[📖 Read]
+
+.4+|JWT
+|auto
+^|xref:slurmrestd/unix-jwt-auto.adoc[📖 Read]
+
+|static
+^|xref:slurmrestd/unix-jwt-static.adoc[📖 Read]
+
+.2+|TCP/IP
+|auto
+^|xref:slurmrestd/inet-jwt-auto.adoc[📖 Read]
+
+|static
+^|xref:slurmrestd/inet-jwt-static.adoc[📖 Read]
+
+|===

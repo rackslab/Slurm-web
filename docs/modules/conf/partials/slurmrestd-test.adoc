@@ -1,0 +1,12 @@
+== Test Access
+
+To test Slurm-web agent and `slurmrestd` service configuration parameters, you
+can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web-connect-check`]
+utility. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
+configuration parameters and reports the status. For example:
+
+[source,console]
+----
+# /usr/libexec/slurm-web/slurm-web-connect-check
+✅ connection successful (slurm: 24.11.0, cluster: hpc)
+----

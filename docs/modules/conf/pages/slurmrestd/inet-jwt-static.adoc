@@ -1,0 +1,30 @@
+= Slurmrestd Access
+
+****
+This page describes how-to setup Slurm `slurmrestd` service and Slurm-web agent
+with:
+
+* *TCP/IP* socket,
+* *JWT* authentication,
+* *static* token management mode.
+
+xref:slurmrestd.adoc#slurmrestd-conf-options[< back to all `slurmrestd` setups]
+****
+
+image::slurmrestd/slurmrestd_access_modes_inet_jwt_static.png[]
+
+== Setup Slurm
+
+:slurmrestd_uri: [::]:6820
+
+include::partial$slurm-jwt.adoc[]
+
+:slurmrestd_uri: http://localhost:6820
+
+== Setup Agent
+
+include::partial$agent-jwt-static.adoc[]
+
+include::partial$agent-unprivileged.adoc[]
+
+include::partial$slurmrestd-test.adoc[]

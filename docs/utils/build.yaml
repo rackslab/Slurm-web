@@ -8,3 +8,9 @@ diagrams:
   modules/overview/images/arch/slurm-web_distribution.svg: medium
   modules/overview/images/arch/slurm-web_integration.svg: medium
   modules/overview/images/arch/slurm-web_protocols.svg: medium
+  modules/conf/images/slurmrestd/slurmrestd_access_modes.svg: large
+  modules/conf/images/slurmrestd/slurmrestd_access_modes_unix_jwt_auto.svg: large
+  modules/conf/images/slurmrestd/slurmrestd_access_modes_unix_jwt_static.svg: large
+  modules/conf/images/slurmrestd/slurmrestd_access_modes_unix_local.svg: large
+  modules/conf/images/slurmrestd/slurmrestd_access_modes_inet_jwt_auto.svg: large
+  modules/conf/images/slurmrestd/slurmrestd_access_modes_inet_jwt_static.svg: large

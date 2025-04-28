@@ -1,0 +1,59 @@
+To improve security, edit Slurm-web agent service to run as unprivileged
+_slurm-web_ system user:
+
+* With native services, edit agent service settings:
++
+--
+[source,console]
+----
+# systemctl edit slurm-web-agent.service
+----
+
+Add the following lines:
+
+[source,ini]
+----
+[Service]
+User=slurm-web
+----
+
+Restart the service:
+
+[source,console]
+----
+# systemctl restart slurm-web-agent.service
+----
+--
+
+* With production HTTP server, edit agent uWSGI service settings
+  [.path]#`/etc/systemd/system/slurm-web-agent-uwsgi.service`#:
++
+--
+[source,diff]
+----
+--- a/etc/systemd/system/slurm-web-agent-uwsgi.service
++++ b/etc/systemd/system/slurm-web-agent-uwsgi.service
+@@ -6,7 +6,7 @@
+ # By default, this service runs with slurm admin user for local authentication
+ # on slurmrestd. When slurmrestd is setup with JWT authentication, it is
+ # recommended to change this value to more restricted slurm-web system user.
+-User=slurm
++User=slurm-web
+ RuntimeDirectory=slurm-web-agent
+ ExecStart=/usr/sbin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
+----
+
+Reload service units:
+
+[source,console]
+----
+# systemctl daemon-reload
+----
+
+Restart Slurm-web agent:
+
+[source,console]
+----
+# systemctl restart slurm-web-agent.service
+----
+--
