@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="182.51688mm"
-   height="46.302086mm"
-   viewBox="0 0 182.51687 46.302085"
+   width="207.70509mm"
+   height="50.270836mm"
+   viewBox="0 0 207.70509 50.270835"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="slurm-web_protocols.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,20 +28,22 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="1.5554293"
-     inkscape:cx="843.17558"
-     inkscape:cy="137.90405"
-     inkscape:window-width="3840"
-     inkscape:window-height="2096"
+     inkscape:zoom="2.7225291"
+     inkscape:cx="565.65052"
+     inkscape:cy="122.68005"
+     inkscape:window-width="1920"
+     inkscape:window-height="1131"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1">
+     inkscape:current-layer="layer1"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid824"
        originx="21.121045"
-       originy="-22.489579" />
+       originy="-22.489578" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -155,7 +157,7 @@
        id="rect16105"
        width="62.177082"
        height="27.78125"
-       x="99.21875"
+       x="124.40697"
        y="22.489582"
        rx="2.6458335"
        ry="2.6458335" />
@@ -169,25 +171,25 @@
        rx="2.6105554"
        ry="2.7781224" />
     <rect
-       style="opacity:0.3;fill:#6faf40;fill-opacity:1;stroke-width:0.424264;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.3;fill:#6faf40;fill-opacity:1;stroke-width:0.608097;stroke-linecap:round;stroke-linejoin:round"
        id="rect5299"
-       width="30.427082"
-       height="31.75"
+       width="55.562496"
+       height="35.71875"
        x="83.34375"
        y="37.041668" />
     <rect
-       style="opacity:0.3;fill:#9c21ac;fill-opacity:1;stroke-width:0.612905;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.3;fill:#9c21ac;fill-opacity:1;stroke-width:0.650084;stroke-linecap:round;stroke-linejoin:round"
        id="rect1291"
        width="63.499996"
-       height="31.75"
+       height="35.718746"
        x="17.197914"
        y="37.041668" />
     <rect
-       style="opacity:0.3;fill:#c38a1c;fill-opacity:1;stroke-width:0.424264;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.3;fill:#c38a1c;fill-opacity:1;stroke-width:0.469158;stroke-linecap:round;stroke-linejoin:round"
        id="rect1373"
-       width="30.427082"
-       height="31.75"
-       x="116.41666"
+       width="33.072918"
+       height="35.71875"
+       x="141.49928"
        y="37.041668" />
     <rect
        style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.07814;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
@@ -212,7 +214,7 @@
        id="rect40253"
        width="22.489586"
        height="10.583336"
-       x="120.38541"
+       x="146.84375"
        y="51.59375"
        rx="1.3229177"
        ry="1.3229177" />
@@ -331,44 +333,44 @@
        id="rect14344"
        width="25.135416"
        height="13.229167"
-       x="101.86459"
+       x="127.0528"
        y="33.072918"
        rx="1.3229173"
        ry="1.3229173" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="103.9552"
+       x="129.1434"
        y="41.211498"
        id="text14348"><tspan
          sodipodi:role="line"
          id="tspan14346"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Raleway;-inkscape-font-specification:Raleway;stroke-width:0.264583"
-         x="103.9552"
+         x="129.1434"
          y="41.211498">slurmrestd</tspan></text>
     <rect
        style="fill:#afafaf;stroke-width:0.514295;stroke-linecap:round;stroke-linejoin:round"
        id="rect15602"
        width="25.135416"
        height="13.229167"
-       x="133.61458"
+       x="160.07291"
        y="33.072918"
        rx="1.3229173"
        ry="1.3229173" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="136.74832"
+       x="163.20665"
        y="38.479065"
        id="text15606"><tspan
          sodipodi:role="line"
          id="tspan15604"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Raleway;-inkscape-font-specification:Raleway;stroke-width:0.264583"
-         x="136.74832"
+         x="163.20665"
          y="38.479065">slurmctld</tspan><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Raleway;-inkscape-font-specification:Raleway;stroke-width:0.264583"
-         x="136.74832"
+         x="163.20665"
          y="43.943935"
          id="tspan53566">slurmdbd</tspan></text>
     <rect
@@ -398,12 +400,12 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 95.25,39.687499 6.61458,10e-7"
+       d="m 95.25,39.687499 31.75,4e-6"
        id="path31623"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 127,39.6875 h 6.61458"
+       d="m 152.13541,39.687503 7.9375,-3e-6"
        id="path31724"
        sodipodi:nodetypes="cc" />
     <path
@@ -413,12 +415,12 @@
        sodipodi:nodetypes="cccc" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 100.27708,38.89375 v 1.587501 l 2.11667,-0.79375 z"
+       d="m 125.41249,38.89375 v 1.587501 l 2.11667,-0.79375 z"
        id="path32839"
        sodipodi:nodetypes="cccc" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 132.02708,38.89375 v 1.587501 l 2.11667,-0.79375 z"
+       d="m 158.48541,38.89375 v 1.587501 l 2.11667,-0.79375 z"
        id="path32841"
        sodipodi:nodetypes="cccc" />
     <path
@@ -475,12 +477,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="131.54245"
+       x="156.73065"
        y="28.297709"
        id="text15039"><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Raleway;-inkscape-font-specification:Raleway;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
-         x="131.54245"
+         x="156.73065"
          y="28.297709"
          id="tspan15037">Slurm</tspan></text>
     <text
@@ -534,17 +536,17 @@
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
-       x="131.34447"
+       x="157.80281"
        y="55.900284"
        id="text31932"><tspan
          sodipodi:role="line"
          style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
-         x="131.34447"
+         x="157.80281"
          y="55.900284"
          id="tspan31930">Slurm RPC</tspan><tspan
          sodipodi:role="line"
          style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
-         x="131.34447"
+         x="157.80281"
          y="60.310009"
          id="tspan32462">TCP/IP</tspan></text>
     <path
@@ -571,58 +573,132 @@
        r="0.78599709" />
     <path
        style="fill:none;stroke:#707070;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 98.424999,39.687501 v 11.90625"
+       d="M 111.125,39.687503 V 56.88542"
        id="path39855"
        sodipodi:nodetypes="cc" />
     <circle
        style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.98047;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
        id="circle39857"
-       cx="98.424995"
-       cy="39.6875"
+       cx="111.125"
+       cy="39.679749"
        r="0.78599709" />
     <path
        style="fill:none;stroke:#707070;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 130.175,39.952085 v 11.90625"
+       d="m 156.21359,39.952085 v 11.90625"
        id="path39859"
        sodipodi:nodetypes="cc" />
     <circle
        style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.98047;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
        id="circle39861"
-       cx="130.17494"
+       cx="156.21353"
        cy="39.6875"
        r="0.78599709" />
     <text
        xml:space="preserve"
-       style="font-size:4.23333px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;stroke-width:0.264583;fill:#884c91;fill-opacity:1"
+       style="font-size:4.23333px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#884c91;fill-opacity:1;stroke-width:0.264583"
        x="44.771233"
-       y="67.564064"
+       y="68.622398"
        id="text10584"><tspan
          sodipodi:role="line"
          id="tspan10582"
-         style="font-size:4.23333px;stroke-width:0.264583;fill:#884c91;fill-opacity:1"
+         style="font-size:4.23333px;fill:#884c91;fill-opacity:1;stroke-width:0.264583"
          x="44.771233"
-         y="67.564064">JWT</tspan></text>
+         y="68.622398">JWT</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
-       x="116.51379"
+       x="142.97214"
        y="67.094521"
        id="text22878"><tspan
          sodipodi:role="line"
          id="tspan22876"
          style="font-size:3.52778px;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
-         x="116.51379"
+         x="142.97214"
          y="67.094521">auth/{munge,slurm}</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-       x="87.283653"
-       y="67.11216"
+       x="85.724998"
+       y="68.170494"
        id="text5303"><tspan
          sodipodi:role="line"
          id="tspan5301"
          style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-         x="87.283653"
-         y="67.11216">rest_auth/local</tspan></text>
+         x="85.724998"
+         y="68.170494">rest_auth/local</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+         x="85.724998"
+         y="72.580215"
+         id="tspan550" /></text>
+    <rect
+       style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.07814;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect552"
+       width="22.489586"
+       height="10.583336"
+       x="112.44791"
+       y="51.59375"
+       rx="1.3229177"
+       ry="1.3229177" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
+       x="124.35416"
+       y="55.92939"
+       id="text558"><tspan
+         sodipodi:role="line"
+         id="tspan554"
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
+         x="124.35416"
+         y="55.92939">HTTP</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#ededed;fill-opacity:1;stroke-width:0.264583"
+         x="124.35416"
+         y="60.339115"
+         id="tspan556">TCP/IP</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+       x="116.29144"
+       y="68.170494"
+       id="text564"><tspan
+         sodipodi:role="line"
+         style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+         x="116.29144"
+         y="68.170494"
+         id="tspan562">rest_auth/jwt</tspan></text>
+    <path
+       style="fill:none;stroke:#707070;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 109.80208,56.88542 h 2.64583"
+       id="path615"
+       sodipodi:nodetypes="cc" />
+    <circle
+       style="fill:#707070;fill-opacity:1;stroke:none;stroke-width:1.16667;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="circle666"
+       cx="111.125"
+       cy="56.885418"
+       r="0.46302179" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+       x="111.1109"
+       y="68.239571"
+       id="text670"><tspan
+         sodipodi:role="line"
+         style="font-style:italic;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.52778px;font-family:Lato;-inkscape-font-specification:'Lato Light Italic';fill:#325d17;fill-opacity:1;stroke-width:0.264583"
+         x="111.1109"
+         y="68.239571"
+         id="tspan668">or</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
+       x="158.13014"
+       y="70.793686"
+       id="text674"><tspan
+         sodipodi:role="line"
+         id="tspan672"
+         style="font-size:3.175px;text-align:center;text-anchor:middle;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
+         x="158.13014"
+         y="70.793686">(+ auth/jwt alternative)</tspan></text>
   </g>
 </svg>

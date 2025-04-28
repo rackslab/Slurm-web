@@ -61,8 +61,8 @@ Optionally, the *agent* can also:
 [#protocols]
 == Protocols
 
-Protocols and authentication realms used for communication between Slurm-web and
-Slurm components are represented in this diagram:
+Protocols and authentication realms involved in communications between Slurm-web
+and Slurm components are represented in this diagram:
 
 .Protocols in communication between Slurm-web components [xref:image$arch/slurm-web_protocols.svg[icon:download[] SVG]]
 image::arch/slurm-web_protocols.png[]
@@ -72,21 +72,28 @@ component are performed with HTTP over TCP/IP network protocols. These
 network communications can be secured with SSL/TLS (aka. HTTPS) over standard
 port TCP/443 with a xref:conf:wsgi/index.adoc[production HTTP server]. After
 initial authentication with LDAP directory, users are authenticated between
-these components with https://jwt.io/[JSON Web Token] (JWT).
+these components with https://jwt.io/[JSON Web Token] (JWT). Slurm-web has its
+own JWT realm, with its dedicated JWT signing key, to secure communication
+between its components.
 
-Communications between *agent* component and Slurm `slurmrestd` daemon are
-performed with HTTP protocol over a Unix socket. For security reasons
-`slurmrestd` checks the *agent* runs with the same UID/GID as itself with its
-`rest_auth/local` plugin.
+Slurm `slurmrestd` supports incoming HTTP requests on:
 
-NOTE: Slurm `slurmrestd` supports incoming connections on TCP/IP sockets with
-`rest_auth/jwt` plugin but this configuration is not yet supported by Slurm-web.
-This is currently a limitation in Slurm-web that might change in the future (see
-https://github.com/rackslab/Slurm-web/issues/313[#313]).
+* *Unix socket*, with two authentication methods: `rest_auth/local`, in which
+  `slurmrestd` authenticates users with client process UID/GID, and
+  `rest_auth/jwt` with tokens signed by Slurm JWT signing key.
+* *TCP/IP socket*, with `rest_auth/jwt` authentication supported only.
+
+Slurm-web *agent* supports all these combinations of sockets and authentication
+methods. Please refer to
+xref:conf:slurmrestd.adoc[slurmrestd access configuration page] for more
+details.
 
 Slurm components communicates with specific binary RPC protocol over TCP/IP
 sockets, secured by either https://dun.github.io/munge/[Munge] or
 https://slurm.schedmd.com/authentication.html#slurm[Slurm internal mechanism].
+When JWT authentication is used between Slurm-web *agent* and Slurm `slurmrestd`
+service, the `auth/jwt` alternative authentication type must also be enabled in
+main Slurm and `slurmdbd` configuration.
 
 [#multiclusters]
 == Multi-clusters Distribution
