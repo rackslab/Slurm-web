@@ -5,6 +5,9 @@ After=systemd-sysusers.service
 [Service]
 ExecStart=/usr/libexec/slurm-web/slurm-web-agent
 Restart=on-failure
+# By default, this service runs with slurm admin user for local authentication
+# on slurmrestd. When slurmrestd is setup with JWT authentication, it is
+# recommended to change this value to more restricted slurm-web system user.
 User=slurm
 
 [Install]
