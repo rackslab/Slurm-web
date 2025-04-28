@@ -3,8 +3,10 @@ Description=uWSGI instance for Slurm-web agent
 After=network.target
 
 [Service]
+# By default, this service runs with slurm admin user for local authentication
+# on slurmrestd. When slurmrestd is setup with JWT authentication, it is
+# recommended to change this value to more restricted slurm-web system user.
 User=slurm
-Group=slurm
 RuntimeDirectory=slurm-web-agent
 ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
 

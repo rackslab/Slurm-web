@@ -35,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention support of JWT authentication and TCP/IP sockets between agent and
     Slurm `slurmrestd` in _Protocols_ section of Architecture page and
     Quickstart guide.
+- lib: Add comment in agent native and uWSGI services units to explain
+  possibility to drop privileges of _slurm_ user in favor of more restricted
+  _slurm-web_ user with `slurmrestd` JWT authentication.
 
 ### Changed
 - conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed
