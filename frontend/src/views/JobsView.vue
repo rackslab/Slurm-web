@@ -378,12 +378,12 @@ onMounted(() => {
                       {{ job.state_reason }}
                     </template>
                   </td>
-                  <td class="text-sm text-right font-medium h-full">
+                  <td class="h-full text-right text-sm font-medium">
                     <RouterLink
                       :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
                       class="text-gray-500 hover:text-slurmweb-dark"
                     >
-                      <WindowIcon class="h-5 w-5 inline-block mr-4 lg:mr-6" aria-hidden="true" />
+                      <WindowIcon class="mr-4 inline-block h-5 w-5 lg:mr-6" aria-hidden="true" />
                       <span class="sr-only">View {{ job.job_id }}</span>
                     </RouterLink>
                   </td>
