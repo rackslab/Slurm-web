@@ -33,7 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add _Slurmrestd Access_ page with guides to setup Slurm and agent in all
     supported configurations.
   - Mention support of JWT authentication and TCP/IP sockets between agent and
-    Slurm `slurmrestd` in _Protocols_ section of Architecture page.
+    Slurm `slurmrestd` in _Protocols_ section of Architecture page and
+    Quickstart guide.
 
 ### Changed
 - conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed
