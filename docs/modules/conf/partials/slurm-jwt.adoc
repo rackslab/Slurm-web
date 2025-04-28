@@ -1,0 +1,60 @@
+With _jwt_ authentication method, the client must provide user and token in HTTP
+headers. Then, `slurmrestd` service forwards these credentials in RPCs to
+`slurmctld` and `slurmdbd` which are responsible to check expiration and
+signature of the token .
+
+In this configuration, `slurmrestd` service and Slurm-web *agent* can run with
+unprivileged system users.
+
+Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
+drop-in configuration override for `slurmrestd` service:
+
+[source,ini,subs="+attributes"]
+----
+[Service]
+# Unset vendor unit ExecStart to avoid cumulative definition
+ExecStart=
+Environment=
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/jwt {slurmrestd_uri}
+RuntimeDirectory=slurmrestd
+RuntimeDirectoryMode=0755
+User=slurmrestd
+Group=slurmrestd
+DynamicUser=yes
+----
+
+NOTE: With `DynamicUser=yes`, systemd creates a transient `slurmrestd` system
+user during the lifetime of the service and executes the daemon with this
+unprivileged user.
+
+Reload systemd units and enable the service:
+
+[source,console]
+----
+# systemctl daemon-reload && systemctl enable --now slurmrestd.service
+----
+
+Generate random Slurm JWT signing key with restrictive permissions:
+
+[source,console]
+----
+# dd if=/dev/random of=/var/spool/slurm/jwt_hs256.key bs=32 count=1
+# chown slurm:slurm /var/spool/slurm/jwt_hs256.key
+# chmod 0600 /var/spool/slurm/jwt_hs256.key
+----
+
+Edit main Slurm and SlurmDBD configuration to enable JWT alternative
+authentication:
+
+[source,ini]
+----
+AuthAltTypes=auth/jwt
+AuthAltParameters=jwt_key=/var/spool/slurm/jwt_hs256.key
+----
+
+Restart `slurmctld` and `slurmdbd` services to update configuration:
+
+[source,console]
+----
+# systemctl restart slurmctld slurmdbd
+----

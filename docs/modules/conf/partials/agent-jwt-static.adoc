@@ -1,0 +1,25 @@
+Generate a token with Slurm for _slurm_ admin user:
+
+[source,console]
+----
+# scontrol token lifespan=infinite username=slurm
+----
+
+NOTE: In this example, we generate a token with an infinite lifespan to avoid
+its expiration and the requirement to update the token on a regular basis. You
+can also choose to generate tokens with a short lifespan and manage these
+updates.
+
+Copy the token in output and edit Slurm-web agent configuration file
+[.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini,subs="+attributes"]
+----
+[slurmrestd]
+ifdef::slurmrestd_uri[]
+uri={slurmrestd_uri}
+endif::[]
+auth=jwt
+jwt_mode=static
+jwt_token=<secret_token>
+----

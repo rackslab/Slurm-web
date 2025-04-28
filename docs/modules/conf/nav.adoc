@@ -5,6 +5,7 @@
 * xref:conf/index.adoc[]
 ** xref:conf/gateway.adoc[Gateway]
 ** xref:conf/agent.adoc[Agent]
+* xref:slurmrestd.adoc[]
 * xref:policy.adoc[]
 * xref:messages.adoc[]
 * xref:metrics.adoc[]
