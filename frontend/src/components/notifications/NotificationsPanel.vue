@@ -14,7 +14,7 @@ const runtimeStore = useRuntimeStore()
 </script>
 
 <template>
-  <div aria-live="assertive" class="fixed top-2 right-4 z-50 flex w-96 flex-col space-y-4">
+  <div aria-live="assertive" class="fixed right-4 top-2 z-50 flex w-96 flex-col space-y-4">
     <TransitionGroup
       move-class="transition-all ease-in-out duration-500"
       enter-active-class="transform transition ease-out duration-300"

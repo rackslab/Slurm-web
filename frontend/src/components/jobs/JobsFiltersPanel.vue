@@ -58,7 +58,7 @@ const state_filters = [
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="bg-opacity-25 fixed inset-0 bg-black" />
+        <div class="fixed inset-0 bg-black bg-opacity-25" />
       </TransitionChild>
 
       <div class="fixed inset-0 z-40 flex">
@@ -78,7 +78,7 @@ const state_filters = [
               <h2 class="text-lg font-medium text-gray-900">
                 Filters
                 <span
-                  class="text-slurmweb ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium md:inline-block"
+                  class="ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-slurmweb md:inline-block"
                   >{{ nbJobs }}</span
                 >
               </h2>
@@ -101,7 +101,7 @@ const state_filters = [
                   >
                     <span class="flex">
                       <BoltIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-gray-600 p-2 text-white"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-gray-600 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">State</span>
                     </span>
@@ -126,7 +126,7 @@ const state_filters = [
                         :value="state.value"
                         type="checkbox"
                         v-model="runtimeStore.jobs.filters.states"
-                        class="text-slurmweb focus:ring-slurmweb h-4 w-4 rounded-sm border-gray-300"
+                        class="h-4 w-4 rounded border-gray-300 text-slurmweb focus:ring-slurmweb"
                       />
                       <label
                         :for="`filter-mobile-${state.value}-${optionIdx}`"
@@ -154,7 +154,7 @@ const state_filters = [
                   >
                     <span class="flex">
                       <UserIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-emerald-500 p-2 text-white"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-emerald-500 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">Users</span>
                     </span>
@@ -182,7 +182,7 @@ const state_filters = [
                   >
                     <span class="flex">
                       <UsersIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-yellow-500 p-2 text-white"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-yellow-500 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">Accounts</span>
                     </span>
@@ -210,7 +210,7 @@ const state_filters = [
                   >
                     <span class="flex">
                       <SwatchIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-purple-500 p-2 text-white"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-purple-500 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">QOS</span>
                     </span>
@@ -238,7 +238,7 @@ const state_filters = [
                   >
                     <span class="flex">
                       <RectangleGroupIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-amber-700 p-2 text-white"
+                        class="-ml-1 -mt-1 mr-2 h-8 w-8 rounded-full bg-amber-700 p-2 text-white"
                       />
                       <span class="font-medium text-gray-900">Partitions</span>
                     </span>
