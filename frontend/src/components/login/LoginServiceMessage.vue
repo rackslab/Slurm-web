@@ -57,7 +57,7 @@ watch(
     class="my-4 w-full rounded-md bg-yellow-50 p-4 shadow-lg sm:max-w-md"
   >
     <div class="flex">
-      <div class="shrink-0">
+      <div class="flex-shrink-0">
         <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
       </div>
       <iframe

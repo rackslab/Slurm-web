@@ -70,7 +70,7 @@ function triggerSortOrder() {
         leave-to-class="transform opacity-0 scale-95"
       >
         <MenuItems
-          class="ring-opacity-5 absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black focus:outline-hidden"
+          class="absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           <div class="py-1">
             <MenuItem v-for="option in sortOptions" :key="option.name" v-slot="{ active }">
