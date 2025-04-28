@@ -13,6 +13,7 @@ application = SlurmwebAppAgent(
     SlurmwebConfSeed(
         debug=False,
         log_flags=["ALL"],
+        log_component=None,
         debug_flags=[],
         conf_defs=SlurmwebAppAgent.SETTINGS_DEFINITION,
         conf=SlurmwebAppAgent.SITE_CONFIGURATION,
