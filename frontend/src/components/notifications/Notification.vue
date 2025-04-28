@@ -19,7 +19,7 @@ const { notification } = defineProps<{ notification: Notification }>()
 
 <template>
   <div
-    class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5"
+    class="ring-opacity-5 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black"
     style="margin-top: 50"
   >
     <div class="flex items-start p-4">
