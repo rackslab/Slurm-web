@@ -1,13 +1,12 @@
 name: slurm-web
 title: Slurm-web
-version: v4.2
-prerelease: -dev
+version: v4
 start_page: overview:start.adoc
 asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
-    version: 4.1.0
+    version: 4.2.0
     api_version: 0.0.40
 nav:
 - modules/overview/nav.adoc
