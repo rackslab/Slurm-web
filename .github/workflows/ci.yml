@@ -11,18 +11,11 @@ on:
 
 jobs:
   python_tests:
-    name: Python tests
+    name: Python unit tests
     strategy:
       matrix:
         os: ["ubuntu-latest"]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-        include:
-          - os: "ubuntu-22.04"
-            python-version: "3.7"
-          # ubuntu-20.04 runners are disabled in GitHub actions, Python 3.6 must
-          # be disabled until we find a solution.
-          #- os: "ubuntu-20.04"
-          #  python-version: "3.6"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -34,29 +27,84 @@ jobs:
       - name: Install tests dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential python3-dev libldap2-dev libsasl2-dev libcairo2-dev libgirepository1.0-dev libpango1.0-dev
+          sudo apt-get install -y build-essential python3-dev libldap2-dev libsasl2-dev libcairo2-dev libgirepository-1.0-dev libgirepository-2.0-dev libpango1.0-dev
           python -m pip install --upgrade pip
 
-      # New version of PyGObject 3.52.1 (RacksDB dependency) depends on
-      #libgirepository-2.0-dev, which is available in ubuntu >= 24.04 only.
-      - if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: sudo apt-get install -y libgirepository-2.0-dev
-
       - name: Install application with its dependencies
-        if: ${{ matrix.python-version != '3.6' }}
         run: |
           pip install . .[agent] .[gateway] .[tests]
 
-      # Unfortunately, pip and setuptools in Python 3.6 do not fully support
+      - name: Run tests
+        run: pytest
+
+  os_rpm_tests:
+    name: OS integration tests (rpm)
+    strategy:
+      fail-fast: false
+      matrix:
+        envs:
+        - container: rockylinux/rockylinux:8
+          epel: 8
+          repo: powertools
+          rackslab-repo: el8
+          racksdb-pkg: python3-racksdb-web
+        - container: rockylinux/rockylinux:9
+          epel: 9
+          rackslab-repo: el9
+          repo: crb
+          racksdb-pkg: python3-racksdb+web
+        - container: fedora:41
+          rackslab-repo: fc41
+          racksdb-pkg: python3-racksdb+web
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.envs.container }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable EPEL repository (Rocky Linux)
+        if: ${{ startsWith(matrix.envs.container, 'rockylinux') }}
+        run: |
+          dnf -y install 'dnf-command(config-manager)'
+          dnf config-manager --set-enabled ${{ matrix.envs.repo }}
+          dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${{ matrix.envs.epel }}.noarch.rpm
+
+      - name: Add Rackslab repository
+        run: |
+          curl --silent https://pkgs.rackslab.io/keyring.asc --output /etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+          cat <<EOF > /etc/yum.repos.d/rackslab.repo
+          [rackslab]
+          name=Rackslab
+          baseurl=https://pkgs.rackslab.io/rpm/${{ matrix.envs.rackslab-repo }}/main/x86_64/
+          gpgcheck=1
+          gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+          EOF
+
+      - name: Install tests dependencies
+        run: |
+          dnf -y install \
+            python3-aiohttp \
+            python3-clustershell \
+            python3-flask \
+            python3-importlib-metadata \
+            python3-markdown \
+            python3-pip \
+            python3-prometheus_client \
+            python3-pytest \
+            python3-PyYAML \
+            ${{ matrix.envs.racksdb-pkg }} \
+            python3-redis \
+            python3-requests \
+            python3-rfl-authentication \
+            python3-rfl-build \
+            python3-rfl-core \
+            python3-rfl-log \
+            python3-rfl-settings \
+            python3-rfl-web
+
+      # Unfortunately, pip and setuptools in RHEL8 do not fully support
       # PEP517 pyproject.toml. As a workaround for this version, the setup.py
       # script provided by RFL.build package is copied and executed.
-      #
-      # Some dependencies are pre-installed to add version constraints, in order
-      # to force installation of old versions compatible with Python 3.6.
-      #
-      # Some Slurm-web optional dependencies are declared in extra packages.
-      # This is not supported by setup.py script from RFL.build. As a workaround
-      # these dependencies are installed manually afterwhile.
       #
       # Latest version of setuptools build wheels following PEP-491 naming
       # conventions (eg. RFL.core becomes rfl-core) published with this name on
@@ -64,47 +112,85 @@ jobs:
       # equivalence. For this reason, RFL dependencies are renamed with sed in
       # pyproject.toml so old versions of setuptools can find the wheels on
       # PyPI.
-      - name: Install application with its dependencies (Python 3.6)
-        if: ${{ matrix.python-version == '3.6' }}
+      - name: Install RFL.build setup wrapper (Rocky Linux 8)
+        if: ${{ matrix.envs.container == 'rockylinux/rockylinux:8' }}
         run: |
-          echo "::notice::Installing RFL.build"
-          pip install RFL.build
-          echo "::notice::Installing PyYAML (old version)"
-          pip install PyYAML==5.4.1
-          echo "::notice::Installing PyJWT (old version)"
-          pip install PyJWT==2.4.0
-          echo "::notice::Installing Werkzeug (old version)"
-          pip install "Werkzeug<0.13"
-          echo "::notice::Installing Flask (old version)"
-          pip install "flask<1.0"
-          echo "::notice::Installing requests (old version)"
-          pip install "requests<2.26.0"
-          echo "::notice::Installing python-ldap (old version)"
-          pip install "python-ldap<3.4"
-          echo "::notice::Installing markdown (old version)"
-          pip install "markdown<3"
-
+          cp -v /usr/lib/python3.6/site-packages/rfl/build/scripts/setup setup.py
           sed -i 's/RFL\./rfl-/' pyproject.toml
-          cp -v ${Python3_ROOT_DIR}/lib/python3.6/site-packages/rfl/build/scripts/setup setup.py
-          python3 setup.py install
 
-          echo "::notice::Installing optional dependencies required for tests"
-          pip install pytest RacksDB[web] redis prometheus-client markdown aiohttp
+      - name: Install application
+        run: pip3 install -e .
 
-      # The cached_property decorator is integrated in Python 3.8+. For older
-      # versions, install cached_property external library.
-      # On Python 3.8+, Slurm-web uses importlib.metadata in standard library to
-      # retrieve the version of the package. For older versions, install
-      # importlib_metadata external backport library, and explicitely force the
-      # old version available in RHEL8.
-      - if: ${{ matrix.python-version == '3.6' || matrix.python-version == '3.7' }}
-        run: pip install cached_property "importlib-metadata==0.23"
+      - name: Run tests
+        run: pytest-3
+
+  os_deb_tests:
+    name: OS integration tests (deb)
+    strategy:
+      fail-fast: false
+      matrix:
+        envs:
+        - container: debian:stable
+          rackslab-repo: bookworm
+        - container: debian:testing
+          rackslab-repo: trixie
+        - container: debian:unstable
+          rackslab-repo: sid
+        - container: ubuntu:noble
+          rackslab-repo: ubuntu24.04
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.envs.container }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Rackslab repository
+        run: |
+          apt update
+          apt install -y ca-certificates curl gpg
+          curl -sS https://pkgs.rackslab.io/keyring.asc | gpg --dearmor | tee /usr/share/keyrings/rackslab.gpg > /dev/null
+          cat <<EOF > /etc/apt/sources.list.d/rackslab.sources
+          Types: deb
+          URIs: https://pkgs.rackslab.io/deb
+          Suites: ${{ matrix.envs.rackslab-repo }}
+          Components: main
+          Architectures: amd64
+          Signed-By: /usr/share/keyrings/rackslab.gpg
+          EOF
+
+      - name: Install tests dependencies
+        run: |
+          apt update
+          apt install -y \
+            python3-aiohttp \
+            python3-clustershell \
+            python3-flask \
+            python3-markdown \
+            python3-pip \
+            python3-prometheus-client \
+            python3-pytest \
+            python3-yaml \
+            python3-racksdb-web \
+            python3-redis \
+            python3-requests \
+            python3-rfl-authentication \
+            python3-rfl-build \
+            python3-rfl-core \
+            python3-rfl-log \
+            python3-rfl-settings \
+            python3-rfl-web \
+            python3-venv
+
+      - name: Install application
+        run: |
+          python3 -m venv --system-site-packages ~/venv
+          ~/venv/bin/pip install -e .
 
       - name: Run tests
         run: pytest
 
   vuejs_tests:
-    name: Vue.js tests
+    name: Vue.js unit tests
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
