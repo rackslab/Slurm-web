@@ -42,12 +42,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - conf: Deprecate `[slurmrestd]` > `socket` parameter in favor of `uri` designed
   to support TCP/IP socket.
+- frontend: Replace _view_ job link by a window icon in jobs list.
+- lib: Rename sysusers configuration file `slurm-web-gateway.conf` to
+  `slurm-web.conf` in order to make it generic for both gateway and agent.
 - pkgs:
   - Add dependency on `importlib_metadata` external library on Python < 3.8.
   - Bump minimal version of `RFL.log` to v1.4.0.
   - Bump minimal version of `RFL.settings` to v1.4.0.
   - Bump minimal version of `RFL.authentication` to v1.4.0.
-- frontend: Replace _view_ job link by a window icon in jobs list.
 - docs: Update configuration reference documentation.
 
 ### Fixed
