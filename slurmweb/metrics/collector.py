@@ -11,6 +11,13 @@ import logging
 import prometheus_client
 import prometheus_client.core
 
+# In Prometheus client < v0.14.0 (distributed in EPEL8), Collector abstract
+# class is not defined. Use concrete CollectorRegistry class as an alternative.
+try:
+    from prometheus_client.registry import Collector
+except ImportError:
+    from prometheus_client.registry import CollectorRegistry as Collector
+
 from ..errors import SlurmwebCacheError
 from ..slurmrestd.errors import (
     SlurmrestdNotFoundError,
@@ -25,7 +32,7 @@ if t.TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class SlurmWebMetricsCollector(prometheus_client.registry.Collector):
+class SlurmWebMetricsCollector(Collector):
     def __init__(self, slurmrestd):
         self.slurmrestd = slurmrestd
         self.register()
