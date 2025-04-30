@@ -2,7 +2,7 @@
 
 image:https://rackslab.io/images/distribs/fedora.png[Fedora,float=right]
 
-This installation procedure works on Fedora version 40 and 41.
+This installation procedure works on Fedora version 41 and 42.
 
 include::partial$install/signing-dnf.adoc[]
 
