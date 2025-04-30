@@ -136,7 +136,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
             return
 
         with self.assertRaisesRegex(
-            SlurmrestdInternalError, "^SlurwebRestdError\(.*\)$"
+            SlurmrestdInternalError, r"^SlurwebRestdError\(.*\)$"
         ):
             self.slurmrestd._request("/whatever", key="whatever")
 
@@ -150,7 +150,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
             return
 
         with self.assertRaisesRegex(
-            SlurmrestdInternalError, "^SlurwebRestdError\(.*\)$"
+            SlurmrestdInternalError, r"^SlurwebRestdError\(.*\)$"
         ):
             self.slurmrestd._request("/whatever", key="whatever")
 
