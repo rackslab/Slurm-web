@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## Added
+- docs: Mention support of Fedora 42.
+
 ### Fixed
-- Fix `AttributeError` with `prometheus_client.registry.Collector` on el8 (#548)
+- agent: Fix `AttributeError` with `prometheus_client.registry.Collector` on el8
+  (#548).
+
+## Removed
+- docs: Drop support of Fedora 40.
 
 ## [4.2.0] - 2025-04-29
 
