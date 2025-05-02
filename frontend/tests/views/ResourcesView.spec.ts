@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
+import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import ResourcesView from '@/views/ResourcesView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterNode } from '@/composables/GatewayAPI'
-import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
-import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import nodes from '../assets/nodes.json'
 
