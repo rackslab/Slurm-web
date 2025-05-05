@@ -9,10 +9,12 @@
 import sys
 import typing as t
 import json
-import logging
+import socket
 from pathlib import Path
+import logging
 
 import requests
+import paramiko
 
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import (
@@ -48,6 +50,35 @@ def load_settings(definitions: str, dev_tmp_dir: Path, overrides: str):
 def busy_node(node):
     """Return True if the given node is busy."""
     return "ALLOCATED" in node["state"] or "MIXED" in node["state"]
+
+
+class DevelopmentHostConnectionError(Exception):
+    pass
+
+
+class DevelopmentHostClient:
+    def __init__(self, host, user):
+        self._client = None
+        self.host = host
+        self.user = user
+
+    def connect(self):
+        self._client = paramiko.SSHClient()
+        self._client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
+        logger.info("Connecting to development host %s", self.host)
+        try:
+            self._client.connect(self.host, username=self.user)
+        except socket.gaierror as err:
+            raise DevelopmentHostConnectionError(
+                f"Unable to get address of {self.host}: {err}"
+            ) from err
+        except paramiko.ssh_exception.PasswordRequiredException as err:
+            raise DevelopmentHostConnectionError(
+                f"Unable to connect on {self.user}@{self.host}: {err}"
+            ) from err
+
+    def exec(self, cmd: str):
+        return self._client.exec_command(cmd)
 
 
 def dump_component_query(

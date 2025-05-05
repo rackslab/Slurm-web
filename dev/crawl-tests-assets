@@ -14,7 +14,11 @@ import logging
 
 from rfl.log import setup_logger
 
-from crawler.lib import load_settings
+from crawler.lib import (
+    load_settings,
+    DevelopmentHostClient,
+    DevelopmentHostConnectionError,
+)
 from crawler.slurmrestd import crawl_slurmrestd
 from crawler.agent import crawl_agent
 from crawler.gateway import crawl_gateway
@@ -72,10 +76,16 @@ def main() -> None:
         db.infrastructures.filter(name=METRICS_PREFERRED_CLUSTER)
     )[0].name
 
+    dev_host = DevelopmentHostClient(DEV_HOST, USER)
+    try:
+        dev_host.connect()
+    except DevelopmentHostConnectionError as err:
+        logger.error(err)
+        sys.exit(1)
+
     # Crawl gateway and get bearer token
     token = crawl_gateway(
-        DEV_HOST,
-        USER,
+        dev_host,
         slurmweb_cluster_name(gateway_infrastructure),
         gateway_infrastructure,
         dev_tmp_dir,
