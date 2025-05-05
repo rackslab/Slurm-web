@@ -36,7 +36,7 @@ def query_slurmrestd(
     return response.text, response.headers.get("content-type"), response.status_code
 
 
-def dump_slurmrestd_query(
+def _dump_slurmrestd_query(
     session: requests.Session,
     headers: t.Dict[str, str],
     requests_statuses,
@@ -119,94 +119,71 @@ def crawl_slurmrestd(
     else:
         requests_statuses = {}
 
+    def dump_slurmrestd_query(
+        request_path: str,
+        asset_name: str,
+        auth_headers: dict[str, str] = auth.headers(),
+        **kwargs,
+    ):
+        _dump_slurmrestd_query(
+            session,
+            auth_headers,
+            requests_statuses,
+            prefix,
+            request_path,
+            assets_path,
+            asset_name,
+            **kwargs,
+        )
+
     # Download ping
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/ping",
-        assets_path,
         "slurm-ping",
     )
 
     # Download URL not found for both slurm and slurmdb
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/not-found",
-        assets_path,
         "slurm-not-found",
     )
 
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurmdb/v{api}/not-found",
-        assets_path,
         "slurmdb-not-found",
     )
 
     if auth.method == "jwt":
         # if JWT auth, test missing headers
-        dump_slurmrestd_query(
-            session,
-            {},
-            requests_statuses,
-            prefix,
-            f"/slurm/v{api}/jobs",
-            assets_path,
-            "slurm-jwt-missing-headers",
-        )
+        dump_slurmrestd_query(f"/slurm/v{api}/jobs", "slurm-jwt-missing-headers", {})
         # if JWT auth, test invalid headers
         dump_slurmrestd_query(
-            session,
-            {"X-SLURM-USER-FAIL": "tail"},
-            requests_statuses,
-            prefix,
             f"/slurm/v{api}/jobs",
-            assets_path,
             "slurm-jwt-invalid-headers",
+            {"X-SLURM-USER-FAIL": "tail"},
         )
         # if JWT auth, test invalid token
         dump_slurmrestd_query(
-            session,
-            {"X-SLURM-USER-NAME": auth.jwt_user, "X-SLURM-USER-TOKEN": "fail"},
-            requests_statuses,
-            prefix,
             f"/slurm/v{api}/jobs",
-            assets_path,
             "slurm-jwt-invalid-token",
+            {"X-SLURM-USER-NAME": auth.jwt_user, "X-SLURM-USER-TOKEN": "fail"},
         )
         # if JWT auth and ability to generate token, test expired token
         if auth.jwt_mode == "auto":
             dump_slurmrestd_query(
-                session,
+                f"/slurm/v{api}/jobs",
+                "slurm-jwt-expired-token",
                 {
                     "X-SLURM-USER-NAME": auth.jwt_user,
                     "X-SLURM-USER-TOKEN": auth.jwt_manager.generate(
                         duration=-1, claimset={"sun": auth.jwt_user}
                     ),
                 },
-                requests_statuses,
-                prefix,
-                f"/slurm/v{api}/jobs",
-                assets_path,
-                "slurm-jwt-expired-token",
             )
 
     # Download jobs
     jobs = dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/jobs",
-        assets_path,
         "slurm-jobs",
         skip_exist=False,
         limit_dump=30,
@@ -216,21 +193,11 @@ def crawl_slurmrestd(
     def dump_job_state(state: str):
         if state in _job["job_state"]:
             dump_slurmrestd_query(
-                session,
-                auth.headers(),
-                requests_statuses,
-                prefix,
                 f"/slurm/v{api}/job/{_job['job_id']}",
-                assets_path,
                 f"slurm-job-{state.lower()}",
             )
             dump_slurmrestd_query(
-                session,
-                auth.headers(),
-                requests_statuses,
-                prefix,
                 f"/slurmdb/v{api}/job/{_job['job_id']}",
-                assets_path,
                 f"slurmdb-job-{state.lower()}",
             )
 
@@ -252,51 +219,26 @@ def crawl_slurmrestd(
                 dump_job_state(state)
 
         dump_slurmrestd_query(
-            session,
-            auth.headers(),
-            requests_statuses,
-            prefix,
             f"/slurm/v{api}/job/{min_job_id - 1}",
-            assets_path,
             "slurm-job-archived",
         )
         dump_slurmrestd_query(
-            session,
-            auth.headers(),
-            requests_statuses,
-            prefix,
             f"/slurmdb/v{api}/job/{min_job_id - 1}",
-            assets_path,
             "slurmdb-job-archived",
         )
 
         dump_slurmrestd_query(
-            session,
-            auth.headers(),
-            requests_statuses,
-            prefix,
             f"/slurm/v{api}/job/{max_job_id * 2}",
-            assets_path,
             "slurm-job-unfound",
         )
         dump_slurmrestd_query(
-            session,
-            auth.headers(),
-            requests_statuses,
-            prefix,
             f"/slurmdb/v{api}/job/{max_job_id * 2}",
-            assets_path,
             "slurmdb-job-unfound",
         )
 
     # Download nodes
     nodes = dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/nodes",
-        assets_path,
         "slurm-nodes",
         skip_exist=False,
         limit_dump=100,
@@ -306,12 +248,7 @@ def crawl_slurmrestd(
     def dump_node_state():
         if state in _node["state"]:
             dump_slurmrestd_query(
-                session,
-                auth.headers(),
-                requests_statuses,
-                prefix,
                 f"/slurm/v{api}/node/{_node['name']}",
-                assets_path,
                 f"slurm-node-{state.lower()}",
             )
 
@@ -322,56 +259,31 @@ def crawl_slurmrestd(
 
     # Request node not found
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/node/unexisting-node",
-        assets_path,
         "slurm-node-unfound",
     )
 
     # Download partitions
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/partitions",
-        assets_path,
         "slurm-partitions",
     )
 
     # Download qos
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurmdb/v{api}/qos",
-        assets_path,
         "slurm-qos",
     )
 
     # Download accounts
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurmdb/v{api}/accounts",
-        assets_path,
         "slurm-accounts",
     )
 
     # Download reservations
     dump_slurmrestd_query(
-        session,
-        auth.headers(),
-        requests_statuses,
-        prefix,
         f"/slurm/v{api}/reservations",
-        assets_path,
         "slurm-reservations",
     )
 
