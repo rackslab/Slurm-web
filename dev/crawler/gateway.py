@@ -6,17 +6,20 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from __future__ import annotations
+import typing as t
 import sys
 import os
 import json
 import shlex
-import socket
 import random
 import getpass
 from pathlib import Path
 
-import paramiko
 import requests
+
+if t.TYPE_CHECKING:
+    from .lib import DevelopmentHostClient
 
 from .lib import ASSETS, crawler_logger, load_settings, dump_component_query, busy_node
 
@@ -58,21 +61,10 @@ def user_token(url: str, user: str):
     return response.json()["token"]
 
 
-def admin_user(host: str, user: str, cluster: str):
+def admin_user(dev_host: DevelopmentHostClient, cluster: str):
     """Return name of a user in admin group for the given cluster."""
-    ssh_client = paramiko.SSHClient()
-    ssh_client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
-    logger.info("Connecting to development host %s", host)
-    try:
-        ssh_client.connect(host, username=user)
-    except socket.gaierror as err:
-        logger.error("Unable to get address of %s: %s", host, str(err))
-        sys.exit(1)
-    except paramiko.ssh_exception.PasswordRequiredException as err:
-        logger.error("Unable to connect on %s@%s: %s", user, host, str(err))
-        sys.exit(1)
 
-    _, stdout, _ = ssh_client.exec_command(
+    _, stdout, _ = dev_host.exec(
         shlex.join(["firehpc", "status", "--cluster", cluster, "--json"])
     )
     cluster_status = json.loads(stdout.read())
@@ -86,12 +78,15 @@ def admin_user(host: str, user: str, cluster: str):
 
 
 def crawl_gateway(
-    host: str, user: str, cluster: str, infrastructure: str, dev_tmp_dir: Path
+    dev_host: DevelopmentHostClient,
+    cluster: str,
+    infrastructure: str,
+    dev_tmp_dir: Path,
 ) -> str:
     """Crawl and save test assets from Slurm-web gateway component and return
     authentication JWT."""
     # Retrieve admin user account to connect
-    user = admin_user(host, user, infrastructure)
+    user = admin_user(dev_host, infrastructure)
     logger.info("Found user %s in group admin on cluster %s", user, cluster)
 
     # Get gateway HTTP base URL from configuration
