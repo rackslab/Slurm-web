@@ -77,14 +77,12 @@ def admin_user(dev_host: DevelopmentHostClient, cluster: str):
     sys.exit(1)
 
 
-def crawl_gateway(
+def slurmweb_token(
     dev_host: DevelopmentHostClient,
     cluster: str,
     infrastructure: str,
     dev_tmp_dir: Path,
-) -> str:
-    """Crawl and save test assets from Slurm-web gateway component and return
-    authentication JWT."""
+):
     # Retrieve admin user account to connect
     user = admin_user(dev_host, infrastructure)
     logger.info("Found user %s in group admin on cluster %s", user, cluster)
@@ -93,7 +91,22 @@ def crawl_gateway(
     url = gateway_url(dev_tmp_dir)
 
     # Authenticate on gateway and get token
-    token = user_token(url, user)
+    return user_token(url, user)
+
+
+def crawl_gateway(
+    dev_host: DevelopmentHostClient,
+    token: str,
+    cluster: str,
+    infrastructure: str,
+    dev_tmp_dir: Path,
+) -> str:
+    """Crawl and save test assets from Slurm-web gateway component and return
+    authentication JWT."""
+
+    # Get gateway HTTP base URL from configuration
+    url = gateway_url(dev_tmp_dir)
+
     headers = {"Authorization": f"Bearer {token}"}
 
     # Check assets directory
