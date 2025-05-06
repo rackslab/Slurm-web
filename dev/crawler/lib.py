@@ -26,6 +26,32 @@ from rfl.settings.errors import (
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / "tests" / "assets"
 
 
+class BaseAssetsManager:
+    def __init__(self, subdir: Path | str):
+        # Check assets directory for this version
+        self.path = ASSETS / subdir
+        if not self.path.exists():
+            self.path.mkdir(parents=True)
+
+        # Save requests status
+        self.status_file = self.path / "status.json"
+        if self.status_file.exists():
+            with open(self.status_file) as fh:
+                self.statuses = json.load(fh)
+        else:
+            self.statuses = {}
+
+    def exists(self, asset_name: str) -> bool:
+        """Return True if asset already exists or False."""
+        return len(list(self.path.glob(f"{asset_name}.*"))) > 0
+
+    def save(self):
+        """Save resulting status file."""
+        with open(self.status_file, "w+") as fh:
+            json.dump(self.statuses, fh, indent=2, sort_keys=True)
+            fh.write("\n")
+
+
 def crawler_logger():
     return logging.getLogger("crawl-tests-assets")
 
