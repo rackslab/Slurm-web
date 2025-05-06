@@ -21,11 +21,22 @@ import requests
 if t.TYPE_CHECKING:
     from .lib import DevelopmentHostClient
 
-from .lib import ASSETS, crawler_logger, load_settings, dump_component_query, busy_node
+from .lib import (
+    BaseAssetsManager,
+    crawler_logger,
+    load_settings,
+    dump_component_query,
+    busy_node,
+)
 
 ADMIN_PASSWORD_ENV_VAR = "SLURMWEB_DEV_ADMIN_PASSWORD"
 
 logger = crawler_logger()
+
+
+class GatewayAssetsManager(BaseAssetsManager):
+    def __init__(self):
+        super().__init__("gateway")
 
 
 def gateway_url(dev_tmp_dir):
@@ -94,217 +105,156 @@ def slurmweb_token(
     return user_token(url, user)
 
 
-def crawl_gateway(
-    dev_host: DevelopmentHostClient,
-    token: str,
-    cluster: str,
-    infrastructure: str,
-    dev_tmp_dir: Path,
-) -> str:
-    """Crawl and save test assets from Slurm-web gateway component and return
-    authentication JWT."""
+class GatewayCrawler:
+    def __init__(
+        self, token: str, cluster: str, infrastructure: str, dev_tmp_dir: Path
+    ):
+        self.token = token
+        self.cluster = cluster
+        self.infrastructure = infrastructure
+        # Get gateway HTTP base URL from configuration
+        self.url = gateway_url(dev_tmp_dir)
+        self.assets = GatewayAssetsManager()
 
-    # Get gateway HTTP base URL from configuration
-    url = gateway_url(dev_tmp_dir)
-
-    headers = {"Authorization": f"Bearer {token}"}
-
-    # Check assets directory
-    assets_path = ASSETS / "gateway"
-    if not assets_path.exists():
-        assets_path.mkdir(parents=True)
-
-    # Save requests status
-    status_file = assets_path / "status.json"
-    if status_file.exists():
-        with open(status_file) as fh:
-            requests_statuses = json.load(fh)
-    else:
-        requests_statuses = {}
-
-    dump_component_query(
-        requests_statuses, url, "/api/clusters", headers, assets_path, "clusters"
-    )
-    dump_component_query(
-        requests_statuses, url, "/api/users", headers, assets_path, "users"
-    )
-    dump_component_query(
-        requests_statuses,
-        url,
-        "/api/messages/login",
-        headers,
-        assets_path,
-        {
-            200: "message_login",
-            404: "message_login_not_found",
-            500: "message_login_error",
-        },
-    )
-
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/stats",
-        headers,
-        assets_path,
-        "stats",
-    )
-
-    jobs = dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/jobs",
-        headers,
-        assets_path,
-        "jobs",
-        skip_exist=False,
-        limit_dump=100,
-    )
-
-    if not (len(jobs)):
-        logger.warning(
-            "No jobs found in queue of cluster %s, unable to crawl jobs data", cluster
+    def dump_component_query(
+        self,
+        query: str,
+        asset_name: dict[int, str] | str,
+        headers: dict[str, str] | None = None,
+        **kwargs,
+    ):
+        if headers is None:
+            headers = {"Authorization": f"Bearer {self.token}"}
+        return dump_component_query(
+            self.assets.statuses,
+            self.url,
+            query,
+            headers,
+            self.assets.path,
+            asset_name,
+            **kwargs,
         )
-    else:
-        min_job_id = jobs[0]["job_id"]
 
-        def dump_job_state() -> None:
-            if state in _job["job_state"]:
-                dump_component_query(
-                    requests_statuses,
-                    url,
-                    f"/api/agents/{cluster}/job/{_job['job_id']}",
-                    headers,
-                    assets_path,
-                    f"job-{state.lower()}",
+    def crawl(self):
+        """Crawl and save test assets from Slurm-web gateway component and return
+        authentication JWT."""
+
+        self.dump_component_query("/api/clusters", "clusters")
+        self.dump_component_query("/api/users", "users")
+        self.dump_component_query(
+            "/api/messages/login",
+            {
+                200: "message_login",
+                404: "message_login_not_found",
+                500: "message_login_error",
+            },
+        )
+        self.dump_component_query(f"/api/agents/{self.cluster}/stats", "stats")
+        jobs = self.dump_component_query(
+            f"/api/agents/{self.cluster}/jobs",
+            "jobs",
+            skip_exist=False,
+            limit_dump=100,
+        )
+
+        if not (len(jobs)):
+            logger.warning(
+                "No jobs found in queue of cluster %s, unable to crawl jobs data",
+                self.cluster,
+            )
+        else:
+            min_job_id = jobs[0]["job_id"]
+
+            def dump_job_state() -> None:
+                if state in _job["job_state"]:
+                    self.dump_component_query(
+                        f"/api/agents/{self.cluster}/job/{_job['job_id']}",
+                        f"job-{state.lower()}",
+                    )
+
+            for _job in jobs:
+                if _job["job_id"] < min_job_id:
+                    min_job_id = _job["job_id"]
+                for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
+                    dump_job_state()
+
+            self.dump_component_query(
+                f"/api/agents/{self.cluster}/job/{min_job_id - 1}",
+                "job-archived",
+            )
+
+        # FIXME: Download unknown job
+
+        nodes = self.dump_component_query(
+            f"/api/agents/{self.cluster}/nodes",
+            "nodes",
+            skip_exist=False,
+        )
+
+        # Get jobs which have resources on any of the busy nodes
+        try:
+            random_busy_node = random.choice(list(filter(busy_node, nodes)))["name"]
+
+            self.dump_component_query(
+                f"/api/agents/{self.cluster}/jobs?node={random_busy_node}",
+                "jobs-node",
+            )
+        except IndexError:
+            logger.warning(
+                "Unable to find busy node on gateway for cluster %s", self.cluster
+            )
+
+        def dump_node_state() -> None:
+            if state in _node["state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/node/{_node['name']}",
+                    f"node-{state.lower()}",
                 )
 
-        for _job in jobs:
-            if _job["job_id"] < min_job_id:
-                min_job_id = _job["job_id"]
-            for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
-                dump_job_state()
+        # Download specific node
+        for _node in nodes:
+            for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
+                dump_node_state()
 
-        dump_component_query(
-            requests_statuses,
-            url,
-            f"/api/agents/{cluster}/job/{min_job_id - 1}",
-            headers,
-            assets_path,
-            "job-archived",
+        # FIXME: download unknown node
+
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/partitions",
+            "partitions",
+        )
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/qos",
+            "qos",
+        )
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/reservations",
+            "reservations",
+        )
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/accounts",
+            "accounts",
         )
 
-    # FIXME: Download unknown job
-
-    nodes = dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/nodes",
-        headers,
-        assets_path,
-        "nodes",
-        skip_exist=False,
-    )
-
-    # Get jobs which have resources on any of the busy nodes
-    try:
-        random_busy_node = random.choice(list(filter(busy_node, nodes)))["name"]
-
-        dump_component_query(
-            requests_statuses,
-            url,
-            f"/api/agents/{cluster}/jobs?node={random_busy_node}",
-            headers,
-            assets_path,
-            "jobs-node",
+        # RacksDB infrastructure diagram
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/racksdb/draw/infrastructure/{self.infrastructure}.png?coordinates",
+            "racksdb-draw-coordinates",
+            method="POST",
+            content={
+                # FIXME: Retrieve these RacksDB request parameters from Slurm-web code
+                # base to avoid duplication.
+                "general": {"pixel_perfect": True},
+                "dimensions": {"width": 1000, "height": 300},
+                "infrastructure": {"equipment_labels": False, "ghost_unselected": True},
+            },
         )
-    except IndexError:
-        logger.warning("Unable to find busy node on gateway for cluster %s", cluster)
+        # metrics
+        for metric in ["nodes", "cores", "jobs"]:
+            for _range in ["hour"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/metrics/{metric}?range={_range}",
+                    f"metrics-{metric}-{_range}",
+                    prettify=False,
+                )
 
-    def dump_node_state() -> None:
-        if state in _node["state"]:
-            dump_component_query(
-                requests_statuses,
-                url,
-                f"/api/agents/{cluster}/node/{_node['name']}",
-                headers,
-                assets_path,
-                f"node-{state.lower()}",
-            )
-
-    # Download specific node
-    for _node in nodes:
-        for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
-            dump_node_state()
-
-    # FIXME: download unknown node
-
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/partitions",
-        headers,
-        assets_path,
-        "partitions",
-    )
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/qos",
-        headers,
-        assets_path,
-        "qos",
-    )
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/reservations",
-        headers,
-        assets_path,
-        "reservations",
-    )
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/accounts",
-        headers,
-        assets_path,
-        "accounts",
-    )
-
-    # RacksDB infrastructure diagram
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"/api/agents/{cluster}/racksdb/draw/infrastructure/{infrastructure}.png?coordinates",
-        headers,
-        assets_path,
-        "racksdb-draw-coordinates",
-        method="POST",
-        content={
-            # FIXME: Retrieve these RacksDB request parameters from Slurm-web code base
-            # to avoid duplication.
-            "general": {"pixel_perfect": True},
-            "dimensions": {"width": 1000, "height": 300},
-            "infrastructure": {"equipment_labels": False, "ghost_unselected": True},
-        },
-    )
-    # metrics
-    for metric in ["nodes", "cores", "jobs"]:
-        for _range in ["hour"]:
-            dump_component_query(
-                requests_statuses,
-                url,
-                f"/api/agents/{cluster}/metrics/{metric}?range={_range}",
-                headers,
-                assets_path,
-                f"metrics-{metric}-{_range}",
-                prettify=False,
-            )
-
-    # Save resulting status file
-    with open(status_file, "w+") as fh:
-        json.dump(requests_statuses, fh, indent=2, sort_keys=True)
-        fh.write("\n")
-
-    return token
+        self.assets.save()

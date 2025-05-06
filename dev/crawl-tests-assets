@@ -21,7 +21,7 @@ from crawler.lib import (
 )
 from crawler.slurmrestd import crawl_slurmrestd
 from crawler.agent import crawl_agent
-from crawler.gateway import slurmweb_token, crawl_gateway
+from crawler.gateway import slurmweb_token, GatewayCrawler
 from crawler.prometheus import crawl_prometheus
 
 from racksdb import RacksDB
@@ -88,14 +88,13 @@ def main() -> None:
 
     for cluster in db.infrastructures.keys():
         if cluster == GATEWAY_PREFERRED_CLUSTER:
-            # Crawl gateway
-            crawl_gateway(
-                dev_host,
+            gateway = GatewayCrawler(
                 token,
                 slurmweb_cluster_name(GATEWAY_PREFERRED_CLUSTER),
                 GATEWAY_PREFERRED_CLUSTER,
                 dev_tmp_dir,
             )
+            gateway.crawl()
 
         # Load agent configuration
         settings = load_settings(
