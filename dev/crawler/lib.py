@@ -81,6 +81,10 @@ class DevelopmentHostClient:
         return self._client.exec_command(cmd)
 
 
+class CrawlerError(Exception):
+    pass
+
+
 def dump_component_query(
     requests_statuses,
     url: str,

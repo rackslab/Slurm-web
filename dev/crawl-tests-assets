@@ -116,7 +116,7 @@ def main() -> None:
 
         # Crawl slurmrestd
         try:
-            crawl_slurmrestd(settings.slurmrestd.uri, auth)
+            crawl_slurmrestd(dev_host, cluster, settings.slurmrestd.uri, auth)
         except RuntimeError as err:
             logger.error(
                 "Unable to crawl slurmrestd data from cluster %s: %s", cluster, err
