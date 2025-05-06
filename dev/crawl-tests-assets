@@ -18,6 +18,7 @@ from crawler.lib import (
     load_settings,
     DevelopmentHostClient,
     DevelopmentHostConnectionError,
+    DevelopmentHostCluster,
 )
 from crawler.slurmrestd import crawl_slurmrestd
 from crawler.agent import crawl_agent
@@ -32,8 +33,8 @@ logger = logging.getLogger("crawl-tests-assets")
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
-GATEWAY_PREFERRED_CLUSTER = "tiny"
-METRICS_PREFERRED_CLUSTER = "emulator"
+GATEWAY_PREFERRED_INFRASTRUCTURE = "tiny"
+METRICS_PREFERRED_INFRASTRUCTURE = "emulator"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
 MAP_CLUSTER_NAMES = {"emulator": "atlas"}
 
@@ -81,34 +82,16 @@ def main() -> None:
     # Get Slurm-web JWT for authentication on gateway and agent
     token = slurmweb_token(
         dev_host,
-        slurmweb_cluster_name(GATEWAY_PREFERRED_CLUSTER),
-        GATEWAY_PREFERRED_CLUSTER,
+        slurmweb_cluster_name(GATEWAY_PREFERRED_INFRASTRUCTURE),
+        GATEWAY_PREFERRED_INFRASTRUCTURE,
         dev_tmp_dir,
     )
 
-    for cluster in db.infrastructures.keys():
-        if cluster == GATEWAY_PREFERRED_CLUSTER:
-            gateway = GatewayCrawler(
-                token,
-                slurmweb_cluster_name(GATEWAY_PREFERRED_CLUSTER),
-                GATEWAY_PREFERRED_CLUSTER,
-                dev_tmp_dir,
-            )
-            gateway.crawl()
-
+    for infrastructure in db.infrastructures.keys():
         # Load agent configuration
         settings = load_settings(
-            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{cluster}.ini"
+            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
         )
-        crawl_metrics = cluster == METRICS_PREFERRED_CLUSTER
-
-        # Crawl agent
-        crawl_agent(settings.service.port, token, metrics=crawl_metrics)
-
-        # Crawl prometheus
-        if crawl_metrics:
-            crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
-
         auth = SlurmrestdAuthentifier(
             settings.slurmrestd.auth,
             settings.slurmrestd.jwt_mode,
@@ -117,6 +100,33 @@ def main() -> None:
             settings.slurmrestd.jwt_lifespan,
             settings.slurmrestd.jwt_token,
         )
+        cluster = DevelopmentHostCluster(
+            dev_host, infrastructure, settings.slurmrestd.uri, auth
+        )
+
+        # Check no jobs in queue
+
+        # Launch submit fake jobs
+
+        # If cluster has gpu, launch individual jobs
+
+        if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+            gateway = GatewayCrawler(
+                token,
+                slurmweb_cluster_name(infrastructure),
+                infrastructure,
+                dev_tmp_dir,
+            )
+            gateway.crawl()
+
+        crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
+
+        # Crawl agent
+        crawl_agent(settings.service.port, token, metrics=crawl_metrics)
+
+        # Crawl prometheus
+        if crawl_metrics:
+            crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
 
         # Crawl slurmrestd
         try:
