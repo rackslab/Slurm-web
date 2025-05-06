@@ -21,7 +21,7 @@ from crawler.lib import (
 )
 from crawler.slurmrestd import crawl_slurmrestd
 from crawler.agent import crawl_agent
-from crawler.gateway import crawl_gateway
+from crawler.gateway import slurmweb_token, crawl_gateway
 from crawler.prometheus import crawl_prometheus
 
 from racksdb import RacksDB
@@ -32,15 +32,14 @@ logger = logging.getLogger("crawl-tests-assets")
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
+GATEWAY_PREFERRED_CLUSTER = "tiny"
 METRICS_PREFERRED_CLUSTER = "emulator"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
 MAP_CLUSTER_NAMES = {"emulator": "atlas"}
 
 
 def slurmweb_cluster_name(infrastructure: str):
-    if infrastructure in MAP_CLUSTER_NAMES:
-        return MAP_CLUSTER_NAMES[infrastructure]
-    return infrastructure
+    return MAP_CLUSTER_NAMES.get(infrastructure, infrastructure)
 
 
 def main() -> None:
@@ -72,10 +71,6 @@ def main() -> None:
     db = RacksDB.load(db="dev/firehpc/db", schema="../RacksDB/schemas/racksdb.yml")
     logger.info("List of clusters: %s", db.infrastructures.keys())
 
-    gateway_infrastructure = list(
-        db.infrastructures.filter(name=METRICS_PREFERRED_CLUSTER)
-    )[0].name
-
     dev_host = DevelopmentHostClient(DEV_HOST, USER)
     try:
         dev_host.connect()
@@ -83,15 +78,25 @@ def main() -> None:
         logger.error(err)
         sys.exit(1)
 
-    # Crawl gateway and get bearer token
-    token = crawl_gateway(
+    # Get Slurm-web JWT for authentication on gateway and agent
+    token = slurmweb_token(
         dev_host,
-        slurmweb_cluster_name(gateway_infrastructure),
-        gateway_infrastructure,
+        slurmweb_cluster_name(GATEWAY_PREFERRED_CLUSTER),
+        GATEWAY_PREFERRED_CLUSTER,
         dev_tmp_dir,
     )
 
     for cluster in db.infrastructures.keys():
+        if cluster == GATEWAY_PREFERRED_CLUSTER:
+            # Crawl gateway
+            crawl_gateway(
+                dev_host,
+                token,
+                slurmweb_cluster_name(GATEWAY_PREFERRED_CLUSTER),
+                GATEWAY_PREFERRED_CLUSTER,
+                dev_tmp_dir,
+            )
+
         # Load agent configuration
         settings = load_settings(
             "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{cluster}.ini"
