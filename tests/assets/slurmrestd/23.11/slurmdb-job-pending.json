@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "clara",
-        "id": 14
+        "user": "ksoto",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -55,10 +55,10 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1731483270,
+        "eligible": 1746621149,
         "end": 0,
         "start": 0,
-        "submission": 1731483270,
+        "submission": 1746621149,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -110,30 +110,30 @@
           "number": 0
         }
       },
-      "job_id": 671,
+      "job_id": 516,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "normal",
+      "partition": "standard",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 90
+        "number": 363
       },
       "qos": "normal",
       "required": {
-        "CPUs": 1,
+        "CPUs": 128,
         "memory_per_cpu": {
-          "set": false,
+          "set": true,
           "infinite": false,
-          "number": 0
+          "number": 512
         },
         "memory_per_node": {
-          "set": true,
+          "set": false,
           "infinite": false,
           "number": 0
         }
@@ -151,7 +151,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 1",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --ntasks 128",
       "tres": {
         "allocated": [],
         "requested": [
@@ -159,13 +159,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 131072
+            "count": 65536
           },
           {
             "type": "node",
@@ -177,17 +177,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 128
           }
         ]
       },
       "used_gres": "",
-      "user": "clara",
+      "user": "ksoto",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/clara"
+      "working_directory": "/home/ksoto"
     }
   ],
   "meta": {
@@ -198,7 +198,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93961651] (fd 10)",
+      "source": "[firehpc]:42582",
       "user": "",
       "group": ""
     },

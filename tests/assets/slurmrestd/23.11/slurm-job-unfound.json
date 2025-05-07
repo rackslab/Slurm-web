@@ -18,7 +18,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93503590] (fd 10)",
+      "source": "[firehpc]:48662",
       "user": "root",
       "group": "root"
     },
@@ -35,7 +35,7 @@
   },
   "errors": [
     {
-      "description": "Unable to query JobId=1646",
+      "description": "Unable to query JobId=1578",
       "error_number": 2017,
       "error": "Invalid job id specified",
       "source": "_handle_job_get"

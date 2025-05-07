@@ -1,437 +1,99 @@
 [
   {
-    "account": "admin",
+    "account": "biology",
     "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 6235,
+    "gres_detail": [],
+    "job_id": 5318,
     "job_state": [
-      "PENDING"
+      "TIMEOUT"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
+    "nodes": "cn1",
     "partition": "normal",
     "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
       "infinite": false,
       "number": 0,
+      "set": false
+    },
+    "state_reason": "TimeLimit",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "JobHeldUser",
-    "user_name": "rwallace"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
   },
   {
     "account": "acoustic",
     "cpus": {
       "infinite": false,
-      "number": 128,
+      "number": 1,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8036,
+    "gres_detail": [],
+    "job_id": 5319,
     "job_state": [
-      "RUNNING"
+      "COMPLETED"
     ],
     "node_count": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "nodes": "cn[1-2]",
+    "nodes": "cn1",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 272,
+      "number": 90,
       "set": true
     },
     "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
     "state_reason": "None",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8042,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
+    "tasks": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 190,
-      "set": true
-    },
-    "qos": "study",
-    "state_reason": "Priority",
-    "user_name": "clara"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8045,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 272,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8048,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 272,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8051,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 272,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8055,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 190,
-      "set": true
-    },
-    "qos": "study",
-    "state_reason": "Priority",
-    "user_name": "clara"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8060,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 272,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8064,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 181,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "pkerr"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
   },
   {
     "account": "optic",
     "cpus": {
       "infinite": false,
-      "number": 16,
+      "number": 1,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8066,
+    "gres_detail": [],
+    "job_id": 5320,
     "job_state": [
-      "COMPLETED"
+      "FAILED"
     ],
     "node_count": {
       "infinite": false,
@@ -446,80 +108,956 @@
       "set": true
     },
     "qos": "normal",
-    "state_reason": "None",
-    "user_name": "jcampbell"
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "NonZeroExitCode",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "ksoto"
   },
   {
-    "account": "optic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
       "number": 32,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8067,
+    "gres_detail": [],
+    "job_id": 5321,
     "job_state": [
       "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5322,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn4",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5323,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5324,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn4",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5325,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5326,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5327,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn4",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "ksoto"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5328,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5329,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 818,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "agoodwin"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 128,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5330,
+    "job_state": [
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
       "number": 2,
       "set": true
     },
-    "nodes": "cn[1-2]",
+    "nodes": "cn[1,4]",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 554,
+      "number": 181,
       "set": true
     },
-    "qos": "study",
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
     "state_reason": "None",
-    "user_name": "jsherman"
+    "tasks": {
+      "infinite": false,
+      "number": 128,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5331,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "BeginTime",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tmcgrath"
   },
   {
     "account": "acoustic",
     "cpus": {
       "infinite": false,
-      "number": 8,
+      "number": 1,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
+    "gres_detail": [],
+    "job_id": 5332,
+    "job_state": [
+      "TIMEOUT"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
     },
-    "job_id": 8068,
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "TimeLimit",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5333,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cbaker"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5334,
+    "job_state": [
+      "FAILED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 818,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "NonZeroExitCode",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "agoodwin"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5335,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn3",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 454,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "bparks"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5336,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tmcgrath"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 128,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5337,
+    "job_state": [
+      "PENDING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "nodes": "",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 90,
+      "set": true
+    },
+    "qos": "",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "Resources",
+    "tasks": {
+      "infinite": false,
+      "number": 128,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5338,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tmcgrath"
+  },
+  {
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5339,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tmcgrath"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5340,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn3",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 181,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
+  },
+  {
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5341,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn3",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 363,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "ksoto"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5342,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn1",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 636,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "emendoza"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5343,
     "job_state": [
       "PENDING"
     ],
@@ -532,39 +1070,78 @@
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 181,
+      "number": 90,
       "set": true
     },
-    "qos": "normal",
+    "qos": "",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
     "state_reason": "Priority",
-    "user_name": "pkerr"
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
   },
   {
     "account": "acoustic",
     "cpus": {
       "infinite": false,
-      "number": 16,
+      "number": 32,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
+    "gres_detail": [],
+    "job_id": 5344,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
     },
-    "job_id": 8069,
+    "nodes": "cn3",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 272,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cbaker"
+  },
+  {
+    "account": "acoustic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5345,
     "job_state": [
       "PENDING"
     ],
@@ -580,98 +1157,22 @@
       "number": 272,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "qos": "",
+    "sockets_per_node": {
       "infinite": false,
-      "number": 32,
-      "set": true
+      "number": 0,
+      "set": false
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8070,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
+    "state_reason": "BeginTime",
+    "tasks": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 190,
-      "set": true
-    },
-    "qos": "study",
-    "state_reason": "Priority",
-    "user_name": "clara"
-  },
-  {
-    "account": "biology",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 8071,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "normal",
-    "priority": {
-      "infinite": false,
-      "number": 636,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Resources",
-    "user_name": "dshaw"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cbaker"
   }
 ]

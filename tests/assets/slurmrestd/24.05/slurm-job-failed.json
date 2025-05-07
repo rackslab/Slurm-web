@@ -1,11 +1,11 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1732136203
+        "number": 1747045465
       },
       "admin_comment": "",
       "allocating_node": "admin",
@@ -25,7 +25,7 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 18,
+      "association_id": 14,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "admin.emulator",
@@ -33,8 +33,10 @@
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
         "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
         "USING_DEFAULT_WCKEY",
-        "BACKFILL_ATTEMPTED"
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -55,7 +57,7 @@
       "billable_tres": {
         "set": true,
         "infinite": false,
-        "number": 2.0
+        "number": 1.0
       },
       "cpus_per_task": {
         "set": true,
@@ -111,12 +113,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1732136203
+        "number": 1747045465
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137632
+        "number": 1747045467
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -157,10 +159,10 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 539867,
+      "job_id": 153297,
       "job_resources": {
-        "nodes": "cn560",
-        "allocated_cores": 2,
+        "nodes": "cn484",
+        "allocated_cores": 1,
         "allocated_cpus": 0,
         "allocated_hosts": 1,
         "allocated_nodes": [
@@ -168,19 +170,14 @@
             "sockets": {
               "0": {
                 "cores": {
-                  "22": "allocated"
-                }
-              },
-              "1": {
-                "cores": {
-                  "21": "allocated"
+                  "2": "allocated"
                 }
               }
             },
-            "nodename": "cn560",
+            "nodename": "cn484",
             "cpus_used": 0,
             "memory_used": 0,
-            "memory_allocated": 1024
+            "memory_allocated": 512
           }
         ]
       },
@@ -191,11 +188,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732137271
+        "number": 1747045466
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "jcampbell",
+      "mail_user": "tpearson",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -210,7 +207,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn560",
+      "nodes": "cn484",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -240,7 +237,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 1
       },
       "node_count": {
         "set": true,
@@ -250,7 +247,7 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 1
       },
       "partition": "batch",
       "prefer": "",
@@ -296,7 +293,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 90
       },
       "profile": [
         "NOT_SET"
@@ -332,17 +329,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137271
+        "number": 1747045466
       },
       "state_description": "",
       "state_reason": "NonZeroExitCode",
-      "standard_error": "/home/jcampbell/slurm-539867.out",
+      "standard_error": "/home/tpearson/slurm-153297.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/jcampbell/slurm-539867.out",
+      "standard_output": "/home/tpearson/slurm-153297.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1732136203
+        "number": 1747045465
       },
       "suspend_time": {
         "set": true,
@@ -353,7 +350,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 10
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -371,24 +368,24 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=2,mem=1G,node=1,billing=2",
-      "tres_alloc_str": "cpu=2,mem=1G,node=1,billing=2",
-      "user_id": 10010,
-      "user_name": "jcampbell",
+      "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
+      "tres_alloc_str": "cpu=1,mem=512M,node=1,billing=1",
+      "user_id": 10006,
+      "user_name": "tpearson",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/jcampbell"
+      "current_working_directory": "/home/tpearson"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732137685
+    "number": 1747044265
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732137702
+    "number": 1747045563
   },
   "meta": {
     "plugin": {
@@ -398,7 +395,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[207634367] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1999611881] (fd 8)",
       "user": "root",
       "group": "root"
     },

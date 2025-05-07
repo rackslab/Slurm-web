@@ -16,7 +16,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -27,7 +27,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   }

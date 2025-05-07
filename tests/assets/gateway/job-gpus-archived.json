@@ -1,0 +1,291 @@
+{
+  "association": {
+    "account": "acoustic",
+    "cluster": "hpc",
+    "id": 16,
+    "partition": "",
+    "user": "cpotter"
+  },
+  "comment": {
+    "administrator": "",
+    "job": "",
+    "system": ""
+  },
+  "derived_exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "group": "scientists",
+  "name": "wrap",
+  "nodes": "gpu1",
+  "partition": "gpu",
+  "priority": {
+    "infinite": false,
+    "number": 90,
+    "set": true
+  },
+  "qos": "normal",
+  "script": "",
+  "state": {
+    "current": [
+      "COMPLETED"
+    ],
+    "reason": "None"
+  },
+  "steps": [
+    {
+      "CPU": {
+        "governor": "0",
+        "requested_frequency": {
+          "max": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          },
+          "min": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          }
+        }
+      },
+      "exit_code": {
+        "return_code": {
+          "infinite": false,
+          "number": 0,
+          "set": true
+        },
+        "signal": {
+          "id": {
+            "infinite": false,
+            "number": 0,
+            "set": false
+          },
+          "name": ""
+        },
+        "status": [
+          "SUCCESS"
+        ]
+      },
+      "kill_request_user": "",
+      "nodes": {
+        "count": 1,
+        "list": [
+          "gpu1"
+        ],
+        "range": "gpu1"
+      },
+      "pid": "",
+      "state": [
+        "COMPLETED"
+      ],
+      "statistics": {
+        "CPU": {
+          "actual_frequency": 0
+        },
+        "energy": {
+          "consumed": {
+            "infinite": false,
+            "number": 0,
+            "set": true
+          }
+        }
+      },
+      "step": {
+        "id": "5348.batch",
+        "name": "batch"
+      },
+      "task": {
+        "distribution": "Unknown"
+      },
+      "tasks": {
+        "count": 1
+      },
+      "time": {
+        "elapsed": 30,
+        "end": {
+          "infinite": false,
+          "number": 1747044816,
+          "set": true
+        },
+        "start": {
+          "infinite": false,
+          "number": 1747044786,
+          "set": true
+        },
+        "suspended": 0,
+        "system": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "total": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "user": {
+          "microseconds": 0,
+          "seconds": 0
+        }
+      },
+      "tres": {
+        "allocated": [
+          {
+            "count": 1,
+            "id": 1,
+            "name": "",
+            "type": "cpu"
+          },
+          {
+            "count": 512,
+            "id": 2,
+            "name": "",
+            "type": "mem"
+          },
+          {
+            "count": 1,
+            "id": 4,
+            "name": "",
+            "type": "node"
+          }
+        ],
+        "consumed": {
+          "average": [],
+          "max": [],
+          "min": [],
+          "total": []
+        },
+        "requested": {
+          "average": [],
+          "max": [],
+          "min": [],
+          "total": []
+        }
+      }
+    }
+  ],
+  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+  "time": {
+    "elapsed": 30,
+    "eligible": 1747044784,
+    "end": 1747044816,
+    "limit": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "start": 1747044786,
+    "submission": 1747044784,
+    "suspended": 0,
+    "system": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "total": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "user": {
+      "microseconds": 0,
+      "seconds": 0
+    }
+  },
+  "tres": {
+    "allocated": [
+      {
+        "count": 1,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 512,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": -2,
+        "id": 3,
+        "name": "",
+        "type": "energy"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 1,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ],
+    "requested": [
+      {
+        "count": 1,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 512,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 1,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ]
+  },
+  "used_gres": "",
+  "user": "cpotter",
+  "wckey": {
+    "flags": [],
+    "wckey": ""
+  },
+  "working_directory": "/home/cpotter"
+}

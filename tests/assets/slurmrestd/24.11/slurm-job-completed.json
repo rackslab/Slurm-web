@@ -1,11 +1,11 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044480
       },
       "admin_comment": "",
       "allocating_node": "login",
@@ -25,7 +25,7 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 18,
+      "association_id": 16,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "cn1",
@@ -33,7 +33,10 @@
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
         "USING_DEFAULT_ACCOUNT",
-        "USING_DEFAULT_WCKEY"
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
+        "USING_DEFAULT_WCKEY",
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -54,7 +57,7 @@
       "billable_tres": {
         "set": true,
         "infinite": false,
-        "number": 64.0
+        "number": 1.0
       },
       "cpus_per_task": {
         "set": true,
@@ -110,12 +113,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044480
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026949
+        "number": 1747044483
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -156,108 +159,25 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 48,
+      "job_id": 5319,
       "job_resources": {
-        "nodes": "cn[1-2]",
-        "allocated_cores": 64,
+        "nodes": "cn1",
+        "allocated_cores": 1,
         "allocated_cpus": 0,
-        "allocated_hosts": 2,
+        "allocated_hosts": 1,
         "allocated_nodes": [
           {
             "sockets": {
               "0": {
                 "cores": {
-                  "13": "allocated",
-                  "14": "allocated",
-                  "15": "allocated",
-                  "16": "allocated",
-                  "17": "allocated",
-                  "18": "allocated",
-                  "19": "allocated",
-                  "20": "allocated",
-                  "21": "allocated",
-                  "22": "allocated",
-                  "23": "allocated",
-                  "24": "allocated",
-                  "25": "allocated",
-                  "26": "allocated",
-                  "27": "allocated",
-                  "28": "allocated",
-                  "29": "allocated",
-                  "30": "allocated",
-                  "31": "allocated"
-                }
-              },
-              "1": {
-                "cores": {
-                  "6": "allocated",
-                  "7": "allocated",
-                  "8": "allocated",
-                  "9": "allocated",
-                  "10": "allocated",
-                  "11": "allocated",
-                  "12": "allocated",
-                  "13": "allocated",
-                  "14": "allocated",
-                  "15": "allocated",
-                  "16": "allocated",
-                  "17": "allocated",
-                  "18": "allocated",
-                  "19": "allocated",
-                  "20": "allocated",
-                  "21": "allocated",
-                  "22": "allocated",
-                  "23": "allocated",
-                  "24": "allocated",
-                  "25": "allocated",
-                  "26": "allocated",
-                  "27": "allocated",
-                  "28": "allocated",
-                  "29": "allocated",
-                  "30": "allocated",
-                  "31": "allocated"
+                  "1": "allocated"
                 }
               }
             },
             "nodename": "cn1",
             "cpus_used": 0,
             "memory_used": 0,
-            "memory_allocated": 23040
-          },
-          {
-            "sockets": {
-              "0": {
-                "cores": {
-                  "0": "allocated",
-                  "1": "allocated",
-                  "2": "allocated",
-                  "3": "allocated",
-                  "4": "allocated",
-                  "5": "allocated",
-                  "6": "allocated",
-                  "7": "allocated",
-                  "8": "allocated",
-                  "9": "allocated"
-                }
-              },
-              "1": {
-                "cores": {
-                  "0": "allocated",
-                  "1": "allocated",
-                  "2": "allocated",
-                  "3": "allocated",
-                  "4": "allocated",
-                  "5": "allocated",
-                  "6": "allocated",
-                  "7": "allocated",
-                  "8": "allocated"
-                }
-              }
-            },
-            "nodename": "cn2",
-            "cpus_used": 0,
-            "memory_used": 0,
-            "memory_allocated": 9728
+            "memory_allocated": 512
           }
         ]
       },
@@ -268,11 +188,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732026589
+        "number": 1747044482
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "jcampbell",
+      "mail_user": "cpotter",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -287,7 +207,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn[1-2]",
+      "nodes": "cn1",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -317,17 +237,17 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 64
+        "number": 1
       },
       "node_count": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 1
       },
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 64
+        "number": 1
       },
       "partition": "normal",
       "prefer": "",
@@ -373,7 +293,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 90
       },
       "profile": [
         "NOT_SET"
@@ -405,17 +325,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026589
+        "number": 1747044482
       },
       "state_description": "",
       "state_reason": "None",
-      "standard_error": "/home/jcampbell/slurm-48.out",
+      "standard_error": "/home/cpotter/slurm-5319.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/jcampbell/slurm-48.out",
+      "standard_output": "/home/cpotter/slurm-5319.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044480
       },
       "suspend_time": {
         "set": true,
@@ -426,7 +346,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 120
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -444,24 +364,24 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
-      "tres_alloc_str": "cpu=64,mem=32G,node=2,billing=64",
-      "user_id": 10010,
-      "user_name": "jcampbell",
+      "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
+      "tres_alloc_str": "cpu=1,mem=512M,node=1,billing=1",
+      "user_id": 10008,
+      "user_name": "cpotter",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/jcampbell"
+      "current_working_directory": "/home/cpotter"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732027256
+    "number": 1747044752
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027265
+    "number": 1747044775
   },
   "meta": {
     "plugin": {
@@ -482,7 +402,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

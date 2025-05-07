@@ -7,17 +7,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1731514097
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 285,
+      "cpu_load": 35,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 291
+        "number": 1635
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -47,21 +47,21 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1732025549
+        "number": 1746619853
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn2",
+      "name": "cn4",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "cn2",
-      "hostname": "cn2",
+      "address": "cn4",
+      "hostname": "cn4",
       "state": [
-        "ALLOCATED",
+        "IDLE",
         "DRAIN"
       ],
-      "operating_system": "Linux 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30)",
+      "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
       "owner": "",
       "partitions": [
         "normal"
@@ -73,7 +73,7 @@
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 1732027555
+        "number": 1746621005
       },
       "reason_set_by_user": "root",
       "resume_after": {
@@ -82,28 +82,28 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732025546
+        "number": 1746441568
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "24.11.0-0rc2"
+      "version": "24.11.0"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027580
+    "number": 1746621039
   },
   "meta": {
     "plugin": {
@@ -113,7 +113,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -124,7 +124,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

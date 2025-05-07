@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1732194673,
+    "number": 1747044477,
     "set": true
   },
   "association": {
-    "account": "optic",
+    "account": "biology",
     "cluster": "hpc",
-    "id": 18,
+    "id": 11,
     "partition": "",
-    "user": "jcampbell"
+    "user": "crich"
   },
   "batch_flag": true,
   "command": "",
@@ -20,10 +20,10 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 4096,
+    "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jcampbell",
+  "current_working_directory": "/home/crich",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,30 +61,36 @@
       "SUCCESS"
     ]
   },
+  "gres_detail": [],
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1732195249,
+    "number": 1747044479,
     "set": true
   },
   "name": "wrap",
   "node_count": {
     "infinite": false,
-    "number": 87,
+    "number": 1,
     "set": true
   },
-  "nodes": "cn[642-722,765-770]",
-  "partition": "batch",
+  "nodes": "cn1",
+  "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 454,
+    "number": 727,
     "set": true
   },
   "qos": "normal",
   "script": "",
-  "standard_error": "/home/jcampbell/slurm-599930.out",
+  "sockets_per_node": {
+    "infinite": false,
+    "number": 0,
+    "set": false
+  },
+  "standard_error": "/home/crich/slurm-5318.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/jcampbell/slurm-599930.out",
+  "standard_output": "/home/crich/slurm-5318.out",
   "state": {
     "current": [
       "TIMEOUT"
@@ -130,9 +136,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "admin.emulator"
+          "cn1"
         ],
-        "range": "admin.emulator"
+        "range": "cn1"
       },
       "pid": "",
       "state": [
@@ -151,7 +157,7 @@
         }
       },
       "step": {
-        "id": "599930.batch",
+        "id": "5318.batch",
         "name": "batch"
       },
       "task": {
@@ -161,15 +167,15 @@
         "count": 1
       },
       "time": {
-        "elapsed": 622,
+        "elapsed": 64,
         "end": {
           "infinite": false,
-          "number": 1732195871,
+          "number": 1747044543,
           "set": true
         },
         "start": {
           "infinite": false,
-          "number": 1732195249,
+          "number": 1747044479,
           "set": true
         },
         "suspended": 0,
@@ -189,13 +195,13 @@
       "tres": {
         "allocated": [
           {
-            "count": 34,
+            "count": 1,
             "id": 1,
             "name": "",
             "type": "cpu"
           },
           {
-            "count": 17408,
+            "count": 512,
             "id": 2,
             "name": "",
             "type": "mem"
@@ -222,23 +228,23 @@
       }
     }
   ],
-  "submit_line": "sbatch --qos normal --partition batch --time 10 --wrap /usr/bin/sleep 720 --ntasks 4096",
+  "submit_line": "sbatch --time 1 --wrap sleep 90 && true --ntasks 1",
   "tasks": {
     "infinite": false,
-    "number": 4096,
+    "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 622,
-    "eligible": 1732194673,
-    "end": 1732195871,
+    "elapsed": 62,
+    "eligible": 1747044477,
+    "end": 1747044541,
     "limit": {
       "infinite": false,
-      "number": 10,
+      "number": 1,
       "set": true
     },
-    "start": 1732195249,
-    "submission": 1732194673,
+    "start": 1747044479,
+    "submission": 1747044477,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -256,13 +262,13 @@
   "tres": {
     "allocated": [
       {
-        "count": 4096,
+        "count": 1,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 2097152,
+        "count": 512,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -274,13 +280,13 @@
         "type": "energy"
       },
       {
-        "count": 87,
+        "count": 1,
         "id": 4,
         "name": "",
         "type": "node"
       },
       {
-        "count": 4096,
+        "count": 1,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -288,13 +294,13 @@
     ],
     "requested": [
       {
-        "count": 4096,
+        "count": 1,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 2097152,
+        "count": 512,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -306,19 +312,23 @@
         "type": "node"
       },
       {
-        "count": 4096,
+        "count": 1,
         "id": 5,
         "name": "",
         "type": "billing"
       }
     ]
   },
-  "tres_req_str": "cpu=4096,mem=2T,node=1,billing=4096",
+  "tres_per_job": "",
+  "tres_per_node": "",
+  "tres_per_socket": "",
+  "tres_per_task": "",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "jcampbell",
+  "user": "crich",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jcampbell"
+  "working_directory": "/home/crich"
 }

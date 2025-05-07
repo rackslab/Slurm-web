@@ -1,14 +1,14 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "optic",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137446
+        "number": 1747044482
       },
       "admin_comment": "",
-      "allocating_node": "192.168.99.9",
+      "allocating_node": "login",
       "array_job_id": {
         "set": true,
         "infinite": false,
@@ -25,15 +25,18 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 12,
+      "association_id": 17,
       "batch_features": "",
       "batch_flag": true,
-      "batch_host": "cn2",
+      "batch_host": "cn1",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
         "USING_DEFAULT_ACCOUNT",
-        "USING_DEFAULT_WCKEY"
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
+        "USING_DEFAULT_WCKEY",
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -110,12 +113,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137446
+        "number": 1747044482
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137808
+        "number": 1747044486
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -156,9 +159,9 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 6294,
+      "job_id": 5320,
       "job_resources": {
-        "nodes": "cn2",
+        "nodes": "cn1",
         "allocated_cores": 1,
         "allocated_cpus": 0,
         "allocated_hosts": 1,
@@ -167,11 +170,11 @@
             "sockets": {
               "0": {
                 "cores": {
-                  "25": "allocated"
+                  "17": "allocated"
                 }
               }
             },
-            "nodename": "cn2",
+            "nodename": "cn1",
             "cpus_used": 0,
             "memory_used": 0,
             "memory_allocated": 512
@@ -185,11 +188,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732137448
+        "number": 1747044485
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "dshaw",
+      "mail_user": "ksoto",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -204,7 +207,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn2",
+      "nodes": "cn1",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -290,12 +293,12 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 736
+        "number": 363
       },
       "profile": [
         "NOT_SET"
       ],
-      "qos": "study",
+      "qos": "normal",
       "reboot": false,
       "required_nodes": "",
       "minimum_switches": 0,
@@ -322,17 +325,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137448
+        "number": 1747044485
       },
       "state_description": "",
       "state_reason": "NonZeroExitCode",
-      "standard_error": "/home/dshaw/slurm-6294.out",
+      "standard_error": "/home/ksoto/slurm-5320.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/dshaw/slurm-6294.out",
+      "standard_output": "/home/ksoto/slurm-5320.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1732137446
+        "number": 1747044482
       },
       "suspend_time": {
         "set": true,
@@ -343,7 +346,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 120
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -363,22 +366,22 @@
       "tres_per_task": "",
       "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
       "tres_alloc_str": "cpu=1,mem=512M,node=1,billing=1",
-      "user_id": 10004,
-      "user_name": "dshaw",
+      "user_id": 10009,
+      "user_name": "ksoto",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/dshaw"
+      "current_working_directory": "/home/ksoto"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732137845
+    "number": 1747044752
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732137874
+    "number": 1747044775
   },
   "meta": {
     "plugin": {
@@ -399,7 +402,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },
