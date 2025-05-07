@@ -1,24 +1,26 @@
 {
-  "alloc_cpus": 8,
-  "alloc_idle_cpus": 56,
-  "alloc_memory": 4096,
-  "architecture": "",
+  "alloc_cpus": 6,
+  "alloc_idle_cpus": 58,
+  "alloc_memory": 3072,
+  "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
-    "number": 1731514097,
+    "number": 1741793226,
     "set": true
   },
   "cores": 32,
   "cpus": 64,
+  "gres": "",
+  "gres_used": "",
   "last_busy": {
     "infinite": false,
-    "number": 1732026980,
+    "number": 1746621012,
     "set": true
   },
-  "name": "cn081",
-  "operating_system": "",
+  "name": "cn2",
+  "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
   "partitions": [
-    "batch"
+    "normal"
   ],
   "real_memory": 131072,
   "reason": "",

@@ -1,10 +1,10 @@
 {
   "association": {
-    "account": "acoustic",
+    "account": "optic",
     "cluster": "hpc",
-    "id": 16,
+    "id": 18,
     "partition": "",
-    "user": "pkerr"
+    "user": "bparks"
   },
   "comment": {
     "administrator": "",
@@ -49,27 +49,14 @@
   },
   "group": "scientists",
   "name": "wrap",
-  "nodes": "cn[079-080]",
-  "partition": "batch",
+  "nodes": "cn3",
+  "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 272,
+    "number": 454,
     "set": true
   },
   "qos": "normal",
-  "required": {
-    "CPUs": 128,
-    "memory_per_cpu": {
-      "infinite": false,
-      "number": 512,
-      "set": true
-    },
-    "memory_per_node": {
-      "infinite": false,
-      "number": 0,
-      "set": false
-    }
-  },
   "script": "",
   "state": {
     "current": [
@@ -116,9 +103,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "admin.emulator"
+          "cn3"
         ],
-        "range": "admin.emulator"
+        "range": "cn3"
       },
       "pid": "",
       "state": [
@@ -137,7 +124,7 @@
         }
       },
       "step": {
-        "id": "507478.batch",
+        "id": "5370.batch",
         "name": "batch"
       },
       "task": {
@@ -147,15 +134,15 @@
         "count": 1
       },
       "time": {
-        "elapsed": 362,
+        "elapsed": 61,
         "end": {
           "infinite": false,
-          "number": 1732086177,
+          "number": 1747055009,
           "set": true
         },
         "start": {
           "infinite": false,
-          "number": 1732085815,
+          "number": 1747054948,
           "set": true
         },
         "suspended": 0,
@@ -175,13 +162,13 @@
       "tres": {
         "allocated": [
           {
-            "count": 64,
+            "count": 32,
             "id": 1,
             "name": "",
             "type": "cpu"
           },
           {
-            "count": 32768,
+            "count": 16384,
             "id": 2,
             "name": "",
             "type": "mem"
@@ -208,18 +195,18 @@
       }
     }
   ],
-  "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 128",
+  "submit_line": "sbatch --time 2 --wrap sleep 60 && true --ntasks 32",
   "time": {
-    "elapsed": 362,
-    "eligible": 1732085460,
-    "end": 1732086177,
+    "elapsed": 61,
+    "eligible": 1747054835,
+    "end": 1747055009,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 2,
       "set": true
     },
-    "start": 1732085815,
-    "submission": 1732085460,
+    "start": 1747054948,
+    "submission": 1747054835,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -237,13 +224,13 @@
   "tres": {
     "allocated": [
       {
-        "count": 128,
+        "count": 32,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 65536,
+        "count": 16384,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -255,13 +242,13 @@
         "type": "energy"
       },
       {
-        "count": 2,
+        "count": 1,
         "id": 4,
         "name": "",
         "type": "node"
       },
       {
-        "count": 128,
+        "count": 32,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -269,13 +256,13 @@
     ],
     "requested": [
       {
-        "count": 128,
+        "count": 32,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 65536,
+        "count": 16384,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -287,7 +274,7 @@
         "type": "node"
       },
       {
-        "count": 128,
+        "count": 32,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -295,10 +282,10 @@
     ]
   },
   "used_gres": "",
-  "user": "pkerr",
+  "user": "bparks",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/pkerr"
+  "working_directory": "/home/bparks"
 }

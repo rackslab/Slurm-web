@@ -18,7 +18,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93492567] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1999620607] (fd 8)",
       "user": "root",
       "group": "root"
     },
@@ -35,7 +35,7 @@
   },
   "errors": [
     {
-      "description": "Unable to query JobId=408955",
+      "description": "Unable to query JobId=153294",
       "error_number": 2017,
       "error": "Invalid job id specified",
       "source": "_handle_job_get"

@@ -71,6 +71,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-node-without-gpu": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-nodes": {
     "content-type": "application/json",
     "status": 200

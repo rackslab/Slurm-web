@@ -1,0 +1,173 @@
+{
+  "accrue_time": {
+    "infinite": false,
+    "number": 0,
+    "set": true
+  },
+  "association": {
+    "account": "acoustic",
+    "cluster": "hpc",
+    "id": 16,
+    "partition": "",
+    "user": "cpotter"
+  },
+  "batch_flag": true,
+  "command": "",
+  "comment": {
+    "administrator": "",
+    "job": "",
+    "system": ""
+  },
+  "cpus": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "current_working_directory": "/home/cpotter",
+  "derived_exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "exclusive": [],
+  "exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "gres_detail": [],
+  "group": "scientists",
+  "last_sched_evaluation": {
+    "infinite": false,
+    "number": 1747044782,
+    "set": true
+  },
+  "name": "wrap",
+  "node_count": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "nodes": "None assigned",
+  "partition": "gpu",
+  "priority": {
+    "infinite": false,
+    "number": 90,
+    "set": true
+  },
+  "qos": "normal",
+  "script": "",
+  "sockets_per_node": {
+    "infinite": false,
+    "number": 0,
+    "set": false
+  },
+  "standard_error": "/home/cpotter/slurm-5347.out",
+  "standard_input": "/dev/null",
+  "standard_output": "/home/cpotter/slurm-5347.out",
+  "state": {
+    "current": [
+      "PENDING"
+    ],
+    "reason": "None"
+  },
+  "steps": [],
+  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4 --begin now+1hour",
+  "tasks": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "time": {
+    "elapsed": 0,
+    "eligible": 1747048382,
+    "end": 0,
+    "limit": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "start": 0,
+    "submission": 1747044782,
+    "suspended": 0,
+    "system": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "total": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "user": {
+      "microseconds": 0,
+      "seconds": 0
+    }
+  },
+  "tres": {
+    "allocated": [],
+    "requested": [
+      {
+        "count": 1,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 512,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 1,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ]
+  },
+  "tres_per_job": "gres/gpu:4",
+  "tres_per_node": "",
+  "tres_per_socket": "",
+  "tres_per_task": "",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
+  "used_gres": "",
+  "user": "cpotter",
+  "wckey": {
+    "flags": [],
+    "wckey": ""
+  },
+  "working_directory": "/home/cpotter"
+}

@@ -1,11 +1,11 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044692
       },
       "admin_comment": "",
       "allocating_node": "login",
@@ -25,16 +25,19 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 17,
+      "association_id": 14,
       "batch_features": "",
       "batch_flag": true,
-      "batch_host": "cn1",
+      "batch_host": "cn3",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "ACCRUE_COUNT_CLEARED",
         "JOB_WAS_RUNNING",
         "USING_DEFAULT_ACCOUNT",
-        "USING_DEFAULT_WCKEY"
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
+        "USING_DEFAULT_WCKEY",
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -55,7 +58,7 @@
       "billable_tres": {
         "set": true,
         "infinite": false,
-        "number": 16.0
+        "number": 32.0
       },
       "cpus_per_task": {
         "set": true,
@@ -111,12 +114,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044692
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732034151
+        "number": 1747044865
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -157,10 +160,10 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 49,
+      "job_id": 5340,
       "job_resources": {
-        "nodes": "cn1",
-        "allocated_cores": 16,
+        "nodes": "cn3",
+        "allocated_cores": 32,
         "allocated_cpus": 0,
         "allocated_hosts": 1,
         "allocated_nodes": [
@@ -168,6 +171,8 @@
             "sockets": {
               "0": {
                 "cores": {
+                  "16": "allocated",
+                  "17": "allocated",
                   "18": "allocated",
                   "19": "allocated",
                   "20": "allocated",
@@ -175,26 +180,40 @@
                   "22": "allocated",
                   "23": "allocated",
                   "24": "allocated",
-                  "25": "allocated"
+                  "25": "allocated",
+                  "26": "allocated",
+                  "27": "allocated",
+                  "28": "allocated",
+                  "29": "allocated",
+                  "30": "allocated",
+                  "31": "allocated"
                 }
               },
               "1": {
                 "cores": {
-                  "9": "allocated",
-                  "10": "allocated",
-                  "11": "allocated",
-                  "12": "allocated",
-                  "13": "allocated",
-                  "14": "allocated",
-                  "15": "allocated",
-                  "16": "allocated"
+                  "16": "allocated",
+                  "17": "allocated",
+                  "18": "allocated",
+                  "19": "allocated",
+                  "20": "allocated",
+                  "21": "allocated",
+                  "22": "allocated",
+                  "23": "allocated",
+                  "24": "allocated",
+                  "25": "allocated",
+                  "26": "allocated",
+                  "27": "allocated",
+                  "28": "allocated",
+                  "29": "allocated",
+                  "30": "allocated",
+                  "31": "allocated"
                 }
               }
             },
-            "nodename": "cn1",
+            "nodename": "cn3",
             "cpus_used": 0,
             "memory_used": 0,
-            "memory_allocated": 8192
+            "memory_allocated": 16384
           }
         ]
       },
@@ -205,11 +224,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732026951
+        "number": 1747044745
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "jsherman",
+      "mail_user": "tpearson",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -224,7 +243,7 @@
       "memory_per_tres": "",
       "name": "wrap",
       "network": "",
-      "nodes": "cn1",
+      "nodes": "cn3",
       "nice": 0,
       "tasks_per_core": {
         "set": false,
@@ -254,7 +273,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 16
+        "number": 32
       },
       "node_count": {
         "set": true,
@@ -264,7 +283,7 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 16
+        "number": 32
       },
       "partition": "normal",
       "prefer": "",
@@ -342,17 +361,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026951
+        "number": 1747044745
       },
       "state_description": "",
       "state_reason": "None",
-      "standard_error": "/home/jsherman/slurm-49.out",
+      "standard_error": "/home/tpearson/slurm-5340.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/jsherman/slurm-49.out",
+      "standard_output": "/home/tpearson/slurm-5340.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026227
+        "number": 1747044692
       },
       "suspend_time": {
         "set": true,
@@ -363,7 +382,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 120
+        "number": 2
       },
       "time_minimum": {
         "set": true,
@@ -381,24 +400,24 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=16,mem=8G,node=1,billing=16",
-      "tres_alloc_str": "cpu=16,mem=8G,node=1,billing=16",
-      "user_id": 10009,
-      "user_name": "jsherman",
+      "tres_req_str": "cpu=32,mem=16G,node=1,billing=32",
+      "tres_alloc_str": "cpu=32,mem=16G,node=1,billing=32",
+      "user_id": 10006,
+      "user_name": "tpearson",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/jsherman"
+      "current_working_directory": "/home/tpearson"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732027256
+    "number": 1747044752
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027265
+    "number": 1747044775
   },
   "meta": {
     "plugin": {
@@ -419,7 +438,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

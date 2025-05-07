@@ -1,0 +1,32 @@
+{
+  "alloc_cpus": 1,
+  "alloc_idle_cpus": 31,
+  "alloc_memory": 512,
+  "architecture": "x86_64",
+  "boot_time": {
+    "infinite": false,
+    "number": 1741793226,
+    "set": true
+  },
+  "cores": 16,
+  "cpus": 32,
+  "gres": "gpu:h100:4",
+  "gres_used": "gpu:h100:4(IDX:0-3)",
+  "last_busy": {
+    "infinite": false,
+    "number": 1746619852,
+    "set": true
+  },
+  "name": "gpu2",
+  "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
+  "partitions": [
+    "normal"
+  ],
+  "real_memory": 524288,
+  "reason": "",
+  "sockets": 2,
+  "state": [
+    "MIXED"
+  ],
+  "threads": 1
+}
