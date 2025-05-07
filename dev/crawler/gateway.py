@@ -115,7 +115,22 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "login": self._crawl_login,
                 "stats": self._crawl_stats,
                 "jobs": self._crawl_jobs,
+                "job-gpus-running": self._crawl_job_gpus_running,
+                "job-gpus-pending": self._crawl_job_gpus_pending,
+                "job-gpus-completed": self._crawl_job_gpus_completed,
+                "job-gpus-archived": self._crawl_job_gpus_archived,
+                "job-gpus-multi-nodes": self._crawl_job_gpus_multi_nodes,
+                "job-gpus-type": self._crawl_job_gpus_type,
+                "job-gpus-per-node": self._crawl_job_gpus_per_node,
+                "job-gpus-multi-types": self._crawl_job_gpus_multi_types,
+                "job-gpus-per-socket": self._crawl_job_gpus_per_socket,
+                "job-gpus-per-task": self._crawl_job_gpus_per_task,
+                "job-gpus-gres": self._crawl_job_gpus_gres,
                 "nodes": self._crawl_nodes,
+                "node-gpus-allocated": self._crawl_node_gpus_allocated,
+                "node-gpus-mixed": self._crawl_node_gpus_mixed,
+                "node-gpus-idle": self._crawl_node_gpus_idle,
+                "node-without-gpu": self._crawl_node_without_gpu,
                 "partitions": self._crawl_partitions,
                 "qos": self._crawl_qos,
                 "reservations": self._crawl_reservations,
@@ -186,6 +201,72 @@ class GatewayCrawler(TokenizedComponentCrawler):
 
         # FIXME: Download unknown job
 
+    def _crawl_job_gpus_running(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-running",
+        )
+
+    def _crawl_job_gpus_pending(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-pending",
+        )
+
+    def _crawl_job_gpus_completed(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-completed",
+        )
+
+    def _crawl_job_gpus_archived(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-archived",
+        )
+
+    def _crawl_job_gpus_multi_nodes(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-multi-nodes",
+        )
+
+    def _crawl_job_gpus_type(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-type",
+        )
+
+    def _crawl_job_gpus_per_node(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-per-node",
+        )
+
+    def _crawl_job_gpus_multi_types(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-multi-types",
+        )
+
+    def _crawl_job_gpus_per_socket(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-per-socket",
+        )
+
+    def _crawl_job_gpus_per_task(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-per-task",
+        )
+
+    def _crawl_job_gpus_gres(self, job_id):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/job/{job_id}",
+            "job-gpus-gres",
+        )
+
     def _crawl_nodes(self):
         nodes = self.dump_component_query(
             f"/api/agents/{self.cluster}/nodes",
@@ -219,6 +300,30 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 dump_node_state()
 
         # FIXME: download unknown node
+
+    def _crawl_node_gpus_allocated(self, node):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/node/{node}",
+            "node-with-gpus-allocated",
+        )
+
+    def _crawl_node_gpus_mixed(self, node):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/node/{node}",
+            "node-with-gpus-mixed",
+        )
+
+    def _crawl_node_gpus_idle(self, node):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/node/{node}",
+            "node-with-gpus-idle",
+        )
+
+    def _crawl_node_without_gpu(self, node):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/node/{node}",
+            "node-without-gpu",
+        )
 
     def _crawl_partitions(self):
         self.dump_component_query(
