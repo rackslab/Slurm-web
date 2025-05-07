@@ -11,7 +11,7 @@ import sys
 import getpass
 import random
 import logging
-
+import time
 
 from rfl.log import setup_logger
 
@@ -46,6 +46,8 @@ def slurmweb_cluster_name(infrastructure: str):
 
 def main() -> None:
     """Crawl and save test assets from Slurm-web gateway, agent and slurmrestd."""
+
+    # FIXME: support possibility to restrict cluster
 
     # Setup logger
     setup_logger(
@@ -116,7 +118,7 @@ def main() -> None:
         # Move some nodes from production
         nodes = cluster.nodes_partition(cluster.partitions()[0])
         node_down = random.choice(nodes)
-        node_drain = random.choice(nodes)
+        node_drain = random.choice([node for node in nodes if node != node_down])
         cluster.node_update(node_down, "DOWN", "CPU dead")
         cluster.node_update(node_drain, "DRAIN", "ECC memory error")
 
@@ -127,7 +129,18 @@ def main() -> None:
                 "Unable to crawl cluster %s with jobs in queue", infrastructure
             )
             continue
-
+        # Submit timeout job
+        # FIXME
+        cluster.submit(
+            cluster.pick_user(),
+            [
+                "--ntasks",
+                str(1),
+            ],
+            duration=90,
+            timelimit=1,
+            wait_running=False,
+        )
         # Submit completed job
         cluster.submit(
             cluster.pick_user(),
@@ -149,18 +162,6 @@ def main() -> None:
             wait_running=False,
             success=False,
         )
-        # Submit timeout job
-        cluster.submit(
-            cluster.pick_user(),
-            [
-                "--ntasks",
-                str(1),
-            ],
-            duration=30,
-            timelimit=(0, 2),
-            wait_running=False,
-        )
-
         # Submit 10 random running jobs
         for idx in range(10):
             cluster.submit(
@@ -170,6 +171,7 @@ def main() -> None:
                     str(random.choice([1, 4, 16, 32, 64, 128])),
                 ],
                 duration=random.choice([30, 60, 90]),
+                timelimit=2,
                 wait_running=False,
             )
         # Submit pending job
@@ -184,6 +186,10 @@ def main() -> None:
             duration=30,
             wait_running=False,
         )
+        # Wait for job to timeout
+        logging.info("Waiting for job to timeout…")
+        time.sleep(70)
+        # FIXME: create reservation
 
         # Crawl assets from components
         if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
@@ -225,8 +231,6 @@ def main() -> None:
                 "errors",
                 "jobs",
                 "nodes",
-                "jobs-gpus",
-                "nodes-gpus",
                 "partitions",
                 "qos",
                 "accounts",
@@ -238,10 +242,217 @@ def main() -> None:
         cluster.node_resume(node_down)
         cluster.node_resume(node_drain)
 
+        # If cluster has gpu, launch individual jobs
+        nodes = cluster.query_slurmrestd_json(f"/slurm/v{cluster.api}/nodes")
+
+        # Look at GPU declared on cluster. Logic expects all nodes with GPUs share the
+        # same GPUs setup.
+        has_gpu = False
+        gpu_per_node = 0
+        gpu_types = []
+        gpu_partition = None
+
+        for node in nodes["nodes"]:
+            all_gres = node["gres"].split(",")
+            if len(all_gres) and any([gres_s.startswith("gpu") for gres_s in all_gres]):
+                has_gpu = True
+                for gres_s in all_gres:
+                    gres = gres_s.split(":")
+                    # skip non-gpu gres
+                    if gres[0] != "gpu":
+                        continue
+                    gpu_types.append(gres[1])
+                    gpu_per_node += int(gres[2])
+                    gpu_partition = node["partitions"][0]
+                break
+
+        # Submit jobs and allocate GPUs
+        if has_gpu:
+            # Pick random user on cluster to submit jobs
+            user = cluster.pick_user()
+
+            # sbatch --gpus <n> mono-node running
+            job_id = cluster.submit(
+                user, ["--partition", gpu_partition, "--gpus", str(gpu_per_node)]
+            )
+            slurmrestd.crawl(["job-gpus-running"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-running"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus <n> mono-node pending
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus",
+                    str(gpu_per_node),
+                    "--begin",
+                    "now+1hour",
+                ],
+                wait_running=False,
+            )
+            slurmrestd.crawl(["job-gpus-pending"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-pending"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus <n> with short runtime and wait it to be completed
+            # and then removed from slurmctld queue (ie. archived)
+            job_id = cluster.submit(
+                user,
+                ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+                duration=30,
+            )
+            time.sleep(30)
+            slurmrestd.crawl(["job-gpus-completed"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-completed"], job_id)
+            time.sleep(600)
+            slurmrestd.crawl(["job-gpus-archived"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-archived"], job_id)
+
+            # sbatch --gpus <n> multi-nodes
+            job_id = cluster.submit(
+                user,
+                ["--partition", gpu_partition, "--gpus", str(gpu_per_node * 2)],
+            )
+            slurmrestd.crawl(["job-gpus-multi-nodes"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-multi-nodes"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus type:<n>
+            job_id = cluster.submit(
+                user, ["--partition", gpu_partition, "--gpus", f"{gpu_types[0]}:1"]
+            )
+            slurmrestd.crawl(["job-gpus-type"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-type"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus-per-node <m> --nodes <n>
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus-per-node",
+                    str(1),
+                    "--nodes",
+                    str(2),
+                ],
+            )
+            slurmrestd.crawl(["job-gpus-per-node"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-per-node"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus-per-node type1:<n>,type2:<m>
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus-per-node",
+                    ",".join([f"{gpu_type}:1" for gpu_type in gpu_types]),
+                ],
+            )
+            slurmrestd.crawl(["job-gpus-multi-types"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-multi-types"], job_id)
+
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus-per-socket --sockets-per-node
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus-per-socket",
+                    str(2),
+                    "--sockets-per-node",
+                    str(2),
+                ],
+            )
+            slurmrestd.crawl(["job-gpus-per-socket"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-per-socket"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gpus-per-task <m> --ntasks <n>
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus-per-task",
+                    str(2),
+                    "--ntasks",
+                    str(2),
+                ],
+            )
+            slurmrestd.crawl(["job-gpus-per-task"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-per-task"], job_id)
+            cluster.cancel(user, job_id)
+
+            # sbatch --gres gpu:<n>
+            job_id = cluster.submit(
+                user,
+                ["--partition", gpu_partition, "--gres ", f"gpu:{gpu_per_node}"],
+            )
+            slurmrestd.crawl(["job-gpus-gres"], job_id)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["job-gpus-gres"], job_id)
+            cluster.cancel(user, job_id)
+
+            # Allocate all GPUs on a node
+            job_id = cluster.submit(
+                user,
+                [
+                    "--partition",
+                    gpu_partition,
+                    "--gpus",
+                    str(gpu_per_node),
+                    "--nodes",
+                    str(1),
+                ],
+            )
+            node = cluster.job_nodes(job_id)[0]
+            slurmrestd.crawl(["node-gpus-allocated"], node)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["node-gpus-allocated"], node)
+            cluster.cancel(user, job_id)
+
+            # Allocate some GPUs on a node
+            job_id = cluster.submit(
+                user, ["--partition", gpu_partition, "--gpus", str(1)]
+            )
+            node = cluster.job_nodes(job_id)[0]
+            slurmrestd.crawl(["node-gpus-mixed"], node)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["node-gpus-mixed"], node)
+            cluster.cancel(user, job_id)
+
+            cluster.wait_idle(node)
+            slurmrestd.crawl(["node-gpus-idle"], node)
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway.crawl(["node-gpus-idle"], node)
+
+        for _node in nodes["nodes"]:
+            # Get node without GPU
+            if not len(_node["gres"]):
+                slurmrestd.crawl(["node-without-gpu"], _node["name"])
+                if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                    gateway.crawl(["node-without-gpu"], _node["name"])
+                break
+
         # Cancel all jobs
         cluster.cancel_all()
-
-        # If cluster has gpu, launch individual jobs
 
 
 if __name__ == "__main__":

@@ -234,7 +234,8 @@ class DevelopmentHostCluster:
                 "--",
                 "scontrol",
                 "update",
-                f"nodename={nodename}state=RESUME",
+                f"nodename={nodename}",
+                "state=RESUME",
             ]
         )
 
@@ -262,12 +263,11 @@ class DevelopmentHostCluster:
         user: str,
         args: list[str],
         duration: int = 30,
-        timelimit: tuple[int, int] | None = None,
+        timelimit: int = 1,
         wait_running: bool = True,
         success: bool = True,
     ) -> int:
-        if timelimit is None:
-            timelimit = [0, 30]
+        # FIXME: use REST API
         logger.info("Submitting job as %s with args: %s", user, args)
         _, stdout, stderr = self.dev_host.exec(
             [
@@ -277,7 +277,7 @@ class DevelopmentHostCluster:
                 "--",
                 "sbatch",
                 "--time",
-                f"{timelimit[0]}:{timelimit[1]}",
+                str(timelimit),
                 "--wrap",
                 f"'sleep {duration} && {'true' if success else 'false'}'",
             ]
@@ -294,7 +294,7 @@ class DevelopmentHostCluster:
             )
         job_id = int(output.split(" ")[3])
         if wait_running:
-            max_tries = 5
+            max_tries = 10
             for idx in range(max_tries):
                 job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
                 if "RUNNING" in job["jobs"][0]["job_state"]:
@@ -307,6 +307,7 @@ class DevelopmentHostCluster:
 
     def cancel(self, user: str, job_id: int) -> None:
         """Cancel a job."""
+        # FIXME: use REST API
         self.dev_host.exec(
             [
                 "firehpc",
@@ -320,6 +321,7 @@ class DevelopmentHostCluster:
 
     def cancel_all(self) -> None:
         """Cancel all jobs."""
+        # FIXME: use REST API
         for partition in self.partitions():
             self.dev_host.exec(
                 [
@@ -418,6 +420,7 @@ def dump_component_query(
                 if limit_dump:
                     _data = _data[:limit_dump]
                 fh.write(json.dumps(_data, indent=2 if prettify else None))
+                # FIXME: add newline
             else:
                 fh.write(data)
     return data
@@ -435,10 +438,10 @@ class ComponentCrawler:
         self.map = _map
         self.assets = assets
 
-    def crawl(self, assets: list[str]) -> None:
+    def crawl(self, assets: list[str], *args) -> None:
         for asset in assets:
             logger.info("Crawling asset %s on component %s", asset, self.component)
-            self.map[asset]()
+            self.map[asset](*args)
 
         self.assets.save()
 
