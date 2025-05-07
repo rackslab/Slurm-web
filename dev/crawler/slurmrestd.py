@@ -46,8 +46,21 @@ class SlurmrestdCrawler(ComponentCrawler):
                 "errors": self._crawl_errors,
                 "jobs": self._crawl_jobs,
                 "nodes": self._crawl_nodes,
-                "jobs-gpus": self._crawl_jobs_gpus,
-                "nodes-gpus": self._crawl_nodes_gpus,
+                "job-gpus-running": self._crawl_job_gpus_running,
+                "job-gpus-pending": self._crawl_job_gpus_pending,
+                "job-gpus-completed": self._crawl_job_gpus_completed,
+                "job-gpus-archived": self._crawl_job_gpus_archived,
+                "job-gpus-multi-nodes": self._crawl_job_gpus_multi_nodes,
+                "job-gpus-type": self._crawl_job_gpus_type,
+                "job-gpus-per-node": self._crawl_job_gpus_per_node,
+                "job-gpus-multi-types": self._crawl_job_gpus_multi_types,
+                "job-gpus-per-socket": self._crawl_job_gpus_per_socket,
+                "job-gpus-per-task": self._crawl_job_gpus_per_task,
+                "job-gpus-gres": self._crawl_job_gpus_gres,
+                "node-gpus-allocated": self._crawl_node_gpus_allocated,
+                "node-gpus-mixed": self._crawl_node_gpus_mixed,
+                "node-gpus-idle": self._crawl_node_gpus_idle,
+                "node-without-gpu": self._crawl_node_without_gpu,
                 "partitions": self._crawl_partitions,
                 "qos": self._crawl_qos,
                 "accounts": self._crawl_accounts,
@@ -96,6 +109,7 @@ class SlurmrestdCrawler(ComponentCrawler):
                         _data = data.copy()
                         _data[limit_key] = _data[limit_key][:limit_dump]
                     json.dump(_data, fh, indent=2)
+                    # FIXME: add new line
                 else:
                     fh.write(data)
         return data
@@ -233,311 +247,139 @@ class SlurmrestdCrawler(ComponentCrawler):
             "slurm-node-unfound",
         )
 
-    def _crawl_jobs_gpus(self):
-        nodes = self.cluster.query_slurmrestd_json(f"/slurm/v{self.cluster.api}/nodes")
-        # Look at GPU declared on cluster. Logic expects all nodes with GPUs share the
-        # same GPUs setup.
-        has_gpu = False
-        gpu_per_node = 0
-        gpu_types = []
-        gpu_partition = None
+    def _crawl_job_gpus_running(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-running",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-running",
+        )
 
-        for node in nodes["nodes"]:
-            all_gres = node["gres"].split(",")
-            if len(all_gres) and any([gres_s.startswith("gpu") for gres_s in all_gres]):
-                has_gpu = True
-                for gres_s in all_gres:
-                    gres = gres_s.split(":")
-                    # skip non-gpu gres
-                    if gres[0] != "gpu":
-                        continue
-                    gpu_types.append(gres[1])
-                    gpu_per_node += int(gres[2])
-                    gpu_partition = node["partitions"][0]
-                break
+    def _crawl_job_gpus_pending(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-pending",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-pending",
+        )
 
-        # Submit jobs and allocate GPUs
-        if has_gpu:
-            user = self.cluster.pick_user()
+    def _crawl_job_gpus_completed(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-completed",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-completed",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-running"
-            ) or not self.assets.exists("slurmdb-job-gpus-running"):
-                # sbatch --gpus <n> mono-node running
-                job_id = self.cluster.submit(
-                    user, ["--partition", gpu_partition, "--gpus", str(gpu_per_node)]
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-running",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-running",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_archived(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-archived",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-archived",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-pending"
-            ) or not self.assets.exists("slurmdb-job-gpus-pending"):
-                # sbatch --gpus <n> mono-node pending
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus",
-                        str(gpu_per_node),
-                        "--begin",
-                        "now+1hour",
-                    ],
-                    wait_running=False,
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-pending",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-pending",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_multi_nodes(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-multi-nodes",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-multi-nodes",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-multi-nodes"
-            ) or not self.assets.exists("slurmdb-job-gpus-multi-nodes"):
-                # sbatch --gpus <n> multi-nodes
-                job_id = self.cluster.submit(
-                    user,
-                    ["--partition", gpu_partition, "--gpus", str(gpu_per_node * 2)],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-multi-nodes",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-multi-nodes",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_type(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-type",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-type",
+        )
 
-            if not self.assets.exists("slurm-job-gpus-type") or not self.assets.exists(
-                "slurmdb-job-gpus-type"
-            ):
-                # sbatch --gpus type:<n>
-                job_id = self.cluster.submit(
-                    user, ["--partition", gpu_partition, "--gpus", f"{gpu_types[0]}:1"]
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-type",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-type",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_per_node(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-per-node",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-per-node",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-per-node"
-            ) or not self.assets.exists("slurmdb-job-gpus-per-node"):
-                # sbatch --gpus-per-node <m> --nodes <n>
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus-per-node",
-                        str(1),
-                        "--nodes",
-                        str(2),
-                    ],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-per-node",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-per-node",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_multi_types(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-multi-types",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-multi-types",
+        )
 
-            # sbatch --gpus-per-node type1:<n>,type2:<m>
-            if len(gpu_types) > 1 and (
-                not self.assets.exists("slurm-job-gpus-multiple-types")
-                or not self.assets.exists("slurmdb-job-gpus-multiple-types")
-            ):
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus-per-node",
-                        ",".join([f"{gpu_type}:1" for gpu_type in gpu_types]),
-                    ],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-multiple-types",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-multiple-types",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_per_socket(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-per-socket",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-per-socket",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-per-socket"
-            ) or not self.assets.exists("slurmdb-job-gpus-per-socket"):
-                # sbatch --gpus-per-socket --sockets-per-node
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus-per-socket",
-                        str(2),
-                        "--sockets-per-node",
-                        str(2),
-                    ],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-per-socket",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-per-socket",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_per_task(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-per-task",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-per-task",
+        )
 
-            if not self.assets.exists(
-                "slurm-job-gpus-per-task"
-            ) or not self.assets.exists("slurmdb-job-gpus-per-task"):
-                # sbatch --gpus-per-task <m> --ntasks <n>
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus-per-task",
-                        str(2),
-                        "--ntasks",
-                        str(2),
-                    ],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-per-task",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-per-task",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_job_gpus_gres(self, job_id):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            "slurm-job-gpus-gres",
+        )
+        self.dump_slurmrestd_query(
+            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            "slurmdb-job-gpus-gres",
+        )
 
-            if not self.assets.exists("slurm-job-gpus-gres") or not self.assets.exists(
-                "slurmdb-job-gpus-gres"
-            ):
-                # sbatch --gres gpu:<n>
-                job_id = self.cluster.submit(
-                    user,
-                    ["--partition", gpu_partition, "--gres ", f"gpu:{gpu_per_node}"],
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{job_id}",
-                    "slurm-job-gpus-gres",
-                )
-                self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{job_id}",
-                    "slurmdb-job-gpus-gres",
-                )
-                self.cluster.cancel(user, job_id)
-        else:
-            logger.warning("Unable to find GPU on cluster %s", self.cluster.name)
+    def _crawl_node_gpus_allocated(self, node):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/node/{node}",
+            "slurm-node-with-gpus-allocated",
+        )
 
-    def _crawl_nodes_gpus(self):
-        nodes = self.cluster.query_slurmrestd_json(f"/slurm/v{self.cluster.api}/nodes")
-        # Look at GPU declared on cluster. Logic expects all nodes with GPUs share the
-        # same GPUs setup.
-        has_gpu = False
-        gpu_per_node = 0
-        gpu_types = []
-        gpu_partition = None
-        for _node in nodes["nodes"]:
-            all_gres = _node["gres"].split(",")
-            if len(all_gres) and any([gres_s.startswith("gpu") for gres_s in all_gres]):
-                has_gpu = True
-                for gres_s in all_gres:
-                    gres = gres_s.split(":")
-                    # skip non-gpu gres
-                    if gres[0] != "gpu":
-                        continue
-                    gpu_types.append(gres[1])
-                    gpu_per_node += int(gres[2])
-                    gpu_partition = _node["partitions"][0]
-                break
+    def _crawl_node_gpus_mixed(self, node):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/node/{node}",
+            "slurm-node-with-gpus-mixed",
+        )
 
-        node = None
-        # Submit jobs and allocate GPUs
-        if has_gpu:
-            user = self.cluster.pick_user()
-            if not self.assets.exists("slurm-node-with-gpus-allocated"):
-                # Allocate all GPUs on a node
-                job_id = self.cluster.submit(
-                    user,
-                    [
-                        "--partition",
-                        gpu_partition,
-                        "--gpus",
-                        str(gpu_per_node),
-                        "--nodes",
-                        str(1),
-                    ],
-                )
-                node = self.cluster.job_nodes(job_id)[0]
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{node}",
-                    "slurm-node-with-gpus-allocated",
-                )
-                self.cluster.cancel(user, job_id)
+    def _crawl_node_gpus_idle(self, node):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/node/{node}",
+            "slurm-node-with-gpus-idle",
+        )
 
-            if not self.assets.exists("slurm-node-with-gpus-mixed"):
-                # Allocate some GPUs on a node
-                job_id = self.cluster.submit(
-                    user, ["--partition", gpu_partition, "--gpus", str(1)]
-                )
-                node = self.cluster.job_nodes(job_id)[0]
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{node}",
-                    "slurm-node-with-gpus-mixed",
-                )
-                self.cluster.cancel(user, job_id)
-
-            if not self.assets.exists("slurm-node-with-gpus-idle"):
-                if node:
-                    self.cluster.wait_idle(node)
-                else:
-                    # find random gpu node
-                    for _node in nodes["nodes"]:
-                        if len(_node["gres"]):
-                            node = _node["name"]
-                            break
-                # All GPUs idle
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{node}",
-                    "slurm-node-with-gpus-idle",
-                )
-
-            for _node in nodes["nodes"]:
-                # Get node without GPU
-                if not len(_node["gres"]):
-                    self.dump_slurmrestd_query(
-                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
-                        "slurm-node-without-gpu",
-                    )
-                    break
+    def _crawl_node_without_gpu(self, node):
+        self.dump_slurmrestd_query(
+            f"/slurm/v{self.cluster.api}/node/{node}",
+            "slurm-node-without-gpu",
+        )
 
     def _crawl_partitions(self):
         # Download partitions
