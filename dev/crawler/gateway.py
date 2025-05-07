@@ -11,10 +11,10 @@ import typing as t
 import sys
 import os
 import json
-import shlex
 import random
 import getpass
 from pathlib import Path
+import logging
 
 import requests
 
@@ -23,15 +23,14 @@ if t.TYPE_CHECKING:
 
 from .lib import (
     BaseAssetsManager,
-    crawler_logger,
+    TokenizedComponentCrawler,
     load_settings,
-    dump_component_query,
     busy_node,
 )
 
 ADMIN_PASSWORD_ENV_VAR = "SLURMWEB_DEV_ADMIN_PASSWORD"
 
-logger = crawler_logger()
+logger = logging.getLogger(__name__)
 
 
 class GatewayAssetsManager(BaseAssetsManager):
@@ -75,10 +74,9 @@ def user_token(url: str, user: str):
 def admin_user(dev_host: DevelopmentHostClient, cluster: str):
     """Return name of a user in admin group for the given cluster."""
 
-    _, stdout, _ = dev_host.exec(
-        shlex.join(["firehpc", "status", "--cluster", cluster, "--json"])
-    )
+    _, stdout, _ = dev_host.exec(["firehpc", "status", "--cluster", cluster, "--json"])
     cluster_status = json.loads(stdout.read())
+    stdout.close()
 
     for group in cluster_status["groups"]:
         if group["name"] == "admin":
@@ -105,42 +103,41 @@ def slurmweb_token(
     return user_token(url, user)
 
 
-class GatewayCrawler:
+class GatewayCrawler(TokenizedComponentCrawler):
     def __init__(
         self, token: str, cluster: str, infrastructure: str, dev_tmp_dir: Path
     ):
-        self.token = token
-        self.cluster = cluster
-        self.infrastructure = infrastructure
-        # Get gateway HTTP base URL from configuration
-        self.url = gateway_url(dev_tmp_dir)
-        self.assets = GatewayAssetsManager()
-
-    def dump_component_query(
-        self,
-        query: str,
-        asset_name: dict[int, str] | str,
-        headers: dict[str, str] | None = None,
-        **kwargs,
-    ):
-        if headers is None:
-            headers = {"Authorization": f"Bearer {self.token}"}
-        return dump_component_query(
-            self.assets.statuses,
-            self.url,
-            query,
-            headers,
-            self.assets.path,
-            asset_name,
-            **kwargs,
+        super().__init__(
+            "gateway",
+            {
+                "clusters": self._crawl_clusters,
+                "users": self._crawl_users,
+                "login": self._crawl_login,
+                "stats": self._crawl_stats,
+                "jobs": self._crawl_jobs,
+                "nodes": self._crawl_nodes,
+                "partitions": self._crawl_partitions,
+                "qos": self._crawl_qos,
+                "reservations": self._crawl_reservations,
+                "accounts": self._crawl_accounts,
+                "racksdb": self._crawl_racksdb,
+                "metrics": self._crawl_metrics,
+            },
+            GatewayAssetsManager(),
+            gateway_url(dev_tmp_dir),  # Get gateway HTTP base URL from configuration
+            token,
         )
 
-    def crawl(self):
-        """Crawl and save test assets from Slurm-web gateway component and return
-        authentication JWT."""
+        self.cluster = cluster
+        self.infrastructure = infrastructure
 
+    def _crawl_clusters(self):
         self.dump_component_query("/api/clusters", "clusters")
+
+    def _crawl_users(self):
         self.dump_component_query("/api/users", "users")
+
+    def _crawl_login(self):
         self.dump_component_query(
             "/api/messages/login",
             {
@@ -149,7 +146,11 @@ class GatewayCrawler:
                 500: "message_login_error",
             },
         )
+
+    def _crawl_stats(self):
         self.dump_component_query(f"/api/agents/{self.cluster}/stats", "stats")
+
+    def _crawl_jobs(self):
         jobs = self.dump_component_query(
             f"/api/agents/{self.cluster}/jobs",
             "jobs",
@@ -157,7 +158,7 @@ class GatewayCrawler:
             limit_dump=100,
         )
 
-        if not (len(jobs)):
+        if not len(jobs):
             logger.warning(
                 "No jobs found in queue of cluster %s, unable to crawl jobs data",
                 self.cluster,
@@ -185,6 +186,7 @@ class GatewayCrawler:
 
         # FIXME: Download unknown job
 
+    def _crawl_nodes(self):
         nodes = self.dump_component_query(
             f"/api/agents/{self.cluster}/nodes",
             "nodes",
@@ -218,23 +220,31 @@ class GatewayCrawler:
 
         # FIXME: download unknown node
 
+    def _crawl_partitions(self):
         self.dump_component_query(
             f"/api/agents/{self.cluster}/partitions",
             "partitions",
         )
+
+    def _crawl_qos(self):
         self.dump_component_query(
             f"/api/agents/{self.cluster}/qos",
             "qos",
         )
+
+    def _crawl_reservations(self):
         self.dump_component_query(
             f"/api/agents/{self.cluster}/reservations",
             "reservations",
         )
+
+    def _crawl_accounts(self):
         self.dump_component_query(
             f"/api/agents/{self.cluster}/accounts",
             "accounts",
         )
 
+    def _crawl_racksdb(self):
         # RacksDB infrastructure diagram
         self.dump_component_query(
             f"/api/agents/{self.cluster}/racksdb/draw/infrastructure/{self.infrastructure}.png?coordinates",
@@ -248,6 +258,8 @@ class GatewayCrawler:
                 "infrastructure": {"equipment_labels": False, "ghost_unselected": True},
             },
         )
+
+    def _crawl_metrics(self):
         # metrics
         for metric in ["nodes", "cores", "jobs"]:
             for _range in ["hour"]:
@@ -256,5 +268,3 @@ class GatewayCrawler:
                     f"metrics-{metric}-{_range}",
                     prettify=False,
                 )
-
-        self.assets.save()

@@ -9,6 +9,7 @@
 from pathlib import Path
 import sys
 import getpass
+import random
 import logging
 
 
@@ -20,7 +21,7 @@ from crawler.lib import (
     DevelopmentHostConnectionError,
     DevelopmentHostCluster,
 )
-from crawler.slurmrestd import crawl_slurmrestd
+from crawler.slurmrestd import SlurmrestdCrawler
 from crawler.agent import crawl_agent
 from crawler.gateway import slurmweb_token, GatewayCrawler
 from crawler.prometheus import crawl_prometheus
@@ -30,7 +31,7 @@ from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 logger = logging.getLogger("crawl-tests-assets")
 
-DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
+DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "crawler"]
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
 GATEWAY_PREFERRED_INFRASTRUCTURE = "tiny"
@@ -104,12 +105,87 @@ def main() -> None:
             dev_host, infrastructure, settings.slurmrestd.uri, auth
         )
 
-        # Check no jobs in queue
+        # Cancel all jobs
+        cluster.cancel_all()
 
-        # Launch submit fake jobs
+        # Resume all nodes
+        cluster.nodes_resume()
 
-        # If cluster has gpu, launch individual jobs
+        # FIXME: check all nodes are OK
 
+        # Move some nodes from production
+        nodes = cluster.nodes_partition(cluster.partitions()[0])
+        node_down = random.choice(nodes)
+        node_drain = random.choice(nodes)
+        cluster.node_update(node_down, "DOWN", "CPU dead")
+        cluster.node_update(node_drain, "DRAIN", "ECC memory error")
+
+        # Check has no jobs in queue or skip it
+        # FIXME: wait cluster to become idle
+        if cluster.has_jobs():
+            logger.error(
+                "Unable to crawl cluster %s with jobs in queue", infrastructure
+            )
+            continue
+
+        # Submit completed job
+        cluster.submit(
+            cluster.pick_user(),
+            [
+                "--ntasks",
+                str(1),
+            ],
+            duration=1,
+            wait_running=False,
+        )
+        # Submit failed job
+        cluster.submit(
+            cluster.pick_user(),
+            [
+                "--ntasks",
+                str(1),
+            ],
+            duration=1,
+            wait_running=False,
+            success=False,
+        )
+        # Submit timeout job
+        cluster.submit(
+            cluster.pick_user(),
+            [
+                "--ntasks",
+                str(1),
+            ],
+            duration=30,
+            timelimit=(0, 2),
+            wait_running=False,
+        )
+
+        # Submit 10 random running jobs
+        for idx in range(10):
+            cluster.submit(
+                cluster.pick_user(),
+                [
+                    "--ntasks",
+                    str(random.choice([1, 4, 16, 32, 64, 128])),
+                ],
+                duration=random.choice([30, 60, 90]),
+                wait_running=False,
+            )
+        # Submit pending job
+        cluster.submit(
+            cluster.pick_user(),
+            [
+                "--ntasks",
+                str(random.choice([1, 4, 16, 32, 64, 128])),
+                "--begin",
+                "now+1hour",
+            ],
+            duration=30,
+            wait_running=False,
+        )
+
+        # Crawl assets from components
         if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
             gateway = GatewayCrawler(
                 token,
@@ -117,8 +193,22 @@ def main() -> None:
                 infrastructure,
                 dev_tmp_dir,
             )
-            gateway.crawl()
-
+            gateway.crawl(
+                [
+                    "clusters",
+                    "users",
+                    "login",
+                    "stats",
+                    "jobs",
+                    "nodes",
+                    "partitions",
+                    "qos",
+                    "reservations",
+                    "accounts",
+                    "racksdb",
+                    "metrics",
+                ]
+            )
         crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
 
         # Crawl agent
@@ -128,13 +218,30 @@ def main() -> None:
         if crawl_metrics:
             crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
 
-        # Crawl slurmrestd
-        try:
-            crawl_slurmrestd(dev_host, cluster, settings.slurmrestd.uri, auth)
-        except RuntimeError as err:
-            logger.error(
-                "Unable to crawl slurmrestd data from cluster %s: %s", cluster, err
-            )
+        slurmrestd = SlurmrestdCrawler(cluster, auth)
+        slurmrestd.crawl(
+            [
+                "ping",
+                "errors",
+                "jobs",
+                "nodes",
+                "jobs-gpus",
+                "nodes-gpus",
+                "partitions",
+                "qos",
+                "accounts",
+                "reservations",
+            ]
+        )
+
+        # Resume node states
+        cluster.node_resume(node_down)
+        cluster.node_resume(node_drain)
+
+        # Cancel all jobs
+        cluster.cancel_all()
+
+        # If cluster has gpu, launch individual jobs
 
 
 if __name__ == "__main__":
