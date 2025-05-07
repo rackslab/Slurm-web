@@ -18,7 +18,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -29,13 +29,13 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },
   "errors": [
     {
-      "description": "Unable to query JobId=192",
+      "description": "Unable to query JobId=2640",
       "error_number": 2017,
       "error": "Invalid job id specified",
       "source": "_handle_job_get"

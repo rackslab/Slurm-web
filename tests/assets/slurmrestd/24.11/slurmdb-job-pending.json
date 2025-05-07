@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jsherman",
-        "id": 17
+        "user": "emendoza",
+        "id": 13
       },
       "block": "",
       "cluster": "hpc",
@@ -55,10 +55,10 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1732026955,
+        "eligible": 1746621018,
         "end": 0,
         "start": 0,
-        "submission": 1732026955,
+        "submission": 1746621018,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 120
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -110,7 +110,7 @@
           "number": 0
         }
       },
-      "job_id": 109,
+      "job_id": 1312,
       "name": "wrap",
       "licenses": "",
       "mcs": {
@@ -122,11 +122,11 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 281
+        "number": 545
       },
-      "qos": "study",
+      "qos": "normal",
       "required": {
-        "CPUs": 2,
+        "CPUs": 4,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -151,7 +151,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --qos study --partition normal --time 120 --wrap /usr/bin/sleep 360 --ntasks 2",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 90 && true --ntasks 4",
       "tres": {
         "allocated": [],
         "requested": [
@@ -159,13 +159,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 2
+            "count": 4
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 1024
+            "count": 2048
           },
           {
             "type": "node",
@@ -177,17 +177,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 2
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jsherman",
+      "user": "emendoza",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jsherman"
+      "working_directory": "/home/emendoza"
     }
   ],
   "meta": {
@@ -198,7 +198,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "",
       "group": ""
     },
@@ -209,7 +209,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

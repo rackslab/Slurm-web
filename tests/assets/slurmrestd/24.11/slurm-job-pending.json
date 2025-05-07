@@ -1,11 +1,11 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026955
+        "number": 1746621018
       },
       "admin_comment": "",
       "allocating_node": "login",
@@ -25,16 +25,17 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 17,
+      "association_id": 13,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
         "USING_DEFAULT_WCKEY",
-        "BACKFILL_ATTEMPTED",
-        "SCHEDULING_ATTEMPTED"
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -111,12 +112,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026955
+        "number": 1746621018
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732062960
+        "number": 1746621240
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -157,7 +158,7 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 109,
+      "job_id": 1312,
       "job_resources": {},
       "job_size_str": [],
       "job_state": [
@@ -166,11 +167,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732027256
+        "number": 1746621038
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "jsherman",
+      "mail_user": "emendoza",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -215,7 +216,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 4
       },
       "node_count": {
         "set": true,
@@ -225,7 +226,7 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 4
       },
       "partition": "normal",
       "prefer": "",
@@ -271,12 +272,12 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 281
+        "number": 545
       },
       "profile": [
         "NOT_SET"
       ],
-      "qos": "study",
+      "qos": "",
       "reboot": false,
       "required_nodes": "",
       "minimum_switches": 0,
@@ -288,7 +289,7 @@
       },
       "restart_cnt": 0,
       "resv_name": "",
-      "scheduled_nodes": "cn1",
+      "scheduled_nodes": "cn2",
       "selinux_context": "",
       "shared": [],
       "exclusive": [],
@@ -303,17 +304,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732055760
+        "number": 1746621180
       },
       "state_description": "",
       "state_reason": "Priority",
-      "standard_error": "/home/jsherman/slurm-109.out",
+      "standard_error": "/home/emendoza/slurm-1312.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/jsherman/slurm-109.out",
+      "standard_output": "/home/emendoza/slurm-1312.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1732026955
+        "number": 1746621018
       },
       "suspend_time": {
         "set": true,
@@ -324,7 +325,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 120
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -342,24 +343,24 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=2,mem=1G,node=1,billing=2",
+      "tres_req_str": "cpu=4,mem=2G,node=1,billing=4",
       "tres_alloc_str": "",
-      "user_id": 10009,
-      "user_name": "jsherman",
+      "user_id": 10005,
+      "user_name": "emendoza",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/jsherman"
+      "current_working_directory": "/home/emendoza"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732027256
+    "number": 1746621035
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027265
+    "number": 1746621039
   },
   "meta": {
     "plugin": {
@@ -369,7 +370,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -380,7 +381,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

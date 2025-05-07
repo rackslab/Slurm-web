@@ -15,11 +15,59 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-gpus-archived": {
+    "content-type": "application/json",
+    "status": 404
+  },
+  "slurm-job-gpus-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-gres": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-multi-nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-multi-types": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-per-node": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-per-socket": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-per-task": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-gpus-type": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-pending": {
     "content-type": "application/json",
     "status": 200
   },
   "slurm-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-job-timeout": {
     "content-type": "application/json",
     "status": 200
   },
@@ -52,6 +100,22 @@
     "status": 200
   },
   "slurm-node-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-without-gpu": {
     "content-type": "application/json",
     "status": 200
   },
@@ -91,11 +155,59 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-job-gpus-archived": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-completed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-gres": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-multi-nodes": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-multi-types": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-per-node": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-per-socket": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-per-task": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-gpus-type": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-job-pending": {
     "content-type": "application/json",
     "status": 200
   },
   "slurmdb-job-running": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-timeout": {
     "content-type": "application/json",
     "status": 200
   },

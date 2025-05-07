@@ -6,27 +6,10 @@
       "number": 32,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 602954,
+    "gres_detail": [],
+    "job_id": 4864,
     "job_state": [
-      "PENDING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
@@ -34,150 +17,468 @@
       "set": true
     },
     "nodes": "",
-    "partition": "batch",
+    "partition": "normal",
     "priority": {
       "infinite": false,
       "number": 90,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "BeginTime",
+    "tasks": {
+      "infinite": false,
+      "number": 32,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
   },
   {
-    "account": "acoustic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 16,
+      "number": 2,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 602977,
+    "gres_detail": [],
+    "job_id": 4868,
     "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 602978,
-    "job_state": [
-      "PENDING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
       "number": 2,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "gpu[1-2]",
+    "partition": "gpu",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 727,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "state_reason": "None",
+    "tasks": {
       "infinite": false,
       "number": 2,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
+    "tres_per_job": "gres/gpu:8",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
     },
-    "job_id": 602989,
+    "gres_detail": [],
+    "job_id": 4869,
     "job_state": [
-      "PENDING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "gpu2",
+    "partition": "gpu",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 727,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "gres/gpu:h100:1",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4870,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "nodes": "gpu[1-2]",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "gres/gpu:1",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4871,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu2",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "gres/gpu:h100:1",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4872,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu1",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "gres/gpu:2",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4873,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu2",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "gres/gpu=2",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4874,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu1",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "gres/gpu:4",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4875,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu2",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "gres/gpu:4",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4876,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "gpu1",
+    "partition": "gpu",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "gres/gpu:1",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4877,
+    "job_state": [
+      "TIMEOUT"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 636,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "TimeLimit",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tnixon"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4878,
+    "job_state": [
+      "COMPLETED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4879,
+    "job_state": [
+      "FAILED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "NonZeroExitCode",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
   },
   {
     "account": "acoustic",
@@ -186,88 +487,35 @@
       "number": 4,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 602991,
+    "gres_detail": [],
+    "job_id": 4880,
     "job_state": [
-      "PENDING"
+      "COMPLETED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn2",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 272,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "state_reason": "None",
+    "tasks": {
       "infinite": false,
-      "number": 1,
+      "number": 4,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603006,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cbaker"
   },
   {
     "account": "acoustic",
@@ -276,763 +524,72 @@
       "number": 64,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603013,
+    "gres_detail": [],
+    "job_id": 4881,
     "job_state": [
-      "PENDING"
+      "COMPLETED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn3",
+    "partition": "normal",
     "priority": {
       "infinite": false,
       "number": 90,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cpotter"
   },
   {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603023,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603029,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 32,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603053,
+    "gres_detail": [],
+    "job_id": 4882,
     "job_state": [
-      "PENDING"
+      "COMPLETED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn2",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 454,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603054,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603055,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603062,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603070,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603088,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603123,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603133,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603138,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603139,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603141,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603154,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "state_reason": "None",
+    "tasks": {
       "infinite": false,
       "number": 32,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603155,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 512,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603160,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "bparks"
   },
   {
     "account": "acoustic",
@@ -1041,160 +598,156 @@
       "number": 16,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603168,
+    "gres_detail": [],
+    "job_id": 4883,
     "job_state": [
-      "PENDING"
+      "COMPLETED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn2",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 181,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tpearson"
   },
   {
-    "account": "acoustic",
+    "account": "biology",
+    "cpus": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 4884,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 727,
+      "set": true
+    },
+    "qos": "normal",
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 16,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
+  },
+  {
+    "account": "biology",
     "cpus": {
       "infinite": false,
       "number": 64,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603169,
+    "gres_detail": [],
+    "job_id": 4885,
     "job_state": [
-      "PENDING"
+      "RUNNING"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn3",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 727,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
   },
   {
-    "account": "acoustic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 1,
+      "number": 4,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603189,
+    "gres_detail": [],
+    "job_id": 4886,
     "job_state": [
-      "PENDING"
+      "RUNNING"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "",
-    "partition": "batch",
+    "nodes": "cn2",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 818,
       "set": true
     },
     "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 4,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "agoodwin"
   },
   {
-    "account": "acoustic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 8,
+      "number": 64,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603194,
+    "gres_detail": [],
+    "job_id": 4887,
     "job_state": [
       "PENDING"
     ],
@@ -1204,60 +757,24 @@
       "set": true
     },
     "nodes": "",
-    "partition": "batch",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 727,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "qos": "",
+    "state_reason": "Resources",
+    "tasks": {
       "infinite": false,
-      "number": 2,
+      "number": 64,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603198,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "crich"
   },
   {
     "account": "acoustic",
@@ -1266,25 +783,8 @@
       "number": 4,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603202,
+    "gres_detail": [],
+    "job_id": 4888,
     "job_state": [
       "PENDING"
     ],
@@ -1294,357 +794,34 @@
       "set": true
     },
     "nodes": "",
-    "partition": "batch",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 272,
       "set": true
     },
-    "qos": "normal",
+    "qos": "",
     "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603212,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603220,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603242,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603258,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603260,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603269,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "tasks": {
       "infinite": false,
       "number": 4,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603273,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "cbaker"
   },
   {
-    "account": "acoustic",
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603279,
+    "gres_detail": [],
+    "job_id": 4889,
     "job_state": [
       "PENDING"
     ],
@@ -1654,582 +831,34 @@
       "set": true
     },
     "nodes": "",
-    "partition": "batch",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 454,
       "set": true
     },
-    "qos": "normal",
+    "qos": "",
     "state_reason": "Priority",
-    "user_name": "jryan"
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "bparks"
   },
   {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603288,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 512,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603293,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603307,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603323,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603325,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603328,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603347,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603349,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603354,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603357,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603370,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603385,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 16,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603386,
+    "gres_detail": [],
+    "job_id": 4890,
     "job_state": [
       "PENDING"
     ],
@@ -2239,2264 +868,23 @@
       "set": true
     },
     "nodes": "",
-    "partition": "batch",
+    "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 90,
+      "number": 363,
       "set": true
     },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603395,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603400,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603405,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603408,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603416,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603441,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603449,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603450,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603452,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603459,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603461,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603473,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603501,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603509,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603554,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603556,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
+    "qos": "",
+    "state_reason": "BeginTime",
+    "tasks": {
       "infinite": false,
       "number": 16,
       "set": true
     },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603600,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603602,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603638,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603639,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603646,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603653,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603668,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603675,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603680,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603681,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1024,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603684,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603698,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603701,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603703,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603708,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603709,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603710,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603712,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603721,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603732,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8192,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603741,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 171,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 32,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603744,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603746,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603768,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 8,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603769,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603774,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603789,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603793,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603798,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 128,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603811,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 2,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603815,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 16,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603819,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 256,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603825,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 4,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
-  },
-  {
-    "account": "acoustic",
-    "cpus": {
-      "infinite": false,
-      "number": 64,
-      "set": true
-    },
-    "exit_code": {
-      "return_code": {
-        "infinite": false,
-        "number": 0,
-        "set": true
-      },
-      "signal": {
-        "id": {
-          "infinite": false,
-          "number": 0,
-          "set": false
-        },
-        "name": ""
-      },
-      "status": [
-        "SUCCESS"
-      ]
-    },
-    "job_id": 603835,
-    "job_state": [
-      "PENDING"
-    ],
-    "node_count": {
-      "infinite": false,
-      "number": 1,
-      "set": true
-    },
-    "nodes": "",
-    "partition": "batch",
-    "priority": {
-      "infinite": false,
-      "number": 90,
-      "set": true
-    },
-    "qos": "normal",
-    "state_reason": "Priority",
-    "user_name": "jryan"
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "ksoto"
   }
 ]

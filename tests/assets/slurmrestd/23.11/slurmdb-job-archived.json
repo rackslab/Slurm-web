@@ -28,7 +28,7 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "pkerr",
+        "user": "cpotter",
         "id": 16
       },
       "block": "",
@@ -54,11 +54,11 @@
         }
       },
       "time": {
-        "elapsed": 361,
-        "eligible": 1731483259,
-        "end": 1731486494,
-        "start": 1731486133,
-        "submission": 1731483259,
+        "elapsed": 3,
+        "eligible": 1746619980,
+        "end": 1746619983,
+        "start": 1746619980,
+        "submission": 1746619980,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -111,35 +111,35 @@
           "number": 0
         }
       },
-      "job_id": 670,
+      "job_id": 508,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn2",
-      "partition": "normal",
+      "nodes": "ia1",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 181
+        "number": 272
       },
       "qos": "normal",
       "required": {
         "CPUs": 1,
         "memory_per_cpu": {
-          "set": false,
+          "set": true,
           "infinite": false,
-          "number": 0
+          "number": 512
         },
         "memory_per_node": {
-          "set": true,
+          "set": false,
           "infinite": false,
           "number": 0
         }
       },
-      "kill_request_user": "",
+      "kill_request_user": "cpotter",
       "reservation": {
         "id": 0,
         "name": ""
@@ -147,23 +147,23 @@
       "script": "",
       "state": {
         "current": [
-          "COMPLETED"
+          "CANCELLED"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 361,
+            "elapsed": 4,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1731486494
+              "number": 1746619984
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1731486133
+              "number": 1746619980
             },
             "suspended": 0,
             "system": {
@@ -181,27 +181,27 @@
           },
           "exit_code": {
             "status": [
-              "SUCCESS"
+              "SIGNALED"
             ],
             "return_code": {
-              "set": true,
+              "set": false,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": false,
+                "set": true,
                 "infinite": false,
-                "number": 0
+                "number": 15
               },
-              "name": ""
+              "name": "TERM"
             }
           },
           "nodes": {
             "count": 1,
-            "range": "cn2",
+            "range": "ia1",
             "list": [
-              "cn2"
+              "ia1"
             ]
           },
           "tasks": {
@@ -225,7 +225,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "COMPLETED"
+            "CANCELLED"
           ],
           "statistics": {
             "CPU": {
@@ -240,7 +240,7 @@
             }
           },
           "step": {
-            "id": "670.batch",
+            "id": "508.batch",
             "name": "batch"
           },
           "task": {
@@ -270,7 +270,7 @@
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 131072
+                "count": 512
               },
               {
                 "type": "node",
@@ -282,7 +282,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos normal --partition normal --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 1",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --partition ia --gpus 1",
       "tres": {
         "allocated": [
           {
@@ -295,7 +295,7 @@
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 131072
+            "count": 512
           },
           {
             "type": "energy",
@@ -327,7 +327,7 @@
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 131072
+            "count": 512
           },
           {
             "type": "node",
@@ -344,12 +344,12 @@
         ]
       },
       "used_gres": "",
-      "user": "pkerr",
+      "user": "cpotter",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/pkerr"
+      "working_directory": "/home/cpotter"
     }
   ],
   "meta": {
@@ -360,7 +360,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93496951] (fd 10)",
+      "source": "[firehpc]:46386",
       "user": "",
       "group": ""
     },

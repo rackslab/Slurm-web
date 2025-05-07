@@ -7,17 +7,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1731514097
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 175,
+      "cpu_load": 87,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 605
+        "number": 1578
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -47,7 +47,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1732025549
+        "number": 1746621081
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -60,7 +60,7 @@
       "state": [
         "ALLOCATED"
       ],
-      "operating_system": "Linux 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30)",
+      "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
       "owner": "",
       "partitions": [
         "normal"
@@ -89,20 +89,20 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732025546
+        "number": 1746441568
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "24.11.0-0rc2"
+      "version": "24.11.0"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732026859
+    "number": 1746621261
   },
   "meta": {
     "plugin": {
@@ -112,7 +112,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -123,7 +123,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

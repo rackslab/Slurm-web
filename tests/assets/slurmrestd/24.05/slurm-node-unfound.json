@@ -16,7 +16,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93492048] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839271396] (fd 12)",
       "user": "root",
       "group": "root"
     },
