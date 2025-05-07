@@ -7,10 +7,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
+import logging
 
 from .lib import ASSETS, dump_component_query
 
 from slurmweb.metrics.db import SlurmwebMetricsDB
+
+logger = logging.getLogger(__name__)
 
 
 def crawl_prometheus(url: str, job: str) -> None:

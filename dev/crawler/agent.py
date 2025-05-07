@@ -8,12 +8,13 @@
 
 import json
 import random
+import logging
 
 from slurmweb.version import get_version
 
-from .lib import ASSETS, crawler_logger, dump_component_query, busy_node
+from .lib import ASSETS, dump_component_query, busy_node
 
-logger = crawler_logger()
+logger = logging.getLogger(__name__)
 
 
 def crawl_agent(port: int, token: str, metrics: bool) -> None:
