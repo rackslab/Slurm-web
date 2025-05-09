@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 - docs: Mention support of Fedora 42.
+- conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
+  nodes list and indiviual node responses.
 
 ## Changed
 - frontend: Migrate to Tailwind CSS v4 (#449). Note this breaks support of old
