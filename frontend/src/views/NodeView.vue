@@ -13,6 +13,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
+import { getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -160,6 +161,18 @@ if (runtimeStore.hasPermission('view-jobs')) {
                 <dt class="text-sm leading-6 font-medium text-gray-900">Memory</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   {{ node.data.value.real_memory }}MB
+                </dd>
+              </div>
+              <div
+                v-if="node.data.value.gres"
+                id="memory"
+                class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+              >
+                <dt class="text-sm leading-6 font-medium text-gray-900">GPU</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <ul class="list-disc pl-4">
+                    <li v-for="gpu in getNodeGPU(node.data.value)" :key="gpu">{{ gpu }}</li>
+                  </ul>
                 </dd>
               </div>
               <div id="partitions" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

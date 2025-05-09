@@ -299,11 +299,25 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
     return 'idle'
   }
 }
+
+export function getNodeGPU(node: ClusterNode): string[] {
+  if (!node.gres.length) return []
+  let results: string[] = []
+  node.gres.split(',').forEach((gres) => {
+    const [type, model, number] = gres.split(':')
+    if (type != 'gpu') return
+    results.push(`${number} x ${model}`)
+  })
+  return results
+}
+
 export interface ClusterNode {
   alloc_cpus: number
   alloc_idle_cpus: number
   cores: number
   cpus: number
+  gres: string
+  gres_used: string
   name: string
   partitions: Array<string>
   real_memory: number

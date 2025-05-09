@@ -13,6 +13,7 @@ import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
+import { getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
@@ -76,6 +77,7 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
       previousNode.sockets == currentNode.sockets &&
       previousNode.cores == currentNode.cores &&
       previousNode.real_memory == currentNode.real_memory &&
+      getNodeGPU(previousNode) == getNodeGPU(currentNode) &&
       arraysEqual<string>(previousNode.state, currentNode.state) &&
       arraysEqual<string>(previousNode.partitions, currentNode.partitions)
     ) {
@@ -224,7 +226,9 @@ onMounted(() => {
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Memory
                   </th>
-
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    GPU
+                  </th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     Partitions
                   </th>
@@ -284,6 +288,9 @@ onMounted(() => {
                       {{ node.real_memory }}MB
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                      {{ getNodeGPU(node).join(', ') }}
+                    </td>
+                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <span
                         v-for="partition in node.partitions"
                         :key="partition"
@@ -302,7 +309,7 @@ onMounted(() => {
                       leave-to-class="-translate-y-6 opacity-0"
                     >
                       <tr v-show="foldedNodesShow[node.name]">
-                        <td colspan="7" class="z-0 bg-gray-300">
+                        <td colspan="8" class="z-0 bg-gray-300">
                           <ul
                             role="list"
                             class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4 lg:grid-cols-16"
