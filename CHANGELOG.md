@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ## Added
-- docs: Mention support of Fedora 42.
+- agent: Add total quantity of memory and number of gpus in cluster stats
+  response.
 - conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
   nodes list and indiviual node responses.
+- docs: Mention support of Fedora 42.
 
 ## Changed
 - frontend: Migrate to Tailwind CSS v4 (#449). Note this breaks support of old
