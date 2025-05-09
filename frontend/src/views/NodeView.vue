@@ -7,13 +7,14 @@
 -->
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
-import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
+import { getMBHumanUnit, getNodeGPU, getNodeGPUFromGres } from '@/composables/GatewayAPI'
 import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -42,6 +43,19 @@ let jobs: ClusterDataPoller<ClusterJob[]> | undefined
 if (runtimeStore.hasPermission('view-jobs')) {
   jobs = useClusterDataPoller<ClusterJob[]>('jobs', 10000, nodeName)
 }
+
+const gpuAvailable = computed(() => {
+  if (!node.data.value) return 0
+  return getNodeGPUFromGres(node.data.value.gres).reduce((gpu, current) => gpu + current.count, 0)
+})
+
+const gpuAllocated = computed(() => {
+  if (!node.data.value) return 0
+  return getNodeGPUFromGres(node.data.value.gres_used).reduce(
+    (gpu, current) => gpu + current.count,
+    0
+  )
+})
 </script>
 
 <template>
@@ -104,6 +118,12 @@ if (runtimeStore.hasPermission('view-jobs')) {
                         >({{
                           (node.data.value.alloc_memory / node.data.value.real_memory) * 100
                         }}%)</span
+                      >
+                    </li>
+                    <li v-if="node.data.value.gres_used">
+                      GPU: {{ gpuAllocated }} / {{ gpuAvailable }}
+                      <span class="text-gray-400 italic"
+                        >({{ (gpuAllocated / gpuAvailable) * 100 }}%)</span
                       >
                     </li>
                   </ul>
@@ -172,7 +192,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
                 <dt class="text-sm leading-6 font-medium text-gray-900">GPU</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <ul class="list-disc pl-4">
-                    <li v-for="gpu in getNodeGPU(node.data.value)" :key="gpu">{{ gpu }}</li>
+                    <li v-for="gpu in getNodeGPU(node.data.value.gres)" :key="gpu">{{ gpu }}</li>
                   </ul>
                 </dd>
               </div>
