@@ -7,6 +7,7 @@
 -->
 
 <script setup lang="ts">
+import { getMBHumanUnit } from '@/composables/GatewayAPI'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
@@ -32,7 +33,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         >Unable to retrieve statistics from cluster
         <span class="font-medium">{{ cluster }}</span></ErrorAlert
       >
-      <div v-else class="grid grid-cols-1 gap-px bg-gray-200 sm:grid-cols-2 lg:grid-cols-4">
+      <div v-else class="grid grid-cols-2 gap-px bg-gray-200 md:grid-cols-3 xl:grid-cols-6">
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
           <p class="text-sm leading-6 font-medium text-gray-400">Nodes</p>
           <span
@@ -54,6 +55,35 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
             class="text-4xl font-semibold tracking-tight text-gray-600"
           >
             {{ data.resources.cores }}
+          </span>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
+          <p class="text-sm leading-6 font-medium text-gray-400">Memory</p>
+          <span
+            v-if="data"
+            id="metric-cores"
+            class="text-4xl font-semibold tracking-tight text-gray-600"
+          >
+            {{ getMBHumanUnit(data.resources.memory) }}
+          </span>
+          <div v-else class="flex animate-pulse space-x-4">
+            <div class="h-10 w-10 rounded-full bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="bg-white px-4 py-6 sm:px-6 lg:px-8">
+          <p class="text-sm leading-6 font-medium text-gray-400">GPU</p>
+          <span
+            v-if="data"
+            id="metric-cores"
+            :class="[
+              data.resources.gpus ? 'text-gray-600' : 'text-gray-200',
+              'text-4xl font-semibold tracking-tight'
+            ]"
+          >
+            {{ data.resources.gpus }}
           </span>
           <div v-else class="flex animate-pulse space-x-4">
             <div class="h-10 w-10 rounded-full bg-slate-200"></div>
