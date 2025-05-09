@@ -480,10 +480,26 @@ class TestAgentViews(TestAgentBase):
             response.json["jobs"]["running"],
             len([job for job in jobs_asset if "RUNNING" in job["job_state"]]),
         )
+        self.assertCountEqual(
+            response.json["resources"].keys(), ["nodes", "cores", "memory", "gpus"]
+        )
         self.assertEqual(response.json["resources"]["nodes"], len(nodes_asset))
         self.assertEqual(
             response.json["resources"]["cores"],
             sum([node["cpus"] for node in nodes_asset]),
+        )
+        self.assertEqual(
+            response.json["resources"]["memory"],
+            sum([node["real_memory"] for node in nodes_asset]),
+        )
+        self.assertEqual(
+            response.json["resources"]["gpus"],
+            sum(
+                [
+                    self.app.slurmrestd.node_gres_extract_gpus(node["gres"])
+                    for node in nodes_asset
+                ]
+            ),
         )
         self.assertEqual(response.json["version"], ping_asset["slurm"]["release"])
 

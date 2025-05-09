@@ -355,3 +355,37 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
         qos = self.slurmrestd.qos()
         self.assertCountEqual(qos, asset)
+
+    def test_node_gres_extract_gpus(self):
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus(""), 0)
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:2"), 2)
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:0"), 0)
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:tesla:1"), 1)
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:nvidia:4"), 4)
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("lustre:whamcloud:10"), 0
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:tesla:3,gpu:nvidia:1"), 4
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("lustre:ddn:4,gpu:nvidia:2"), 2
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:h100:0(IDX:N/A)"), 0
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:h100:4(IDX:0-3)"), 4
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus(
+                "gpu:h100:1(IDX:0),gpu:h200:0(IDX:N/A)"
+            ),
+            1,
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus(
+                "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)"
+            ),
+            6,
+        )
