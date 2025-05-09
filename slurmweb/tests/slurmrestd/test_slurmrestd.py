@@ -355,3 +355,16 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
         qos = self.slurmrestd.qos()
         self.assertCountEqual(qos, asset)
+
+    def node_gres_extract_gpus(self):
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:tesla:1"), 1)
+        self.assertEqual(self.slurmrestd.node_gres_extract_gpus("gpu:nvidia:4"), 4)
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("lustre:whamcloud:10"), 0
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:tesla:3,gpu:nvidia:1"), 4
+        )
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("lustre:ddn:4,gpu:nvidia:2"), 2
+        )
