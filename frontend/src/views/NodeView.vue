@@ -13,7 +13,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
-import { getNodeGPU } from '@/composables/GatewayAPI'
+import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -98,7 +98,8 @@ if (runtimeStore.hasPermission('view-jobs')) {
                       >
                     </li>
                     <li>
-                      Memory: {{ node.data.value.alloc_memory }} / {{ node.data.value.real_memory }}
+                      Memory: {{ getMBHumanUnit(node.data.value.alloc_memory) }} /
+                      {{ getMBHumanUnit(node.data.value.real_memory) }}
                       <span class="text-gray-400 italic"
                         >({{
                           (node.data.value.alloc_memory / node.data.value.real_memory) * 100
@@ -160,7 +161,7 @@ if (runtimeStore.hasPermission('view-jobs')) {
               <div id="memory" class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt class="text-sm leading-6 font-medium text-gray-900">Memory</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {{ node.data.value.real_memory }}MB
+                  {{ getMBHumanUnit(node.data.value.real_memory) }}
                 </dd>
               </div>
               <div

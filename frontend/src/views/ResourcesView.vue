@@ -13,7 +13,7 @@ import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import { getNodeGPU } from '@/composables/GatewayAPI'
+import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
@@ -285,7 +285,7 @@ onMounted(() => {
                       {{ node.sockets }} x {{ node.cores }}
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                      {{ node.real_memory }}MB
+                      {{ getMBHumanUnit(node.real_memory) }}
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       {{ getNodeGPU(node).join(', ') }}
