@@ -7,10 +7,10 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1731514097
+        "number": 1741793225
       },
       "cluster_name": "",
-      "cores": 32,
+      "cores": 24,
       "specialized_cores": 0,
       "cpu_binding": 0,
       "cpu_load": 0,
@@ -19,8 +19,8 @@
         "infinite": false,
         "number": 0
       },
-      "cpus": 64,
-      "effective_cpus": 64,
+      "cpus": 48,
+      "effective_cpus": 48,
       "specialized_cpus": "",
       "energy": {
         "average_watts": 0,
@@ -47,11 +47,11 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1732026980
+        "number": 1746621097
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn001",
+      "name": "cn101",
       "next_state_after_reboot": [
         "INVALID"
       ],
@@ -66,7 +66,7 @@
         "batch"
       ],
       "port": 6818,
-      "real_memory": 131072,
+      "real_memory": 65536,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -81,28 +81,28 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
+      "alloc_memory": 24576,
+      "alloc_cpus": 48,
       "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "tres_used": "cpu=48,mem=24G",
+      "tres_weighted": 48.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1731527197
+        "number": 1746449185
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=64,mem=128G,billing=64",
+      "tres": "cpu=48,mem=64G,billing=48",
       "version": ""
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027042
+    "number": 1746621129
   },
   "meta": {
     "plugin": {
@@ -112,7 +112,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93682557] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839272449] (fd 12)",
       "user": "root",
       "group": "root"
     },

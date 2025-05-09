@@ -115,13 +115,22 @@ def stats():
 
     nodes = 0
     cores = 0
+    memory = 0
+    gpus = 0
     for node in slurmrest("nodes"):
         nodes += 1
         cores += node["cpus"]
+        memory += node["real_memory"]
+        gpus += current_app.slurmrestd.node_gres_extract_gpus(node["gres"])
     return jsonify(
         {
             "version": version["release"],
-            "resources": {"nodes": nodes, "cores": cores},
+            "resources": {
+                "nodes": nodes,
+                "cores": cores,
+                "memory": memory,
+                "gpus": gpus,
+            },
             "jobs": {"running": running, "total": total},
         }
     )

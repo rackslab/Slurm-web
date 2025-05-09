@@ -8,7 +8,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93506087] (fd 10)",
+      "source": "[firehpc]:46402",
       "user": "",
       "group": ""
     },
@@ -26,7 +26,7 @@
   "errors": [],
   "warnings": [
     {
-      "description": "slurmdb_jobs_get(0x7fc0a0007770) found nothing",
+      "description": "slurmdb_jobs_get(0x7f4400007170) found nothing",
       "source": "_dump_jobs"
     }
   ]

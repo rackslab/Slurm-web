@@ -54,6 +54,8 @@ export interface ClusterStats {
   resources: {
     nodes: number
     cores: number
+    memory: number
+    gpus: number
   }
   jobs: {
     running: number
@@ -273,6 +275,21 @@ export function compareClusterJobSortOrder(
   }
 }
 
+
+/* Convert a number of megabytes into a string with simplified unit (eg. GB, TB)
+ * when possible. */
+export function getMBHumanUnit(megabytes: number): string {
+  if (!megabytes) return '0'
+  let value = megabytes
+  let divides = 0
+  const units = ['MB', 'GB', 'TB']
+  while (value > 1024) {
+    value /= 1024
+    divides += 1
+  }
+  return `${value}${units[divides]}`
+}
+
 export type ClusterNodeMainState = 'down' | 'drain' | 'draining' | 'up'
 export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle' | 'unavailable'
 
@@ -299,11 +316,41 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
     return 'idle'
   }
 }
+
+interface NodeGPU {
+  model: string
+  number: number
+}
+
+export function getNodeGPUFromGres(fullGres: string): NodeGPU[] {
+  if (!fullGres.length) return []
+  let results: NodeGPU[] = []
+  fullGres.split(',').forEach((gres) => {
+    const [type, model, end] = gres.split(':')
+    if (type != 'gpu') return
+    let number = -1
+    if (end.includes('(')) number = parseInt(end.split('(')[0])
+    else number = parseInt(end)
+    results.push({ model: model, number: number })
+  })
+  return results
+}
+
+export function getNodeGPU(fullGres: string): string[] {
+  let results: string[] = []
+  getNodeGPUFromGres(fullGres).forEach((gpu) => {
+    results.push(`${gpu.number} x ${gpu.model}`)
+  })
+  return results
+}
+
 export interface ClusterNode {
   alloc_cpus: number
   alloc_idle_cpus: number
   cores: number
   cpus: number
+  gres: string
+  gres_used: string
   name: string
   partitions: Array<string>
   real_memory: number

@@ -7,7 +7,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1731514096
+        "number": 1741793225
       },
       "cluster_name": "",
       "cores": 32,
@@ -47,7 +47,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1731527304
+        "number": 1746618105
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -58,9 +58,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE",
-        "COMPLETING",
-        "PLANNED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -91,7 +89,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1731527197
+        "number": 1746449185
       },
       "sockets": 2,
       "threads": 1,
@@ -104,7 +102,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732026868
+    "number": 1746621129
   },
   "meta": {
     "plugin": {
@@ -114,7 +112,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93504610] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839278134] (fd 12)",
       "user": "root",
       "group": "root"
     },

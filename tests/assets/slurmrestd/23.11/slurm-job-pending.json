@@ -1,14 +1,14 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "optic",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1731483270
+        "number": 1746621149
       },
       "admin_comment": "",
-      "allocating_node": "192.168.243.217",
+      "allocating_node": "login",
       "array_job_id": {
         "set": true,
         "infinite": false,
@@ -25,16 +25,17 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 14,
+      "association_id": 17,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "",
       "flags": [
         "EXACT_TASK_COUNT_REQUESTED",
         "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_PARTITION",
+        "USING_DEFAULT_QOS",
         "USING_DEFAULT_WCKEY",
-        "BACKFILL_ATTEMPTED",
-        "SCHEDULING_ATTEMPTED"
+        "PARTITION_ASSIGNED"
       ],
       "burst_buffer": "",
       "burst_buffer_state": "",
@@ -111,12 +112,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1731483270
+        "number": 1746621149
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732041360
+        "number": 0
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -157,7 +158,7 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 671,
+      "job_id": 516,
       "job_resources": {},
       "job_size_str": [],
       "job_state": [
@@ -166,11 +167,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1732027273
+        "number": 1746621158
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "clara",
+      "mail_user": "ksoto",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -215,27 +216,27 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 128
       },
       "node_count": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 2
       },
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 1
+        "number": 128
       },
-      "partition": "normal",
+      "partition": "standard",
       "prefer": "",
       "memory_per_cpu": {
-        "set": false,
+        "set": true,
         "infinite": false,
-        "number": 0
+        "number": 512
       },
       "memory_per_node": {
-        "set": true,
+        "set": false,
         "infinite": false,
         "number": 0
       },
@@ -271,7 +272,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 90
+        "number": 363
       },
       "profile": [
         "NOT_SET"
@@ -288,7 +289,7 @@
       },
       "restart_cnt": 0,
       "resv_name": "",
-      "scheduled_nodes": "cn3",
+      "scheduled_nodes": "",
       "selinux_context": "",
       "shared": [],
       "exclusive": [],
@@ -307,17 +308,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732037760
+        "number": 0
       },
       "state_description": "",
       "state_reason": "Priority",
-      "standard_error": "/home/clara/slurm-671.out",
+      "standard_error": "/home/ksoto/slurm-516.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/clara/slurm-671.out",
+      "standard_output": "/home/ksoto/slurm-516.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1731483270
+        "number": 1746621149
       },
       "suspend_time": {
         "set": true,
@@ -328,7 +329,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 60
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -346,24 +347,24 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=1,mem=128G,node=1,billing=1",
+      "tres_req_str": "cpu=128,mem=64G,node=1,billing=128",
       "tres_alloc_str": "",
-      "user_id": 10006,
-      "user_name": "clara",
+      "user_id": 10009,
+      "user_name": "ksoto",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/clara"
+      "current_working_directory": "/home/ksoto"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1732027273
+    "number": 1746619959
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732027277
+    "number": 1746621161
   },
   "meta": {
     "plugin": {
@@ -373,7 +374,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93965475] (fd 10)",
+      "source": "[firehpc]:42582",
       "user": "root",
       "group": "root"
     },

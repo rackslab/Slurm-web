@@ -1,0 +1,380 @@
+{
+  "jobs": [
+    {
+      "account": "admin",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 1,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "admin",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "tmcgrath",
+        "id": 9
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "time": {
+        "elapsed": 1,
+        "eligible": 1746619851,
+        "end": 0,
+        "start": 1746619851,
+        "submission": 1746619851,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [
+        "STARTED_ON_SCHEDULE",
+        "START_RECEIVED"
+      ],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 1304,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "gpu1",
+      "partition": "gpu",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 909
+      },
+      "qos": "normal",
+      "required": {
+        "CPUs": 1,
+        "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "kill_request_user": "",
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "state": {
+        "current": [
+          "RUNNING"
+        ],
+        "reason": "None"
+      },
+      "steps": [
+        {
+          "time": {
+            "elapsed": 1,
+            "end": {
+              "set": true,
+              "infinite": false,
+              "number": 0
+            },
+            "start": {
+              "set": true,
+              "infinite": false,
+              "number": 1746619851
+            },
+            "suspended": 0,
+            "system": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "total": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "user": {
+              "seconds": 0,
+              "microseconds": 0
+            }
+          },
+          "exit_code": {
+            "status": [
+              "SUCCESS"
+            ],
+            "return_code": {
+              "set": true,
+              "infinite": false,
+              "number": 0
+            },
+            "signal": {
+              "id": {
+                "set": false,
+                "infinite": false,
+                "number": 0
+              },
+              "name": ""
+            }
+          },
+          "nodes": {
+            "count": 1,
+            "range": "gpu1",
+            "list": [
+              "gpu1"
+            ]
+          },
+          "tasks": {
+            "count": 1
+          },
+          "pid": "",
+          "CPU": {
+            "requested_frequency": {
+              "min": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              },
+              "max": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            },
+            "governor": "0"
+          },
+          "kill_request_user": "",
+          "state": [
+            "RUNNING"
+          ],
+          "statistics": {
+            "CPU": {
+              "actual_frequency": 0
+            },
+            "energy": {
+              "consumed": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            }
+          },
+          "step": {
+            "id": "1304.batch",
+            "name": "batch"
+          },
+          "task": {
+            "distribution": "Unknown"
+          },
+          "tres": {
+            "requested": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "consumed": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "allocated": [
+              {
+                "type": "cpu",
+                "name": "",
+                "id": 1,
+                "count": 1
+              },
+              {
+                "type": "mem",
+                "name": "",
+                "id": 2,
+                "count": 512
+              },
+              {
+                "type": "node",
+                "name": "",
+                "id": 4,
+                "count": 1
+              }
+            ]
+          }
+        }
+      ],
+      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --partition gpu --gres gpu:4",
+      "tres": {
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "tmcgrath",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/tmcgrath"
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.40",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "24.11.0",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

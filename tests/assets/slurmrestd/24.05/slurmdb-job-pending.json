@@ -1,359 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
-      "comment": {
-        "administrator": "",
-        "job": "",
-        "system": ""
-      },
-      "allocation_nodes": 1,
-      "array": {
-        "job_id": 0,
-        "limits": {
-          "max": {
-            "running": {
-              "tasks": 0
-            }
-          }
-        },
-        "task_id": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        },
-        "task": ""
-      },
-      "association": {
-        "account": "acoustic",
-        "cluster": "hpc",
-        "partition": "",
-        "user": "pkerr",
-        "id": 16
-      },
-      "block": "",
-      "cluster": "hpc",
-      "constraints": "",
-      "container": "",
-      "derived_exit_code": {
-        "status": [
-          "SUCCESS"
-        ],
-        "return_code": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "signal": {
-          "id": {
-            "set": false,
-            "infinite": false,
-            "number": 0
-          },
-          "name": ""
-        }
-      },
-      "time": {
-        "elapsed": 14,
-        "eligible": 1731016537,
-        "end": 1731021339,
-        "start": 1731021325,
-        "submission": 1731016537,
-        "suspended": 0,
-        "system": {
-          "seconds": 0,
-          "microseconds": 0
-        },
-        "limit": {
-          "set": true,
-          "infinite": false,
-          "number": 60
-        },
-        "total": {
-          "seconds": 0,
-          "microseconds": 0
-        },
-        "user": {
-          "seconds": 0,
-          "microseconds": 0
-        }
-      },
-      "exit_code": {
-        "status": [
-          "SUCCESS"
-        ],
-        "return_code": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "signal": {
-          "id": {
-            "set": false,
-            "infinite": false,
-            "number": 0
-          },
-          "name": ""
-        }
-      },
-      "extra": "",
-      "failed_node": "",
-      "flags": [
-        "STARTED_ON_SCHEDULE",
-        "START_RECEIVED"
-      ],
-      "group": "scientists",
-      "het": {
-        "job_id": 0,
-        "job_offset": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        }
-      },
-      "job_id": 408956,
-      "name": "wrap",
-      "licenses": "",
-      "mcs": {
-        "label": ""
-      },
-      "nodes": "cn459",
-      "partition": "batch",
-      "hold": false,
-      "priority": {
-        "set": true,
-        "infinite": false,
-        "number": 90
-      },
-      "qos": "normal",
-      "required": {
-        "CPUs": 16,
-        "memory_per_cpu": {
-          "set": true,
-          "infinite": false,
-          "number": 512
-        },
-        "memory_per_node": {
-          "set": false,
-          "infinite": false,
-          "number": 0
-        }
-      },
-      "kill_request_user": "",
-      "reservation": {
-        "id": 0,
-        "name": ""
-      },
-      "script": "",
-      "state": {
-        "current": [
-          "PENDING",
-          "REQUEUED"
-        ],
-        "reason": "None"
-      },
-      "steps": [
-        {
-          "time": {
-            "elapsed": 26,
-            "end": {
-              "set": true,
-              "infinite": false,
-              "number": 1731021351
-            },
-            "start": {
-              "set": true,
-              "infinite": false,
-              "number": 1731021325
-            },
-            "suspended": 0,
-            "system": {
-              "seconds": 0,
-              "microseconds": 0
-            },
-            "total": {
-              "seconds": 0,
-              "microseconds": 0
-            },
-            "user": {
-              "seconds": 0,
-              "microseconds": 0
-            }
-          },
-          "exit_code": {
-            "status": [
-              "PENDING"
-            ],
-            "return_code": {
-              "set": false,
-              "infinite": false,
-              "number": 0
-            },
-            "signal": {
-              "id": {
-                "set": false,
-                "infinite": false,
-                "number": 0
-              },
-              "name": ""
-            }
-          },
-          "nodes": {
-            "count": 1,
-            "range": "admin.emulator",
-            "list": [
-              "admin.emulator"
-            ]
-          },
-          "tasks": {
-            "count": 1
-          },
-          "pid": "",
-          "CPU": {
-            "requested_frequency": {
-              "min": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              },
-              "max": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              }
-            },
-            "governor": "0"
-          },
-          "kill_request_user": "",
-          "state": [
-            "CANCELLED"
-          ],
-          "statistics": {
-            "CPU": {
-              "actual_frequency": 0
-            },
-            "energy": {
-              "consumed": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              }
-            }
-          },
-          "step": {
-            "id": "408956.batch",
-            "name": "batch"
-          },
-          "task": {
-            "distribution": "Unknown"
-          },
-          "tres": {
-            "requested": {
-              "max": [],
-              "min": [],
-              "average": [],
-              "total": []
-            },
-            "consumed": {
-              "max": [],
-              "min": [],
-              "average": [],
-              "total": []
-            },
-            "allocated": [
-              {
-                "type": "cpu",
-                "name": "",
-                "id": 1,
-                "count": 16
-              },
-              {
-                "type": "mem",
-                "name": "",
-                "id": 2,
-                "count": 8192
-              },
-              {
-                "type": "node",
-                "name": "",
-                "id": 4,
-                "count": 1
-              }
-            ]
-          }
-        }
-      ],
-      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 16",
-      "tres": {
-        "allocated": [
-          {
-            "type": "cpu",
-            "name": "",
-            "id": 1,
-            "count": 16
-          },
-          {
-            "type": "mem",
-            "name": "",
-            "id": 2,
-            "count": 8192
-          },
-          {
-            "type": "energy",
-            "name": "",
-            "id": 3,
-            "count": -2
-          },
-          {
-            "type": "node",
-            "name": "",
-            "id": 4,
-            "count": 1
-          },
-          {
-            "type": "billing",
-            "name": "",
-            "id": 5,
-            "count": 16
-          }
-        ],
-        "requested": [
-          {
-            "type": "cpu",
-            "name": "",
-            "id": 1,
-            "count": 16
-          },
-          {
-            "type": "mem",
-            "name": "",
-            "id": 2,
-            "count": 8192
-          },
-          {
-            "type": "node",
-            "name": "",
-            "id": 4,
-            "count": 1
-          },
-          {
-            "type": "billing",
-            "name": "",
-            "id": 5,
-            "count": 16
-          }
-        ]
-      },
-      "used_gres": "",
-      "user": "pkerr",
-      "wckey": {
-        "wckey": "",
-        "flags": []
-      },
-      "working_directory": "/home/pkerr"
-    },
-    {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -377,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "pkerr",
-        "id": 16
+        "user": "crich",
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -407,10 +55,10 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1731021472,
+        "eligible": 1746624721,
         "end": 0,
         "start": 0,
-        "submission": 1731021351,
+        "submission": 1746621121,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -419,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -462,7 +110,7 @@
           "number": 0
         }
       },
-      "job_id": 408956,
+      "job_id": 9173,
       "name": "wrap",
       "licenses": "",
       "mcs": {
@@ -470,15 +118,15 @@
       },
       "nodes": "None assigned",
       "partition": "batch",
-      "hold": true,
+      "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 636
       },
       "qos": "normal",
       "required": {
-        "CPUs": 16,
+        "CPUs": 1,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -500,10 +148,10 @@
         "current": [
           "PENDING"
         ],
-        "reason": "JobHeldUser"
+        "reason": "BeginTime"
       },
       "steps": [],
-      "submit_line": "sbatch --qos normal --partition batch --time 1:0:0 --wrap /usr/bin/sleep 360 --ntasks 16",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --ntasks 1 --begin now+1hour",
       "tres": {
         "allocated": [],
         "requested": [
@@ -511,13 +159,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 16
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 8192
+            "count": 512
           },
           {
             "type": "node",
@@ -529,17 +177,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 16
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "pkerr",
+      "user": "crich",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/pkerr"
+      "working_directory": "/home/crich"
     }
   ],
   "meta": {
@@ -550,7 +198,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93953742] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839273092] (fd 12)",
       "user": "",
       "group": ""
     },

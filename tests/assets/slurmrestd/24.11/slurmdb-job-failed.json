@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "dshaw",
-        "id": 12
+        "user": "ksoto",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,11 @@
         }
       },
       "time": {
-        "elapsed": 360,
-        "eligible": 1732137446,
-        "end": 1732137808,
-        "start": 1732137448,
-        "submission": 1732137446,
+        "elapsed": 1,
+        "eligible": 1746621009,
+        "end": 1746621012,
+        "start": 1746621011,
+        "submission": 1746621009,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 120
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -111,7 +111,7 @@
           "number": 0
         }
       },
-      "job_id": 6294,
+      "job_id": 1308,
       "name": "wrap",
       "licenses": "",
       "mcs": {
@@ -123,9 +123,9 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 736
+        "number": 454
       },
-      "qos": "study",
+      "qos": "normal",
       "required": {
         "CPUs": 1,
         "memory_per_cpu": {
@@ -154,16 +154,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 360,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1732137808
+              "number": 1746621012
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1732137448
+              "number": 1746621011
             },
             "suspended": 0,
             "system": {
@@ -240,7 +240,7 @@
             }
           },
           "step": {
-            "id": "6294.batch",
+            "id": "1308.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +282,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos study --partition normal --time 120 --wrap /usr/bin/sleep 360 && /bin/false --ntasks 1",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 1 && false --ntasks 1",
       "tres": {
         "allocated": [
           {
@@ -344,12 +344,12 @@
         ]
       },
       "used_gres": "",
-      "user": "dshaw",
+      "user": "ksoto",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/dshaw"
+      "working_directory": "/home/ksoto"
     }
   ],
   "meta": {
@@ -360,7 +360,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "",
       "group": ""
     },
@@ -371,7 +371,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },

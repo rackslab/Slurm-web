@@ -8,11 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ## Added
+- frontend:
+  - Display cluster total memory size and number of GPUs in dashboard stats.
+  - Display number of GPUs per node in resources page and node details
+    page.
+  - Display number of allocated GPU and allocation percentage in node details
+    page.
+- agent: Add total quantity of memory and number of gpus in cluster stats
+  response.
+- conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
+  nodes list and indiviual node responses.
 - docs: Mention support of Fedora 42.
 
 ## Changed
-- frontend: Migrate to Tailwind CSS v4 (#449). Note this breaks support of old
-  browsers versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.
+- frontend:
+  - Migrate to Tailwind CSS v4 (#449). Note this breaks support of old browsers
+    versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.
+  - Convert nodes memory size in GB or TB in resources page and node details
+    page.
 
 ### Fixed
 - agent: Fix `AttributeError` with `prometheus_client.registry.Collector` on el8

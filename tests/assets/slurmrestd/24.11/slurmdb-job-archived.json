@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "admin",
         "cluster": "hpc",
         "partition": "",
-        "user": "clara",
-        "id": 14
+        "user": "tmcgrath",
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,11 @@
         }
       },
       "time": {
-        "elapsed": 360,
-        "eligible": 1732036372,
-        "end": 1732036734,
-        "start": 1732036374,
-        "submission": 1732036372,
+        "elapsed": 3,
+        "eligible": 1746619857,
+        "end": 1746619860,
+        "start": 1746619857,
+        "submission": 1746619857,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +67,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 120
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -111,21 +111,21 @@
           "number": 0
         }
       },
-      "job_id": 622,
+      "job_id": 1306,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn2",
-      "partition": "normal",
+      "nodes": "gpu1",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 372
+        "number": 909
       },
-      "qos": "study",
+      "qos": "normal",
       "required": {
         "CPUs": 1,
         "memory_per_cpu": {
@@ -139,7 +139,7 @@
           "number": 0
         }
       },
-      "kill_request_user": "",
+      "kill_request_user": "tmcgrath",
       "reservation": {
         "id": 0,
         "name": ""
@@ -147,23 +147,23 @@
       "script": "",
       "state": {
         "current": [
-          "COMPLETED"
+          "CANCELLED"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 360,
+            "elapsed": 4,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1732036734
+              "number": 1746619861
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1732036374
+              "number": 1746619857
             },
             "suspended": 0,
             "system": {
@@ -181,27 +181,27 @@
           },
           "exit_code": {
             "status": [
-              "SUCCESS"
+              "SIGNALED"
             ],
             "return_code": {
-              "set": true,
+              "set": false,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": false,
+                "set": true,
                 "infinite": false,
-                "number": 0
+                "number": 15
               },
-              "name": ""
+              "name": "TERM"
             }
           },
           "nodes": {
             "count": 1,
-            "range": "cn2",
+            "range": "gpu1",
             "list": [
-              "cn2"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -225,7 +225,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "COMPLETED"
+            "CANCELLED"
           ],
           "statistics": {
             "CPU": {
@@ -240,7 +240,7 @@
             }
           },
           "step": {
-            "id": "622.batch",
+            "id": "1306.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +282,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos study --partition normal --time 120 --wrap /usr/bin/sleep 360 --ntasks 1",
+      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --partition gpu --gpus 1",
       "tres": {
         "allocated": [
           {
@@ -344,12 +344,12 @@
         ]
       },
       "used_gres": "",
-      "user": "clara",
+      "user": "tmcgrath",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/clara"
+      "working_directory": "/home/tmcgrath"
     }
   ],
   "meta": {
@@ -360,7 +360,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "",
       "group": ""
     },
@@ -371,7 +371,7 @@
         "micro": "0",
         "minor": "11"
       },
-      "release": "24.11.0-0rc2",
+      "release": "24.11.0",
       "cluster": "hpc"
     }
   },
