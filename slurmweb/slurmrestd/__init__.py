@@ -254,6 +254,16 @@ class Slurmrestd:
     def qos(self: str, **kwargs):
         return self._request(f"/slurmdb/v{self.api_version}/qos", "qos", **kwargs)
 
+    @staticmethod
+    def node_gres_extract_gpus(gres_full: str) -> int:
+        """Return the number of GPU in gres string."""
+        result = 0
+        for gres_s in gres_full.split(","):
+            gres = gres_s.split(":")
+            if gres[0] == "gpu":
+                result += int(gres[2])
+        return result
+
 
 class SlurmrestdFiltered(Slurmrestd):
     def __init__(
