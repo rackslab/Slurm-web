@@ -54,6 +54,8 @@ export interface ClusterStats {
   resources: {
     nodes: number
     cores: number
+    memory: number
+    gpus: number
   }
   jobs: {
     running: number
