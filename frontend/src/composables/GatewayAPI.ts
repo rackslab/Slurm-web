@@ -317,13 +317,29 @@ export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedS
   }
 }
 
-export function getNodeGPU(node: ClusterNode): string[] {
-  if (!node.gres.length) return []
-  let results: string[] = []
-  node.gres.split(',').forEach((gres) => {
-    const [type, model, number] = gres.split(':')
+interface NodeGPU {
+  model: string
+  count: number
+}
+
+export function getNodeGPUFromGres(fullGres: string): NodeGPU[] {
+  if (!fullGres.length) return []
+  const results: NodeGPU[] = []
+  fullGres.split(',').forEach((gres) => {
+    const [type, model, end] = gres.split(':')
     if (type != 'gpu') return
-    results.push(`${number} x ${model}`)
+    let count = -1
+    if (end.includes('(')) count = parseInt(end.split('(')[0])
+    else count = parseInt(end)
+    results.push({ model: model, count: count })
+  })
+  return results
+}
+
+export function getNodeGPU(fullGres: string): string[] {
+  const results: string[] = []
+  getNodeGPUFromGres(fullGres).forEach((gpu) => {
+    results.push(`${gpu.count} x ${gpu.model}`)
   })
   return results
 }

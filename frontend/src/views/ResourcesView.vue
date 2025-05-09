@@ -77,7 +77,7 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
       previousNode.sockets == currentNode.sockets &&
       previousNode.cores == currentNode.cores &&
       previousNode.real_memory == currentNode.real_memory &&
-      getNodeGPU(previousNode) == getNodeGPU(currentNode) &&
+      getNodeGPU(previousNode.gres).join(',') == getNodeGPU(currentNode.gres).join(',') &&
       arraysEqual<string>(previousNode.state, currentNode.state) &&
       arraysEqual<string>(previousNode.partitions, currentNode.partitions)
     ) {
@@ -288,7 +288,7 @@ onMounted(() => {
                       {{ getMBHumanUnit(node.real_memory) }}
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                      {{ getNodeGPU(node).join(', ') }}
+                      {{ getNodeGPU(node.gres).join(', ') }}
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <span
