@@ -17,8 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
-- conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
-  nodes list and indiviual node responses.
+- conf:
+  - Select `gres` and `gres_used` attributes by default in `slurmrestd` nodes
+    list and indiviual node responses.
+  - Select `gres_detail`, `sockets_per_node`, `tasks`, `tres_per_job`,
+    `tres_per_node`, `tres_per_socket`, `tres_per_task` attributes by default in
+    `slurmrestd` jobs list and Slurm controller invidual job responses.
 - docs:
   - Mention support of Fedora 42.
   - Mention GPU metrics.

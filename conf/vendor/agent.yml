@@ -154,6 +154,7 @@ filters:
     - job_id
     - user_name
     - account
+    - gres_detail
     - job_state
     - state_reason
     - partition
@@ -162,6 +163,12 @@ filters:
     - cpus
     - node_count
     - nodes
+    - sockets_per_node
+    - tasks
+    - tres_per_job
+    - tres_per_node
+    - tres_per_socket
+    - tres_per_task
     doc: |
       List of jobs fields selected in slurmrestd API when retrieving a list of
       jobs, all other fields arefiltered out.
@@ -202,13 +209,19 @@ filters:
     - cpus
     - current_working_directory
     - exclusive
+    - gres_detail
     - last_sched_evaluation
     - node_count
     - partition
+    - sockets_per_node
     - standard_error
     - standard_input
     - standard_output
     - tasks
+    - tres_per_job
+    - tres_per_node
+    - tres_per_socket
+    - tres_per_task
     - tres_req_str
     doc: |
       List of slurmctld job fields selected in slurmrestd API when retrieving a
