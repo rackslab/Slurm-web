@@ -61,6 +61,8 @@ class TestAgentMetricsCollector(TestAgentBase):
                 "slurm_nodes_total",
                 "slurm_cores",
                 "slurm_cores_total",
+                "slurm_gpus",
+                "slurm_gpus_total",
                 "slurm_jobs",
                 "slurm_jobs_total",
             ],

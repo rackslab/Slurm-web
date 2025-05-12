@@ -252,7 +252,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertCountEqual(nodes, asset)
 
     @all_slurm_versions
-    def test_nodes_cores_states(self, slurm_version):
+    def test_resources_states(self, slurm_version):
         try:
             [asset] = self.mock_slurmrestd_responses(
                 slurm_version, [("slurm-nodes", "nodes")]
@@ -260,9 +260,14 @@ class TestSlurmrestd(TestSlurmrestdBase):
         except SlurmwebAssetUnavailable:
             return
 
-        nodes_states, cores_states, nodes_total, cores_total = (
-            self.slurmrestd.nodes_cores_states()
-        )
+        (
+            nodes_states,
+            cores_states,
+            gpus_states,
+            nodes_total,
+            cores_total,
+            gpus_total,
+        ) = self.slurmrestd.resources_states()
         # Check total number of nodes matches the number of nodes in asset
         self.assertEqual(nodes_total, len(asset))
         self.assertEqual(nodes_states["unknown"], 0)
@@ -279,6 +284,13 @@ class TestSlurmrestd(TestSlurmrestdBase):
             cores_sum += value
         self.assertEqual(cores_total, cores_sum)
         self.assertEqual(cores_states["unknown"], 0)
+
+        # Check sum of gpus states matches the total number of gpus
+        gpus_sum = 0
+        for value in gpus_states.values():
+            gpus_sum += value
+        self.assertEqual(gpus_total, gpus_sum)
+        self.assertEqual(gpus_states["unknown"], 0)
 
     @all_slurm_versions
     def test_node(self, slurm_version):
