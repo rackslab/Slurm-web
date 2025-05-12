@@ -67,6 +67,7 @@ export interface ClusterStats {
 export interface ClusterJob {
   account: string
   cpus: ClusterOptionalNumber
+  gres_detail: string[]
   job_id: number
   job_state: string[]
   node_count: ClusterOptionalNumber
@@ -74,7 +75,13 @@ export interface ClusterJob {
   partition: string
   priority: ClusterOptionalNumber
   qos: string
+  sockets_per_node: ClusterOptionalNumber
   state_reason: string
+  tasks: ClusterOptionalNumber
+  tres_per_job: string
+  tres_per_node: string
+  tres_per_socket: string
+  tres_per_task: string
   user_name: string
 }
 
@@ -205,6 +212,7 @@ export interface ClusterIndividualJob {
   derived_exit_code: ClusterJobExitCode
   exclusive: string[]
   exit_code: ClusterJobExitCode
+  gres_detail?: string[]
   group: string
   last_sched_evaluation: ClusterOptionalNumber
   name: string
@@ -214,6 +222,7 @@ export interface ClusterIndividualJob {
   priority: ClusterOptionalNumber
   qos: string
   script: string
+  sockets_per_node?: ClusterOptionalNumber
   standard_error: string
   standard_input: string
   standard_output: string
@@ -223,7 +232,11 @@ export interface ClusterIndividualJob {
   tasks: ClusterOptionalNumber
   time: ClusterJobTime
   tres: { allocated: ClusterTRES[]; requested: ClusterTRES[] }
-  tres_req_str: string
+  tres_per_job?: string
+  tres_per_node?: string
+  tres_per_socket?: string
+  tres_per_task?: string
+  tres_req_str?: string
   used_gres: string
   user: string
   wckey: { flags: string[]; wckey: string }
@@ -275,6 +288,121 @@ export function compareClusterJobSortOrder(
   }
 }
 
+export function jobResourcesTRES(tres: ClusterTRES[]): {
+  node: number
+  cpu: number
+  memory: number
+} {
+  const node_tres = tres.find((_tres) => _tres.type == 'node')
+  let node
+  if (node_tres) node = node_tres.count
+  else node = -1
+  const cpu_tres = tres.find((_tres) => _tres.type == 'cpu')
+  let cpu
+  if (cpu_tres) cpu = cpu_tres.count
+  else cpu = -1
+  const memory_tres = tres.find((_tres) => _tres.type == 'mem')
+  let memory
+  if (memory_tres) memory = memory_tres.count
+  else memory = -1
+  return { node: node, cpu: cpu, memory: memory }
+}
+
+/*
+ * Return the number of GPUs from a GRES string, eg:
+ *
+ * "gpu:4" -> 4
+ * "gres/gpu:tesla:2" -> 2
+ * "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)" -> 6
+ */
+function countGPUTRESRequest(tresRequest: string): number {
+  let total = 0
+  for (const _tres of tresRequest.split(',')) {
+    // remove optional index between parenthesis
+    let tres = _tres.split('(')[0]
+    // replace equal sign encountered on tres_per_task in Slurm 24.11
+    tres = tres.replace('=', ':')
+    const items = tres.split(':')
+    if (!['gpu', 'gres/gpu'].includes(items[0])) continue
+    if (items.length == 2) total += parseInt(items[1])
+    // tres has gpu type
+    else total += parseInt(items[2])
+  }
+  return total
+}
+
+/*
+ * Return number of GPU allocated to a job.
+ *
+ * For running jobs, allocated GPUs can be retrieved from gres_detail attribute
+ * provided by slurmctld. This attribute is an empty string for pending and
+ * completed jobs. The attribute does not even exist on archived jobs with
+ * attributes from slurmdbd only. When the value is not available, return -1.
+ */
+export function jobAllocatedGPU(job: ClusterJob | ClusterIndividualJob): number {
+  if (job.gres_detail && job.gres_detail.length)
+    /* parse strings in job.gres_detail array */
+    return job.gres_detail.reduce((gpu, currentGres) => gpu + countGPUTRESRequest(currentGres), 0)
+  return -1
+}
+
+/*
+ * Return an object with the number of GPU requested by a job and a boolean to
+ * indicate reliability of the value.
+ *
+ * Requested GPUs can be retrieved from tres_per_* attributes provided by
+ * slurmctld. Number of GPUs can be requested by job, node, task or socket.
+ *
+ * There is no reliable method to determine the number of sockets that will be
+ * allocated to a job. A bold estimate is computed based on the number of nodes
+ * and requested sockets per node. The reliable boolean is set to false in this
+ * case.
+ *
+ * For archived jobs, with attributes from slurmdbd only, there is no way to
+ * determine requested GPU. In this case, 0 is returned…
+ */
+export function jobRequestedGPU(job: ClusterJob | ClusterIndividualJob): {
+  count: number
+  reliable: boolean
+} {
+  if (job.tres_per_job && job.tres_per_job.length) {
+    return { count: countGPUTRESRequest(job.tres_per_job), reliable: true }
+  }
+  if (job.tres_per_node && job.tres_per_node.length) {
+    return { count: countGPUTRESRequest(job.tres_per_node) * job.node_count.number, reliable: true }
+  }
+  if (
+    job.tres_per_socket &&
+    job.tres_per_socket.length &&
+    job.sockets_per_node &&
+    job.sockets_per_node.set
+  ) {
+    return {
+      count:
+        countGPUTRESRequest(job.tres_per_socket) *
+        job.node_count.number *
+        job.sockets_per_node.number,
+      reliable: false
+    }
+  }
+  if (job.tres_per_task && job.tres_per_task.length) {
+    return { count: countGPUTRESRequest(job.tres_per_task) * job.tasks.number, reliable: true }
+  }
+  return { count: 0, reliable: true }
+}
+
+/*
+ * Return an object with the number of GPU allocated, or requested, by a job and
+ * a boolean to indicate reliability of the value.
+ */
+export function jobResourcesGPU(job: ClusterJob | ClusterIndividualJob): {
+  count: number
+  reliable: boolean
+} {
+  const result = jobAllocatedGPU(job)
+  if (result != -1) return { count: result, reliable: true }
+  return jobRequestedGPU(job)
+}
 
 /* Convert a number of megabytes into a string with simplified unit (eg. GB, TB)
  * when possible. Round value with up to 2 decimals. */
