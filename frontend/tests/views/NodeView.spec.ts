@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import NodeView from '@/views/NodeView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
+import { getMBHumanUnit } from '@/composables/GatewayAPI'
 import type { ClusterJob, ClusterNode } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import nodeAllocated from '../assets/node-allocated.json'
@@ -53,7 +54,7 @@ describe('NodeView.vue', () => {
       `${nodeAllocated.sockets} x ${nodeAllocated.cores} = ${nodeAllocated.cpus}`
     )
     expect(wrapper.get('dl div#arch dd').text()).toBe(nodeAllocated.architecture)
-    expect(wrapper.get('dl div#memory dd').text()).toBe(`${nodeAllocated.real_memory}MB`)
+    expect(wrapper.get('dl div#memory dd').text()).toBe(getMBHumanUnit(nodeAllocated.real_memory))
     expect(wrapper.get('dl div#partitions dd').text()).toBe(nodeAllocated.partitions[0])
   })
 })
