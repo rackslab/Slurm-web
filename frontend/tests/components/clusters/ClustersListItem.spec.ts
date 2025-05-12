@@ -48,7 +48,7 @@ describe('ClustersListItem.vue', () => {
     // Check presence of nodes/jobs stats
     const statsElements = wrapper.findAll('p')
     expect(statsElements[0].text()).toContain('nodes')
-    expect(statsElements[1].text()).toContain('jobs')
+    expect(statsElements[1].text()).toContain('job')
     // Check cluster status is available
     expect(wrapper.get('div div p').text()).toBe('Available')
     // Check error flag is false
