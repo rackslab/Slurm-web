@@ -182,7 +182,7 @@ class Slurmrestd:
     def nodes(self, **kwargs):
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
 
-    def nodes_cores_states(self):
+    def resources_states(self):
         nodes_states = {
             "idle": 0,
             "mixed": 0,
@@ -200,31 +200,58 @@ class Slurmrestd:
         }
         nodes_total = 0
         cores_total = 0
+        gpus_total = 0
+        gpus_states = {
+            "idle": 0,
+            "allocated": 0,
+            "down": 0,
+            "drain": 0,
+            "unknown": 0,
+        }
         for node in self.nodes():
             cores = node["cpus"]
+            node_gpus = self.node_gres_extract_gpus(node["gres"])
             if "MIXED" in node["state"]:
                 nodes_states["mixed"] += 1
                 # Look at number of actually allocated/idle cores
                 cores_states["allocated"] += node["alloc_cpus"]
                 cores_states["idle"] += node["alloc_idle_cpus"]
+                allocated_gpus = self.node_gres_extract_gpus(node["gres_used"])
+                gpus_states["allocated"] += allocated_gpus
+                gpus_states["idle"] += node_gpus - allocated_gpus
             elif "ALLOCATED" in node["state"]:
                 nodes_states["allocated"] += 1
                 cores_states["allocated"] += cores
+                allocated_gpus = self.node_gres_extract_gpus(node["gres_used"])
+                gpus_states["allocated"] += allocated_gpus
+                gpus_states["idle"] += node_gpus - allocated_gpus
             elif "DOWN" in node["state"]:
                 nodes_states["down"] += 1
                 cores_states["down"] += cores
+                gpus_states["down"] += node_gpus
             elif "DRAIN" in node["state"]:
                 nodes_states["drain"] += 1
                 cores_states["drain"] += cores
+                gpus_states["drain"] += node_gpus
             elif "IDLE" in node["state"]:
                 nodes_states["idle"] += 1
                 cores_states["idle"] += cores
+                gpus_states["idle"] += node_gpus
             else:
                 nodes_states["unknown"] += 1
                 cores_states["unknown"] += cores
+                gpus_states["unknown"] += node_gpus
             nodes_total += 1
             cores_total += cores
-        return nodes_states, cores_states, nodes_total, cores_total
+            gpus_total += node_gpus
+        return (
+            nodes_states,
+            cores_states,
+            gpus_states,
+            nodes_total,
+            cores_total,
+            gpus_total,
+        )
 
     def node(self, node_name: str, **kwargs):
         try:
