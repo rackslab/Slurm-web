@@ -20,12 +20,13 @@ import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
+import JobResources from '@/components/jobs/JobResources.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ServerIcon, CpuChipIcon, PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
+import { PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
@@ -347,14 +348,7 @@ onMounted(() => {
                   <td
                     class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 sm:table-cell"
                   >
-                    <span class="mr-2 inline-flex">
-                      <ServerIcon class="mr-0.5 h-5 w-5" aria-hidden="true" />
-                      {{ job.node_count.number }}
-                    </span>
-                    <span class="inline-flex">
-                      <CpuChipIcon class="mr-0.5 h-5 w-5" aria-hidden="true" />
-                      {{ job.cpus.number }}
-                    </span>
+                    <JobResources :job="job" />
                   </td>
                   <td
                     class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 xl:table-cell"
