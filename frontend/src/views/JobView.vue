@@ -13,6 +13,7 @@ import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
+import { jobRequestedGPU, jobAllocatedGPU } from '@/composables/GatewayAPI'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import JobProgress from '@/components/job/JobProgress.vue'
@@ -24,7 +25,7 @@ import { HashtagIcon } from '@heroicons/vue/24/outline'
 import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 import JobFieldComment from '@/components/job/JobFieldComment.vue'
 import JobFieldExitCode from '@/components/job/JobFieldExitCode.vue'
-import JobFieldTRES from '@/components/job/JobFieldTRES.vue'
+import JobResources from '@/components/job/JobResources.vue'
 
 const { cluster, id } = defineProps<{ cluster: string; id: number }>()
 
@@ -151,14 +152,17 @@ const jobFieldsContent = computed(
       {
         id: 'tres-requested',
         label: 'Requested',
-        component: JobFieldTRES,
-        props: { tres: data.value.tres.requested }
+        component: JobResources,
+        props: { tres: data.value.tres.requested, gpu: jobRequestedGPU(data.value) }
       },
       {
         id: 'tres-allocated',
         label: 'Allocated',
-        component: JobFieldTRES,
-        props: { tres: data.value.tres.allocated }
+        component: JobResources,
+        props: {
+          tres: data.value.tres.allocated,
+          gpu: { count: jobAllocatedGPU(data.value), reliable: true }
+        }
       }
     ]
   }
