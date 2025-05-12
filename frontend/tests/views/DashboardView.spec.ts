@@ -43,6 +43,8 @@ describe('DashboardView.vue', () => {
     expect(wrapper.findAll('p').map((element) => element.text())).toStrictEqual([
       'Nodes',
       'Cores',
+      'Memory',
+      'GPU',
       'Running jobs',
       'Total jobs'
     ])
