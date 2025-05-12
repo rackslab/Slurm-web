@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     page.
   - Display number of allocated GPU and allocation percentage in node details
     page.
-- agent: Add total quantity of memory and number of gpus in cluster stats
-  response.
+- agent:
+  - Add total quantity of memory and number of gpus in cluster stats response.
+  - Add metrics for GPU by state and total number of GPU.
 - conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
   nodes list and indiviual node responses.
 - docs: Mention support of Fedora 42.
