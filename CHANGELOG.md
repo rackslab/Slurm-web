@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add metrics for GPU by state and total number of GPU.
 - conf: Select `gres` and `gres_used` attributes by default in `slurmrestd`
   nodes list and indiviual node responses.
-- docs: Mention support of Fedora 42.
+- docs:
+  - Mention support of Fedora 42.
+  - Mention GPU metrics.
 
 ## Changed
 - frontend:

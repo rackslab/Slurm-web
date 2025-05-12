@@ -194,6 +194,13 @@ _idle_, _mixed_, _allocated_, _down_, _drain_ and _unknown_.
 |slurm_cores_total
 |Total number of cores on compute nodes managed by Slurm.
 
+|slurm_gpus[state]
+|Number of GPU of compute nodes in a given state. Supported states are: _idle_,
+_allocated_, _down_, _drain_ and _unknown_.
+
+|slurm_gpus_total
+|Total number of GPU on compute nodes managed by Slurm.
+
 |slurm_jobs[state]
 |Number of jobs in a given state in Slurm controller queue.  Supported states
 are: _running_, _completed_, _completing_, _cancelled_, _pending_ and _unknown_.
