@@ -66,6 +66,16 @@ class TestAgentMetricsRequest(TestAgentBase):
         )
 
     @mock.patch("slurmweb.metrics.db.requests.get")
+    def test_request_metrics_gpus(self, mock_requests_get):
+        _, mock_requests_get.return_value = mock_prometheus_response("gpus-hour")
+        response = self.client.get(f"/v{get_version()}/metrics/gpus")
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(
+            response.json.keys(),
+            ["allocated", "down", "drain", "idle", "unknown"],
+        )
+
+    @mock.patch("slurmweb.metrics.db.requests.get")
     def test_request_metrics_jobs(self, mock_requests_get):
         _, mock_requests_get.return_value = mock_prometheus_response("jobs-hour")
         response = self.client.get(f"/v{get_version()}/metrics/jobs")
