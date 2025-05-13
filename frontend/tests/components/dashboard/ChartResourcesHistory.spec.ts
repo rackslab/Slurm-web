@@ -56,22 +56,31 @@ describe('ChartJobsHistogram.vue', () => {
     expect(wrapper.find({ ref: 'chartCanvas' }).exists()).toBeFalsy()
     expect(wrapper.find('img[alt="Loading chart"]').exists()).toBeFalsy()
   })
-  test('cores toggle changes should change datapoller callback with route query update', async () => {
+  test('resources types button changes should change datapoller callback with route query update', async () => {
     const wrapper = mount(ChartResourcesHistogram)
     mockClusterDataPoller.data.value = metricsNodesHour as Record<
       MetricResourceState,
       MetricValue[]
     >
-    useRuntimeStore().dashboard.coresToggle = true
+    useRuntimeStore().dashboard.chartResourcesType = 'cores'
     await flushPromises()
     expect(mockClusterDataPoller.setCallback).toHaveBeenCalledWith('metrics_cores')
     expect(router.push).toHaveBeenCalledWith({
       name: 'dashboard',
       query: {
-        cores: true
+        resources: 'cores'
       }
     })
-    useRuntimeStore().dashboard.coresToggle = false
+    useRuntimeStore().dashboard.chartResourcesType = 'gpus'
+    await flushPromises()
+    expect(mockClusterDataPoller.setCallback).toHaveBeenCalledWith('metrics_gpus')
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'dashboard',
+      query: {
+        resources: 'gpus'
+      }
+    })
+    useRuntimeStore().dashboard.chartResourcesType = 'nodes'
     await flushPromises()
     expect(mockClusterDataPoller.setCallback).toHaveBeenCalledWith('metrics_nodes')
     expect(router.push).toHaveBeenCalledWith({
