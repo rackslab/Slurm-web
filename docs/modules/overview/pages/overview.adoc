@@ -76,6 +76,20 @@ its health and activity.
 
 image::slurm-web_nodes_fullscreen.png[with=500px]
 
+== GPU Support
+
+Slurm-web provides advanced support for GPU resources, offering a visual and
+intuitive interface to monitor and manage GPU usage across the cluster. It
+displays real-time information and metrics on GPU availability and allocation
+per node, making it easy to track how GPU resources are being used by jobs.
+
+This feature is especially beneficial for AI and Machine Learning workflows,
+where efficient access to and monitoring of GPU resources is critical. Data
+scientists and ML engineers can quickly identify available GPUs, monitor
+job-specific GPU usage, and troubleshoot — without needing deep knowledge of
+Slurm's CLI commands. This streamlined visibility significantly improves
+productivity and resource efficiency in GPU-accelerated workloads.
+
 == Advanced Reservations
 
 Resources can be pre-allocated for a particular usage in Slurm with *advanced
