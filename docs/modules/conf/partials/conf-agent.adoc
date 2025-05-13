@@ -319,17 +319,19 @@ jobs, all other fields arefiltered out.
 *Default:*
 
 
-* `job_id`
-
-* `user_name`
-
 * `account`
 
-* `gres_detail`
+* `cpus`
+
+* `job_id`
 
 * `job_state`
 
-* `state_reason`
+* `gres_detail`
+
+* `node_count`
+
+* `nodes`
 
 * `partition`
 
@@ -337,13 +339,9 @@ jobs, all other fields arefiltered out.
 
 * `qos`
 
-* `cpus`
-
-* `node_count`
-
-* `nodes`
-
 * `sockets_per_node`
+
+* `state_reason`
 
 * `tasks`
 
@@ -354,6 +352,8 @@ jobs, all other fields arefiltered out.
 * `tres_per_socket`
 
 * `tres_per_task`
+
+* `user_name`
 
 
 |-
