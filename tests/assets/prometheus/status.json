@@ -18,5 +18,9 @@
   "unknown-path": {
     "content-type": "application/json",
     "status": 400
+  },
+  "gpus-hour": {
+    "content-type": "application/json",
+    "status": 200
   }
 }
