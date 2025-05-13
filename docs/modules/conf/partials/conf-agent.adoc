@@ -325,6 +325,8 @@ jobs, all other fields arefiltered out.
 
 * `account`
 
+* `gres_detail`
+
 * `job_state`
 
 * `state_reason`
@@ -340,6 +342,18 @@ jobs, all other fields arefiltered out.
 * `node_count`
 
 * `nodes`
+
+* `sockets_per_node`
+
+* `tasks`
+
+* `tres_per_job`
+
+* `tres_per_node`
+
+* `tres_per_socket`
+
+* `tres_per_task`
 
 
 |-
@@ -423,11 +437,15 @@ unique job, all other fields are filtered out.
 
 * `exclusive`
 
+* `gres_detail`
+
 * `last_sched_evaluation`
 
 * `node_count`
 
 * `partition`
+
+* `sockets_per_node`
 
 * `standard_error`
 
@@ -436,6 +454,14 @@ unique job, all other fields are filtered out.
 * `standard_output`
 
 * `tasks`
+
+* `tres_per_job`
+
+* `tres_per_node`
+
+* `tres_per_socket`
+
+* `tres_per_task`
 
 * `tres_req_str`
 
@@ -461,6 +487,10 @@ filtered out.
 * `sockets`
 
 * `cores`
+
+* `gres`
+
+* `gres_used`
 
 * `real_memory`
 
@@ -508,6 +538,10 @@ are filtered out.
 * `threads`
 
 * `real_memory`
+
+* `gres`
+
+* `gres_used`
 
 * `state`
 
