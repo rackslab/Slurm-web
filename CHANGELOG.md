@@ -29,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `slurmrestd` jobs list and Slurm controller invidual job responses.
 - docs:
   - Mention support of Fedora 42.
-  - Mention GPU metrics.
+  - Mention GPU support feature in overview page.
+  - Mention GPU metrics in metrics configuration reference documentation.
 
 ## Changed
 - frontend:
