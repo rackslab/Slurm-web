@@ -701,6 +701,7 @@ const GatewayClusterWithStringAPIKeys = [
   'jobs',
   'metrics_nodes',
   'metrics_cores',
+  'metrics_gpus',
   'metrics_jobs'
 ] as const
 export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
@@ -804,6 +805,15 @@ export function useGatewayAPI() {
     )
   }
 
+  async function metrics_gpus(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricResourceState, MetricValue[]>> {
+    return await restAPI.get<Record<MetricResourceState, MetricValue[]>>(
+      `/agents/${cluster}/metrics/gpus?range=${last}`
+    )
+  }
+
   async function metrics_jobs(
     cluster: string,
     last: string
@@ -893,6 +903,7 @@ export function useGatewayAPI() {
     accounts,
     metrics_nodes,
     metrics_cores,
+    metrics_gpus,
     metrics_jobs,
     infrastructureImagePng,
     abort,

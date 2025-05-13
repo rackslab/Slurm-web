@@ -11,10 +11,11 @@ import { onBeforeMount, useTemplateRef, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
+import type { ChartResourcesType } from '@/stores/runtime/dashboard'
+import { isChartResourcesType } from '@/stores/runtime/dashboard'
 import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
-import type { MetricResourceState } from '@/composables/GatewayAPI'
+import type { GatewayAnyClusterApiKey, MetricResourceState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import { Switch } from '@headlessui/vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -30,31 +31,42 @@ const statesColors: Record<MetricResourceState, string> = {
   unknown: 'rgb(192, 191, 188, 0.7)' // grey
 }
 
+function resourcesTypeCallback(): GatewayAnyClusterApiKey {
+  if (runtimeStore.dashboard.chartResourcesType == 'cores') {
+    return 'metrics_cores'
+  } else if (runtimeStore.dashboard.chartResourcesType == 'gpus') {
+    return 'metrics_gpus'
+  } else {
+    return 'metrics_nodes'
+  }
+}
+
 const liveChart = useDashboardLiveChart<MetricResourceState>(
-  runtimeStore.dashboard.coresToggle ? 'metrics_cores' : 'metrics_nodes',
+  resourcesTypeCallback(),
   chartCanvas,
   statesColors,
   ['unknown', 'down', 'drain', 'allocated', 'mixed', 'idle']
 )
 
+function setResourceType(resourceType: ChartResourcesType) {
+  runtimeStore.dashboard.chartResourcesType = resourceType
+  router.push({ name: 'dashboard', query: runtimeStore.dashboard.query() as LocationQueryRaw })
+}
+
 /* Clear chart datasets and set new poller callback when dashboard range is
  * modified. */
 watch(
-  () => runtimeStore.dashboard.coresToggle,
+  () => runtimeStore.dashboard.chartResourcesType,
   () => {
     router.push({ name: 'dashboard', query: runtimeStore.dashboard.query() as LocationQueryRaw })
-    if (runtimeStore.dashboard.coresToggle) {
-      liveChart.setCallback('metrics_cores')
-    } else {
-      liveChart.setCallback('metrics_nodes')
-    }
+    liveChart.setCallback(resourcesTypeCallback())
   }
 )
 
 onBeforeMount(() => {
-  if (route.query.cores && typeof route.query.cores === 'string' && route.query.cores === 'true') {
-    /* Retrieve the range criteria from query and update the store */
-    runtimeStore.dashboard.coresToggle = true
+  if (route.query.resources && isChartResourcesType(route.query.resources)) {
+    /* Retrieve the resources criteria from query and update the store */
+    runtimeStore.dashboard.chartResourcesType = route.query.resources
   }
 })
 </script>
@@ -62,24 +74,45 @@ onBeforeMount(() => {
 <template>
   <div class="border-gray-200p border-b pt-16 pb-5 sm:flex sm:items-center sm:justify-between">
     <h3 class="text-base font-semibold text-gray-900">Resources Status</h3>
-    <div class="mt-3 inline-flex items-center text-sm sm:mt-0 sm:ml-4">
-      <span class="pr-2">Nodes</span>
-      <Switch
-        v-model="runtimeStore.dashboard.coresToggle"
-        :class="[
-          runtimeStore.dashboard.coresToggle ? 'bg-slurmweb' : 'bg-gray-200',
-          'focus:ring-slurmweb relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-none'
-        ]"
-      >
-        <span
-          aria-hidden="true"
+    <div class="mt-3 text-right sm:mt-0">
+      <span class="isolate inline-flex rounded-md shadow-xs">
+        <button
+          type="button"
           :class="[
-            runtimeStore.dashboard.coresToggle ? 'translate-x-5' : 'translate-x-0',
-            'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out'
+            runtimeStore.dashboard.chartResourcesType == 'nodes'
+              ? 'bg-slurmweb text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50',
+            'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
           ]"
-        />
-      </Switch>
-      <span class="pl-2">Cores</span>
+          @click="setResourceType('nodes')"
+        >
+          Nodes
+        </button>
+        <button
+          type="button"
+          :class="[
+            runtimeStore.dashboard.chartResourcesType == 'cores'
+              ? 'bg-slurmweb text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50',
+            'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+          ]"
+          @click="setResourceType('cores')"
+        >
+          Cores
+        </button>
+        <button
+          type="button"
+          :class="[
+            runtimeStore.dashboard.chartResourcesType == 'gpus'
+              ? 'bg-slurmweb text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50',
+            'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+          ]"
+          @click="setResourceType('gpus')"
+        >
+          GPU
+        </button>
+      </span>
     </div>
   </div>
   <ErrorAlert v-if="liveChart.metrics.unable.value" class="mt-4"
