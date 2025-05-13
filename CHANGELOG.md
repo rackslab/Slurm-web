@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     page.
   - Display number of GPU requested or allocated in jobs list.
   - Display number of GPU requested and allocated in job details page.
+  - Add buttons to display GPU status metrics in dashboard.
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
