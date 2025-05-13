@@ -313,15 +313,15 @@ onMounted(() => {
                         <td colspan="8" class="z-0 bg-gray-300">
                           <ul
                             role="list"
-                            class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-8 sm:gap-4 lg:grid-cols-16"
+                            class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-16"
                           >
                             <li
                               v-for="_node in expandNodeset(node.name)"
                               :key="_node"
-                              class="col-span-1 flex rounded-md border-gray-200 bg-white text-left font-mono text-xs text-gray-500 shadow-xs transition-transform hover:scale-105"
+                              class="col-span-1 divide-y divide-gray-200 rounded-md bg-white text-left font-mono text-xs shadow-xs transition-transform hover:scale-105"
                             >
                               <button
-                                class="inline-flex w-full px-4 py-2 text-white hover:text-gray-500"
+                                class="flex w-full items-center justify-between space-x-6 px-4 py-2 text-white hover:text-gray-500"
                                 @click="
                                   router.push({
                                     name: 'node',
