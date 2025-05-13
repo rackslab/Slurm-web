@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
+  - Support querying GPU metrics.
 - conf:
   - Select `gres` and `gres_used` attributes by default in `slurmrestd` nodes
     list and indiviual node responses.

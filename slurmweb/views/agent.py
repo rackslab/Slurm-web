@@ -186,6 +186,7 @@ def metrics(metric):
     metrics_policy_actions = {
         "nodes": "view-nodes",
         "cores": "view-nodes",
+        "gpus": "view-nodes",
         "jobs": "view-jobs",
     }
 
