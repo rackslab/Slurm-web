@@ -18,6 +18,7 @@ import type { ClusterNode } from '@/composables/GatewayAPI'
 import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
+import NodeGPU from '@/components/resources/NodeGPU.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import ResourcesFiltersPanel from '@/components/resources/ResourcesFiltersPanel.vue'
 import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
@@ -287,8 +288,8 @@ onMounted(() => {
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       {{ getMBHumanUnit(node.real_memory) }}
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                      {{ getNodeGPU(node.gres).join(', ') }}
+                    <td class="px-3 py-4 text-sm whitespace-nowrap">
+                      <NodeGPU :node="node" />
                     </td>
                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       <span
