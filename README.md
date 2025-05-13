@@ -32,6 +32,7 @@ Many features in a reactive & responsive web UI:
 * Instant jobs filtering and sorting
 * Live jobs status update
 * Colored badges to visualize job status at a glance
+* GPU resources utilization monitoring
 * Advanced visualization of node status with racking topology
 * Intuitive visualization of QOS and advanced reservations
 * Multi-clusters support
