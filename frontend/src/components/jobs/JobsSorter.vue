@@ -40,27 +40,23 @@ function triggerSortOrder() {
 }
 </script>
 <template>
-  <div class="group inline-flex">
+  <div class="inline-flex rounded-md shadow-sm">
     <button
       @click="triggerSortOrder()"
-      class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+      type="button"
+      class="relative inline-flex items-center rounded-l-md bg-white px-2 py-1 text-sm font-semibold text-gray-600 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-10"
     >
-      <BarsArrowDownIcon v-if="runtimeStore.jobs.order === 'asc'" />
-      <BarsArrowUpIcon v-else />
+      <span class="sr-only">Order</span>
+      <BarsArrowDownIcon v-if="runtimeStore.jobs.order === 'asc'" class="size-4" />
+      <BarsArrowUpIcon v-else class="size-4" />
     </button>
-    <Menu as="div" class="relative inline-block text-left">
-      <div>
-        <MenuButton
-          class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
-          Sort
-          <ChevronDownIcon
-            class="-mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-            aria-hidden="true"
-          />
-        </MenuButton>
-      </div>
-
+    <Menu as="div" class="relative -ml-px block">
+      <MenuButton
+        class="relative inline-flex items-center rounded-r-md bg-white px-2 py-2 text-sm text-gray-600 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-10"
+      >
+        Sort
+        <ChevronDownIcon class="size-5" aria-hidden="true" />
+      </MenuButton>
       <transition
         enter-active-class="transition ease-out duration-100"
         enter-from-class="transform opacity-0 scale-95"
@@ -70,7 +66,7 @@ function triggerSortOrder() {
         leave-to-class="transform opacity-0 scale-95"
       >
         <MenuItems
-          class="ring-opacity-5 absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black focus:outline-hidden"
+          class="absolute left-0 z-10 mt-2 -mr-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
         >
           <div class="py-1">
             <MenuItem v-for="option in sortOptions" :key="option.name" v-slot="{ active }">
