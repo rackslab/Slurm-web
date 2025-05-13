@@ -151,24 +151,24 @@ filters:
     type: list
     content: str
     default:
-    - job_id
-    - user_name
     - account
+    - cpus
     - gres_detail
+    - job_id
     - job_state
-    - state_reason
+    - node_count
+    - nodes
     - partition
     - priority
     - qos
-    - cpus
-    - node_count
-    - nodes
     - sockets_per_node
+    - state_reason
     - tasks
     - tres_per_job
     - tres_per_node
     - tres_per_socket
     - tres_per_task
+    - user_name
     doc: |
       List of jobs fields selected in slurmrestd API when retrieving a list of
       jobs, all other fields arefiltered out.
