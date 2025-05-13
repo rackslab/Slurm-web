@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.
   - Convert nodes memory size in GB or TB in resources page and node details
     page.
+  - Appearance of jobs sort button to visually separate its double role, change
+    sort order and select sort criterion.
 - docs: Update configuration reference documentation.
 
 ### Fixed
