@@ -34,7 +34,7 @@ def crawl_prometheus(url: str, job: str) -> None:
     headers = {}
     db = SlurmwebMetricsDB(url, job)
 
-    for metric in ["nodes", "cores", "jobs"]:
+    for metric in ["nodes", "cores", "gpus", "jobs"]:
         for _range in ["hour"]:
             dump_component_query(
                 requests_statuses,
