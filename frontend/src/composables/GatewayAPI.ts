@@ -202,34 +202,34 @@ export interface ClusterJobExitCode {
 }
 
 export interface ClusterIndividualJob {
-  accrue_time: ClusterOptionalNumber
+  accrue_time?: ClusterOptionalNumber
   association: { account: string; cluster: string; id: number; partition: string; user: string }
-  batch_flag: boolean
-  command: string
+  batch_flag?: boolean
+  command?: string
   comment: ClusterJobComment
-  cpus: ClusterOptionalNumber
-  current_working_directory: string
+  cpus?: ClusterOptionalNumber
+  current_working_directory?: string
   derived_exit_code: ClusterJobExitCode
-  exclusive: string[]
+  exclusive?: string[]
   exit_code: ClusterJobExitCode
   gres_detail?: string[]
   group: string
-  last_sched_evaluation: ClusterOptionalNumber
+  last_sched_evaluation?: ClusterOptionalNumber
   name: string
-  node_count: ClusterOptionalNumber
+  node_count?: ClusterOptionalNumber
   nodes: string
   partition: string
   priority: ClusterOptionalNumber
   qos: string
   script: string
   sockets_per_node?: ClusterOptionalNumber
-  standard_error: string
-  standard_input: string
-  standard_output: string
+  standard_error?: string
+  standard_input?: string
+  standard_output?: string
   state: { current: string[]; reason: string }
   steps: ClusterJobStep[]
   submit_line: string
-  tasks: ClusterOptionalNumber
+  tasks?: ClusterOptionalNumber
   time: ClusterJobTime
   tres: { allocated: ClusterTRES[]; requested: ClusterTRES[] }
   tres_per_job?: string
@@ -368,12 +368,14 @@ export function jobRequestedGPU(job: ClusterJob | ClusterIndividualJob): {
   if (job.tres_per_job && job.tres_per_job.length) {
     return { count: countGPUTRESRequest(job.tres_per_job), reliable: true }
   }
-  if (job.tres_per_node && job.tres_per_node.length) {
+  if (job.tres_per_node && job.tres_per_node.length && job.node_count && job.node_count.set) {
     return { count: countGPUTRESRequest(job.tres_per_node) * job.node_count.number, reliable: true }
   }
   if (
     job.tres_per_socket &&
     job.tres_per_socket.length &&
+    job.node_count &&
+    job.node_count.set &&
     job.sockets_per_node &&
     job.sockets_per_node.set
   ) {
@@ -385,7 +387,7 @@ export function jobRequestedGPU(job: ClusterJob | ClusterIndividualJob): {
       reliable: false
     }
   }
-  if (job.tres_per_task && job.tres_per_task.length) {
+  if (job.tres_per_task && job.tres_per_task.length && job.tasks && job.tasks.set) {
     return { count: countGPUTRESRequest(job.tres_per_task) * job.tasks.number, reliable: true }
   }
   return { count: 0, reliable: true }
