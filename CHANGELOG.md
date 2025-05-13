@@ -46,7 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - agent: Fix `AttributeError` with `prometheus_client.registry.Collector` on el8
   (#548).
-- frontend: Update dependencies to fix CVE-2025-46565 (vite).
+- frontend:
+  - Rendering of nodes grid in resources page in presence of long node names.
+  - Update dependencies to fix CVE-2025-46565 (vite).
 
 ## Removed
 - docs: Drop support of Fedora 40.
