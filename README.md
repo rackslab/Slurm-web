@@ -35,6 +35,7 @@ Many features in a reactive & responsive web UI:
 * GPU resources utilization monitoring
 * Advanced visualization of node status with racking topology
 * Intuitive visualization of QOS and advanced reservations
+* Dark mode support
 * Multi-clusters support
 * LDAP authentication (including Active Directory support)
 * Advanced RBAC permissions management
@@ -43,6 +44,15 @@ Many features in a reactive & responsive web UI:
 
 Get more details in
 [Slurm-web advanced features overview](https://docs.rackslab.io/slurm-web/overview/overview.html).
+
+<p align="center">
+<img
+  src="assets/screenshots/assemblies/bitmaps/slurm-web_dark_mode-tiny.png"
+  alt="Slurm-web on all devices"
+  width="500px"
+  style="margin: 0 auto;">
+<p>
+
 
 ## Quickstart
 
