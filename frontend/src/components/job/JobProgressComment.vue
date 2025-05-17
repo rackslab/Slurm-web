@@ -17,7 +17,7 @@ const { job, step } = defineProps<{
 </script>
 
 <template>
-  <span class="text-sm text-gray-500">
+  <span class="text-sm text-gray-500 dark:text-gray-300">
     <template v-if="step == 'submitted'">
       {{ new Date(job.time.submission * 1000).toLocaleString() }}
     </template>

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - GPU resources utilization monitoring (#258).
 - frontend:
+  - Dark mode support (#278).
   - Display cluster total memory size and number of GPUs in dashboard stats.
   - Display number of GPUs per node in resources page and node details
     page.

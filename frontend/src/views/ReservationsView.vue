@@ -28,8 +28,10 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
   >
     <div class="mx-auto flex items-center justify-between">
       <div class="px-4 py-16 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Reservations</h1>
-        <p class="mt-4 max-w-xl text-sm font-light text-gray-600">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          Reservations
+        </h1>
+        <p class="mt-4 max-w-xl text-sm font-light text-gray-600 dark:text-gray-300">
           Advanced reservations defined on cluster
         </p>
       </div>
@@ -44,49 +46,26 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
     <div v-else class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle">
-          <table class="min-w-full divide-y divide-gray-300">
+          <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-500">
             <thead>
-              <tr>
+              <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
                 <th
                   scope="col"
-                  class="w-48 py-3.5 pr-3 text-left align-top text-sm font-semibold text-gray-900 sm:pl-6 lg:min-w-[150px] lg:pl-8"
+                  class="w-48 py-3.5 pr-3 text-left align-top sm:pl-6 lg:min-w-[150px] lg:pl-8"
                 >
                   Name
                 </th>
-                <th
-                  scope="col"
-                  class="w-72 px-3 py-3.5 text-left align-top text-sm font-semibold text-gray-900"
-                >
-                  Nodes
-                </th>
-                <th
-                  scope="col"
-                  class="w-72 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Duration
-                </th>
-                <th
-                  scope="col"
-                  class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Users
-                </th>
-                <th
-                  scope="col"
-                  class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Accounts
-                </th>
-                <th
-                  scope="col"
-                  class="hidden w-24 px-3 py-3.5 text-left align-top text-sm font-semibold text-gray-900 2xl:table-cell"
-                >
+                <th scope="col" class="w-72 px-3 py-3.5 text-left align-top">Nodes</th>
+                <th scope="col" class="w-72 px-3 py-3.5 text-left">Duration</th>
+                <th scope="col" class="w-12 px-3 py-3.5 text-left">Users</th>
+                <th scope="col" class="w-12 px-3 py-3.5 text-left">Accounts</th>
+                <th scope="col" class="hidden w-24 px-3 py-3.5 text-left align-top 2xl:table-cell">
                   Flags
                 </th>
                 <th scope="col" class="w-12"></th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
+            <tbody class="divide-y divide-gray-200 text-gray-900 dark:text-gray-100">
               <tr v-for="reservation in data" :key="reservation.name">
                 <td class="pr-3 sm:pl-6 lg:pl-8">{{ reservation.name }}</td>
                 <td class="hidden px-3 text-sm break-all 2xl:table-cell">
@@ -112,7 +91,7 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
                 <td class="px-3 text-sm">
                   <XMarkIcon
                     v-if="!reservation.users"
-                    class="mr-0.5 h-5 w-5 text-gray-400"
+                    class="mr-0.5 h-5 w-5 text-gray-400 dark:text-gray-600"
                     aria-hidden="true"
                   />
                   <ul v-else class="list-disc">
@@ -122,7 +101,7 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
                 <td class="px-3 text-sm">
                   <XMarkIcon
                     v-if="!reservation.accounts"
-                    class="mr-0.5 h-5 w-5 text-gray-400"
+                    class="mr-0.5 h-5 w-5 text-gray-400 dark:text-gray-600"
                     aria-hidden="true"
                   />
                   <ul v-else class="list-disc">
@@ -135,7 +114,7 @@ const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservation
                   <span
                     v-for="flag in reservation.flags"
                     :key="flag"
-                    class="bg-slurmweb-light/50 text-slurmweb-dark ring-slurmweb-dark/10 m-1 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                    class="bg-slurmweb-light/50 dark:bg-slurmweb-verydark text-slurmweb-dark dark:text-slurmweb-light ring-slurmweb-dark/10 m-1 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
                     >{{ flag }}</span
                   >
                 </td>

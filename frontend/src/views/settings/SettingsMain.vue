@@ -12,5 +12,5 @@ import SettingsTabs from '@/components/settings/SettingsTabs.vue'
 
 <template>
   <SettingsTabs entry="General" />
-  <div class="px-4 pt-16 sm:px-6 lg:px-8">General Settings</div>
+  <div class="px-4 pt-16 text-gray-900 sm:px-6 lg:px-8 dark:text-gray-100">General Settings</div>
 </template>

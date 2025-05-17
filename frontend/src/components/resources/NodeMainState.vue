@@ -26,27 +26,27 @@ function getStatusColor(): NodeMainLabelColors {
   switch (getNodeMainState(node)) {
     case 'down':
       return {
-        span: 'bg-red-100 text-red-700',
+        span: 'bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-100',
         label: 'down',
         circle: 'fill-red-600'
       }
     case 'drain':
       return {
-        span: 'bg-fuchsia-100 text-fuchsia-700',
+        span: 'bg-fuchsia-100 dark:bg-fuchsia-900/60 text-fuchsia-700 dark:text-fuchsia-100',
         label: 'drain',
         circle: 'fill-fuchsia-700'
       }
     case 'draining':
       return {
-        span: 'bg-fuchsia-100 text-fuchsia-700',
+        span: 'bg-fuchsia-100 dark:bg-fuchsia-900/60 text-fuchsia-700 dark:text-fuchsia-100',
         label: 'draining',
         circle: 'fill-fuchsia-300'
       }
     default:
       return {
-        span: 'bg-green-100 text-green-700',
+        span: 'bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-200',
         label: 'up',
-        circle: 'fill-green-500'
+        circle: 'fill-green-500 dark:fill-green-700'
       }
   }
 }

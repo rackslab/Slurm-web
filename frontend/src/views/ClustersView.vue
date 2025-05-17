@@ -76,7 +76,7 @@ onMounted(() => {
       <button
         @click="navigate"
         role="link"
-        class="absolute right-0 m-2 flex p-2 text-gray-600 hover:text-gray-800"
+        class="absolute right-0 m-2 flex p-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 hover:dark:text-gray-200"
       >
         Signout
         <ArrowRightOnRectangleIcon class="h-6 w-6" />
@@ -98,7 +98,7 @@ onMounted(() => {
       </div>
       <div
         v-else-if="!loaded"
-        class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%]"
+        class="flex h-24 w-full animate-pulse items-center justify-center rounded-xl bg-slate-200 text-sm text-gray-600 lg:w-[60%] dark:text-gray-400"
       >
         <LoadingSpinner :size="5" />
         Loading clusters…
@@ -115,10 +115,12 @@ onMounted(() => {
         </div>
       </div>
       <div v-else class="flex w-full flex-col lg:w-[80%] xl:w-[60%]">
-        <h1 class="flex px-4 text-left text-lg font-medium text-gray-700">Select a cluster</h1>
+        <h1 class="flex px-4 text-left text-lg font-medium text-gray-700 dark:text-gray-400">
+          Select a cluster
+        </h1>
         <ul
           role="list"
-          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-900/5 lg:rounded-xl"
+          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-700 lg:rounded-xl dark:divide-gray-700 dark:bg-gray-800"
         >
           <ClusterListItem
             v-for="cluster in clusters"

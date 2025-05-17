@@ -25,7 +25,7 @@ const resources = jobResourcesTRES(tres)
 
 <template>
   <span v-if="resources.node == -1 && resources.cpu == -1 && resources.memory == -1">∅</span>
-  <dd v-else class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+  <dd v-else class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
     <ul>
       <li>
         <span class="inline-flex"

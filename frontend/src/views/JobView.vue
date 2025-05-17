@@ -196,7 +196,7 @@ onMounted(() => {
     <button
       @click="backToJobs()"
       type="button"
-      class="bg-slurmweb hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark mt-8 mb-16 inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+      class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark mt-8 mb-16 inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
     >
       <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
       Back to jobs
@@ -213,8 +213,12 @@ onMounted(() => {
     <div v-else-if="data">
       <div class="flex justify-between">
         <div class="px-4 pb-8 sm:px-0">
-          <h3 class="text-base leading-7 font-semibold text-gray-900">Job {{ id }}</h3>
-          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">All job settings</p>
+          <h3 class="text-base leading-7 font-semibold text-gray-900 dark:text-gray-100">
+            Job {{ id }}
+          </h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-300">
+            All job settings
+          </p>
         </div>
         <div>
           <JobStatusBadge :status="data.state.current" :large="true" />
@@ -226,18 +230,18 @@ onMounted(() => {
           <JobProgress v-if="data" :job="data" />
         </div>
         <div class="w-full lg:w-2/3">
-          <div class="border-t border-gray-100">
-            <dl class="divide-y divide-gray-100">
+          <div class="border-t border-gray-100 dark:border-gray-700">
+            <dl class="divide-y divide-gray-100 dark:divide-gray-700">
               <div
                 v-for="field in jobFieldsContent"
                 :key="field.id"
                 :id="`${field.id}`"
                 :class="[
-                  displayTags[field.id].highlight ? 'bg-slurmweb-light' : '',
+                  displayTags[field.id].highlight ? 'bg-slurmweb-light dark:bg-slurmweb-dark' : '',
                   'px-4 py-2 transition-colors duration-700 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'
                 ]"
               >
-                <dt class="text-sm leading-6 font-medium text-gray-900">
+                <dt class="text-sm leading-6 font-medium text-gray-900 dark:text-gray-100">
                   <a :href="`#${field.id}`">
                     <span
                       class="flex items-center"
