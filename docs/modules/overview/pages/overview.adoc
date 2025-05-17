@@ -124,6 +124,19 @@ smartphones to largest desktop screens.
 
 image::slurm-web_responsive.png[width=80%]
 
+== Dark Mode
+
+Slurm-web includes native support for dark mode web interface. This feature
+enhances the user experience by reducing eye strain in low-light environments
+and aligning with system-wide appearance preferences.
+
+image::slurm-web_dark_mode.png[]
+
+The dark mode is automatically applied based on the user's operating system or
+browser theme settings. Dark mode affects all interface components, including
+dashboards, job and node views, charts, and menus, ensuring consistent and
+accessible contrast across the application.
+
 == Enterprise Authentication
 
 Slurm-web supports users authentication with enterprise LDAP directory (FreeIPA,
