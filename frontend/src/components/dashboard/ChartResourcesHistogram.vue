@@ -72,17 +72,19 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="border-gray-200p border-b pt-16 pb-5 sm:flex sm:items-center sm:justify-between">
-    <h3 class="text-base font-semibold text-gray-900">Resources Status</h3>
+  <div
+    class="border-b border-gray-200 pt-16 pb-5 sm:flex sm:items-center sm:justify-between dark:border-gray-700"
+  >
+    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-200">Resources Status</h3>
     <div class="mt-3 text-right sm:mt-0">
       <span class="isolate inline-flex rounded-md shadow-xs">
         <button
           type="button"
           :class="[
             runtimeStore.dashboard.chartResourcesType == 'nodes'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setResourceType('nodes')"
         >
@@ -92,9 +94,9 @@ onBeforeMount(() => {
           type="button"
           :class="[
             runtimeStore.dashboard.chartResourcesType == 'cores'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setResourceType('cores')"
         >
@@ -104,9 +106,9 @@ onBeforeMount(() => {
           type="button"
           :class="[
             runtimeStore.dashboard.chartResourcesType == 'gpus'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setResourceType('gpus')"
         >

@@ -333,21 +333,24 @@ onUnmounted(() => {
       </div>
 
       <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
-        <div v-if="currentNode" class="w-40 overflow-hidden rounded-md bg-white shadow-lg">
-          <ul role="list" class="divide-y divide-gray-200">
-            <li class="bg-gray-200 py-2 text-center text-sm">
+        <div
+          v-if="currentNode"
+          class="w-40 overflow-hidden rounded-md bg-white shadow-lg dark:bg-gray-800"
+        >
+          <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+            <li class="bg-gray-200 py-2 text-center text-sm dark:bg-gray-700 dark:text-gray-100">
               <strong>Node {{ currentNode.name }}</strong>
             </li>
-            <li class="flex px-4 py-1 text-xs text-gray-400">
+            <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
               <NodeMainState :node="currentNode" />
             </li>
-            <li class="flex px-4 py-1 text-xs text-gray-400">
+            <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
               <NodeAllocationState :node="currentNode" />
             </li>
           </ul>
         </div>
         <div
-          class="absolute right-0 left-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white"
+          class="absolute right-0 left-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white dark:border-t-gray-800"
         ></div>
       </aside>
 

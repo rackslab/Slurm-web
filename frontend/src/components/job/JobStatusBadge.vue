@@ -27,37 +27,37 @@ interface JobLabelColors {
 const statusColor = computed<JobLabelColors>(() => {
   if (status.includes('RUNNING'))
     return {
-      span: 'bg-green-100 text-green-700',
-      circle: 'fill-green-500'
+      span: 'bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-200',
+      circle: 'fill-green-500 dark:fill-green-700'
     }
   else if (status.includes('PENDING'))
     return {
-      span: 'bg-yellow-100 text-yellow-800',
+      span: 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-100',
       circle: 'fill-yellow-500'
     }
   else if (status.includes('CANCELLED'))
     return {
-      span: 'bg-purple-100 text-purple-700',
+      span: 'bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-100',
       circle: 'fill-purple-500'
     }
   else if (status.includes('COMPLETED'))
     return {
-      span: 'bg-gray-100 text-gray-600',
+      span: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400',
       circle: 'fill-green-500'
     }
   else if (status.includes('FAILED'))
     return {
-      span: 'bg-gray-100 text-gray-600',
+      span: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400',
       circle: 'fill-red-500'
     }
   else if (status.includes('TIMEOUT'))
     return {
-      span: 'bg-gray-100 text-gray-600',
+      span: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400',
       circle: 'fill-orange-600'
     }
   else
     return {
-      span: 'bg-gray-100 text-gray-600',
+      span: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400',
       circle: 'fill-gray-400'
     }
 })

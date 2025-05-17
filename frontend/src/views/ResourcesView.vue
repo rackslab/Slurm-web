@@ -168,20 +168,22 @@ onMounted(() => {
     :cluster="cluster"
     :breadcrumb="[{ title: 'Resources' }]"
   >
-    <div class="bg-white">
+    <div>
       <ResourcesFiltersPanel :cluster="cluster" :nbNodes="filteredNodes.length" />
 
       <div class="mx-auto flex items-center justify-between px-4 py-16 sm:px-6 lg:px-8">
         <div>
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Nodes</h1>
-          <p class="mt-4 max-w-xl text-sm text-gray-700">State of nodes on cluster</p>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Nodes</h1>
+          <p class="mt-4 max-w-xl text-sm text-gray-700 dark:text-gray-300">
+            State of nodes on cluster
+          </p>
         </div>
-        <div v-if="loaded" class="mt-4 text-right text-gray-600">
+        <div v-if="loaded" class="mt-4 text-right text-gray-600 dark:text-gray-300">
           <div class="text-5xl font-bold">{{ filteredNodes.length }}</div>
           <div class="text-sm font-light">node{{ filteredNodes.length > 1 ? 's' : '' }} found</div>
         </div>
         <div v-else class="flex animate-pulse space-x-4">
-          <div class="h-14 w-14 rounded-2xl bg-slate-200"></div>
+          <div class="h-14 w-14 rounded-2xl bg-slate-200 dark:bg-slate-800"></div>
         </div>
       </div>
 
@@ -199,49 +201,29 @@ onMounted(() => {
       <div v-else class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">
-            <table class="min-w-full divide-y divide-gray-300">
+            <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-500">
               <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    colspan="2"
-                    class="w-12 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
-                  >
+                <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                  <th scope="col" colspan="2" class="w-12 py-3.5 pr-3 text-left sm:pl-6 lg:pl-8">
                     Nodename
                   </th>
-                  <th
-                    scope="col"
-                    class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    State
-                  </th>
-                  <th
-                    scope="col"
-                    class="w-12 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Allocation
-                  </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    CPU
-                  </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Memory
-                  </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    GPU
-                  </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Partitions
-                  </th>
+                  <th scope="col" class="w-12 px-3 py-3.5 text-left">State</th>
+                  <th scope="col" class="w-12 px-3 py-3.5 text-left">Allocation</th>
+                  <th scope="col" class="px-3 py-3.5 text-left">CPU</th>
+                  <th scope="col" class="px-3 py-3.5 text-left">Memory</th>
+                  <th scope="col" class="px-3 py-3.5 text-left">GPU</th>
+                  <th scope="col" class="px-3 py-3.5 text-left">Partitions</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
+              <tbody
+                class="divide-y divide-gray-200 text-sm text-gray-500 dark:divide-gray-700 dark:text-gray-300"
+              >
                 <template v-for="node in foldedNodes" :key="node.name">
-                  <tr class="bg-white">
+                  <tr>
                     <td class="w-4">
                       <button
                         v-if="node.number > 1"
-                        class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                        class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md p-2 text-gray-400"
                         @click="foldedNodesShow[node.name] = !foldedNodesShow[node.name]"
                       >
                         <span class="sr-only">Toggle folded nodes {{ node.name }}</span>
@@ -252,16 +234,18 @@ onMounted(() => {
                         />
                       </button>
                     </td>
-                    <td class="py-4 text-sm whitespace-nowrap text-gray-900">
+                    <td class="py-4 text-sm whitespace-nowrap">
                       <RouterLink
                         v-if="node.number == 1"
-                        class="inline-flex text-white hover:font-bold hover:text-gray-500"
+                        class="inline-flex text-white hover:font-bold hover:text-gray-500 dark:text-gray-900 hover:dark:text-gray-300"
                         :to="{
                           name: 'node',
                           params: { cluster: cluster, nodeName: node.name }
                         }"
                       >
-                        <span class="pr-4 font-mono text-black">{{ node.name }}</span>
+                        <span class="pr-4 font-mono text-black dark:text-gray-100">{{
+                          node.name
+                        }}</span>
                         <MagnifyingGlassPlusIcon class="h-4 w-4" />
                       </RouterLink>
                       <button
@@ -270,28 +254,30 @@ onMounted(() => {
                         class="hover:font-bold"
                       >
                         <span class="sr-only">Toggle folded nodes {{ node.name }}</span>
-                        <span class="font-mono">{{ node.name }}</span>
+                        <span class="font-mono text-gray-900 dark:text-gray-100">{{
+                          node.name
+                        }}</span>
                         <span class="px-1 font-normal text-gray-500 italic"
                           >({{ node.number }})</span
                         >
                       </button>
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       <NodeMainState :node="node" />
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       <NodeAllocationState :node="node" />
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       {{ node.sockets }} x {{ node.cores }}
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       {{ getMBHumanUnit(node.real_memory) }}
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       <NodeGPU :node="node" />
                     </td>
-                    <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                    <td class="px-3 py-4 whitespace-nowrap">
                       <span
                         v-for="partition in node.partitions"
                         :key="partition"
@@ -310,7 +296,7 @@ onMounted(() => {
                       leave-to-class="-translate-y-6 opacity-0"
                     >
                       <tr v-show="foldedNodesShow[node.name]">
-                        <td colspan="8" class="z-0 bg-gray-300">
+                        <td colspan="8" class="z-0 bg-gray-300 dark:bg-gray-800">
                           <ul
                             role="list"
                             class="m-4 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 xl:grid-cols-8 2xl:grid-cols-16"
@@ -318,10 +304,10 @@ onMounted(() => {
                             <li
                               v-for="_node in expandNodeset(node.name)"
                               :key="_node"
-                              class="col-span-1 divide-y divide-gray-200 rounded-md bg-white text-left font-mono text-xs shadow-xs transition-transform hover:scale-105"
+                              class="col-span-1 divide-y divide-gray-200 rounded-md bg-white text-left font-mono text-xs shadow-xs transition-transform hover:scale-105 dark:bg-gray-700"
                             >
                               <button
-                                class="flex w-full items-center justify-between space-x-6 px-4 py-2 text-white hover:text-gray-500"
+                                class="flex w-full items-center justify-between space-x-6 px-4 py-2 text-white hover:text-gray-500 dark:text-gray-700"
                                 @click="
                                   router.push({
                                     name: 'node',
@@ -329,9 +315,10 @@ onMounted(() => {
                                   })
                                 "
                               >
-                                <span class="visible mr-0 grow text-left text-gray-500">{{
-                                  _node
-                                }}</span>
+                                <span
+                                  class="visible mr-0 grow text-left text-gray-500 dark:text-gray-100"
+                                  >{{ _node }}</span
+                                >
                                 <MagnifyingGlassPlusIcon class="h-4 w-4" />
                               </button>
                             </li>

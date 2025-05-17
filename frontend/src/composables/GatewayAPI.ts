@@ -831,6 +831,13 @@ export function useGatewayAPI() {
     width: number,
     height: number
   ): Promise<[RacksDBAPIImage, RacksDBInfrastructureCoordinates]> {
+    /* Detect dark mode to set lighter racks colors */
+    let rack_colors
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      rack_colors = { frame: '#555555', pane: '#505050' }
+    } else {
+      rack_colors = {}
+    }
     const response = await restAPI.postRaw<AxiosResponse>(
       `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.png?coordinates`,
       {
@@ -838,7 +845,8 @@ export function useGatewayAPI() {
         dimensions: { width: width, height: height },
         infrastructure: { equipment_labels: false, ghost_unselected: true },
         row: { labels: runtimeConfiguration.racksdb_rows_labels },
-        rack: { labels: runtimeConfiguration.racksdb_racks_labels }
+        rack: { labels: runtimeConfiguration.racksdb_racks_labels },
+        colors: { racks: [rack_colors] }
       },
       true,
       'arraybuffer'

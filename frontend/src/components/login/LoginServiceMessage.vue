@@ -54,11 +54,14 @@ watch(
 <template>
   <div
     v-if="message.loaded.value"
-    class="my-4 w-full rounded-md bg-yellow-50 p-4 shadow-lg sm:max-w-md"
+    class="my-4 w-full rounded-md bg-yellow-50 p-4 shadow-lg sm:max-w-md dark:bg-stone-800"
   >
     <div class="flex">
       <div class="shrink-0">
-        <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
+        <ExclamationTriangleIcon
+          class="h-5 w-5 text-yellow-400 dark:text-yellow-300"
+          aria-hidden="true"
+        />
       </div>
       <iframe
         ref="iframe"

@@ -53,19 +53,21 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
       <template v-if="current[0] >= stepIdx">
         <div
           v-if="stepIdx !== steps.length - 1"
-          class="bg-slurmweb absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5"
+          class="bg-slurmweb dark:bg-slurmweb-dark absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5"
           aria-hidden="true"
         />
         <div class="group relative flex items-start">
           <span class="flex h-9 items-center">
             <span
-              class="bg-slurmweb relative z-10 flex h-8 w-8 items-center justify-center rounded-full"
+              class="bg-slurmweb dark:bg-slurmweb-dark relative z-10 flex h-8 w-8 items-center justify-center rounded-full"
             >
               <CheckIcon class="h-5 w-5 text-white" aria-hidden="true" />
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-sm font-medium">{{ capitalize(step) }}</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{
+              capitalize(step)
+            }}</span>
             <JobProgressComment :job="job" :step="step" />
           </span>
         </div>
@@ -73,19 +75,21 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
       <template v-else-if="current[0] + 1 == stepIdx && current[1]">
         <div
           v-if="stepIdx !== steps.length - 1"
-          class="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300"
+          class="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 dark:bg-gray-700"
           aria-hidden="true"
         />
         <div class="group relative flex items-start" aria-current="step">
           <span class="flex h-9 items-center" aria-hidden="true">
             <span
-              class="border-slurmweb relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 bg-white"
+              class="border-slurmweb dark:border-slurmweb-dark relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 bg-white dark:bg-gray-900"
             >
-              <span class="bg-slurmweb h-2.5 w-2.5 rounded-full" />
+              <span class="bg-slurmweb dark:bg-slurmweb-dark h-2.5 w-2.5 rounded-full" />
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-slurmweb-dark text-sm font-medium">{{ capitalize(step) }}</span>
+            <span class="text-slurmweb-dark dark:text-slurmweb text-sm font-medium">{{
+              capitalize(step)
+            }}</span>
             <JobProgressComment :job="job" :step="step" />
           </span>
         </div>
@@ -93,19 +97,21 @@ const steps = ['submitted', 'eligible', 'scheduling', 'running', 'completing', '
       <template v-else>
         <div
           v-if="stepIdx !== steps.length - 1"
-          class="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300"
+          class="absolute top-4 left-4 mt-0.5 -ml-px h-full w-0.5 bg-gray-300 dark:bg-gray-700"
           aria-hidden="true"
         />
         <div class="group relative flex items-start">
           <span class="flex h-9 items-center" aria-hidden="true">
             <span
-              class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white"
+              class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900"
             >
               <span class="h-2.5 w-2.5 rounded-full bg-transparent" />
             </span>
           </span>
           <span class="ml-4 flex min-w-0 flex-col">
-            <span class="text-sm font-medium text-gray-500">{{ capitalize(step) }}</span>
+            <span class="text-sm font-medium text-gray-500 dark:text-gray-600">{{
+              capitalize(step)
+            }}</span>
             <JobProgressComment :job="job" :step="step" />
           </span>
         </div>

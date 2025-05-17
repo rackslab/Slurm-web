@@ -39,7 +39,7 @@ const runtimeStore = useRuntimeStore()
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-400/50 transition-opacity" />
+        <div class="fixed inset-0 bg-gray-400/50 transition-opacity dark:bg-gray-900/60" />
       </TransitionChild>
 
       <div class="fixed inset-0 z-40 flex">
@@ -53,19 +53,19 @@ const runtimeStore = useRuntimeStore()
           leave-to="translate-x-full"
         >
           <DialogPanel
-            class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl"
+            class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl dark:bg-gray-700"
           >
             <div class="flex items-center justify-between px-4">
-              <h2 class="text-lg font-medium text-gray-900">
+              <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Filters
                 <span
-                  class="text-slurmweb ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium md:inline-block"
+                  class="text-slurmweb dark:text-slurmweb-light dark:bg-slurmweb-verydark ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium md:inline-block"
                   >{{ nbNodes }}</span
                 >
               </h2>
               <button
                 type="button"
-                class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md p-2 text-gray-400"
                 @click="runtimeStore.resources.openFiltersPanel = false"
               >
                 <span class="sr-only">Close menu</span>
@@ -75,16 +75,20 @@ const runtimeStore = useRuntimeStore()
 
             <!-- Filters -->
             <form class="mt-4">
-              <Disclosure as="div" class="border-t border-gray-200 px-4 py-6" v-slot="{ open }">
+              <Disclosure
+                as="div"
+                class="border-t border-gray-200 px-4 py-6 dark:border-gray-600"
+                v-slot="{ open }"
+              >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
-                    class="flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400"
+                    class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
                       <BoltIcon
-                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-gray-600 p-2 text-white"
+                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-gray-600 p-2 text-white dark:bg-gray-500"
                       />
-                      <span class="font-medium text-gray-900">State</span>
+                      <span class="font-medium text-gray-900 dark:text-gray-100">State</span>
                     </span>
                     <span class="ml-6 flex items-center">
                       <ChevronDownIcon
@@ -111,7 +115,7 @@ const runtimeStore = useRuntimeStore()
                       />
                       <label
                         :for="`filter-mobile-${state.value}-${optionIdx}`"
-                        class="ml-3 text-sm text-gray-500"
+                        class="ml-3 text-sm text-gray-500 dark:text-gray-300"
                         >{{ state.label }}</label
                       >
                     </div>
@@ -122,18 +126,18 @@ const runtimeStore = useRuntimeStore()
               <Disclosure
                 v-if="runtimeStore.hasPermission('view-partitions')"
                 as="div"
-                class="border-t border-t-gray-200 px-4 py-6"
+                class="border-t border-t-gray-200 px-4 py-6 dark:border-t-gray-600"
                 v-slot="{ open }"
               >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
-                    class="flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400"
+                    class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
                       <RectangleGroupIcon
                         class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-amber-700 p-2 text-white"
                       />
-                      <span class="font-medium text-gray-900">Partitions</span>
+                      <span class="font-medium text-gray-900 dark:text-gray-100">Partitions</span>
                     </span>
                     <span class="ml-6 flex items-center">
                       <ChevronDownIcon

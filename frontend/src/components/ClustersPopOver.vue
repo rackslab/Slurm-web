@@ -23,10 +23,10 @@ const runtimeStore = useRuntimeStore()
   <template v-if="runtimeStore.availableClusters.length > 1">
     <Popover class="relative">
       <PopoverButton
-        class="hover:bg-slurmweb-light inline-flex items-center gap-x-1 rounded-sm p-3 leading-6 font-bold text-transparent hover:text-gray-400"
+        class="hover:bg-slurmweb-light hover:dark:bg-slurmweb-dark/30 inline-flex items-center gap-x-1 rounded-sm p-3 leading-6 font-bold text-transparent hover:text-gray-900 focus:outline-hidden hover:dark:text-gray-200"
       >
         <ChevronDownIcon class="h-5 w-5" aria-hidden="true" />
-        <span class="text-gray-700 hover:text-gray-900">{{ cluster }}</span>
+        <span class="text-gray-700 dark:text-gray-400">{{ cluster }}</span>
       </PopoverButton>
 
       <transition
@@ -42,13 +42,13 @@ const runtimeStore = useRuntimeStore()
           class="absolute left-0 z-10 mt-5 flex w-screen max-w-max px-0"
         >
           <div
-            class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
+            class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 dark:bg-gray-700"
           >
             <div class="p-4">
               <div
                 v-for="cluster in runtimeStore.availableClusters"
                 :key="cluster.name"
-                class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50"
+                class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50 hover:dark:bg-gray-800"
               >
                 <div
                   v-if="cluster.permissions.actions.length > 0"
@@ -75,14 +75,17 @@ const runtimeStore = useRuntimeStore()
                     params: { cluster: cluster.name },
                     query: route.query
                   }"
-                  class="flex grow font-semibold text-gray-900"
+                  class="flex grow font-semibold text-gray-900 dark:text-gray-200"
                   @click="close()"
                 >
                   {{ cluster.name }}
                   <span class="absolute inset-0" />
                 </RouterLink>
 
-                <span v-if="cluster.stats" class="mt-1 flex w-30 text-xs leading-5 text-gray-500">
+                <span
+                  v-if="cluster.stats"
+                  class="mt-1 flex w-30 text-xs leading-5 text-gray-500 dark:text-gray-400"
+                >
                   <ServerIcon class="mx-1 h-5" />
                   {{ cluster.stats.resources.nodes }} node{{
                     cluster.stats.resources.nodes > 1 ? 's' : ''

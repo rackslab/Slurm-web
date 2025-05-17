@@ -62,8 +62,8 @@ onMounted(() => {
   <li
     :class="[
       cluster.permissions.actions.length > 0
-        ? 'cursor-pointer hover:bg-gray-50'
-        : 'cursor-not-allowed bg-gray-100',
+        ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'
+        : 'cursor-not-allowed bg-gray-100 dark:bg-gray-900',
       'relative flex h-20 items-center justify-between px-4 py-5 sm:px-6'
     ]"
     @click="
@@ -71,14 +71,14 @@ onMounted(() => {
         router.push({ name: 'dashboard', params: { cluster: cluster.name } })
     "
   >
-    <span class="w-64 text-sm leading-6 font-semibold text-gray-900">
+    <span class="w-64 text-sm leading-6 font-semibold text-gray-900 dark:text-gray-300">
       <RouterLink :to="{ name: 'dashboard', params: { cluster: cluster.name } }">
         <span class="inset-x-0 -top-px bottom-0" />
         {{ cluster.name }}
       </RouterLink>
       <span
         v-if="cluster.stats"
-        class="ml-2 hidden items-center gap-x-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-normal text-gray-600 md:inline-flex"
+        class="dark:bg-slurmweb-dark ml-2 hidden items-center gap-x-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-normal text-gray-600 md:inline-flex dark:text-gray-300"
       >
         <TagIcon class="h-3" />
         Slurm {{ cluster.stats.version }}
@@ -105,7 +105,7 @@ onMounted(() => {
           <div class="flex-none rounded-full bg-gray-500/20 p-1">
             <div class="h-1.5 w-1.5 rounded-full bg-gray-500" />
           </div>
-          <p class="text-xs leading-5 text-gray-500">Loading</p>
+          <p class="text-xs leading-5 text-gray-500 dark:text-gray-300">Loading</p>
           <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
         </div>
         <div
@@ -115,20 +115,20 @@ onMounted(() => {
           <div class="flex-none rounded-full bg-red-500/20 p-1">
             <div class="h-1.5 w-1.5 rounded-full bg-red-500" />
           </div>
-          <p class="text-xs leading-5 text-gray-500">Denied</p>
+          <p class="text-xs leading-5 text-gray-500 dark:text-gray-300">Denied</p>
         </div>
         <div v-else-if="cluster.error" class="mt-1 flex items-center gap-x-1.5">
           <div class="flex-none rounded-full bg-orange-500/20 p-1">
             <div class="h-1.5 w-1.5 rounded-full bg-orange-500" />
           </div>
-          <p class="text-xs leading-5 text-gray-500">Ongoing issue</p>
+          <p class="text-xs leading-5 text-gray-500 dark:text-gray-300">Ongoing issue</p>
           <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
         </div>
         <div v-else class="mt-1 flex items-center gap-x-1.5">
           <div class="flex-none rounded-full bg-emerald-500/20 p-1">
             <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           </div>
-          <p class="text-xs leading-5 text-gray-500">Available</p>
+          <p class="text-xs leading-5 text-gray-500 dark:text-gray-300">Available</p>
           <ChevronRightIcon class="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
         </div>
       </div>

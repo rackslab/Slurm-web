@@ -28,7 +28,7 @@ const activeFiltersGroups: Array<{
     icon: BoltIcon,
     removeCallback: runtimeStore.resources.removeStateFilter,
     colors: {
-      badge: 'border-gray-200 bg-gray-600',
+      badge: 'border-gray-200 dark:border-gray-400 bg-gray-600 dark:bg-gray-500',
       button: 'text-gray-400 hover:bg-gray-700 hover:text-gray-500'
     }
   },
@@ -38,7 +38,7 @@ const activeFiltersGroups: Array<{
     icon: RectangleGroupIcon,
     removeCallback: runtimeStore.resources.removePartitionFilter,
     colors: {
-      badge: 'border-gray-200 bg-amber-700',
+      badge: 'border-gray-200 dark:border-gray-400 bg-amber-700',
       button: 'text-amber-800 hover:bg-amber-800 hover:text-amber-900'
     }
   }
@@ -49,11 +49,11 @@ const activeFiltersGroups: Array<{
   <section aria-labelledby="filter-heading" class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
     <h2 id="filter-heading" class="sr-only">Filters</h2>
 
-    <div class="border-gray-200 bg-white pb-4">
+    <div class="border-gray-200 pb-4 dark:border-gray-700">
       <div class="flex justify-end px-4 sm:px-6 lg:px-8">
         <button
           type="button"
-          class="bg-slurmweb hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
           @click="runtimeStore.resources.openFiltersPanel = true"
         >
           <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -63,7 +63,7 @@ const activeFiltersGroups: Array<{
     </div>
 
     <!-- Active filters -->
-    <div v-show="!runtimeStore.resources.emptyFilters()" class="bg-gray-100">
+    <div v-show="!runtimeStore.resources.emptyFilters()" class="bg-gray-100 dark:bg-gray-800">
       <div class="mx-auto px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
         <h3 class="text-sm font-medium text-gray-500">
           <FunnelIcon class="mr-1 h-4 w-4" />

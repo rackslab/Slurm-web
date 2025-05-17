@@ -54,7 +54,7 @@ const { data } = useGatewayDataGetter<UserDescription[]>('users')
   <div class="relative mt-2">
     <Combobox as="div" v-model="runtimeStore.jobs.filters.users" multiple>
       <ComboboxInput
-        class="focus:ring-slurmweb w-full rounded-md border-0 bg-white py-1.5 pr-12 pl-3 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+        class="focus:ring-slurmweb w-full rounded-md border-0 bg-white py-1.5 pr-12 pl-3 shadow-xs ring-1 ring-gray-300 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-800 dark:ring-gray-700"
         @change="query = $event.target.value"
         :placeholder="queryPlaceholder()"
       />
@@ -66,7 +66,7 @@ const { data } = useGatewayDataGetter<UserDescription[]>('users')
 
       <ComboboxOptions
         v-if="filteredUsers.length > 0"
-        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm dark:bg-gray-800"
       >
         <ComboboxOption
           v-for="user in filteredUsers"
@@ -78,19 +78,16 @@ const { data } = useGatewayDataGetter<UserDescription[]>('users')
           <li
             :class="[
               'relative cursor-default py-2 pr-9 pl-3 select-none',
-              active ? 'bg-slurmweb text-white' : 'text-gray-900'
+              active
+                ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+                : 'text-gray-900 dark:text-gray-400'
             ]"
           >
             <div class="flex">
               <span :class="['truncate', selected && 'font-semibold']">
                 {{ user.fullname }}
               </span>
-              <span
-                :class="[
-                  'ml-2 truncate text-gray-500',
-                  active ? 'text-indigo-200' : 'text-gray-500'
-                ]"
-              >
+              <span :class="['ml-2 truncate', active ? 'text-indigo-200' : 'text-gray-500']">
                 {{ user.login }}
               </span>
             </div>
