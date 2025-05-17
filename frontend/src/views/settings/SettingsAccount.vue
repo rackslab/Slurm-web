@@ -20,27 +20,29 @@ const authStore = useAuthStore()
   <div class="px-4 pt-16 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900">Account</h1>
-        <p class="mt-2 text-sm text-gray-700">Personal account information and permissions.</p>
+        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">Account</h1>
+        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+          Personal account information and permissions.
+        </p>
       </div>
     </div>
-    <div class="mt-6 border-t border-gray-100">
-      <dl class="divide-y divide-gray-100">
+    <div class="mt-6 border-t border-gray-100 dark:border-gray-700">
+      <dl class="divide-y divide-gray-100 dark:divide-gray-700">
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-          <dt class="text-sm leading-6 font-medium text-gray-900">Username</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <dt class="text-sm leading-6 font-medium text-gray-900 dark:text-gray-100">Username</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
             {{ authStore.username }}
           </dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-          <dt class="text-sm leading-6 font-medium text-gray-900">Full name</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <dt class="text-sm leading-6 font-medium text-gray-900 dark:text-gray-100">Full name</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
             {{ authStore.fullname }}
           </dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-          <dt class="text-sm leading-6 font-medium text-gray-900">Groups</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <dt class="text-sm leading-6 font-medium text-gray-900 dark:text-gray-100">Groups</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
             {{ authStore.groups?.join(', ') }}
           </dd>
         </div>
@@ -48,18 +50,22 @@ const authStore = useAuthStore()
     </div>
     <div class="pt-16 sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900">Clusters permissions</h1>
+        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
+          Clusters permissions
+        </h1>
       </div>
     </div>
-    <div class="mt-6 border-t border-gray-100">
-      <dl class="divide-y divide-gray-100">
+    <div class="mt-6 border-t border-gray-100 dark:border-gray-700">
+      <dl class="divide-y divide-gray-100 dark:divide-gray-700">
         <div
           v-for="cluster in runtimeStore.availableClusters"
           :key="cluster.name"
           class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
         >
-          <dt class="text-sm leading-6 font-medium text-gray-900">{{ cluster.name }}</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <dt class="text-sm leading-6 font-medium text-gray-900 dark:text-gray-100">
+            {{ cluster.name }}
+          </dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
             Roles :
             <ul class="mb-4 ml-6 list-disc">
               <li v-for="role in cluster.permissions.roles.sort()" :key="role">{{ role }}</li>

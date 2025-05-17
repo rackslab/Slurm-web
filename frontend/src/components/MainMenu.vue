@@ -86,7 +86,9 @@ const navigation = [
             </TransitionChild>
 
             <!-- Sidebar component -->
-            <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
+            <div
+              class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 dark:bg-gray-700"
+            >
               <div class="flex h-16 shrink-0 items-center justify-center">
                 <img class="flex h-12" src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
               </div>
@@ -100,8 +102,8 @@ const navigation = [
                           :to="{ name: item.route }"
                           :class="[
                             item.route == entry
-                              ? 'bg-slurmweb-dark text-white'
-                              : 'text-slurmweb-font-disabled hover:text-white',
+                              ? 'bg-slurmweb-dark dark:bg-slurmweb-verydark text-white'
+                              : 'text-slurmweb-font-disabled dark:text-slurmweb-font-disabled/80 hover:text-white',
                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                           ]"
                           @click="sidebarOpen = false"
@@ -124,7 +126,7 @@ const navigation = [
                   <li class="mt-auto">
                     <RouterLink
                       :to="{ name: 'settings' }"
-                      class="text-slurmweb-font-disabled hover:bg-slurmweb-dark group -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
+                      class="text-slurmweb-light hover:bg-slurmweb-dark hover:dark:bg-slurmweb-verydark group -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
                     >
                       <Cog6ToothIcon
                         class="text-slurmweb-font-disabled h-6 w-6 shrink-0 group-hover:text-white"
@@ -145,9 +147,10 @@ const navigation = [
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
-    <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
+    <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 dark:bg-gray-700">
       <div class="flex h-24 shrink-0 items-center">
-        <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
+        <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" class="block dark:hidden" />
+        <img src="/logo/slurm-web_horizontal_dark.png" alt="Slurm-web" class="hidden dark:block" />
       </div>
       <nav class="flex flex-1 flex-col">
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -159,8 +162,8 @@ const navigation = [
                   :to="{ name: item.route }"
                   :class="[
                     item.route == entry
-                      ? 'bg-slurmweb-dark text-white'
-                      : 'hover:slurmweb-dark text-slurmweb-font-disabled hover:text-white',
+                      ? 'bg-slurmweb-dark dark:bg-slurmweb-verydark text-white'
+                      : 'hover:slurmweb-dark text-slurmweb-font-disabled dark:text-slurmweb-font-disabled/80 hover:text-white',
                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                   ]"
                 >
@@ -173,7 +176,7 @@ const navigation = [
           <li class="mt-auto">
             <RouterLink
               :to="{ name: 'settings' }"
-              class="text-slurmweb-light hover:bg-slurmweb-dark group -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
+              class="text-slurmweb-light hover:bg-slurmweb-dark hover:dark:bg-slurmweb-verydark group -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-white"
             >
               <Cog6ToothIcon class="h-6 w-6 shrink-0" aria-hidden="true" />
               Settings

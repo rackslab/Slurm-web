@@ -13,7 +13,7 @@ const { exit_code } = defineProps<{ exit_code: ClusterJobExitCode }>()
 </script>
 
 <template>
-  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
     {{ exit_code.status[0] }} ({{ exit_code.return_code.number }})
   </dd>
 </template>

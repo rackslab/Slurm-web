@@ -73,7 +73,8 @@ async function submitLogin() {
           class="w-full rounded-lg bg-white shadow-sm sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800"
         >
           <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <img src="/logo/slurm-web_logo.png" class="m-auto mb-8" />
+            <img src="/logo/slurm-web_logo.png" class="m-auto mb-8 block dark:hidden" />
+            <img src="/logo/slurm-web_logo_dark.png" class="m-auto mb-8 hidden dark:block" />
             <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submitLogin">
               <div>
                 <label
@@ -85,7 +86,7 @@ async function submitLogin() {
                   name="user"
                   id="user"
                   v-model="username"
-                  class="focus:ring-slurmweb block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 transition-colors focus:ring-2 focus:outline-hidden dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  class="focus:ring-slurmweb dark:focus:border-slurmweb block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 transition-colors focus:ring-2 focus:outline-hidden dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   :class="{ 'bg-gray-50': !highlightLogin, 'bg-red-200': highlightLogin }"
                   placeholder="Username"
                 />
@@ -101,7 +102,7 @@ async function submitLogin() {
                   name="password"
                   id="password"
                   v-model="password"
-                  class="focus:ring-slurmweb block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:ring-2 focus:outline-hidden dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  class="focus:ring-slurmweb dark:focus:border-slurmweb block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:ring-2 focus:outline-hidden dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   :class="{ 'bg-gray-50': !highlightPassword, 'bg-red-200': highlightPassword }"
                   placeholder="••••••••"
                 />
@@ -109,7 +110,7 @@ async function submitLogin() {
               <button
                 type="submit"
                 :disabled="disableSubmission"
-                class="focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-slurmweb hover:bg-slurmweb-dark w-full rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:ring-4 focus:outline-hidden disabled:bg-slate-300"
+                class="focus:ring-primary-300 dark:bg-slurmweb-dark dark:hover:bg-slurmweb dark:focus:ring-slurmweb-verydark bg-slurmweb hover:bg-slurmweb-dark w-full rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:ring-4 focus:outline-hidden disabled:bg-slate-300 disabled:dark:bg-slate-700"
                 :class="{ 'animate-horizontal-shake': shakeLoginButton }"
               >
                 <template v-if="disableSubmission">

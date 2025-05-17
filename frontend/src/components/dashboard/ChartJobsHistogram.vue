@@ -38,8 +38,10 @@ const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCan
 </script>
 
 <template>
-  <div class="border-gray-200p border-b pt-16 pb-5 sm:flex sm:items-center sm:justify-between">
-    <h3 class="text-base font-semibold text-gray-900">Jobs Queue</h3>
+  <div
+    class="border-b border-gray-200 pt-16 pb-5 sm:flex sm:items-center sm:justify-between dark:border-gray-700"
+  >
+    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-200">Jobs Queue</h3>
   </div>
   <ErrorAlert v-if="liveChart.metrics.unable.value" class="mt-4"
     >Unable to retrieve jobs metrics.</ErrorAlert

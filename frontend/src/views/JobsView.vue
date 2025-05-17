@@ -229,32 +229,34 @@ onMounted(() => {
 
 <template>
   <ClusterMainLayout menu-entry="jobs" :cluster="cluster" :breadcrumb="[{ title: 'Jobs' }]">
-    <div class="bg-white">
+    <div>
       <JobsFiltersPanel :cluster="cluster" :nb-jobs="sortedJobs.length" />
       <div class="mx-auto flex items-center justify-between">
         <div class="px-4 py-16 sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Jobs</h1>
-          <p class="mt-4 max-w-xl text-sm font-light text-gray-600">Jobs in cluster queue</p>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Jobs</h1>
+          <p class="mt-4 max-w-xl text-sm font-light text-gray-600 dark:text-gray-300">
+            Jobs in cluster queue
+          </p>
         </div>
 
-        <div v-if="loaded" class="mt-4 text-right text-gray-600">
+        <div v-if="loaded" class="mt-4 text-right text-gray-600 dark:text-gray-300">
           <div class="text-5xl font-bold">{{ sortedJobs.length }}</div>
           <div class="text-sm font-light">job{{ sortedJobs.length > 1 ? 's' : '' }} found</div>
         </div>
         <div v-else class="flex animate-pulse space-x-4">
-          <div class="h-14 w-14 rounded-2xl bg-slate-200"></div>
+          <div class="h-14 w-14 rounded-2xl bg-slate-200 dark:bg-slate-800"></div>
         </div>
       </div>
       <section aria-labelledby="filter-heading" class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
         <h2 id="filter-heading" class="sr-only">Filters</h2>
 
-        <div class="border-gray-200 bg-white pb-4">
+        <div class="border-gray-200 pb-4">
           <div class="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
             <JobsSorter @sort="sortJobs" />
 
             <button
               type="button"
-              class="bg-slurmweb hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
               @click="runtimeStore.jobs.openFiltersPanel = true"
             >
               <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -279,51 +281,19 @@ onMounted(() => {
         >
         <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">
-            <table class="min-w-full divide-y divide-gray-300">
+            <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-500">
               <thead>
-                <tr>
+                <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                  <th scope="col" class="w-12 py-3.5 pr-3 text-left sm:pl-6 lg:pl-8">#ID</th>
+                  <th scope="col" class="w-16 px-3 py-3.5 text-left">State</th>
+                  <th scope="col" class="px-3 py-3.5 text-left">User (account)</th>
+                  <th scope="col" class="hidden px-3 py-3.5 text-left sm:table-cell">Resources</th>
+                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">Partition</th>
+                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">QOS</th>
+                  <th scope="col" class="hidden px-3 py-3.5 text-center sm:table-cell">Priority</th>
                   <th
                     scope="col"
-                    class="w-12 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
-                  >
-                    #ID
-                  </th>
-                  <th
-                    scope="col"
-                    class="w-16 px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    State
-                  </th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    User (account)
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                  >
-                    Resources
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 xl:table-cell"
-                  >
-                    Partition
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 xl:table-cell"
-                  >
-                    QOS
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-center text-sm font-semibold text-gray-900 sm:table-cell"
-                  >
-                    Priority
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 2xl:table-cell 2xl:min-w-[100px]"
+                    class="hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:min-w-[100px]"
                   >
                     Reason
                   </th>
@@ -332,50 +302,42 @@ onMounted(() => {
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
+              <tbody
+                class="divide-y divide-gray-200 text-sm text-gray-500 dark:divide-gray-700 dark:text-gray-300"
+              >
                 <tr v-for="job in sortedJobs.slice(firstjob, lastjob)" :key="job.job_id">
                   <td
-                    class="py-4 pr-3 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pl-8"
+                    class="py-4 pr-3 font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pl-8 dark:text-gray-100"
                   >
                     {{ job.job_id }}
                   </td>
-                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td class="px-3 py-4 whitespace-nowrap">
                     <JobStatusBadge :status="job.job_state" />
                   </td>
-                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td class="px-3 py-4 whitespace-nowrap">
                     {{ job.user_name }} ({{ job.account }})
                   </td>
-                  <td
-                    class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 sm:table-cell"
-                  >
+                  <td class="hidden px-3 py-4 whitespace-nowrap sm:table-cell">
                     <JobResources :job="job" />
                   </td>
-                  <td
-                    class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 xl:table-cell"
-                  >
+                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
                     {{ job.partition }}
                   </td>
-                  <td
-                    class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 xl:table-cell"
-                  >
+                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
                     {{ job.qos }}
                   </td>
-                  <td
-                    class="hidden px-3 py-4 text-center text-sm whitespace-nowrap text-gray-500 sm:table-cell"
-                  >
+                  <td class="hidden px-3 py-4 text-center whitespace-nowrap sm:table-cell">
                     {{ jobPriority(job) }}
                   </td>
-                  <td
-                    class="hidden px-3 py-4 text-sm whitespace-nowrap text-gray-500 2xl:table-cell"
-                  >
+                  <td class="hidden px-3 py-4 whitespace-nowrap 2xl:table-cell">
                     <template v-if="job.state_reason != 'None'">
                       {{ job.state_reason }}
                     </template>
                   </td>
-                  <td class="h-full text-right text-sm font-medium">
+                  <td class="h-full text-right font-medium">
                     <RouterLink
                       :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
-                      class="hover:text-slurmweb-dark text-gray-500"
+                      class="hover:text-slurmweb-dark hover:dark:text-slurmweb"
                     >
                       <WindowIcon class="mr-4 inline-block h-5 w-5 lg:mr-6" aria-hidden="true" />
                       <span class="sr-only">View {{ job.job_id }}</span>
@@ -385,23 +347,23 @@ onMounted(() => {
               </tbody>
             </table>
             <div
-              class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+              class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 dark:border-gray-700"
             >
               <div class="flex flex-1 justify-between sm:hidden">
                 <a
                   href="#"
-                  class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 hover:dark:bg-gray-600"
                   >Previous</a
                 >
                 <a
                   href="#"
-                  class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 hover:dark:bg-gray-600"
                   >Next</a
                 >
               </div>
               <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
-                  <p class="text-sm text-gray-700">
+                  <p class="text-sm text-gray-700 dark:text-gray-300">
                     Showing
                     {{ ' ' }}
                     <span class="font-medium">{{ firstjob }}</span>
@@ -425,9 +387,9 @@ onMounted(() => {
                     <button
                       :class="[
                         runtimeStore.jobs.page == 1
-                          ? 'cursor-default bg-gray-100 text-gray-100'
-                          : 'text-gray-400 hover:bg-gray-50',
-                        'relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-gray-300 ring-inset focus:z-20 focus:outline-offset-0'
+                          ? 'cursor-default bg-gray-100 text-gray-100 dark:bg-gray-900 dark:text-gray-900'
+                          : 'text-gray-400 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 hover:dark:bg-gray-700',
+                        'relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-gray-300 ring-inset focus:z-20 focus:outline-offset-0 dark:ring-gray-700'
                       ]"
                       @click="runtimeStore.jobs.page > 1 && (runtimeStore.jobs.page -= 1)"
                     >
@@ -438,7 +400,7 @@ onMounted(() => {
                       <button
                         v-if="page.ellipsis"
                         aria-current="page"
-                        class="relative z-10 inline-flex items-center bg-white px-4 py-2 text-xs font-semibold text-gray-600 ring-1 ring-gray-300 ring-inset focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        class="relative z-10 inline-flex items-center bg-white px-4 py-2 text-xs font-semibold text-gray-600 ring-1 ring-gray-300 ring-inset focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-gray-800 dark:ring-gray-700"
                       >
                         …
                       </button>
@@ -447,8 +409,8 @@ onMounted(() => {
                         aria-current="page"
                         :class="[
                           page.id == runtimeStore.jobs.page
-                            ? 'bg-slurmweb text-white'
-                            : 'bg-white text-black ring-1 ring-gray-300 ring-inset hover:bg-gray-50',
+                            ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+                            : 'bg-white text-black ring-1 ring-gray-300 ring-inset hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700 hover:dark:bg-gray-700',
                           'relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                         ]"
                         @click="runtimeStore.jobs.page = page.id"
@@ -459,9 +421,9 @@ onMounted(() => {
                     <button
                       :class="[
                         runtimeStore.jobs.page == lastpage
-                          ? 'cursor-default bg-gray-100 text-gray-100'
-                          : 'text-gray-400 hover:bg-gray-50',
-                        'relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-gray-300 ring-inset focus:z-20 focus:outline-offset-0'
+                          ? 'cursor-default bg-gray-100 text-gray-100 dark:bg-gray-900 dark:text-gray-900'
+                          : 'text-gray-400 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 hover:dark:bg-gray-700',
+                        'relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-gray-300 ring-inset focus:z-20 focus:outline-offset-0 dark:ring-gray-700'
                       ]"
                       @click="runtimeStore.jobs.page < lastpage && (runtimeStore.jobs.page += 1)"
                     >

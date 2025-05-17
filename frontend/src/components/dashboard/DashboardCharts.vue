@@ -35,16 +35,16 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="border-gray-200p pt-16">
+  <div class="border-gray-200p pt-16 dark:border-gray-700">
     <div class="mt-3 text-right sm:mt-0">
       <span class="isolate inline-flex rounded-md shadow-xs">
         <button
           type="button"
           :class="[
             runtimeStore.dashboard.range == 'week'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setRange('week')"
         >
@@ -54,9 +54,9 @@ onBeforeMount(() => {
           type="button"
           :class="[
             runtimeStore.dashboard.range == 'day'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setRange('day')"
         >
@@ -66,9 +66,9 @@ onBeforeMount(() => {
           type="button"
           :class="[
             runtimeStore.dashboard.range == 'hour'
-              ? 'bg-slurmweb text-white'
-              : 'bg-white text-gray-900 hover:bg-gray-50',
-            'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10'
+              ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+              : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
+            'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
           ]"
           @click="setRange('hour')"
         >

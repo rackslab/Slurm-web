@@ -13,7 +13,7 @@ const { comment } = defineProps<{ comment: ClusterJobComment }>()
 </script>
 
 <template>
-  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
     <p v-if="comment.administrator">
       <span class="italic">(administrator)</span> {{ comment.administrator }}
     </p>

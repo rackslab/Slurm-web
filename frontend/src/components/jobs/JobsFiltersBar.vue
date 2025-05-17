@@ -34,7 +34,7 @@ const activeFiltersGroups: Array<{
     icon: BoltIcon,
     removeCallback: runtimeStore.jobs.removeStateFilter,
     colors: {
-      badge: 'border-gray-200 bg-gray-600',
+      badge: 'border-gray-200 dark:border-gray-400 bg-gray-600 dark:bg-gray-500',
       button: 'text-gray-400 hover:bg-gray-700 hover:text-gray-500'
     }
   },
@@ -44,7 +44,7 @@ const activeFiltersGroups: Array<{
     icon: UserIcon,
     removeCallback: runtimeStore.jobs.removeUserFilter,
     colors: {
-      badge: 'border-gray-200 bg-emerald-500',
+      badge: 'border-gray-200 dark:border-gray-400 bg-emerald-500',
       button: 'text-emerald-600 hover:bg-emerald-600 hover:text-emerald-700'
     }
   },
@@ -54,7 +54,7 @@ const activeFiltersGroups: Array<{
     icon: UsersIcon,
     removeCallback: runtimeStore.jobs.removeAccountFilter,
     colors: {
-      badge: 'border-gray-200 bg-yellow-500',
+      badge: 'border-gray-200 dark:border-gray-400 bg-yellow-500',
       button: 'text-yellow-600 hover:bg-yellow-600 hover:text-yellow-700'
     }
   },
@@ -64,7 +64,7 @@ const activeFiltersGroups: Array<{
     icon: SwatchIcon,
     removeCallback: runtimeStore.jobs.removeQosFilter,
     colors: {
-      badge: 'border-gray-200 bg-purple-500',
+      badge: 'border-gray-200 dark:border-gray-400 bg-purple-500',
       button: 'text-purple-600 hover:bg-purple-600 hover:text-purple-700'
     }
   },
@@ -74,7 +74,7 @@ const activeFiltersGroups: Array<{
     icon: RectangleGroupIcon,
     removeCallback: runtimeStore.jobs.removePartitionFilter,
     colors: {
-      badge: 'border-gray-200 bg-amber-700',
+      badge: 'border-gray-200 dark:border-gray-400 bg-amber-700',
       button: 'text-amber-800 hover:bg-amber-800 hover:text-amber-900'
     }
   }
@@ -83,7 +83,7 @@ const activeFiltersGroups: Array<{
 
 <template>
   <!-- Active filters -->
-  <div v-show="!runtimeStore.jobs.emptyFilters()" class="bg-gray-100">
+  <div v-show="!runtimeStore.jobs.emptyFilters()" class="bg-gray-100 dark:bg-gray-800">
     <div class="mx-auto px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
       <h3 class="text-sm font-medium text-gray-500">
         <FunnelIcon class="mr-1 h-4 w-4" />

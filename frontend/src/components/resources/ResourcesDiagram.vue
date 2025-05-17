@@ -50,7 +50,7 @@ function mouseOverThumbnail() {
       v-show="displayFullscreenButton"
       ref="fullscreenButton"
       @click="toggleFullScreen()"
-      class="absolute top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+      class="absolute top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
     >
       <span class="sr-only">fullscreen</span>
       <ArrowsPointingOutIcon class="h-6 w-6" aria-hidden="true" />
@@ -90,12 +90,12 @@ function mouseOverThumbnail() {
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative min-h-screen min-w-full transform overflow-hidden bg-white px-4 text-left shadow-xl transition-all"
+              class="relative min-h-screen min-w-full transform overflow-hidden bg-white px-4 text-left shadow-xl transition-all dark:bg-gray-900"
             >
               <div class="absolute top-0 right-0 z-50 pt-4 pr-4 sm:block">
                 <button
                   type="button"
-                  class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                  class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
                   @click="toggleFullScreen()"
                 >
                   <span class="sr-only">Close</span>
@@ -107,7 +107,7 @@ function mouseOverThumbnail() {
               >
                 <DialogTitle
                   as="h3"
-                  class="flex p-6 text-base leading-6 font-semibold text-gray-900"
+                  class="flex p-6 text-base leading-6 font-semibold text-gray-900 dark:text-gray-100"
                   >Cluster {{ cluster }}</DialogTitle
                 >
                 <ResourcesCanvas
