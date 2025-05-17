@@ -37,6 +37,11 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
   )
   let chart: Chart | null
 
+  /* Detect dark mode to set darker grid and axis colors */
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    Chart.defaults.borderColor = '#333333'
+  }
+
   /* Update charts datasets when metrics values change. */
   watch(
     () => metrics.data.value,
