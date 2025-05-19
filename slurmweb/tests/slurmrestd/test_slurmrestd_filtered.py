@@ -7,10 +7,7 @@
 import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
-from ..lib.utils import (
-    all_slurm_versions,
-    SlurmwebAssetUnavailable,
-)
+from ..lib.utils import all_slurm_versions
 from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
@@ -26,12 +23,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_jobs(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-jobs", "jobs")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-jobs", "jobs")]
+        )
         jobs = self.slurmrestd.jobs()
         for idx in range(len(jobs)):
             # Check there are less keys for the 1st item in result than in original
@@ -44,13 +38,10 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_job(self, slurm_version):
-        try:
-            [slurmdb_asset, slurm_asset] = self.mock_slurmrestd_responses(
-                slurm_version,
-                [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [slurmdb_asset, slurm_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
+        )
         job = self.slurmrestd.job(1)
         # Check there are less keys for the item in result than in original asset.
         self.assertLess(len(job.keys()), len(slurm_asset[0].keys()))
@@ -61,12 +52,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_nodes(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-nodes", "nodes")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-nodes", "nodes")]
+        )
         nodes = self.slurmrestd.nodes()
         for idx in range(len(nodes)):
             # Check there are less keys for the 1st item in result than in original
@@ -79,12 +67,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_node(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-node-idle", "nodes")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-node-idle", "nodes")]
+        )
         node = self.slurmrestd.node("node1")
         # Check there are less keys for the item in result than in original asset.
         self.assertLess(len(node.keys()), len(asset[0].keys()))
@@ -95,12 +80,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_partitions(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-partitions", "partitions")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-partitions", "partitions")]
+        )
         partitions = self.slurmrestd.partitions()
         for idx in range(len(partitions)):
             # Check there are less keys for the 1st item in result than in original
@@ -113,12 +95,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_accounts(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-accounts", "accounts")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-accounts", "accounts")]
+        )
         accounts = self.slurmrestd.accounts()
         for idx in range(len(accounts)):
             # Check there are less keys for the 1st item in result than in original
@@ -131,12 +110,9 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_reservations(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-reservations", "reservations")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-reservations", "reservations")]
+        )
         reservations = self.slurmrestd.reservations()
         for idx in range(len(reservations)):
             # Check there are less keys for the 1st item in result than in original
@@ -149,12 +125,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_qos(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-qos", "qos")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(slurm_version, [("slurm-qos", "qos")])
         qos = self.slurmrestd.qos()
         for idx in range(len(qos)):
             # Check there are less keys for the 1st item in result than in original

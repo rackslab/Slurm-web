@@ -6,20 +6,19 @@
 
 
 from unittest import mock
-import warnings
 from pathlib import Path
 import json
 import copy
 
 import requests
 import flask
+import parameterized
 
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / ".." / "tests" / "assets"
 
 
 def slurm_versions():
-    for path in (ASSETS / "slurmrestd").iterdir():
-        yield path.name
+    return [path.name for path in (ASSETS / "slurmrestd").iterdir()]
 
 
 def load_asset(path: Path):
@@ -32,17 +31,7 @@ def load_json_asset(path: Path):
         return json.load(f)
 
 
-def all_slurm_versions(test):
-    """Split test with a subtest for every slurm versions"""
-
-    def inner(self, *args, **kwargs):
-        for slurm_version in slurm_versions():
-            with self.subTest(
-                msg=f"slurm {slurm_version}", slurm_version=slurm_version
-            ):
-                test(self, slurm_version, *args, **kwargs)
-
-    return inner
+all_slurm_versions = parameterized.parameterized.expand(slurm_versions())
 
 
 def any_slurm_version(test):
@@ -95,11 +84,10 @@ def mock_slurmrestd_responses(slurmrestd, slurm_version, assets):
 
     for asset_name, key in assets:
         if asset_name not in requests_statuses:
-            warnings.warn(
+            raise SlurmwebAssetUnavailable(
                 f"Unable to find asset {asset_name} in requests status file for Slurm "
                 f"{slurm_version}"
             )
-            raise SlurmwebAssetUnavailable()
 
         is_json = True
         if requests_statuses[asset_name]["content-type"] == "application/json":
@@ -168,10 +156,9 @@ def mock_component_response(component, asset_name):
         requests_statuses = json.load(fh)
 
     if asset_name not in requests_statuses:
-        warnings.warn(
-            f"Unable to find asset {asset_name} in {component} requests status file"
+        raise SlurmwebAssetUnavailable(
+            f"Unable to find asset {asset_name} for component {component}"
         )
-        raise SlurmwebAssetUnavailable()
 
     is_json = True
     if requests_statuses[asset_name]["content-type"] == "application/json":

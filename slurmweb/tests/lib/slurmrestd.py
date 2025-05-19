@@ -10,7 +10,7 @@ from pathlib import Path
 
 from rfl.settings import RuntimeSettings
 
-from .utils import mock_slurmrestd_responses
+from .utils import mock_slurmrestd_responses, SlurmwebAssetUnavailable
 from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 
@@ -27,7 +27,10 @@ def basic_authentifier():
 
 class TestSlurmrestdBase(unittest.TestCase):
     def mock_slurmrestd_responses(self, slurm_version, assets):
-        return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
+        try:
+            return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
+        except SlurmwebAssetUnavailable as err:
+            self.skipTest(str(err))
 
     def load_agent_settings_definition(self):
         return RuntimeSettings.yaml_definition(

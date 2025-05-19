@@ -11,10 +11,7 @@ from slurmweb.slurmrestd import SlurmrestdFilteredCached
 from slurmweb.cache import CachingService
 from slurmweb.errors import SlurmwebCacheError
 
-from ..lib.utils import (
-    all_slurm_versions,
-    SlurmwebAssetUnavailable,
-)
+from ..lib.utils import all_slurm_versions
 from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
@@ -38,12 +35,9 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_not_in_cache(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-jobs", "jobs")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-jobs", "jobs")]
+        )
         self.slurmrestd.service.get = mock.Mock(return_value=None)
         self.slurmrestd.service.put = mock.Mock()
         jobs = self.slurmrestd.jobs()
@@ -59,12 +53,9 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_in_cache(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-jobs", "jobs")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-jobs", "jobs")]
+        )
         self.slurmrestd.service.get = mock.Mock(return_value=asset)
         self.slurmrestd.service.put = mock.Mock()
         jobs = self.slurmrestd.jobs()
@@ -77,12 +68,9 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_cache_get_error(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-jobs", "jobs")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-jobs", "jobs")]
+        )
         # Check behaviour when SlurmwebCacheError in raised at get()
         self.slurmrestd.service.get = mock.Mock(
             side_effect=SlurmwebCacheError("fake cache error")
@@ -95,12 +83,9 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_cache_put_error(self, slurm_version):
-        try:
-            [asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-jobs", "jobs")]
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version, [("slurm-jobs", "jobs")]
+        )
         # Check behaviour when SlurmwebCacheError in raised at put()
         self.slurmrestd.service.get = mock.Mock(return_value=None)
         self.slurmrestd.service.put = mock.Mock(

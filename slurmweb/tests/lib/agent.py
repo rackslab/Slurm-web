@@ -21,6 +21,7 @@ from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
 
 from .utils import (
     mock_slurmrestd_responses,
+    SlurmwebAssetUnavailable,
     SlurmwebCustomTestResponse,
 )
 
@@ -82,7 +83,10 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 class TestSlurmrestdClient(unittest.TestCase):
     def mock_slurmrestd_responses(self, slurm_version, assets):
-        return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
+        try:
+            return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
+        except SlurmwebAssetUnavailable as err:
+            self.skipTest(str(err))
 
 
 class TestAgentBase(TestSlurmrestdClient):
