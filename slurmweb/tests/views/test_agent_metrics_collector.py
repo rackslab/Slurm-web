@@ -20,10 +20,7 @@ from slurmweb.slurmrestd.errors import (
 from slurmweb.errors import SlurmwebCacheError
 
 from ..lib.agent import TestAgentBase
-from ..lib.utils import (
-    all_slurm_versions,
-    SlurmwebAssetUnavailable,
-)
+from ..lib.utils import all_slurm_versions
 
 
 class TestAgentMetricsCollector(TestAgentBase):
@@ -43,13 +40,10 @@ class TestAgentMetricsCollector(TestAgentBase):
 
     @all_slurm_versions
     def test_request_metrics(self, slurm_version):
-        try:
-            [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
-                slurm_version,
-                [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
-            )
-        except SlurmwebAssetUnavailable:
-            return
+        [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
+        )
         response = self.client.get("/metrics")
         self.assertEqual(response.status_code, 200)
         families = list(text_string_to_metric_families(response.text))
