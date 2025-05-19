@@ -41,6 +41,7 @@ gateway = [
 ]
 tests = [
     "pytest",
+    "parameterized",
     "pytest-cov",
     "coverage",
 ]
