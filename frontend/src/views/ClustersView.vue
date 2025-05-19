@@ -120,7 +120,7 @@ onMounted(() => {
         </h1>
         <ul
           role="list"
-          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-700 lg:rounded-xl dark:divide-gray-700 dark:bg-gray-800"
+          class="divide-y divide-gray-100 overflow-hidden bg-white shadow-xs ring-1 ring-gray-100 lg:rounded-xl dark:divide-gray-700 dark:bg-gray-800"
         >
           <ClusterListItem
             v-for="cluster in clusters"
