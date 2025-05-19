@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     page.
   - Appearance of jobs sort button to visually separate its double role, change
     sort order and select sort criterion.
+  - Bump heroicons dependency to version 2.2.0.
 - docs: Update configuration reference documentation.
 
 ### Fixed
