@@ -25,6 +25,7 @@ import ResourcesView from '@/views/ResourcesView.vue'
 import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
+import JobsStatusBadges from '@/views/JobsStatusBadges.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -134,13 +135,18 @@ const router = createRouter({
           props: true
         }
       ]
+    },
+    {
+      path: '/tests/jobs-status-badges',
+      name: 'tests-jobs-status-badges',
+      component: JobsStatusBadges
     }
   ]
 })
 
 router.beforeEach(async (to, from) => {
   /* redirect to login page if not logged in and trying to access a restricted page */
-  const publicPages = ['/login', '/anonymous']
+  const publicPages = ['/login', '/anonymous', '/tests/jobs-status-badges']
   const authRequired = !publicPages.includes(to.path)
   const auth = useAuthStore()
   const runtime = useRuntimeStore()
