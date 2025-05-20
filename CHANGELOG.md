@@ -49,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     sort order and select sort criterion.
   - Bump heroicons dependency to version 2.2.0.
   - Group _drain_ and _draining_ node state filters.
+- conf: Bump `[slurmrestd]` > `version` default value from `0.0.40` to `0.0.41`
+  in agent configuration for compatibility with Slurm 25.05.
 - docs: Update configuration reference documentation.
 
 ### Fixed
