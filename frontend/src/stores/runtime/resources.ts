@@ -9,14 +9,37 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getNodeMainState } from '@/composables/GatewayAPI'
-import type { ClusterNode } from '@/composables/GatewayAPI'
+import type { ClusterNode, ClusterNodeMainState } from '@/composables/GatewayAPI'
 
 /*
  * Resources view settings
  */
 
+const filtersClusterNodeMainStates = ['down', 'error', 'drain', 'fail', 'up'] as const
+export type FiltersClusterNodeMainState = (typeof filtersClusterNodeMainStates)[number]
+
+export function isFiltersClusterNodeMainState(
+  value: unknown
+): value is FiltersClusterNodeMainState {
+  return (
+    typeof value === 'string' &&
+    (filtersClusterNodeMainStates as readonly string[]).indexOf(value) >= 0
+  )
+}
+
+export const resourcesStates: Record<
+  FiltersClusterNodeMainState,
+  { label: string; status: ClusterNodeMainState[] }
+> = {
+  up: { label: 'Up', status: ['up'] },
+  drain: { label: 'Drain', status: ['drain', 'draining'] },
+  down: { label: 'Down', status: ['down'] },
+  error: { label: 'Error', status: ['error'] },
+  fail: { label: 'Fail', status: ['fail', 'failing'] }
+}
+
 export interface ResourcesViewFilters {
-  states: string[]
+  states: FiltersClusterNodeMainState[]
   partitions: string[]
 }
 
@@ -24,13 +47,6 @@ export interface ResourcesQueryParameters {
   states?: string
   partitions?: string
 }
-
-export const resourcesStates = [
-  { value: 'up', label: 'Up' },
-  { value: 'drain', label: 'Drain' },
-  { value: 'draining', label: 'Draining' },
-  { value: 'down', label: 'Down' }
-]
 
 export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
   const openFiltersPanel = ref(false)
@@ -45,13 +61,16 @@ export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
   function emptyFilters(): boolean {
     return filters.value.states.length == 0 && filters.value.partitions.length == 0
   }
+
   function matchesFilters(node: ClusterNode): boolean {
     if (emptyFilters()) {
       return true
     }
     if (filters.value.states.length != 0) {
       if (
-        !filters.value.states.some((state) => state.toLocaleLowerCase() == getNodeMainState(node))
+        !filters.value.states.some((state) =>
+          resourcesStates[state].status.includes(getNodeMainState(node.state))
+        )
       ) {
         return false
       }

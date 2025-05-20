@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Reproduce Slurm job status logic for jobs badges (#404).
   - Reproduce Slurm node status logic for node status and allocation badges with
     icons to represent status flags (#405).
+  - Add node filter for _error_ and _fail_ states.
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
@@ -47,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Appearance of jobs sort button to visually separate its double role, change
     sort order and select sort criterion.
   - Bump heroicons dependency to version 2.2.0.
+  - Group _drain_ and _draining_ node state filters.
 - docs: Update configuration reference documentation.
 
 ### Fixed
