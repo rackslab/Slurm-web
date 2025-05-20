@@ -45,7 +45,7 @@ describe('NodeView.vue', () => {
     await nextTick()
     // Check some node fields
     expect(wrapper.get('dl div#status dd').getComponent(NodeMainState).props()).toStrictEqual({
-      node: nodeAllocated
+      status: nodeAllocated.state
     })
     // Check list of jobs has the same number of items than the number of jobs running
     // on the node.

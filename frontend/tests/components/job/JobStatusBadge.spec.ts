@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import jobRunning from '../../assets/job-running.json'
 import jobPending from '../../assets/job-pending.json'
@@ -7,19 +7,6 @@ import jobCompleted from '../../assets/job-completed.json'
 import jobFailed from '../../assets/job-failed.json'
 import jobTimeout from '../../assets/job-timeout.json'
 import jobArchived from '../../assets/job-archived.json'
-import {
-  ArrowDownOnSquareIcon,
-  ArrowRightStartOnRectangleIcon,
-  ArrowsPointingOutIcon,
-  Cog8ToothIcon,
-  ArrowPathRoundedSquareIcon,
-  LockClosedIcon,
-  StopCircleIcon,
-  BellAlertIcon,
-  EyeSlashIcon,
-  FolderMinusIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/vue/16/solid'
 
 describe('JobStatusBadge.vue', () => {
   // tests with specific values
