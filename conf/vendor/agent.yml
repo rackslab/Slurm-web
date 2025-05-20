@@ -137,7 +137,7 @@ slurmrestd:
       _static_.
   version:
     type: str
-    default: '0.0.40'
+    default: '0.0.41'
     doc: |
       Slurm REST API version.
 
