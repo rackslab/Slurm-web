@@ -6,6 +6,8 @@ import {
   jobRequestedGPU,
   jobResourcesGPU,
   getMBHumanUnit,
+  getNodeMainState,
+  getNodeAllocationState,
   getNodeGPUFromGres,
   getNodeGPU
 } from '@/composables/GatewayAPI'
@@ -22,6 +24,10 @@ import jobGpuMultiTypes from '../assets/job-gpus-multi-types.json'
 import jobGpuPerNode from '../assets/job-gpus-per-node.json'
 import jobGpuPerSocket from '../assets/job-gpus-per-socket.json'
 import jobGpuPerTask from '../assets/job-gpus-per-task.json'
+import nodeDown from '../assets/node-down.json'
+import nodeAllocated from '../assets/node-allocated.json'
+import nodeIdle from '../assets/node-idle.json'
+import nodeMixed from '../assets/node-mixed.json'
 import nodeWithGpusAllocated from '../assets/node-with-gpus-allocated.json'
 import nodeWithGpusIdle from '../assets/node-with-gpus-idle.json'
 import nodeWithGpusMixed from '../assets/node-with-gpus-mixed.json'
@@ -631,6 +637,99 @@ describe('getNodeGPUFromGres', () => {
     expect(
       getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBe(0)
+  })
+})
+
+describe('getNodeMainState', () => {
+  // tests with specific values
+  test('node down', () => {
+    expect(getNodeMainState(['DOWN'])).toStrictEqual('down')
+  })
+  test('node error', () => {
+    expect(getNodeMainState(['ERROR'])).toStrictEqual('error')
+  })
+  test('node future', () => {
+    expect(getNodeMainState(['FUTURE'])).toStrictEqual('future')
+  })
+  test('node drain', () => {
+    expect(getNodeMainState(['IDLE', 'DRAIN'])).toStrictEqual('drain')
+  })
+  test('node draining', () => {
+    expect(getNodeMainState(['ALLOCATED', 'DRAIN'])).toStrictEqual('draining')
+    expect(getNodeMainState(['MIXED', 'DRAIN'])).toStrictEqual('draining')
+    expect(getNodeMainState(['IDLE', 'COMPLETING', 'DRAIN'])).toStrictEqual('draining')
+  })
+  test('node fail', () => {
+    expect(getNodeMainState(['IDLE', 'FAIL'])).toStrictEqual('fail')
+  })
+  test('node failing', () => {
+    expect(getNodeMainState(['ALLOCATED', 'FAIL'])).toStrictEqual('failing')
+    expect(getNodeMainState(['MIXED', 'FAIL'])).toStrictEqual('failing')
+    expect(getNodeMainState(['IDLE', 'COMPLETING', 'FAIL'])).toStrictEqual('failing')
+  })
+  test('node idle', () => {
+    expect(getNodeMainState(['IDLE'])).toStrictEqual('up')
+  })
+  // tests with assets
+  test('asset node down', () => {
+    const node = { ...nodeDown }
+    expect(getNodeMainState(node.state)).toStrictEqual('down')
+  })
+  test('asset node allocated', () => {
+    const node = { ...nodeAllocated }
+    expect(getNodeMainState(node.state)).toStrictEqual('up')
+  })
+  test('asset node mixed', () => {
+    const node = { ...nodeMixed }
+    expect(getNodeMainState(node.state)).toStrictEqual('up')
+  })
+  test('asset node idle', () => {
+    const node = { ...nodeIdle }
+    expect(getNodeMainState(node.state)).toStrictEqual('up')
+  })
+})
+
+describe('getNodeAllocationState', () => {
+  // tests with specific values
+  test('node allocated', () => {
+    expect(getNodeAllocationState(['ALLOCATED'])).toStrictEqual('allocated')
+  })
+  test('node mixed', () => {
+    expect(getNodeAllocationState(['MIXED'])).toStrictEqual('mixed')
+  })
+  test('node down', () => {
+    expect(getNodeAllocationState(['DOWN'])).toStrictEqual('unavailable')
+  })
+  test('node error', () => {
+    expect(getNodeAllocationState(['ERROR'])).toStrictEqual('unavailable')
+  })
+  test('node future', () => {
+    expect(getNodeAllocationState(['FUTURE'])).toStrictEqual('unavailable')
+  })
+  test('node planned', () => {
+    expect(getNodeAllocationState(['IDLE', 'PLANNED'])).toStrictEqual('planned')
+  })
+  test('node idle', () => {
+    expect(getNodeAllocationState(['IDLE'])).toStrictEqual('idle')
+  })
+  // tests with assets
+  test('asset node down', () => {
+    const node = { ...nodeDown }
+    expect(getNodeAllocationState(node.state)).toStrictEqual('unavailable')
+  })
+  test('asset node allocated', () => {
+    const node = { ...nodeAllocated }
+    expect(getNodeAllocationState(node.state)).toStrictEqual('allocated')
+  })
+  test('asset node idle', () => {
+    const node = { ...nodeIdle }
+    expect(getNodeAllocationState(node.state)).toSatisfy((value) =>
+      ['idle', 'planned'].includes(value)
+    )
+  })
+  test('asset node mixed', () => {
+    const node = { ...nodeMixed }
+    expect(getNodeAllocationState(node.state)).toStrictEqual('mixed')
   })
 })
 
