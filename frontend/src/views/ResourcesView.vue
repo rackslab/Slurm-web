@@ -12,6 +12,7 @@ import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
+import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
@@ -147,7 +148,10 @@ onMounted(() => {
   if (['states', 'partitions'].some((parameter) => parameter in route.query)) {
     if (route.query.states) {
       /* Retrieve the states filters from query and update the store */
-      runtimeStore.resources.filters.states = (route.query.states as string).split(',')
+      runtimeStore.resources.filters.states = []
+      ;(route.query.states as string).split(',').forEach((state: string) => {
+        if (isFiltersClusterNodeMainState(state)) runtimeStore.resources.filters.states.push(state)
+      })
     }
     if (route.query.partitions) {
       /* Retrieve the partitions filters from query and update the store */
@@ -263,10 +267,10 @@ onMounted(() => {
                       </button>
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap">
-                      <NodeMainState :node="node" />
+                      <NodeMainState :status="node.state" />
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap">
-                      <NodeAllocationState :node="node" />
+                      <NodeAllocationState :status="node.state" />
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap">
                       {{ node.sockets }} x {{ node.cores }}

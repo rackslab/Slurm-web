@@ -420,28 +420,47 @@ export function getMBHumanUnit(megabytes: number): string {
   return `${Math.round(value * 100) / 100}${units[divides]}`
 }
 
-export type ClusterNodeMainState = 'down' | 'drain' | 'draining' | 'up'
-export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'idle' | 'unavailable'
+export type ClusterNodeMainState =
+  | 'down'
+  | 'error'
+  | 'drain'
+  | 'draining'
+  | 'fail'
+  | 'failing'
+  | 'future'
+  | 'up'
 
-export function getNodeMainState(node: ClusterNode): ClusterNodeMainState {
-  if (node.state.includes('DOWN')) {
+export type ClusterNodeAllocatedState = 'allocated' | 'mixed' | 'unavailable' | 'planned' | 'idle'
+
+export function getNodeMainState(status: string[]): ClusterNodeMainState {
+  if (status.includes('DOWN')) {
     return 'down'
-  } else if (node.state.includes('DRAIN') && node.state.includes('IDLE')) {
-    return 'drain'
-  } else if (node.state.includes('DRAIN')) {
-    return 'draining'
+  } else if (status.includes('ERROR')) {
+    return 'error'
+  } else if (status.includes('FUTURE')) {
+    return 'future'
+  } else if (status.includes('DRAIN')) {
+    if (status.includes('ALLOCATED') || status.includes('MIXED') || status.includes('COMPLETING'))
+      return 'draining'
+    else return 'drain'
+  } else if (status.includes('FAIL')) {
+    if (status.includes('ALLOCATED') || status.includes('MIXED') || status.includes('COMPLETING'))
+      return 'failing'
+    else return 'fail'
   } else {
     return 'up'
   }
 }
 
-export function getNodeAllocationState(node: ClusterNode): ClusterNodeAllocatedState {
-  if (node.state.includes('ALLOCATED')) {
+export function getNodeAllocationState(status: string[]): ClusterNodeAllocatedState {
+  if (status.includes('ALLOCATED')) {
     return 'allocated'
-  } else if (node.state.includes('MIXED')) {
+  } else if (status.includes('MIXED')) {
     return 'mixed'
-  } else if (node.state.includes('DOWN')) {
+  } else if (status.includes('DOWN') || status.includes('ERROR') || status.includes('FUTURE')) {
     return 'unavailable'
+  } else if (status.includes('PLANNED')) {
+    return 'planned'
   } else {
     return 'idle'
   }
