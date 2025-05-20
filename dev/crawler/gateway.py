@@ -287,17 +287,44 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "Unable to find busy node on gateway for cluster %s", self.cluster
             )
 
-        def dump_node_state() -> None:
-            if state in _node["state"]:
-                self.dump_component_query(
-                    f"/api/agents/{self.cluster}/node/{_node['name']}",
-                    f"node-{state.lower()}",
-                )
-
         # Download specific node
         for _node in nodes:
-            for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAINED"]:
-                dump_node_state()
+            if "IDLE" in _node["state"]:
+                if "PLANNED" in _node["state"]:
+                    self.dump_component_query(
+                        f"/api/agents/{self.cluster}/node/{_node['name']}",
+                        "node-planned",
+                    )
+                elif "DRAIN" in _node["state"]:
+                    self.dump_component_query(
+                        f"/api/agents/{self.cluster}/node/{_node['name']}",
+                        "node-drain",
+                    )
+                else:
+                    self.dump_component_query(
+                        f"/api/agents/{self.cluster}/node/{_node['name']}",
+                        "node-idle",
+                    )
+            elif "DRAIN" in _node["state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/node/{_node['name']}",
+                    "node-draining",
+                )
+            if "MIXED" in _node["state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/node/{_node['name']}",
+                    "node-mixed",
+                )
+            if "ALLOCATED" in _node["state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/node/{_node['name']}",
+                    "node-allocated",
+                )
+            if "DOWN" in _node["state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster}/node/{_node['name']}",
+                    "node-down",
+                )
 
         # FIXME: download unknown node
 
