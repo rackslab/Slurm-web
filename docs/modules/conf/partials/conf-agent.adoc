@@ -291,7 +291,7 @@ the default value only.
 
 
 
-*Default:* `0.0.40`
+*Default:* `0.0.41`
 
 |-
 
@@ -323,11 +323,11 @@ jobs, all other fields arefiltered out.
 
 * `cpus`
 
+* `gres_detail`
+
 * `job_id`
 
 * `job_state`
-
-* `gres_detail`
 
 * `node_count`
 
