@@ -229,17 +229,44 @@ class SlurmrestdCrawler(ComponentCrawler):
             limit_key="nodes",
         )
 
-        def dump_node_state():
-            if state in _node["state"]:
-                self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
-                    f"slurm-node-{state.lower()}",
-                )
-
         # Download specific node
         for _node in nodes["nodes"]:
-            for state in ["IDLE", "MIXED", "ALLOCATED", "DOWN", "DRAINING", "DRAIN"]:
-                dump_node_state()
+            if "IDLE" in _node["state"]:
+                if "PLANNED" in _node["state"]:
+                    self.dump_slurmrestd_query(
+                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        "slurm-node-planned",
+                    )
+                elif "DRAIN" in _node["state"]:
+                    self.dump_slurmrestd_query(
+                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        "slurm-node-drain",
+                    )
+                else:
+                    self.dump_slurmrestd_query(
+                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        "slurm-node-idle",
+                    )
+            elif "DRAIN" in _node["state"]:
+                self.dump_slurmrestd_query(
+                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    "slurm-node-draining",
+                )
+            if "MIXED" in _node["state"]:
+                self.dump_slurmrestd_query(
+                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    "slurm-node-mixed",
+                )
+            if "ALLOCATED" in _node["state"]:
+                self.dump_slurmrestd_query(
+                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    "slurm-node-allocated",
+                )
+            if "DOWN" in _node["state"]:
+                self.dump_slurmrestd_query(
+                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    "slurm-node-down",
+                )
 
         # Request node not found
         self.dump_slurmrestd_query(
