@@ -124,7 +124,7 @@ class DevelopmentHostCluster:
     ):
         self.dev_host = dev_host
         self.name = name
-        self.api = "0.0.40"
+        self.api = "0.0.41"
         self.auth = auth
         self.session = requests.Session()
 
