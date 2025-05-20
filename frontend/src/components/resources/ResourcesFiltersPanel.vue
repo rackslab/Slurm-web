@@ -99,24 +99,24 @@ const runtimeStore = useRuntimeStore()
                   </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                  <div class="space-y-6">
+                  <div class="space-y-4">
                     <div
-                      v-for="(state, optionIdx) in resourcesStates"
-                      :key="state.value"
+                      v-for="(value, state) in resourcesStates"
+                      :key="state"
                       class="flex items-center"
                     >
                       <input
-                        :id="`filter-mobile-${state.value}-${optionIdx}`"
-                        :name="`state-${state.value}[]`"
-                        :value="state.value"
+                        :id="`filter-mobile-${state}`"
+                        :name="`state-${state}[]`"
+                        :value="state"
                         type="checkbox"
                         v-model="runtimeStore.resources.filters.states"
                         class="text-slurmweb focus:ring-slurmweb h-4 w-4 rounded-sm border-gray-300"
                       />
                       <label
-                        :for="`filter-mobile-${state.value}-${optionIdx}`"
+                        :for="`filter-mobile-${state}`"
                         class="ml-3 text-sm text-gray-500 dark:text-gray-300"
-                        >{{ state.label }}</label
+                        >{{ value.label }}</label
                       >
                     </div>
                   </div>
