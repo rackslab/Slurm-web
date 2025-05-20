@@ -1,7 +1,7 @@
 [
   {
-    "alloc_cpus": 0,
-    "alloc_idle_cpus": 64,
+    "alloc_cpus": 63,
+    "alloc_idle_cpus": 1,
     "cores": 32,
     "cpus": 64,
     "gres": "",
@@ -11,15 +11,15 @@
       "normal"
     ],
     "real_memory": 131072,
-    "reason": "CPU dead",
+    "reason": "",
     "sockets": 2,
     "state": [
-      "DOWN"
+      "MIXED"
     ]
   },
   {
-    "alloc_cpus": 6,
-    "alloc_idle_cpus": 58,
+    "alloc_cpus": 51,
+    "alloc_idle_cpus": 13,
     "cores": 32,
     "cpus": 64,
     "gres": "",
@@ -32,7 +32,8 @@
     "reason": "",
     "sockets": 2,
     "state": [
-      "MIXED"
+      "MIXED",
+      "PLANNED"
     ]
   },
   {
@@ -47,11 +48,11 @@
       "normal"
     ],
     "real_memory": 131072,
-    "reason": "",
+    "reason": "ECC memory error",
     "sockets": 2,
     "state": [
       "IDLE",
-      "PLANNED"
+      "DRAIN"
     ]
   },
   {
@@ -66,11 +67,10 @@
       "normal"
     ],
     "real_memory": 131072,
-    "reason": "ECC memory error",
+    "reason": "CPU dead",
     "sockets": 2,
     "state": [
-      "IDLE",
-      "DRAIN"
+      "DOWN"
     ]
   },
   {

@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1747044480,
+    "number": 1747751518,
     "set": true
   },
   "association": {
-    "account": "acoustic",
+    "account": "optic",
     "cluster": "hpc",
-    "id": 16,
+    "id": 18,
     "partition": "",
-    "user": "cpotter"
+    "user": "bparks"
   },
   "batch_flag": true,
   "command": "",
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/cpotter",
+  "current_working_directory": "/home/bparks",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -65,7 +65,7 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747044482,
+    "number": 1747751520,
     "set": true
   },
   "name": "wrap",
@@ -78,7 +78,7 @@
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 90,
+    "number": 454,
     "set": true
   },
   "qos": "normal",
@@ -88,9 +88,9 @@
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/cpotter/slurm-5319.out",
+  "standard_error": "/home/bparks/slurm-5965.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/cpotter/slurm-5319.out",
+  "standard_output": "/home/bparks/slurm-5965.out",
   "state": {
     "current": [
       "COMPLETED"
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "5319.batch",
+        "id": "5965.batch",
         "name": "batch"
       },
       "task": {
@@ -167,15 +167,15 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 2,
         "end": {
           "infinite": false,
-          "number": 1747044483,
+          "number": 1747751522,
           "set": true
         },
         "start": {
           "infinite": false,
-          "number": 1747044482,
+          "number": 1747751520,
           "set": true
         },
         "suspended": 0,
@@ -235,16 +235,21 @@
     "set": true
   },
   "time": {
-    "elapsed": 1,
-    "eligible": 1747044480,
-    "end": 1747044483,
+    "elapsed": 2,
+    "eligible": 1747751518,
+    "end": 1747751522,
     "limit": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "start": 1747044482,
-    "submission": 1747044480,
+    "planned": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "start": 1747751520,
+    "submission": 1747751518,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -325,10 +330,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "cpotter",
+  "user": "bparks",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/cpotter"
+  "working_directory": "/home/bparks"
 }

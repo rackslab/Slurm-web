@@ -3,7 +3,31 @@
     "accounts": "biology",
     "end_time": {
       "infinite": false,
-      "number": 1732982400,
+      "number": 1805731200,
+      "set": true
+    },
+    "flags": [
+      "IGNORE_JOBS",
+      "ANY_NODES",
+      "PART_NODES",
+      "SPEC_NODES",
+      "FLEX"
+    ],
+    "name": "training2",
+    "node_count": 4,
+    "node_list": "cn[1-4]",
+    "start_time": {
+      "infinite": false,
+      "number": 1805533200,
+      "set": true
+    },
+    "users": ""
+  },
+  {
+    "accounts": "acoustic",
+    "end_time": {
+      "infinite": false,
+      "number": 1748336172,
       "set": true
     },
     "flags": [
@@ -14,13 +38,13 @@
       "FLEX"
     ],
     "name": "training",
-    "node_count": 960,
-    "node_list": "cn[001-080,101-980]",
+    "node_count": 4,
+    "node_list": "cn[1-4]",
     "start_time": {
       "infinite": false,
-      "number": 1732957200,
+      "number": 1748249772,
       "set": true
     },
-    "users": "dshaw,sharrison"
+    "users": "cpotter,tpearson"
   }
 ]

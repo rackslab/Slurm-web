@@ -14,10 +14,10 @@
   "gres_used": "",
   "last_busy": {
     "infinite": false,
-    "number": 1746619864,
+    "number": 1747753681,
     "set": true
   },
-  "name": "cn1",
+  "name": "cn2",
   "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
   "partitions": [
     "normal"

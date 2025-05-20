@@ -7,7 +7,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -39,6 +39,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -47,7 +48,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747754568
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -67,6 +68,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -102,17 +104,17 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1746619914
+    "number": 1747754573
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839141273] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486004335] (fd 8)",
       "user": "root",
       "group": "root"
     },

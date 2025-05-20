@@ -1,7 +1,7 @@
 {
-  "alloc_cpus": 6,
-  "alloc_idle_cpus": 58,
-  "alloc_memory": 3072,
+  "alloc_cpus": 1,
+  "alloc_idle_cpus": 63,
+  "alloc_memory": 512,
   "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
@@ -14,10 +14,10 @@
   "gres_used": "",
   "last_busy": {
     "infinite": false,
-    "number": 1746621012,
+    "number": 1747753681,
     "set": true
   },
-  "name": "cn2",
+  "name": "cn1",
   "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
   "partitions": [
     "normal"
@@ -26,7 +26,8 @@
   "reason": "",
   "sockets": 2,
   "state": [
-    "MIXED"
+    "MIXED",
+    "PLANNED"
   ],
   "threads": 1
 }

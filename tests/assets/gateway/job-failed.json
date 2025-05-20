@@ -1,7 +1,7 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1747044482,
+    "number": 1747751520,
     "set": true
   },
   "association": {
@@ -65,7 +65,7 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747044485,
+    "number": 1747751521,
     "set": true
   },
   "name": "wrap",
@@ -88,9 +88,9 @@
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/ksoto/slurm-5320.out",
+  "standard_error": "/home/ksoto/slurm-5966.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/ksoto/slurm-5320.out",
+  "standard_output": "/home/ksoto/slurm-5966.out",
   "state": {
     "current": [
       "FAILED"
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "5320.batch",
+        "id": "5966.batch",
         "name": "batch"
       },
       "task": {
@@ -170,12 +170,12 @@
         "elapsed": 1,
         "end": {
           "infinite": false,
-          "number": 1747044486,
+          "number": 1747751522,
           "set": true
         },
         "start": {
           "infinite": false,
-          "number": 1747044485,
+          "number": 1747751521,
           "set": true
         },
         "suspended": 0,
@@ -236,15 +236,20 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1747044482,
-    "end": 1747044486,
+    "eligible": 1747751520,
+    "end": 1747751522,
     "limit": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "start": 1747044485,
-    "submission": 1747044482,
+    "planned": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "start": 1747751521,
+    "submission": 1747751520,
     "suspended": 0,
     "system": {
       "microseconds": 0,

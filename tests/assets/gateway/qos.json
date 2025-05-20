@@ -117,8 +117,10 @@
     }
   },
   {
-    "description": "critical",
-    "flags": [],
+    "description": "study",
+    "flags": [
+      "OVERRIDE_PARTITION_QOS"
+    ],
     "limits": {
       "factor": {
         "infinite": true,
@@ -149,7 +151,7 @@
           },
           "count": {
             "infinite": false,
-            "number": 300,
+            "number": 60,
             "set": true
           }
         },
@@ -191,18 +193,58 @@
             }
           },
           "per": {
-            "account": [],
-            "job": [],
+            "account": [
+              {
+                "count": 196,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              },
+              {
+                "count": 131072,
+                "id": 2,
+                "name": "",
+                "type": "mem"
+              }
+            ],
+            "job": [
+              {
+                "count": 128,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              }
+            ],
             "node": [],
-            "user": []
+            "user": [
+              {
+                "count": 128,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              },
+              {
+                "count": 65536,
+                "id": 2,
+                "name": "",
+                "type": "mem"
+              }
+            ]
           },
-          "total": []
+          "total": [
+            {
+              "count": 50,
+              "id": 4,
+              "name": "",
+              "type": "node"
+            }
+          ]
         },
         "wall_clock": {
           "per": {
             "job": {
               "infinite": false,
-              "number": 2880,
+              "number": 480,
               "set": true
             },
             "qos": {
@@ -226,10 +268,10 @@
         }
       }
     },
-    "name": "critical",
+    "name": "study",
     "priority": {
       "infinite": false,
-      "number": 200,
+      "number": 100,
       "set": true
     }
   }

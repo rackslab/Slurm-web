@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "tmcgrath",
-        "id": 9
+        "user": "crich",
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 3,
-        "eligible": 1746619857,
-        "end": 1746619860,
-        "start": 1746619857,
-        "submission": 1746619857,
+        "elapsed": 30,
+        "eligible": 1747750688,
+        "end": 1747750886,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 168
+        },
+        "start": 1747750856,
+        "submission": 1747750688,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -111,23 +116,23 @@
           "number": 0
         }
       },
-      "job_id": 1306,
+      "job_id": 5959,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "gpu",
+      "nodes": "cn4",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 545
       },
       "qos": "normal",
       "required": {
-        "CPUs": 1,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -139,31 +144,37 @@
           "number": 0
         }
       },
-      "kill_request_user": "tmcgrath",
+      "kill_request_user": "",
       "reservation": {
         "id": 0,
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/crich/slurm-5959.out",
+      "stderr_expanded": "",
+      "stdout": "/home/crich/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
-          "CANCELLED"
+          "COMPLETED"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 4,
+            "elapsed": 30,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1746619861
+              "number": 1747750886
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1746619857
+              "number": 1747750856
             },
             "suspended": 0,
             "system": {
@@ -181,27 +192,27 @@
           },
           "exit_code": {
             "status": [
-              "SIGNALED"
+              "SUCCESS"
             ],
             "return_code": {
-              "set": false,
+              "set": true,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": true,
+                "set": false,
                 "infinite": false,
-                "number": 15
+                "number": 0
               },
-              "name": "TERM"
+              "name": ""
             }
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "cn4",
             "list": [
-              "gpu1"
+              "cn4"
             ]
           },
           "tasks": {
@@ -225,7 +236,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "CANCELLED"
+            "COMPLETED"
           ],
           "statistics": {
             "CPU": {
@@ -240,7 +251,7 @@
             }
           },
           "step": {
-            "id": "1306.batch",
+            "id": "5959.batch",
             "name": "batch"
           },
           "task": {
@@ -264,13 +275,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 1
+                "count": 64
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 512
+                "count": 32768
               },
               {
                 "type": "node",
@@ -282,20 +293,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --partition gpu --gpus 1",
+      "submit_line": "sbatch --time 2 --wrap sleep 30 && true --ntasks 64",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 32768
           },
           {
             "type": "energy",
@@ -313,7 +324,7 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 64
           }
         ],
         "requested": [
@@ -321,13 +332,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 32768
           },
           {
             "type": "node",
@@ -339,24 +350,24 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 64
           }
         ]
       },
       "used_gres": "",
-      "user": "tmcgrath",
+      "user": "crich",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tmcgrath"
+      "working_directory": "/home/crich"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
@@ -368,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

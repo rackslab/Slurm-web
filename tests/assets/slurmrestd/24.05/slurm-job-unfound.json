@@ -14,11 +14,11 @@
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1999612900] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485994126] (fd 8)",
       "user": "root",
       "group": "root"
     },
@@ -35,7 +35,7 @@
   },
   "errors": [
     {
-      "description": "Unable to query JobId=306616",
+      "description": "Unable to query JobId=1299460",
       "error_number": 2017,
       "error": "Invalid job id specified",
       "source": "_handle_job_get"

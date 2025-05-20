@@ -3,8 +3,8 @@
     {
       "nodes": {
         "allowed_allocation": "",
-        "configured": "cn[001-080,101-980]",
-        "total": 960
+        "configured": "cn[001-080,101-532]",
+        "total": 512
       },
       "accounts": {
         "allowed": "",
@@ -21,12 +21,13 @@
       "alternate": "",
       "tres": {
         "billing_weights": "",
-        "configured": "cpu=47360,mem=65T,node=960,billing=47360"
+        "configured": "cpu=25856,mem=37T,node=512,billing=25856"
       },
       "cluster": "",
+      "select_type": [],
       "cpus": {
         "task_binding": 0,
-        "total": 47360
+        "total": 25856
       },
       "defaults": {
         "memory_per_cpu": -9223372036854775296,
@@ -147,6 +148,7 @@
         "configured": "cpu=1216,mem=2432G,node=19,billing=1216"
       },
       "cluster": "",
+      "select_type": [],
       "cpus": {
         "task_binding": 0,
         "total": 1216
@@ -270,6 +272,7 @@
         "configured": "cpu=64,mem=128G,node=1,billing=64"
       },
       "cluster": "",
+      "select_type": [],
       "cpus": {
         "task_binding": 0,
         "total": 64
@@ -393,6 +396,7 @@
         "configured": "cpu=1280,mem=20T,node=40,billing=1280"
       },
       "cluster": "",
+      "select_type": [],
       "cpus": {
         "task_binding": 0,
         "total": 1280
@@ -496,17 +500,17 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732026868
+    "number": 1747754570
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93507712] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485991257] (fd 8)",
       "user": "root",
       "group": "root"
     },

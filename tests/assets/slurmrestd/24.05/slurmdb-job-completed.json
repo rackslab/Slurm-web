@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "bparks",
-        "id": 18
+        "user": "tpearson",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -55,10 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1746621091,
-        "end": 1746621094,
-        "start": 1746621093,
-        "submission": 1746621091,
+        "eligible": 1747754468,
+        "end": 1747754470,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "start": 1747754469,
+        "submission": 1747754468,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -111,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 9160,
+      "job_id": 649718,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn101",
+      "nodes": "cn001",
       "partition": "batch",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 363
+        "number": 272
       },
       "qos": "normal",
       "required": {
@@ -145,6 +150,12 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/tpearson/slurm-649718.out",
+      "stderr_expanded": "",
+      "stdout": "/home/tpearson/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "COMPLETED"
@@ -158,12 +169,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1746621094
+              "number": 1747754470
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1746621093
+              "number": 1747754469
             },
             "suspended": 0,
             "system": {
@@ -240,7 +251,7 @@
             }
           },
           "step": {
-            "id": "9160.batch",
+            "id": "649718.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 1 && true --ntasks 1",
+      "submit_line": "sbatch --time 1 --wrap sleep 1 && true --ntasks 1",
       "tres": {
         "allocated": [
           {
@@ -344,23 +355,23 @@
         ]
       },
       "used_gres": "",
-      "user": "bparks",
+      "user": "tpearson",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/bparks"
+      "working_directory": "/home/tpearson"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839271109] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485983217] (fd 8)",
       "user": "",
       "group": ""
     },

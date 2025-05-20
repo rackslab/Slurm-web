@@ -1,0 +1,35 @@
+{
+  "pings": [
+    {
+      "hostname": "admin.pocket",
+      "pinged": "UP",
+      "latency": 2371,
+      "mode": "primary"
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.41",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:9)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "0",
+        "minor": "05"
+      },
+      "release": "25.05.0-0rc1",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -283,11 +283,11 @@
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93506057] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486000017] (fd 8)",
       "user": "",
       "group": ""
     },

@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "crich",
-        "id": 11
+        "user": "ksoto",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 26,
-        "eligible": 1746621096,
+        "elapsed": 88,
+        "eligible": 1747754477,
         "end": 0,
-        "start": 1746621099,
-        "submission": 1746621096,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "start": 1747754478,
+        "submission": 1747754477,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -111,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 9162,
+      "job_id": 649722,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn101",
+      "nodes": "cn001",
       "partition": "batch",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 636
+        "number": 454
       },
       "qos": "normal",
       "required": {
@@ -145,6 +150,12 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/ksoto/slurm-649722.out",
+      "stderr_expanded": "",
+      "stdout": "/home/ksoto/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "RUNNING"
@@ -154,7 +165,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 26,
+            "elapsed": 88,
             "end": {
               "set": true,
               "infinite": false,
@@ -163,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1746621099
+              "number": 1747754478
             },
             "suspended": 0,
             "system": {
@@ -240,7 +251,7 @@
             }
           },
           "step": {
-            "id": "9162.batch",
+            "id": "649722.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 0:2 --wrap sleep 30 && true --ntasks 1",
+      "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 1",
       "tres": {
         "allocated": [
           {
@@ -344,23 +355,23 @@
         ]
       },
       "used_gres": "",
-      "user": "crich",
+      "user": "ksoto",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/crich"
+      "working_directory": "/home/ksoto"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839272208] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485994113] (fd 8)",
       "user": "",
       "group": ""
     },

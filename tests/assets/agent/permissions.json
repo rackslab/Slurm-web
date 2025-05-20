@@ -1,11 +1,11 @@
 {
   "actions": [
-    "view-accounts",
-    "view-jobs",
+    "view-qos",
     "view-nodes",
     "view-partitions",
+    "view-accounts",
     "view-reservations",
-    "view-qos",
+    "view-jobs",
     "view-stats"
   ],
   "roles": [

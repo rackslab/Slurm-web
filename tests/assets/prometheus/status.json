@@ -7,6 +7,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "gpus-hour": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "jobs-hour": {
     "content-type": "application/json",
     "status": 200
@@ -18,9 +22,5 @@
   "unknown-path": {
     "content-type": "application/json",
     "status": 400
-  },
-  "gpus-hour": {
-    "content-type": "application/json",
-    "status": 200
   }
 }

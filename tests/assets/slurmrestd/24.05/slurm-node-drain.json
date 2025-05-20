@@ -7,7 +7,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 24,
@@ -39,6 +39,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -47,11 +48,11 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456757
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn155",
+      "name": "cn146",
       "next_state_after_reboot": [
         "INVALID"
       ],
@@ -68,12 +69,13 @@
       ],
       "port": 6818,
       "real_memory": 65536,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "ECC memory error",
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 1746621090
+        "number": 1747762139
       },
       "reason_set_by_user": "root",
       "resume_after": {
@@ -103,17 +105,17 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1746621129
+    "number": 1747762242
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839275231] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486637317] (fd 8)",
       "user": "root",
       "group": "root"
     },

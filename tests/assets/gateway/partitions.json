@@ -1,18 +1,10 @@
 [
   {
-    "name": "batch",
+    "name": "normal",
     "node_sets": ""
   },
   {
-    "name": "debug",
-    "node_sets": ""
-  },
-  {
-    "name": "interactive",
-    "node_sets": ""
-  },
-  {
-    "name": "ia",
+    "name": "gpu",
     "node_sets": ""
   }
 ]

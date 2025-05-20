@@ -1,0 +1,75 @@
+{
+  "reservations": [
+    {
+      "accounts": "optic",
+      "burst_buffer": "",
+      "core_count": 256,
+      "core_specializations": [],
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1748337066
+      },
+      "features": "",
+      "flags": [
+        "IGNORE_JOBS",
+        "ANY_NODES",
+        "PART_NODES",
+        "SPEC_NODES",
+        "FLEX"
+      ],
+      "groups": "",
+      "licenses": "",
+      "max_start_delay": 0,
+      "name": "training",
+      "node_count": 4,
+      "node_list": "cn[1-4]",
+      "partition": "standard",
+      "purge_completed": {
+        "time": {
+          "set": true,
+          "infinite": false,
+          "number": 300
+        }
+      },
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1748250666
+      },
+      "watts": {},
+      "tres": "cpu=256",
+      "users": "ksoto,bparks"
+    }
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1747819133
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.41",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:9)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "0",
+        "minor": "05"
+      },
+      "release": "25.05.0-0rc1",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,7 +1,7 @@
 {
   "jobs": {
-    "running": 1,
-    "total": 14
+    "running": 5,
+    "total": 15
   },
   "resources": {
     "cores": 320,
@@ -9,5 +9,5 @@
     "memory": 1572864,
     "nodes": 6
   },
-  "version": "24.11.0"
+  "version": "24.11.5"
 }
