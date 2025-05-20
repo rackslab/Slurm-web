@@ -25,7 +25,7 @@ import ResourcesView from '@/views/ResourcesView.vue'
 import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
-import JobsStatusBadges from '@/views/JobsStatusBadges.vue'
+import JobsStatusBadges from '@/views/tests/JobsStatusBadges.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
