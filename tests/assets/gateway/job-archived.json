@@ -1,10 +1,10 @@
 {
   "association": {
-    "account": "optic",
+    "account": "biology",
     "cluster": "hpc",
-    "id": 18,
+    "id": 11,
     "partition": "",
-    "user": "bparks"
+    "user": "crich"
   },
   "comment": {
     "administrator": "",
@@ -49,11 +49,11 @@
   },
   "group": "scientists",
   "name": "wrap",
-  "nodes": "cn3",
+  "nodes": "cn4",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 454,
+    "number": 545,
     "set": true
   },
   "qos": "normal",
@@ -103,9 +103,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "cn3"
+          "cn4"
         ],
-        "range": "cn3"
+        "range": "cn4"
       },
       "pid": "",
       "state": [
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "5370.batch",
+        "id": "5959.batch",
         "name": "batch"
       },
       "task": {
@@ -134,15 +134,15 @@
         "count": 1
       },
       "time": {
-        "elapsed": 61,
+        "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1747055009,
+          "number": 1747750886,
           "set": true
         },
         "start": {
           "infinite": false,
-          "number": 1747054948,
+          "number": 1747750856,
           "set": true
         },
         "suspended": 0,
@@ -162,13 +162,13 @@
       "tres": {
         "allocated": [
           {
-            "count": 32,
+            "count": 64,
             "id": 1,
             "name": "",
             "type": "cpu"
           },
           {
-            "count": 16384,
+            "count": 32768,
             "id": 2,
             "name": "",
             "type": "mem"
@@ -195,18 +195,23 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 2 --wrap sleep 60 && true --ntasks 32",
+  "submit_line": "sbatch --time 2 --wrap sleep 30 && true --ntasks 64",
   "time": {
-    "elapsed": 61,
-    "eligible": 1747054835,
-    "end": 1747055009,
+    "elapsed": 30,
+    "eligible": 1747750688,
+    "end": 1747750886,
     "limit": {
       "infinite": false,
       "number": 2,
       "set": true
     },
-    "start": 1747054948,
-    "submission": 1747054835,
+    "planned": {
+      "infinite": false,
+      "number": 168,
+      "set": true
+    },
+    "start": 1747750856,
+    "submission": 1747750688,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -224,13 +229,13 @@
   "tres": {
     "allocated": [
       {
-        "count": 32,
+        "count": 64,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 16384,
+        "count": 32768,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -248,7 +253,7 @@
         "type": "node"
       },
       {
-        "count": 32,
+        "count": 64,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -256,13 +261,13 @@
     ],
     "requested": [
       {
-        "count": 32,
+        "count": 64,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 16384,
+        "count": 32768,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -274,7 +279,7 @@
         "type": "node"
       },
       {
-        "count": 32,
+        "count": 64,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -282,10 +287,10 @@
     ]
   },
   "used_gres": "",
-  "user": "bparks",
+  "user": "crich",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/bparks"
+  "working_directory": "/home/crich"
 }

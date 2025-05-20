@@ -3,7 +3,7 @@
     {
       "hostname": "admin.emulator",
       "pinged": "UP",
-      "latency": 1719,
+      "latency": 1060,
       "mode": "primary"
     }
   ],
@@ -11,11 +11,11 @@
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[93482609] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485995911] (fd 8)",
       "user": "root",
       "group": "root"
     },

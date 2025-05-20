@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1747045419,
+    "number": 1747752261,
     "set": true
   },
   "association": {
-    "account": "acoustic",
+    "account": "biology",
     "cluster": "hpc",
-    "id": 16,
+    "id": 13,
     "partition": "",
-    "user": "cpotter"
+    "user": "emendoza"
   },
   "batch_flag": true,
   "command": "",
@@ -23,7 +23,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/cpotter",
+  "current_working_directory": "/home/emendoza",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -68,7 +68,7 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747045419,
+    "number": 1747752261,
     "set": true
   },
   "name": "wrap",
@@ -81,7 +81,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 90,
+    "number": 727,
     "set": true
   },
   "qos": "normal",
@@ -91,9 +91,9 @@
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/cpotter/slurm-5349.out",
+  "standard_error": "/home/emendoza/slurm-5981.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/cpotter/slurm-5349.out",
+  "standard_output": "/home/emendoza/slurm-5981.out",
   "state": {
     "current": [
       "RUNNING"
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "5349.batch",
+        "id": "5981.batch",
         "name": "batch"
       },
       "task": {
@@ -170,7 +170,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 2,
+        "elapsed": 1,
         "end": {
           "infinite": false,
           "number": 0,
@@ -178,7 +178,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1747045419,
+          "number": 1747752261,
           "set": true
         },
         "suspended": 0,
@@ -238,16 +238,21 @@
     "set": true
   },
   "time": {
-    "elapsed": 2,
-    "eligible": 1747045419,
+    "elapsed": 1,
+    "eligible": 1747752261,
     "end": 0,
     "limit": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "start": 1747045419,
-    "submission": 1747045419,
+    "planned": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "start": 1747752261,
+    "submission": 1747752261,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -328,10 +333,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "cpotter",
+  "user": "emendoza",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/cpotter"
+  "working_directory": "/home/emendoza"
 }

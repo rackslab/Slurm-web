@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "tmcgrath",
-        "id": 9
+        "user": "emendoza",
+        "id": 13
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1746619835,
+        "elapsed": 0,
+        "eligible": 1747752267,
         "end": 0,
-        "start": 1746619837,
-        "submission": 1746619835,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 2
+        },
+        "start": 1747752269,
+        "submission": 1747752267,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -111,7 +116,7 @@
           "number": 0
         }
       },
-      "job_id": 1300,
+      "job_id": 5983,
       "name": "wrap",
       "licenses": "",
       "mcs": {
@@ -123,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 727
       },
       "qos": "normal",
       "required": {
@@ -145,6 +150,12 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/emendoza/slurm-5983.out",
+      "stderr_expanded": "",
+      "stdout": "/home/emendoza/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "RUNNING"
@@ -154,7 +165,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -163,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1746619837
+              "number": 1747752269
             },
             "suspended": 0,
             "system": {
@@ -240,7 +251,7 @@
             }
           },
           "step": {
-            "id": "1300.batch",
+            "id": "5983.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --partition gpu --gpus-per-node 1 --nodes 2",
+      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-node 1 --nodes 2",
       "tres": {
         "allocated": [
           {
@@ -344,19 +355,19 @@
         ]
       },
       "used_gres": "",
-      "user": "tmcgrath",
+      "user": "emendoza",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tmcgrath"
+      "working_directory": "/home/emendoza"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
@@ -368,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

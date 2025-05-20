@@ -13,11 +13,11 @@
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 35,
+      "cpu_load": 28,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 1635
+        "number": 3149
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -39,6 +39,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -47,16 +48,16 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746619853
+        "number": 1747753876
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn4",
+      "name": "cn1",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "cn4",
-      "hostname": "cn4",
+      "address": "cn1",
+      "hostname": "cn1",
       "state": [
         "IDLE",
         "DRAIN"
@@ -68,12 +69,13 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "ECC memory error",
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 1746621005
+        "number": 1747761356
       },
       "reason_set_by_user": "root",
       "resume_after": {
@@ -90,26 +92,26 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1746441568
+        "number": 1747256520
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "24.11.0"
+      "version": "24.11.5"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1746621039
+    "number": 1747761457
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
@@ -121,10 +123,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

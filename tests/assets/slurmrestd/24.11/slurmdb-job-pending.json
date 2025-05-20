@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
-        "id": 13
+        "user": "tnixon",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -55,10 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1746621018,
+        "eligible": 1747755144,
         "end": 0,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": -3528
+        },
         "start": 0,
-        "submission": 1746621018,
+        "submission": 1747751544,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -110,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 1312,
+      "job_id": 5977,
       "name": "wrap",
       "licenses": "",
       "mcs": {
@@ -122,11 +127,11 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 818
       },
       "qos": "normal",
       "required": {
-        "CPUs": 4,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -144,6 +149,12 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/tnixon/slurm-5977.out",
+      "stderr_expanded": "",
+      "stdout": "/home/tnixon/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "PENDING"
@@ -151,7 +162,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 90 && true --ntasks 4",
+      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 64 --begin now+1hour",
       "tres": {
         "allocated": [],
         "requested": [
@@ -159,13 +170,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 4
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 2048
+            "count": 32768
           },
           {
             "type": "node",
@@ -177,24 +188,24 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 4
+            "count": 64
           }
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "tnixon",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/tnixon"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
@@ -206,10 +217,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

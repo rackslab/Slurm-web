@@ -1,13 +1,13 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 0,
+      "allocation_nodes": 1,
       "array": {
         "job_id": 0,
         "limits": {
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "ksoto",
-        "id": 17
+        "user": "crich",
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -54,11 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 0,
-        "eligible": 1746623502,
-        "end": 1746619916,
-        "start": 4294967294,
-        "submission": 1746619902,
+        "elapsed": 42,
+        "eligible": 1747749294,
+        "end": 1747749338,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 2
+        },
+        "start": 1747749296,
+        "submission": 1747749294,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -67,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 10
         },
         "total": {
           "seconds": 0,
@@ -99,6 +104,7 @@
       "extra": "",
       "failed_node": "",
       "flags": [
+        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
       "group": "scientists",
@@ -110,23 +116,23 @@
           "number": 0
         }
       },
-      "job_id": 9159,
+      "job_id": 649716,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "None assigned",
+      "nodes": "cn176",
       "partition": "batch",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 727
       },
       "qos": "normal",
       "required": {
-        "CPUs": 4,
+        "CPUs": 1,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -144,28 +150,169 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/dev/null",
+      "stderr_expanded": "",
+      "stdout": "/dev/null",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "CANCELLED"
         ],
-        "reason": "BeginTime"
+        "reason": "None"
       },
-      "steps": [],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 30 && true --ntasks 4 --begin now+1hour",
+      "steps": [
+        {
+          "time": {
+            "elapsed": 46,
+            "end": {
+              "set": true,
+              "infinite": false,
+              "number": 1747749342
+            },
+            "start": {
+              "set": true,
+              "infinite": false,
+              "number": 1747749296
+            },
+            "suspended": 0,
+            "system": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "total": {
+              "seconds": 0,
+              "microseconds": 0
+            },
+            "user": {
+              "seconds": 0,
+              "microseconds": 0
+            }
+          },
+          "exit_code": {
+            "status": [
+              "SIGNALED"
+            ],
+            "return_code": {
+              "set": false,
+              "infinite": false,
+              "number": 0
+            },
+            "signal": {
+              "id": {
+                "set": true,
+                "infinite": false,
+                "number": 15
+              },
+              "name": "TERM"
+            }
+          },
+          "nodes": {
+            "count": 1,
+            "range": "admin.emulator",
+            "list": [
+              "admin.emulator"
+            ]
+          },
+          "tasks": {
+            "count": 1
+          },
+          "pid": "",
+          "CPU": {
+            "requested_frequency": {
+              "min": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              },
+              "max": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            },
+            "governor": "0"
+          },
+          "kill_request_user": "",
+          "state": [
+            "CANCELLED"
+          ],
+          "statistics": {
+            "CPU": {
+              "actual_frequency": 0
+            },
+            "energy": {
+              "consumed": {
+                "set": true,
+                "infinite": false,
+                "number": 0
+              }
+            }
+          },
+          "step": {
+            "id": "649716.batch",
+            "name": "batch"
+          },
+          "task": {
+            "distribution": "Unknown"
+          },
+          "tres": {
+            "requested": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "consumed": {
+              "max": [],
+              "min": [],
+              "average": [],
+              "total": []
+            },
+            "allocated": [
+              {
+                "type": "cpu",
+                "name": "",
+                "id": 1,
+                "count": 1
+              },
+              {
+                "type": "mem",
+                "name": "",
+                "id": 2,
+                "count": 512
+              },
+              {
+                "type": "node",
+                "name": "",
+                "id": 4,
+                "count": 1
+              }
+            ]
+          }
+        }
+      ],
+      "submit_line": "sbatch --qos normal --partition batch --time 10 --output /dev/null --wrap /usr/bin/sleep 360 && /bin/false --ntasks 1",
       "tres": {
-        "allocated": [],
-        "requested": [
+        "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 4
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 2048
+            "count": 512
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
           },
           {
             "type": "node",
@@ -177,28 +324,54 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 4
+            "count": 1
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "ksoto",
+      "user": "crich",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ksoto"
+      "working_directory": "/home/crich"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839258617] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486000651] (fd 8)",
       "user": "",
       "group": ""
     },

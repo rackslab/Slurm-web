@@ -7,7 +7,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -39,6 +39,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -47,7 +48,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -58,7 +59,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "MIXED"
       ],
       "operating_system": "",
       "owner": "",
@@ -67,6 +68,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -81,11 +83,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 512,
+      "alloc_cpus": 1,
+      "alloc_idle_cpus": 63,
+      "tres_used": "cpu=1,mem=512M",
+      "tres_weighted": 1.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -105,7 +107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -137,6 +139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -145,7 +148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747754506
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -165,6 +168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -203,7 +207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -235,6 +239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -243,7 +248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -254,7 +259,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "ALLOCATED"
       ],
       "operating_system": "",
       "owner": "",
@@ -263,6 +268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -277,11 +283,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 32768,
+      "alloc_cpus": 64,
+      "alloc_idle_cpus": 0,
+      "tres_used": "cpu=64,mem=32G",
+      "tres_weighted": 64.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -301,7 +307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -333,6 +339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -341,7 +348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -352,7 +359,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "MIXED"
       ],
       "operating_system": "",
       "owner": "",
@@ -361,6 +368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -375,11 +383,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 24576,
+      "alloc_cpus": 48,
+      "alloc_idle_cpus": 16,
+      "tres_used": "cpu=48,mem=24G",
+      "tres_weighted": 48.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -399,7 +407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -431,6 +439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -439,7 +448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -450,7 +459,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "ALLOCATED"
       ],
       "operating_system": "",
       "owner": "",
@@ -459,6 +468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -473,11 +483,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 32768,
+      "alloc_cpus": 64,
+      "alloc_idle_cpus": 0,
+      "tres_used": "cpu=64,mem=32G",
+      "tres_weighted": 64.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -497,7 +507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -529,6 +539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -537,7 +548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612952
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -548,7 +559,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "MIXED"
       ],
       "operating_system": "",
       "owner": "",
@@ -557,6 +568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -571,11 +583,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 8192,
+      "alloc_cpus": 16,
+      "alloc_idle_cpus": 48,
+      "tres_used": "cpu=16,mem=8G",
+      "tres_weighted": 16.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -595,7 +607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -627,6 +639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -635,7 +648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612952
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -655,6 +668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -693,7 +707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -725,6 +739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -733,7 +748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612952
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -753,6 +768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -791,7 +807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -823,6 +839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -831,7 +848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612952
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -851,6 +868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -889,7 +907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -921,6 +939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -929,7 +948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612952
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -949,6 +968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -987,7 +1007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1019,6 +1039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1027,7 +1048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746607645
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1047,6 +1068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1085,7 +1107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1117,6 +1139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1125,7 +1148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746607645
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1145,6 +1168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1183,7 +1207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1215,6 +1239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1223,7 +1248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746607645
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1243,6 +1268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1281,7 +1307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1313,6 +1339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1321,7 +1348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456975
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1341,6 +1368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1379,7 +1407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1411,6 +1439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1419,7 +1448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456819
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1439,6 +1468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1477,7 +1507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1509,6 +1539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1517,7 +1548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456970
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1537,6 +1568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1575,7 +1607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1607,6 +1639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1615,7 +1648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456819
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1635,6 +1668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1673,7 +1707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1705,6 +1739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1713,7 +1748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746457067
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1733,6 +1768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1771,7 +1807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1803,6 +1839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1811,7 +1848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456841
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1831,6 +1868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1869,7 +1907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1901,6 +1939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -1909,7 +1948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746457044
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1929,6 +1968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -1967,7 +2007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -1999,6 +2039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2007,7 +2048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456847
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2027,6 +2068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2065,7 +2107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2097,6 +2139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2105,7 +2148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456765
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2125,6 +2168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2163,7 +2207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2195,6 +2239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2203,7 +2248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456636
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2223,6 +2268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2261,7 +2307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2293,6 +2339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2301,7 +2348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456832
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2321,6 +2368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2359,7 +2407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2391,6 +2439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2399,7 +2448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456945
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2419,6 +2468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2457,7 +2507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2489,6 +2539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2497,7 +2548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456760
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2508,7 +2559,7 @@
       "address": "admin.emulator",
       "hostname": "admin.emulator",
       "state": [
-        "IDLE"
+        "DOWN"
       ],
       "operating_system": "",
       "owner": "",
@@ -2517,14 +2568,15 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
-      "reason": "",
+      "reason": "CPU dead",
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1747754463
       },
-      "reason_set_by_user": "",
+      "reason_set_by_user": "root",
       "resume_after": {
         "set": true,
         "infinite": false,
@@ -2555,7 +2607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2587,6 +2639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2595,7 +2648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456945
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2615,6 +2668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2653,7 +2707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2685,6 +2739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2693,7 +2748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456813
+        "number": 1747749339
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2713,6 +2768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2751,7 +2807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2783,6 +2839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2791,7 +2848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456962
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2811,6 +2868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2849,7 +2907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2881,6 +2939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2889,7 +2948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456953
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2909,6 +2968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -2947,7 +3007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -2979,6 +3039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -2987,7 +3048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618102
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3007,6 +3068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3045,7 +3107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3077,6 +3139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3085,7 +3148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456440
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3105,6 +3168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3143,7 +3207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3175,6 +3239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3183,7 +3248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456963
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3203,6 +3268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3241,7 +3307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3273,6 +3339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3281,7 +3348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3301,6 +3368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3339,7 +3407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3371,6 +3439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3379,7 +3448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456708
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3399,6 +3468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3437,7 +3507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3469,6 +3539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3477,7 +3548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456847
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3497,6 +3568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3535,7 +3607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3567,6 +3639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3575,7 +3648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456741
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3595,6 +3668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3633,7 +3707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3665,6 +3739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3673,7 +3748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3693,6 +3768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3731,7 +3807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3763,6 +3839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3771,7 +3848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3791,6 +3868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3829,7 +3907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3861,6 +3939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3869,7 +3948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3889,6 +3968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -3927,7 +4007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -3959,6 +4039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -3967,7 +4048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3987,6 +4068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4025,7 +4107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4057,6 +4139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4065,7 +4148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4085,6 +4168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4123,7 +4207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4155,6 +4239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4163,7 +4248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456696
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4183,6 +4268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4221,7 +4307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4253,6 +4339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4261,7 +4348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456930
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4281,6 +4368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4319,7 +4407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4351,6 +4439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4359,7 +4448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456912
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4379,6 +4468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4417,7 +4507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4449,6 +4539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4457,7 +4548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456780
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4477,6 +4568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4515,7 +4607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4547,6 +4639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4555,7 +4648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456773
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4575,6 +4668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4613,7 +4707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4645,6 +4739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4653,7 +4748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456507
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4673,6 +4768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4711,7 +4807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4743,6 +4839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4751,7 +4848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456780
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4771,6 +4868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4809,7 +4907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4841,6 +4939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4849,7 +4948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456780
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4869,6 +4968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -4907,7 +5007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -4939,6 +5039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -4947,7 +5048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456808
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4967,6 +5068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5005,7 +5107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5037,6 +5139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5045,7 +5148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456628
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5065,6 +5168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5103,7 +5207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5135,6 +5239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5143,7 +5248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456507
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5163,6 +5268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5201,7 +5307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5233,6 +5339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5241,7 +5348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456507
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5261,6 +5368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5299,7 +5407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5331,6 +5439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5339,7 +5448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456507
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5359,6 +5468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5397,7 +5507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5429,6 +5539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5437,7 +5548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456507
+        "number": 1747749370
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5457,6 +5568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5495,7 +5607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5527,6 +5639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5535,7 +5648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456539
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5555,6 +5668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5593,7 +5707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5625,6 +5739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5633,7 +5748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456265
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5653,6 +5768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5691,7 +5807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5723,6 +5839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5731,7 +5848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456265
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5751,6 +5868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5789,7 +5907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5821,6 +5939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5829,7 +5948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612907
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5849,6 +5968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5887,7 +6007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -5919,6 +6039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -5927,7 +6048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746612907
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5947,6 +6068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -5985,7 +6107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6017,6 +6139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6025,7 +6148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456412
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6045,6 +6168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6083,7 +6207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6115,6 +6239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6123,7 +6248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456663
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6143,6 +6268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6181,7 +6307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6213,6 +6339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6221,7 +6348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456817
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6241,6 +6368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6279,7 +6407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6311,6 +6439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6319,7 +6448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456628
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6339,6 +6468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6377,7 +6507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6409,6 +6539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6417,7 +6548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456832
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6437,6 +6568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6475,7 +6607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6507,6 +6639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6515,7 +6648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456801
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6535,6 +6668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6573,7 +6707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6605,6 +6739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6613,7 +6748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456773
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6633,6 +6768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6671,7 +6807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6703,6 +6839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6711,7 +6848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456739
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6731,6 +6868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6769,7 +6907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6801,6 +6939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6809,7 +6948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456808
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6829,6 +6968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6867,7 +7007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6899,6 +7039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -6907,7 +7048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456808
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6927,6 +7068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -6965,7 +7107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -6997,6 +7139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7005,7 +7148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456854
+        "number": 1747749341
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7025,6 +7168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7063,7 +7207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7095,6 +7239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7103,7 +7248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456854
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7123,6 +7268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7161,7 +7307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7193,6 +7339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7201,7 +7348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456854
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7221,6 +7368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7259,7 +7407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7291,6 +7439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7299,7 +7448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456380
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7319,6 +7468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7357,7 +7507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7389,6 +7539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7397,7 +7548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456601
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7417,6 +7568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7455,7 +7607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7487,6 +7639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7495,7 +7648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456768
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7515,6 +7668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7553,7 +7707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7585,6 +7739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7593,7 +7748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618102
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7613,6 +7768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7651,7 +7807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7683,6 +7839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7691,7 +7848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749340
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7711,6 +7868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7749,7 +7907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7781,6 +7939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7789,7 +7948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746618105
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7809,6 +7968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7847,7 +8007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7879,6 +8039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7887,7 +8048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456064
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7907,6 +8068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -7945,7 +8107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -7977,6 +8139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -7985,7 +8148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746454843
+        "number": 1747749342
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8005,6 +8168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8043,7 +8207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8075,6 +8239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8083,7 +8248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746455172
+        "number": 1747748490
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8103,6 +8268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8141,7 +8307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8173,6 +8339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8181,7 +8348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452624
+        "number": 1747748027
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8201,6 +8368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8239,7 +8407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8271,6 +8439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8279,7 +8448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452624
+        "number": 1747748027
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8299,6 +8468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8337,7 +8507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8369,6 +8539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8377,7 +8548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452624
+        "number": 1747748872
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8397,6 +8568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8435,7 +8607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8467,6 +8639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8475,7 +8648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452624
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8495,6 +8668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8533,7 +8707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8565,6 +8739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8573,7 +8748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452624
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8593,6 +8768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8631,7 +8807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8663,6 +8839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8671,7 +8848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452678
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8691,6 +8868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8729,7 +8907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8761,6 +8939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8769,7 +8948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452678
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8789,6 +8968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8827,7 +9007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8859,6 +9039,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8867,7 +9048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452678
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8887,6 +9068,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -8925,7 +9107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -8957,6 +9139,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -8965,7 +9148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452678
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8985,6 +9168,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9023,7 +9207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9055,6 +9239,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9063,7 +9248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456993
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9083,6 +9268,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9121,7 +9307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9153,6 +9339,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9161,7 +9348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746455851
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9181,6 +9368,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9219,7 +9407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9251,6 +9439,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9259,7 +9448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452936
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9279,6 +9468,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9317,7 +9507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9349,6 +9539,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9357,7 +9548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746452936
+        "number": 1747720817
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9377,6 +9568,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9415,7 +9607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9447,6 +9639,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9455,7 +9648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746453140
+        "number": 1747721184
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9475,6 +9668,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9513,7 +9707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9545,6 +9739,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9553,7 +9748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746453975
+        "number": 1747721558
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9573,6 +9768,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9611,7 +9807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9643,6 +9839,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9651,7 +9848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746453235
+        "number": 1747721558
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9671,6 +9868,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9709,7 +9907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
       "cores": 32,
@@ -9741,6 +9939,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -9749,7 +9948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746456019
+        "number": 1747749350
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9769,6 +9968,7 @@
       ],
       "port": 6818,
       "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -9804,17 +10004,17 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1746621125
+    "number": 1747754566
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839264558] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485988276] (fd 8)",
       "user": "root",
       "group": "root"
     },

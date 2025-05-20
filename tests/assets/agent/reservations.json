@@ -3,7 +3,7 @@
     "accounts": "biology",
     "end_time": {
       "infinite": false,
-      "number": 1732982400,
+      "number": 1774195200,
       "set": true
     },
     "flags": [
@@ -14,13 +14,37 @@
       "FLEX"
     ],
     "name": "training",
-    "node_count": 2,
-    "node_list": "cn[1-2]",
+    "node_count": 4,
+    "node_list": "cn[1-4]",
     "start_time": {
       "infinite": false,
-      "number": 1732957200,
+      "number": 1773997200,
       "set": true
     },
-    "users": "dshaw,sharrison"
+    "users": "agoodwin"
+  },
+  {
+    "accounts": "biology",
+    "end_time": {
+      "infinite": false,
+      "number": 1805731200,
+      "set": true
+    },
+    "flags": [
+      "IGNORE_JOBS",
+      "ANY_NODES",
+      "PART_NODES",
+      "SPEC_NODES",
+      "FLEX"
+    ],
+    "name": "training2",
+    "node_count": 4,
+    "node_list": "cn[1-4]",
+    "start_time": {
+      "infinite": false,
+      "number": 1805533200,
+      "set": true
+    },
+    "users": ""
   }
 ]

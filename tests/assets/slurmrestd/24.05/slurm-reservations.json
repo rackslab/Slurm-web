@@ -1,14 +1,14 @@
 {
   "reservations": [
     {
-      "accounts": "biology",
+      "accounts": "optic",
       "burst_buffer": "",
-      "core_count": 47360,
+      "core_count": 25856,
       "core_specializations": [],
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1732982400
+        "number": 1748336953
       },
       "features": "",
       "flags": [
@@ -22,8 +22,8 @@
       "licenses": "",
       "max_start_delay": 0,
       "name": "training",
-      "node_count": 960,
-      "node_list": "cn[001-080,101-980]",
+      "node_count": 512,
+      "node_list": "cn[001-080,101-532]",
       "partition": "batch",
       "purge_completed": {
         "time": {
@@ -35,27 +35,27 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1732957200
+        "number": 1748250553
       },
       "watts": {},
-      "tres": "cpu=47360",
-      "users": "dshaw,sharrison"
+      "tres": "cpu=25856",
+      "users": "bparks,bparks"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1732097140
+    "number": 1747818660
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[190164066] (fd 27)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2491134588] (fd 8)",
       "user": "root",
       "group": "root"
     },

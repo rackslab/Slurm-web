@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1747044685,
+    "number": 0,
     "set": true
   },
   "association": {
-    "account": "acoustic",
+    "account": "biology",
     "cluster": "hpc",
-    "id": 16,
+    "id": 12,
     "partition": "",
-    "user": "cpotter"
+    "user": "tnixon"
   },
   "batch_flag": true,
   "command": "",
@@ -20,10 +20,10 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 128,
+    "number": 64,
     "set": true
   },
-  "current_working_directory": "/home/cpotter",
+  "current_working_directory": "/home/tnixon",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -65,20 +65,20 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747044760,
+    "number": 1747751544,
     "set": true
   },
   "name": "wrap",
   "node_count": {
     "infinite": false,
-    "number": 2,
+    "number": 1,
     "set": true
   },
   "nodes": "None assigned",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 90,
+    "number": 818,
     "set": true
   },
   "qos": "normal",
@@ -88,9 +88,9 @@
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/cpotter/slurm-5337.out",
+  "standard_error": "/home/tnixon/slurm-5977.out",
   "standard_input": "/dev/null",
-  "standard_output": "/home/cpotter/slurm-5337.out",
+  "standard_output": "/home/tnixon/slurm-5977.out",
   "state": {
     "current": [
       "PENDING"
@@ -98,23 +98,28 @@
     "reason": "None"
   },
   "steps": [],
-  "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 128",
+  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 64 --begin now+1hour",
   "tasks": {
     "infinite": false,
-    "number": 128,
+    "number": 64,
     "set": true
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1747044685,
+    "eligible": 1747755144,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
+      "set": true
+    },
+    "planned": {
+      "infinite": false,
+      "number": -3529,
       "set": true
     },
     "start": 0,
-    "submission": 1747044685,
+    "submission": 1747751544,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -133,13 +138,13 @@
     "allocated": [],
     "requested": [
       {
-        "count": 128,
+        "count": 64,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 65536,
+        "count": 32768,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -151,7 +156,7 @@
         "type": "node"
       },
       {
-        "count": 128,
+        "count": 64,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -162,12 +167,12 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=128,mem=64G,node=1,billing=128",
+  "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
   "used_gres": "",
-  "user": "cpotter",
+  "user": "tnixon",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/cpotter"
+  "working_directory": "/home/tnixon"
 }

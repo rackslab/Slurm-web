@@ -3,11 +3,11 @@
     "account": "acoustic",
     "cpus": {
       "infinite": false,
-      "number": 32,
+      "number": 16,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 5340,
+    "job_id": 5974,
     "job_state": [
       "RUNNING"
     ],
@@ -16,7 +16,7 @@
       "number": 1,
       "set": true
     },
-    "nodes": "cn3",
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
@@ -32,24 +32,66 @@
     "state_reason": "None",
     "tasks": {
       "infinite": false,
-      "number": 32,
+      "number": 16,
       "set": true
     },
     "tres_per_job": "",
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "tpearson"
+    "user_name": "cbaker"
   },
   {
-    "account": "acoustic",
+    "account": "admin",
+    "cpus": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 5975,
+    "job_state": [
+      "RUNNING"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 2,
+      "set": true
+    },
+    "nodes": "cn[1-2]",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 909,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 64,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "tmcgrath"
+  },
+  {
+    "account": "biology",
     "cpus": {
       "infinite": false,
       "number": 32,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 5344,
+    "job_id": 5976,
     "job_state": [
       "RUNNING"
     ],
@@ -58,11 +100,11 @@
       "number": 1,
       "set": true
     },
-    "nodes": "cn3",
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 272,
+      "number": 636,
       "set": true
     },
     "qos": "normal",
@@ -81,6 +123,6 @@
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "cbaker"
+    "user_name": "agoodwin"
   }
 ]

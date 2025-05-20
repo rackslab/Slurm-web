@@ -55,10 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1746621009,
-        "end": 1746621012,
-        "start": 1746621011,
-        "submission": 1746621009,
+        "eligible": 1747751520,
+        "end": 1747751522,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "start": 1747751521,
+        "submission": 1747751520,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -111,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 1308,
+      "job_id": 5966,
       "name": "wrap",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn2",
+      "nodes": "cn1",
       "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 363
       },
       "qos": "normal",
       "required": {
@@ -145,6 +150,12 @@
         "name": ""
       },
       "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/ksoto/slurm-5966.out",
+      "stderr_expanded": "",
+      "stdout": "/home/ksoto/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
       "state": {
         "current": [
           "FAILED"
@@ -158,12 +169,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1746621012
+              "number": 1747751522
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1746621011
+              "number": 1747751521
             },
             "suspended": 0,
             "system": {
@@ -199,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn2",
+            "range": "cn1",
             "list": [
-              "cn2"
+              "cn1"
             ]
           },
           "tasks": {
@@ -240,7 +251,7 @@
             }
           },
           "step": {
-            "id": "1308.batch",
+            "id": "5966.batch",
             "name": "batch"
           },
           "task": {
@@ -282,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 0:30 --wrap sleep 1 && false --ntasks 1",
+      "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
       "tres": {
         "allocated": [
           {
@@ -356,7 +367,7 @@
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
@@ -368,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

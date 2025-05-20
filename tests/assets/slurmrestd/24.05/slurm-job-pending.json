@@ -112,12 +112,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1747049089
+        "number": 1747758094
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1747049149
+        "number": 1747758154
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -158,7 +158,7 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 153308,
+      "job_id": 649730,
       "job_resources": {},
       "job_size_str": [],
       "job_state": [
@@ -167,7 +167,7 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1747045489
+        "number": 1747754494
       },
       "licenses": "",
       "mail_type": [],
@@ -216,7 +216,7 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 4
+        "number": 64
       },
       "node_count": {
         "set": true,
@@ -226,7 +226,7 @@
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 4
+        "number": 64
       },
       "partition": "batch",
       "prefer": "",
@@ -308,17 +308,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1747049089
+        "number": 1747758094
       },
       "state_description": "",
       "state_reason": "BeginTime",
-      "standard_error": "/home/tmcgrath/slurm-153308.out",
+      "standard_error": "/home/tmcgrath/slurm-649730.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/tmcgrath/slurm-153308.out",
+      "standard_output": "/home/tmcgrath/slurm-649730.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1747045489
+        "number": 1747754494
       },
       "suspend_time": {
         "set": true,
@@ -347,7 +347,7 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=4,mem=2G,node=1,billing=4",
+      "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
       "tres_alloc_str": "",
       "user_id": 10001,
       "user_name": "tmcgrath",
@@ -359,22 +359,22 @@
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1747044265
+    "number": 1747749331
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1747045563
+    "number": 1747754566
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1999622510] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485991021] (fd 8)",
       "user": "root",
       "group": "root"
     },

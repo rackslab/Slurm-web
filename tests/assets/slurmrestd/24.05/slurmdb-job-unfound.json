@@ -4,11 +4,11 @@
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839270106] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485992228] (fd 8)",
       "user": "",
       "group": ""
     },
@@ -26,7 +26,7 @@
   "errors": [],
   "warnings": [
     {
-      "description": "slurmdb_jobs_get(0x7fb5a8002e40) found nothing",
+      "description": "slurmdb_jobs_get(0x7fa44c001940) found nothing",
       "source": "_dump_jobs"
     }
   ]

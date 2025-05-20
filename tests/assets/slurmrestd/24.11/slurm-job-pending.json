@@ -1,11 +1,11 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "accrue_time": {
         "set": true,
         "infinite": false,
-        "number": 1747044685
+        "number": 0
       },
       "admin_comment": "",
       "allocating_node": "login",
@@ -25,7 +25,7 @@
         "number": 0
       },
       "array_task_string": "",
-      "association_id": 16,
+      "association_id": 12,
       "batch_features": "",
       "batch_flag": true,
       "batch_host": "",
@@ -112,12 +112,12 @@
       "eligible_time": {
         "set": true,
         "infinite": false,
-        "number": 1747044685
+        "number": 1747755144
       },
       "end_time": {
         "set": true,
         "infinite": false,
-        "number": 1747044985
+        "number": 1747755204
       },
       "excluded_nodes": "",
       "exit_code": {
@@ -158,8 +158,8 @@
         "infinite": false,
         "number": 0
       },
-      "job_id": 5337,
-      "job_resources": {},
+      "job_id": 5977,
+      "job_resources": null,
       "job_size_str": [],
       "job_state": [
         "PENDING"
@@ -167,11 +167,11 @@
       "last_sched_evaluation": {
         "set": true,
         "infinite": false,
-        "number": 1747044774
+        "number": 1747751544
       },
       "licenses": "",
       "mail_type": [],
-      "mail_user": "cpotter",
+      "mail_user": "tnixon",
       "max_cpus": {
         "set": true,
         "infinite": false,
@@ -216,17 +216,17 @@
       "cpus": {
         "set": true,
         "infinite": false,
-        "number": 128
+        "number": 64
       },
       "node_count": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 1
       },
       "tasks": {
         "set": true,
         "infinite": false,
-        "number": 128
+        "number": 64
       },
       "partition": "normal",
       "prefer": "",
@@ -272,12 +272,12 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 90
+        "number": 818
       },
       "profile": [
         "NOT_SET"
       ],
-      "qos": "",
+      "qos": "normal",
       "reboot": false,
       "required_nodes": "",
       "minimum_switches": 0,
@@ -289,7 +289,7 @@
       },
       "restart_cnt": 0,
       "resv_name": "",
-      "scheduled_nodes": "cn[1,3]",
+      "scheduled_nodes": "",
       "selinux_context": "",
       "shared": [],
       "exclusive": [],
@@ -304,17 +304,17 @@
       "start_time": {
         "set": true,
         "infinite": false,
-        "number": 1747044865
+        "number": 1747755144
       },
       "state_description": "",
-      "state_reason": "Resources",
-      "standard_error": "/home/cpotter/slurm-5337.out",
+      "state_reason": "BeginTime",
+      "standard_error": "/home/tnixon/slurm-5977.out",
       "standard_input": "/dev/null",
-      "standard_output": "/home/cpotter/slurm-5337.out",
+      "standard_output": "/home/tnixon/slurm-5977.out",
       "submit_time": {
         "set": true,
         "infinite": false,
-        "number": 1747044685
+        "number": 1747751544
       },
       "suspend_time": {
         "set": true,
@@ -325,7 +325,7 @@
       "time_limit": {
         "set": true,
         "infinite": false,
-        "number": 2
+        "number": 1
       },
       "time_minimum": {
         "set": true,
@@ -343,34 +343,34 @@
       "tres_per_node": "",
       "tres_per_socket": "",
       "tres_per_task": "",
-      "tres_req_str": "cpu=128,mem=64G,node=1,billing=128",
+      "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
       "tres_alloc_str": "",
-      "user_id": 10008,
-      "user_name": "cpotter",
+      "user_id": 10004,
+      "user_name": "tnixon",
       "maximum_switch_wait_time": 0,
       "wckey": "",
-      "current_working_directory": "/home/cpotter"
+      "current_working_directory": "/home/tnixon"
     }
   ],
   "last_backfill": {
     "set": true,
     "infinite": false,
-    "number": 1747044752
+    "number": 1747751586
   },
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1747044775
+    "number": 1747751616
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:9)",
+      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
       "user": "root",
       "group": "root"
     },
@@ -378,10 +378,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "0",
+        "micro": "5",
         "minor": "11"
       },
-      "release": "24.11.0",
+      "release": "24.11.5",
       "cluster": "hpc"
     }
   },

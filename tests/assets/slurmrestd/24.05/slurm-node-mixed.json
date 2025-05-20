@@ -7,10 +7,10 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1741793225
+        "number": 1741793226
       },
       "cluster_name": "",
-      "cores": 24,
+      "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
       "cpu_load": 0,
@@ -19,8 +19,8 @@
         "infinite": false,
         "number": 0
       },
-      "cpus": 48,
-      "effective_cpus": 48,
+      "cpus": 64,
+      "effective_cpus": 64,
       "specialized_cpus": "",
       "energy": {
         "average_watts": 0,
@@ -39,6 +39,7 @@
       "power": {},
       "features": [],
       "active_features": [],
+      "gpu_spec": "",
       "gres": "",
       "gres_drained": "N/A",
       "gres_used": "",
@@ -47,11 +48,11 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1746619511
+        "number": 1747754568
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "cn103",
+      "name": "cn001",
       "next_state_after_reboot": [
         "INVALID"
       ],
@@ -66,7 +67,8 @@
         "batch"
       ],
       "port": 6818,
-      "real_memory": 65536,
+      "real_memory": 131072,
+      "res_cores_per_gpu": 0,
       "comment": "",
       "reason": "",
       "reason_changed_at": {
@@ -81,11 +83,11 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 23040,
-      "alloc_cpus": 45,
-      "alloc_idle_cpus": 3,
-      "tres_used": "cpu=45,mem=22.50G",
-      "tres_weighted": 45.0,
+      "alloc_memory": 512,
+      "alloc_cpus": 1,
+      "alloc_idle_cpus": 63,
+      "tres_used": "cpu=1,mem=512M",
+      "tres_weighted": 1.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
@@ -95,24 +97,24 @@
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=48,mem=64G,billing=48",
+      "tres": "cpu=64,mem=128G,billing=64",
       "version": ""
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1746621129
+    "number": 1747754569
   },
   "meta": {
     "plugin": {
       "type": "openapi/slurmctld",
       "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser/v0.0.40",
+      "data_parser": "data_parser/v0.0.41",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1839274294] (fd 12)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486002991] (fd 8)",
       "user": "root",
       "group": "root"
     },

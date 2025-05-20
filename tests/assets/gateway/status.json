@@ -87,14 +87,6 @@
     "content-type": "text/html; charset=utf-8",
     "status": 200
   },
-  "message_login_error": {
-    "content-type": "application/json",
-    "status": 500
-  },
-  "message_login_not_found": {
-    "content-type": "application/json",
-    "status": 404
-  },
   "metrics-cores-hour": {
     "content-type": "application/json",
     "status": 200
@@ -115,11 +107,19 @@
     "content-type": "application/json",
     "status": 200
   },
+  "node-drain": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "node-idle": {
     "content-type": "application/json",
     "status": 200
   },
   "node-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "node-planned": {
     "content-type": "application/json",
     "status": 200
   },
@@ -152,7 +152,7 @@
     "status": 200
   },
   "racksdb-draw-coordinates": {
-    "content-type": "multipart/form-data; boundary=504493dbb844492c9de020e4069d7914",
+    "content-type": "multipart/form-data; boundary=f4a560fe88f04e8f89a1f9428fda1c9b",
     "status": 200
   },
   "reservations": {
