@@ -16,7 +16,9 @@ import {
   ArrowPathRoundedSquareIcon,
   LockClosedIcon,
   StopCircleIcon,
+  BugAntIcon,
   BellAlertIcon,
+  BoltIcon,
   EyeSlashIcon,
   FolderMinusIcon,
   ExclamationTriangleIcon
@@ -106,9 +108,9 @@ const statusColor = computed<JobLabelColors>(() => {
 })
 
 /*
-  This must be kept in sync with logic implemented in Slurm job_state_string():
-  https://github.com/SchedMD/slurm/blob/master/src/common/slurm_protocol_defs.c
-*/
+ * This must be kept in sync with logic implemented in Slurm job_state_string():
+ * https://github.com/SchedMD/slurm/blob/master/src/common/slurm_protocol_defs.c
+ */
 
 const mainStatus = computed<string>(() => {
   if (status.includes('PENDING')) return 'PENDING'
@@ -127,13 +129,16 @@ const mainStatus = computed<string>(() => {
 })
 
 const stateFlagsIcons = computed(() => {
-  let result = []
+  const result = []
   const flag_icons = {
+    LAUNCH_FAILED: BugAntIcon,
     COMPLETING: ArrowDownOnSquareIcon,
     STAGE_OUT: ArrowRightStartOnRectangleIcon,
     CONFIGURING: Cog8ToothIcon,
+    POWER_UP_NODE: BoltIcon,
+    RECONFIG_FAIL: BugAntIcon,
     RESIZING: ArrowsPointingOutIcon,
-    REQUEUD: ArrowPathRoundedSquareIcon,
+    REQUEUED: ArrowPathRoundedSquareIcon,
     REQUEUE_FED: ArrowPathRoundedSquareIcon,
     REQUEUE_HOLD: LockClosedIcon,
     SPECIAL_EXIT: ExclamationTriangleIcon,
@@ -166,6 +171,8 @@ const stateFlagsIcons = computed(() => {
     <template v-else>
       {{ mainStatus }}
     </template>
-    <template v-for="icon in stateFlagsIcons"><component :is="icon" class="size-4"/></template>
+    <template v-for="icon in stateFlagsIcons" :key="icon"
+      ><component :is="icon" class="size-4"
+    /></template>
   </span>
 </template>
