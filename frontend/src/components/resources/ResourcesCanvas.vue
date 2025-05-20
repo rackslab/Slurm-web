@@ -342,10 +342,10 @@ onUnmounted(() => {
               <strong>Node {{ currentNode.name }}</strong>
             </li>
             <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
-              <NodeMainState :node="currentNode" />
+              <NodeMainState :status="currentNode.state" />
             </li>
             <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
-              <NodeAllocationState :node="currentNode" />
+              <NodeAllocationState :status="currentNode.state" />
             </li>
           </ul>
         </div>

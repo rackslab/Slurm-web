@@ -100,7 +100,7 @@ const gpuAllocated = computed(() => {
                   Node status
                 </dt>
                 <dd class="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                  <NodeMainState :node="node.data.value" />
+                  <NodeMainState :status="node.data.value.state" />
                   <span v-if="node.data.value.reason" class="pl-4 text-gray-500"
                     >reason: {{ node.data.value.reason }}</span
                   >
@@ -113,7 +113,7 @@ const gpuAllocated = computed(() => {
                 <dd
                   class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                 >
-                  <NodeAllocationState :node="node.data.value" />
+                  <NodeAllocationState :status="node.data.value.state" />
                   <ul class="list-disc pt-4 pl-4">
                     <li>
                       CPU: {{ node.data.value.alloc_cpus }} / {{ node.data.value.cpus }}

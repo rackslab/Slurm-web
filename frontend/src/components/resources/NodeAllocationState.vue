@@ -7,22 +7,18 @@
 -->
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import type { Ref } from 'vue'
-import type { ClusterNode } from '@/composables/GatewayAPI'
+import { computed } from 'vue'
 import { getNodeAllocationState } from '@/composables/GatewayAPI'
 
-const { node } = defineProps<{ node: ClusterNode }>()
+const { status } = defineProps<{ status: string[] }>()
 
 interface NodeAllocationLabelColors {
   label: string
   color: string
 }
 
-const nodeAllocationLabelColor: Ref<NodeAllocationLabelColors | undefined> = ref()
-
-function getStatusColor(): NodeAllocationLabelColors {
-  switch (getNodeAllocationState(node)) {
+const nodeAllocationLabelColor = computed<NodeAllocationLabelColors>(() => {
+  switch (getNodeAllocationState(status)) {
     case 'allocated':
       return {
         label: 'allocated',
@@ -38,23 +34,17 @@ function getStatusColor(): NodeAllocationLabelColors {
         label: 'unavailable',
         color: 'fill-red-500 opacity-30'
       }
+    case 'planned':
+      return {
+        label: 'planned',
+        color: 'fill-green-500'
+      }
     default:
       return {
         label: 'idle',
         color: 'fill-green-500'
       }
   }
-}
-
-watch(
-  () => node,
-  () => {
-    nodeAllocationLabelColor.value = getStatusColor()
-  }
-)
-
-onMounted(() => {
-  nodeAllocationLabelColor.value = getStatusColor()
 })
 </script>
 
@@ -65,7 +55,7 @@ onMounted(() => {
     :class="nodeAllocationLabelColor.color"
   >
     <svg
-      v-if="nodeAllocationLabelColor.label == 'idle'"
+      v-if="nodeAllocationLabelColor.label == 'idle' || nodeAllocationLabelColor.label == 'planned'"
       viewBox="0 0 3.175 5.556"
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-2"

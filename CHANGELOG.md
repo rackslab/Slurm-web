@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Display number of GPU requested or allocated in jobs list.
   - Display number of GPU requested and allocated in job details page.
   - Add buttons to display GPU status metrics in dashboard.
-  - Implement Slurm job status logic for jobs labels (#404).
+  - Reproduce Slurm job status logic for jobs badges (#404).
+  - Reproduce Slurm node status logic for node status and allocation badges with
+    icons to represent status flags (#405).
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
