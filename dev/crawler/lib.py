@@ -338,8 +338,8 @@ class DevelopmentHostCluster:
     def job_nodes(self, job_id: int) -> list[str]:
         job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
         return [
-            allocated_node["nodename"]
-            for allocated_node in job["jobs"][0]["job_resources"]["allocated_nodes"]
+            allocated_node["name"]
+            for allocated_node in job["jobs"][0]["job_resources"]["nodes"]["allocation"]
         ]
 
     def wait_idle(self, node_name: str) -> None:
