@@ -222,6 +222,7 @@ class SlurmwebAgent:
         slurmrestd_jwt_key = None
         if CLUSTERS[self.name]["auth"] == "jwt":
             if CLUSTERS[self.name].get("mode") == "static":
+                logger.info("Generating static JWT for cluster %s", self.name)
                 # get infinite token for slurm user
                 cmd = shlex.join(
                     [
@@ -237,6 +238,9 @@ class SlurmwebAgent:
                 _, stdout, _ = self.channel.connection.exec_command(cmd)
                 slurmrestd_token = stdout.read().decode().split("=")[1]
             else:
+                logger.info(
+                    "Downloading remote Slurm JWT signing key for cluster %s", self.name
+                )
                 try:
                     with sftp.open(
                         f".local/state/firehpc/clusters/{self.name}/slurm/jwt_hs256.key"

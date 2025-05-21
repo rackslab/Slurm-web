@@ -8,8 +8,9 @@ key={{ jwt_key }}
 
 [slurmrestd]
 uri={{ slurmrestd_uri }}
-{% if slurmrestd_auth == "jwt" %}
-auth=jwt
+{% if slurmrestd_auth == "local" %}
+auth=local
+{% else %}
 {% if slurmrestd_jwt_mode %}
 jwt_mode={{ slurmrestd_jwt_mode }}
 {% endif %}
