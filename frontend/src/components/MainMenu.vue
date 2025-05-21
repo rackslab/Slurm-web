@@ -18,8 +18,10 @@ import {
   SwatchIcon,
   XMarkIcon
 } from '@heroicons/vue/24/outline'
+import { TagIcon } from '@heroicons/vue/16/solid'
 
 import { useRuntimeStore } from '@/stores/runtime'
+import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 
 const { entry } = defineProps<{
   entry: string
@@ -28,6 +30,7 @@ const { entry } = defineProps<{
 const sidebarOpen = defineModel<boolean>()
 
 const runtimeStore = useRuntimeStore()
+const runtimeConfiguration = useRuntimeConfiguration()
 const navigation = [
   { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permission: 'view-stats' },
   { name: 'Jobs', route: 'jobs', icon: PlayCircleIcon, permission: 'view-jobs' },
@@ -92,6 +95,12 @@ const navigation = [
               <div class="flex h-16 shrink-0 items-center justify-center">
                 <img class="flex h-12" src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
               </div>
+              <div
+                class="text-slurmweb-dark dark:text-slurmweb mx-8 -mt-10 mb-6 text-right text-xs"
+              >
+                <TagIcon class="inline size-3" aria-hidden="true" />
+                {{ runtimeConfiguration.version }}
+              </div>
               <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                   <li>
@@ -151,6 +160,9 @@ const navigation = [
       <div class="flex h-24 shrink-0 items-center">
         <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" class="block dark:hidden" />
         <img src="/logo/slurm-web_horizontal_dark.png" alt="Slurm-web" class="hidden dark:block" />
+      </div>
+      <div class="text-slurmweb-dark dark:text-slurmweb -mt-12 mb-4 text-right text-xs">
+        <TagIcon class="inline size-3" aria-hidden="true" /> {{ runtimeConfiguration.version }}
       </div>
       <nav class="flex flex-1 flex-col">
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
