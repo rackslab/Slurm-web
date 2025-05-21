@@ -14,6 +14,7 @@ export interface RuntimeConfiguration {
   authentication: boolean
   racksdb_rows_labels: boolean
   racksdb_racks_labels: boolean
+  version: string
 }
 
 const injectionKey = Symbol('rc')
@@ -38,7 +39,8 @@ export const initRuntimeConfiguration = async (): Promise<RuntimeConfiguration> 
     api_server: value.API_SERVER,
     authentication: value.AUTHENTICATION,
     racksdb_rows_labels: value.RACKSDB_ROWS_LABELS,
-    racksdb_racks_labels: value.RACKSDB_RACKS_LABELS
+    racksdb_racks_labels: value.RACKSDB_RACKS_LABELS,
+    version: value.VERSION
   } as RuntimeConfiguration
 }
 

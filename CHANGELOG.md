@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Reproduce Slurm node status logic for node status and allocation badges with
     icons to represent status flags (#405).
   - Add node filter for _error_ and _fail_ states.
+  - Display version in below logo in main menu (#568).
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
