@@ -336,6 +336,7 @@ def ui_config():
             "AUTHENTICATION": current_app.settings.authentication.enabled,
             "RACKSDB_ROWS_LABELS": current_app.settings.ui.racksdb_rows_labels,
             "RACKSDB_RACKS_LABELS": current_app.settings.ui.racksdb_racks_labels,
+            "VERSION": get_version(),
         }
     )
 
