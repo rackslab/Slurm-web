@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import sys
-import typing as t
 from pathlib import Path
 import logging
 
@@ -24,33 +23,13 @@ from rfl.log import setup_logger, enforce_debug
 logger = logging.getLogger(__name__)
 
 
-class SlurmwebConfSeed:
-    def __init__(
-        self,
-        debug: bool,
-        log_flags: t.List[str],
-        log_component: t.Optional[str],
-        debug_flags: t.List[str],
-        conf_defs: Path,
-        conf: Path,
-    ):
-        self.debug = debug
-        self.log_flags = log_flags
-        self.log_component = log_component
-        self.debug_flags = debug_flags
-        self.conf_defs = conf_defs
-        self.conf = conf
-
+class SlurmwebAppSeed:
     @classmethod
-    def from_args(cls, args):
-        return cls(
-            args.debug,
-            args.log_flags,
-            args.log_component,
-            args.debug_flags,
-            args.conf_defs,
-            args.conf,
-        )
+    def with_parameters(cls, **kwargs):
+        seed = cls()
+        for key, value in kwargs.items():
+            setattr(seed, key, value)
+        return seed
 
 
 class SlurmwebGenericApp:
@@ -58,7 +37,7 @@ class SlurmwebGenericApp:
     SITE_CONFIGURATION = None
     SETTINGS_DEFINITION = None
 
-    def __init__(self, seed: SlurmwebConfSeed):
+    def __init__(self, seed: SlurmwebAppSeed):
         # load configuration files
         setup_logger(
             debug=seed.debug,
@@ -94,7 +73,7 @@ class SlurmwebGenericApp:
 class SlurmwebWebApp(SlurmwebGenericApp, Flask):
     VIEWS = set()
 
-    def __init__(self, seed: SlurmwebConfSeed):
+    def __init__(self, seed: SlurmwebAppSeed):
         SlurmwebGenericApp.__init__(self, seed)
         Flask.__init__(self, self.NAME)
         # set URL rules

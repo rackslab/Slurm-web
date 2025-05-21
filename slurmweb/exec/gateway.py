@@ -8,9 +8,7 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
-
-from . import SlurmwebAppArgs
-from ..apps import SlurmwebConfSeed
+from ..apps import SlurmwebAppSeed
 from ..apps.gateway import SlurmwebAppGateway
 
 
@@ -64,7 +62,5 @@ class SlurmwebExecGateway:
             type=Path,
         )
 
-        application = SlurmwebAppGateway(
-            SlurmwebConfSeed.from_args(parser.parse_args(namespace=SlurmwebAppArgs))
-        )
+        application = SlurmwebAppGateway(parser.parse_args(namespace=SlurmwebAppSeed))
         application.run()
