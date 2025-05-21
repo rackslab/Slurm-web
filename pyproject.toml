@@ -40,10 +40,11 @@ gateway = [
     "markdown",
 ]
 tests = [
-    "pytest",
-    "parameterized",
-    "pytest-cov",
     "coverage",
+    "Jinja2",
+    "parameterized",
+    "pytest",
+    "pytest-cov",
 ]
 
 [project.scripts]
