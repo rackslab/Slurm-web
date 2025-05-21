@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention GPU support feature in overview page.
   - Mention GPU metrics in metrics configuration reference documentation.
   - Mention dark mode support feature in overview page.
+  - Mention new `--with-slurm` option in `slurm-web-gen-jwt-key` manpage.
 
 ### Changed
 - agent: Emit warning log entry at launch when slurmrestd local authentication
