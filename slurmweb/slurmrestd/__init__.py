@@ -138,33 +138,32 @@ class Slurmrestd:
         return [job for job in self.jobs() if on_node(job) and not terminated(job)]
 
     def jobs_states(self):
+        # All Slurm jobs base states. Jobs can have only one of them.
         jobs = {
             "running": 0,
+            "pending": 0,
+            "completing": 0,
             "completed": 0,
+            "cancelled": 0,
+            "suspended": 0,
+            "preempted": 0,
             "failed": 0,
             "timeout": 0,
-            "completing": 0,
-            "cancelled": 0,
-            "pending": 0,
+            "node_fail": 0,
+            "boot_fail": 0,
+            "deadline": 0,
+            "out_of_memory": 0,
             "unknown": 0,
         }
         total = 0
         for job in self.jobs():
-            if "RUNNING" in job["job_state"]:
-                jobs["running"] += 1
-            elif "COMPLETED" in job["job_state"]:
-                jobs["completed"] += 1
-            elif "FAILED" in job["job_state"]:
-                jobs["failed"] += 1
-            elif "TIMEOUT" in job["job_state"]:
-                jobs["timeout"] += 1
-            elif "COMPLETING" in job["job_state"]:
-                jobs["completing"] += 1
-            elif "CANCELLED" in job["job_state"]:
-                jobs["cancelled"] += 1
-            elif "PENDING" in job["job_state"]:
-                jobs["pending"] += 1
-            else:
+            state_found = False
+            for state in jobs.keys():
+                if state.upper() in job["job_state"]:
+                    jobs[state] += 1
+                    state_found = True
+                    break
+            if not state_found:
                 jobs["unknown"] += 1
             total += 1
         return jobs, total

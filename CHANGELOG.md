@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
   - Support querying GPU metrics.
+  - Add missing jobs base states in collected metrics: `SUSPENDED`, `PREEMPTED`,
+    `NODE_FAIL`, `BOOT_FAIL`, `DEADLINE` and `OUT_OF_MEMORY`.
 - gateway: Add version in configuration file generated for frontend component.
 - conf:
   - Select `gres` and `gres_used` attributes by default in `slurmrestd` nodes
