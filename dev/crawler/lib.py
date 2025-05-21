@@ -7,7 +7,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from __future__ import annotations
-from functools import cached_property
 import sys
 import typing as t
 import json
@@ -32,6 +31,7 @@ from rfl.settings.errors import (
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 
 if t.TYPE_CHECKING:
+    from datetime import datetime
     from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 logger = logging.getLogger(__name__)
@@ -138,18 +138,12 @@ class DevelopmentHostCluster:
         _, stdout, _ = self.dev_host.exec(
             ["firehpc", "status", "--cluster", self.name, "--json"]
         )
-        self.emulator = json.loads(stdout.read())["settings"]["slurm_emulator"]
-        stdout.close()
+        self.status = json.loads(stdout.read())
 
-    @cached_property
-    def users(self):
-        """Return name of a user in admin group for the given cluster."""
-        _, stdout, _ = self.dev_host.exec(
-            ["firehpc", "status", "--cluster", self.name, "--json"]
-        )
-        users = json.loads(stdout.read())["users"]
+        self.emulator = self.status["settings"]["slurm_emulator"]
+        self.users = [user["login"] for user in self.status["users"]]
+        self.groups = self.status["groups"]
         stdout.close()
-        return [user["login"] for user in users]
 
     def query_slurmrestd(self, query: str, headers: dict[str, str] | None = None):
         """Send GET HTTP request to slurmrestd and return JSON result. Raise
@@ -354,8 +348,65 @@ class DevelopmentHostCluster:
             else:
                 time.sleep(1)
 
-    def pick_user(self):
+    def pick_user(self) -> str:
         return random.choice(self.users)
+
+    def pick_account(self) -> str:
+        return random.choice(
+            [group["name"] for group in self.groups if group["parent"] != "root"]
+        )
+
+    def pick_account_users(self, account: str, number: int) -> list[str]:
+        for group in self.groups:
+            if group["name"] == account:
+                return random.choices(group["members"], k=number)
+        raise CrawlerError(f"Unable to find account {account} on cluster {self.name}")
+
+    def reservation(
+        self,
+        name: str,
+        partition: str,
+        accounts: list[str] | None,
+        users: list[str] | None,
+        start: datetime,
+        end: datetime,
+    ) -> None:
+        """Create reservation."""
+        # FIXME: use REST API
+        cmd = [
+            "firehpc",
+            "ssh",
+            self.name,
+            "--",
+            "scontrol",
+            "create",
+            "reservation",
+            f"Reservation={name}",
+            f"StartTime={start.strftime('%Y-%m-%dT%H:%M:%S')}",
+            f"EndTime={end.strftime('%Y-%m-%dT%H:%M:%S')}",
+            f"Partition={partition}",
+            "Flags=ANY_NODES,FLEX,IGNORE_JOBS",
+        ]
+        if users:
+            cmd.append(f"Users={','.join(users)}")
+        if accounts:
+            cmd.append(f"Accounts={','.join(accounts)}")
+        self.dev_host.exec(cmd)
+
+    def reservation_delete(self, name: str) -> None:
+        # FIXME: use REST API
+        self.dev_host.exec(
+            [
+                "firehpc",
+                "ssh",
+                self.name,
+                "--",
+                "scontrol",
+                "delete",
+                "reservation",
+                name,
+            ]
+        )
 
 
 def dump_component_query(
