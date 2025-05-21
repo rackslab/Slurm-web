@@ -125,6 +125,7 @@ class TestGatewayViews(TestGatewayBase):
                 "AUTHENTICATION": False,
                 "RACKSDB_RACKS_LABELS": False,
                 "RACKSDB_ROWS_LABELS": False,
+                "VERSION": get_version(),
             },
         )
 
