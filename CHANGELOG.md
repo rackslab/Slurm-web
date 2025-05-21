@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     sort order and select sort criterion.
   - Bump heroicons dependency to version 2.2.0.
   - Group _drain_ and _draining_ node state filters.
+- genjwt: Give ownership of Slurm-web JWT signing key to _slurm-web_ system user
+  only by default. Read ACL is added for _slurm_ system user only if
+  `--with-slurm` option is provided explicitely.
 - conf:
   - Bump `[slurmrestd]` > `version` default value from `0.0.40` to `0.0.41` in
     agent configuration for compatibility with Slurm 25.05.

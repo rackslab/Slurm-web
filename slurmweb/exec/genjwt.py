@@ -62,6 +62,12 @@ class SlurmwebExecGenJWT:
             default=SlurmwebAppGateway.SITE_CONFIGURATION,
             type=Path,
         )
+        parser.add_argument(
+            "--with-slurm",
+            dest="with_slurm",
+            action="store_true",
+            help="Also give read permission on JWT key to slurm user",
+        )
 
         application = SlurmwebAppGenJWT(
             parser.parse_args(namespace=SlurmwebAppSeed),
