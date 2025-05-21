@@ -13,7 +13,7 @@ const mockClusterDataPoller = getMockClusterDataPoller<ClusterReservation[]>()
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
 }))
-describe('QosView.vue', () => {
+describe('ReservationsView.vue', () => {
   beforeEach(() => {
     init_plugins()
     useRuntimeStore().availableClusters = [
@@ -41,16 +41,23 @@ describe('QosView.vue', () => {
      * - account in 6th cell
      * - flags in 7th cell
      */
-    let reservationCells
     for (const [i, value] of reservationsTableLines.entries()) {
-      reservationCells = reservationsTableLines[i].findAll('td')
+      const reservationCells = reservationsTableLines[i].findAll('td')
       expect(reservationCells[0].text()).toBe(reservations[i].name)
-      expect(reservationCells[4].findAll('li').map((element) => element.text())).toStrictEqual(
-        reservations[i].users.split(',')
-      )
-      expect(reservationCells[5].findAll('li').map((element) => element.text())).toStrictEqual(
-        reservations[i].accounts.split(',')
-      )
+      // if users in reservations, check all li items else check li absence
+      if (reservations[i].users.length)
+        expect(reservationCells[4].findAll('li').map((element) => element.text())).toStrictEqual(
+          reservations[i].users.split(',')
+        )
+      else
+        expect(() => reservationCells[4].get('li')).toThrowError()
+      // if accounts in reservations, check all li items else check li absence
+      if (reservations[i].accounts.length)
+        expect(reservationCells[5].findAll('li').map((element) => element.text())).toStrictEqual(
+          reservations[i].accounts.split(',')
+        )
+      else
+        expect(() => reservationCells[5].get('li')).toThrowError()
       expect(reservationCells[6].findAll('span').map((element) => element.text())).toStrictEqual(
         reservations[i].flags
       )
