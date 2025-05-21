@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention dark mode support feature in overview page.
 
 ### Changed
+- agent: Emit warning log entry at launch when slurmrestd local authentication
+  method is used.
 - frontend:
   - Migrate to Tailwind CSS v4 (#449). Note this breaks support of old browsers
     versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.

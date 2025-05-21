@@ -115,6 +115,13 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                 f"unix://{self.settings.slurmrestd.socket}"
             )
 
+        # Warn deprecated local authentication method to slurmrestd
+        if self.settings.slurmrestd.auth == "local":
+            logger.warning(
+                "Using deprecated slurmrestd local authentication method, it is "
+                "recommended to migrate to jwt authentication"
+            )
+
         try:
             self.slurmrestd = SlurmrestdFilteredCached(
                 self.settings.slurmrestd.uri,
