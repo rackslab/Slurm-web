@@ -144,6 +144,7 @@ export interface ClusterJobTime {
   eligible: number
   end: number
   limit: ClusterOptionalNumber
+  planned: ClusterOptionalNumber
   start: number
   submission: number
   suspended: number
