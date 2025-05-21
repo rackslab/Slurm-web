@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from slurmweb.apps.connect import SlurmwebAppConnectCheck
-from slurmweb.apps import SlurmwebConfSeed
+from slurmweb.apps import SlurmwebAppSeed
 from .agent import TestSlurmrestdClient
 
 
@@ -17,7 +17,7 @@ class TestConnectCheckAppBase(TestSlurmrestdClient):
             metrics=metrics,
         )
         self.app = SlurmwebAppConnectCheck(
-            SlurmwebConfSeed(
+            SlurmwebAppSeed.with_parameters(
                 debug=False,
                 log_flags=["ALL"],
                 log_component=None,
