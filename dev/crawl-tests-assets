@@ -12,6 +12,7 @@ import getpass
 import random
 import logging
 import time
+from datetime import datetime, timedelta
 
 from rfl.log import setup_logger
 
@@ -122,6 +123,17 @@ def main() -> None:
         cluster.node_update(node_down, "DOWN", "CPU dead")
         cluster.node_update(node_drain, "DRAIN", "ECC memory error")
 
+        # Create reservation
+        account = cluster.pick_account()
+        cluster.reservation(
+            "training",
+            cluster.partitions()[0],
+            accounts=[account],
+            users=cluster.pick_account_users(account, 2),
+            start=datetime.now() + timedelta(days=5),
+            end=datetime.now() + timedelta(days=6),
+        )
+
         # Check has no jobs in queue or skip it
         # FIXME: wait cluster to become idle
         if cluster.has_jobs():
@@ -189,7 +201,6 @@ def main() -> None:
         # Wait for job to timeout
         logging.info("Waiting for job to timeout…")
         time.sleep(70)
-        # FIXME: create reservation
 
         # Crawl assets from components
         if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
@@ -241,6 +252,9 @@ def main() -> None:
         # Resume node states
         cluster.node_resume(node_down)
         cluster.node_resume(node_drain)
+
+        # Delete reservation
+        cluster.reservation_delete("training")
 
         # If cluster has gpu, launch individual jobs
         nodes = cluster.query_slurmrestd_json(f"/slurm/v{cluster.api}/nodes")
