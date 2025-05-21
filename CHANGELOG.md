@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-## Added
+### Added
+- Support Slurm 25.05 and Slurm REST API v0.0.41 (#541).
 - GPU resources utilization monitoring (#258).
 - frontend:
   - Dark mode support (#278).
@@ -39,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention GPU metrics in metrics configuration reference documentation.
   - Mention dark mode support feature in overview page.
 
-## Changed
+### Changed
 - frontend:
   - Migrate to Tailwind CSS v4 (#449). Note this breaks support of old browsers
     versions, it requires Safari 16.4+, Chrome 111+, and Firefox 128+.
@@ -60,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Rendering of nodes grid in resources page in presence of long node names.
   - Update dependencies to fix CVE-2025-46565 (vite).
 
-## Removed
+### Removed
+- Drop support of Slurm 23.11 and Slurm REST API v0.0.40.
 - docs: Drop support of Fedora 40.
 
 ## [4.2.0] - 2025-04-29
