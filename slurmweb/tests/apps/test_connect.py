@@ -24,7 +24,7 @@ class TestConnectCheckApp(TestConnectCheckAppBase):
 
     def test_app_socket_deprecated(self):
         with self.assertLogs("slurmweb", level="WARNING") as cm:
-            self.setup(additional_conf="[slurmrestd]\nsocket=/test/slurmrestd.socket")
+            self.setup(slurmrestd_parameters=["socket=/test/slurmrestd.socket"])
         self.assertIn(
             "WARNING:slurmweb.apps.connect:Using deprecated parameter "
             "[slurmrestd]>socket to define [slurmrest]>uri, update your site agent "

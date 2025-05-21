@@ -6,21 +6,26 @@
 
 from slurmweb.apps.connect import SlurmwebAppConnectCheck
 from slurmweb.apps import SlurmwebConfSeed
-from .agent import TestSlurmrestdClient, setup_agent_conf
+from .agent import TestSlurmrestdClient
 
 
 class TestConnectCheckAppBase(TestSlurmrestdClient):
-    def setup(self, additional_conf=None):
-        key, conf, conf_defs = setup_agent_conf(additional_conf)
+    def setup(self, slurmrestd_parameters=None, racksdb=True, metrics=False):
+        self.setup_agent_conf(
+            slurmrestd_parameters=slurmrestd_parameters,
+            racksdb=racksdb,
+            metrics=metrics,
+        )
         self.app = SlurmwebAppConnectCheck(
             SlurmwebConfSeed(
                 debug=False,
                 log_flags=["ALL"],
                 log_component=None,
                 debug_flags=[],
-                conf_defs=conf_defs,
-                conf=conf.name,
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
             )
         )
-        conf.close()
-        key.close()
+        self.conf.close()
+        self.key.close()
+        self.slurmrestd_key.close()

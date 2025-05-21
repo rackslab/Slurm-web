@@ -12,6 +12,7 @@ import os
 
 import werkzeug
 from flask import Blueprint, jsonify
+import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from rfl.permissions.rbac import ANONYMOUS_ROLE
@@ -26,47 +27,35 @@ from .utils import (
 )
 
 
-CONF = """
+CONF_TPL = """
 [service]
 cluster=test
 
 [jwt]
-key={key}
+key={{ key }}
 
 [policy]
-definition={policy_defs}
-vendor_roles={policy}
+definition={{ policy_defs }}
+vendor_roles={{ policy }}
+
+{% if not racksdb %}
+[racksdb]
+enabled=no
+{% endif %}
+
+[slurmrestd]
+jwt_key={{ slurmrestd_key }}
+{% if slurmrestd_parameters %}
+{% for slurmrestd_parameter in slurmrestd_parameters %}
+{{ slurmrestd_parameter }}
+{% endfor %}
+{% endif %}
+
+{% if metrics %}
+[metrics]
+enabled=yes
+{% endif %}
 """
-
-
-def setup_agent_conf(additional_conf=None):
-    # Generate JWT signing key
-    key = tempfile.NamedTemporaryFile(mode="w+")
-    key.write("hey")
-    key.seek(0)
-
-    vendor_path = os.path.join(
-        os.path.dirname(__file__), "..", "..", "..", "conf", "vendor"
-    )
-
-    # Policy definition path
-    policy_defs = os.path.join(vendor_path, "policy.yml")
-
-    # Policy path
-    policy = os.path.join(vendor_path, "policy.ini")
-
-    # Generate configuration file
-    conf = tempfile.NamedTemporaryFile(mode="w+")
-    conf_content = CONF
-    if additional_conf is not None:
-        conf_content += additional_conf
-    conf.write(
-        conf_content.format(key=key.name, policy_defs=policy_defs, policy=policy)
-    )
-    conf.seek(0)
-
-    # Configuration definition path
-    return key, conf, os.path.join(vendor_path, "agent.yml")
 
 
 class FakeRacksDBWebBlueprint(Blueprint):
@@ -82,6 +71,45 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 
 class TestSlurmrestdClient(unittest.TestCase):
+    def setup_agent_conf(self, slurmrestd_parameters=None, racksdb=True, metrics=False):
+        # Generate JWT signing key
+        self.key = tempfile.NamedTemporaryFile(mode="w+")
+        self.key.write("hey")
+        self.key.seek(0)
+
+        # Generate slurmrestd_key
+        self.slurmrestd_key = tempfile.NamedTemporaryFile(mode="w+")
+        self.slurmrestd_key.write("hey")
+        self.slurmrestd_key.seek(0)
+
+        vendor_path = os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "conf", "vendor"
+        )
+
+        # Policy definition path
+        policy_defs = os.path.join(vendor_path, "policy.yml")
+
+        # Policy path
+        policy = os.path.join(vendor_path, "policy.ini")
+
+        # Generate configuration file
+        self.conf = tempfile.NamedTemporaryFile(mode="w+")
+        conf_template = jinja2.Template(CONF_TPL)
+        self.conf.write(
+            conf_template.render(
+                key=self.key.name,
+                policy_defs=policy_defs,
+                policy=policy,
+                slurmrestd_key=self.slurmrestd_key.name,
+                slurmrestd_parameters=slurmrestd_parameters,
+                racksdb=racksdb,
+                metrics=metrics,
+            )
+        )
+        self.conf.seek(0)
+
+        self.conf_defs = os.path.join(vendor_path, "agent.yml")
+
     def mock_slurmrestd_responses(self, slurm_version, assets):
         try:
             return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
@@ -92,14 +120,20 @@ class TestSlurmrestdClient(unittest.TestCase):
 class TestAgentBase(TestSlurmrestdClient):
     def setup_client(
         self,
-        additional_conf=None,
+        slurmrestd_parameters=None,
+        racksdb=True,
+        metrics=False,
         racksdb_format_error=False,
         racksdb_schema_error=False,
         anonymous_user=False,
         anonymous_enabled=True,
         use_token=True,
     ):
-        key, conf, conf_defs = setup_agent_conf(additional_conf)
+        self.setup_agent_conf(
+            slurmrestd_parameters=slurmrestd_parameters,
+            racksdb=racksdb,
+            metrics=metrics,
+        )
 
         # Start the app with mocked RacksDB web blueprint
         with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
@@ -115,15 +149,17 @@ class TestAgentBase(TestSlurmrestdClient):
                     log_flags=["ALL"],
                     log_component=None,
                     debug_flags=[],
-                    conf_defs=conf_defs,
-                    conf=conf.name,
+                    conf_defs=self.conf_defs,
+                    conf=self.conf.name,
                 )
             )
         if not anonymous_enabled:
             self.app.policy.disable_anonymous()
 
-        conf.close()
-        key.close()
+        self.conf.close()
+        self.key.close()
+        self.slurmrestd_key.close()
+
         self.app.config.update(
             {
                 "TESTING": True,

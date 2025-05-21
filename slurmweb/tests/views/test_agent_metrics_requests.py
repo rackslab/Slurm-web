@@ -6,7 +6,6 @@
 
 
 from unittest import mock
-import textwrap
 
 from slurmweb.version import get_version
 from slurmweb.errors import SlurmwebMetricsDBError
@@ -17,15 +16,7 @@ from ..lib.utils import mock_prometheus_response
 
 class TestAgentMetricsRequest(TestAgentBase):
     def setUp(self):
-        self.setup_client(
-            additional_conf=textwrap.dedent(
-                """
-
-                [metrics]
-                enabled=yes
-                """
-            )
-        )
+        self.setup_client(metrics=True)
 
     def tearDown(self):
         self.app.metrics_collector.unregister()

@@ -6,7 +6,6 @@
 
 
 from unittest import mock
-import textwrap
 import ipaddress
 
 from prometheus_client.parser import text_string_to_metric_families
@@ -25,15 +24,7 @@ from ..lib.utils import all_slurm_versions
 
 class TestAgentMetricsCollector(TestAgentBase):
     def setUp(self):
-        self.setup_client(
-            additional_conf=textwrap.dedent(
-                """
-
-                [metrics]
-                enabled=yes
-                """
-            )
-        )
+        self.setup_client(metrics=True)
 
     def tearDown(self):
         self.app.metrics_collector.unregister()
