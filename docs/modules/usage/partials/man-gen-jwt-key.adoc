@@ -11,6 +11,9 @@ key file and protect it with restrictive permissions.
 
 include::gateway-opts.adoc[]
 
+[.cli-opt]#*--with-slurm*#::
+  Add read ACL permission on JWT signing key for slurm system user as well.
+
 == Exit status
 
 *0*::
