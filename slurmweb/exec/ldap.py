@@ -8,8 +8,7 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
-from . import SlurmwebAppArgs
-from ..apps import SlurmwebConfSeed
+from ..apps import SlurmwebAppSeed
 from ..apps.ldap import SlurmwebAppLDAPCheck
 from ..apps.gateway import SlurmwebAppGateway
 
@@ -64,7 +63,5 @@ class SlurmwebExecLDAPCheck:
             type=Path,
         )
 
-        application = SlurmwebAppLDAPCheck(
-            SlurmwebConfSeed.from_args(parser.parse_args(namespace=SlurmwebAppArgs))
-        )
+        application = SlurmwebAppLDAPCheck(parser.parse_args(namespace=SlurmwebAppSeed))
         application.run()

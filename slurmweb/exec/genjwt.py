@@ -8,8 +8,7 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
-from . import SlurmwebAppArgs
-from ..apps import SlurmwebConfSeed
+from ..apps import SlurmwebAppSeed
 from ..apps.genjwt import SlurmwebAppGenJWT
 from ..apps.gateway import SlurmwebAppGateway
 
@@ -65,6 +64,6 @@ class SlurmwebExecGenJWT:
         )
 
         application = SlurmwebAppGenJWT(
-            SlurmwebConfSeed.from_args(parser.parse_args(namespace=SlurmwebAppArgs))
+            parser.parse_args(namespace=SlurmwebAppSeed),
         )
         application.run()

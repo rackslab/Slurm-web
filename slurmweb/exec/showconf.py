@@ -8,8 +8,7 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
-from . import SlurmwebAppArgs
-from ..apps import SlurmwebConfSeed
+from ..apps import SlurmwebAppSeed
 from ..apps.showconf import SlurmwebAppShowConf
 from ..apps.gateway import SlurmwebAppGateway
 from ..apps.agent import SlurmwebAppAgent
@@ -66,7 +65,7 @@ class SlurmwebExecShowConf:
             choices=["gateway", "agent"],
         )
 
-        args = parser.parse_args(namespace=SlurmwebAppArgs)
+        args = parser.parse_args(namespace=SlurmwebAppSeed)
 
         if args.component == "gateway":
             if args.conf is None:
@@ -78,7 +77,5 @@ class SlurmwebExecShowConf:
                 args.conf = SlurmwebAppAgent.SITE_CONFIGURATION
             if args.conf_defs is None:
                 args.conf_defs = SlurmwebAppAgent.SETTINGS_DEFINITION
-        application = SlurmwebAppShowConf(
-            SlurmwebConfSeed.from_args(args), args.component
-        )
+        application = SlurmwebAppShowConf(args)
         application.run()
