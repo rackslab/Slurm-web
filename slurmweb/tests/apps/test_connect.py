@@ -22,7 +22,7 @@ class TestConnectCheckApp(TestConnectCheckAppBase):
     def test_app_loaded(self):
         self.setup()
 
-    def test_app_socket_deprecated(self):
+    def test_app_slurmrestd_socket_deprecated(self):
         with self.assertLogs("slurmweb", level="WARNING") as cm:
             self.setup(slurmrestd_parameters=["socket=/test/slurmrestd.socket"])
         self.assertIn(
@@ -38,6 +38,16 @@ class TestConnectCheckApp(TestConnectCheckAppBase):
         self.assertEqual(
             self.app.settings.slurmrestd.uri.path, "/test/slurmrestd.socket"
         )
+
+    def test_app_slurmrestd_auth_local_deprecated(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            self.setup(slurmrestd_parameters=["auth=local"])
+        self.assertIn(
+            "WARNING:slurmweb.apps.connect:Using deprecated slurmrestd local "
+            "authentication method, it is recommended to migrate to jwt authentication",
+            cm.output,
+        )
+        self.assertEqual(self.app.settings.slurmrestd.auth, "local")
 
     @mock.patch("slurmweb.apps.connect.Slurmrestd")
     def test_app_slurmrestd_conf_error(self, mock_slurmrestd):
