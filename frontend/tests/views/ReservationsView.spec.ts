@@ -49,15 +49,13 @@ describe('ReservationsView.vue', () => {
         expect(reservationCells[4].findAll('li').map((element) => element.text())).toStrictEqual(
           reservations[i].users.split(',')
         )
-      else
-        expect(() => reservationCells[4].get('li')).toThrowError()
+      else expect(() => reservationCells[4].get('li')).toThrowError()
       // if accounts in reservations, check all li items else check li absence
       if (reservations[i].accounts.length)
         expect(reservationCells[5].findAll('li').map((element) => element.text())).toStrictEqual(
           reservations[i].accounts.split(',')
         )
-      else
-        expect(() => reservationCells[5].get('li')).toThrowError()
+      else expect(() => reservationCells[5].get('li')).toThrowError()
       expect(reservationCells[6].findAll('span').map((element) => element.text())).toStrictEqual(
         reservations[i].flags
       )
