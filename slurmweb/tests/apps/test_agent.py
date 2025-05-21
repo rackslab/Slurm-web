@@ -46,9 +46,7 @@ class TestAgentApp(TestAgentBase):
 
     def test_app_socket_deprecated(self):
         with self.assertLogs("slurmweb", level="WARNING") as cm:
-            self.setup_client(
-                additional_conf="[slurmrestd]\nsocket=/test/slurmrestd.socket"
-            )
+            self.setup_client(slurmrestd_parameters=["socket=/test/slurmrestd.socket"])
         self.assertIn(
             "WARNING:slurmweb.apps.agent:Using deprecated parameter "
             "[slurmrestd]>socket to define [slurmrest]>uri, update your site agent "

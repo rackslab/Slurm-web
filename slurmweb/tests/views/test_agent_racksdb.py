@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
-import textwrap
-
 from ..lib.agent import TestAgentBase
 from ..lib.utils import flask_404_description
 
@@ -46,15 +44,7 @@ class TestAgentRacksDBUnabledRequest(TestAgentBase):
 
 class TestAgentRacksDBDisabledRequest(TestAgentBase):
     def setUp(self):
-        self.setup_client(
-            additional_conf=textwrap.dedent(
-                """
-
-                [racksdb]
-                enabled=no
-                """
-            )
-        )
+        self.setup_client(racksdb=False)
 
     def test_request_racksdb(self):
         # Check FakeRacksDBWebBlueprint is not registered when racksdb is disabled.
