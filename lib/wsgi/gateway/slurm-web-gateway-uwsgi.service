@@ -4,7 +4,6 @@ After=network.target
 
 [Service]
 User=slurm-web
-Group=slurm-web
 RuntimeDirectory=slurm-web-gateway
 ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/gateway/slurm-web-gateway.ini
 
