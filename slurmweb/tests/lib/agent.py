@@ -16,7 +16,7 @@ import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from rfl.permissions.rbac import ANONYMOUS_ROLE
-from slurmweb.apps import SlurmwebConfSeed
+from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
 from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
 
@@ -144,7 +144,7 @@ class TestAgentBase(TestSlurmrestdClient):
             else:
                 m.return_value = FakeRacksDBWebBlueprint()
             self.app = SlurmwebAppAgent(
-                SlurmwebConfSeed(
+                SlurmwebAppSeed.with_parameters(
                     debug=False,
                     log_flags=["ALL"],
                     log_component=None,

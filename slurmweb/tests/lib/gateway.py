@@ -11,7 +11,7 @@ import os
 import werkzeug
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
-from slurmweb.apps import SlurmwebConfSeed
+from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 
 from .utils import SlurmwebCustomTestResponse
@@ -45,7 +45,7 @@ class TestGatewayBase(unittest.TestCase):
         conf_defs = os.path.join(self.vendor_path, "gateway.yml")
 
         self.app = SlurmwebAppGateway(
-            SlurmwebConfSeed(
+            SlurmwebAppSeed.with_parameters(
                 debug=False,
                 log_flags=["ALL"],
                 log_component=None,
