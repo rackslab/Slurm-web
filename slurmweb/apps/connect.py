@@ -45,6 +45,13 @@ class SlurmwebAppConnectCheck(SlurmwebGenericApp):
                 f"unix://{self.settings.slurmrestd.socket}"
             )
 
+        # Warn deprecated local authentication method to slurmrestd
+        if self.settings.slurmrestd.auth == "local":
+            logger.warning(
+                "Using deprecated slurmrestd local authentication method, it is "
+                "recommended to migrate to jwt authentication"
+            )
+
         logger.info(
             "slurmrestd URI: %s, authentication: %s, JWT mode: %s",
             self.settings.slurmrestd.uri.geturl(),
