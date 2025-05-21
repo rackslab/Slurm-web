@@ -5,12 +5,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
+import shutil
 import sys
 import pwd
 import subprocess
 import logging
 
-from . import SlurmwebGenericApp
+from . import SlurmwebAppSeed, SlurmwebGenericApp
 
 from rfl.core.utils import shlex_join
 from rfl.authentication.jwt import jwt_gen_key
@@ -21,6 +22,10 @@ logger = logging.getLogger(__name__)
 
 class SlurmwebAppGenJWT(SlurmwebGenericApp):
     NAME = "slurm-web-gen-jwt-key"
+
+    def __init__(self, seed: SlurmwebAppSeed):
+        super().__init__(seed)
+        self.with_slurm = seed.with_slurm
 
     def run(self):
         logger.info("Running %s", self.NAME)
@@ -37,10 +42,11 @@ class SlurmwebAppGenJWT(SlurmwebGenericApp):
                 logger.critical("Error while generating JWT key: %s", err)
                 sys.exit(1)
 
-        for user in ["slurm-web", "slurm"]:
-            self.set_user_permission(user)
+        self.set_user_permission("slurm-web")
+        if self.with_slurm:
+            self.set_user_permission("slurm", acl=True)
 
-    def set_user_permission(self, user):
+    def set_user_permission(self, user, acl=False):
         try:
             pwd.getpwnam(user)
         except KeyError:
@@ -49,11 +55,14 @@ class SlurmwebAppGenJWT(SlurmwebGenericApp):
                 user,
             )
         else:
-            try:
-                logger.info("Setting read permission on key for %s user", user)
-                cmd = ["setfacl", "-m", f"u:{user}:r", self.settings.jwt.key]
-                subprocess.run(cmd)
-            except subprocess.CalledProcessError as err:
-                logger.error(
-                    "Error while running command: %s: %s", shlex_join(cmd), err
-                )
+            logger.info("Setting read permission on key for %s user", user)
+            if acl:
+                try:
+                    cmd = ["setfacl", "-m", f"u:{user}:r", self.settings.jwt.key]
+                    subprocess.run(cmd)
+                except subprocess.CalledProcessError as err:
+                    logger.error(
+                        "Error while running command: %s: %s", shlex_join(cmd), err
+                    )
+            else:
+                shutil.chown(self.settings.jwt.key, user=user)
