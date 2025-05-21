@@ -57,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - genjwt: Give ownership of Slurm-web JWT signing key to _slurm-web_ system user
   only by default. Read ACL is added for _slurm_ system user only if
   `--with-slurm` option is provided explicitely.
+- connect: Emit warning log entry when slurmrestd local authentication method is
+  used.
 - conf:
   - Bump `[slurmrestd]` > `version` default value from `0.0.40` to `0.0.41` in
     agent configuration for compatibility with Slurm 25.05.
