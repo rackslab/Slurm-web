@@ -165,12 +165,13 @@ _No default value_
 |str
 |Authentication method with slurmrestd.
 
-Note that `local` authentication method is only supported with Unix socket
-URI. With this method, Slurm-web agent must run with the same UID as
-slurmrestd service (eg. slurm system user).
-
 The `jwt` authentication method is supported by both TCP/IP and Unix
 sockets URIs.
+
+Note that `local` authentication method is only supported with Unix socket
+URI and Slurm <= 24.11. With this method, Slurm-web agent must run with
+the _slurm_ system user as well as `slurmrestd` service. Running
+`slurmrestd` as _slurm_ system user is not possible with Slurm >= 25.05.
 
 
 
@@ -182,7 +183,7 @@ sockets URIs.
 * `jwt`
 
 
-*Default:* `local`
+*Default:* `jwt`
 
 |-
 
