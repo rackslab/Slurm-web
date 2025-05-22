@@ -15,3 +15,4 @@
 *** xref:install/srcpkgs/rpm.adoc[RPM]
 *** xref:install/srcpkgs/deb.adoc[Deb]
 ** xref:install/sources.adoc[From Sources]
+* xref:update.adoc[]
