@@ -6,7 +6,7 @@ Debian 12 _« bookworm »_::
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: bookworm
-Components: main
+Components: main slurmweb-5
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -20,7 +20,7 @@ Debian 13 _« trixie »_::
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: trixie
-Components: main
+Components: main slurmweb-5
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -34,7 +34,7 @@ Debian unstable _« sid »_::
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: sid
-Components: main
+Components: main slurmweb-5
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
