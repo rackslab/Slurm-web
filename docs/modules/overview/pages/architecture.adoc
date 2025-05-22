@@ -116,8 +116,8 @@ to the *agents* deployed on the clusters.
 == Slurm REST API versions
 
 Slurm-web {version} is officially tested and supported with Slurm REST API
-*v{api_version}*. This version of Slurm REST API is available in Slurm 23.11,
-24.05 and 24.11.
+*v{api_version}*. This version of Slurm REST API is available in Slurm 24.05,
+24.11 and 25.05.
 
 This table represents all Slurm REST API versions supported by the latest Slurm
 releases:
@@ -132,23 +132,23 @@ releases:
 |*Compatible*
 |*Deprecated*
 
-|23.02
-|0.0.39
-|0.0.38
-|0.0.37
-
 |23.11
-|*0.0.40*
+|0.0.40
 |0.0.39
 |0.0.38
 
 |24.05
-|0.0.41
-|*0.0.40*
+|*0.0.41*
+|0.0.40
 |0.0.39
 
 |24.11
 |0.0.42
-|0.0.41
-|*0.0.40*
+|*0.0.41*
+|0.0.40
+
+|25.05
+|0.0.43
+|0.0.42
+|*0.0.41*
 |===
