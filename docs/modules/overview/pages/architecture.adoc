@@ -78,10 +78,11 @@ between its components.
 
 Slurm `slurmrestd` supports incoming HTTP requests on:
 
-* *Unix socket*, with two authentication methods: `rest_auth/local`, in which
-  `slurmrestd` authenticates users with client process UID/GID, and
-  `rest_auth/jwt` with tokens signed by Slurm JWT signing key.
-* *TCP/IP socket*, with `rest_auth/jwt` authentication supported only.
+* *TCP/IP socket*, with `rest_auth/jwt` authentication and tokens signed by
+  Slurm JWT signing key.
+* *Unix socket*, with two authentication methods: `rest_auth/jwt` and
+  `rest_auth/local` _(deprecated)_ in which `slurmrestd` authenticates users
+  with client process UID/GID.
 
 Slurm-web *agent* supports all these combinations of sockets and authentication
 methods. Please refer to

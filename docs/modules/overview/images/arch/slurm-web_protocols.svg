@@ -29,10 +29,10 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="2.7225291"
-     inkscape:cx="565.65052"
-     inkscape:cy="122.68005"
-     inkscape:window-width="1920"
-     inkscape:window-height="1131"
+     inkscape:cx="406.42357"
+     inkscape:cy="104.68208"
+     inkscape:window-width="3840"
+     inkscape:window-height="2091"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -146,6 +146,21 @@
          stop-color="#9a3af6"
          offset="1" />
     </linearGradient>
+    <radialGradient
+       id="a"
+       gradientUnits="userSpaceOnUse"
+       cy="41.400002"
+       cx="24.290001"
+       gradientTransform="matrix(1,0,0,0.3526,0,26.8)"
+       r="21.1">
+      <stop
+         offset="0"
+         id="stop21550" />
+      <stop
+         stop-opacity="0"
+         offset="1"
+         id="stop21552" />
+    </radialGradient>
   </defs>
   <g
      inkscape:label="Calque 1"
@@ -615,20 +630,62 @@
          style="font-size:3.52778px;fill:#775b25;fill-opacity:1;stroke-width:0.264583"
          x="142.97214"
          y="67.094521">auth/{munge,slurm}</tspan></text>
+    <g
+       id="g21585"
+       transform="matrix(0.05680461,0,0,0.05680461,135.40809,67.672304)">
+      <ellipse
+         opacity="0.41"
+         rx="21.1"
+         ry="7.4400001"
+         cy="41.400002"
+         cx="24.290001"
+         fill="url(#a)"
+         id="ellipse21557"
+         style="fill:url(#a)" />
+      <circle
+         cy="21.4"
+         cx="24.299999"
+         r="21.27"
+         fill="#914900"
+         id="circle21559" />
+      <circle
+         r="20"
+         cy="21.309999"
+         stroke="#fcaf3e"
+         cx="24.440001"
+         fill="#f57900"
+         id="circle21561" />
+      <g
+         fill="#ffffff"
+         id="g21569">
+        <path
+           d="m 21.46,10.39 c -0.13,0 -0.23,0.16 -0.23,0.37 L 22.3,25.2 c 0,0.21 0.11,0.38 0.23,0.38 h 3.57 c 0.13,0 0.23,-0.17 0.23,-0.38 L 27.4,10.76 c 0,-0.21 -0.11,-0.37 -0.23,-0.37 h -5.7"
+           id="path21563" />
+        <path
+           d="m 43.68,20.48 c 0,10.83 -6.1,-4.31 -18.67,0.39 C 12.28,25.59 4.43,31.31 4.43,20.48 4.43,9.65 13.23,0.86 24.06,0.86 c 10.83,0 19.62,8.79 19.62,19.62"
+           fill-opacity="0.21"
+           id="path21565" />
+        <circle
+           cy="30.200001"
+           cx="24.360001"
+           r="2.3"
+           id="circle21567" />
+      </g>
+    </g>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-       x="85.724998"
+       x="113.50625"
        y="68.170494"
        id="text5303"><tspan
          sodipodi:role="line"
          id="tspan5301"
          style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-         x="85.724998"
+         x="113.50625"
          y="68.170494">rest_auth/local</tspan><tspan
          sodipodi:role="line"
          style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-         x="85.724998"
+         x="113.50625"
          y="72.580215"
          id="tspan550" /></text>
     <rect
@@ -659,12 +716,12 @@
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-       x="116.29144"
+       x="86.254166"
        y="68.170494"
        id="text564"><tspan
          sodipodi:role="line"
          style="font-size:3.52778px;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-         x="116.29144"
+         x="86.254166"
          y="68.170494"
          id="tspan562">rest_auth/jwt</tspan></text>
     <path
@@ -681,12 +738,12 @@
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-       x="111.1109"
+       x="109.24295"
        y="68.239571"
        id="text670"><tspan
          sodipodi:role="line"
          style="font-style:italic;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.52778px;font-family:Lato;-inkscape-font-specification:'Lato Light Italic';fill:#325d17;fill-opacity:1;stroke-width:0.264583"
-         x="111.1109"
+         x="109.24295"
          y="68.239571"
          id="tspan668">or</tspan></text>
     <text
