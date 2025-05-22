@@ -70,6 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Replace mention of Slurm REST API version v0.0.40 by v0.0.41.
   - Mention requirement of Slurm >= 24.05 and dropped support of Slurm 23.11.
+  - Update quickstart guide to setup `slurmrestd` JWT authentication, automatic
+    token management mode on Unix socket by default.
   - Update troubleshooting guide with different `curl` command for `slurmrestd`
     JWT authentication and TCP/IP socket.
   - Mention `slurmrestd` local authentication is deprecated in architecture

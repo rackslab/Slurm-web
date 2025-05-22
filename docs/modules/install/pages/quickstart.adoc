@@ -14,7 +14,11 @@ https://slurm.schedmd.com/accounting.html[accounting enabled]
 ** RHEL
 ** Debian
 ** Ubuntu
-* LDAP directory (for authentication)
+* LDAP directory (recommended for authentication)
+
+== Slurm JWT authentication
+
+include::conf:partial$slurm-jwt.adoc[]
 
 [#slurmrestd]
 == Install `slurmrestd`
@@ -94,21 +98,21 @@ drop-in configuration override for `slurmrestd` service:
 [source,ini]
 ----
 [Service]
-# Unset vendor unit ExecStart to avoid cumulative definition
+# Unset vendor unit ExecStart and Environment to avoid cumulative definition
 ExecStart=
 Environment=
-# Disable slurm user security check
-Environment=SLURMRESTD_SECURITY=disable_user_check
-ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/local unix:/run/slurmrestd/slurmrestd.socket
+Environment="SLURM_JWT=daemon"
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/jwt unix:/run/slurmrestd/slurmrestd.socket
 RuntimeDirectory=slurmrestd
 RuntimeDirectoryMode=0755
-User=slurm
-Group=slurm
+User=slurmrestd
+Group=slurmrestd
+DynamicUser=yes
 ----
 
 NOTE: With this configuration, `slurmrestd` listens for incoming connections on
-Unix socket with _local_ authentication method. It is also possible to configure
-`slurmrestd` to listen on TCP/IP with JWT authentication, please refer to
+Unix socket with _jwt_ authentication method. It is also possible to configure
+`slurmrestd` to listen on TCP/IP socket. Please refer to
 xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
 
 Make `systemd` reload units changes on disk:
@@ -125,11 +129,13 @@ Enable and start `slurmrestd` service:
 # systemctl enable --now slurmrestd.service
 ----
 
-To check `slurmrestd` daemon is properly running, run this command:
+To check `slurmrestd` daemon is properly running with JWT authentication, run
+this command:
 
 [source,console,subs=attributes]
 ----
-# curl --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v{api_version}/diag
+# export $(scontrol token)
+# curl -H X-SLURM-USER-TOKEN:$SLURM_JWT --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v{api_version}/diag
 {
    "meta": {
      "plugin": {
@@ -260,7 +266,7 @@ xref:conf:conf/agent.adoc#_service[`service` section of agent configuration].
 * xref:conf:conf/gateway.adoc[]
 --
 
-== JWT signing key
+== Slurm-web JWT signing key
 
 Slurm-web authenticates users with https://jwt.io/[JSON Web Token] (JWT) for
 communications between its components. A secret key is required to
@@ -272,7 +278,6 @@ cryptographically sign generated tokens. Run this command to generate this key:
 INFO ⸬ Running slurm-web-gen-jwt-key
 INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
 INFO ⸬ Setting read permission on key for slurm-web user
-INFO ⸬ Setting read permission on key for slurm user
 ----
 
 [sidebar]
@@ -281,6 +286,40 @@ INFO ⸬ Setting read permission on key for slurm user
 * xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
 * xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
 --
+
+== Slurm JWT siging key
+
+For authentication to `slurmrestd`, copy Slurm JWT signing key:
+
+[source,console]
+----
+# cp /var/spool/slurm/jwt_hs256.key /var/lib/slurm-web/slurmrestd.key
+----
+
+Restrict access to this sensitive file with read permission to _slurm-web_
+system user only:
+
+[source,console]
+----
+# chown slurm-web:slurm-web /var/lib/slurm-web/slurmrestd.key
+# chmod 400 /var/lib/slurm-web/slurmrestd.key
+----
+
+NOTE: With this configuration, Slurm-web agent automatically generates its
+tokens with short lifespan for authentication to `slurmrestd`. As an
+alternative, Slurm-web supports _static_ tokens. Please refer to
+xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
+
+To test Slurm-web agent and `slurmrestd` service configuration parameters, you
+can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web-connect-check`]
+utility. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
+configuration parameters and reports the status. For example:
+
+[source,console]
+----
+# /usr/libexec/slurm-web/slurm-web-connect-check
+✅ connection successful (slurm: 25.05.0, cluster: hpc)
+----
 
 == First Access
 
