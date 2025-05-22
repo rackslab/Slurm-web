@@ -14,8 +14,12 @@ endif::[]
 name=Rackslab
 baseurl=https://pkgs.rackslab.io/rpm/el8/main/$basearch/
 gpgcheck=1
-enabled=1
-countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-slurmweb-5]
+name=Rackslab slurmweb-5
+baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-5/$basearch/
+gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
@@ -36,8 +40,12 @@ endif::[]
 name=Rackslab
 baseurl=https://pkgs.rackslab.io/rpm/el9/main/$basearch/
 gpgcheck=1
-enabled=1
-countme=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-slurmweb-5]
+name=Rackslab slurmweb-5
+baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-5/$basearch/
+gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====

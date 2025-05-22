@@ -6,7 +6,7 @@ Ubuntu 24.04 LTS::
 Types: deb
 URIs: https://pkgs.rackslab.io/deb
 Suites: ubuntu24.04
-Components: main
+Components: main slurmweb-5
 Architectures: amd64
 Signed-By: /usr/share/keyrings/rackslab.gpg
 ----

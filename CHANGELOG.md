@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention requirement of Slurm >= 24.05 and dropped support of Slurm 23.11.
   - Update quickstart guide to setup `slurmrestd` JWT authentication, automatic
     token management mode on Unix socket by default.
+  - Update installation guide and quickstart guide to mention new separate
+    `slurmweb-5` repository.
   - Update troubleshooting guide with different `curl` command for `slurmrestd`
     JWT authentication and TCP/IP socket.
   - Mention `slurmrestd` local authentication is deprecated in architecture
