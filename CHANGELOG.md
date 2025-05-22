@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention GPU metrics in metrics configuration reference documentation.
   - Mention dark mode support feature in overview page.
   - Mention new `--with-slurm` option in `slurm-web-gen-jwt-key` manpage.
+  - Add update guide page with special notes for manual steps required to update
+    from v4 to v5.
 
 ### Changed
 - agent:
