@@ -26,14 +26,14 @@
      inkscape:document-units="mm"
      showgrid="true"
      showguides="true"
-     inkscape:zoom="2.2878992"
-     inkscape:cx="306.61316"
-     inkscape:cy="201.49489"
-     inkscape:window-width="1920"
-     inkscape:window-height="1131"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:zoom="3.2355781"
+     inkscape:cx="289.7473"
+     inkscape:cy="192.08314"
+     inkscape:window-width="1726"
+     inkscape:window-height="1282"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <inkscape:grid
        type="xygrid"
@@ -110,6 +110,21 @@
        y1="105.83333"
        x2="132.29167"
        y2="99.21875" />
+    <radialGradient
+       id="a"
+       gradientUnits="userSpaceOnUse"
+       cy="41.400002"
+       cx="24.290001"
+       gradientTransform="matrix(1,0,0,0.3526,0,26.8)"
+       r="21.1">
+      <stop
+         offset="0"
+         id="stop21550" />
+      <stop
+         stop-opacity="0"
+         offset="1"
+         id="stop21552" />
+    </radialGradient>
   </defs>
   <g
      inkscape:label="Calque 1"
@@ -423,5 +438,47 @@
        d="M 41.010417,84.666665 H 166.6875"
        id="path2658"
        sodipodi:nodetypes="cc" />
+    <g
+       id="g21585"
+       transform="matrix(0.11286648,0,0,0.11286648,76.616541,105.13956)">
+      <ellipse
+         opacity="0.41"
+         rx="21.1"
+         ry="7.4400001"
+         cy="41.400002"
+         cx="24.290001"
+         fill="url(#a)"
+         id="ellipse21557"
+         style="fill:url(#a)" />
+      <circle
+         cy="21.4"
+         cx="24.299999"
+         r="21.27"
+         fill="#914900"
+         id="circle21559" />
+      <circle
+         r="20"
+         cy="21.309999"
+         stroke="#fcaf3e"
+         cx="24.440001"
+         fill="#f57900"
+         id="circle21561" />
+      <g
+         fill="#ffffff"
+         id="g21569">
+        <path
+           d="m 21.46,10.39 c -0.13,0 -0.23,0.16 -0.23,0.37 L 22.3,25.2 c 0,0.21 0.11,0.38 0.23,0.38 h 3.57 c 0.13,0 0.23,-0.17 0.23,-0.38 L 27.4,10.76 c 0,-0.21 -0.11,-0.37 -0.23,-0.37 h -5.7"
+           id="path21563" />
+        <path
+           d="m 43.68,20.48 c 0,10.83 -6.1,-4.31 -18.67,0.39 C 12.28,25.59 4.43,31.31 4.43,20.48 4.43,9.65 13.23,0.86 24.06,0.86 c 10.83,0 19.62,8.79 19.62,19.62"
+           fill-opacity="0.21"
+           id="path21565" />
+        <circle
+           cy="30.200001"
+           cx="24.360001"
+           r="2.3"
+           id="circle21567" />
+      </g>
+    </g>
   </g>
 </svg>

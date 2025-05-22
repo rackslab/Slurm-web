@@ -19,7 +19,6 @@ Copy the token in output and edit Slurm-web agent configuration file
 ifdef::slurmrestd_uri[]
 uri={slurmrestd_uri}
 endif::[]
-auth=jwt
 jwt_mode=static
 jwt_token=<secret_token>
 ----

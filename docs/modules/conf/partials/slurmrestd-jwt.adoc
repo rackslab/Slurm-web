@@ -1,0 +1,28 @@
+Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
+drop-in configuration override for `slurmrestd` service:
+
+[source,ini,subs="+attributes"]
+----
+[Service]
+# Unset vendor unit ExecStart and Environment to avoid cumulative definition
+ExecStart=
+Environment=
+Environment="SLURM_JWT=daemon"
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/jwt {slurmrestd_uri}
+RuntimeDirectory=slurmrestd
+RuntimeDirectoryMode=0755
+User=slurmrestd
+Group=slurmrestd
+DynamicUser=yes
+----
+
+NOTE: With `DynamicUser=yes`, systemd creates a transient `slurmrestd` system
+user during the lifetime of the service and executes the daemon with this
+unprivileged user.
+
+Reload systemd units and enable the service:
+
+[source,console]
+----
+# systemctl daemon-reload && systemctl enable --now slurmrestd.service
+----

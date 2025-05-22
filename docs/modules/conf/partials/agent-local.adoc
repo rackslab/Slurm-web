@@ -1,0 +1,8 @@
+Edit Slurm-web agent configuration file [.path]#`/etc/slurm-web/agent.ini`# to
+enable local authentication method:
+
+[source,ini]
+----
+[slurmrestd]
+auth=local
+----

@@ -1,0 +1,26 @@
+Upon succesful test, restart agent service to apply changes:
+
+[tabs]
+======
+Native service::
++
+====
+When using default native service:
+
+[source,console]
+----
+# systemctl restart slurm-web-agent.service
+----
+====
+
+Production HTTP server::
++
+====
+When using xref:conf:wsgi/index.adoc[production HTTP server]:
+
+[source,console,subs=attributes]
+----
+# systemctl restart slurm-web-agent-uwsgi.service
+----
+====
+======

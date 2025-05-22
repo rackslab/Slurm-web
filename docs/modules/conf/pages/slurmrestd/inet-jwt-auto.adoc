@@ -13,11 +13,17 @@ xref:slurmrestd.adoc#slurmrestd-conf-options[< back to all `slurmrestd` setups]
 
 image::slurmrestd/slurmrestd_access_modes_inet_jwt_auto.png[]
 
-== Setup Slurm
+include::partial$intro-jwt.adoc[]
+
+== Setup JWT authentication
+
+include::partial$slurm-jwt.adoc[]
+
+== Setup `slurmrestd`
 
 :slurmrestd_uri: [::]:6820
 
-include::partial$slurm-jwt.adoc[]
+include::partial$slurmrestd-jwt.adoc[]
 
 :slurmrestd_uri: http://localhost:6820
 
@@ -27,6 +33,10 @@ include::partial$agent-jwt-auto.adoc[]
 
 :!slurmrestd_uri:
 
-include::partial$agent-unprivileged.adoc[]
+== Test Access
 
 include::partial$slurmrestd-test.adoc[]
+
+== Restart agent
+
+include::partial$agent-restart.adoc[]

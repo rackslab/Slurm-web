@@ -12,6 +12,11 @@ xref:slurmrestd.adoc#slurmrestd-conf-options[< back to all `slurmrestd` setups]
 
 image::slurmrestd/slurmrestd_access_modes_unix_local.png[]
 
+WARNING: The *local* authentication method is deprecated since Slurm-web v5
+because it requires to run `slurmrestd` as _slurm_ system user which is not
+supported anymore in Slurm ≥ 25.05. It is recommended to use default *jwt*
+authentication method.
+
 With _local_ authentication method, `slurmrestd` service authenticates the user
 with UID/GID of the client process, which must match UID/GID of `slurmrestd`
 service itself.
@@ -23,7 +28,7 @@ because Slurm-web has its own internal security
 xref:conf:policy.adoc[autorization policy] to control users permissions and
 enforce security.
 
-== Setup Slurm
+== Setup `slurmrestd`
 
 Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
 drop-in configuration override for `slurmrestd` service:
@@ -53,7 +58,16 @@ Reload systemd units and enable the service:
 # systemctl daemon-reload && systemctl enable --now slurmrestd.service
 ----
 
-NOTE: There is nothing more to configure as it is the configuration expected by
-default by Slurm-web agent.
+== Setup Agent
+
+include::partial$agent-local.adoc[]
+
+include::partial$agent-privileged.adoc[]
+
+== Test Access
 
 include::partial$slurmrestd-test.adoc[]
+
+== Restart agent
+
+include::partial$agent-restart.adoc[]

@@ -1,0 +1,60 @@
+Add permission to _slurm_ user on Slurm-web JWT signing key:
+
+[source,console]
+----
+# /usr/libexec/slurm-web/slurm-web-gen-jwt-key --with-slurm
+INFO ⸬ Setting read permission on key for slurm user
+----
+
+Edit Slurm-web agent service to run as privileged _slurm_ system user:
+
+[tabs]
+======
+Native service::
++
+====
+With native services, edit agent service settings:
+
+[source,console]
+----
+# systemctl edit slurm-web-agent.service
+----
+
+Add the following lines:
+
+[source,ini]
+----
+[Service]
+User=slurm
+----
+====
+
+Production HTTP server::
++
+====
+When using xref:conf:wsgi/index.adoc[production HTTP server], edit agent uWSGI
+service settings [.path]#`/etc/systemd/system/slurm-web-agent-uwsgi.service`#:
+
+[source,diff]
+----
+--- a/etc/systemd/system/slurm-web-agent-uwsgi.service
++++ b/etc/systemd/system/slurm-web-agent-uwsgi.service
+@@ -5,7 +5,7 @@
+ [Service]
+ # By default, this service runs with slurm-web. When local authentication is
+ # used on slurmrestd, this must be changed to run as slurm system user.
+-User=slurm-web
++User=slurm
+ RuntimeDirectory=slurm-web-agent
+ ExecStart=/usr/bin/uwsgi --ini /usr/share/slurm-web/wsgi/agent/slurm-web-agent.ini
+
+----
+====
+======
+
+Reload service units:
+
+[source,console]
+----
+# systemctl daemon-reload
+----

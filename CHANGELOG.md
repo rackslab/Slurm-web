@@ -74,6 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     JWT authentication and TCP/IP socket.
   - Mention `slurmrestd` local authentication is deprecated in architecture
     and `slurmrestd` configuration pages.
+  - Update `slurmrestd` configuration guides to reflect change to _jwt_
+    authentication method by default.
   - Update configuration reference documentation.
 
 ### Fixed

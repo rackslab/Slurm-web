@@ -1,0 +1,7 @@
+With _jwt_ authentication method, the client must provide user and token in HTTP
+headers. Then, `slurmrestd` service forwards these credentials in RPCs to
+`slurmctld` and `slurmdbd` which are responsible to check expiration and
+signature of the token.
+
+In this configuration, `slurmrestd` service and Slurm-web *agent* can run with
+unprivileged system users.
