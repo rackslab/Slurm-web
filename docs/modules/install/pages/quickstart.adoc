@@ -174,7 +174,7 @@ This procedure works on
 https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
 https://www.centos.org/[CentOS],
 https://rockylinux.org/[Rocky Linux] and
-https://almalinux.org/[AlmaLinux OS],
+https://almalinux.org/[AlmaLinux OS].
 
 [NOTE]
 ====
