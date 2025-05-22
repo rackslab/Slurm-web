@@ -12,6 +12,10 @@ Slurm also supports two authentication methods for `slurmrestd` service:
 * *local* (Unix socket only): based on UID/GID of client process.
 * *jwt*: based on tokens in HTTP request headers.
 
+WARNING: The *local* authentication method is deprecated because it requires to
+run `slurmrestd` as _slurm_ system user which is not supported anymore in Slurm
+≥ 25.05. It is recommended to use default *jwt* authentication method.
+
 Slurm-web also supports two tokens management modes for JWT authentication:
 
 * *auto*: Slurm-web agent has access to a copy of Slurm JWT signing key. It
@@ -28,12 +32,12 @@ image::slurmrestd/slurmrestd_access_modes.png[]
 
 All supported configuration are listed in the table below:
 
-[cols="1,1,1,1",width=60%]
+[cols="2,2,1,1",width=70%]
 |===
 |Socket|Authentication|Mode|
 
 .3+|Unix
-|local
+|local _(deprecated)_
 |-
 ^|xref:slurmrestd/unix-local.adoc[📖 Read]
 

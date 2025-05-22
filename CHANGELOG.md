@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention requirement of Slurm >= 24.05 and dropped support of Slurm 23.11.
   - Update troubleshooting guide with different `curl` command for `slurmrestd`
     JWT authentication and TCP/IP socket.
+  - Mention `slurmrestd` local authentication is deprecated in architecture
+    and `slurmrestd` configuration pages.
   - Update configuration reference documentation.
 
 ### Fixed
