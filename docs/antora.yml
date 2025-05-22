@@ -7,8 +7,8 @@ asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
-    version: 4.2.0
-    api_version: 0.0.40
+    version: 5.0.0
+    api_version: 0.0.41
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc

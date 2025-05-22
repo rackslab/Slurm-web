@@ -54,7 +54,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Group _drain_ and _draining_ node state filters.
 - conf: Bump `[slurmrestd]` > `version` default value from `0.0.40` to `0.0.41`
   in agent configuration for compatibility with Slurm 25.05.
-- docs: Update configuration reference documentation.
+- docs:
+  - Replace mention of Slurm REST API version v0.0.40 by v0.0.41.
+  - Mention requirement of Slurm >= 24.05 and dropped support of Slurm 23.11.
+  - Update configuration reference documentation.
 
 ### Fixed
 - agent: Fix `AttributeError` with `prometheus_client.registry.Collector` on el8
