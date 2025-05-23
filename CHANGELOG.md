@@ -70,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `--with-slurm` option is provided explicitely.
 - connect: Emit warning log entry when slurmrestd local authentication method is
   used.
+- ldap-check: Return exit code 1 on LDAP authentication error.
 - conf:
   - Bump `[slurmrestd]` > `version` default value from `0.0.40` to `0.0.41` in
     agent configuration for compatibility with Slurm 25.05.
