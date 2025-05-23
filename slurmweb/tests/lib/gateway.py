@@ -9,6 +9,7 @@ import tempfile
 import os
 
 import werkzeug
+import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from slurmweb.apps import SlurmwebAppSeed
@@ -16,17 +17,25 @@ from slurmweb.apps.gateway import SlurmwebAppGateway
 
 from .utils import SlurmwebCustomTestResponse
 
-CONF = """
+CONF_TPL = """
 [agents]
 url=http://localhost
 
 [jwt]
-key={key}
+key={{ key }}
+
+{% if ldap %}
+[authentication]
+enabled=yes
+
+[ldap]
+uri=ldap://localhost
+{% endif %}
 """
 
 
 class TestGatewayConfBase(unittest.TestCase):
-    def setup_gateway_conf(self):
+    def setup_gateway_conf(self, ldap=False):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
         self.key.write("hey")
@@ -38,7 +47,8 @@ class TestGatewayConfBase(unittest.TestCase):
 
         # Generate configuration file
         self.conf = tempfile.NamedTemporaryFile(mode="w+")
-        self.conf.write(CONF.format(key=self.key.name))
+        conf_template = jinja2.Template(CONF_TPL)
+        self.conf.write(conf_template.render(key=self.key.name, ldap=ldap))
         self.conf.seek(0)
 
         # Configuration definition path
