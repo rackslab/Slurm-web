@@ -25,16 +25,7 @@ const statesColors: Record<MetricJobState, string> = {
   unknown: 'rgb(30, 30, 30, 0.7)' // dark grey
 }
 
-const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, statesColors, [
-  'unknown',
-  'cancelled',
-  'completed',
-  'failed',
-  'timeout',
-  'completing',
-  'running',
-  'pending'
-])
+const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, statesColors)
 </script>
 
 <template>
