@@ -14,18 +14,47 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 
 const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
-const statesColors: Record<MetricJobState, string> = {
-  running: 'rgb(51, 204, 51, 0.7)', // green
-  pending: 'rgba(255, 204, 0, 0.7)', // yellow
-  completing: 'rgba(204, 153, 0, 0.7)', // dark yellow
-  completed: 'rgb(192, 191, 188, 0.7)', // grey
-  failed: 'rgb(199, 40, 43, 0.7)', // red
-  timeout: 'rgb(214, 93, 11, 0.7)', // dark orange
-  cancelled: 'rgb(204, 0, 153, 0.7)', // purple
-  unknown: 'rgb(30, 30, 30, 0.7)' // dark grey
+/* Note that order of keys determines the stack of metrics in histogram */
+const labels: Record<string, { group: MetricJobState[]; color: string }> = {
+  unknown: {
+    group: ['unknown'],
+    color: 'rgba(30, 30, 30, 0.7)' // dark grey
+  },
+  timeout: {
+    group: ['timeout'],
+    color: 'rgba(214, 93, 11, 0.7)' // dark orange
+  },
+  failed: {
+    group: ['failed', 'deadline', 'node_fail', 'boot_fail', 'out_of_memory'],
+    color: 'rgba(199, 40, 43, 0.7)' // red
+  },
+  cancelled: {
+    group: ['cancelled', 'preempted'],
+    color: 'rgba(204, 0, 153, 0.7)' // fuschia
+  },
+  suspended: {
+    group: ['suspended'],
+    color: 'rgba(114, 52, 167, 0.7)' // purple
+  },
+  completed: {
+    group: ['completed'],
+    color: 'rgba(192, 191, 188, 0.7)' // grey
+  },
+  completing: {
+    group: ['completing'],
+    color: 'rgba(204, 153, 0, 0.7)' // dark yellow
+  },
+  pending: {
+    group: ['pending'],
+    color: 'rgba(255, 204, 0, 0.7)' // yellow
+  },
+  running: {
+    group: ['running'],
+    color: 'rgba(51, 204, 51, 0.7)' // green
+  }
 }
 
-const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, statesColors)
+const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, labels)
 </script>
 
 <template>

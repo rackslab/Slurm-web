@@ -26,7 +26,7 @@ export interface DashboardLiveChart<MetricKeyType extends string> {
 export function useDashboardLiveChart<MetricKeyType extends string>(
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,
-  stateColors: Record<MetricKeyType, string>
+  labels: Record<string, { group: MetricKeyType[]; color: string }>
 ): DashboardLiveChart<MetricKeyType> {
   const runtimeStore = useRuntimeStore()
   const metrics = useClusterDataPoller<Record<MetricKeyType, MetricValue[]>>(
@@ -55,25 +55,37 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
       }
 
       const newSuggestedMin = suggestedMin()
-      for (const state of Object.keys(stateColors)) {
+      for (const [label, properties] of Object.entries(labels)) {
         /* If current state is not present in poller data keys, skip it. */
-        if (!(state in metrics.data.value)) continue
-        /* Compute new data array */
-        const new_data = metrics.data.value[state as MetricKeyType].map((value) => ({
+        if (!properties.group.some((metric) => metrics.data.value && metric in metrics.data.value))
+          continue
+        /* Compute new data array with values of first metric in group */
+        const new_data = metrics.data.value[properties.group[0]].map((value) => ({
           x: value[0],
           y: value[1]
         }))
+        /* Sum values of all other metrics in the same group */
+        if (properties.group.length > 1) {
+          properties.group.forEach((metric, index) => {
+            // skip index 0 already in new_data
+            if (!index || !metrics.data.value) return
+            metrics.data.value[metric].forEach((value) => {
+              const item = new_data.find((_value) => _value.x == value[0])
+              if (item) item.y += value[1]
+            })
+          })
+        }
         /* Search for existing dataset which has the current state as label */
-        const matching_datasets = chart.data.datasets.filter((dataset) => dataset.label == state)
+        const matching_datasets = chart.data.datasets.filter((dataset) => dataset.label == label)
         if (!matching_datasets.length) {
           /* If matching dataset has not been found, push a new dataset with all
            * its parameters. */
           chart.data.datasets.push({
-            label: state,
+            label: label,
             data: new_data,
             barPercentage: 1,
             fill: 'stack',
-            backgroundColor: stateColors[state as MetricKeyType]
+            backgroundColor: properties.color
           })
           continue
         } else {

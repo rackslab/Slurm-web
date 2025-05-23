@@ -22,13 +22,40 @@ const route = useRoute()
 const runtimeStore = useRuntimeStore()
 const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
-const statesColors: Record<MetricResourceState, string> = {
-  idle: 'rgb(51, 204, 51, 0.7)', // green
-  down: 'rgb(204, 0, 0, 0.7)', // red
-  mixed: 'rgba(255, 204, 0, 0.7)', // yellow
-  allocated: 'rgba(204, 153, 0, 0.7)', // dark yellow
-  drain: 'rgb(204, 0, 153, 0.7)', // purple
-  unknown: 'rgb(192, 191, 188, 0.7)' // grey
+/* Note that order of keys determines the stack of metrics in histogram */
+const labels: Record<string, { group: MetricResourceState[]; color: string }> = {
+  unknown: {
+    group: ['unknown'],
+    color: 'rgb(192, 191, 188, 0.7)' // grey
+  },
+  down: {
+    group: ['down'],
+    color: 'rgb(204, 0, 0, 0.7)' // red
+  },
+  fail: {
+    group: ['fail'],
+    color: 'rgb(214, 93, 11, 0.7)' // dark orange
+  },
+  error: {
+    group: ['error'],
+    color: 'rgb(143, 23, 49, 0.7)' // dark purple
+  },
+  drain: {
+    group: ['drain'],
+    color: 'rgb(204, 0, 153, 0.7)' // purple
+  },
+  allocated: {
+    group: ['allocated'],
+    color: 'rgba(236, 183, 23, 0.7)' // ellow
+  },
+  mixed: {
+    group: ['mixed'],
+    color: 'rgba(246, 221, 56, 0.7)' // light yellow
+  },
+  idle: {
+    group: ['idle'],
+    color: 'rgb(51, 204, 51, 0.7)' // green
+  }
 }
 
 function resourcesTypeCallback(): GatewayAnyClusterApiKey {
@@ -44,7 +71,7 @@ function resourcesTypeCallback(): GatewayAnyClusterApiKey {
 const liveChart = useDashboardLiveChart<MetricResourceState>(
   resourcesTypeCallback(),
   chartCanvas,
-  statesColors
+  labels
 )
 
 function setResourceType(resourceType: ChartResourcesType) {
