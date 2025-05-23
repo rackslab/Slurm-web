@@ -8,10 +8,33 @@ import os
 from unittest import mock
 from pathlib import Path
 
-from ..lib.genjwt import TestGenJWTAppBase
+from slurmweb.apps import SlurmwebAppSeed
+from slurmweb.apps.genjwt import SlurmwebAppGenJWT
+
+from ..lib.agent import TestAgentConfBase
 
 
-class TestGenJwtApp(TestGenJWTAppBase):
+class TestGenJwtApp(TestAgentConfBase):
+    def setup(
+        self,
+    ):
+        self.setup_agent_conf()
+        self.app = SlurmwebAppGenJWT(
+            SlurmwebAppSeed.with_parameters(
+                debug=False,
+                log_flags=["ALL"],
+                log_component=None,
+                debug_flags=[],
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
+                with_slurm=False,
+            )
+        )
+        # Close conf and keys file handlers to remove temporary files
+        self.conf.close()
+        self.key.close()
+        self.slurmrestd_key.close()
+
     def test_setup(self):
         self.setup()
 
