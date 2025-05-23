@@ -6,11 +6,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from slurmweb.apps import SlurmwebConfSeed
+from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 
 application = SlurmwebAppGateway(
-    SlurmwebConfSeed(
+    SlurmwebAppSeed.with_parameters(
         debug=False,
         log_flags=["ALL"],
         log_component=None,
