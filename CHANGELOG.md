@@ -96,6 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - frontend:
   - Rendering of nodes grid in resources page in presence of long node names.
   - Update dependencies to fix CVE-2025-46565 (vite).
+- ldap-check: Report and return error instead of crashing when LDAP URI is not
+  defined in configuration.
 
 ### Removed
 - Drop support of Slurm 23.11 and Slurm REST API v0.0.40.

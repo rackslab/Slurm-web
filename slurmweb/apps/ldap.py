@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import sys
 import logging
 
 from rfl.authentication.ldap import LDAPAuthentifier
@@ -19,6 +20,12 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
 
     def run(self):
         logger.info("Running %s", self.NAME)
+        if not self.settings.ldap.uri:
+            logger.critical(
+                "LDAP directory URI is not defined in configuration, exiting"
+            )
+            sys.exit(1)
+
         self.authentifier = LDAPAuthentifier(
             uri=self.settings.ldap.uri,
             cacert=self.settings.ldap.cacert,
