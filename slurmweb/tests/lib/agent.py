@@ -70,7 +70,7 @@ class FakeRacksDBWebBlueprint(Blueprint):
         return jsonify({"test": "ok"})
 
 
-class TestSlurmrestdClient(unittest.TestCase):
+class TestAgentConfBase(unittest.TestCase):
     def setup_agent_conf(self, slurmrestd_parameters=None, racksdb=True, metrics=False):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
@@ -110,6 +110,8 @@ class TestSlurmrestdClient(unittest.TestCase):
 
         self.conf_defs = os.path.join(vendor_path, "agent.yml")
 
+
+class TestSlurmrestdClient(TestAgentConfBase):
     def mock_slurmrestd_responses(self, slurm_version, assets):
         try:
             return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
@@ -156,6 +158,7 @@ class TestAgentBase(TestSlurmrestdClient):
         if not anonymous_enabled:
             self.app.policy.disable_anonymous()
 
+        # Close conf and keys file handlers to remove temporary files
         self.conf.close()
         self.key.close()
         self.slurmrestd_key.close()
