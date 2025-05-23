@@ -109,9 +109,11 @@ NOTE: This breaking change has been introduced because Slurm 25.05 dropped
 support of running `slurmrestd` as _slurm_ system user, which is a requirement
 for using _local_ authentication in Slurm-web.
 
-It is *highly recommended* to migrate your Slurm-web installation to _jwt_
-authentication. However, documentation is also provided to keep using _local_
-authentication despite the recommendation.
+It is *highly recommended* to
+xref:update.adoc#migrate-jwt[migrate your Slurm-web installation to _jwt_ authentication].
+However, documentation is also provided to
+xref:update.adoc#keep-local[keep using _local_ authentication]
+despite the recommendation.
 
 To avoid impacting users with automatic upgrades, Slurm-web 5 packages have been
 moved to a separate repository. Packages repositories settings must be updated
@@ -339,6 +341,7 @@ override that was used to force running the agent as _slurm_ system user:
 New system service file [.path]#`/lib/systemd/system/slurm-web-agent.service`#
 can be used without override.
 
+[#migrate-jwt]
 === Migrate to JWT authentication
 
 ==== Setup Slurm JWT
@@ -463,6 +466,7 @@ Restart the service to apply changes:
 # systemctl restart slurm-web-agent-uwsgi.service
 ----
 
+[#keep-local]
 === Keep using local authentication
 
 You want to keep using `slurmrestd` local authentication despite the
