@@ -9,6 +9,7 @@ import tempfile
 import os
 
 import werkzeug
+import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from slurmweb.apps import SlurmwebAppSeed
@@ -16,33 +17,47 @@ from slurmweb.apps.gateway import SlurmwebAppGateway
 
 from .utils import SlurmwebCustomTestResponse
 
-CONF = """
+CONF_TPL = """
 [agents]
 url=http://localhost
 
 [jwt]
-key={key}
+key={{ key }}
+
+{% if ldap %}
+[authentication]
+enabled=yes
+
+[ldap]
+uri=ldap://localhost
+{% endif %}
 """
 
 
-class TestGatewayBase(unittest.TestCase):
-    def setup_app(self, anonymous_user=False, use_token=True):
+class TestGatewayConfBase(unittest.TestCase):
+    def setup_gateway_conf(self, ldap=False):
         # Generate JWT signing key
-        key = tempfile.NamedTemporaryFile(mode="w+")
-        key.write("hey")
-        key.seek(0)
+        self.key = tempfile.NamedTemporaryFile(mode="w+")
+        self.key.write("hey")
+        self.key.seek(0)
 
         self.vendor_path = os.path.join(
             os.path.dirname(__file__), "..", "..", "..", "conf", "vendor"
         )
 
         # Generate configuration file
-        conf = tempfile.NamedTemporaryFile(mode="w+")
-        conf.write(CONF.format(key=key.name))
-        conf.seek(0)
+        self.conf = tempfile.NamedTemporaryFile(mode="w+")
+        conf_template = jinja2.Template(CONF_TPL)
+        self.conf.write(conf_template.render(key=self.key.name, ldap=ldap))
+        self.conf.seek(0)
 
         # Configuration definition path
-        conf_defs = os.path.join(self.vendor_path, "gateway.yml")
+        self.conf_defs = os.path.join(self.vendor_path, "gateway.yml")
+
+
+class TestGatewayBase(TestGatewayConfBase):
+    def setup_app(self, anonymous_user=False, use_token=True):
+        self.setup_gateway_conf()
 
         self.app = SlurmwebAppGateway(
             SlurmwebAppSeed.with_parameters(
@@ -50,12 +65,14 @@ class TestGatewayBase(unittest.TestCase):
                 log_flags=["ALL"],
                 log_component=None,
                 debug_flags=[],
-                conf_defs=conf_defs,
-                conf=conf.name,
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
             )
         )
-        conf.close()
-        key.close()
+
+        # Close conf and key file handlers to remove temporary files
+        self.conf.close()
+        self.key.close()
         self.app.config.update(
             {
                 "TESTING": True,

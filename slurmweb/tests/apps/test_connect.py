@@ -6,6 +6,8 @@
 
 from unittest import mock
 
+from slurmweb.apps import SlurmwebAppSeed
+from slurmweb.apps.connect import SlurmwebAppConnectCheck
 from slurmweb.errors import SlurmwebConfigurationError
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
@@ -14,11 +16,32 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInvalidResponseError,
     SlurmrestdInternalError,
 )
-from ..lib.connect import TestConnectCheckAppBase
 from ..lib.utils import all_slurm_versions, SlurmwebAssetUnavailable
+from ..lib.agent import TestSlurmrestdClient
 
 
-class TestConnectCheckApp(TestConnectCheckAppBase):
+class TestConnectCheckApp(TestSlurmrestdClient):
+    def setup(self, slurmrestd_parameters=None, racksdb=True, metrics=False):
+        self.setup_agent_conf(
+            slurmrestd_parameters=slurmrestd_parameters,
+            racksdb=racksdb,
+            metrics=metrics,
+        )
+        self.app = SlurmwebAppConnectCheck(
+            SlurmwebAppSeed.with_parameters(
+                debug=False,
+                log_flags=["ALL"],
+                log_component=None,
+                debug_flags=[],
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
+            )
+        )
+        # Close conf and keys file handlers to remove temporary files
+        self.conf.close()
+        self.key.close()
+        self.slurmrestd_key.close()
+
     def test_app_loaded(self):
         self.setup()
 

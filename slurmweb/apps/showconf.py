@@ -8,7 +8,7 @@ import logging
 import sys
 from rfl.log import setup_logger
 
-from . import SlurmwebConfSeed
+from . import SlurmwebAppSeed
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import (
     SettingsDefinitionError,
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class SlurmwebAppShowConf:
     NAME = "slurm-web-show-conf"
 
-    def __init__(self, seed: SlurmwebConfSeed):
+    def __init__(self, seed: SlurmwebAppSeed):
         # load configuration files
         setup_logger(
             debug=seed.debug,
