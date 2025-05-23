@@ -44,8 +44,7 @@ function resourcesTypeCallback(): GatewayAnyClusterApiKey {
 const liveChart = useDashboardLiveChart<MetricResourceState>(
   resourcesTypeCallback(),
   chartCanvas,
-  statesColors,
-  ['unknown', 'down', 'drain', 'allocated', 'mixed', 'idle']
+  statesColors
 )
 
 function setResourceType(resourceType: ChartResourcesType) {

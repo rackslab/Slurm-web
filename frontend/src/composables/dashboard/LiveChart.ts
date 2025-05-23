@@ -26,8 +26,7 @@ export interface DashboardLiveChart<MetricKeyType extends string> {
 export function useDashboardLiveChart<MetricKeyType extends string>(
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,
-  stateColors: Record<MetricKeyType, string>,
-  possibleStates: MetricKeyType[]
+  stateColors: Record<MetricKeyType, string>
 ): DashboardLiveChart<MetricKeyType> {
   const runtimeStore = useRuntimeStore()
   const metrics = useClusterDataPoller<Record<MetricKeyType, MetricValue[]>>(
@@ -56,7 +55,7 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
       }
 
       const newSuggestedMin = suggestedMin()
-      for (const state of possibleStates) {
+      for (const state of Object.keys(stateColors)) {
         /* If current state is not present in poller data keys, skip it. */
         if (!(state in metrics.data.value)) continue
         /* Compute new data array */
