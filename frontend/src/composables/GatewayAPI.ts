@@ -603,16 +603,30 @@ export interface ClusterReservation {
 export type MetricValue = [number, number]
 const MetricRanges = ['week', 'day', 'hour'] as const
 export type MetricRange = (typeof MetricRanges)[number]
-export type MetricResourceState = 'idle' | 'down' | 'mixed' | 'allocated' | 'drain' | 'unknown'
-export type MetricJobState =
+export type MetricResourceState =
+  | 'idle'
+  | 'mixed'
+  | 'allocated'
+  | 'drain'
+  | 'down'
+  | 'error'
+  | 'fail'
   | 'unknown'
-  | 'cancelled'
-  | 'completed'
-  | 'failed'
-  | 'timeout'
-  | 'completing'
+export type MetricJobState =
   | 'running'
   | 'pending'
+  | 'completing'
+  | 'completed'
+  | 'cancelled'
+  | 'suspended'
+  | 'preempted'
+  | 'failed'
+  | 'timeout'
+  | 'node_fail'
+  | 'boot_fail'
+  | 'deadline'
+  | 'out_of_memory'
+  | 'unknown'
 
 export function isMetricRange(range: unknown): range is MetricRange {
   return typeof range === 'string' && MetricRanges.includes(range as MetricRange)

@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     icons to represent status flags (#405).
   - Add node filter for _error_ and _fail_ states.
   - Display version in below logo in main menu (#568).
+  - Display _suspended_, _preempted_, _deadline_, _node fail_, _boot fail_,
+    _out of memory_ jobs in dashboard chart.
+  - Display _fail_ and _error_ nodes in dashboar chart.
 - agent:
   - Add total quantity of memory and number of gpus in cluster stats response.
   - Add metrics for GPU by state and total number of GPU.
