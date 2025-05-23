@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Support querying GPU metrics.
   - Add missing jobs base states in collected metrics: `SUSPENDED`, `PREEMPTED`,
     `NODE_FAIL`, `BOOT_FAIL`, `DEADLINE` and `OUT_OF_MEMORY`.
+  - Add `ERROR` and `FAIL` node states in collected metrics.
 - gateway: Add version in configuration file generated for frontend component.
 - conf:
   - Select `gres` and `gres_used` attributes by default in `slurmrestd` nodes

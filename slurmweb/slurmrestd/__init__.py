@@ -182,35 +182,52 @@ class Slurmrestd:
         return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
 
     def resources_states(self):
+        # All Slurm nodes base states and some interesting flags such as drain and fail.
         nodes_states = {
             "idle": 0,
             "mixed": 0,
             "allocated": 0,
-            "down": 0,
             "drain": 0,
+            "down": 0,
+            "error": 0,
+            "fail": 0,
             "unknown": 0,
         }
         cores_states = {
             "idle": 0,
+            "mixed": 0,
             "allocated": 0,
-            "down": 0,
             "drain": 0,
+            "down": 0,
+            "error": 0,
+            "fail": 0,
+            "unknown": 0,
+        }
+        gpus_states = {
+            "idle": 0,
+            "mixed": 0,
+            "allocated": 0,
+            "drain": 0,
+            "down": 0,
+            "error": 0,
+            "fail": 0,
             "unknown": 0,
         }
         nodes_total = 0
         cores_total = 0
         gpus_total = 0
-        gpus_states = {
-            "idle": 0,
-            "allocated": 0,
-            "down": 0,
-            "drain": 0,
-            "unknown": 0,
-        }
         for node in self.nodes():
             cores = node["cpus"]
             node_gpus = self.node_gres_extract_gpus(node["gres"])
-            if "MIXED" in node["state"]:
+            if "ERROR" in node["state"]:
+                nodes_states["error"] += 1
+                cores_states["error"] += cores
+                gpus_states["error"] += node_gpus
+            elif "FAIL" in node["state"]:
+                nodes_states["fail"] += 1
+                cores_states["fail"] += cores
+                gpus_states["fail"] += node_gpus
+            elif "MIXED" in node["state"]:
                 nodes_states["mixed"] += 1
                 # Look at number of actually allocated/idle cores
                 cores_states["allocated"] += node["alloc_cpus"]
