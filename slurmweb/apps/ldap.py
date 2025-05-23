@@ -52,3 +52,4 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
                 print(f"- {str(user)}")
         except LDAPAuthenticationError as err:
             logger.error("LDAP error: %s", str(err))
+            sys.exit(1)
