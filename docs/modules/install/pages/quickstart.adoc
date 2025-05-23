@@ -289,7 +289,7 @@ INFO ⸬ Setting read permission on key for slurm-web user
 
 == Slurm JWT siging key
 
-For authentication to `slurmrestd`, copy Slurm JWT signing key:
+For Slurm-web authentication to `slurmrestd`, copy Slurm JWT signing key:
 
 [source,console]
 ----

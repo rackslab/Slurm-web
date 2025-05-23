@@ -406,7 +406,7 @@ this command:
 
 ==== Slurm JWT signing key
 
-For authentication to `slurmrestd`, copy Slurm JWT signing key:
+For Slurm-web authentication to `slurmrestd`, copy Slurm JWT signing key:
 
 [source,console]
 ----
