@@ -839,8 +839,8 @@ export function useGatewayAPI() {
   async function metrics_jobs(
     cluster: string,
     last: string
-  ): Promise<Record<MetricResourceState, MetricValue[]>> {
-    return await restAPI.get<Record<MetricResourceState, MetricValue[]>>(
+  ): Promise<Record<MetricJobState, MetricValue[]>> {
+    return await restAPI.get<Record<MetricJobState, MetricValue[]>>(
       `/agents/${cluster}/metrics/jobs?range=${last}`
     )
   }
