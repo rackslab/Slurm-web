@@ -22,3 +22,12 @@ Restart `slurmctld` and `slurmdbd` services to update configuration:
 ----
 # systemctl restart slurmctld slurmdbd
 ----
+
+:slurm-jwt: https://slurm.schedmd.com/jwt.html
+
+[sidebar]
+--
+.More links
+* {slurm-jwt}[Official Slurm JWT authentication documentation] with more
+  details about configuration options.
+--
