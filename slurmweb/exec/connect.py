@@ -8,14 +8,15 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
+from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
 from ..apps.connect import SlurmwebAppConnectCheck
 from ..apps.agent import SlurmwebAppAgent
 
 
-class SlurmwebExecConnectCheck:
+class SlurmwebExecConnectCheck(SlurmwebExecBase):
     @staticmethod
-    def run():
+    def seed(args=None):
         parser = argparse.ArgumentParser(description=SlurmwebAppConnectCheck.NAME)
         parser.add_argument(
             "-v",
@@ -63,7 +64,8 @@ class SlurmwebExecConnectCheck:
             type=Path,
         )
 
-        application = SlurmwebAppConnectCheck(
-            parser.parse_args(namespace=SlurmwebAppSeed)
-        )
-        application.run()
+        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+
+    @staticmethod
+    def app(args=None):
+        return SlurmwebAppConnectCheck(SlurmwebExecConnectCheck.seed(args=args))

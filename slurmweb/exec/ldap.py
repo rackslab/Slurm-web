@@ -8,14 +8,15 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
+from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
 from ..apps.ldap import SlurmwebAppLDAPCheck
 from ..apps.gateway import SlurmwebAppGateway
 
 
-class SlurmwebExecLDAPCheck:
+class SlurmwebExecLDAPCheck(SlurmwebExecBase):
     @staticmethod
-    def run():
+    def seed(args=None):
         parser = argparse.ArgumentParser(description=SlurmwebAppLDAPCheck.NAME)
         parser.add_argument(
             "-v",
@@ -63,5 +64,8 @@ class SlurmwebExecLDAPCheck:
             type=Path,
         )
 
-        application = SlurmwebAppLDAPCheck(parser.parse_args(namespace=SlurmwebAppSeed))
-        application.run()
+        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+
+    @staticmethod
+    def app(args=None):
+        return SlurmwebAppLDAPCheck(SlurmwebExecLDAPCheck.seed(args=args))
