@@ -9,6 +9,7 @@ asciidoc:
     table-caption: false
     version: 5.0.0
     api_version: 0.0.41
+    pkgs-derivative: slurmweb-5
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc
