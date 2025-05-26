@@ -3,5 +3,5 @@
   "AUTHENTICATION": true,
   "RACKSDB_ROWS_LABELS": false,
   "RACKSDB_RACKS_LABELS": false,
-  "VERSION": "4.2.0"
+  "VERSION": "5.0.0"
 }

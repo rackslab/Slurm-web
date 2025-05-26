@@ -1,6 +1,6 @@
 {
   "name": "slurm-web-frontend",
-  "version": "4.2.0",
+  "version": "5.0.0",
   "private": true,
   "type": "module",
   "scripts": {
