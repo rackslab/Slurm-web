@@ -8,14 +8,15 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
+from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
 from ..apps.genjwt import SlurmwebAppGenJWT
 from ..apps.gateway import SlurmwebAppGateway
 
 
-class SlurmwebExecGenJWT:
+class SlurmwebExecGenJWT(SlurmwebExecBase):
     @staticmethod
-    def run():
+    def seed(args=None):
         parser = argparse.ArgumentParser(description=SlurmwebAppGenJWT.NAME)
         parser.add_argument(
             "-v",
@@ -69,7 +70,8 @@ class SlurmwebExecGenJWT:
             help="Also give read permission on JWT key to slurm user",
         )
 
-        application = SlurmwebAppGenJWT(
-            parser.parse_args(namespace=SlurmwebAppSeed),
-        )
-        application.run()
+        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+
+    @staticmethod
+    def app(args=None):
+        return SlurmwebAppGenJWT(SlurmwebExecGenJWT.seed(args=args))

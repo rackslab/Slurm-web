@@ -8,15 +8,16 @@ import argparse
 from pathlib import Path
 
 from ..version import get_version
+from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
 from ..apps.showconf import SlurmwebAppShowConf
 from ..apps.gateway import SlurmwebAppGateway
 from ..apps.agent import SlurmwebAppAgent
 
 
-class SlurmwebExecShowConf:
+class SlurmwebExecShowConf(SlurmwebExecBase):
     @staticmethod
-    def run():
+    def seed(args=None):
         parser = argparse.ArgumentParser(description=SlurmwebAppShowConf.NAME)
         parser.add_argument(
             "-v",
@@ -65,17 +66,21 @@ class SlurmwebExecShowConf:
             choices=["gateway", "agent"],
         )
 
-        args = parser.parse_args(namespace=SlurmwebAppSeed)
+        args = parser.parse_args(args=args, namespace=SlurmwebAppSeed())
 
         if args.component == "gateway":
             if args.conf is None:
-                args.conf = SlurmwebAppGateway.SITE_CONFIGURATION
+                args.conf = Path(SlurmwebAppGateway.SITE_CONFIGURATION)
             if args.conf_defs is None:
-                args.conf_defs = SlurmwebAppGateway.SETTINGS_DEFINITION
+                args.conf_defs = Path(SlurmwebAppGateway.SETTINGS_DEFINITION)
         else:
             if args.conf is None:
-                args.conf = SlurmwebAppAgent.SITE_CONFIGURATION
+                args.conf = Path(SlurmwebAppAgent.SITE_CONFIGURATION)
             if args.conf_defs is None:
-                args.conf_defs = SlurmwebAppAgent.SETTINGS_DEFINITION
-        application = SlurmwebAppShowConf(args)
-        application.run()
+                args.conf_defs = Path(SlurmwebAppAgent.SETTINGS_DEFINITION)
+
+        return args
+
+    @staticmethod
+    def app(args=None):
+        return SlurmwebAppShowConf(SlurmwebExecShowConf.seed(args=args))
