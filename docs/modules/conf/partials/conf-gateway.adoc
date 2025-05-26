@@ -268,7 +268,7 @@ _No default value_
 
 
 
-*Default:* `4.2.0`
+*Default:* `5.0.0`
 
 |-
 
