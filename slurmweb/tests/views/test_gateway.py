@@ -9,26 +9,15 @@ import tempfile
 import os
 import shutil
 
-import werkzeug
-
 from slurmweb.version import get_version
 
 from ..lib.gateway import TestGatewayBase
-from ..lib.utils import SlurmwebCustomTestResponse, flask_version
+from ..lib.utils import flask_version
 
 
 class TestGatewayViews(TestGatewayBase):
     def setUp(self):
         self.setup_app()
-        # werkzeug.test.TestResponse class does not have text and json
-        # properties in werkzeug <= 0.15. When such version is installed, use
-        # custom test response class to backport these text and json properties.
-        try:
-            getattr(werkzeug.test.TestResponse, "text")
-            getattr(werkzeug.test.TestResponse, "json")
-        except AttributeError:
-            self.app.response_class = SlurmwebCustomTestResponse
-        self.client = self.app.test_client()
 
     def test_version(self):
         response = self.client.get("/api/version")
