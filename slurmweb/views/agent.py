@@ -39,9 +39,10 @@ def info():
         "metrics": current_app.settings.metrics.enabled,
         "racksdb": {
             "enabled": current_app.settings.racksdb.enabled,
-            "version": racksdb_get_version(),
             "infrastructure": current_app.settings.racksdb.infrastructure,
+            "version": racksdb_get_version(),
         },
+        "version": get_version(),
     }
     return jsonify(data)
 
