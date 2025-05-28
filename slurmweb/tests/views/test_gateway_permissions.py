@@ -7,9 +7,8 @@
 from unittest import mock
 
 from slurmweb.version import get_version
-from slurmweb.apps.gateway import SlurmwebAgent, SlurmwebAgentRacksDBSettings
 
-from ..lib.gateway import TestGatewayBase
+from ..lib.gateway import TestGatewayBase, fake_slurmweb_agent
 
 
 class TestGatewayPermissions(TestGatewayBase):
@@ -38,14 +37,7 @@ class TestGatewayPermissions(TestGatewayBase):
     @mock.patch("slurmweb.views.gateway.proxy_agent")
     def test_restricted_access_auth(self, mock_proxy_agent, mock_agents):
         self.setup_app()
-        mock_agents.return_value = {
-            "tiny": SlurmwebAgent(
-                "tiny",
-                SlurmwebAgentRacksDBSettings(True, "0.4.0", "tiny"),
-                True,
-                "http://localhost",
-            )
-        }
+        mock_agents.return_value = {"tiny": fake_slurmweb_agent("tiny")}
         mock_proxy_agent.return_value = self.app.response_class(
             response='"fake agent response"', status=200, mimetype="application/json"
         )
@@ -61,14 +53,7 @@ class TestGatewayPermissions(TestGatewayBase):
     @mock.patch("slurmweb.views.gateway.proxy_agent")
     def test_restricted_access_anonymous(self, mock_proxy_agent, mock_agents):
         self.setup_app(anonymous_user=True)
-        mock_agents.return_value = {
-            "tiny": SlurmwebAgent(
-                "tiny",
-                SlurmwebAgentRacksDBSettings(True, "0.4.0", "tiny"),
-                True,
-                "http://localhost",
-            )
-        }
+        mock_agents.return_value = {"tiny": fake_slurmweb_agent("tiny")}
         mock_proxy_agent.return_value = self.app.response_class(
             response='"fake agent response"', status=200, mimetype="application/json"
         )
@@ -84,14 +69,7 @@ class TestGatewayPermissions(TestGatewayBase):
     @mock.patch("slurmweb.views.gateway.proxy_agent")
     def test_restricted_access_no_token(self, mock_proxy_agent, mock_agents):
         self.setup_app(use_token=False)
-        mock_agents.return_value = {
-            "tiny": SlurmwebAgent(
-                "tiny",
-                SlurmwebAgentRacksDBSettings(True, "0.4.0", "tiny"),
-                True,
-                "http://localhost",
-            )
-        }
+        mock_agents.return_value = {"tiny": fake_slurmweb_agent("tiny")}
         mock_proxy_agent.return_value = self.app.response_class(
             response='"fake agent response"', status=200, mimetype="application/json"
         )

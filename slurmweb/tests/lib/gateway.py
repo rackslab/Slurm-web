@@ -12,8 +12,10 @@ import werkzeug
 import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
+from racksdb.version import get_version as racksdb_get_version
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
+from slurmweb.apps.gateway import SlurmwebAgent, SlurmwebAgentRacksDBSettings
 
 from .utils import SlurmwebCustomTestResponse
 
@@ -32,6 +34,17 @@ enabled=yes
 uri=ldap://localhost
 {% endif %}
 """
+
+
+def fake_slurmweb_agent(cluster: str):
+    return SlurmwebAgent(
+        cluster,
+        SlurmwebAgentRacksDBSettings(
+            enabled=True, version=racksdb_get_version(), infrastructure=cluster
+        ),
+        metrics=True,
+        url=f"http://{cluster}",
+    )
 
 
 class TestGatewayConfBase(unittest.TestCase):
