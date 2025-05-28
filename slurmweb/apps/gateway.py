@@ -31,8 +31,14 @@ SlurmwebAgentRacksDBSettings = collections.namedtuple(
 
 class SlurmwebAgent:
     def __init__(
-        self, cluster: str, racksdb: SlurmwebAgentRacksDBSettings, metrics: bool, url
+        self,
+        version: str,
+        cluster: str,
+        racksdb: SlurmwebAgentRacksDBSettings,
+        metrics: bool,
+        url,
     ):
+        self.version = version
         self.cluster = cluster
         self.metrics = metrics
         self.racksdb = racksdb
@@ -42,6 +48,7 @@ class SlurmwebAgent:
     def from_json(cls, url, data):
         try:
             return cls(
+                data["version"],
                 data["cluster"],
                 SlurmwebAgentRacksDBSettings(**data["racksdb"]),
                 data["metrics"],
@@ -111,7 +118,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
     }
 
     def _agent_info(self, url: str) -> SlurmwebAgent:
-        response = requests.get(f"{url}/v{self.settings.agents.version}/info")
+        response = requests.get(f"{url}/info")
         return SlurmwebAgent.from_json(url, response.json())
 
     @property
@@ -141,6 +148,18 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     str(err),
                 )
             else:
+                # Check agent version is greater or equal than minimal version specified
+                # in configuration.
+                if not version_greater_or_equal(
+                    self.settings.agents.version, agent.version
+                ):
+                    logger.error(
+                        "Unsupported Slurm-web agent API version %s on agent %s, "
+                        "discarding this agent",
+                        agent.version,
+                        agent.cluster,
+                    )
+                    continue
                 # If RacksDB is enabled on agent, check its version is greater or equal
                 # than minimal version specified in configuration.
                 if agent.racksdb.enabled and not version_greater_or_equal(
