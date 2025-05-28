@@ -13,6 +13,7 @@ import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from racksdb.version import get_version as racksdb_get_version
+from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 from slurmweb.apps.gateway import SlurmwebAgent, SlurmwebAgentRacksDBSettings
@@ -38,6 +39,7 @@ uri=ldap://localhost
 
 def fake_slurmweb_agent(cluster: str):
     return SlurmwebAgent(
+        get_version(),
         cluster,
         SlurmwebAgentRacksDBSettings(
             enabled=True, version=racksdb_get_version(), infrastructure=cluster
