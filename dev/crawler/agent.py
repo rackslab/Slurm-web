@@ -37,9 +37,7 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
 
     headers = {"Authorization": f"Bearer {token}"}
 
-    dump_component_query(
-        requests_statuses, url, f"/v{get_version()}/info", headers, assets_path, "info"
-    )
+    dump_component_query(requests_statuses, url, "/info", headers, assets_path, "info")
     dump_component_query(
         requests_statuses,
         url,
