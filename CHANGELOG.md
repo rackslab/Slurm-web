@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent:
  - Change route to information endpoint from `/v{version}/info` to `/info`.
  - Return version of agent in information endpoint.
+- conf: Update description of `agent` > `version` gateway parameter to describe
+  its new semantic.
 
 ## [5.0.0] - 2025-05-27
 

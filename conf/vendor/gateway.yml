@@ -108,7 +108,13 @@ agents:
   version:
     type: str
     default: 5.0.0
-    doc: Version of Slurm-web agent API
+    doc: |
+      Minimal support version of Slurm-web agent API
+
+      CAUTION: You SHOULD NOT change this parameter unless you really know what
+      you are doing. This parameter is more intented for Slurm-web developers
+      rather than end users. Slurm-web is officially tested and validated with
+      the default value only.
   racksdb_version:
     type: str
     default: 0.5.0
