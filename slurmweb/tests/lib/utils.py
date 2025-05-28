@@ -187,3 +187,66 @@ def mock_agent_response(asset_name):
 def mock_prometheus_response(asset_name):
     """Return mocked requests Response corresponding to the given Prometheus asset."""
     return mock_component_response("prometheus", asset_name)
+
+
+class AsyncContextManagerMock:
+    """Mock for async context managers for aiohttp responses."""
+
+    def __init__(self, mock):
+        """Initialize with a mock that will be returned from __aenter__."""
+        self.mock = mock
+
+    async def __aenter__(self):
+        """Enter async context manager."""
+        return self.mock
+
+    async def __aexit__(self, exc_type, exc, tb):
+        """Exit async context manager."""
+        pass
+
+
+def async_mock(content):
+    """Unfortunately, mock.AsyncMock is not available in Python >= 3.8. When this class
+    is not available, return a dumb awaitable."""
+    try:
+        return mock.AsyncMock(return_value=content)
+    except AttributeError:
+
+        async def _awaitable():
+            return content
+
+        return _awaitable
+
+
+def mock_agent_aio_response(asset=None, status=200, content=None):
+    """Return mocked aiohttp Response corresponding to the given component asset. If
+    asset is None, use status and json."""
+    if asset:
+        component = "agent"
+        with open(ASSETS / component / "status.json") as fh:
+            requests_statuses = json.load(fh)
+
+        if asset not in requests_statuses:
+            raise SlurmwebAssetUnavailable(
+                f"Unable to find asset {asset} for component {component}"
+            )
+
+        is_json = True
+        if requests_statuses[asset]["content-type"] == "application/json":
+            content = load_json_asset(f"{component}/{asset}.json")
+        else:
+            is_json = False
+            content = load_asset(f"{component}/{asset}.txt")
+        status = requests_statuses[asset]["status"]
+    else:
+        assert content
+        is_json = True
+
+    response = mock.Mock()
+    response.status = status
+    if is_json:
+        response.json = async_mock(content)
+    else:
+        response.text = mock.PropertyMock(return_value=content)
+
+    return content, AsyncContextManagerMock(response)
