@@ -36,10 +36,10 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.text, f"Slurm-web agent v{get_version()}\n")
 
     def test_info(self):
-        response = self.client.get(f"/v{get_version()}/info")
+        response = self.client.get("/info")
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
-        self.assertEqual(len(response.json.keys()), 3)
+        self.assertEqual(len(response.json.keys()), 4)
         self.assertIn("cluster", response.json)
         self.assertEqual(response.json["cluster"], "test")
         self.assertIn("racksdb", response.json)
@@ -50,6 +50,9 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["racksdb"]["infrastructure"], "test")
         self.assertIn("metrics", response.json)
         self.assertIsInstance(response.json["metrics"], bool)
+        self.assertIn("version", response.json)
+        self.assertIsInstance(response.json["version"], str)
+        self.assertEqual(response.json["version"], get_version())
 
     #
     # General error cases
