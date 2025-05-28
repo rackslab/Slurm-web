@@ -8,22 +8,10 @@ import typing as t
 from unittest import mock
 import time
 
-from racksdb.version import get_version as racksdb_get_version
-from slurmweb.apps.gateway import SlurmwebAgent, SlurmwebAgentRacksDBSettings
+from slurmweb.apps.gateway import SlurmwebAgent
 
-from ..lib.gateway import TestGatewayBase
+from ..lib.gateway import TestGatewayBase, fake_slurmweb_agent
 from ..lib.utils import mock_agent_aio_response
-
-
-def fake_slurmweb_agent(cluster: str):
-    return SlurmwebAgent(
-        cluster,
-        SlurmwebAgentRacksDBSettings(
-            enabled=True, version=racksdb_get_version(), infrastructure=cluster
-        ),
-        metrics=True,
-        url=f"http://{cluster}",
-    )
 
 
 class TestGatewayViews(TestGatewayBase):
