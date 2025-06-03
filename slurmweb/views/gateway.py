@@ -155,21 +155,19 @@ async def get_cluster(agent):
     return cluster
 
 
-async def get_clusters():
+async def get_clusters(agents):
     """Return the list of available clusters with permissions. Clusters on which
     request to get permissions failed are filtered out."""
     return [
         cluster
-        for cluster in await asyncio.gather(
-            *[get_cluster(agent) for agent in current_app.agents.values()]
-        )
+        for cluster in await asyncio.gather(*[get_cluster(agent) for agent in agents])
         if cluster is not None
     ]
 
 
 @check_jwt
 def clusters():
-    return jsonify(asyncio_run(get_clusters()))
+    return jsonify(asyncio_run(get_clusters(current_app.agents.values())))
 
 
 @check_jwt

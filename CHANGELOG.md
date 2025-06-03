@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Changed
-- gateway: Check agent version is greater or equal to the minimal supported
-  version specified in gateway configuration settings.
+- gateway:
+  - Check agent version is greater or equal to the minimal supported version
+    specified in gateway configuration settings.
+  - Send asynchronous HTTP requests to discover agents (#438).
 - agent:
  - Change route to information endpoint from `/v{version}/info` to `/info`.
  - Return version of agent in information endpoint.
