@@ -6,18 +6,19 @@
 
 import time
 import collections
+import asyncio
 import logging
 
 from rfl.web.tokens import RFLTokenizedWebApp
 from rfl.authentication.ldap import LDAPAuthentifier
-import requests
+from rfl.core.asyncio import asyncio_run
+import aiohttp
 
 from . import SlurmwebWebApp
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
 from ..errors import (
     SlurmwebConfigurationError,
-    SlurmwebCompatJSONDecodeError,
     SlurmwebAgentError,
 )
 
@@ -36,7 +37,7 @@ class SlurmwebAgent:
         cluster: str,
         racksdb: SlurmwebAgentRacksDBSettings,
         metrics: bool,
-        url,
+        url: str,
     ):
         self.version = version
         self.cluster = cluster
@@ -117,9 +118,72 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         ),
     }
 
-    def _agent_info(self, url: str) -> SlurmwebAgent:
-        response = requests.get(f"{url}/info")
-        return SlurmwebAgent.from_json(url, response.json())
+    async def _get_agent_info(self, url) -> SlurmwebAgent:
+        """Retrieve information from one agent, check values and return SlurmwebAgent
+        object if checks pass. Return None on error."""
+        try:
+            logger.info("Retrieving info from agent at url %s", url)
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f"{url}/info") as response:
+                    if response.status != 200:
+                        raise SlurmwebAgentError(
+                            f"unexpected status code {response.status}"
+                        )
+                    agent = SlurmwebAgent.from_json(url, await response.json())
+        except (
+            SlurmwebAgentError,
+            aiohttp.client_exceptions.ClientConnectionError,
+            aiohttp.client_exceptions.ContentTypeError,
+        ) as err:
+            logger.error(
+                "Unable to retrieve agent info from url %s: [%s] %s",
+                url,
+                type(err).__name__,
+                str(err),
+            )
+            return None
+
+        # Check agent version is greater or equal than minimal version specified
+        # in configuration.
+        if not version_greater_or_equal(self.settings.agents.version, agent.version):
+            logger.error(
+                "Unsupported Slurm-web agent API version %s on agent %s, "
+                "discarding this agent",
+                agent.version,
+                agent.cluster,
+            )
+            return None
+        # If RacksDB is enabled on agent, check its version is greater or equal
+        # than minimal version specified in configuration.
+        if agent.racksdb.enabled and not version_greater_or_equal(
+            self.settings.agents.racksdb_version, agent.racksdb.version
+        ):
+            logger.error(
+                "Unsupported RacksDB API version %s on agent %s, discarding this agent",
+                agent.racksdb.version,
+                agent.cluster,
+            )
+            return None
+        logger.debug(
+            "Discovered available agent for cluster %s at url %s",
+            agent.cluster,
+            url,
+        )
+        return agent
+
+    async def _get_agents_info(self):
+        """Return the list of available clusters SlurmwebAgent. Agents on which request
+        failed are filtered out."""
+        return {
+            agent.cluster: agent
+            for agent in await asyncio.gather(
+                *[
+                    self._get_agent_info(url.geturl())
+                    for url in self.settings.agents.url
+                ]
+            )
+            if agent is not None
+        }
 
     @property
     def agents(self):
@@ -131,54 +195,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         if int(time.time()) < self._agents_timeout:
             return self._agents
 
-        self._agents = {}
-        for url in self.settings.agents.url:
-            try:
-                logger.info("Retrieving info from agent at url %s", url.geturl())
-                agent = self._agent_info(url.geturl())
-            except (
-                requests.exceptions.RequestException,
-                SlurmwebCompatJSONDecodeError,
-                SlurmwebAgentError,
-            ) as err:
-                logger.error(
-                    "Unable to retrieve agent info from url %s: [%s] %s",
-                    url.geturl(),
-                    type(err).__name__,
-                    str(err),
-                )
-            else:
-                # Check agent version is greater or equal than minimal version specified
-                # in configuration.
-                if not version_greater_or_equal(
-                    self.settings.agents.version, agent.version
-                ):
-                    logger.error(
-                        "Unsupported Slurm-web agent API version %s on agent %s, "
-                        "discarding this agent",
-                        agent.version,
-                        agent.cluster,
-                    )
-                    continue
-                # If RacksDB is enabled on agent, check its version is greater or equal
-                # than minimal version specified in configuration.
-                if agent.racksdb.enabled and not version_greater_or_equal(
-                    self.settings.agents.racksdb_version, agent.racksdb.version
-                ):
-                    logger.error(
-                        "Unsupported RacksDB API version %s on agent %s, discarding "
-                        "this agent",
-                        agent.racksdb.version,
-                        agent.cluster,
-                    )
-                    continue
-                logger.debug(
-                    "Discovered available agent for cluster %s at url %s",
-                    agent.cluster,
-                    url.geturl(),
-                )
-                self._agents[agent.cluster] = agent
-
+        self._agents = asyncio_run(self._get_agents_info())
         # Set new agents information timeout
         self._agents_timeout = int(time.time()) + 300
 
