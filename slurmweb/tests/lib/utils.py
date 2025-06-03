@@ -12,6 +12,7 @@ import copy
 
 import requests
 import flask
+import aiohttp
 import parameterized
 
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / ".." / "tests" / "assets"
@@ -218,7 +219,7 @@ def async_mock(content):
         return _awaitable
 
 
-def mock_agent_aio_response(asset=None, status=200, content=None):
+def mock_agent_aio_response(asset=None, status=200, content=None, is_json=True):
     """Return mocked aiohttp Response corresponding to the given component asset. If
     asset is None, use status and json."""
     if asset:
@@ -240,13 +241,14 @@ def mock_agent_aio_response(asset=None, status=200, content=None):
         status = requests_statuses[asset]["status"]
     else:
         assert content
-        is_json = True
 
-    response = mock.Mock()
+    response = mock.create_autospec(aiohttp.client_reqrep.ClientResponse)
     response.status = status
     if is_json:
+        response.headers = {"content-type": "application/json"}
         response.json = async_mock(content)
     else:
-        response.text = mock.PropertyMock(return_value=content)
+        response.headers = {"content-type": "text/plain"}
+        response.json = async_mock(content)
 
     return content, AsyncContextManagerMock(response)
