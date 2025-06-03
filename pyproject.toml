@@ -14,7 +14,6 @@ authors = [
 ]
 dependencies = [
     "Flask",
-    "requests",
     "RFL.authentication >= 1.4.0",
     "RFL.core >= 1.1.0",
     "RFL.log >= 1.4.0",
@@ -34,6 +33,7 @@ agent = [
     "prometheus-client",
     "RacksDB[web]",
     "redis",
+    "requests",
 ]
 gateway = [
     "aiohttp",
