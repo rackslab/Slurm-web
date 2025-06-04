@@ -237,7 +237,15 @@ async def async_proxy_agent(
             session, cluster, query, token, with_version
         ) as response:
             if json:
-                return jsonify(await response.json()), response.status
+                try:
+                    return jsonify(await response.json()), response.status
+                except aiohttp.client_exceptions.ContentTypeError as err:
+                    msg = (
+                        f"Unsupported Content-Type for agent {cluster} URL "
+                        f"{err.request_info.url}: {err}"
+                    )
+                    logger.error(msg)
+                    abort(500, msg)
             else:
                 return Response(
                     await response.read(),
