@@ -10,11 +10,11 @@
   },
   "cores": 16,
   "cpus": 32,
-  "gres": "gpu:4",
-  "gres_used": "gpu:0",
+  "gres": "gpu:h100:4",
+  "gres_used": "gpu:h100:1(IDX:0)",
   "last_busy": {
     "infinite": false,
-    "number": 1749123356,
+    "number": 1747754448,
     "set": true
   },
   "name": "gpu1",
@@ -26,8 +26,7 @@
   "reason": "",
   "sockets": 2,
   "state": [
-    "IDLE",
-    "COMPLETING"
+    "ALLOCATED"
   ],
   "threads": 1
 }

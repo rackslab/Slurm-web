@@ -13,11 +13,11 @@
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 18,
+      "cpu_load": 70,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 3313
+        "number": 2978
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -40,15 +40,15 @@
       "features": [],
       "active_features": [],
       "gpu_spec": "",
-      "gres": "gpu:h100:4",
+      "gres": "gpu:4",
       "gres_drained": "N/A",
-      "gres_used": "gpu:h100:1(IDX:0)",
+      "gres_used": "gpu:1",
       "instance_id": "",
       "instance_type": "",
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1747754448
+        "number": 1749072186
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -91,7 +91,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1747256520
+        "number": 1749065118
       },
       "sockets": 2,
       "threads": 1,
@@ -104,7 +104,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1747754451
+    "number": 1749072189
   },
   "meta": {
     "plugin": {
