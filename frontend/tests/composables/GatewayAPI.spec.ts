@@ -31,6 +31,10 @@ import nodeMixed from '../assets/node-mixed.json'
 import nodeWithGpusAllocated from '../assets/node-with-gpus-allocated.json'
 import nodeWithGpusIdle from '../assets/node-with-gpus-idle.json'
 import nodeWithGpusMixed from '../assets/node-with-gpus-mixed.json'
+import nodeWithGpusModelAllocated from '../assets/node-with-gpus-model-allocated.json'
+import nodeWithGpusModelIdle from '../assets/node-with-gpus-model-idle.json'
+import nodeWithGpusModelMixed from '../assets/node-with-gpus-model-mixed.json'
+
 import nodeWithoutGpu from '../assets/node-without-gpu.json'
 
 describe('compareClusterJobSorter', () => {
@@ -584,19 +588,27 @@ describe('getNodeGPUFromGres', () => {
     expect(getNodeGPUFromGres('')).toStrictEqual([])
   })
   test('simple', () => {
+    expect(getNodeGPUFromGres('gpu:2')).toStrictEqual([{ model: 'unknown', count: 2 }])
+  })
+  test('with model', () => {
     expect(getNodeGPUFromGres('gpu:h100:4')).toStrictEqual([{ model: 'h100', count: 4 }])
   })
   test('with index', () => {
+    expect(getNodeGPUFromGres('gpu:2(IDX:0-1)')).toStrictEqual([{ model: 'unknown', count: 2 }])
+  })
+  test('with model and index', () => {
     expect(getNodeGPUFromGres('gpu:h100:2(IDX:0-1)')).toStrictEqual([{ model: 'h100', count: 2 }])
   })
   test('multiple types', () => {
-    expect(getNodeGPUFromGres('gpu:h100:2,gpu:h200:4')).toStrictEqual([
+    expect(getNodeGPUFromGres('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
+      { model: 'unknown', count: 1 },
       { model: 'h100', count: 2 },
       { model: 'h200', count: 4 }
     ])
   })
   test('multiple types with index', () => {
-    expect(getNodeGPUFromGres('gpu:h100:1(IDX:0),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+    expect(getNodeGPUFromGres('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+      { model: 'unknown', count: 1 },
       { model: 'h100', count: 1 },
       { model: 'h200', count: 0 }
     ])
@@ -604,6 +616,15 @@ describe('getNodeGPUFromGres', () => {
   // test with assets
   test('node with gpu allocated', () => {
     const node = { ...nodeWithGpusAllocated }
+    expect(
+      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+    ).toBeGreaterThan(0)
+    expect(
+      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBeGreaterThan(0)
+  })
+  test('node with gpu model allocated', () => {
+    const node = { ...nodeWithGpusModelAllocated }
     expect(
       getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
@@ -620,8 +641,26 @@ describe('getNodeGPUFromGres', () => {
       getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
   })
+  test('node with gpu momdel mixed', () => {
+    const node = { ...nodeWithGpusModelMixed }
+    expect(
+      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+    ).toBeGreaterThan(0)
+    expect(
+      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBeGreaterThan(0)
+  })
   test('node with gpu idle', () => {
     const node = { ...nodeWithGpusIdle }
+    expect(
+      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+    ).toBeGreaterThan(0)
+    expect(
+      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBe(0)
+  })
+  test('node with gpu model idle', () => {
+    const node = { ...nodeWithGpusModelIdle }
     expect(
       getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
@@ -739,16 +778,27 @@ describe('getNodeGPU', () => {
     expect(getNodeGPU('')).toStrictEqual([])
   })
   test('simple', () => {
+    expect(getNodeGPU('gpu:2')).toStrictEqual(['2 x unknown'])
+  })
+  test('with model', () => {
     expect(getNodeGPU('gpu:h100:4')).toStrictEqual(['4 x h100'])
   })
   test('with index', () => {
+    expect(getNodeGPU('gpu:2(IDX:0-1)')).toStrictEqual(['2 x unknown'])
+  })
+  test('with model and index', () => {
     expect(getNodeGPU('gpu:h100:2(IDX:0-1)')).toStrictEqual(['2 x h100'])
   })
   test('multiple types', () => {
-    expect(getNodeGPU('gpu:h100:2,gpu:h200:4')).toStrictEqual(['2 x h100', '4 x h200'])
+    expect(getNodeGPU('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
+      '1 x unknown',
+      '2 x h100',
+      '4 x h200'
+    ])
   })
   test('multiple types with index', () => {
-    expect(getNodeGPU('gpu:h100:1(IDX:0),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+    expect(getNodeGPU('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+      '1 x unknown',
       '1 x h100',
       '0 x h200'
     ])
@@ -759,13 +809,31 @@ describe('getNodeGPU', () => {
     expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
     expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
   })
+  test('node with gpu model allocated', () => {
+    const node = { ...nodeWithGpusModelAllocated }
+    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
+    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+  })
   test('node with gpu mixed', () => {
     const node = { ...nodeWithGpusMixed }
     expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
     expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
   })
+  test('node with gpu model mixed', () => {
+    const node = { ...nodeWithGpusModelMixed }
+    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
+    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+  })
   test('node with gpu idle', () => {
     const node = { ...nodeWithGpusIdle }
+    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
+    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+    getNodeGPU(node.gres_used).forEach((gpu) => {
+      expect(gpu[0]).toBe('0')
+    })
+  })
+  test('node with gpu model idle', () => {
+    const node = { ...nodeWithGpusModelIdle }
     expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
     expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
     getNodeGPU(node.gres_used).forEach((gpu) => {
