@@ -472,16 +472,19 @@ interface NodeGPU {
   count: number
 }
 
+const gpumatcher = new RegExp('^gpu(?::([^:]*))?(?::([^:]*))$')
+
 export function getNodeGPUFromGres(fullGres: string): NodeGPU[] {
   if (!fullGres.length) return []
   const results: NodeGPU[] = []
   fullGres.split(',').forEach((gres) => {
-    const [type, model, end] = gres.split(':')
-    if (type != 'gpu') return
+    const matched = gpumatcher.exec(gres.replace(/\([^)]*\)$/g, ''))
+    if (matched === null) return
+    const [, model, end] = matched
     let count = -1
     if (end.includes('(')) count = parseInt(end.split('(')[0])
     else count = parseInt(end)
-    results.push({ model: model, count: count })
+    results.push({ model: model || 'unknown', count: count })
   })
   return results
 }

@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs: Set Python _requests_ external library dependency on agent only.
 - docs: Update configuration reference documentation.
 
+### Fixed
+- front: Handling of GPU declared without model in Slurm configuration (#584).
+  Contribution from @mehalter.
+
 ## [5.0.0] - 2025-05-27
 
 ### Added
