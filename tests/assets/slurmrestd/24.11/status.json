@@ -119,6 +119,18 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-node-with-gpus-model-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-model-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-model-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-node-without-gpu": {
     "content-type": "application/json",
     "status": 200

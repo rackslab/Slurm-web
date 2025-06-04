@@ -13,11 +13,11 @@
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 70,
+      "cpu_load": 46,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 2978
+        "number": 3001
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -40,32 +40,31 @@
       "features": [],
       "active_features": [],
       "gpu_spec": "",
-      "gres": "gpu:4",
+      "gres": "gpu:h100:2,gpu:h200:4",
       "gres_drained": "N/A",
-      "gres_used": "gpu:0",
+      "gres_used": "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)",
       "instance_id": "",
       "instance_type": "",
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1749072191
+        "number": 1749072969
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "gpu1",
+      "name": "ia1",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "gpu1",
-      "hostname": "gpu1",
+      "address": "ia1",
+      "hostname": "ia1",
       "state": [
-        "IDLE",
-        "COMPLETING"
+        "ALLOCATED"
       ],
       "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
       "owner": "",
       "partitions": [
-        "normal"
+        "standard"
       ],
       "port": 6818,
       "real_memory": 524288,
@@ -92,20 +91,20 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1749065118
+        "number": 1748264252
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=32,mem=512G,billing=32",
-      "version": "24.11.5"
+      "version": "25.05.0-0rc1"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1749072191
+    "number": 1749072970
   },
   "meta": {
     "plugin": {
@@ -115,18 +114,18 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "admin:6820(fd:18)",
       "user": "root",
       "group": "root"
     },
     "command": [],
     "slurm": {
       "version": {
-        "major": "24",
-        "micro": "5",
-        "minor": "11"
+        "major": "25",
+        "micro": "0",
+        "minor": "05"
       },
-      "release": "24.11.5",
+      "release": "25.05.0-0rc1",
       "cluster": "hpc"
     }
   },

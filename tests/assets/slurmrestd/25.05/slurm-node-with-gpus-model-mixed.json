@@ -13,11 +13,11 @@
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 34,
+      "cpu_load": 46,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 3231
+        "number": 3001
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -42,13 +42,13 @@
       "gpu_spec": "",
       "gres": "gpu:h100:2,gpu:h200:4",
       "gres_drained": "N/A",
-      "gres_used": "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)",
+      "gres_used": "gpu:h100:1(IDX:0),gpu:h200:0(IDX:N/A)",
       "instance_id": "",
       "instance_type": "",
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1747755330
+        "number": 1749072966
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -91,7 +91,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1747748741
+        "number": 1748264254
       },
       "sockets": 2,
       "threads": 1,
@@ -104,7 +104,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1747755332
+    "number": 1749072973
   },
   "meta": {
     "plugin": {
@@ -114,7 +114,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:9)",
+      "source": "admin:6820(fd:18)",
       "user": "root",
       "group": "root"
     },

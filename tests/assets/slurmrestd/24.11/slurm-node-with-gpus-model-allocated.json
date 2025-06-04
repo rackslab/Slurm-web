@@ -13,11 +13,11 @@
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 70,
+      "cpu_load": 18,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 2978
+        "number": 3313
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -40,27 +40,26 @@
       "features": [],
       "active_features": [],
       "gpu_spec": "",
-      "gres": "gpu:4",
+      "gres": "gpu:h100:4",
       "gres_drained": "N/A",
-      "gres_used": "gpu:0",
+      "gres_used": "gpu:h100:4(IDX:0-3)",
       "instance_id": "",
       "instance_type": "",
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1749072191
+        "number": 1747754445
       },
       "mcs_label": "",
       "specialized_memory": 0,
-      "name": "gpu1",
+      "name": "gpu2",
       "next_state_after_reboot": [
         "INVALID"
       ],
-      "address": "gpu1",
-      "hostname": "gpu1",
+      "address": "gpu2",
+      "hostname": "gpu2",
       "state": [
-        "IDLE",
-        "COMPLETING"
+        "MIXED"
       ],
       "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
       "owner": "",
@@ -84,15 +83,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 32,
-      "tres_used": "",
-      "tres_weighted": 0.0,
+      "alloc_memory": 512,
+      "alloc_cpus": 1,
+      "alloc_idle_cpus": 31,
+      "tres_used": "cpu=1,mem=512M",
+      "tres_weighted": 1.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1749065118
+        "number": 1747256521
       },
       "sockets": 2,
       "threads": 1,
@@ -105,7 +104,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1749072191
+    "number": 1747754448
   },
   "meta": {
     "plugin": {
