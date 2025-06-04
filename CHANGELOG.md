@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add gateway `[ldap]`>`lookup_as_user` configuration parameter. Contribution
     from @Cornelicorn.
   - Introduce `cache-view` authorization action.
+  - Assign `cache-view` action to _user_ role (all authenticated users) in
+    default authorization policy.
 
 ### Changed
 - gateway:
