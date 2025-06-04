@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- conf: Introduce `view-cache` authorization action.
+
 ### Changed
 - gateway:
   - Check agent version is greater or equal to the minimal supported version
