@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- conf: Introduce `view-cache` authorization action.
+- conf:
+  - Introduce `view-cache` authorization action.
+  - Assign `view-cache` action to _user_ role (all authenticated users) in
+    default authorization policy.
 
 ### Changed
 - gateway:
