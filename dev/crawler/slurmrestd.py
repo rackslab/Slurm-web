@@ -70,6 +70,14 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self.auth = auth
 
+    def get_slurmrestd_json_response(
+        self, query: str, headers: dict[str, str] | None = None
+    ):
+        """Send GET HTTP request to slurmrestd and get JSON result, raw text
+        response, content type and status."""
+        text, content_type, status = self.cluster.query_slurmrestd(query, headers)
+        return json.loads(text), text, content_type, status
+
     def dump_slurmrestd_query(
         self,
         query: str,
@@ -86,7 +94,14 @@ class SlurmrestdCrawler(ComponentCrawler):
             return
 
         text, content_type, status = self.cluster.query_slurmrestd(query, headers)
+        self.dump_slurmrestd_response(
+            asset_name, text, content_type, status, limit_dump, limit_key
+        )
 
+    def dump_slurmrestd_response(
+        self, asset_name, text, content_type, status, limit_dump=0, limit_key=None
+    ):
+        """Save slurmrestd response asset."""
         if asset_name not in self.assets.statuses:
             self.assets.statuses[asset_name] = {}
         self.assets.statuses[asset_name]["content-type"] = content_type
@@ -385,22 +400,43 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
 
     def _crawl_node_gpus_allocated(self, node):
-        self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/node/{node}",
-            "slurm-node-with-gpus-allocated",
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.cluster.api}/node/{node}"
         )
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        )
+        if has_model:
+            asset = "slurm-node-with-gpus-model-allocated"
+        else:
+            asset = "slurm-node-with-gpus-allocated"
+        self.dump_slurmrestd_response(asset, text, content_type, status)
 
     def _crawl_node_gpus_mixed(self, node):
-        self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/node/{node}",
-            "slurm-node-with-gpus-mixed",
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.cluster.api}/node/{node}"
         )
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        )
+        if has_model:
+            asset = "slurm-node-with-gpus-model-mixed"
+        else:
+            asset = "slurm-node-with-gpus-mixed"
+        self.dump_slurmrestd_response(asset, text, content_type, status)
 
     def _crawl_node_gpus_idle(self, node):
-        self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/node/{node}",
-            "slurm-node-with-gpus-idle",
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.cluster.api}/node/{node}"
         )
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        )
+        if has_model:
+            asset = "slurm-node-with-gpus-model-idle"
+        else:
+            asset = "slurm-node-with-gpus-idle"
+        self.dump_slurmrestd_response(asset, text, content_type, status)
 
     def _crawl_node_without_gpu(self, node):
         self.dump_slurmrestd_query(

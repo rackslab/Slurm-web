@@ -329,22 +329,46 @@ class GatewayCrawler(TokenizedComponentCrawler):
         # FIXME: download unknown node
 
     def _crawl_node_gpus_allocated(self, node):
-        self.dump_component_query(
-            f"/api/agents/{self.cluster}/node/{node}",
-            "node-with-gpus-allocated",
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster}/node/{node}"
         )
+        print(response.json())
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
+        )
+        if has_model:
+            asset = "node-with-gpus-model-allocated"
+        else:
+            asset = "node-with-gpus-allocated"
+        self.dump_component_response(asset, response)
 
     def _crawl_node_gpus_mixed(self, node):
-        self.dump_component_query(
-            f"/api/agents/{self.cluster}/node/{node}",
-            "node-with-gpus-mixed",
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster}/node/{node}"
         )
+        print(response.json())
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
+        )
+        if has_model:
+            asset = "node-with-gpus-model-mixed"
+        else:
+            asset = "node-with-gpus-mixed"
+        self.dump_component_response(asset, response)
 
     def _crawl_node_gpus_idle(self, node):
-        self.dump_component_query(
-            f"/api/agents/{self.cluster}/node/{node}",
-            "node-with-gpus-idle",
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster}/node/{node}"
         )
+        print(response.json())
+        has_model = any(
+            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
+        )
+        if has_model:
+            asset = "node-with-gpus-model-idle"
+        else:
+            asset = "node-with-gpus-idle"
+        self.dump_component_response(asset, response)
 
     def _crawl_node_without_gpu(self, node):
         self.dump_component_query(
