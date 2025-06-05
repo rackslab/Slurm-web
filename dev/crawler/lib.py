@@ -409,6 +409,25 @@ class DevelopmentHostCluster:
         )
 
 
+def get_component_response(
+    url: str,
+    query: str,
+    headers: str,
+    method: str = "GET",
+    content: t.Optional[t.Dict] = None,
+):
+    if method == "GET":
+        response = requests.get(f"{url}{query}", headers=headers)
+    elif method == "POST":
+        kwargs = {}
+        if content:
+            kwargs["json"] = content
+        response = requests.post(f"{url}{query}", headers=headers, **kwargs)
+    else:
+        raise RuntimeError(f"Unsupport request method {method}")
+    return response
+
+
 def dump_component_query(
     requests_statuses,
     url: str,
@@ -446,6 +465,19 @@ def dump_component_query(
         response = requests.post(f"{url}{query}", headers=headers, **kwargs)
     else:
         raise RuntimeError(f"Unsupport request method {method}")
+    dump_component_response(
+        requests_statuses, assets_path, asset_name, response, prettify, limit_dump
+    )
+
+
+def dump_component_response(
+    requests_statuses,
+    assets_path: Path,
+    asset_name: dict[int, str] | str,
+    response,
+    prettify: bool = True,
+    limit_dump=0,
+):
     if isinstance(asset_name, dict):
         _asset_name = asset_name[response.status_code]
     else:
@@ -510,6 +542,13 @@ class TokenizedComponentCrawler(ComponentCrawler):
         self.url = url
         self.token = token
 
+    def get_component_response(
+        self, query: str, headers: dict[str, str] | None = None, **kwargs
+    ):
+        if headers is None:
+            headers = {"Authorization": f"Bearer {self.token}"}
+        return get_component_response(self.url, query, headers, **kwargs)
+
     def dump_component_query(
         self,
         query: str,
@@ -527,4 +566,11 @@ class TokenizedComponentCrawler(ComponentCrawler):
             self.assets.path,
             asset_name,
             **kwargs,
+        )
+
+    def dump_component_response(
+        self, asset_name: dict[int, str] | str, response, **kwargs
+    ):
+        return dump_component_response(
+            self.assets.statuses, self.assets.path, asset_name, response, **kwargs
         )
