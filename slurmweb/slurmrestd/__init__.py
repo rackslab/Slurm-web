@@ -425,6 +425,9 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
         if data is None:
             data = func(*args, **kwargs)
             self.service.put(key, data, expiration)
+            self.service.count_miss(key)
+        else:
+            self.service.count_hit(key)
         return data
 
     def jobs(self):
