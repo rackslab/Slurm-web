@@ -37,11 +37,13 @@ class SlurmwebAgent:
         cluster: str,
         racksdb: SlurmwebAgentRacksDBSettings,
         metrics: bool,
+        cache: bool,
         url: str,
     ):
         self.version = version
         self.cluster = cluster
         self.metrics = metrics
+        self.cache = cache
         self.racksdb = racksdb
         self.url = url
 
@@ -53,6 +55,7 @@ class SlurmwebAgent:
                 data["cluster"],
                 SlurmwebAgentRacksDBSettings(**data["racksdb"]),
                 data["metrics"],
+                data["cache"],
                 url,
             )
         except KeyError as err:
