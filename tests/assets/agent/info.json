@@ -1,9 +1,10 @@
 {
-  "cluster": "tiny",
+  "cache": true,
+  "cluster": "atlas",
   "metrics": true,
   "racksdb": {
     "enabled": true,
-    "infrastructure": "tiny",
+    "infrastructure": "emulator",
     "version": "0.5.0"
   },
   "version": "5.0.0"
