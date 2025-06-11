@@ -37,6 +37,7 @@ def info():
     data = {
         "cluster": current_app.settings.service.cluster,
         "metrics": current_app.settings.metrics.enabled,
+        "cache": current_app.settings.cache.enabled,
         "racksdb": {
             "enabled": current_app.settings.racksdb.enabled,
             "infrastructure": current_app.settings.racksdb.infrastructure,
