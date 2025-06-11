@@ -7,10 +7,12 @@
 -->
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
+import { useTemplateRef, watch } from 'vue'
 import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
 import type { MetricJobState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+
+const { cluster } = defineProps<{ cluster: string }>()
 
 const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
@@ -54,7 +56,19 @@ const labels: Record<string, { group: MetricJobState[]; color: string }> = {
   }
 }
 
-const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, labels)
+const liveChart = useDashboardLiveChart<MetricJobState>(
+  cluster,
+  'metrics_jobs',
+  chartCanvas,
+  labels
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    liveChart.setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>

@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
@@ -65,7 +65,12 @@ function isValidJobField(key: string): key is JobField {
   return typeof key === 'string' && JobsFields.includes(key as JobField)
 }
 
-const { data, unable, loaded } = useClusterDataPoller<ClusterIndividualJob>('job', 5000, id)
+const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterIndividualJob>(
+  cluster,
+  'job',
+  5000,
+  id
+)
 
 const displayTags = ref<Record<JobField, { show: boolean; highlight: boolean }>>({
   user: { show: false, highlight: false },
@@ -175,6 +180,13 @@ function highlightField(field: JobField) {
     displayTags.value[field].highlight = false
   }, 2000)
 }
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
+  }
+)
 
 onMounted(() => {
   /* If a job field is in route hash, highlight this field. */

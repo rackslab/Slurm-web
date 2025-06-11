@@ -15,6 +15,8 @@ import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistog
 import ChartJobsHistogram from '@/components/dashboard/ChartJobsHistogram.vue'
 import { isMetricRange, type MetricRange } from '@/composables/GatewayAPI'
 
+const { cluster } = defineProps<{ cluster: string }>()
+
 const router = useRouter()
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
@@ -77,6 +79,6 @@ onBeforeMount(() => {
       </span>
     </div>
   </div>
-  <ChartResourcesHistogram v-if="runtimeStore.hasPermission('view-nodes')" />
-  <ChartJobsHistogram v-if="runtimeStore.hasPermission('view-jobs')" />
+  <ChartResourcesHistogram v-if="runtimeStore.hasPermission('view-nodes')" :cluster="cluster" />
+  <ChartJobsHistogram v-if="runtimeStore.hasPermission('view-jobs')" :cluster="cluster" />
 </template>

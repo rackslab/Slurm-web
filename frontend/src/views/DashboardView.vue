@@ -7,6 +7,7 @@
 -->
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { getMBHumanUnit } from '@/composables/GatewayAPI'
 import type { ClusterStats } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -19,7 +20,18 @@ const runtimeStore = useRuntimeStore()
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
+const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterStats>(
+  cluster,
+  'stats',
+  10000
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>
@@ -40,7 +52,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">Nodes</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-nodes"
             class="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-500"
           >
@@ -53,7 +65,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">Cores</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-cores"
             class="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-500"
           >
@@ -66,7 +78,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">Memory</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-cores"
             class="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-500"
           >
@@ -79,7 +91,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">GPU</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-cores"
             :class="[
               data.resources.gpus
@@ -97,7 +109,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">Running jobs</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-jobs-running"
             class="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-500"
           >
@@ -110,7 +122,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
         <div class="bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-gray-900">
           <p class="text-sm leading-6 font-medium text-gray-400 dark:text-gray-200">Total jobs</p>
           <span
-            v-if="data"
+            v-if="loaded && data"
             id="metric-jobs-total"
             class="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-500"
           >
@@ -121,7 +133,7 @@ const { data, unable } = useClusterDataPoller<ClusterStats>('stats', 10000)
           </div>
         </div>
       </div>
-      <DashboardCharts v-if="runtimeStore.getCluster(cluster).metrics"></DashboardCharts>
+      <DashboardCharts v-if="runtimeStore.getCluster(cluster).metrics" :cluster="cluster" />
     </div>
   </ClusterMainLayout>
 </template>
