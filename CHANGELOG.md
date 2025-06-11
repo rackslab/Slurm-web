@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update authorization policy reference documentation.
   - Update configuration reference documentation.
+  - Mention cache metrics in metrics configuration reference documentation.
 
 ### Fixed
 - gateway: Handle content type error when expecting JSON response from agent.
