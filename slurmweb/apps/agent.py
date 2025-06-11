@@ -146,7 +146,8 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         if self.settings.racksdb.infrastructure is None:
             self.settings.racksdb.infrastructure = self.settings.service.cluster
 
-        self.metrics = None
+        self.metrics_collector = None
+        self.metrics_db = None
         if self.settings.metrics.enabled:
             # Lazy load metrics module to avoid failing on missing optional external
             # dependency when feature is actually disabled.
