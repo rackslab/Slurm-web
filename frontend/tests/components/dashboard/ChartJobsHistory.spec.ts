@@ -17,7 +17,11 @@ describe('ChartJobsHistogram.vue', () => {
     init_plugins()
   })
   test('should display jobs charts histogram', async () => {
-    const wrapper = mount(ChartJobsHistogram)
+    const wrapper = mount(ChartJobsHistogram, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     const placeholder = wrapper.get('img[alt="Loading chart"]')
     const canvas = wrapper.get({ ref: 'chartCanvas' })
 
@@ -40,7 +44,11 @@ describe('ChartJobsHistogram.vue', () => {
     expect(canvas.attributes('style')).not.toContain('display: none;')
   })
   test('should display error when unable to load data', async () => {
-    const wrapper = mount(ChartJobsHistogram)
+    const wrapper = mount(ChartJobsHistogram, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     mockClusterDataPoller.unable.value = true
     await flushPromises()
     // Check error message
