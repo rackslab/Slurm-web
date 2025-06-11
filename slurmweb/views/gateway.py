@@ -268,6 +268,12 @@ def stats(cluster: str):
 
 @check_jwt
 @validate_cluster
+def cache_stats(cluster: str):
+    return proxy_agent(cluster, "cache/stats", request.token)
+
+
+@check_jwt
+@validate_cluster
 def jobs(cluster: str):
     return proxy_agent(cluster, "jobs", request.token)
 
