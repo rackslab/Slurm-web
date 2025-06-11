@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Support querying cache metrics.
   - Add cache boolean in `/info` endpoint to indicate whether cache service is
     enabled on agent.
+  - Add `/cache` route to retrieve cache statistics.
 - conf:
   - Introduce `view-cache` authorization action.
   - Assign `view-cache` action to _user_ role (all authenticated users) in
