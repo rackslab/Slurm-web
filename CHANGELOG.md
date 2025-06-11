@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- gateway: Support loading LDAP bind password from separate file (#585).
-  Contribution from @Cornelicorn.
+- gateway:
+  - Support loading LDAP bind password from separate file (#585). Contribution
+    from @Cornelicorn.
+  - Add cache boolean in `/clusters` response to indicate whether cache service
+    is enabled on agents.
 - agent:
   - Record slurmrestd cache hit and miss counts in cache service.
   - Add metrics with cache hit and miss counts.
