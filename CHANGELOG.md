@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- gateway: Add cache boolean in `/clusters` response to indicate whether cache
-  service is enabled on agents.
+- gateway:
+  - Add cache boolean in `/clusters` response to indicate whether cache service
+    is enabled on agents.
+  - Add `/agent/{cluster}/cache` route to reverse proxy request to agent
+    `/cache`.
 - agent:
   - Record slurmrestd cache hit and miss counts in cache service.
   - Add metrics with cache hit and miss counts.
