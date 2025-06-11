@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -36,12 +36,12 @@ function backToResources() {
   })
 }
 
-const node = useClusterDataPoller<ClusterIndividualNode>('node', 5000, nodeName)
+const node = useClusterDataPoller<ClusterIndividualNode>(cluster, 'node', 5000, nodeName)
 
 /* Poll jobs on current nodes if user has permission on view-jobs action. */
 let jobs: ClusterDataPoller<ClusterJob[]> | undefined
 if (runtimeStore.hasPermission('view-jobs')) {
-  jobs = useClusterDataPoller<ClusterJob[]>('jobs', 10000, nodeName)
+  jobs = useClusterDataPoller<ClusterJob[]>(cluster, 'jobs', 10000, nodeName)
 }
 
 const gpuAvailable = computed(() => {
@@ -56,6 +56,13 @@ const gpuAllocated = computed(() => {
     0
   )
 })
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    node.setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>
