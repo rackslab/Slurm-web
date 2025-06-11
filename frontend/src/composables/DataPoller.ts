@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ref, onUnmounted, onMounted, watch } from 'vue'
+import { ref, onUnmounted, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
@@ -22,11 +22,13 @@ export interface ClusterDataPoller<ResponseType> {
   data: Ref<ResponseType | undefined>
   unable: Ref<boolean>
   loaded: Ref<boolean>
+  setCluster: (newCluster: string) => void
   setCallback: (newCallback: GatewayAnyClusterApiKey) => void
   setParam: (newOtherParam: string | number) => void
 }
 
 export function useClusterDataPoller<Type>(
+  cluster: string,
   initialCallback: GatewayAnyClusterApiKey,
   timeout: number,
   initialOtherParam?: number | string
@@ -47,9 +49,9 @@ export function useClusterDataPoller<Type>(
     router.push({ name: 'signout' })
   }
 
-  function reportPermissionError(error: PermissionError, cluster: string) {
+  function reportPermissionError(error: PermissionError) {
     runtime.reportError(`Permission error: ${error.message}`)
-    stop(cluster)
+    stop()
     unable.value = true
   }
 
@@ -58,7 +60,7 @@ export function useClusterDataPoller<Type>(
     unable.value = true
   }
 
-  async function poll(cluster: string) {
+  async function poll() {
     try {
       unable.value = false
       if (gateway.isValidGatewayClusterWithStringAPIKey(callback)) {
@@ -71,84 +73,60 @@ export function useClusterDataPoller<Type>(
 
       loaded.value = true
     } catch (error) {
-      /*
-       * Skip errors received lately from other clusters, after the view cluster
-       * parameter has changed.
-       */
-      if (cluster === runtime.currentCluster?.name) {
-        if (error instanceof AuthenticationError) {
-          reportAuthenticationError(error)
-        } else if (error instanceof PermissionError) {
-          reportPermissionError(error, cluster)
-        } else if (!(error instanceof CanceledRequestError) && error instanceof Error) {
-          /* Ignore canceled requests errors */
-          reportOtherError(error)
-        }
+      if (error instanceof AuthenticationError) {
+        reportAuthenticationError(error)
+      } else if (error instanceof PermissionError) {
+        reportPermissionError(error)
+      } else if (!(error instanceof CanceledRequestError) && error instanceof Error) {
+        /* Ignore canceled requests errors */
+        reportOtherError(error)
       }
     }
   }
 
-  async function start(cluster: string) {
+  async function start() {
     console.log(`Start polling ${callback} on cluster ${cluster}`)
     _stop = false
-    await poll(cluster)
-    if (cluster === runtime.currentCluster?.name && !_stop) {
+    await poll()
+    if (!_stop) {
       _timeout = window.setTimeout(start, timeout, cluster)
     }
   }
 
-  function stop(cluster: string) {
+  function stop() {
     console.log(`Stop polling ${callback} for cluster ${cluster}`)
     _stop = true
     clearTimeout(_timeout)
     gateway.abort()
   }
 
+  function setCluster(newCluster: string) {
+    stop()
+    cluster = newCluster
+    loaded.value = false
+    start()
+  }
+
   function setCallback(newCallback: GatewayAnyClusterApiKey) {
-    if (runtime.currentCluster) stop(runtime.currentCluster.name)
+    stop()
     callback = newCallback
     loaded.value = false
-    if (runtime.currentCluster) {
-      start(runtime.currentCluster.name)
-    }
+    start()
   }
 
   function setParam(newOtherParam: string | number) {
-    if (runtime.currentCluster) stop(runtime.currentCluster.name)
+    stop()
     otherParam = newOtherParam
     loaded.value = false
-    if (runtime.currentCluster) {
-      start(runtime.currentCluster.name)
-    }
+    start()
   }
 
-  watch(
-    () => runtime.currentCluster,
-    (newCluster, oldCluster) => {
-      if (oldCluster) {
-        stop(oldCluster.name)
-      }
-      console.log(
-        `Updating ${callback} poller from cluster ${oldCluster?.name} to ${newCluster?.name}`
-      )
-      data.value = undefined
-      loaded.value = false
-      if (newCluster) {
-        start(newCluster.name)
-      }
-    }
-  )
-
   onMounted(() => {
-    if (runtime.currentCluster) {
-      start(runtime.currentCluster.name)
-    }
+    start()
   })
   onUnmounted(() => {
-    if (runtime.currentCluster) {
-      stop(runtime.currentCluster.name)
-    }
+    stop()
   })
 
-  return { data, unable, loaded, setCallback, setParam }
+  return { data, unable, loaded, setCluster, setCallback, setParam }
 }

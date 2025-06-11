@@ -43,7 +43,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<AccountDescription[]>('accounts', cluster)
+const { data } = useClusterDataGetter<AccountDescription[]>(cluster, 'accounts')
 </script>
 
 <template>
