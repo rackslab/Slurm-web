@@ -50,3 +50,13 @@ class CachingService:
             redis.exceptions.ResponseError,
         ) as err:
             raise SlurmwebCacheError(str(err)) from err
+
+    def count_miss(self, key: CacheKey):
+        _key = f"cache-miss-{key.count}"
+        self.connection.incr(_key)
+        self.connection.incr("cache-miss-total")
+
+    def count_hit(self, key: CacheKey):
+        _key = f"cache-hit-{key.count}"
+        self.connection.incr(_key)
+        self.connection.incr("cache-hit-total")
