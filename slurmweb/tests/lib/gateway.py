@@ -47,6 +47,7 @@ def fake_slurmweb_agent(cluster: str):
             enabled=True, version=racksdb_get_version(), infrastructure=cluster
         ),
         metrics=True,
+        cache=True,
         url=f"http://{cluster}",
     )
 
