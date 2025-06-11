@@ -194,6 +194,7 @@ def metrics(metric):
         "cores": "view-nodes",
         "gpus": "view-nodes",
         "jobs": "view-jobs",
+        "cache": "view-cache",
     }
 
     # Check metric is supported or send HTTP/404
