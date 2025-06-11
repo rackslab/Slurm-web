@@ -41,7 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Set Python _requests_ external library dependency on agent only.
   - Bump minimal version of `RFL.authentication` to v1.5.0.
-- docs: Update configuration reference documentation.
+- docs:
+  - Update authorization policy reference documentation.
+  - Update configuration reference documentation.
 
 ### Fixed
 - gateway: Handle content type error when expecting JSON response from agent.
