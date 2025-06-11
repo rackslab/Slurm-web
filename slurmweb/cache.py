@@ -5,11 +5,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import typing as t
+import logging
 
 import redis
 import pickle
 
 from .errors import SlurmwebCacheError
+
+logger = logging.getLogger(__name__)
 
 
 class CacheKey:
@@ -25,6 +28,9 @@ class CacheKey:
 
 
 class CachingService:
+    KEY_PREFIX_MISS = "cache-miss-"
+    KEY_PREFIX_HIT = "cache-hit-"
+
     def __init__(self, host: str, port: int, password: t.Union[str, None]):
         self.host = host
         self.port = port
@@ -52,11 +58,40 @@ class CachingService:
             raise SlurmwebCacheError(str(err)) from err
 
     def count_miss(self, key: CacheKey):
-        _key = f"cache-miss-{key.count}"
+        self.connection.sadd("cache-miss-keys", key.count)
+        _key = f"{self.KEY_PREFIX_MISS}{key.count}"
         self.connection.incr(_key)
         self.connection.incr("cache-miss-total")
 
     def count_hit(self, key: CacheKey):
-        _key = f"cache-hit-{key.count}"
+        self.connection.sadd("cache-hit-keys", key.count)
+        _key = f"{self.KEY_PREFIX_HIT}{key.count}"
         self.connection.incr(_key)
         self.connection.incr("cache-hit-total")
+
+    def metrics(self):
+        cache_misses = {}
+        cache_hits = {}
+        for _key in self.connection.smembers("cache-miss-keys"):
+            _key = _key.decode()
+            full_key = f"{self.KEY_PREFIX_MISS}{_key}"
+            value = self.connection.get(full_key)
+            if not value:
+                logger.warning("Miss cache key %s referenced without value", full_key)
+                continue
+            cache_misses[_key] = int(value)
+        for _key in self.connection.smembers("cache-hit-keys"):
+            _key = _key.decode()
+            full_key = f"{self.KEY_PREFIX_HIT}{_key}"
+            value = self.connection.get(full_key)
+            if not value:
+                logger.warning("Hit cache key %s referenced without value", full_key)
+                continue
+            cache_hits[_key] = int(value)
+
+        return (
+            cache_hits,
+            cache_misses,
+            int(self.connection.get("cache-hit-total")),
+            int(self.connection.get("cache-miss-total")),
+        )
