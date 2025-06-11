@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Record slurmrestd cache hit and miss counts in cache service.
   - Add metrics with cache hit and miss counts.
   - Support querying cache metrics.
+  - Add cache boolean in `/info` endpoint to indicate whether cache service is
+    enabled on agent.
 - ldap-check: Support loading LDAP bind password from separate file.
   Contribution from @Cornelicorn.
 - conf:
