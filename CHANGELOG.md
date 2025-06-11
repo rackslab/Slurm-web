@@ -26,8 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway: Handle content type error when expecting JSON response from agent.
 - agent: Return HTTP/501 instead of crashing when metrics are requested but
   metrics service is disabled.
-- front: Handling of GPU declared without model in Slurm configuration (#584).
-  Contribution from @mehalter.
+- front:
+  - Handling of GPU declared without model in Slurm configuration (#584).
+    Contribution from @mehalter.
+  - Regression on handling of denied clusters in cluster list.
 
 ## [5.0.0] - 2025-05-27
 

@@ -46,9 +46,7 @@ async function getClustersDescriptions() {
        * set to true if stats retrieval fail later on.
        */
       element.error = false
-      if (element.permissions.actions.length > 0) {
-        runtimeStore.addCluster(element)
-      }
+      runtimeStore.addCluster(element)
     })
     loaded.value = true
   } catch (error) {

@@ -58,7 +58,7 @@ const authStore = useAuthStore()
     <div class="mt-6 border-t border-gray-100 dark:border-gray-700">
       <dl class="divide-y divide-gray-100 dark:divide-gray-700">
         <div
-          v-for="cluster in runtimeStore.availableClusters"
+          v-for="cluster in runtimeStore.getAllowedClusters()"
           :key="cluster.name"
           class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
         >

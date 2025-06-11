@@ -74,6 +74,10 @@ export const useRuntimeStore = defineStore('runtime', () => {
     return availableClusters.value.filter((cluster) => cluster.name === name)[0]
   }
 
+  function getAllowedClusters() {
+    return availableClusters.value.filter((cluster) => cluster.permissions.actions.length > 0)
+  }
+
   function checkClusterAvailable(name: string): boolean {
     return availableClusters.value.filter((cluster) => cluster.name === name).length > 0
   }
@@ -126,6 +130,7 @@ export const useRuntimeStore = defineStore('runtime', () => {
     currentCluster,
     addCluster,
     getCluster,
+    getAllowedClusters,
     checkClusterAvailable,
     hasPermission,
     hasClusterPermission,
