@@ -40,6 +40,8 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         )
         self.slurmrestd.service.get = mock.Mock(return_value=None)
         self.slurmrestd.service.put = mock.Mock()
+        self.slurmrestd.service.count_hit = mock.Mock()
+        self.slurmrestd.service.count_miss = mock.Mock()
         jobs = self.slurmrestd.jobs()
         for idx in range(len(jobs)):
             self.assertEqual(jobs[idx]["job_id"], asset[idx]["job_id"])
@@ -50,6 +52,8 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd.service.put.assert_called_once_with(
             CacheKey("jobs"), jobs, self.settings.cache.jobs
         )
+        self.slurmrestd.service.count_hit.assert_not_called()
+        self.slurmrestd.service.count_miss.assert_called_once_with(CacheKey("jobs"))
 
     @all_slurm_versions
     def test_in_cache(self, slurm_version):
@@ -58,6 +62,8 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         )
         self.slurmrestd.service.get = mock.Mock(return_value=asset)
         self.slurmrestd.service.put = mock.Mock()
+        self.slurmrestd.service.count_hit = mock.Mock()
+        self.slurmrestd.service.count_miss = mock.Mock()
         jobs = self.slurmrestd.jobs()
         for idx in range(len(jobs)):
             self.assertEqual(jobs[idx]["job_id"], asset[idx]["job_id"])
@@ -65,6 +71,8 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd.service.get.assert_called_once_with(CacheKey("jobs"))
         # Check SlurmrestdFilteredCached has not put jobs again in cache.
         self.slurmrestd.service.put.assert_not_called()
+        self.slurmrestd.service.count_hit.assert_called_once_with(CacheKey("jobs"))
+        self.slurmrestd.service.count_miss.assert_not_called()
 
     @all_slurm_versions
     def test_cache_get_error(self, slurm_version):
