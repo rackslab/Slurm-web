@@ -183,6 +183,11 @@ def accounts():
 
 @check_jwt
 def metrics(metric):
+    if current_app.metrics_db is None:
+        error = "Metrics are disabled, unable to query values"
+        logger.warning(error)
+        abort(501, error)
+
     # Dictionnary of metrics and required policy actions associations
     metrics_policy_actions = {
         "nodes": "view-nodes",
