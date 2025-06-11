@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Support querying cache metrics.
   - Add cache boolean in `/info` endpoint to indicate whether cache service is
     enabled on agent.
+  - Add `/cache/stats` route to retrieve cache statistics.
 - ldap-check: Support loading LDAP bind password from separate file.
   Contribution from @Cornelicorn.
 - conf:

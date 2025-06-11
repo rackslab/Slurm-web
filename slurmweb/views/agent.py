@@ -182,6 +182,21 @@ def accounts():
     return jsonify(slurmrest("accounts"))
 
 
+@rbac_action("cache-view")
+def cache_stats():
+    if current_app.cache is None:
+        error = "Cache service is disabled, unable to query cache statistics"
+        logger.warning(error)
+        abort(501, error)
+    (cache_hits, cache_misses, total_hits, total_misses) = current_app.cache.metrics()
+    return jsonify(
+        {
+            "hit": {"keys": cache_hits, "total": total_hits},
+            "miss": {"keys": cache_misses, "total": total_misses},
+        }
+    )
+
+
 @check_jwt
 def metrics(metric):
     if current_app.metrics_db is None:
