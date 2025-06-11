@@ -20,7 +20,7 @@ const runtimeStore = useRuntimeStore()
 </script>
 
 <template>
-  <template v-if="runtimeStore.availableClusters.length > 1">
+  <template v-if="runtimeStore.getAllowedClusters().length > 1">
     <Popover class="relative">
       <PopoverButton
         class="hover:bg-slurmweb-light hover:dark:bg-slurmweb-dark/30 inline-flex items-center gap-x-1 rounded-sm p-3 leading-6 font-bold text-transparent hover:text-gray-900 focus:outline-hidden hover:dark:text-gray-200"
@@ -46,7 +46,7 @@ const runtimeStore = useRuntimeStore()
           >
             <div class="p-4">
               <div
-                v-for="cluster in runtimeStore.availableClusters"
+                v-for="cluster in runtimeStore.getAllowedClusters()"
                 :key="cluster.name"
                 class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50 hover:dark:bg-gray-800"
               >
