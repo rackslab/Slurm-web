@@ -33,7 +33,11 @@ const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
 const runtimeStore = useRuntimeStore()
 const route = useRoute()
 const router = useRouter()
-const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>('nodes', 10000)
+const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterNode[]>(
+  cluster,
+  'nodes',
+  10000
+)
 
 function arraysEqual<CType>(a: Array<CType>, b: Array<CType>): boolean {
   if (a === b) return true
@@ -141,6 +145,13 @@ watch(
       }
     }
     foldedNodesShow.value = newFoldedNodesShow
+  }
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
   }
 )
 

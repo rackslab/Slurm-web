@@ -20,16 +20,19 @@ import { DateTime } from 'luxon'
 
 export interface DashboardLiveChart<MetricKeyType extends string> {
   metrics: ClusterDataPoller<Record<MetricKeyType, MetricValue[]>>
+  setCluster: (cluster: string) => void
   setCallback: (callback: GatewayAnyClusterApiKey) => void
 }
 
 export function useDashboardLiveChart<MetricKeyType extends string>(
+  cluster: string,
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,
   labels: Record<string, { group: MetricKeyType[]; color: string }>
 ): DashboardLiveChart<MetricKeyType> {
   const runtimeStore = useRuntimeStore()
   const metrics = useClusterDataPoller<Record<MetricKeyType, MetricValue[]>>(
+    cluster,
     callback,
     30000,
     runtimeStore.dashboard.range
@@ -206,6 +209,10 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
       }
     }
   }
+  function setCluster(newCluster: string) {
+    if (chart) chart.data.datasets = []
+    metrics.setCluster(newCluster)
+  }
 
   /* Clear chart datasets and set new metrics callback */
   function setCallback(callback: GatewayAnyClusterApiKey) {
@@ -223,5 +230,5 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
     }
   })
 
-  return { metrics, setCallback }
+  return { metrics, setCluster, setCallback }
 }

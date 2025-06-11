@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
@@ -26,7 +26,12 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable } = useClusterDataPoller<ClusterQos[]>('qos', 10000)
+const {
+  data,
+  unable,
+  loaded: _loaded,
+  setCluster
+} = useClusterDataPoller<ClusterQos[]>(cluster, 'qos', 10000)
 
 const helpModalShow: Ref<boolean> = ref(false)
 const modalQosLimit: Ref<QosModalLimitDescription | undefined> = ref()
@@ -100,6 +105,13 @@ function qosResourcesLimits(qos: ClusterQos) {
     }
   ]
 }
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>
