@@ -218,4 +218,5 @@ def metrics(metric):
             current_app.metrics_db.request(metric, request.args.get("range", "hour"))
         )
     except SlurmwebMetricsDBError as err:
+        logger.warning(str(err))
         abort(500, str(err))

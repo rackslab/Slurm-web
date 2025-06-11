@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent:
  - Change route to information endpoint from `/v{version}/info` to `/info`.
  - Return version of agent in information endpoint.
+ - Emit warning log entry when `SlurmwebMetricsDBError` is raised before
+   responding HTTP/500.
 - conf: Update description of `agent` > `version` gateway parameter to describe
   its new semantic.
 - pkgs: Set Python _requests_ external library dependency on agent only.
