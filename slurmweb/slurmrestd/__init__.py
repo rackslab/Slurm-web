@@ -13,6 +13,7 @@ import ClusterShell
 
 from .unix import SlurmrestdUnixAdapter
 from .auth import SlurmrestdAuthentifier
+from ..cache import CacheKey
 from .errors import (
     SlurmrestdNotFoundError,
     SlurmrestdInvalidResponseError,
@@ -412,7 +413,7 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
 
     def _cached(
         self,
-        cache_key: str,
+        key: "CacheKey",
         expiration: int,
         func: t.Callable,
         *args: t.Tuple[t.Any, ...],
@@ -420,36 +421,46 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
     ) -> t.Any:
         if not self.cache.enabled:
             return func(*args, **kwargs)
-        data = self.service.get(cache_key)
+        data = self.service.get(key)
         if data is None:
             data = func(*args, **kwargs)
-            self.service.put(cache_key, data, expiration)
+            self.service.put(key, data, expiration)
         return data
 
     def jobs(self):
-        return self._cached("jobs", self.cache.jobs, super().jobs)
+        return self._cached(CacheKey("jobs"), self.cache.jobs, super().jobs)
 
     def job(self, job_id: int):
-        return self._cached(f"job-{job_id}", self.cache.job, super().job, job_id)
+        return self._cached(
+            CacheKey(f"job-{job_id}", "individual-job"),
+            self.cache.job,
+            super().job,
+            job_id,
+        )
 
     def nodes(self):
-        return self._cached("nodes", self.cache.nodes, super().nodes)
+        return self._cached(CacheKey("nodes"), self.cache.nodes, super().nodes)
 
     def node(self, node_name: str):
         return self._cached(
-            f"node-{node_name}", self.cache.node, super().node, node_name
+            CacheKey(f"node-{node_name}", "individual-node"),
+            self.cache.node,
+            super().node,
+            node_name,
         )
 
     def partitions(self):
-        return self._cached("partitions", self.cache.partitions, super().partitions)
+        return self._cached(
+            CacheKey("partitions"), self.cache.partitions, super().partitions
+        )
 
     def accounts(self):
-        return self._cached("accounts", self.cache.accounts, super().accounts)
+        return self._cached(CacheKey("accounts"), self.cache.accounts, super().accounts)
 
     def reservations(self: str):
         return self._cached(
-            "reservations", self.cache.reservations, super().reservations
+            CacheKey("reservations"), self.cache.reservations, super().reservations
         )
 
     def qos(self: str):
-        return self._cached("qos", self.cache.qos, super().qos)
+        return self._cached(CacheKey("qos"), self.cache.qos, super().qos)
