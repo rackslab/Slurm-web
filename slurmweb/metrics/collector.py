@@ -28,13 +28,20 @@ from ..slurmrestd.errors import (
 
 if t.TYPE_CHECKING:
     from rfl.settings import RuntimeSettings
+    from ..slurmrestd import SlurmrestdFilteredCached
+    from ..cache import CachingService
 
 logger = logging.getLogger(__name__)
 
 
 class SlurmWebMetricsCollector(Collector):
-    def __init__(self, slurmrestd):
+    def __init__(
+        self,
+        slurmrestd: "SlurmrestdFilteredCached",
+        cache: t.Optional["CachingService"],
+    ):
         self.slurmrestd = slurmrestd
+        self.cache = cache
         self.register()
 
     def describe(self):
@@ -107,6 +114,31 @@ class SlurmWebMetricsCollector(Collector):
         yield c
         yield prometheus_client.core.GaugeMetricFamily(
             "slurm_jobs_total", "Slurm total number of jobs", value=jobs_total
+        )
+
+        # Skip cache metrics if cache service is disabled
+        if not self.cache:
+            return
+        (cache_hits, cache_misses, total_hits, total_misses) = self.cache.metrics()
+        c = prometheus_client.core.GaugeMetricFamily(
+            "slurmweb_cache_hit", "Slurm-web cache hits", labels=["key"]
+        )
+        for _key, value in cache_hits.items():
+            c.add_metric([_key], value)
+        yield c
+        c = prometheus_client.core.GaugeMetricFamily(
+            "slurmweb_cache_miss", "Slurm-web cache misses", labels=["key"]
+        )
+        for _key, value in cache_misses.items():
+            c.add_metric([_key], value)
+        yield c
+        yield prometheus_client.core.GaugeMetricFamily(
+            "slurmweb_cache_hit_total", "Slurm-web cache total hits", value=total_hits
+        )
+        yield prometheus_client.core.GaugeMetricFamily(
+            "slurmweb_cache_miss_total",
+            "Slurm-web cache total misses",
+            value=total_misses,
         )
 
     def collect(self):

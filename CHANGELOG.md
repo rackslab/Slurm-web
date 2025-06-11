@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - gateway: Support loading LDAP bind password from separate file (#585).
   Contribution from @Cornelicorn.
-- agent: Record slurmrestd cache hit and miss counts in cache service.
+- agent:
+  - Record slurmrestd cache hit and miss counts in cache service.
+  - Add metrics with cache hit and miss counts.
 - ldap-check: Support loading LDAP bind password from separate file.
   Contribution from @Cornelicorn.
 - conf:
