@@ -13,7 +13,8 @@ const { entry } = defineProps<{ entry: string }>()
 const tabs = [
   { name: 'General', href: 'settings' },
   { name: 'Errors', href: 'settings-errors' },
-  { name: 'Account', href: 'settings-account' }
+  { name: 'Account', href: 'settings-account' },
+  { name: 'Cache', href: 'settings-cache' }
 ]
 </script>
 <template>
