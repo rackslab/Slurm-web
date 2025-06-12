@@ -643,6 +643,7 @@ export type MetricJobState =
   | 'deadline'
   | 'out_of_memory'
   | 'unknown'
+export type MetricCacheResult = 'hit' | 'miss'
 
 export function isMetricRange(range: unknown): range is MetricRange {
   return typeof range === 'string' && MetricRanges.includes(range as MetricRange)
@@ -755,7 +756,8 @@ const GatewayClusterWithStringAPIKeys = [
   'metrics_nodes',
   'metrics_cores',
   'metrics_gpus',
-  'metrics_jobs'
+  'metrics_jobs',
+  'metrics_cache'
 ] as const
 export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
 export type GatewayAnyClusterApiKey =
@@ -880,6 +882,15 @@ export function useGatewayAPI() {
     )
   }
 
+  async function metrics_cache(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricCacheResult, MetricValue[]>> {
+    return await restAPI.get<Record<MetricCacheResult, MetricValue[]>>(
+      `/agents/${cluster}/metrics/cache?range=${last}`
+    )
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     infrastructure: string,
@@ -971,6 +982,7 @@ export function useGatewayAPI() {
     metrics_cores,
     metrics_gpus,
     metrics_jobs,
+    metrics_cache,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,
