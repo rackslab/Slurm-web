@@ -1,0 +1,98 @@
+<!--
+  Copyright (c) 2025 Rackslab
+
+  This file is part of Slurm-web.
+
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+<script setup lang="ts">
+import type { ClusterDescription, CacheStatistics } from '@/composables/GatewayAPI'
+import { useClusterDataPoller } from '@/composables/DataPoller'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+
+const { cluster } = defineProps<{ cluster: ClusterDescription }>()
+
+const { data, unable, loaded } = useClusterDataPoller<CacheStatistics>(cluster.name, 'cache', 30000)
+
+function hit_value(key: string): number {
+  if (!data.value) return 0
+  return key in data.value.hit.keys ? data.value.hit.keys[key] : 0
+}
+</script>
+
+<template>
+  <div>
+    <ErrorAlert v-if="unable" class="mt-4">Unable to retrieve cache statistics.</ErrorAlert>
+    <div v-else-if="!loaded">Loading</div>
+    <div v-else-if="data" class="mt-8 flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr class="divide-x divide-gray-200">
+                <th
+                  scope="col"
+                  class="py-3.5 pr-4 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  Name
+                </th>
+                <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Hit
+                </th>
+                <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Miss
+                </th>
+                <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Total
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 pr-4 pl-4 text-left text-sm font-semibold text-gray-900 sm:pr-0"
+                >
+                  Hit rate
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr
+                v-for="(value, key) in data.miss.keys"
+                :key="key"
+                class="divide-x divide-gray-200"
+              >
+                <td
+                  class="py-4 pr-4 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
+                >
+                  {{ key }}
+                </td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">{{ hit_value(key) }}</td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">{{ value }}</td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">
+                  {{ value + hit_value(key) }}
+                </td>
+                <td class="py-4 pr-4 pl-4 text-sm whitespace-nowrap text-gray-500 sm:pr-0">
+                  {{ ((hit_value(key) / (value + hit_value(key))) * 100).toFixed(2) }}%
+                </td>
+              </tr>
+              <tr class="divide-x divide-gray-200">
+                <td
+                  class="py-4 pr-4 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
+                >
+                  Total
+                </td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">{{ data.hit.total }}</td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">{{ data.miss.total }}</td>
+                <td class="p-4 text-sm whitespace-nowrap text-gray-500">
+                  {{ data.hit.total + data.miss.total }}
+                </td>
+                <td class="py-4 pr-4 pl-4 text-sm whitespace-nowrap text-gray-500 sm:pr-0">
+                  {{ ((data.hit.total / (data.miss.total + data.hit.total)) * 100).toFixed(2) }}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
