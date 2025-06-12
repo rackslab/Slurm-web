@@ -94,7 +94,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             return
 
         text, content_type, status = self.cluster.query_slurmrestd(query, headers)
-        self.dump_slurmrestd_response(
+        return self.dump_slurmrestd_response(
             asset_name, text, content_type, status, limit_dump, limit_key
         )
 
