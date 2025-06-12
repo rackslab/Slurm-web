@@ -22,6 +22,7 @@ export interface ClusterDescription {
   racksdb: boolean
   infrastructure: string
   metrics: boolean
+  cache: boolean
   permissions: ClusterPermissions
   stats?: ClusterStats
   error?: boolean
