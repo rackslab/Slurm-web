@@ -465,7 +465,7 @@ def dump_component_query(
         response = requests.post(f"{url}{query}", headers=headers, **kwargs)
     else:
         raise RuntimeError(f"Unsupport request method {method}")
-    dump_component_response(
+    return dump_component_response(
         requests_statuses, assets_path, asset_name, response, prettify, limit_dump
     )
 
