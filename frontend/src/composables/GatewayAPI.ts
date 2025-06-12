@@ -605,6 +605,17 @@ export interface ClusterReservation {
   users: string
 }
 
+export interface CacheStatistics {
+  hit: {
+    keys: Record<string, number>
+    total: number
+  }
+  miss: {
+    keys: Record<string, number>
+    total: number
+  }
+}
+
 export type MetricValue = [number, number]
 const MetricRanges = ['week', 'day', 'hour'] as const
 export type MetricRange = (typeof MetricRanges)[number]
@@ -732,7 +743,8 @@ const GatewayClusterAPIKeys = [
   'partitions',
   'qos',
   'reservations',
-  'accounts'
+  'accounts',
+  'cache_stats'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
@@ -826,6 +838,10 @@ export function useGatewayAPI() {
 
   async function accounts(cluster: string): Promise<Array<AccountDescription>> {
     return await restAPI.get<AccountDescription[]>(`/agents/${cluster}/accounts`)
+  }
+
+  async function cache_stats(cluster: string): Promise<CacheStatistics> {
+    return await restAPI.get<CacheStatistics>(`/agents/${cluster}/cache/stats`)
   }
 
   async function metrics_nodes(
@@ -950,6 +966,7 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    cache_stats,
     metrics_nodes,
     metrics_cores,
     metrics_gpus,
