@@ -1,17 +1,19 @@
 [
   {
+    "cache": true,
     "infrastructure": "tiny",
     "metrics": true,
     "name": "tiny",
     "permissions": {
       "actions": [
-        "view-qos",
         "view-nodes",
-        "view-partitions",
-        "view-accounts",
         "view-reservations",
+        "view-accounts",
+        "view-cache",
+        "view-stats",
         "view-jobs",
-        "view-stats"
+        "view-qos",
+        "view-partitions"
       ],
       "roles": [
         "admin"
@@ -20,18 +22,20 @@
     "racksdb": true
   },
   {
+    "cache": true,
     "infrastructure": "emulator",
     "metrics": true,
     "name": "atlas",
     "permissions": {
       "actions": [
-        "view-nodes",
         "view-partitions",
-        "view-stats",
         "view-qos",
-        "view-accounts",
+        "view-reservations",
+        "view-cache",
         "view-jobs",
-        "view-reservations"
+        "view-stats",
+        "view-accounts",
+        "view-nodes"
       ],
       "roles": [
         "admin"
@@ -40,18 +44,20 @@
     "racksdb": true
   },
   {
+    "cache": true,
     "infrastructure": "pocket",
     "metrics": false,
     "name": "pocket",
     "permissions": {
       "actions": [
-        "view-reservations",
-        "view-accounts",
-        "view-jobs",
         "view-nodes",
         "view-qos",
+        "view-stats",
+        "view-cache",
+        "view-jobs",
         "view-partitions",
-        "view-stats"
+        "view-reservations",
+        "view-accounts"
       ],
       "roles": [
         "admin"
