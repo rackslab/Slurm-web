@@ -166,3 +166,20 @@ class TestAgentMetricsRequest(TestAgentBase):
                 "name": "Not Found",
             },
         )
+
+
+class TestAgentMetricsRequestDisabled(TestAgentBase):
+    def setUp(self):
+        self.setup_client(metrics=False)
+
+    def test_request(self):
+        response = self.client.get(f"/v{get_version()}/metrics/jobs")
+        self.assertEqual(response.status_code, 501)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 501,
+                "description": "Metrics are disabled, unable to query values",
+                "name": "Not Implemented",
+            },
+        )
