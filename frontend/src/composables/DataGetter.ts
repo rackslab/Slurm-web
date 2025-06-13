@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
@@ -75,6 +75,7 @@ export function useGatewayDataGetter<Type>(
 }
 
 export function useClusterDataGetter<Type>(
+  cluster: string,
   initialCallback: GatewayAnyClusterApiKey,
   initialOtherParam?: string | number
 ) {
@@ -102,7 +103,7 @@ export function useClusterDataGetter<Type>(
     unable.value = true
   }
 
-  async function get(cluster: string) {
+  async function get() {
     try {
       unable.value = false
       if (gateway.isValidGatewayClusterWithStringAPIKey(callback)) {
@@ -114,18 +115,12 @@ export function useClusterDataGetter<Type>(
       }
       loaded.value = true
     } catch (error) {
-      /*
-       * Skip errors received lately from other clusters, after the view cluster
-       * parameter has changed.
-       */
-      if (cluster === runtime.currentCluster?.name) {
-        if (error instanceof AuthenticationError) {
-          reportAuthenticationError(error)
-        } else if (error instanceof PermissionError) {
-          reportPermissionError(error)
-        } else if (error instanceof Error) {
-          reportOtherError(error)
-        }
+      if (error instanceof AuthenticationError) {
+        reportAuthenticationError(error)
+      } else if (error instanceof PermissionError) {
+        reportPermissionError(error)
+      } else if (error instanceof Error) {
+        reportOtherError(error)
       }
     }
   }
@@ -133,35 +128,17 @@ export function useClusterDataGetter<Type>(
   function setCallback(newCallback: GatewayAnyClusterApiKey) {
     callback = newCallback
     loaded.value = false
-    if (runtime.currentCluster) {
-      get(runtime.currentCluster.name)
-    }
+    get()
   }
 
   function setParam(newOtherParam: string | number) {
     otherParam = newOtherParam
     loaded.value = false
-    if (runtime.currentCluster) {
-      get(runtime.currentCluster.name)
-    }
+    get()
   }
 
-  watch(
-    () => runtime.currentCluster,
-    (newCluster, oldCluster) => {
-      console.log(
-        `Updating ${callback} getter from cluster ${oldCluster?.name} to ${newCluster?.name}`
-      )
-      loaded.value = false
-      if (newCluster) {
-        get(newCluster.name)
-      }
-    }
-  )
   onMounted(() => {
-    if (runtime.currentCluster) {
-      get(runtime.currentCluster.name)
-    }
+    get()
   })
   return { data, unable, loaded, setCallback, setParam }
 }

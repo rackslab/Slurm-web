@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- gateway:
+  - Add cache boolean in `/clusters` response to indicate whether cache service
+    is enabled on agents.
+  - Add `/agent/{cluster}/cache` route to reverse proxy request to agent
+    `/cache`.
+- agent:
+  - Record slurmrestd cache hit and miss counts in cache service.
+  - Add metrics with cache hit and miss counts.
+  - Support querying cache metrics.
+  - Add cache boolean in `/info` endpoint to indicate whether cache service is
+    enabled on agent.
+  - Add `/cache` route to retrieve cache statistics.
+- conf:
+  - Introduce `view-cache` authorization action.
+  - Assign `view-cache` action to _user_ role (all authenticated users) in
+    default authorization policy.
+
 ### Changed
 - gateway:
   - Check agent version is greater or equal to the minimal supported version
@@ -20,7 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf: Update description of `agent` > `version` gateway parameter to describe
   its new semantic.
 - pkgs: Set Python _requests_ external library dependency on agent only.
-- docs: Update configuration reference documentation.
+- docs:
+  - Update authorization policy reference documentation.
+  - Update configuration reference documentation.
+  - Mention cache metrics in metrics configuration reference documentation.
 
 ### Fixed
 - gateway: Handle content type error when expecting JSON response from agent.

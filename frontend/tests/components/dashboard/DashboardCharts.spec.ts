@@ -21,7 +21,11 @@ describe('DashboardCharts.vue', () => {
     runtimeStore.currentCluster = cluster
   })
   test('should display resources and jobs charts', () => {
-    const wrapper = shallowMount(DashboardCharts)
+    const wrapper = shallowMount(DashboardCharts, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     // Check presence of resources and jobs charts component
     wrapper.getComponent(ChartResourcesHistogram)
     wrapper.getComponent(ChartJobsHistogram)
@@ -30,7 +34,11 @@ describe('DashboardCharts.vue', () => {
     const runtimeStore = useRuntimeStore()
     runtimeStore.currentCluster!.permissions.actions =
       runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'view-nodes')
-    const wrapper = shallowMount(DashboardCharts)
+    const wrapper = shallowMount(DashboardCharts, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     // Check absence of resources chart and presence of jobs charts
     expect(wrapper.findComponent(ChartResourcesHistogram).exists()).toBe(false)
     wrapper.getComponent(ChartJobsHistogram)
@@ -39,7 +47,11 @@ describe('DashboardCharts.vue', () => {
     const runtimeStore = useRuntimeStore()
     runtimeStore.currentCluster!.permissions.actions =
       runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'view-jobs')
-    const wrapper = shallowMount(DashboardCharts)
+    const wrapper = shallowMount(DashboardCharts, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     // Check absence of jobs chart and presence of resources charts
     wrapper.getComponent(ChartResourcesHistogram)
     expect(wrapper.findComponent(ChartJobsHistogram).exists()).toBe(false)

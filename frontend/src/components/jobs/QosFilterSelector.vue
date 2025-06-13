@@ -43,7 +43,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterQos[]>('qos', cluster)
+const { data } = useClusterDataGetter<ClusterQos[]>(cluster, 'qos')
 </script>
 
 <template>

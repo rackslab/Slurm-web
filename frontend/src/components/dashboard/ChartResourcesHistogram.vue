@@ -17,6 +17,8 @@ import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
 import type { GatewayAnyClusterApiKey, MetricResourceState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 
+const { cluster } = defineProps<{ cluster: string }>()
+
 const router = useRouter()
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
@@ -69,6 +71,7 @@ function resourcesTypeCallback(): GatewayAnyClusterApiKey {
 }
 
 const liveChart = useDashboardLiveChart<MetricResourceState>(
+  cluster,
   resourcesTypeCallback(),
   chartCanvas,
   labels
@@ -86,6 +89,13 @@ watch(
   () => {
     router.push({ name: 'dashboard', query: runtimeStore.dashboard.query() as LocationQueryRaw })
     liveChart.setCallback(resourcesTypeCallback())
+  }
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    liveChart.setCluster(new_cluster)
   }
 )
 

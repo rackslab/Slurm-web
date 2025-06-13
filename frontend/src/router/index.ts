@@ -18,6 +18,7 @@ import SettingsLayout from '@/components/settings/SettingsLayout.vue'
 import SettingsMainView from '@/views/settings/SettingsMain.vue'
 import SettingsErrorsView from '@/views/settings/SettingsErrors.vue'
 import SettingsAccountView from '@/views/settings/SettingsAccount.vue'
+import SettingsCacheView from '@/views/settings/SettingsCache.vue'
 import ClustersView from '@/views/ClustersView.vue'
 import JobsView from '@/views/JobsView.vue'
 import JobView from '@/views/JobView.vue'
@@ -81,6 +82,14 @@ const router = createRouter({
           path: '/settings/account',
           name: 'settings-account',
           component: SettingsAccountView,
+          meta: {
+            settings: true
+          }
+        },
+        {
+          path: '/settings/cache',
+          name: 'settings-cache',
+          component: SettingsCacheView,
           meta: {
             settings: true
           }

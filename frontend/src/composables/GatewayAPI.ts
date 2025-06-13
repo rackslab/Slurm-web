@@ -22,6 +22,7 @@ export interface ClusterDescription {
   racksdb: boolean
   infrastructure: string
   metrics: boolean
+  cache: boolean
   permissions: ClusterPermissions
   stats?: ClusterStats
   error?: boolean
@@ -603,6 +604,17 @@ export interface ClusterReservation {
   users: string
 }
 
+export interface CacheStatistics {
+  hit: {
+    keys: Record<string, number>
+    total: number
+  }
+  miss: {
+    keys: Record<string, number>
+    total: number
+  }
+}
+
 export type MetricValue = [number, number]
 const MetricRanges = ['week', 'day', 'hour'] as const
 export type MetricRange = (typeof MetricRanges)[number]
@@ -630,6 +642,7 @@ export type MetricJobState =
   | 'deadline'
   | 'out_of_memory'
   | 'unknown'
+export type MetricCacheResult = 'hit' | 'miss'
 
 export function isMetricRange(range: unknown): range is MetricRange {
   return typeof range === 'string' && MetricRanges.includes(range as MetricRange)
@@ -730,7 +743,8 @@ const GatewayClusterAPIKeys = [
   'partitions',
   'qos',
   'reservations',
-  'accounts'
+  'accounts',
+  'cache'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 const GatewayClusterWithNumberAPIKeys = ['job'] as const
@@ -741,7 +755,8 @@ const GatewayClusterWithStringAPIKeys = [
   'metrics_nodes',
   'metrics_cores',
   'metrics_gpus',
-  'metrics_jobs'
+  'metrics_jobs',
+  'metrics_cache'
 ] as const
 export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
 export type GatewayAnyClusterApiKey =
@@ -826,6 +841,10 @@ export function useGatewayAPI() {
     return await restAPI.get<AccountDescription[]>(`/agents/${cluster}/accounts`)
   }
 
+  async function cache(cluster: string): Promise<CacheStatistics> {
+    return await restAPI.get<CacheStatistics>(`/agents/${cluster}/cache`)
+  }
+
   async function metrics_nodes(
     cluster: string,
     last: string
@@ -859,6 +878,15 @@ export function useGatewayAPI() {
   ): Promise<Record<MetricJobState, MetricValue[]>> {
     return await restAPI.get<Record<MetricJobState, MetricValue[]>>(
       `/agents/${cluster}/metrics/jobs?range=${last}`
+    )
+  }
+
+  async function metrics_cache(
+    cluster: string,
+    last: string
+  ): Promise<Record<MetricCacheResult, MetricValue[]>> {
+    return await restAPI.get<Record<MetricCacheResult, MetricValue[]>>(
+      `/agents/${cluster}/metrics/cache?range=${last}`
     )
   }
 
@@ -948,10 +976,12 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    cache,
     metrics_nodes,
     metrics_cores,
     metrics_gpus,
     metrics_jobs,
+    metrics_cache,
     infrastructureImagePng,
     abort,
     isValidGatewayGenericAPIKey,

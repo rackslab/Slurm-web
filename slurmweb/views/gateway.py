@@ -149,6 +149,7 @@ async def get_cluster(agent):
             "racksdb": agent.racksdb.enabled,
             "infrastructure": agent.racksdb.infrastructure,
             "metrics": agent.metrics,
+            "cache": agent.cache,
             "permissions": permissions,
         }
 
@@ -263,6 +264,12 @@ def proxy_agent(*args, **kwargs):
 @validate_cluster
 def stats(cluster: str):
     return proxy_agent(cluster, "stats", request.token)
+
+
+@check_jwt
+@validate_cluster
+def cache(cluster: str):
+    return proxy_agent(cluster, "cache", request.token)
 
 
 @check_jwt

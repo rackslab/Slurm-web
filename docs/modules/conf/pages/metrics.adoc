@@ -207,6 +207,18 @@ are: _running_, _completed_, _completing_, _cancelled_, _pending_ and _unknown_.
 
 |slurm_jobs_total
 |Total number of jobs in Slurm controller queue.
+
+|slurmweb_cache_hit[key]
+|Number of cache hit per cache key.
+
+|slurmweb_cache_miss[key]
+|Number of cache miss per cache key.
+
+|slurmweb_cache_hit_total
+|Total number of cache hits.
+
+|slurmweb_cache_miss_total
+|Total number of cache misses.
 |===
 
 TIP: Do want more Slurm metrics exported by Slurm-web?

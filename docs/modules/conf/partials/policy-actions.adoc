@@ -41,4 +41,8 @@ compute nodes in cluster with their status in Slurm.
 defined reservations.
 
 
+|view-cache
+|Access to cache information and metrics in settings panel.
+
+
 |===

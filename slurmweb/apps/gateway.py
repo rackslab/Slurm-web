@@ -37,11 +37,13 @@ class SlurmwebAgent:
         cluster: str,
         racksdb: SlurmwebAgentRacksDBSettings,
         metrics: bool,
+        cache: bool,
         url: str,
     ):
         self.version = version
         self.cluster = cluster
         self.metrics = metrics
+        self.cache = cache
         self.racksdb = racksdb
         self.url = url
 
@@ -53,6 +55,7 @@ class SlurmwebAgent:
                 data["cluster"],
                 SlurmwebAgentRacksDBSettings(**data["racksdb"]),
                 data["metrics"],
+                data["cache"],
                 url,
             )
         except KeyError as err:
@@ -103,6 +106,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         SlurmwebAppRoute("/api/users", views.users),
         SlurmwebAppRoute("/api/agents/<cluster>/stats", views.stats),
         SlurmwebAppRoute("/api/agents/<cluster>/metrics/<metric>", views.metrics),
+        SlurmwebAppRoute("/api/agents/<cluster>/cache", views.cache),
         SlurmwebAppRoute("/api/agents/<cluster>/jobs", views.jobs),
         SlurmwebAppRoute("/api/agents/<cluster>/job/<int:job>", views.job),
         SlurmwebAppRoute("/api/agents/<cluster>/nodes", views.nodes),

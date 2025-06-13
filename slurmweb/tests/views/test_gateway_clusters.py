@@ -30,6 +30,7 @@ class TestGatewayViews(TestGatewayBase):
             {
                 "infrastructure": "foo",
                 "metrics": True,
+                "cache": True,
                 "name": "foo",
                 "permissions": permissions,
                 "racksdb": True,
@@ -58,6 +59,7 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "foo",
                     "metrics": True,
+                    "cache": True,
                     "name": "foo",
                     "permissions": permissions,
                     "racksdb": True,
@@ -65,6 +67,7 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "bar",
                     "metrics": True,
+                    "cache": True,
                     "name": "bar",
                     "permissions": permissions,
                     "racksdb": True,
@@ -72,6 +75,7 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "baz",
                     "metrics": True,
+                    "cache": True,
                     "name": "baz",
                     "permissions": permissions,
                     "racksdb": True,
@@ -119,6 +123,7 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "foo",
                     "metrics": True,
+                    "cache": True,
                     "name": "foo",
                     "permissions": permissions,
                     "racksdb": True,
@@ -126,6 +131,7 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "bar",
                     "metrics": True,
+                    "cache": True,
                     "name": "bar",
                     "permissions": permissions,
                     "racksdb": True,
