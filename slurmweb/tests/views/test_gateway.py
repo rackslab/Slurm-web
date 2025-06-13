@@ -11,8 +11,8 @@ import shutil
 
 from slurmweb.version import get_version
 
-from ..lib.gateway import TestGatewayBase
-from ..lib.utils import flask_version
+from ..lib.gateway import TestGatewayBase, fake_slurmweb_agent
+from ..lib.utils import flask_version, mock_agent_aio_response
 
 
 class TestGatewayViews(TestGatewayBase):
@@ -115,6 +115,26 @@ class TestGatewayViews(TestGatewayBase):
                 "RACKSDB_RACKS_LABELS": False,
                 "RACKSDB_ROWS_LABELS": False,
                 "VERSION": get_version(),
+            },
+        )
+
+    @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
+    def test_unexpected_not_json(self, mock_get):
+        self.app_set_agents({"foo": fake_slurmweb_agent("foo")})
+        _, mock_get.return_value = mock_agent_aio_response(
+            content="fail", fail_content_type=True
+        )
+        response = self.client.get("/api/agents/foo/jobs")
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 500,
+                "description": (
+                    "Unsupported Content-Type for agent foo URL http://localhost/info: "
+                    "0, message='', url='http://localhost/info'"
+                ),
+                "name": "Internal Server Error",
             },
         )
 

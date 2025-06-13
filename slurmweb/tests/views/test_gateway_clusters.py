@@ -4,11 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import typing as t
 from unittest import mock
-import time
-
-from slurmweb.apps.gateway import SlurmwebAgent
 
 from ..lib.gateway import TestGatewayBase, fake_slurmweb_agent
 from ..lib.utils import mock_agent_aio_response
@@ -17,12 +13,6 @@ from ..lib.utils import mock_agent_aio_response
 class TestGatewayViews(TestGatewayBase):
     def setUp(self):
         self.setup_app()
-
-    def app_set_agents(self, agents: t.Dict[str, SlurmwebAgent]):
-        """Set gateway application _agents attribute with timeout in future to
-        avoid application sending GET requests to retrieve /info."""
-        self.app._agents = agents
-        self.app._agents_timeout = int(time.time()) + 300
 
     @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
     def test_clusters_one_agent(self, mock_get):
