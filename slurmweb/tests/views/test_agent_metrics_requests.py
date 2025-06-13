@@ -25,7 +25,8 @@ class TestAgentMetricsRequest(TestAgentBase):
         self.app.metrics_db.request = mock.Mock(
             side_effect=SlurmwebMetricsDBError("fake metrics request error")
         )
-        response = self.client.get(f"/v{get_version()}/metrics/nodes")
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            response = self.client.get(f"/v{get_version()}/metrics/nodes")
         self.assertEqual(response.status_code, 500)
         self.assertEqual(
             response.json,
@@ -34,6 +35,9 @@ class TestAgentMetricsRequest(TestAgentBase):
                 "description": "fake metrics request error",
                 "name": "Internal Server Error",
             },
+        )
+        self.assertEqual(
+            cm.output, ["WARNING:slurmweb.views.agent:fake metrics request error"]
         )
 
     @mock.patch("slurmweb.metrics.db.requests.get")
