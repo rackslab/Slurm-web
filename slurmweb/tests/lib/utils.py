@@ -206,20 +206,30 @@ class AsyncContextManagerMock:
         pass
 
 
-def async_mock(content):
+def async_mock(content, fail_content_type: bool):
     """Unfortunately, mock.AsyncMock is not available in Python >= 3.8. When this class
     is not available, return a dumb awaitable."""
+    exception = aiohttp.client_exceptions.ContentTypeError(
+        aiohttp.client_reqrep.RequestInfo("http://localhost/info", "GET", {}),
+        (),
+    )
     try:
+        if fail_content_type:
+            return mock.AsyncMock(side_effect=exception)
         return mock.AsyncMock(return_value=content)
     except AttributeError:
 
         async def _awaitable():
+            if fail_content_type:
+                raise exception
             return content
 
         return _awaitable
 
 
-def mock_agent_aio_response(asset=None, status=200, content=None, is_json=True):
+def mock_agent_aio_response(
+    asset=None, status=200, content=None, is_json=True, fail_content_type=False
+):
     """Return mocked aiohttp Response corresponding to the given component asset. If
     asset is None, use status and json."""
     if asset:
@@ -246,9 +256,9 @@ def mock_agent_aio_response(asset=None, status=200, content=None, is_json=True):
     response.status = status
     if is_json:
         response.headers = {"content-type": "application/json"}
-        response.json = async_mock(content)
+        response.json = async_mock(content, fail_content_type)
     else:
         response.headers = {"content-type": "text/plain"}
-        response.json = async_mock(content)
+        response.json = async_mock(content, fail_content_type)
 
     return content, AsyncContextManagerMock(response)

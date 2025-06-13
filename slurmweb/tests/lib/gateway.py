@@ -4,9 +4,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import typing as t
 import unittest
 import tempfile
 import os
+import time
 
 import werkzeug
 import jinja2
@@ -119,3 +121,9 @@ class TestGatewayBase(TestGatewayConfBase):
                 duration=3600,
             )
             self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
+
+    def app_set_agents(self, agents: t.Dict[str, SlurmwebAgent]):
+        """Set gateway application _agents attribute with timeout in future to
+        avoid application sending GET requests to retrieve /info."""
+        self.app._agents = agents
+        self.app._agents_timeout = int(time.time()) + 300
