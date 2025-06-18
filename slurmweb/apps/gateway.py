@@ -230,6 +230,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     bind_password=bind_password,
                     restricted_groups=self.settings.ldap.restricted_groups,
                     lookup_user_dn=self.settings.ldap.lookup_user_dn,
+                    lookup_as_user=self.settings.ldap.lookup_as_user,
                 )
             else:
                 raise SlurmwebConfigurationError(
