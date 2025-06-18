@@ -599,6 +599,9 @@ describe('getNodeGPUFromGres', () => {
   test('with model and index', () => {
     expect(getNodeGPUFromGres('gpu:h100:2(IDX:0-1)')).toStrictEqual([{ model: 'h100', count: 2 }])
   })
+  test('with model and socket', () => {
+    expect(getNodeGPUFromGres('gpu:h100:8(S:1,3,5,7)')).toStrictEqual([{ model: 'h100', count: 8 }])
+  })
   test('multiple types', () => {
     expect(getNodeGPUFromGres('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
       { model: 'unknown', count: 1 },
@@ -788,6 +791,9 @@ describe('getNodeGPU', () => {
   })
   test('with model and index', () => {
     expect(getNodeGPU('gpu:h100:2(IDX:0-1)')).toStrictEqual(['2 x h100'])
+  })
+  test('with model and multiple indexes', () => {
+    expect(getNodeGPU('gpu:h100:5(IDX:0-2,4-5)')).toStrictEqual(['5 x h100'])
   })
   test('multiple types', () => {
     expect(getNodeGPU('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
