@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Check agent version is greater or equal to the minimal supported version
     specified in gateway configuration settings.
   - Send asynchronous HTTP requests to discover agents (#438).
+  - After successful user authentication, when service bind dn and password
+    are defined in configuration, Slurm-web now retrieves user information
+    and user groups in LDAP with these credentials by default. Previous behavior
+    can be restored by setting `lookup_as_user = yes` under the `[ldap]` section
+    in gateway configuration file (#587). Contribution from @Cornelicorn.
 - agent:
  - Change route to information endpoint from `/v{version}/info` to `/info`.
  - Return version of agent in information endpoint.
