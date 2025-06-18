@@ -210,6 +210,13 @@ ldap:
       Password of bind DN. This parameter is required when `bind_dn` is
       defined.
     ex: SECR3T
+  user_bind_lookups:
+    type: bool
+    doc: |
+      Bind to the authenticating user when logging in to fetch user information
+      and groups. When this parameter is not defined and `bind_dn` and
+      `bind_password` are given, binding will happen with these credentials.
+      Otherwise, binding is done with the credentials of the user logging in.
   restricted_groups:
     type: list
     content: str

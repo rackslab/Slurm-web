@@ -41,6 +41,7 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
             bind_dn=self.settings.ldap.bind_dn,
             bind_password=self.settings.ldap.bind_password,
             restricted_groups=self.settings.ldap.restricted_groups,
+            user_bind_lookups=self.settings.ldap.user_bind_lookups,
         )
         try:
             users = self.authentifier.users(with_groups=True)
