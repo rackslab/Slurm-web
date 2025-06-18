@@ -525,6 +525,18 @@ _No default value_
 
 |-
 
+|user_bind_lookups
+|bool
+|Bind to the authenticating user when logging in to fetch user information and
+groups. When this paramter is not defined and `bind_dn` and `bind_password` are
+given, binding will happen with these credentials. Otherwise, binding is done
+with the credentials of the user logging in.
+
+
+_No default value_
+
+|-
+
 |restricted_groups
 |list[str]
 |List of users groups allowed to connect. When this parameter is not
