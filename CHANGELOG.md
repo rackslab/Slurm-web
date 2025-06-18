@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - conf: Add gateway `bind_password_file` configuration parameter. Contribution
   from @Cornelicorn.
+- gateway: Support loading LDAP bind password from separate file (#585).
+  Contribution from @Cornelicorn.
+- ldap-check: Support loading LDAP bind password from separate file.
+  Contribution from @Cornelicorn.
 
 ### Changed
 - gateway:

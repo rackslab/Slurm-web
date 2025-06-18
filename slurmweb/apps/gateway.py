@@ -14,7 +14,7 @@ from rfl.authentication.ldap import LDAPAuthentifier
 from rfl.core.asyncio import asyncio_run
 import aiohttp
 
-from . import SlurmwebWebApp
+from . import SlurmwebWebApp, load_ldap_password_from_file
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
 from ..errors import (
@@ -210,6 +210,10 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         # Setup authentifier
         if self.settings.authentication.enabled:
             if self.settings.authentication.method == "ldap":
+                bind_password = (
+                    load_ldap_password_from_file(self.settings.ldap.bind_password_file)
+                    or self.settings.ldap.bind_password
+                )
                 self.authentifier = LDAPAuthentifier(
                     uri=self.settings.ldap.uri,
                     user_base=self.settings.ldap.user_base,
@@ -223,7 +227,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
                     cacert=self.settings.ldap.cacert,
                     starttls=self.settings.ldap.starttls,
                     bind_dn=self.settings.ldap.bind_dn,
-                    bind_password=self.settings.ldap.bind_password,
+                    bind_password=bind_password,
                     restricted_groups=self.settings.ldap.restricted_groups,
                     lookup_user_dn=self.settings.ldap.lookup_user_dn,
                 )

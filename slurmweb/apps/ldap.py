@@ -10,7 +10,7 @@ import logging
 from rfl.authentication.ldap import LDAPAuthentifier
 from rfl.authentication.errors import LDAPAuthenticationError
 
-from . import SlurmwebGenericApp
+from . import SlurmwebGenericApp, load_ldap_password_from_file
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,10 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
             )
             sys.exit(1)
 
+        bind_password = (
+            load_ldap_password_from_file(self.settings.ldap.bind_password_file)
+            or self.settings.ldap.bind_password
+        )
         self.authentifier = LDAPAuthentifier(
             uri=self.settings.ldap.uri,
             cacert=self.settings.ldap.cacert,
@@ -39,7 +43,7 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
             group_object_classes=self.settings.ldap.group_object_classes,
             starttls=self.settings.ldap.starttls,
             bind_dn=self.settings.ldap.bind_dn,
-            bind_password=self.settings.ldap.bind_password,
+            bind_password=bind_password,
             restricted_groups=self.settings.ldap.restricted_groups,
         )
         try:

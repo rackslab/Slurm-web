@@ -7,6 +7,7 @@
 import sys
 from pathlib import Path
 import logging
+from typing import Optional
 
 from flask import Flask, jsonify
 from werkzeug.exceptions import HTTPException
@@ -20,7 +21,37 @@ from rfl.settings.errors import (
 
 from rfl.log import setup_logger, enforce_debug
 
+from ..errors import SlurmwebConfigurationError
+
 logger = logging.getLogger(__name__)
+
+
+def load_ldap_password_from_file(bind_password_file: Optional[Path]) -> Optional[str]:
+    if bind_password_file is None:
+        return None
+
+    logger.debug(f"Loading LDAP bind password from path {bind_password_file}")
+
+    if not bind_password_file.is_file():
+        raise SlurmwebConfigurationError(
+            f"LDAP bind password file path {bind_password_file} is not a file"
+        )
+    try:
+        bind_password = bind_password_file.read_text()
+    except PermissionError as err:
+        raise SlurmwebConfigurationError(
+            f"Permission error to access bind password file {bind_password_file}"
+        ) from err
+    except UnicodeDecodeError as err:
+        raise SlurmwebConfigurationError(
+            f"Unable to decode bind password file {bind_password_file}: {err}"
+        ) from err
+    if not len(bind_password):
+        raise SlurmwebConfigurationError(
+            f"Bind Password loaded from file {bind_password_file} is empty"
+        )
+
+    return bind_password
 
 
 class SlurmwebAppSeed:
