@@ -525,6 +525,21 @@ _No default value_
 
 |-
 
+|bind_password_file
+|path
+|As an alternative to `bind_password` parameter, path to a separate file to
+read bind DN password from. When this parameter is defined, the
+`bind_password` parameter is ignored.
+
+
+
+*Example:* `/etc/slurm-web/ldap_password`
+
+
+_No default value_
+
+|-
+
 |restricted_groups
 |list[str]
 |List of users groups allowed to connect. When this parameter is not
