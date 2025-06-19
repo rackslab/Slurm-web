@@ -210,6 +210,13 @@ ldap:
       Password of bind DN. This parameter is required when `bind_dn` is
       defined.
     ex: SECR3T
+  bind_password_file:
+    type: path
+    doc: |
+      As an alternative to `bind_password` parameter, path to a separate file to
+      read bind DN password from. When this parameter is defined, the
+      `bind_password` parameter is ignored.
+    ex: /etc/slurm-web/ldap_password
   restricted_groups:
     type: list
     content: str

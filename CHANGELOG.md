@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- conf: Add gateway `bind_password_file` configuration parameter. Contribution
+  from @Cornelicorn.
+
 ### Changed
 - gateway:
   - Check agent version is greater or equal to the minimal supported version
