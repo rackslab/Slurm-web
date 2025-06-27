@@ -217,6 +217,17 @@ ldap:
       read bind DN password from. When this parameter is defined, the
       `bind_password` parameter is ignored.
     ex: /etc/slurm-web/ldap_password
+  lookup_as_user:
+    type: bool
+    doc: |
+      After successful user authentication, when this parameter is set to _yes_,
+      Slurm-web retrieves user information and groups from LDAP directory with
+      authenticated user permissions. When this parameter is set to _no_
+      Slurm-web searches this information with service `bind_dn` and
+      `bind_password` when defined or performs the operation anonymously. When
+      this parameter is omitted in configuration (default), Slurm-web uses
+      service `bind_dn` and `bind_password` when defined or authenticated user
+      permissions as a fallback.
   restricted_groups:
     type: list
     content: str
