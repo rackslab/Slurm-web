@@ -29,10 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     can be restored by setting `lookup_as_user = yes` under the `[ldap]` section
     in gateway configuration file (#587). Contribution from @Cornelicorn.
 - agent:
- - Change route to information endpoint from `/v{version}/info` to `/info`.
- - Return version of agent in information endpoint.
- - Emit warning log entry when `SlurmwebMetricsDBError` is raised before
-   responding HTTP/500.
+  - Change route to information endpoint from `/v{version}/info` to `/info`.
+  - Return version of agent in information endpoint.
+  - Emit warning log entry when `SlurmwebMetricsDBError` is raised before
+    responding HTTP/500.
 - conf: Update description of `agent` > `version` gateway parameter to describe
   its new semantic.
 - pkgs:
@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Handling of GPU declared without model in Slurm configuration (#584).
     Contribution from @mehalter.
   - Regression on handling of denied clusters in cluster list.
-  - Parsing of GRES GPUs when comma is present between brakets with indexes or
+  - Parsing of GRES GPUs when comma is present between brackets with indexes or
     sockets. Contribution from @astappiev.
 
 ## [5.0.0] - 2025-05-27
