@@ -35,7 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    responding HTTP/500.
 - conf: Update description of `agent` > `version` gateway parameter to describe
   its new semantic.
-- pkgs: Set Python _requests_ external library dependency on agent only.
+- pkgs:
+  - Set Python _requests_ external library dependency on agent only.
+  - Bump minimal version of `RFL.authentication` to v1.5.0.
 - docs: Update configuration reference documentation.
 
 ### Fixed
