@@ -51,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Parsing of GRES GPUs when comma is present between brackets with indexes or
     sockets. Contribution from @astappiev.
   - Update dependencies to fix CVE-2025-5889 (brace-expansion).
+- docs: Fix rendering of example list values in generated configuration
+  reference documentation (#599).
 
 ## [5.0.0] - 2025-05-27
 
