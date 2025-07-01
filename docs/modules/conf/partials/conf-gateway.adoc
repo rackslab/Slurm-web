@@ -254,7 +254,13 @@ representations.
 |List of Slurm-web agents URL
 
 
-*Example:* `['https://cluster1/agent', 'https://cluster2/agent']`
+*Example:*
+
+
+* `https://cluster1/agent`
+
+* `https://cluster2/agent`
+
 
 
 _No default value_
@@ -565,7 +571,13 @@ defined, all users in LDAP directory are authorized to sign in.
 
 
 
-*Example:* `['admins', 'biology']`
+*Example:*
+
+
+* `admins`
+
+* `biology`
+
 
 
 _No default value_
