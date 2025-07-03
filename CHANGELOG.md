@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Set Python _requests_ external library dependency on agent only.
   - Bump minimal version of `RFL.authentication` to v1.5.0.
+  - Move Python _aiohttp_ external library dependency from gateway extra package
+    to main package because it is also a dependency of the agent now.
 - docs:
   - Update authorization policy reference documentation.
   - Update configuration reference documentation.
