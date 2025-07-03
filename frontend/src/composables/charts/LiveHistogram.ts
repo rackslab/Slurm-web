@@ -24,7 +24,7 @@ export interface DashboardLiveChart<MetricKeyType extends string> {
   setCallback: (callback: GatewayAnyClusterApiKey) => void
 }
 
-export function useDashboardLiveChart<MetricKeyType extends string>(
+export function useLiveHistogram<MetricKeyType extends string>(
   cluster: string,
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,

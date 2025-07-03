@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { useTemplateRef, watch } from 'vue'
-import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
+import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
 import type { MetricJobState } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
@@ -58,7 +58,7 @@ const labels: Record<string, { group: MetricJobState[]; color: string }> = {
   }
 }
 
-const liveChart = useDashboardLiveChart<MetricJobState>(
+const liveChart = useLiveHistogram<MetricJobState>(
   cluster,
   'metrics_jobs',
   chartCanvas,
