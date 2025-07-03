@@ -28,7 +28,7 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
   cluster: string,
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,
-  labels: Record<string, { group: MetricKeyType[]; color: string }>
+  labels: Record<string, { group: MetricKeyType[]; color: string; invert?: boolean }>
 ): DashboardLiveChart<MetricKeyType> {
   const runtimeStore = useRuntimeStore()
   const metrics = useClusterDataPoller<Record<MetricKeyType, MetricValue[]>>(
@@ -56,7 +56,6 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
         chart.data.datasets = []
         return
       }
-
       const newSuggestedMin = suggestedMin()
       for (const [label, properties] of Object.entries(labels)) {
         /* If current state is not present in poller data keys, skip it. */
@@ -65,7 +64,7 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
         /* Compute new data array with values of first metric in group */
         const new_data = metrics.data.value[properties.group[0]].map((value) => ({
           x: value[0],
-          y: value[1]
+          y: properties.invert ? -value[1] : value[1]
         }))
         /* Sum values of all other metrics in the same group */
         if (properties.group.length > 1) {
