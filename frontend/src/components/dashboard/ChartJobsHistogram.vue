@@ -10,10 +10,12 @@
 import { useTemplateRef, watch } from 'vue'
 import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
 import type { MetricJobState } from '@/composables/GatewayAPI'
+import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
+const runtimeStore = useRuntimeStore()
 const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
 /* Note that order of keys determines the stack of metrics in histogram */
@@ -60,7 +62,15 @@ const liveChart = useDashboardLiveChart<MetricJobState>(
   cluster,
   'metrics_jobs',
   chartCanvas,
-  labels
+  labels,
+  runtimeStore.dashboard.range
+)
+
+watch(
+  () => runtimeStore.dashboard.range,
+  () => {
+    liveChart.setRange(runtimeStore.dashboard.range)
+  }
 )
 
 watch(
