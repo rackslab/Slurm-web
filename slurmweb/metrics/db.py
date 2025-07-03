@@ -61,7 +61,12 @@ class SlurmwebMetricsDB:
             hour=SlurmWebRangeResolution("30s", "1h", 30),
             day=SlurmWebRangeResolution("10m", "1d", 600),
             week=SlurmWebRangeResolution("1h", "1w", 3600),
-        )
+        ),
+        "1m": SlurmWebRangeResolutionSet(
+            hour=SlurmWebRangeResolution("1m", "1h", 60),
+            day=SlurmWebRangeResolution("10m", "1d", 600),
+            week=SlurmWebRangeResolution("1h", "1w", 3600),
+        ),
     }
     METRICS_QUERY_PARAMS = {
         "nodes": SlurmwebMetricQuery(
@@ -91,6 +96,14 @@ class SlurmwebMetricsDB:
             RANGE_RESOLUTIONS["30s"],
             agg="avg_over_time",
             label_as_key="state",
+        ),
+        "cache": SlurmwebMetricQuery(
+            "query_range",
+            [
+                SlurmwebMetricId("slurmweb_cache_hit_total", "hit"),
+                SlurmwebMetricId("slurmweb_cache_miss_total", "miss"),
+            ],
+            RANGE_RESOLUTIONS["1m"],
         ),
     }
 
