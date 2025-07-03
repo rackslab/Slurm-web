@@ -74,7 +74,8 @@ const liveChart = useDashboardLiveChart<MetricResourceState>(
   cluster,
   resourcesTypeCallback(),
   chartCanvas,
-  labels
+  labels,
+  runtimeStore.dashboard.range
 )
 
 function setResourceType(resourceType: ChartResourcesType) {
@@ -89,6 +90,13 @@ watch(
   () => {
     router.push({ name: 'dashboard', query: runtimeStore.dashboard.query() as LocationQueryRaw })
     liveChart.setCallback(resourcesTypeCallback())
+  }
+)
+
+watch(
+  () => runtimeStore.dashboard.range,
+  () => {
+    liveChart.setRange(runtimeStore.dashboard.range)
   }
 )
 

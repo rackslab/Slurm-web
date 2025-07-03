@@ -9,7 +9,6 @@
 import { watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
 import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
-import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
 import type { MetricValue } from '@/composables/GatewayAPI'
@@ -21,6 +20,7 @@ import { DateTime } from 'luxon'
 export interface DashboardLiveChart<MetricKeyType extends string> {
   metrics: ClusterDataPoller<Record<MetricKeyType, MetricValue[]>>
   setCluster: (cluster: string) => void
+  setRange: (range: string) => void
   setCallback: (callback: GatewayAnyClusterApiKey) => void
 }
 
@@ -28,14 +28,16 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
   cluster: string,
   callback: GatewayAnyClusterApiKey,
   chartCanvas: Ref<HTMLCanvasElement | null>,
-  labels: Record<string, { group: MetricKeyType[]; color: string; invert?: boolean }>
+  labels: Record<string, { group: MetricKeyType[]; color: string; invert?: boolean }>,
+  originalRange: string
 ): DashboardLiveChart<MetricKeyType> {
-  const runtimeStore = useRuntimeStore()
+  let range = originalRange
+
   const metrics = useClusterDataPoller<Record<MetricKeyType, MetricValue[]>>(
     cluster,
     callback,
     30000,
-    runtimeStore.dashboard.range
+    range
   )
   let chart: Chart | null
 
@@ -118,28 +120,18 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
     }
   )
 
-  /* Clear chart datasets and set new poller param when dashboard range is
-   * modified. */
-  watch(
-    () => runtimeStore.dashboard.range,
-    () => {
-      if (chart) chart.data.datasets = []
-      metrics.setParam(runtimeStore.dashboard.range)
-    }
-  )
-
   /* Compute the suggested min of the x-axis depending on the current dashboard
    * range. */
   function suggestedMin() {
     const now = Date.now()
     let result = 0
-    if (runtimeStore.dashboard.range == 'hour') {
+    if (range == 'hour') {
       result = now - 60 * 60 * 1000
     }
-    if (runtimeStore.dashboard.range == 'day') {
+    if (range == 'day') {
       result = now - 24 * 60 * 60 * 1000
     }
-    if (runtimeStore.dashboard.range == 'week') {
+    if (range == 'week') {
       result = now - 7 * 24 * 60 * 60 * 1000
     }
     return result
@@ -148,7 +140,7 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
   /* Determine the timeframe unit of the x-axis depending on the current
    * dashboard range. */
   function timeframeUnit(): TimeUnit {
-    if (runtimeStore.dashboard.range == 'hour') {
+    if (range == 'hour') {
       return 'minute'
     }
     return 'hour'
@@ -168,13 +160,13 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
     if (typeof value === 'number') {
       const dt = DateTime.fromMillis(value)
       // localized time simple every five minutes with hour range.
-      if (runtimeStore.dashboard.range == 'hour' && value % (1000 * 60 * 5) === 0)
+      if (range == 'hour' && value % (1000 * 60 * 5) === 0)
         return dt.toLocaleString(DateTime.TIME_SIMPLE)
       // localized time simple every hours with day range.
-      if (runtimeStore.dashboard.range == 'day' && value % (1000 * 60 * 60) === 0)
+      if (range == 'day' && value % (1000 * 60 * 60) === 0)
         return dt.toLocaleString(DateTime.TIME_SIMPLE)
       // localized numeric day time at midnight and empty tick at noon.
-      if (runtimeStore.dashboard.range == 'week') {
+      if (range == 'week') {
         if (value % (1000 * 60 * 60 * 24) === 0) {
           return dt.toLocaleString({ month: 'numeric', day: 'numeric' })
         }
@@ -213,6 +205,14 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
     metrics.setCluster(newCluster)
   }
 
+  /* Clear chart datasets and set new poller param when dashboard range is
+   * modified. */
+  function setRange(newRange: string) {
+    range = newRange
+    if (chart) chart.data.datasets = []
+    metrics.setParam(range)
+  }
+
   /* Clear chart datasets and set new metrics callback */
   function setCallback(callback: GatewayAnyClusterApiKey) {
     if (chart) chart.data.datasets = []
@@ -229,5 +229,5 @@ export function useDashboardLiveChart<MetricKeyType extends string>(
     }
   })
 
-  return { metrics, setCluster, setCallback }
+  return { metrics, setCluster, setRange, setCallback }
 }
