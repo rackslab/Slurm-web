@@ -8,7 +8,7 @@ import unittest
 from unittest import mock
 import urllib
 
-import requests
+import aiohttp
 
 from slurmweb.metrics.db import SlurmwebMetricsDB
 from slurmweb.errors import SlurmwebMetricsDBError
@@ -22,24 +22,25 @@ class TestSlurmwebMetricsDB(unittest.TestCase):
             urllib.parse.urlparse("http://localhost:9090"), "slurm"
         )
 
-    @mock.patch("slurmweb.metrics.db.requests.get")
-    def test_request(self, mock_requests_get):
-        _, mock_requests_get.return_value = mock_prometheus_response("nodes-hour")
+    @mock.patch("slurmweb.metrics.db.aiohttp.ClientSession.get")
+    def test_request(self, mock_get):
+        _, mock_get.return_value = mock_prometheus_response("nodes-hour")
         self.db.request("nodes", "hour")
 
-    @mock.patch("slurmweb.metrics.db.requests.get")
-    def test_request_empty_result(self, mock_requests_get):
-        _, mock_requests_get.return_value = mock_prometheus_response("unknown-metric")
+    @mock.patch("slurmweb.metrics.db.aiohttp.ClientSession.get")
+    def test_request_empty_result(self, mock_get):
+        _, mock_get.return_value = mock_prometheus_response("unknown-metric")
         with self.assertRaisesRegex(
             SlurmwebMetricsDBError, "^Empty result for query .*$"
         ):
             self.db.request("nodes", "hour")
 
-    @mock.patch("slurmweb.metrics.db.requests.get")
-    def test_request_unknown_path(self, mock_requests_get):
-        _, mock_requests_get.return_value = mock_prometheus_response("unknown-path")
+    @mock.patch("slurmweb.metrics.db.aiohttp.ClientSession.get")
+    def test_request_unknown_path(self, mock_get):
+        _, mock_get.return_value = mock_prometheus_response("unknown-path")
         with self.assertRaisesRegex(
-            SlurmwebMetricsDBError, "^Prometheus error for query .*$"
+            SlurmwebMetricsDBError,
+            "^Unexpected response status 400 for metrics database request .*$",
         ):
             self.db.request("nodes", "hour")
 
@@ -49,10 +50,13 @@ class TestSlurmwebMetricsDB(unittest.TestCase):
         ):
             self.db.request("nodes", "fail")
 
-    @mock.patch("slurmweb.metrics.db.requests.get")
-    def test_request_connection_error(self, mock_requests_get):
-        mock_requests_get.side_effect = requests.exceptions.ConnectionError("fail")
+    @mock.patch("slurmweb.metrics.db.aiohttp.ClientSession.get")
+    def test_request_connection_error(self, mock_get):
+        mock_get.side_effect = aiohttp.client_exceptions.ClientConnectionError(
+            "fake connection error"
+        )
         with self.assertRaisesRegex(
-            SlurmwebMetricsDBError, "^Connection error on http://localhost:9090: fail$"
+            SlurmwebMetricsDBError,
+            "^Metrics database connection error: fake connection error$",
         ):
             self.db.request("nodes", "hour")
