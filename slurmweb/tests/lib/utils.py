@@ -180,16 +180,6 @@ def mock_component_response(component, asset_name):
     return asset, response
 
 
-def mock_agent_response(asset_name):
-    """Return mocked requests Response corresponding to the given agent asset."""
-    return mock_component_response("agent", asset_name)
-
-
-def mock_prometheus_response(asset_name):
-    """Return mocked requests Response corresponding to the given Prometheus asset."""
-    return mock_component_response("prometheus", asset_name)
-
-
 class AsyncContextManagerMock:
     """Mock for async context managers for aiohttp responses."""
 
@@ -227,13 +217,17 @@ def async_mock(content, fail_content_type: bool):
         return _awaitable
 
 
-def mock_agent_aio_response(
-    asset=None, status=200, content=None, is_json=True, fail_content_type=False
+def mock_component_aio_response(
+    component: str,
+    asset=None,
+    status=200,
+    content=None,
+    is_json=True,
+    fail_content_type=False,
 ):
     """Return mocked aiohttp Response corresponding to the given component asset. If
     asset is None, use status and json."""
-    if asset:
-        component = "agent"
+    if component and asset:
         with open(ASSETS / component / "status.json") as fh:
             requests_statuses = json.load(fh)
 
@@ -262,3 +256,18 @@ def mock_agent_aio_response(
         response.json = async_mock(content, fail_content_type)
 
     return content, AsyncContextManagerMock(response)
+
+
+def mock_agent_aio_response(
+    asset=None, status=200, content=None, is_json=True, fail_content_type=False
+):
+    """Return mocked aiohttp Response corresponding to the given agent asset. If
+    asset is None, use status and json."""
+    return mock_component_aio_response(
+        "agent", asset, status, content, is_json, fail_content_type
+    )
+
+
+def mock_prometheus_response(asset_name):
+    """Return mocked requests Response corresponding to the given Prometheus asset."""
+    return mock_component_aio_response("prometheus", asset_name)
