@@ -7,6 +7,7 @@
 -->
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterReservation } from '@/composables/GatewayAPI'
@@ -17,7 +18,19 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable } = useClusterDataPoller<ClusterReservation[]>('reservations', 10000)
+const {
+  data,
+  unable,
+  loaded: _loaded,
+  setCluster
+} = useClusterDataPoller<ClusterReservation[]>(cluster, 'reservations', 10000)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>

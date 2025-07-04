@@ -13,9 +13,11 @@ import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ChartResourcesType } from '@/stores/runtime/dashboard'
 import { isChartResourcesType } from '@/stores/runtime/dashboard'
-import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
+import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
 import type { GatewayAnyClusterApiKey, MetricResourceState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+
+const { cluster } = defineProps<{ cluster: string }>()
 
 const router = useRouter()
 const route = useRoute()
@@ -68,10 +70,12 @@ function resourcesTypeCallback(): GatewayAnyClusterApiKey {
   }
 }
 
-const liveChart = useDashboardLiveChart<MetricResourceState>(
+const liveChart = useLiveHistogram<MetricResourceState>(
+  cluster,
   resourcesTypeCallback(),
   chartCanvas,
-  labels
+  labels,
+  runtimeStore.dashboard.range
 )
 
 function setResourceType(resourceType: ChartResourcesType) {
@@ -86,6 +90,20 @@ watch(
   () => {
     router.push({ name: 'dashboard', query: runtimeStore.dashboard.query() as LocationQueryRaw })
     liveChart.setCallback(resourcesTypeCallback())
+  }
+)
+
+watch(
+  () => runtimeStore.dashboard.range,
+  () => {
+    liveChart.setRange(runtimeStore.dashboard.range)
+  }
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    liveChart.setCluster(new_cluster)
   }
 )
 

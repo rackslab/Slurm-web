@@ -20,7 +20,11 @@ describe('ChartJobsHistogram.vue', () => {
     router = init_plugins()
   })
   test('should display resources charts histogram', async () => {
-    const wrapper = mount(ChartResourcesHistogram)
+    const wrapper = mount(ChartResourcesHistogram, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     const placeholder = wrapper.get('img[alt="Loading chart"]')
     const canvas = wrapper.get({ ref: 'chartCanvas' })
 
@@ -47,7 +51,11 @@ describe('ChartJobsHistogram.vue', () => {
     expect(canvas.attributes('style')).not.toContain('display: none;')
   })
   test('should display error when unable to load data', async () => {
-    const wrapper = mount(ChartResourcesHistogram)
+    const wrapper = mount(ChartResourcesHistogram, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     mockClusterDataPoller.unable.value = true
     await flushPromises()
     // Check error message
@@ -57,7 +65,11 @@ describe('ChartJobsHistogram.vue', () => {
     expect(wrapper.find('img[alt="Loading chart"]').exists()).toBeFalsy()
   })
   test('resources types button changes should change datapoller callback with route query update', async () => {
-    const wrapper = mount(ChartResourcesHistogram)
+    const wrapper = mount(ChartResourcesHistogram, {
+      props: {
+        cluster: 'foo'
+      }
+    })
     mockClusterDataPoller.data.value = metricsNodesHour as Record<
       MetricResourceState,
       MetricValue[]

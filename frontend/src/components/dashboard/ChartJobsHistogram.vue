@@ -7,11 +7,15 @@
 -->
 
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
-import { useDashboardLiveChart } from '@/composables/dashboard/LiveChart'
+import { useTemplateRef, watch } from 'vue'
+import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
 import type { MetricJobState } from '@/composables/GatewayAPI'
+import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 
+const { cluster } = defineProps<{ cluster: string }>()
+
+const runtimeStore = useRuntimeStore()
 const chartCanvas = useTemplateRef<HTMLCanvasElement>('chartCanvas')
 
 /* Note that order of keys determines the stack of metrics in histogram */
@@ -54,7 +58,27 @@ const labels: Record<string, { group: MetricJobState[]; color: string }> = {
   }
 }
 
-const liveChart = useDashboardLiveChart<MetricJobState>('metrics_jobs', chartCanvas, labels)
+const liveChart = useLiveHistogram<MetricJobState>(
+  cluster,
+  'metrics_jobs',
+  chartCanvas,
+  labels,
+  runtimeStore.dashboard.range
+)
+
+watch(
+  () => runtimeStore.dashboard.range,
+  () => {
+    liveChart.setRange(runtimeStore.dashboard.range)
+  }
+)
+
+watch(
+  () => cluster,
+  (new_cluster) => {
+    liveChart.setCluster(new_cluster)
+  }
+)
 </script>
 
 <template>

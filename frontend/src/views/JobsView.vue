@@ -31,7 +31,11 @@ import { PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
 const { cluster } = defineProps<{ cluster: string }>()
 
 const route = useRoute()
-const { data, unable, loaded } = useClusterDataPoller<ClusterJob[]>('jobs', 5000)
+const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterJob[]>(
+  cluster,
+  'jobs',
+  5000
+)
 
 function compareClusterJob(a: ClusterJob, b: ClusterJob): number {
   return compareClusterJobSortOrder(a, b, runtimeStore.jobs.sort, runtimeStore.jobs.order)
@@ -132,6 +136,13 @@ watch(
     updateQueryParameters()
   }
 )
+watch(
+  () => cluster,
+  (new_cluster) => {
+    setCluster(new_cluster)
+  }
+)
+
 /*
  * Set current page to last page if last page changes to a value lower than
  * current page.

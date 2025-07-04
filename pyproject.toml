@@ -13,6 +13,7 @@ authors = [
     {name = "Rémi Palancher", email = "remi@rackslab.io"},
 ]
 dependencies = [
+    "aiohttp",
     "Flask",
     "RFL.authentication >= 1.5.0",
     "RFL.core >= 1.1.0",
@@ -36,7 +37,6 @@ agent = [
     "requests",
 ]
 gateway = [
-    "aiohttp",
     "markdown",
 ]
 tests = [

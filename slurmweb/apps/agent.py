@@ -50,6 +50,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/qos", views.qos),
         SlurmwebAppRoute(f"/v{get_version()}/reservations", views.reservations),
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
+        SlurmwebAppRoute(f"/v{get_version()}/cache", views.cache),
         SlurmwebAppRoute(f"/v{get_version()}/metrics/<metric>", views.metrics),
     }
 
@@ -154,7 +155,9 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             from ..metrics.collector import SlurmWebMetricsCollector, make_wsgi_app
             from ..metrics.db import SlurmwebMetricsDB
 
-            self.metrics_collector = SlurmWebMetricsCollector(self.slurmrestd)
+            self.metrics_collector = SlurmWebMetricsCollector(
+                self.slurmrestd, self.cache
+            )
             self.wsgi_app = dispatcher.DispatcherMiddleware(
                 self.wsgi_app, {"/metrics": make_wsgi_app(self.settings.metrics)}
             )

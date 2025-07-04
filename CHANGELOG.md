@@ -8,8 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- gateway: Support loading LDAP bind password from separate file (#585).
-  Contribution from @Cornelicorn.
+- gateway:
+  - Support loading LDAP bind password from separate file (#585). Contribution
+    from @Cornelicorn.
+  - Add cache boolean in `/clusters` response to indicate whether cache service
+    is enabled on agents.
+  - Add `/agent/{cluster}/cache` route to reverse proxy request to agent
+    `/cache`.
+- agent:
+  - Record slurmrestd cache hit and miss counts in cache service.
+  - Add metrics with cache hit and miss counts.
+  - Support querying cache metrics.
+  - Add cache boolean in `/info` endpoint to indicate whether cache service is
+    enabled on agent.
+  - Add `/cache` route to retrieve cache statistics.
 - ldap-check: Support loading LDAP bind password from separate file.
   Contribution from @Cornelicorn.
 - conf:
@@ -17,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     Contribution from @Cornelicorn.
   - Add gateway `[ldap]`>`lookup_as_user` configuration parameter. Contribution
     from @Cornelicorn.
+  - Introduce `cache-view` authorization action.
+  - Assign `cache-view` action to _user_ role (all authenticated users) in
+    default authorization policy.
 
 ### Changed
 - gateway:
@@ -38,7 +53,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Set Python _requests_ external library dependency on agent only.
   - Bump minimal version of `RFL.authentication` to v1.5.0.
-- docs: Update configuration reference documentation.
+  - Move Python _aiohttp_ external library dependency from gateway extra package
+    to main package because it is also a dependency of the agent now.
+- docs:
+  - Update authorization policy reference documentation.
+  - Update configuration reference documentation.
+  - Mention cache metrics in metrics configuration reference documentation.
 
 ### Fixed
 - gateway: Handle content type error when expecting JSON response from agent.
