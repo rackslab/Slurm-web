@@ -55,6 +55,11 @@ jwt_key={{ slurmrestd_key }}
 [metrics]
 enabled=yes
 {% endif %}
+
+{% if cache %}
+[cache]
+enabled=yes
+{% endif %}
 """
 
 
@@ -71,7 +76,9 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 
 class TestAgentConfBase(unittest.TestCase):
-    def setup_agent_conf(self, slurmrestd_parameters=None, racksdb=True, metrics=False):
+    def setup_agent_conf(
+        self, slurmrestd_parameters=None, racksdb=True, metrics=False, cache=False
+    ):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
         self.key.write("hey")
@@ -104,6 +111,7 @@ class TestAgentConfBase(unittest.TestCase):
                 slurmrestd_parameters=slurmrestd_parameters,
                 racksdb=racksdb,
                 metrics=metrics,
+                cache=cache,
             )
         )
         self.conf.seek(0)
@@ -125,6 +133,7 @@ class TestAgentBase(TestSlurmrestdClient):
         slurmrestd_parameters=None,
         racksdb=True,
         metrics=False,
+        cache=False,
         racksdb_format_error=False,
         racksdb_schema_error=False,
         anonymous_user=False,
@@ -135,6 +144,7 @@ class TestAgentBase(TestSlurmrestdClient):
             slurmrestd_parameters=slurmrestd_parameters,
             racksdb=racksdb,
             metrics=metrics,
+            cache=cache,
         )
 
         # Start the app with mocked RacksDB web blueprint
