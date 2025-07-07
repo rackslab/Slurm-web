@@ -104,6 +104,14 @@ class TestGatewayViews(TestGatewayBase):
                 "message template message.html.j2 not found",
             )
 
+    @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
+    def test_cache_stats(self, mock_get):
+        self.app_set_agents({"foo": fake_slurmweb_agent("foo")})
+        asset, mock_get.return_value = mock_agent_aio_response(asset="cache-stats")
+        response = self.client.get("/api/agents/foo/cache/stats")
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(response.json.keys(), ["hit", "miss"])
+
     def test_ui_config(self):
         response = self.client.get("/config.json")
         self.assertEqual(response.status_code, 200)
