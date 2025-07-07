@@ -17,6 +17,7 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
     SlurmrestdInvalidResponseError,
 )
+from slurmweb.cache import CachingService
 
 from ..lib.agent import TestAgentBase
 from ..lib.utils import all_slurm_versions, flask_404_description
@@ -495,6 +496,46 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(len(response.json), len(accounts_asset))
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["name"], accounts_asset[idx]["name"])
+
+    def test_cache_stats_disabled(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            response = self.client.get(f"/v{get_version()}/cache/stats")
+        self.assertEqual(response.status_code, 501)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 501,
+                "description": (
+                    "Cache service is disabled, unable to query cache statistics"
+                ),
+                "name": "Not Implemented",
+            },
+        )
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:slurmweb.views.agent:Cache service is disabled, unable to "
+                "query cache statistics"
+            ],
+        )
+
+    def test_cache_stats(self):
+        self.app.cache = mock.Mock(spec=CachingService)
+        self.app.cache.metrics.return_value = (
+            {"jobs": 10, "nodes": 5},
+            {"jobs": 8, "nodes": 3},
+            15,
+            11,
+        )
+        response = self.client.get(f"/v{get_version()}/cache/stats")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json,
+            {
+                "hit": {"keys": {"jobs": 10, "nodes": 5}, "total": 15},
+                "miss": {"keys": {"jobs": 8, "nodes": 3}, "total": 11},
+            },
+        )
 
     def test_request_metrics(self):
         # Metrics feature is disabled in this test case, check that the corresponding

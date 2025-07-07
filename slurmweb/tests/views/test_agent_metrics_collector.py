@@ -17,7 +17,7 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInternalError,
 )
 from slurmweb.errors import SlurmwebCacheError
-
+from slurmweb.cache import CachingService
 from ..lib.agent import TestAgentBase
 from ..lib.utils import all_slurm_versions
 
@@ -59,6 +59,48 @@ class TestAgentMetricsCollector(TestAgentBase):
                 self.assertEqual(family.samples[0].value, len(nodes_asset))
             if family.name == "slurm_jobs_total":
                 self.assertEqual(family.samples[0].value, len(jobs_asset))
+
+    @all_slurm_versions
+    def test_request_metrics_with_cache(self, slurm_version):
+        [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
+        )
+        self.app.metrics_collector.cache = mock.Mock(spec=CachingService)
+        self.app.metrics_collector.cache.metrics.return_value = (
+            {"jobs": 10, "nodes": 5},
+            {"jobs": 8, "nodes": 3},
+            15,
+            11,
+        )
+        response = self.client.get("/metrics")
+        self.assertEqual(response.status_code, 200)
+        families = list(text_string_to_metric_families(response.text))
+        # Check expected metrics are present
+        metrics_names = [family.name for family in families]
+        self.assertCountEqual(
+            [
+                "slurm_nodes",
+                "slurm_nodes_total",
+                "slurm_cores",
+                "slurm_cores_total",
+                "slurm_gpus",
+                "slurm_gpus_total",
+                "slurm_jobs",
+                "slurm_jobs_total",
+                "slurmweb_cache_hit",
+                "slurmweb_cache_miss",
+                "slurmweb_cache_hit_total",
+                "slurmweb_cache_miss_total",
+            ],
+            metrics_names,
+        )
+        # Check some values against assets
+        for family in families:
+            if family.name == "slurmweb_cache_hit_total":
+                self.assertEqual(family.samples[0].value, 15)
+            if family.name == "slurmweb_cache_miss_total":
+                self.assertEqual(family.samples[0].value, 11)
 
     def test_request_metrics_forbidden(self):
         # Change restricted list of network allowed to request metrics

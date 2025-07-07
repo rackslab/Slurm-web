@@ -89,6 +89,19 @@ class TestAgentMetricsRequest(TestAgentBase):
             ],
         )
 
+    @mock.patch("slurmweb.metrics.db.aiohttp.ClientSession.get")
+    def test_request_metrics_cache(self, mock_get):
+        _, mock_get.return_value = mock_prometheus_response("cache-hour")
+        response = self.client.get(f"/v{get_version()}/metrics/cache")
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(
+            response.json.keys(),
+            [
+                "hit",
+                "miss",
+            ],
+        )
+
     def test_request_metrics_nodes_denied(self):
         with RemoveActionInPolicy(self.app.policy, "user", "view-nodes"):
             with self.assertLogs("slurmweb", level="WARNING") as cm:
@@ -149,6 +162,27 @@ class TestAgentMetricsRequest(TestAgentBase):
             [
                 "WARNING:slurmweb.views.agent:Unauthorized access from user test (∅) "
                 "[group] to jobs metric (missing permission on view-jobs)"
+            ],
+        )
+
+    def test_request_metrics_cache_denied(self):
+        with RemoveActionInPolicy(self.app.policy, "user", "cache-view"):
+            with self.assertLogs("slurmweb", level="WARNING") as cm:
+                response = self.client.get(f"/v{get_version()}/metrics/cache")
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 403,
+                "description": "Access to cache metric not permitted",
+                "name": "Forbidden",
+            },
+        )
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:slurmweb.views.agent:Unauthorized access from user test (∅) "
+                "[group] to cache metric (missing permission on cache-view)"
             ],
         )
 
