@@ -275,8 +275,12 @@ def main() -> None:
                     # skip non-gpu gres
                     if gres[0] != "gpu":
                         continue
-                    gpu_types.append(gres[1])
-                    gpu_per_node += int(gres[2])
+                    if len(gres) > 2:
+                        gpu_types.append(gres[1])
+                        gpu_per_node += int(gres[2])
+                    else:
+                        gpu_types.append("n/a")
+                        gpu_per_node += int(gres[1])
                     gpu_partition = node["partitions"][0]
                 break
 
