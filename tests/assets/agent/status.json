@@ -3,6 +3,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "cache-stats": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "info": {
     "content-type": "application/json",
     "status": 200
@@ -12,6 +16,10 @@
     "status": 200
   },
   "jobs-node": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "metrics-cache-hour": {
     "content-type": "application/json",
     "status": 200
   },

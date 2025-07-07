@@ -22,5 +22,9 @@
   "unknown-path": {
     "content-type": "application/json",
     "status": 400
+  },
+  "cache-hour": {
+    "content-type": "application/json",
+    "status": 200
   }
 }
