@@ -3,6 +3,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "cache-stats": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "clusters": {
     "content-type": "application/json",
     "status": 200
@@ -85,6 +89,10 @@
   },
   "message_login": {
     "content-type": "text/html; charset=utf-8",
+    "status": 200
+  },
+  "metrics-cache-hour": {
+    "content-type": "application/json",
     "status": 200
   },
   "metrics-cores-hour": {

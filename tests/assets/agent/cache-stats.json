@@ -1,0 +1,19 @@
+{
+  "hit": {
+    "keys": {
+      "individual-node": 2,
+      "jobs": 4340,
+      "nodes": 4290
+    },
+    "total": 8640
+  },
+  "miss": {
+    "keys": {
+      "individual-node": 2,
+      "jobs": 4290,
+      "nodes": 4260,
+      "reservations": 3
+    },
+    "total": 8561
+  }
+}
