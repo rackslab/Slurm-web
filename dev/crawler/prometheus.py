@@ -11,7 +11,7 @@ import logging
 
 from .lib import ASSETS, dump_component_query
 
-from slurmweb.metrics.db import SlurmwebMetricsDB
+from slurmweb.metrics.db import SlurmwebMetricsDB, SlurmwebMetricQuery, SlurmwebMetricId
 
 logger = logging.getLogger(__name__)
 
@@ -34,23 +34,32 @@ def crawl_prometheus(url: str, job: str) -> None:
     headers = {}
     db = SlurmwebMetricsDB(url, job)
 
-    for metric in ["nodes", "cores", "gpus", "jobs"]:
+    for metric in ["nodes", "cores", "gpus", "jobs", "cache"]:
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS[metric]
         for _range in ["hour"]:
-            dump_component_query(
-                requests_statuses,
-                url,
-                f"{db.REQUEST_BASE_PATH}{db._query(metric, _range)}",
-                headers,
-                assets_path,
-                f"{metric}-{_range}",
-                prettify=False,
-            )
+            for _id in params.ids:
+                _, _, _query = db._query(_id, params, _range)
+                dump_component_query(
+                    requests_statuses,
+                    url,
+                    f"{db.REQUEST_BASE_PATH}{_query}",
+                    headers,
+                    assets_path,
+                    f"{metric}-{_range}",
+                    prettify=False,
+                )
 
     # query unexisting metric
+    params = SlurmwebMetricQuery(
+        "query",
+        [SlurmwebMetricId("fail")],
+        SlurmwebMetricsDB.RANGE_RESOLUTIONS["30s"],
+    )
+    _, _, _query = db._query(params.ids[0], params, "hour")
     dump_component_query(
         requests_statuses,
         url,
-        f"{db.REQUEST_BASE_PATH}{db._query('fail', 'hour')}",
+        f"{db.REQUEST_BASE_PATH}{_query}",
         headers,
         assets_path,
         "unknown-metric",

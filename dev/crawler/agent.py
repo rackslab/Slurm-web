@@ -117,7 +117,7 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
 
     # metrics
     if metrics:
-        for metric in ["nodes", "cores", "jobs"]:
+        for metric in ["nodes", "cores", "jobs", "cache"]:
             for _range in ["hour"]:
                 dump_component_query(
                     requests_statuses,
@@ -128,6 +128,15 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
                     f"metrics-{metric}-{_range}",
                     prettify=False,
                 )
+
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/cache/stats",
+        headers,
+        assets_path,
+        "cache-stats",
+    )
 
     # FIXME: Download unknown job/node
     # Save resulting status file
