@@ -137,6 +137,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "accounts": self._crawl_accounts,
                 "racksdb": self._crawl_racksdb,
                 "metrics": self._crawl_metrics,
+                "cache-stats": self._crawl_cache_stats,
             },
             GatewayAssetsManager(),
             gateway_url(dev_tmp_dir),  # Get gateway HTTP base URL from configuration
@@ -417,10 +418,16 @@ class GatewayCrawler(TokenizedComponentCrawler):
 
     def _crawl_metrics(self):
         # metrics
-        for metric in ["nodes", "cores", "jobs"]:
+        for metric in ["nodes", "cores", "jobs", "cache"]:
             for _range in ["hour"]:
                 self.dump_component_query(
                     f"/api/agents/{self.cluster}/metrics/{metric}?range={_range}",
                     f"metrics-{metric}-{_range}",
                     prettify=False,
                 )
+
+    def _crawl_cache_stats(self):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster}/cache/stats",
+            "cache-stats",
+        )

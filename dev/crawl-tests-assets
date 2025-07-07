@@ -224,6 +224,7 @@ def main() -> None:
                     "accounts",
                     "racksdb",
                     "metrics",
+                    "cache-stats",
                 ]
             )
         crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
