@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Regression on handling of denied clusters in cluster list.
   - Parsing of GRES GPUs when comma is present between brackets with indexes or
     sockets. Contribution from @astappiev.
+  - Fix color of ring in clusters list in dark mode.
   - Update dependencies to fix CVE-2025-5889 (brace-expansion).
 - docs: Fix rendering of example list values in generated configuration
   reference documentation (#599).
