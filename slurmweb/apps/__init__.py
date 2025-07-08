@@ -30,7 +30,7 @@ def load_ldap_password_from_file(bind_password_file: Optional[Path]) -> Optional
     if bind_password_file is None:
         return None
 
-    logger.debug(f"Loading LDAP bind password from path {bind_password_file}")
+    logger.debug("Loading LDAP bind password from the specified file")
 
     if not bind_password_file.is_file():
         raise SlurmwebConfigurationError(
