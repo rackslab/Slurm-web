@@ -133,10 +133,12 @@ jobs:
       fail-fast: false
       matrix:
         envs:
-        - container: debian:stable
+        - container: debian:oldstable
           rackslab-repo: bookworm
-        - container: debian:testing
+        - container: debian:stable
           rackslab-repo: trixie
+        - container: debian:testing
+          rackslab-repo: forky
         - container: debian:unstable
           rackslab-repo: sid
         - container: ubuntu:noble
