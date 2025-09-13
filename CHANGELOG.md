@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - front: Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751
-  and CVE-2025-58752 (vite).
+  and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
 
 ## [5.1.0] - 2025-07-09
 
