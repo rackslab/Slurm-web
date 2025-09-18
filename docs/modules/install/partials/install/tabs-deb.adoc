@@ -26,6 +26,20 @@ Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
 ====
 
+Debian 14 _« forky »_::
++
+====
+[source,subs=attributes]
+----
+Types: deb
+URIs: https://pkgs.rackslab.io/deb
+Suites: forky
+Components: main {pkgs-derivative}
+Architectures: amd64
+Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====
+
 Debian unstable _« sid »_::
 +
 ====

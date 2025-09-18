@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- docs: Mention support of Fedora 42.
+- docs:
+  - Mention support of Fedora 42.
+  - Mention support of Debian 14 _« forky »_.
 
 ### Changed
 - docs: Update package repository settings to install Slurm-web 4 with
