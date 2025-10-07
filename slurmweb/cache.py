@@ -92,6 +92,6 @@ class CachingService:
         return (
             cache_hits,
             cache_misses,
-            int(self.connection.get("cache-hit-total")),
-            int(self.connection.get("cache-miss-total")),
+            int(self.connection.get("cache-hit-total") or 0),
+            int(self.connection.get("cache-miss-total") or 0),
         )
