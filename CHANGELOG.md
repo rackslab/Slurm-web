@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs: Mention support of Debian 14 _« forky »_.
 
 ### Fixed
+- agent: Handle `SlurmrestdAuthenticationError` in metrics endpoint (#623).
 - front: Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751
   and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
 

@@ -24,6 +24,7 @@ from ..slurmrestd.errors import (
     SlurmrestdInvalidResponseError,
     SlurmrestConnectionError,
     SlurmrestdInternalError,
+    SlurmrestdAuthenticationError,
 )
 
 if t.TYPE_CHECKING:
@@ -164,6 +165,11 @@ class SlurmWebMetricsCollector(Collector):
             )
         except SlurmwebCacheError as err:
             logger.error("Unable to collect metrics due to cache error: %s", err)
+        except SlurmrestdAuthenticationError as err:
+            logger.error(
+                "Unable to collect metrics due to slurmrestd authentication error: %s",
+                err,
+            )
 
 
 def get_client_ipaddress(environ):
