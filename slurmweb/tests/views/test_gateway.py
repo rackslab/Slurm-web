@@ -112,6 +112,19 @@ class TestGatewayViews(TestGatewayBase):
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(response.json.keys(), ["hit", "miss"])
 
+    @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.post")
+    def test_cache_reset(self, mock_post):
+        self.app_set_agents({"foo": fake_slurmweb_agent("foo")})
+        asset, mock_post.return_value = mock_agent_aio_response(asset="cache-reset")
+        try:
+            response = self.client.post("/api/agents/foo/cache/reset", json={})
+        except TypeError:
+            # FlaskClient.post() supports json argument since Flask 0.15.0, we need to
+            # support Flask 0.12.2 on el8.
+            response = self.client.post("/api/agents/foo/cache/reset", data={})
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(response.json.keys(), ["hit", "miss"])
+
     def test_ui_config(self):
         response = self.client.get("/config.json")
         self.assertEqual(response.status_code, 200)
