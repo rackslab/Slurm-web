@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - front: Support filtering jobs in _failed_ state (#611).
+- conf: Introduce `cache-reset` authorization action.
 - docs: Mention support of Debian 14 _« forky »_.
 
 ### Fixed
