@@ -14,7 +14,8 @@ describe('DashboardCharts.vue', () => {
       permissions: { roles: ['admin'], actions: ['view-nodes', 'view-jobs'] },
       racksdb: true,
       infrastructure: 'foo',
-      metrics: true
+      metrics: true,
+      cache: true
     }
     const runtimeStore = useRuntimeStore()
     runtimeStore.availableClusters = [cluster]
