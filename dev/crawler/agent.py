@@ -138,6 +138,18 @@ def crawl_agent(port: int, token: str, metrics: bool) -> None:
         "cache-stats",
     )
 
+    # Cache reset (POST) — write minimal JSON body to ensure proper content-type
+    dump_component_query(
+        requests_statuses,
+        url,
+        f"/v{get_version()}/cache/reset",
+        headers,
+        assets_path,
+        "cache-reset",
+        method="POST",
+        content={},
+    )
+
     # FIXME: Download unknown job/node
     # Save resulting status file
     with open(status_file, "w+") as fh:
