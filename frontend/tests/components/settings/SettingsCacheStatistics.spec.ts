@@ -14,9 +14,18 @@ vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
 }))
 
+const mockGatewayAPI = {
+  cache_reset: vi.fn()
+}
+
+vi.mock('@/composables/GatewayAPI', () => ({
+  useGatewayAPI: () => mockGatewayAPI
+}))
+
 describe('SettingsCacheStatistics.vue', () => {
   beforeEach(() => {
     init_plugins()
+    mockGatewayAPI.cache_reset.mockClear()
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',
@@ -83,5 +92,87 @@ describe('SettingsCacheStatistics.vue', () => {
     expect(wrapper.findComponent(LoadingSpinner).exists()).toBeTruthy()
     expect(wrapper.find('div').text()).toBe('Loading statistics…')
     expect(wrapper.find('table').exists()).toBeFalsy()
+  })
+
+  test('should not show reset button when user lacks cache-reset permission', () => {
+    mockClusterDataPoller.unable.value = false
+    mockClusterDataPoller.loaded.value = true
+    mockClusterDataPoller.data.value = cacheStats
+
+    const clusterWithoutResetPermission = {
+      name: 'foo',
+      permissions: { roles: [], actions: ['cache-view'] },
+      racksdb: true,
+      infrastructure: 'foo',
+      metrics: true,
+      cache: true
+    }
+
+    const wrapper = mount(SettingsCacheStatistics, {
+      props: {
+        cluster: clusterWithoutResetPermission
+      }
+    })
+
+    expect(wrapper.find('button').exists()).toBeFalsy()
+  })
+
+  test('should show reset button when user has cache-reset permission', () => {
+    mockClusterDataPoller.unable.value = false
+    mockClusterDataPoller.loaded.value = true
+    mockClusterDataPoller.data.value = cacheStats
+
+    const clusterWithResetPermission = {
+      name: 'foo',
+      permissions: { roles: [], actions: ['cache-view', 'cache-reset'] },
+      racksdb: true,
+      infrastructure: 'foo',
+      metrics: true,
+      cache: true
+    }
+
+    const wrapper = mount(SettingsCacheStatistics, {
+      props: {
+        cluster: clusterWithResetPermission
+      }
+    })
+
+    const resetButton = wrapper.find('button')
+    expect(resetButton.exists()).toBeTruthy()
+    expect(resetButton.text()).toBe('Reset statistics')
+    expect(resetButton.find('svg').exists()).toBeTruthy() // ArrowPathIcon
+  })
+
+  test('should call cache_reset and update data when reset button is clicked', async () => {
+    mockClusterDataPoller.unable.value = false
+    mockClusterDataPoller.loaded.value = true
+    mockClusterDataPoller.data.value = cacheStats
+
+    const resetResponse = {
+      hit: { keys: {}, total: 0 },
+      miss: { keys: {}, total: 0 }
+    }
+    mockGatewayAPI.cache_reset.mockResolvedValue(resetResponse)
+
+    const clusterWithResetPermission = {
+      name: 'foo',
+      permissions: { roles: [], actions: ['cache-view', 'cache-reset'] },
+      racksdb: true,
+      infrastructure: 'foo',
+      metrics: true,
+      cache: true
+    }
+
+    const wrapper = mount(SettingsCacheStatistics, {
+      props: {
+        cluster: clusterWithResetPermission
+      }
+    })
+
+    const resetButton = wrapper.find('button')
+    await resetButton.trigger('click')
+
+    expect(mockGatewayAPI.cache_reset).toHaveBeenCalledWith('foo')
+    expect(mockClusterDataPoller.data.value).toEqual(resetResponse)
   })
 })
