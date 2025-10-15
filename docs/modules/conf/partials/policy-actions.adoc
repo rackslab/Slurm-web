@@ -45,4 +45,7 @@ defined reservations.
 |Access to cache information and metrics in settings panel.
 
 
+|cache-reset
+|Reset cache statistics in settings panel.
+
 |===

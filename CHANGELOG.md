@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
   - Handling of cache hit rate calculation when total number of requests in
     cache statistics is 0.
+- docs: Update authorization policy reference documentation.
 
 ## [5.1.0] - 2025-07-09
 
