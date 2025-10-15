@@ -40,6 +40,7 @@ const runtimeConfiguration = useRuntimeConfiguration()
 
 const state_filters = [
   { value: 'completed', label: 'Completed' },
+  { value: 'failed', label: 'Failed' },
   { value: 'running', label: 'Running' },
   { value: 'pending', label: 'Pending' }
 ]
