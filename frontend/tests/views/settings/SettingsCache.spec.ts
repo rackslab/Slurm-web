@@ -95,7 +95,7 @@ describe('settings/SettingsCache.vue', () => {
     expect(wrapper.findAllComponents(SettingsCacheStatistics).length).toBe(0)
     expect(wrapper.findAllComponents(SettingsCacheMetrics).length).toBe(0)
   })
-  test('should not display cache statistics without metrics when metrics disabled', () => {
+  test('should display cache statistics without metrics when metrics disabled', () => {
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',
@@ -109,7 +109,8 @@ describe('settings/SettingsCache.vue', () => {
     const wrapper = mount(SettingsCacheView, {
       global: {
         stubs: {
-          SettingsTabs: true
+          SettingsTabs: true,
+          SettingsCacheStatistics: true
         }
       }
     })
