@@ -25,7 +25,8 @@ describe('QosView.vue', () => {
         permissions: { roles: [], actions: [] },
         racksdb: true,
         infrastructure: 'foo',
-        metrics: true
+        metrics: true,
+        cache: true
       }
     ]
     // Reset mockClusterDataPoller unable to its default value before every tests.

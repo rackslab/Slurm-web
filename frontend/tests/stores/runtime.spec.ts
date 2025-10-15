@@ -19,6 +19,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -26,6 +27,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     runtime.addCluster(clusterFoo)
@@ -39,6 +41,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -46,6 +49,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     runtime.addCluster(clusterFoo)
@@ -59,6 +63,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -66,6 +71,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     runtime.addCluster(clusterFoo)
@@ -79,6 +85,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -86,6 +93,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: [] }
     }
     runtime.addCluster(clusterFoo)
@@ -99,6 +107,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -106,6 +115,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     runtime.addCluster(clusterFoo)
@@ -120,6 +130,7 @@ describe('Runtime Store', () => {
       infrastructure: 'foo',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
     }
     const clusterBar = {
@@ -127,6 +138,7 @@ describe('Runtime Store', () => {
       infrastructure: 'bar',
       racksdb: true,
       metrics: true,
+      cache: true,
       permissions: { roles: ['user', 'admin'], actions: ['view-jobs'] }
     }
     runtime.addCluster(clusterFoo)

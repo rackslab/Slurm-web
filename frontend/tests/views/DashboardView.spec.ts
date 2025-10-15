@@ -23,7 +23,8 @@ describe('DashboardView.vue', () => {
         permissions: { roles: [], actions: [] },
         racksdb: true,
         infrastructure: 'foo',
-        metrics: true
+        metrics: true,
+        cache: true
       }
     ]
   })
