@@ -42,7 +42,6 @@ function compareClusterJob(a: ClusterJob, b: ClusterJob): number {
 }
 
 const sortedJobs = computed(() => {
-  console.log(`Computing sorted jobs by ${runtimeStore.jobs.sort}`)
   if (data.value) {
     // https://vuejs.org/guide/essentials/list.html#displaying-filtered-sorted-results
     const result = [...data.value].filter((job) => {
