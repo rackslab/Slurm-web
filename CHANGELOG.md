@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - front: Support filtering jobs in _failed_ state (#611).
+- gateway: Add `/agent/{cluster}/cache/reset` route to reverse proxy request to
+  agent `/cache/reset`.
 - agent: Add `/cache/reset` route to reset cache statistics.
 - conf:
   - Introduce `cache-reset` authorization action.
