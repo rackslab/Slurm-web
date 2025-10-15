@@ -45,6 +45,23 @@ function hit_value(key: string): number {
   if (!data.value) return 0
   return key in data.value.hit.keys ? data.value.hit.keys[key] : 0
 }
+
+// Return total hit rate as a percentage, return '-' if the total number of
+// requests is 0.
+function hit_rate_total(): string {
+  if (!data.value) return '-'
+  if (!(data.value.miss.total + data.value.hit.total)) return '-'
+  return (
+    ((data.value.hit.total / (data.value.miss.total + data.value.hit.total)) * 100).toFixed(2) + '%'
+  )
+}
+
+// Return hit rate for a given key as a percentage, return '-' if the total
+// number of requests is 0.
+function hit_rate_key(key: string, value: number): string {
+  if (!(hit_value(key) + value)) return '-'
+  return ((hit_value(key) / (hit_value(key) + value)) * 100).toFixed(2) + '%'
+}
 </script>
 
 <template>
@@ -92,7 +109,7 @@ function hit_value(key: string): number {
                 <td
                   class="py-4 pr-4 pl-4 text-sm whitespace-nowrap text-gray-500 sm:pr-0 dark:text-gray-400"
                 >
-                  {{ ((hit_value(key) / (value + hit_value(key))) * 100).toFixed(2) }}%
+                  {{ hit_rate_key(key, value) }}
                 </td>
               </tr>
               <tr class="divide-x divide-gray-200 dark:divide-gray-500">
@@ -113,7 +130,7 @@ function hit_value(key: string): number {
                 <td
                   class="py-4 pr-4 pl-4 text-sm whitespace-nowrap text-gray-500 sm:pr-0 dark:text-gray-400"
                 >
-                  {{ ((data.hit.total / (data.miss.total + data.hit.total)) * 100).toFixed(2) }}%
+                  {{ hit_rate_total() }}
                 </td>
               </tr>
             </tbody>
