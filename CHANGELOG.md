@@ -23,8 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Handle `SlurmrestdAuthenticationError` in metrics endpoint (#623).
   - Fix failure of metrics endpoint when `cache-hit-total` or
     `cache-miss-total` keys are missing in Redis cache (#622).
-- front: Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751
-  and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
+- front:
+  - Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751
+    and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
+  - Handling of cache hit rate calculation when total number of requests in
+    cache statistics is 0.
 
 ## [5.1.0] - 2025-07-09
 
