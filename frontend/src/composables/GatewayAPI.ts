@@ -846,6 +846,10 @@ export function useGatewayAPI() {
     return await restAPI.get<CacheStatistics>(`/agents/${cluster}/cache/stats`)
   }
 
+  async function cache_reset(cluster: string): Promise<CacheStatistics> {
+    return await restAPI.post<CacheStatistics>(`/agents/${cluster}/cache/reset`, {})
+  }
+
   async function metrics_nodes(
     cluster: string,
     last: string
@@ -978,6 +982,7 @@ export function useGatewayAPI() {
     reservations,
     accounts,
     cache_stats,
+    cache_reset,
     metrics_nodes,
     metrics_cores,
     metrics_gpus,
