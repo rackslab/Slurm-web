@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - front: Support filtering jobs in _failed_ state (#611).
+- agent: Add `/cache/reset` route to reset cache statistics.
 - conf:
   - Introduce `cache-reset` authorization action.
   - Assign `cache-reset` action to _user_ role (all authenticated users) in
