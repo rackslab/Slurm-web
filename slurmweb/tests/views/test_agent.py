@@ -537,6 +537,47 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
+    def test_cache_reset_disabled(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            response = self.client.post(f"/v{get_version()}/cache/reset")
+        self.assertEqual(response.status_code, 501)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 501,
+                "description": ("Cache service is disabled, unable to reset cache"),
+                "name": "Not Implemented",
+            },
+        )
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:slurmweb.views.agent:Cache service is disabled, unable to "
+                "reset cache"
+            ],
+        )
+
+    def test_cache_reset(self):
+        self.app.cache = mock.Mock(spec=CachingService)
+        self.app.cache.metrics.return_value = (
+            {"jobs": 0},
+            {"jobs": 0},
+            0,
+            0,
+        )
+        response = self.client.post(f"/v{get_version()}/cache/reset")
+        self.assertEqual(response.status_code, 200)
+        # Ensure reset() was called before metrics()
+        self.app.cache.reset.assert_called_once()
+        self.app.cache.metrics.assert_called_once()
+        self.assertEqual(
+            response.json,
+            {
+                "hit": {"keys": {"jobs": 0}, "total": 0},
+                "miss": {"keys": {"jobs": 0}, "total": 0},
+            },
+        )
+
     def test_request_metrics(self):
         # Metrics feature is disabled in this test case, check that the corresponding
         # endpoint returns HTTP/404 (not found).

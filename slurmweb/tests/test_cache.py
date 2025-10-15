@@ -190,3 +190,39 @@ class TestCachingService(unittest.TestCase):
 
         # Verify the returned tuple (without missing keys)
         self.assertEqual(result, ({"key1": 10}, {"key1": 5}, 10, 5))
+
+    def test_reset(self):
+        # Setup mocks for Redis operations used in reset()
+        self.cache.connection.set = mock.Mock()
+        # Mock fake cache keys for hit and miss
+        self.cache.connection.smembers = mock.Mock(
+            side_effect=[{b"hit1", b"hit2"}, {b"miss1"}]
+        )
+        self.cache.connection.delete = mock.Mock()
+
+        # Call reset()
+        self.cache.reset()
+
+        # Check that totals are reset to 0
+        self.cache.connection.set.assert_has_calls(
+            [mock.call("cache-hit-total", 0), mock.call("cache-miss-total", 0)]
+        )
+
+        # Check that per-key counters are deleted for all hit keys
+        self.cache.connection.delete.assert_has_calls(
+            [
+                mock.call("cache-hit-hit1"),
+                mock.call("cache-hit-hit2"),
+            ],
+            any_order=True,
+        )
+
+        # Check that per-key counters are deleted for all miss keys
+        self.cache.connection.delete.assert_has_calls(
+            [mock.call("cache-miss-miss1")], any_order=True
+        )
+
+        # Check that sets are cleared
+        self.cache.connection.delete.assert_has_calls(
+            [mock.call("cache-hit-keys"), mock.call("cache-miss-keys")]
+        )
