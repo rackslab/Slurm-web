@@ -73,6 +73,7 @@ const state_filters = [
           leave-to="translate-x-full"
         >
           <DialogPanel
+            id="jobs-filters-panel"
             class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl dark:bg-gray-700"
           >
             <div class="flex items-center justify-between px-4">
@@ -102,6 +103,7 @@ const state_filters = [
               >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
+                    id="disclosure-state-btn"
                     class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
@@ -183,6 +185,7 @@ const state_filters = [
               >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
+                    id="disclosure-accounts-btn"
                     class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
@@ -211,6 +214,7 @@ const state_filters = [
               >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
+                    id="disclosure-qos-btn"
                     class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
@@ -239,6 +243,7 @@ const state_filters = [
               >
                 <h3 class="-mx-2 -my-3 flow-root">
                   <DisclosureButton
+                    id="disclosure-partitions-btn"
                     class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
                   >
                     <span class="flex">
