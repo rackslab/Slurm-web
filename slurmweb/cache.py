@@ -95,3 +95,24 @@ class CachingService:
             int(self.connection.get("cache-hit-total") or 0),
             int(self.connection.get("cache-miss-total") or 0),
         )
+
+    def reset(self):
+        """Reset cache statistics."""
+
+        # Reset hit and miss totals
+        self.connection.set("cache-hit-total", 0)
+        self.connection.set("cache-miss-total", 0)
+
+        # Delete all hit keys
+        for _key in self.connection.smembers("cache-hit-keys"):
+            _key = _key.decode()
+            self.connection.delete(f"{self.KEY_PREFIX_HIT}{_key}")
+
+        # Delete all miss keys
+        for _key in self.connection.smembers("cache-miss-keys"):
+            _key = _key.decode()
+            self.connection.delete(f"{self.KEY_PREFIX_MISS}{_key}")
+
+        # Delete hit and miss keys sets
+        self.connection.delete("cache-hit-keys")
+        self.connection.delete("cache-miss-keys")
