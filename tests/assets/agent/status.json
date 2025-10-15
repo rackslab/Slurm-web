@@ -7,6 +7,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "cache-reset": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "info": {
     "content-type": "application/json",
     "status": 200
