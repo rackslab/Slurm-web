@@ -21,6 +21,10 @@ Slurm-web is based on 3 components:
   served by the _gateway_ application and executed on client side in web
   browsers.
 
+NOTE: The *gateway* and *frontend* components are actually bundled together in
+the Slurm-web _gateway_ package for simplicity reason. See
+xref:#deployment[Deployment] section for more details.
+
 [sidebar]
 --
 .More links
@@ -112,6 +116,67 @@ Slurm cluster.
 
 The *gateway* can be installed on a central server. It distributes the requests
 to the *agents* deployed on the clusters.
+
+[#deployment]
+== Deployment
+
+This section lists which Slurm-web packages must be installed on which servers
+for common deployment topologies. Package names below refer to distribution
+packages available via the supported repositories.
+
+=== Single cluster — collocated with Slurm
+
+All Slurm-web components run on the same host as Slurm services (`slurmrestd`,
+`slurmctld` and `slurmdbd`), typically the _admin_ node of the cluster:
+
+.Slurm-web deployment on a single cluster [xref:image$arch/slurm-web_deployment_mono-cluster_collocated.svg[icon:download[] SVG]]
+image::arch/slurm-web_deployment_mono-cluster_collocated.png[]
+
+In this architecture, install the following Slurm-web packages on the Slurm
+controller host:
+
+* `slurm-web-agent`
+* `slurm-web-gateway`
+
+This is the *simplest deployment topology* and is recommended for small clusters.
+
+NOTE: The frontend component is included in the `slurm-web-gateway` package,
+there is no need to install a separate frontend package.
+
+=== Single cluster — separate server
+
+Slurm-web components are installed on a dedicated host (bare-metal or virtual
+machine). Multiple deployment topologies are possible: Slurm-web can be
+separated from Slurm services, or collocated with `slurmrestd` only, or
+Slurm-web components can be even separated themselves (*agent* and *gateway*).
+
+.Slurm-web deployment on a single cluster with separate server [xref:image$arch/slurm-web_deployment_mono-cluster_separated.svg[icon:download[] SVG]]
+image::arch/slurm-web_deployment_mono-cluster_separated.png[]
+
+CAUTION: When slurmrestd is not collocated with Slurm-web, `slurmrestd` must be
+configured to listen on a TCP/IP socket (_ie._ not on Unix socket). Please refer
+to xref:conf:slurmrestd.adoc[slurmrestd access configuration page] for more
+details.
+
+=== Multiple clusters
+
+Each cluster has its own _agent_ collocated with its `slurmrestd` service. The
+central _gateway_ routes user traffic to the appropriate agent:
+
+.Slurm-web deployment on multiple clusters [xref:image$arch/slurm-web_deployment_multi-clusters.svg[icon:download[] SVG]]
+image::arch/slurm-web_deployment_multi-clusters.png[]
+
+On each cluster, install the `slurm-web-agent` package. On the central Slurm-web
+host, install the `slurm-web-gateway` package.
+
+[NOTE]
+====
+* The gateway must be configured with all agents’ URLs and serves the single
+  frontend for all clusters. Please refer to
+  xref:conf:conf/gateway.adoc[gateway configuration page] for more details.
+* As in single cluster deployment topology, `slurm-web-agent` and Slurm services
+  can be collocated on the same host or separated.
+====
 
 [#slurm-versions]
 == Slurm REST API versions

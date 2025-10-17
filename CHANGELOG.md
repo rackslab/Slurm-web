@@ -18,7 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `cache-reset` authorization action.
   - Assign `cache-reset` action to _user_ role (all authenticated users) in
     default authorization policy.
-- docs: Mention support of Debian 14 _« forky »_.
+- docs:
+  - Mention support of Debian 14 _« forky »_.
+  - Add _Deployment_ section in architecture page to explain where packages must
+    be installed with different topologies (#483)
+
+### Changed
+- docs: Simplify distribution schema in architecture page to avoid confusion of
+  frontend component on users host.
 
 ### Fixed
 - agent:
