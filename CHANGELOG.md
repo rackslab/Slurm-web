@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     be installed with different topologies (#483)
 
 ### Changed
+- Change license from GPLv3+ to MIT.
 - docs: Simplify distribution schema in architecture page to avoid confusion of
   frontend component on users host.
 
