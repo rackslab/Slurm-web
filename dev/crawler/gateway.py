@@ -4,7 +4,7 @@
 #
 # This file is part of Slurm-web.
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 import typing as t

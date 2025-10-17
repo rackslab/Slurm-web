@@ -120,5 +120,4 @@ available in
 
 ## License
 
-Slurm-web is distributed under the terms of the GNU General Public License v3.0
-or later (GPLv3+).
+Slurm-web is distributed under the terms of the MIT license.
