@@ -3,7 +3,7 @@
 
   This file is part of Slurm-web.
 
-  SPDX-License-Identifier: GPL-3.0-or-later
+  SPDX-License-Identifier: MIT
 -->
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useTemplateRef, watch, nextTick } from 'vue'
