@@ -16,7 +16,7 @@ import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
-import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
+import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import NodeGPU from '@/components/resources/NodeGPU.vue'
@@ -202,7 +202,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <ResourcesDiagram
+      <ResourcesDiagramThumbnail
         v-if="runtimeStore.getCluster(cluster).racksdb"
         :cluster="cluster"
         :nodes="filteredNodes"

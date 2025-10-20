@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
+import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import ResourcesView from '@/views/ResourcesView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
@@ -37,12 +37,12 @@ describe('ResourcesView.vue', () => {
       },
       global: {
         stubs: {
-          ResourcesDiagram: true
+          ResourcesDiagramThumbnail: true
         }
       }
     })
-    // Check presence of ResourcesDiagram component
-    wrapper.getComponent(ResourcesDiagram)
+    // Check presence of ResourcesDiagramThumbnail component
+    wrapper.getComponent(ResourcesDiagramThumbnail)
     // Check presence of ResourcesFiltersBar component
     wrapper.getComponent(ResourcesFiltersBar)
     // Check presence of table
@@ -58,12 +58,12 @@ describe('ResourcesView.vue', () => {
       },
       global: {
         stubs: {
-          ResourcesDiagram: true
+          ResourcesDiagramThumbnail: true
         }
       }
     })
-    // Check absence of ResourcesDiagram component
-    expect(wrapper.findComponent(ResourcesDiagram).exists()).toBeFalsy()
+    // Check absence of ResourcesDiagramThumbnail component
+    expect(wrapper.findComponent(ResourcesDiagramThumbnail).exists()).toBeFalsy()
     // Check presence of table
     wrapper.get('main table')
   })
@@ -75,7 +75,7 @@ describe('ResourcesView.vue', () => {
       },
       global: {
         stubs: {
-          ResourcesDiagram: true
+          ResourcesDiagramThumbnail: true
         }
       }
     })
