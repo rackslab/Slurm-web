@@ -1,15 +1,15 @@
 import { describe, test, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ResourcesDiagram from '@/components/resources/ResourcesDiagram.vue'
+import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import { init_plugins } from '../../lib/common'
 import nodes from '../../assets/nodes.json'
 
-describe('ResourcesDiagram.vue', () => {
+describe('ResourcesDiagramThumbnail.vue', () => {
   beforeEach(() => {
     init_plugins()
   })
   test('display resources diagram', async () => {
-    const wrapper = mount(ResourcesDiagram, {
+    const wrapper = mount(ResourcesDiagramThumbnail, {
       props: {
         cluster: 'foo',
         nodes: nodes
