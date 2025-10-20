@@ -1,15 +1,19 @@
+import { nextTick } from 'vue'
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
-import ResourcesView from '@/views/ResourcesView.vue'
-import { init_plugins, getMockClusterDataPoller } from '../lib/common'
+import ResourcesView from '@/views/resources/ResourcesView.vue'
+import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
+import type { RouterMock } from 'vue-router-mock'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import nodes from '../assets/nodes.json'
+import nodes from '../../assets/nodes.json'
 
 const mockClusterDataPoller = getMockClusterDataPoller<ClusterNode[]>()
+
+let router: RouterMock
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -17,7 +21,7 @@ vi.mock('@/composables/DataPoller', () => ({
 
 describe('ResourcesView.vue', () => {
   beforeEach(() => {
-    init_plugins()
+    router = init_plugins()
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',
@@ -84,5 +88,20 @@ describe('ResourcesView.vue', () => {
     )
     // Check absence of main table
     expect(wrapper.find('main table').exists()).toBeFalsy()
+  })
+  test('syncs filters with URL on mount and on change', async () => {
+    const runtime = useRuntimeStore()
+    mockClusterDataPoller.data.value = nodes
+    const wrapper = mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    // onMounted should push initial query when none is set
+    expect(router.push).toHaveBeenCalled()
+
+    // simulate store filter change and expect another push
+    runtime.resources.filters.states = ['up'] as any
+    await nextTick()
+    expect(router.push).toHaveBeenCalledTimes(2)
   })
 })
