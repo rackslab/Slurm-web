@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useTemplateRef, watch, nextTick } from 'vue'
 import type { Ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
@@ -15,7 +16,6 @@ import { APIServerError } from '@/composables/HTTPErrors'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import router from '@/router'
 
 const { cluster, nodes, fullscreen } = defineProps<{
   cluster: string
@@ -26,6 +26,7 @@ const { cluster, nodes, fullscreen } = defineProps<{
 const emit = defineEmits(['imageSize'])
 const unable = defineModel({ required: true, default: false })
 
+const router = useRouter()
 const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
