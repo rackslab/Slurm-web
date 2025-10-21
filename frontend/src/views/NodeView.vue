@@ -8,8 +8,7 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
-import type { LocationQueryRaw } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
@@ -21,20 +20,12 @@ import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { ChevronLeftIcon, XCircleIcon } from '@heroicons/vue/20/solid'
+import BackToResourcesButton from '@/components/resources/BackToResourcesButton.vue'
+import { XCircleIcon } from '@heroicons/vue/20/solid'
 
 const { cluster, nodeName } = defineProps<{ cluster: string; nodeName: string }>()
 
 const runtimeStore = useRuntimeStore()
-const router = useRouter()
-
-function backToResources() {
-  router.push({
-    name: 'resources',
-    params: { cluster: runtimeStore.currentCluster?.name },
-    query: runtimeStore.resources.query() as LocationQueryRaw
-  })
-}
 
 function roundToDecimal(value: number, decimals: number = 1): number {
   return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
@@ -75,14 +66,7 @@ watch(
     :cluster="cluster"
     :breadcrumb="[{ title: 'Resources', routeName: 'resources' }, { title: `Node ${nodeName}` }]"
   >
-    <button
-      @click="backToResources()"
-      type="button"
-      class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark mt-8 mb-16 inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
-    >
-      <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
-      Back to resources
-    </button>
+    <BackToResourcesButton :cluster="cluster" />
     <ErrorAlert v-if="node.unable.value"
       >Unable to retrieve node {{ nodeName }} from cluster
       <span class="font-medium">{{ cluster }}</span></ErrorAlert
