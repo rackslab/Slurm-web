@@ -30,8 +30,8 @@ export function init_plugins(): RouterMock {
 
   const router = createRouterMock({
     spy: {
-      create: (fn: any) => vi.fn(fn),
-      reset: (spy: any) => spy.mockRestore()
+      create: (fn: (...args: unknown[]) => unknown) => vi.fn(fn),
+      reset: (spy: { mockRestore: () => void }) => spy.mockRestore()
     }
   })
 

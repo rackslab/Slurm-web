@@ -1,10 +1,9 @@
-import { describe, test, beforeEach, afterEach, expect } from 'vitest'
-import { mount, config } from '@vue/test-utils'
+import { describe, test, beforeEach, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
 import { init_plugins } from '../../lib/common'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import { nextTick } from 'vue'
-import { Dialog } from '@headlessui/vue'
 
 describe('JobsFiltersPanel.vue', () => {
   beforeEach(() => {

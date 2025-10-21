@@ -8,8 +8,8 @@ import nodes from '../../assets/nodes.json'
 import requestsStatus from '../../assets/status.json'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 const mockRESTAPI = {
   postRaw: vi.fn()

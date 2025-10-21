@@ -41,7 +41,7 @@ describe('ReservationsView.vue', () => {
      * - account in 6th cell
      * - flags in 7th cell
      */
-    for (const [i, value] of reservationsTableLines.entries()) {
+    for (const [i] of reservationsTableLines.entries()) {
       const reservationCells = reservationsTableLines[i].findAll('td')
       expect(reservationCells[0].text()).toBe(reservations[i].name)
       // if users in reservations, check all li items else check li absence

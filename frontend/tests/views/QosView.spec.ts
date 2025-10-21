@@ -46,7 +46,7 @@ describe('QosView.vue', () => {
     // Check one line per qos in table body
     expect(qosTableLines.length).toBe(qos.length)
     // Check name and description of QOS are present
-    for (const [i, value] of qosTableLines.entries()) {
+    for (const [i] of qosTableLines.entries()) {
       expect(qosTableLines[i].find('td p.text-base').text()).toBe(qos[i].name)
       expect(qosTableLines[i].find('td p.text-gray-500').text()).toBe(qos[i].description)
     }
