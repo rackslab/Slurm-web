@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { describe, test, beforeEach, vi, expect } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
@@ -113,5 +114,83 @@ describe('ResourcesCanvas.vue', () => {
     expect(wrapper.get('span').text()).toBe('Server error: fake other server error')
     // Check unable model has been emitted
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+  })
+  test('display resources canvas in cores mode', async () => {
+    const message = fs.readFileSync(
+      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
+    )
+    mockRESTAPI.postRaw.mockReturnValueOnce(
+      Promise.resolve({
+        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
+        data: message
+      })
+    )
+    const wrapper = mount(ResourcesCanvas, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        fullscreen: false,
+        mode: 'cores',
+        modelValue: false
+      },
+      global: {
+        stubs: {
+          LoadingSpinner: true
+        }
+      }
+    })
+    // Wait for asynchronous code to execute and display the canvas
+    await flushPromises()
+    await flushPromises()
+    // Check canvas is displayed
+    expect(wrapper.get('canvas').attributes('style')).not.toContain('display: none;')
+    // Check mode prop is passed correctly
+    expect(wrapper.props('mode')).toBe('cores')
+  })
+  test('tooltip shows cores information in cores mode', async () => {
+    const message = fs.readFileSync(
+      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
+    )
+    mockRESTAPI.postRaw.mockReturnValueOnce(
+      Promise.resolve({
+        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
+        data: message
+      })
+    )
+    const wrapper = mount(ResourcesCanvas, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        fullscreen: false,
+        mode: 'cores',
+        modelValue: false
+      },
+      global: {
+        stubs: {
+          LoadingSpinner: true
+        }
+      }
+    })
+    await flushPromises()
+    await flushPromises()
+
+    // Simulate mouse hover to set currentNode by accessing internal properties
+    ;(wrapper.vm as { currentNode: unknown }).currentNode = nodes[0] // Set the first node as current
+    ;(wrapper.vm as { nodeTooltipOpen: boolean }).nodeTooltipOpen = true
+
+    await nextTick()
+
+    // Check tooltip is displayed
+    const tooltip = wrapper.find('aside')
+    expect(tooltip.exists()).toBe(true)
+
+    // Check that tooltip list is displayed
+    const tooltipContent = tooltip.find('ul')
+    expect(tooltipContent.exists()).toBe(true)
+
+    // Check that cores information is displayed
+    const coresInfo = tooltip.find('span.text-right')
+    expect(coresInfo.exists()).toBe(true)
+    expect(coresInfo.text()).toContain(`${nodes[0].alloc_cpus}/${nodes[0].cpus}`)
   })
 })
