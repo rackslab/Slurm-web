@@ -81,7 +81,7 @@ function reportOtherError(error: Error) {
 
 function getNodeStrokeColor(states: string[]): string | undefined {
   const strokeColors = {
-    DOWN: '#b82c2c',
+    DOWN: '#c10007',
     DRAINING: '#b380c4',
     DRAIN: '#b654d6'
   }
@@ -95,10 +95,10 @@ function getNodeStrokeColor(states: string[]): string | undefined {
 
 function getNodeFillColor(states: string[]): string {
   const fillColors = {
-    DOWN: '#b82c2c',
-    IDLE: '#71db78',
-    MIXED: '#f2ab78',
-    ALLOCATED: '#bf5a13'
+    DOWN: '#c10007',
+    IDLE: '#70e079',
+    MIXED: '#ffd230',
+    ALLOCATED: '#e17100'
   }
   let fillColor = '#ffffff'
   for (const [status, color] of Object.entries(fillColors)) {
