@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useTemplateRef, watch, nextTick } from 'vue'
 import type { Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
@@ -28,6 +28,7 @@ const emit = defineEmits(['imageSize'])
 const unable = defineModel({ required: true, default: false })
 
 const router = useRouter()
+const route = useRoute()
 const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
@@ -434,7 +435,11 @@ function setMouseEventHandler() {
     for (const [nodeName, nodePath] of Object.entries(allNodesPaths)) {
       const isPointInPath = ctx.isPointInPath(nodePath.path, event.offsetX, event.offsetY)
       if (isPointInPath) {
-        router.push({ name: 'node', params: { cluster: cluster, nodeName: nodeName } })
+        router.push({
+          name: 'node',
+          params: { cluster: cluster, nodeName: nodeName },
+          query: { returnTo: route.name as string }
+        })
       }
     }
   })

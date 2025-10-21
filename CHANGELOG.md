@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Change license from GPLv3+ to MIT.
+- front: _Back to resources_ button in node details page redirects to the
+  original resources view (eg. nodes diagram) instead of resources page
+  consistently.
 - docs:
   - Simplify distribution schema in architecture page to avoid confusion of
     frontend component on users host.

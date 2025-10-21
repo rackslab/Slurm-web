@@ -255,7 +255,8 @@ onMounted(() => {
                         class="inline-flex text-white hover:font-bold hover:text-gray-500 dark:text-gray-900 hover:dark:text-gray-300"
                         :to="{
                           name: 'node',
-                          params: { cluster: cluster, nodeName: node.name }
+                          params: { cluster: cluster, nodeName: node.name },
+                          query: { returnTo: 'resources' }
                         }"
                       >
                         <span class="pr-4 font-mono text-black dark:text-gray-100">{{
@@ -326,7 +327,8 @@ onMounted(() => {
                                 @click="
                                   router.push({
                                     name: 'node',
-                                    params: { cluster: $props.cluster, nodeName: _node }
+                                    params: { cluster: $props.cluster, nodeName: _node },
+                                    query: { returnTo: 'resources' }
                                   })
                                 "
                               >
