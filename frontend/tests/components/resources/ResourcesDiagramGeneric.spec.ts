@@ -53,6 +53,26 @@ describe('ResourcesDiagramGeneric.vue', () => {
       expect(canvas.props('mode')).toBe('nodes')
     })
 
+    test('passes loading prop to ResourcesCanvas when data is loading', () => {
+      mockClusterDataPoller.loaded.value = false
+      const wrapper = mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'nodes' },
+        global: { stubs: { ResourcesCanvas: true, ResourcesDiagramNavigation: true } }
+      })
+      const canvas = wrapper.getComponent(ResourcesCanvas)
+      expect(canvas.props('loading')).toBe(true)
+    })
+
+    test('passes loading prop to ResourcesCanvas when data is loaded', () => {
+      mockClusterDataPoller.loaded.value = true
+      const wrapper = mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'nodes' },
+        global: { stubs: { ResourcesCanvas: true, ResourcesDiagramNavigation: true } }
+      })
+      const canvas = wrapper.getComponent(ResourcesCanvas)
+      expect(canvas.props('loading')).toBe(false)
+    })
+
     test('passes correct props to ResourcesDiagramNavigation in nodes mode', () => {
       const wrapper = mount(ResourcesDiagramGeneric, {
         props: { cluster: 'foo', mode: 'nodes' },
@@ -106,6 +126,26 @@ describe('ResourcesDiagramGeneric.vue', () => {
       })
       const canvas = wrapper.getComponent(ResourcesCanvas)
       expect(canvas.props('mode')).toBe('cores')
+    })
+
+    test('passes loading prop to ResourcesCanvas when data is loading in cores mode', () => {
+      mockClusterDataPoller.loaded.value = false
+      const wrapper = mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'cores' },
+        global: { stubs: { ResourcesCanvas: true, ResourcesDiagramNavigation: true } }
+      })
+      const canvas = wrapper.getComponent(ResourcesCanvas)
+      expect(canvas.props('loading')).toBe(true)
+    })
+
+    test('passes loading prop to ResourcesCanvas when data is loaded in cores mode', () => {
+      mockClusterDataPoller.loaded.value = true
+      const wrapper = mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'cores' },
+        global: { stubs: { ResourcesCanvas: true, ResourcesDiagramNavigation: true } }
+      })
+      const canvas = wrapper.getComponent(ResourcesCanvas)
+      expect(canvas.props('loading')).toBe(false)
     })
 
     test('passes correct props to ResourcesDiagramNavigation in cores mode', () => {

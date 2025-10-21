@@ -35,6 +35,7 @@ describe('ResourcesView.vue', () => {
   })
   test('display resources', () => {
     mockClusterDataPoller.data.value = nodes
+    mockClusterDataPoller.loaded.value = true
     const wrapper = mount(ResourcesView, {
       props: {
         cluster: 'foo'
@@ -46,7 +47,10 @@ describe('ResourcesView.vue', () => {
       }
     })
     // Check presence of ResourcesDiagramThumbnail component
-    wrapper.getComponent(ResourcesDiagramThumbnail)
+    const thumbnail = wrapper.getComponent(ResourcesDiagramThumbnail)
+    // Check that loading prop is passed correctly (should be false when loaded
+    // is true)
+    expect(thumbnail.props('loading')).toBe(false)
     // Check presence of ResourcesFiltersBar component
     wrapper.getComponent(ResourcesFiltersBar)
     // Check presence of table
@@ -88,6 +92,18 @@ describe('ResourcesView.vue', () => {
     )
     // Check absence of main table
     expect(wrapper.find('main table').exists()).toBeFalsy()
+  })
+  test('passes loading state to ResourcesDiagramThumbnail', () => {
+    mockClusterDataPoller.data.value = nodes
+    mockClusterDataPoller.loaded.value = false // Data is loading
+    const wrapper = mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    // Check that loading prop is passed correctly (should be true when loaded
+    // is false)
+    const thumbnail = wrapper.getComponent(ResourcesDiagramThumbnail)
+    expect(thumbnail.props('loading')).toBe(true)
   })
   test('syncs filters with URL on mount and on change', async () => {
     const runtime = useRuntimeStore()
