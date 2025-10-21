@@ -206,6 +206,7 @@ onMounted(() => {
         v-if="runtimeStore.getCluster(cluster).racksdb"
         :cluster="cluster"
         :nodes="filteredNodes"
+        :loading="!loaded"
       />
       <ResourcesFiltersBar />
 

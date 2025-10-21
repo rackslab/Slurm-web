@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     error when unable to load jobs.
   - Introduce new fullscreen cluster graphical representions with cores
     allocations rates (#293).
+  - Add shimmering effect on nodes graphical representations while loading
+    their states from Slurm.
 - gateway: Add `/agent/{cluster}/cache/reset` route to reverse proxy request to
   agent `/cache/reset`.
 - agent: Add `/cache/reset` route to reset cache statistics.
