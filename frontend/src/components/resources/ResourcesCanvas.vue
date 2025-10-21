@@ -17,10 +17,11 @@ import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const { cluster, nodes, fullscreen } = defineProps<{
+const { cluster, nodes, fullscreen, mode } = defineProps<{
   cluster: string
   nodes: ClusterNode[]
   fullscreen: boolean
+  mode?: 'nodes' | 'cores'
 }>()
 
 const emit = defineEmits(['imageSize'])
@@ -78,39 +79,221 @@ function reportOtherError(error: Error) {
   unable.value = true
 }
 
-function getNodeFillStrokeColors(nodeName: string): [string, string | undefined] {
+function getNodeStrokeColor(states: string[]): string | undefined {
+  const strokeColors = {
+    DOWN: '#b82c2c',
+    DRAINING: '#b380c4',
+    DRAIN: '#b654d6'
+  }
+  for (const [status, color] of Object.entries(strokeColors)) {
+    if (states.includes(status)) {
+      return color
+    }
+  }
+  return undefined
+}
+
+function getNodeFillColor(states: string[]): string {
   const fillColors = {
     DOWN: '#b82c2c',
     IDLE: '#71db78',
     MIXED: '#f2ab78',
     ALLOCATED: '#bf5a13'
   }
-  const strokeColors = {
-    DOWN: '#b82c2c',
-    DRAINING: '#b380c4',
-    DRAIN: '#b654d6'
-  }
-  const states = getNodeState(nodeName)
   let fillColor = '#ffffff'
-  let strokeColor = undefined
   for (const [status, color] of Object.entries(fillColors)) {
     if (states.includes(status)) {
       fillColor = color
       break
     }
   }
-  for (const [status, color] of Object.entries(strokeColors)) {
-    if (states.includes(status)) {
-      strokeColor = color
-      break
-    }
-  }
-  return [fillColor, strokeColor]
+  return fillColor
 }
 
 function drawNodeHoverRing(ctx: CanvasRenderingContext2D, nodePath: Path2D): void {
   ctx.strokeStyle = '#74a5d6' // hover color
   ctx.stroke(nodePath)
+}
+
+function drawNodeStroke(
+  ctx: CanvasRenderingContext2D,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number,
+  strokeColor: string
+): void {
+  ctx.strokeStyle = strokeColor
+  // Define stroke width depending on node height
+  if (node_height > 10) {
+    ctx.lineWidth = 5
+  } else {
+    ctx.lineWidth = 2
+  }
+  ctx.strokeRect(
+    node_x + ctx.lineWidth / 2,
+    node_y + ctx.lineWidth / 2,
+    node_width - ctx.lineWidth - 1,
+    node_height - ctx.lineWidth
+  )
+  ctx.lineWidth = 1
+}
+
+function getNodeCoresUsage(nodeName: string): {
+  allocated: number
+  total: number
+  percentage: number
+} {
+  const node = getClusterNode(nodeName)
+  if (!node) return { allocated: 0, total: 0, percentage: 0 }
+
+  const allocated = node.alloc_cpus || 0
+  const total = node.cpus || 0
+  const percentage = total > 0 ? (allocated / total) * 100 : 0
+
+  return { allocated, total, percentage }
+}
+
+function progressBarColor(percentage: number): string {
+  if (percentage == 100) return '#f54900'
+  else if (percentage >= 80) return '#fe9a00'
+  else if (percentage >= 30) return '#ffd230'
+  else return '#7ccf00'
+}
+
+function drawCoresProgressBar(
+  ctx: CanvasRenderingContext2D,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number,
+  coresUsage: { allocated: number; total: number; percentage: number }
+): void {
+  // Determine if node is wider than tall
+  const isHorizontal = node_width > node_height
+  const backgroundColor = '#e5e7eb' // gray-200
+
+  if (isHorizontal) {
+    // Horizontal progress bar (left to right)
+    const barWidth = node_width - 1
+    const barHeight = node_height
+    const barX = node_x
+    const barY = node_y + (node_height - barHeight) / 2
+
+    // Background bar
+    ctx.fillStyle = backgroundColor
+    ctx.fillRect(barX, barY, barWidth, barHeight)
+
+    // Progress bar
+    const progressWidth = barWidth * (coresUsage.percentage / 100)
+    if (progressWidth > 0) {
+      ctx.fillStyle = progressBarColor(coresUsage.percentage)
+      ctx.fillRect(barX, barY, progressWidth, barHeight)
+    }
+  } else {
+    // Vertical progress bar (bottom to top)
+    const barWidth = node_width - 1
+    const barHeight = node_height
+    const barX = node_x + (node_width - barWidth) / 2
+    const barY = node_y
+
+    // Background bar
+    ctx.fillStyle = backgroundColor
+    ctx.fillRect(barX, barY, barWidth, barHeight)
+
+    // Progress bar (from bottom)
+    const progressHeight = barHeight * (coresUsage.percentage / 100)
+    if (progressHeight > 0) {
+      ctx.fillStyle = progressBarColor(coresUsage.percentage)
+      ctx.fillRect(barX, barY + barHeight - progressHeight, barWidth, progressHeight)
+    }
+  }
+}
+
+function drawCoresTextOverlay(
+  ctx: CanvasRenderingContext2D,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number,
+  coresUsage: { allocated: number; total: number; percentage: number }
+): void {
+  const textColor = '#374151' // gray-700
+  const isHorizontal = node_width > node_height
+
+  if (isHorizontal) {
+    // Horizontal text overlay - aligned to right
+    if (node_width > 60 && node_height > 10) {
+      ctx.fillStyle = textColor
+      const fontSize = Math.min(node_height - 4, 12)
+      ctx.font = `${fontSize}px sans-serif`
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(
+        `${coresUsage.allocated}/${coresUsage.total}`,
+        node_x + node_width - 2,
+        node_y + node_height / 2 + 1
+      )
+    }
+  } else {
+    // Vertical text overlay - aligned to top
+    if (node_width > 10 && node_height > 20) {
+      ctx.fillStyle = textColor
+      const fontSize = Math.min(node_width - 4, 12)
+      ctx.font = `${fontSize}px sans-serif`
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'middle'
+      ctx.save()
+      ctx.translate(node_x + node_width / 2 + 1, node_y + 2)
+      ctx.rotate(-Math.PI / 2)
+      ctx.fillText(`${coresUsage.allocated}/${coresUsage.total}`, 0, 0)
+      ctx.restore()
+    }
+  }
+}
+
+function drawNodeCoresMode(
+  ctx: CanvasRenderingContext2D,
+  nodeName: string,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number
+): void {
+  // Draw cores progress bar
+  const coresUsage = getNodeCoresUsage(nodeName)
+  drawCoresProgressBar(ctx, node_x, node_y, node_width, node_height, coresUsage)
+
+  // Draw node stroke if its color is defined
+  const strokeColor = getNodeStrokeColor(getNodeState(nodeName))
+  if (strokeColor) {
+    drawNodeStroke(ctx, node_x, node_y, node_width, node_height, strokeColor)
+  }
+
+  // Draw text overlay on top of stroke
+  drawCoresTextOverlay(ctx, node_x, node_y, node_width, node_height, coresUsage)
+}
+
+function drawNodeNodesMode(
+  ctx: CanvasRenderingContext2D,
+  nodeName: string,
+  nodePath: Path2D,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number
+): void {
+  const states = getNodeState(nodeName)
+  // Draw nodes with state-based colors
+  const fillColor = getNodeFillColor(states)
+  ctx.fillStyle = fillColor
+  ctx.fill(nodePath)
+
+  // Draw node stroke if its color is defined
+  const strokeColor = getNodeStrokeColor(states)
+  if (strokeColor) {
+    drawNodeStroke(ctx, node_x, node_y, node_width, node_height, strokeColor)
+  }
 }
 
 async function updateCanvas(fullUpdate: boolean = true) {
@@ -160,26 +343,18 @@ async function updateCanvas(fullUpdate: boolean = true) {
           ctx.fillStyle = '#aaaaaa'
           ctx.fill(nodePath)
         } else {
-          const [fillColor, strokeColor] = getNodeFillStrokeColors(nodeName)
-          ctx.fillStyle = fillColor
-          ctx.fill(nodePath)
-
-          // Draw node stroke if its color is defined
-          if (strokeColor) {
-            ctx.strokeStyle = strokeColor
-            // Define stroke width depending on node height
-            if (nodeCoordinates[3] > 10) {
-              ctx.lineWidth = 5
-            } else {
-              ctx.lineWidth = 2
-            }
-            ctx.strokeRect(
-              nodeCoordinates[0] + x_shift + ctx.lineWidth / 2 + 0.5,
-              nodeCoordinates[1] + y_shift + ctx.lineWidth / 2 - 0.5,
-              nodeCoordinates[2] - ctx.lineWidth - 1,
-              nodeCoordinates[3] - ctx.lineWidth
+          if (mode === 'cores') {
+            drawNodeCoresMode(ctx, nodeName, node_x, node_y, nodeCoordinates[2], nodeCoordinates[3])
+          } else {
+            drawNodeNodesMode(
+              ctx,
+              nodeName,
+              nodePath,
+              node_x,
+              node_y,
+              nodeCoordinates[2],
+              nodeCoordinates[3]
             )
-            ctx.lineWidth = 1
           }
 
           // Add node path to global hash
@@ -347,8 +522,14 @@ onUnmounted(() => {
             <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
               <NodeMainState :status="currentNode.state" />
             </li>
-            <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
+            <li class="flex justify-between px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
               <NodeAllocationState :status="currentNode.state" />
+              <span
+                v-if="mode === 'cores'"
+                class="text-right text-xs text-gray-400 dark:text-gray-200"
+              >
+                {{ currentNode.alloc_cpus }}/{{ currentNode.cpus }}
+              </span>
             </li>
           </ul>
         </div>

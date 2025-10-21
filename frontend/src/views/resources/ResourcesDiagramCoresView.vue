@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2023-2025 Rackslab
+  Copyright (c) 2025 Rackslab
 
   This file is part of Slurm-web.
 
@@ -13,5 +13,5 @@ const { cluster } = defineProps<{ cluster: string }>()
 </script>
 
 <template>
-  <ResourcesDiagramGeneric :cluster="cluster" mode="nodes" />
+  <ResourcesDiagramGeneric :cluster="cluster" mode="cores" />
 </template>
