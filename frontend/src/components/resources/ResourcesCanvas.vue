@@ -17,11 +17,18 @@ import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
-const { cluster, nodes, fullscreen, mode } = defineProps<{
+const {
+  cluster,
+  nodes,
+  fullscreen,
+  mode,
+  loading: nodesLoading
+} = defineProps<{
   cluster: string
   nodes: ClusterNode[]
   fullscreen: boolean
   mode?: 'nodes' | 'cores'
+  loading?: boolean
 }>()
 
 const emit = defineEmits(['imageSize'])
@@ -33,13 +40,14 @@ const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
 
 const container = useTemplateRef<HTMLDivElement>('container')
-const loading: Ref<boolean> = ref(true)
+const racksLoading: Ref<boolean> = ref(true)
 const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
 const nodeTooltip = useTemplateRef<HTMLDivElement>('nodeTooltip')
 const nodeTooltipOpen: Ref<boolean> = ref(false)
 const errorMessage: Ref<string | undefined> = ref()
 let timeout: number = -1 // holder for timeout id
 const delay = 250 // delay after event is "complete" to run callback
+let animationId: number | null = null // holder for animation frame id
 let allNodesPaths: Record<
   string,
   { x: number; y: number; width: number; height: number; path: Path2D }
@@ -253,6 +261,101 @@ function drawCoresTextOverlay(
   }
 }
 
+function drawShimmerAnimation(ctx: CanvasRenderingContext2D, time: number): void {
+  if (!bitmap || !canvas.value || !coordinates) return
+
+  const shimmerSpeed = 0.001
+  const shimmerWidth = canvas.value.height * 0.1
+
+  // Calculate global shimmer position across entire canvas (top to bottom)
+  const canvasHeight = canvas.value.height
+  const shimmerProgress = (time * shimmerSpeed) % 1
+  const globalShimmerY = canvasHeight * shimmerProgress
+
+  // Apply shimmer effect to each node
+  for (const [, nodeCoordinates] of Object.entries(coordinates)) {
+    const node_x = nodeCoordinates[0] + x_shift + 0.5
+    const node_y = nodeCoordinates[1] + y_shift - 0.5
+    const node_width = nodeCoordinates[2] - 1
+    const node_height = nodeCoordinates[3]
+
+    // Calculate shimmer intensity for this node based on global vertical position
+    let shimmerIntensity = 0
+    if (globalShimmerY > node_y && globalShimmerY < node_y + node_height) {
+      // Shimmer is within node bounds
+      shimmerIntensity = 1
+    } else if (globalShimmerY > node_y - shimmerWidth && globalShimmerY <= node_y) {
+      // Shimmer is entering from top - intensity higher when closer to global shimmer Y
+      const distanceFromShimmer = Math.abs(globalShimmerY - node_y)
+      const maxDistance = shimmerWidth
+      const proximityFactor = 1 - distanceFromShimmer / maxDistance
+      shimmerIntensity = proximityFactor * 0.8 // Higher intensity when closer
+    } else if (
+      globalShimmerY >= node_y + node_height &&
+      globalShimmerY < node_y + node_height + shimmerWidth
+    ) {
+      // Shimmer is exiting to bottom - intensity higher when closer to global shimmer Y
+      const distanceFromShimmer = Math.abs(globalShimmerY - (node_y + node_height))
+      const maxDistance = shimmerWidth
+      const proximityFactor = 1 - distanceFromShimmer / maxDistance
+      shimmerIntensity = proximityFactor * 0.8 // Higher intensity when closer
+    }
+
+    // Draw the node with shimmered color based on intensity
+    ctx.fillStyle = createShimmeredColor(shimmerIntensity)
+    ctx.fillRect(node_x, node_y, node_width, node_height)
+
+    // Draw black stroke around the rectangle
+    ctx.strokeStyle = 'black'
+    ctx.lineWidth = 1
+    ctx.strokeRect(node_x, node_y, node_width, node_height)
+  }
+}
+
+function createShimmeredColor(intensity: number): string {
+  // base color (color when intensity is 0)
+  const baseColor = { r: 170, g: 170, b: 170 } // #aaaaaa
+
+  // target color (target color when intensity is 1)
+  const targetColor = { r: 117, g: 154, b: 184 } // #759ab8, aka. slurm-web-blue
+
+  // Interpolate between baseColor and targetColor based on intensity
+  const r = Math.round(baseColor.r + (targetColor.r - baseColor.r) * intensity)
+  const g = Math.round(baseColor.g + (targetColor.g - baseColor.g) * intensity)
+  const b = Math.round(baseColor.b + (targetColor.b - baseColor.b) * intensity)
+
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+function startShimmerAnimation(): void {
+  if (animationId) return // Animation already running
+
+  const animate = (time: number) => {
+    // Stop animation when nodes are loaded or canvas is not available
+    if (!nodesLoading || !canvas.value) {
+      animationId = null
+      return
+    }
+
+    const ctx = canvas.value.getContext('2d')
+    if (ctx && bitmap) {
+      // Draw shimmer animation
+      drawShimmerAnimation(ctx, time)
+    }
+
+    animationId = requestAnimationFrame(animate)
+  }
+
+  animationId = requestAnimationFrame(animate)
+}
+
+function stopShimmerAnimation(): void {
+  if (animationId) {
+    cancelAnimationFrame(animationId)
+    animationId = null
+  }
+}
+
 function drawNodeCoresMode(
   ctx: CanvasRenderingContext2D,
   nodeName: string,
@@ -300,7 +403,7 @@ function drawNodeNodesMode(
 async function updateCanvas(fullUpdate: boolean = true) {
   if (container.value !== null && canvas.value !== null) {
     if (fullUpdate) {
-      loading.value = true
+      racksLoading.value = true
       /* Resize canvas to fill parent container size */
       canvas.value.width = container.value.clientWidth
       canvas.value.height = container.value.clientHeight
@@ -324,6 +427,11 @@ async function updateCanvas(fullUpdate: boolean = true) {
       x_shift = Math.round((canvas.value.width - bitmap.width) / 2)
       y_shift = Math.round((canvas.value.height - bitmap.height) / 2)
       emit('imageSize', x_shift, bitmap.width)
+      racksLoading.value = false
+      // Start shimmer animation only if nodes are loading
+      if (nodesLoading) {
+        startShimmerAnimation()
+      }
     }
 
     const ctx = canvas.value.getContext('2d')
@@ -332,7 +440,7 @@ async function updateCanvas(fullUpdate: boolean = true) {
         ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
         ctx.drawImage(bitmap, x_shift, y_shift, bitmap.width, bitmap.height)
       }
-      loading.value = false
+
       // Draw all nodes using their coordinates
       for (const [nodeName, nodeCoordinates] of Object.entries(coordinates)) {
         const nodePath = new Path2D()
@@ -448,7 +556,7 @@ function setMouseEventHandler() {
 // window.resize event listener
 function updateCanvasDimensions() {
   if (canvas.value !== null) {
-    loading.value = true
+    racksLoading.value = true
     currentNode.value = undefined
     previousPath = undefined
     /*
@@ -490,6 +598,7 @@ watch(
     updateCanvas(false)
   }
 )
+
 onMounted(() => {
   updateCanvas()
   setMouseEventHandler()
@@ -498,6 +607,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateCanvasDimensions)
+  stopShimmerAnimation()
 })
 </script>
 
@@ -511,7 +621,7 @@ onUnmounted(() => {
   >
     <span v-if="unable" class="text-sm text-gray-500">{{ errorMessage }}</span>
     <template v-else>
-      <div v-show="loading" class="text-slurmweb h-1/2">
+      <div v-show="racksLoading" class="text-slurmweb h-1/2">
         <LoadingSpinner :size="8" />
       </div>
 
@@ -543,7 +653,7 @@ onUnmounted(() => {
         ></div>
       </aside>
 
-      <canvas v-show="!loading" ref="canvas">Cluster canvas</canvas>
+      <canvas v-show="!racksLoading" ref="canvas">Cluster canvas</canvas>
     </template>
   </div>
 </template>

@@ -14,9 +14,10 @@ import { ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 
-const { cluster, nodes } = defineProps<{
+const { cluster, nodes, loading } = defineProps<{
   cluster: string
   nodes: ClusterNode[]
+  loading?: boolean
 }>()
 
 const fullscreenButton = useTemplateRef<HTMLDivElement>('fullscreenButton')
@@ -58,6 +59,7 @@ function mouseOverThumbnail() {
       :cluster="cluster"
       :nodes="nodes"
       :fullscreen="false"
+      :loading="loading"
       @image-size="positionFullscreenButton"
       v-model="unable"
     />

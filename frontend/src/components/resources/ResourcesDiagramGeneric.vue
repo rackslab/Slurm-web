@@ -28,7 +28,7 @@ const { cluster, mode } = defineProps<{
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
 const route = useRoute()
-const { data, unable } = useClusterDataPoller<ClusterNode[]>(cluster, 'nodes', 10000)
+const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>(cluster, 'nodes', 10000)
 
 const filteredNodes: Ref<ClusterNode[]> = computed(() => {
   if (!data.value) return []
@@ -103,6 +103,7 @@ onMounted(() => {
       :nodes="filteredNodes"
       :fullscreen="true"
       :mode="mode"
+      :loading="!loaded"
       v-model="unable"
     />
   </div>
