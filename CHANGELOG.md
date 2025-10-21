@@ -36,8 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fix failure of metrics endpoint when `cache-hit-total` or
     `cache-miss-total` keys are missing in Redis cache (#622).
 - front:
-  - Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751
-    and CVE-2025-58752 (vite), CVE-2025-58754 (axios).
+  - Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751,
+    CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios).
   - Handling of cache hit rate calculation when total number of requests in
     cache statistics is 0.
 - docs: Update authorization policy reference documentation.
