@@ -21,7 +21,7 @@ import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
+import { ChevronLeftIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 
 const { cluster, nodeName } = defineProps<{ cluster: string; nodeName: string }>()
 
@@ -164,7 +164,15 @@ watch(
                   >
                 </dt>
                 <dd class="text-sm leading-6 sm:col-span-2">
-                  <template v-if="jobs.data.value">
+                  <div v-if="jobs.unable.value" class="flex items-center gap-x-1 text-gray-400 dark:text-gray-600">
+                    <XCircleIcon class="h-5 w-5" aria-hidden="true" />
+                    Unable to retrieve jobs
+                  </div>
+                  <div v-else-if="!jobs.loaded.value" class="text-gray-400 dark:text-gray-600">
+                    <LoadingSpinner :size="4" />
+                    Loading jobs...
+                  </div>
+                  <template v-else-if="jobs.data.value">
                     <ul v-if="jobs.data.value.length">
                       <li v-for="job in jobs.data.value" :key="job.job_id" class="inline">
                         <RouterLink
