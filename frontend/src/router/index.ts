@@ -24,6 +24,7 @@ import JobsView from '@/views/JobsView.vue'
 import JobView from '@/views/JobView.vue'
 import ResourcesView from '@/views/resources/ResourcesView.vue'
 import ResourcesDiagramNodesView from '@/views/resources/ResourcesDiagramNodesView.vue'
+import ResourcesDiagramCoresView from '@/views/resources/ResourcesDiagramCoresView.vue'
 import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
@@ -131,6 +132,12 @@ const router = createRouter({
           path: 'resources/diagram/nodes',
           name: 'resources-diagram-nodes',
           component: ResourcesDiagramNodesView,
+          props: true
+        },
+        {
+          path: 'resources/diagram/cores',
+          name: 'resources-diagram-cores',
+          component: ResourcesDiagramCoresView,
           props: true
         },
         {
