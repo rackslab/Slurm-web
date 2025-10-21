@@ -36,6 +36,10 @@ function backToResources() {
   })
 }
 
+function roundToDecimal(value: number, decimals: number = 1): number {
+  return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
+}
+
 const node = useClusterDataPoller<ClusterIndividualNode>(cluster, 'node', 5000, nodeName)
 
 /* Poll jobs on current nodes if user has permission on view-jobs action. */
@@ -125,7 +129,9 @@ watch(
                     <li>
                       CPU: {{ node.data.value.alloc_cpus }} / {{ node.data.value.cpus }}
                       <span class="text-gray-400 italic dark:text-gray-500"
-                        >({{ (node.data.value.alloc_cpus / node.data.value.cpus) * 100 }}%)</span
+                        >({{
+                          roundToDecimal((node.data.value.alloc_cpus / node.data.value.cpus) * 100)
+                        }}%)</span
                       >
                     </li>
                     <li>
@@ -133,14 +139,16 @@ watch(
                       {{ getMBHumanUnit(node.data.value.real_memory) }}
                       <span class="text-gray-400 italic dark:text-gray-600"
                         >({{
-                          (node.data.value.alloc_memory / node.data.value.real_memory) * 100
+                          roundToDecimal(
+                            (node.data.value.alloc_memory / node.data.value.real_memory) * 100
+                          )
                         }}%)</span
                       >
                     </li>
                     <li v-if="node.data.value.gres_used">
                       GPU: {{ gpuAllocated }} / {{ gpuAvailable }}
                       <span class="text-gray-400 italic dark:text-gray-600"
-                        >({{ (gpuAllocated / gpuAvailable) * 100 }}%)</span
+                        >({{ roundToDecimal((gpuAllocated / gpuAvailable) * 100) }}%)</span
                       >
                     </li>
                   </ul>
