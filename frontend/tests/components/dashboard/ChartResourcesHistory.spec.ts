@@ -65,7 +65,7 @@ describe('ChartJobsHistogram.vue', () => {
     expect(wrapper.find('img[alt="Loading chart"]').exists()).toBeFalsy()
   })
   test('resources types button changes should change datapoller callback with route query update', async () => {
-    const wrapper = mount(ChartResourcesHistogram, {
+    mount(ChartResourcesHistogram, {
       props: {
         cluster: 'foo'
       }

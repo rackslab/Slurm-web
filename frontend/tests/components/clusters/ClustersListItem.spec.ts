@@ -15,11 +15,9 @@ vi.mock('@/composables/GatewayAPI', () => ({
   useGatewayAPI: () => mockGatewayAPI
 }))
 
-let router
-
 describe('ClustersListItem.vue', () => {
   beforeEach(() => {
-    router = init_plugins()
+    init_plugins()
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',

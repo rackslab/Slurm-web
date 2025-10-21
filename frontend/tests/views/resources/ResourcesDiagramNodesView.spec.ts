@@ -51,7 +51,7 @@ describe('ResourcesDiagramNodesView.vue', () => {
   test('syncs filters with URL on mount and on change', async () => {
     const runtime = useRuntimeStore()
     mockClusterDataPoller.data.value = []
-    const wrapper = mount(ResourcesDiagramNodesView, {
+    mount(ResourcesDiagramNodesView, {
       props: { cluster: 'foo' },
       global: { stubs: { ResourcesCanvas: true } }
     })

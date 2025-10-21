@@ -5,7 +5,6 @@ import JobsView from '@/views/JobsView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import type { ClusterJob } from '@/composables/GatewayAPI'
 import jobs from '../assets/jobs.json'
-import type { RouterMock } from 'vue-router-mock'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 
@@ -15,11 +14,9 @@ vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
 }))
 
-let router: RouterMock
-
 describe('JobView.vue', () => {
   beforeEach(() => {
-    router = init_plugins()
+    init_plugins()
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',

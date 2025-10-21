@@ -1,4 +1,4 @@
-import { describe, test, beforeEach, expect, vi } from 'vitest'
+import { describe, test, beforeEach, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
 import { init_plugins } from '../../lib/common'

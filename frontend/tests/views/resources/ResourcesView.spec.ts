@@ -92,7 +92,7 @@ describe('ResourcesView.vue', () => {
   test('syncs filters with URL on mount and on change', async () => {
     const runtime = useRuntimeStore()
     mockClusterDataPoller.data.value = nodes
-    const wrapper = mount(ResourcesView, {
+    mount(ResourcesView, {
       props: { cluster: 'foo' },
       global: { stubs: { ResourcesDiagramThumbnail: true } }
     })
@@ -100,7 +100,7 @@ describe('ResourcesView.vue', () => {
     expect(router.push).toHaveBeenCalled()
 
     // simulate store filter change and expect another push
-    runtime.resources.filters.states = ['up'] as any
+    runtime.resources.filters.states = ['up']
     await nextTick()
     expect(router.push).toHaveBeenCalledTimes(2)
   })

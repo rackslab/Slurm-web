@@ -1,4 +1,4 @@
-import { describe, test, beforeEach, vi, expect } from 'vitest'
+import { describe, test, beforeEach, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import { init_plugins } from '../../lib/common'
@@ -12,7 +12,7 @@ describe('ResourcesDiagramThumbnail.vue', () => {
     router = init_plugins()
   })
   test('display resources diagram', async () => {
-    const wrapper = mount(ResourcesDiagramThumbnail, {
+    mount(ResourcesDiagramThumbnail, {
       props: {
         cluster: 'foo',
         nodes: nodes

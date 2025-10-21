@@ -42,7 +42,7 @@ describe('ClustersView.vue', () => {
     mockGatewayAPI.clusters.mockImplementationOnce(() => {
       throw new AuthenticationError('fake authentication error')
     })
-    const wrapper = shallowMount(ClustersView)
+    shallowMount(ClustersView)
     // Wait for result of clusters requests
     await flushPromises()
     // Check redirect to signout on authentication error

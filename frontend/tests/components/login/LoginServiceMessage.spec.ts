@@ -7,8 +7,8 @@ import { init_plugins } from '../../lib/common'
 import { APIServerError } from '@/composables/HTTPErrors'
 import { useRuntimeStore } from '@/stores/runtime'
 
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 const mockGatewayAPI = {
   message_login: vi.fn()
