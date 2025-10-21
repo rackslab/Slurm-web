@@ -25,6 +25,40 @@ describe('ResourcesDiagramThumbnail.vue', () => {
     })
   })
 
+  test('passes loading prop to ResourcesCanvas when data is loading', () => {
+    const wrapper = mount(ResourcesDiagramThumbnail, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        loading: true
+      },
+      global: {
+        stubs: {
+          ResourcesCanvas: true
+        }
+      }
+    })
+    const canvas = wrapper.getComponent({ name: 'ResourcesCanvas' })
+    expect(canvas.props('loading')).toBe(true)
+  })
+
+  test('passes loading prop to ResourcesCanvas when data is loaded', () => {
+    const wrapper = mount(ResourcesDiagramThumbnail, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        loading: false
+      },
+      global: {
+        stubs: {
+          ResourcesCanvas: true
+        }
+      }
+    })
+    const canvas = wrapper.getComponent({ name: 'ResourcesCanvas' })
+    expect(canvas.props('loading')).toBe(false)
+  })
+
   test('clicking fullscreen navigates to resources-diagram-nodes', async () => {
     const wrapper = mount(ResourcesDiagramThumbnail, {
       props: { cluster: 'foo', nodes },

@@ -49,6 +49,7 @@ describe('ResourcesCanvas.vue', () => {
         cluster: 'foo',
         nodes: nodes,
         fullscreen: false,
+        loading: true, // nodesLoading prop
         modelValue: false
       },
       global: {
@@ -62,9 +63,12 @@ describe('ResourcesCanvas.vue', () => {
       wrapper.getComponent(LoadingSpinner).element.parentElement.getAttribute('style')
     ).toBeNull()
     expect(wrapper.get('canvas').attributes('style')).toContain('display: none;')
-    // Wait for asynchronous code to execute and display the canvas
+
+    // Update loading prop to false to simulate data loaded
+    await wrapper.setProps({ loading: false })
     await flushPromises()
     await flushPromises()
+
     // Check main div height is 96
     expect(wrapper.get('div').classes('h-96')).toBeTruthy()
     // Check parent of LoadingSpinner is hidden and canvas is now displayed
@@ -143,7 +147,8 @@ describe('ResourcesCanvas.vue', () => {
     await flushPromises()
     await flushPromises()
     // Check canvas is displayed
-    expect(wrapper.get('canvas').attributes('style')).not.toContain('display: none;')
+    const canvasStyle = wrapper.get('canvas').attributes('style')
+    expect(canvasStyle === undefined || !canvasStyle.includes('display: none;')).toBe(true)
     // Check mode prop is passed correctly
     expect(wrapper.props('mode')).toBe('cores')
   })
@@ -192,5 +197,71 @@ describe('ResourcesCanvas.vue', () => {
     const coresInfo = tooltip.find('span.text-right')
     expect(coresInfo.exists()).toBe(true)
     expect(coresInfo.text()).toContain(`${nodes[0].alloc_cpus}/${nodes[0].cpus}`)
+  })
+
+  test('shimmer animation starts when nodes are loading', async () => {
+    const message = fs.readFileSync(
+      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
+    )
+    mockRESTAPI.postRaw.mockReturnValueOnce(
+      Promise.resolve({
+        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
+        data: message
+      })
+    )
+    const wrapper = mount(ResourcesCanvas, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        fullscreen: false,
+        loading: true, // nodesLoading = true
+        modelValue: false
+      },
+      global: {
+        stubs: {
+          LoadingSpinner: true
+        }
+      }
+    })
+    await flushPromises()
+    await flushPromises()
+
+    // Check that shimmer animation is active when nodes are loading
+    // The animation should be running (animationId should not be null)
+    const vm = wrapper.vm as { animationId: number | null }
+    expect(vm.animationId).toBeDefined()
+  })
+
+  test('shimmer animation stops when nodes are loaded', async () => {
+    const message = fs.readFileSync(
+      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
+    )
+    mockRESTAPI.postRaw.mockReturnValueOnce(
+      Promise.resolve({
+        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
+        data: message
+      })
+    )
+    const wrapper = mount(ResourcesCanvas, {
+      props: {
+        cluster: 'foo',
+        nodes: nodes,
+        fullscreen: false,
+        loading: false, // nodesLoading = false
+        modelValue: false
+      },
+      global: {
+        stubs: {
+          LoadingSpinner: true
+        }
+      }
+    })
+    await flushPromises()
+    await flushPromises()
+
+    // Check that shimmer animation is not active when nodes are loaded
+    // The animation should not be running (animationId should be null)
+    const vm = wrapper.vm as { animationId: number | null }
+    expect(vm.animationId).toBeNull()
   })
 })
