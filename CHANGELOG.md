@@ -51,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios).
   - Handling of cache hit rate calculation when total number of requests in
     cache statistics is 0.
+  - Adjust colors of nodes graphical representation to match more cores
+    graphical representation.
 - docs: Fix entreprise→enterprise typo.
 
 ## [5.1.0] - 2025-07-09
