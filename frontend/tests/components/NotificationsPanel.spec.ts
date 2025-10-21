@@ -1,9 +1,9 @@
-import { describe, test, beforeEach, expect, vi } from 'vitest'
+import { describe, test, beforeEach, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
 import { init_plugins } from '../lib/common'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel.vue'
-import Notification from '@/components/notifications/Notification.vue'
+import NotificationMessage from '@/components/notifications/NotificationMessage.vue'
 
 describe('DashboardCharts.vue', () => {
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('DashboardCharts.vue', () => {
     // check main div is fixed
     expect(wrapper.find('div').classes('fixed')).toBeTruthy()
     // empty by default
-    expect(wrapper.findComponent(Notification).exists()).toBe(false)
+    expect(wrapper.findComponent(NotificationMessage).exists()).toBe(false)
   })
   test('should display reported info/error notifications', async () => {
     const runtimeStore = useRuntimeStore()
@@ -33,6 +33,6 @@ describe('DashboardCharts.vue', () => {
     runtimeStore.reportError('test error')
     const wrapper = mount(NotificationsPanel)
     // check presence of 2 notifications
-    expect(wrapper.findAllComponents(Notification).length).toBe(2)
+    expect(wrapper.findAllComponents(NotificationMessage).length).toBe(2)
   })
 })

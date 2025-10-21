@@ -7,7 +7,7 @@
 -->
 
 <script setup lang="ts">
-import Notification from './Notification.vue'
+import NotificationMessage from '@/components/notifications/NotificationMessage.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 
 const runtimeStore = useRuntimeStore()
@@ -24,7 +24,7 @@ const runtimeStore = useRuntimeStore()
       leave-from-class="opacity-100 translate-x-0"
       leave-to-class="opacity-0 translate-x-4"
     >
-      <Notification
+      <NotificationMessage
         v-for="notification in runtimeStore.notifications"
         :key="notification.id"
         :notification="notification"
