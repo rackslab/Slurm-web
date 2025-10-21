@@ -18,12 +18,11 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const {
-  data,
-  unable,
-  loaded: _loaded,
-  setCluster
-} = useClusterDataPoller<ClusterReservation[]>(cluster, 'reservations', 10000)
+const { data, unable, setCluster } = useClusterDataPoller<ClusterReservation[]>(
+  cluster,
+  'reservations',
+  10000
+)
 
 watch(
   () => cluster,

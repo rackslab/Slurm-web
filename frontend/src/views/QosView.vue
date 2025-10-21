@@ -26,12 +26,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const {
-  data,
-  unable,
-  loaded: _loaded,
-  setCluster
-} = useClusterDataPoller<ClusterQos[]>(cluster, 'qos', 10000)
+const { data, unable, setCluster } = useClusterDataPoller<ClusterQos[]>(cluster, 'qos', 10000)
 
 const helpModalShow: Ref<boolean> = ref(false)
 const modalQosLimit: Ref<QosModalLimitDescription | undefined> = ref()
