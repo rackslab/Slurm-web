@@ -225,8 +225,10 @@ function setMouseEventHandler() {
           }
           // Position nodeTooltip
           if (nodeTooltip.value && container.value) {
+            // The tooltip has a width of w-40, ie. 160px. Shift its left side
+            // to center it on the node, and right-shift it by 1px.
             nodeTooltip.value.style.left =
-              (nodePath.x + (nodePath.width - 176) / 2).toString() + 'px'
+              (nodePath.x + (nodePath.width - 160) / 2 - 1).toString() + 'px'
             nodeTooltip.value.style.bottom =
               (container.value.offsetHeight - nodePath.y + 10).toString() + 'px'
           }

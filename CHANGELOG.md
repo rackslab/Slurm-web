@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `cache-miss-total` keys are missing in Redis cache (#622).
 - front:
   - Round allocated resources percentages with one decimal in node details page.
+  - Fix centering of node tooltip over the racks graphical representation.
   - Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751,
     CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios).
   - Handling of cache hit rate calculation when total number of requests in
