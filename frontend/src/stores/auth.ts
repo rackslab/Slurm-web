@@ -35,7 +35,9 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('groups', JSON.stringify(_groups))
 
     // redirect to previous url or default to clusters page
-    router.push(returnUrl.value || { name: 'clusters' })
+    const redirectUrl = returnUrl.value || { name: 'clusters' }
+    returnUrl.value = null // Clear returnUrl after use
+    router.push(redirectUrl)
   }
 
   function anonymousLogin(_token: string) {

@@ -8,6 +8,7 @@
 
 import { useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useAuthStore } from '@/stores/auth'
 import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
 
 /**
@@ -18,16 +19,20 @@ import { AuthenticationError, PermissionError } from '@/composables/HTTPErrors'
 export function useErrorsHandler() {
   const router = useRouter()
   const runtime = useRuntimeStore()
+  const authStore = useAuthStore()
 
   /**
    * Handles authentication errors by:
    * 1. Reporting the error to the runtime store
-   * 2. Redirecting to the signout page
+   * 2. Setting the current route as returnUrl for post-login redirection
+   * 3. Redirecting to the signout page
    *
    * @param error - The AuthenticationError instance
    */
   function reportAuthenticationError(error: AuthenticationError) {
     runtime.reportError(`Authentication error: ${error.message}`)
+    // Set returnUrl to current route before redirecting to signout
+    authStore.returnUrl = router.currentRoute.value.fullPath
     router.push({ name: 'signout' })
   }
 
