@@ -8,7 +8,6 @@
 
 import { ref, onUnmounted, onMounted } from 'vue'
 import type { Ref } from 'vue'
-import { useRouter } from 'vue-router'
 import {
   AuthenticationError,
   PermissionError,
@@ -17,6 +16,7 @@ import {
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useErrorsHandler } from '@/composables/ErrorsHandler'
 
 export interface ClusterDataPoller<ResponseType> {
   data: Ref<ResponseType | undefined>
@@ -39,21 +39,10 @@ export function useClusterDataPoller<Type>(
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
   let _stop: boolean = false
-  const router = useRouter()
   const gateway = useGatewayAPI()
   const runtime = useRuntimeStore()
+  const { reportAuthenticationError, reportPermissionError } = useErrorsHandler()
   let _timeout: number = -1
-
-  function reportAuthenticationError(error: AuthenticationError) {
-    runtime.reportError(`Authentication error: ${error.message}`)
-    router.push({ name: 'signout' })
-  }
-
-  function reportPermissionError(error: PermissionError) {
-    runtime.reportError(`Permission error: ${error.message}`)
-    stop()
-    unable.value = true
-  }
 
   function reportOtherError(error: Error) {
     runtime.reportError(`Server error: ${error.message}`)
@@ -77,6 +66,8 @@ export function useClusterDataPoller<Type>(
         reportAuthenticationError(error)
       } else if (error instanceof PermissionError) {
         reportPermissionError(error)
+        stop()
+        unable.value = true
       } else if (!(error instanceof CanceledRequestError) && error instanceof Error) {
         /* Ignore canceled requests errors */
         reportOtherError(error)

@@ -9,11 +9,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
+import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { XCircleIcon } from '@heroicons/vue/20/solid'
@@ -22,20 +23,10 @@ import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
 const gateway = useGatewayAPI()
-const router = useRouter()
+const { reportAuthenticationError, reportServerError } = useErrorsHandler()
 const clusters: Ref<Array<ClusterDescription>> = ref([])
 const loaded: Ref<boolean> = ref(false)
 const unable: Ref<boolean> = ref(false)
-
-function reportAuthenticationError(error: AuthenticationError) {
-  runtimeStore.reportError(`Authentication error: ${error.message}`)
-  router.push({ name: 'signout' })
-}
-
-function reportOtherError(error: Error) {
-  runtimeStore.reportError(`Server error: ${error.message}`)
-  unable.value = true
-}
 
 async function getClustersDescriptions() {
   try {
@@ -53,7 +44,8 @@ async function getClustersDescriptions() {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
     } else if (error instanceof Error) {
-      reportOtherError(error)
+      reportServerError(error)
+      unable.value = true
     }
   }
 }

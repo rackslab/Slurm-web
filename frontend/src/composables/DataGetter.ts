@@ -8,7 +8,6 @@
 
 import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
-import { useRouter } from 'vue-router'
 import {
   AuthenticationError,
   PermissionError,
@@ -17,6 +16,7 @@ import {
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { GatewayGenericAPIKey, GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useErrorsHandler } from '@/composables/ErrorsHandler'
 
 export function useGatewayDataGetter<Type>(
   callback: GatewayGenericAPIKey,
@@ -25,19 +25,9 @@ export function useGatewayDataGetter<Type>(
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
-  const router = useRouter()
   const gateway = useGatewayAPI()
   const runtime = useRuntimeStore()
-
-  function reportAuthenticationError(error: AuthenticationError) {
-    runtime.reportError(`Authentication error: ${error.message}`)
-    router.push({ name: 'signout' })
-  }
-
-  function reportPermissionError(error: PermissionError) {
-    runtime.reportError(`Permission error: ${error.message}`)
-    unable.value = true
-  }
+  const { reportAuthenticationError, reportPermissionError } = useErrorsHandler()
 
   function defaultErrorHandler(error: Error) {
     runtime.reportError(`Server error: ${error.message}`)
@@ -58,6 +48,7 @@ export function useGatewayDataGetter<Type>(
         reportAuthenticationError(error)
       } else if (error instanceof PermissionError) {
         reportPermissionError(error)
+        unable.value = true
       } else if (!(error instanceof CanceledRequestError) && error instanceof Error) {
         /* Ignore canceled requests errors */
         if (customErrorHandler) {
@@ -84,19 +75,9 @@ export function useClusterDataGetter<Type>(
   const data: Ref<Type | undefined> = ref()
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
-  const router = useRouter()
   const gateway = useGatewayAPI()
   const runtime = useRuntimeStore()
-
-  function reportAuthenticationError(error: AuthenticationError) {
-    runtime.reportError(`Authentication error: ${error.message}`)
-    router.push({ name: 'signout' })
-  }
-
-  function reportPermissionError(error: PermissionError) {
-    runtime.reportError(`Permission error: ${error.message}`)
-    unable.value = true
-  }
+  const { reportAuthenticationError, reportPermissionError } = useErrorsHandler()
 
   function reportOtherError(error: Error) {
     runtime.reportError(`Server error: ${error.message}`)
@@ -119,6 +100,7 @@ export function useClusterDataGetter<Type>(
         reportAuthenticationError(error)
       } else if (error instanceof PermissionError) {
         reportPermissionError(error)
+        unable.value = true
       } else if (error instanceof Error) {
         reportOtherError(error)
       }
