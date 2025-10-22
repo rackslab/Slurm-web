@@ -170,6 +170,7 @@ router.beforeEach(async (to, from) => {
   /* redirect to login page if not logged in and trying to access a restricted page */
   const publicPages = [
     '/login',
+    '/signout',
     '/anonymous',
     '/tests/jobs-status-badges',
     '/tests/nodes-status-badges'
