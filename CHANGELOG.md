@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Simplify distribution schema in architecture page to avoid confusion of
     frontend component on users host.
+  - Update screenshots in quickstart guide to reflect latest UI updates.
   - Update authorization policy reference documentation.
 
 ### Fixed
