@@ -11,6 +11,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
+import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { TagIcon } from '@heroicons/vue/20/solid'
 import { ServerIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
@@ -21,16 +22,7 @@ const { clusterName } = defineProps<{ clusterName: string }>()
 const runtimeStore = useRuntimeStore()
 const cluster = runtimeStore.getCluster(clusterName)
 const loading = ref<boolean>(true)
-
-function reportAuthenticationError(error: AuthenticationError) {
-  runtimeStore.reportError(`Authentication error: ${error.message}`)
-  router.push({ name: 'signout' })
-}
-
-function reportOtherError(error: Error) {
-  runtimeStore.reportError(`Server error: ${error.message}`)
-  cluster.error = true
-}
+const { reportAuthenticationError, reportServerError } = useErrorsHandler()
 
 const gateway = useGatewayAPI()
 const router = useRouter()
@@ -46,7 +38,7 @@ async function getClusterStats() {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
     } else if (error instanceof Error) {
-      reportOtherError(error)
+      reportServerError(error)
       cluster.error = true
     }
   }
