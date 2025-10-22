@@ -76,6 +76,19 @@ its health and activity.
 
 image::slurm-web_nodes_fullscreen.png[with=500px]
 
+== Cores Allocations
+
+Slurm-web provides a more detailed and in-depth view of CPU cores usage and allocations
+compared to the global nodes status overview. This feature offers granular visualization
+of core allocation rates across compute nodes.
+
+image::screenshot_cores_tablet.png[width=80%]
+
+The interface displays real-time information about how many cores are allocated versus
+available on each node, providing a comprehensive view of resource distribution. While
+offering detailed insights into individual node utilization, it also allows users to
+get the overall cores usage level at a glance.
+
 == GPU Support
 
 Slurm-web provides advanced support for GPU resources, offering a visual and
