@@ -27,7 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Mention support of Debian 14 _« forky »_.
   - Add _Deployment_ section in architecture page to explain where packages must
-    be installed with different topologies (#483)
+    be installed with different topologies (#483).
+  - Mention cores allocations graphical representation in overview page.
 
 ### Changed
 - Change license from GPLv3+ to MIT.
