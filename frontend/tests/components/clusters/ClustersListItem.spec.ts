@@ -4,7 +4,8 @@ import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import stats from '../../assets/stats.json'
 import { init_plugins } from '../../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import { APIServerError } from '@/composables/HTTPErrors'
+import { APIServerError, AuthenticationError } from '@/composables/HTTPErrors'
+import { useAuthStore } from '@/stores/auth'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const mockGatewayAPI = {
@@ -16,8 +17,12 @@ vi.mock('@/composables/GatewayAPI', () => ({
 }))
 
 describe('ClustersListItem.vue', () => {
+  let router
+
   beforeEach(() => {
-    init_plugins()
+    router = init_plugins()
+    // Set current route to /clusters for testing
+    router.currentRoute.value.fullPath = '/clusters'
     useRuntimeStore().availableClusters = [
       {
         name: 'foo',
@@ -123,5 +128,20 @@ describe('ClustersListItem.vue', () => {
     // Check there is only one paragraph for cluster status, not for stats
     expect(wrapper.findAll('p').length).toBe(1)
     expect(wrapper.get('div div p').text()).toBe('Available')
+  })
+  test('authentication error', async () => {
+    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    mockGatewayAPI.stats.mockImplementationOnce(() => {
+      throw new AuthenticationError('fake authentication error')
+    })
+    shallowMount(ClusterListItem, {
+      props: {
+        clusterName: useRuntimeStore().availableClusters[0].name
+      }
+    })
+    // Wait for result of stats requests
+    await flushPromises()
+    // Check that returnUrl was set to current route
+    expect(useAuthStore().returnUrl).toBe('/clusters')
   })
 })

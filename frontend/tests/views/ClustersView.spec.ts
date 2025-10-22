@@ -6,6 +6,7 @@ import { init_plugins } from '../lib/common'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import { APIServerError, AuthenticationError } from '@/composables/HTTPErrors'
+import { useAuthStore } from '@/stores/auth'
 
 const mockGatewayAPI = {
   clusters: vi.fn()
@@ -20,6 +21,8 @@ let router
 describe('ClustersView.vue', () => {
   beforeEach(() => {
     router = init_plugins()
+    // Set current route to /clusters for testing
+    router.currentRoute.value.fullPath = '/clusters'
   })
   test('display clusters list', async () => {
     // Check at least one cluster is present in test asset or the test is pointless.
@@ -48,6 +51,8 @@ describe('ClustersView.vue', () => {
     // Check redirect to signout on authentication error
     expect(router.push).toHaveBeenCalledTimes(1)
     expect(router.push).toHaveBeenCalledWith({ name: 'signout' })
+    // Check that returnUrl was set to current route
+    expect(useAuthStore().returnUrl).toBe('/clusters')
   })
   test('server error', async () => {
     mockGatewayAPI.clusters.mockImplementationOnce(() => {
