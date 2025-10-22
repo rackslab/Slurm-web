@@ -197,7 +197,11 @@ class SlurmwebAgent:
             )
 
     def render_conf(
-        self, tmpdir: Path, jwt_key_path: Path, cache_enabled: bool
+        self,
+        tmpdir: Path,
+        jwt_key_path: Path,
+        cache_enabled: bool,
+        metrics_enabled: bool,
     ) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("agent.ini.j2")
@@ -277,6 +281,7 @@ class SlurmwebAgent:
                     redis_password=redis_password,
                     prometheus_port=self.forwards["prometheus"].local,
                     infrastructure=self.name if self.ui_name != self.name else None,
+                    metrics_enabled=metrics_enabled,
                 )
             )
 
@@ -406,6 +411,19 @@ def main():
         action="store_true",
         help="Enable anonymous mode and disable authentication",
     )
+    parser.add_argument(
+        "--clusters",
+        nargs="+",
+        choices=list(CLUSTERS.keys()),
+        default=list(CLUSTERS.keys()),
+        help="Select specific clusters to launch (default: all clusters)",
+    )
+    parser.add_argument(
+        "--no-metrics",
+        dest="metrics",
+        action="store_false",
+        help="Disable metrics collection globally",
+    )
     args = parser.parse_args()
 
     # Load cluster list from RacksDB database
@@ -436,6 +454,10 @@ def main():
     agents = []
     port_allocator = PortAllocator()
     for infrastructure in db.infrastructures:
+        # Skip infrastructure if not in selected clusters
+        if infrastructure.name not in args.clusters:
+            continue
+
         if "name" in CLUSTERS[infrastructure.name]:
             ui_name = CLUSTERS[infrastructure.name]["name"]
         else:
@@ -450,7 +472,7 @@ def main():
         )
         # Generate agent configuration file
         agent.render_policy(tmpdir, args.anonymous)
-        agent.render_conf(tmpdir, jwt_key_path, args.cache)
+        agent.render_conf(tmpdir, jwt_key_path, args.cache, args.metrics)
         # Launch agent in backgroup
         agent.launch()
         agents.append(agent)
