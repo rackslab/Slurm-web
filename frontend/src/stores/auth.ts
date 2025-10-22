@@ -48,7 +48,6 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('username')
     localStorage.removeItem('fullname')
     localStorage.removeItem('groups')
-    router.push({ name: 'login' })
   }
 
   return { token, username, fullname, groups, returnUrl, login, anonymousLogin, logout }
