@@ -164,7 +164,10 @@ watch(
                   >
                 </dt>
                 <dd class="text-sm leading-6 sm:col-span-2">
-                  <div v-if="jobs.unable.value" class="flex items-center gap-x-1 text-gray-400 dark:text-gray-600">
+                  <div
+                    v-if="jobs.unable.value"
+                    class="flex items-center gap-x-1 text-gray-400 dark:text-gray-600"
+                  >
                     <XCircleIcon class="h-5 w-5" aria-hidden="true" />
                     Unable to retrieve jobs
                   </div>
