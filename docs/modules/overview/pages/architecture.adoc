@@ -41,7 +41,7 @@ external services and data sources:
 .Slurm-web integration with external components [xref:image$arch/slurm-web_integration.svg[icon:download[] SVG]]
 image::arch/slurm-web_integration.png[]
 
-The *gateway* component authenticates users with an entreprise LDAP
+The *gateway* component authenticates users with an enterprise LDAP
 directory. Slurm-web supports all major LDAP services implementation such as
 OpenLDAP, FreeIPA and Active Directory with legacy NIS and RFC 2307 bis schemas.
 

@@ -29,8 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Change license from GPLv3+ to MIT.
-- docs: Simplify distribution schema in architecture page to avoid confusion of
-  frontend component on users host.
+- docs:
+  - Simplify distribution schema in architecture page to avoid confusion of
+    frontend component on users host.
+  - Update authorization policy reference documentation.
 
 ### Fixed
 - agent:
@@ -43,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios).
   - Handling of cache hit rate calculation when total number of requests in
     cache statistics is 0.
-- docs: Update authorization policy reference documentation.
+- docs: Fix entreprise→enterprise typo.
 
 ## [5.1.0] - 2025-07-09
 
