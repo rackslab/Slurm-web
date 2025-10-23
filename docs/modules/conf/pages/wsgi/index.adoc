@@ -17,7 +17,7 @@ information, etc).
 
 There are plenty of methods to setup HTTPS with SSL/TLS certificates, it mostly
 depends on your network environment (ex: Let's Encrypt, Internet trusted CA,
-entreprise CA, …), so it is not covered in this documentation. Please refer to
+enterprise CA, …), so it is not covered in this documentation. Please refer to
 official HTTP servers documentation for more help.
 ====
 
