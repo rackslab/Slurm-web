@@ -71,10 +71,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ldap-check: Support loading LDAP bind password from separate file.
   Contribution from @Cornelicorn.
 - conf:
-  - Add gateway `[ldap]`>`bind_password_file` configuration parameter.
+  - Add gateway `[ldap]` > `bind_password_file` configuration parameter.
     Contribution from @Cornelicorn.
-  - Add gateway `[ldap]`>`lookup_as_user` configuration parameter. Contribution
-    from @Cornelicorn.
+  - Add gateway `[ldap]` > `lookup_as_user` configuration parameter.
+    Contribution from @Cornelicorn.
   - Introduce `cache-view` authorization action.
   - Assign `cache-view` action to _user_ role (all authenticated users) in
     default authorization policy.
@@ -534,8 +534,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   list responses.
 - docs: Add full gateway and agent configuration files examples.
 - conf:
-  - Add `ldap`>`user_name_attribute` parameter for the gateway.
-  - Add `ui`>`hide_denied` parameter for the gateway.
+  - Add `ldap` > `user_name_attribute` parameter for the gateway.
+  - Add `ui` > `hide_denied` parameter for the gateway.
 
 ### Changed
 - frontend:
