@@ -9,12 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - front:
- - Support filtering jobs in _failed_ state (#611).
- - Add button to reset cache statistics in settings cache tab (#603).
- - Dedicated route to directly access fullscreen view of resources diagram
-   instead of modal requiring clicks (#631).
- - Display spinner while loading jobs running in node details page and display
-   error when unable to load jobs.
+  - Support filtering jobs in _failed_ state (#611).
+  - Add button to reset cache statistics in settings cache tab (#603).
+  - Dedicated route to directly access fullscreen view of resources diagram
+    instead of modal requiring clicks (#631).
+  - Display spinner while loading jobs running in node details page and display
+    error when unable to load jobs.
 - gateway: Add `/agent/{cluster}/cache/reset` route to reverse proxy request to
   agent `/cache/reset`.
 - agent: Add `/cache/reset` route to reset cache statistics.
