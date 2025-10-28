@@ -7,7 +7,7 @@
  */
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { getNodeMainState } from '@/composables/GatewayAPI'
 import type { ClusterNode, ClusterNodeMainState } from '@/composables/GatewayAPI'
 
@@ -51,6 +51,7 @@ export interface ResourcesQueryParameters {
 export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
   const openFiltersPanel = ref(false)
   const filters = ref<ResourcesViewFilters>({ states: [], partitions: [] })
+  const showNodeNames = ref<boolean>(JSON.parse(localStorage.getItem('showNodeNames') || 'true'))
 
   function removeStateFilter(state: string) {
     filters.value.states = filters.value.states.filter((element) => element != state)
@@ -93,9 +94,15 @@ export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
     }
     return result
   }
+
+  watch(showNodeNames, (value: boolean) => {
+    localStorage.setItem('showNodeNames', JSON.stringify(value))
+  })
+
   return {
     openFiltersPanel,
     filters,
+    showNodeNames,
     removeStateFilter,
     removePartitionFilter,
     emptyFilters,
