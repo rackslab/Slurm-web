@@ -261,6 +261,66 @@ function drawCoresTextOverlay(
   }
 }
 
+function drawNodeNameText(
+  ctx: CanvasRenderingContext2D,
+  nodeName: string,
+  node_x: number,
+  node_y: number,
+  node_width: number,
+  node_height: number,
+  coresMode: boolean = false
+): void {
+  if (!runtimeStore.resources.showNodeNames) return
+
+  const textColor = '#374151' // gray-700
+  const isHorizontal = node_width > node_height
+  const padding = 2
+
+  if (isHorizontal) {
+    // Horizontal nodes: align text to the left, vertically centered
+    if (node_width > 60 && node_height > 10) {
+      ctx.fillStyle = textColor
+      const fontSize = Math.min(node_height - 4, 12)
+      ctx.font = `${fontSize}px sans-serif`
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+
+      // Measure text width to check if it fits
+      const metrics = ctx.measureText(nodeName)
+      const textWidth = metrics.width
+      const availableWidth = coresMode ? node_width - 100 : node_width - padding * 2
+
+      // Only draw if text fits within available space
+      if (textWidth <= availableWidth) {
+        ctx.fillText(nodeName, node_x + padding, node_y + node_height / 2 + 1)
+      }
+    }
+  } else {
+    // Vertical nodes: rotate text -90°, align to bottom
+    if (node_width > 10 && node_height > 40) {
+      ctx.fillStyle = textColor
+      const fontSize = Math.min(node_width - 4, 12)
+      ctx.font = `${fontSize}px sans-serif`
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+
+      // Measure text width (which becomes height when rotated)
+      const metrics = ctx.measureText(nodeName)
+      const textHeight = metrics.width
+      const availableHeight = coresMode ? node_height - 50 : node_height - padding * 2
+
+      // Only draw if text fits within available space
+      if (textHeight <= availableHeight) {
+        ctx.save()
+        ctx.translate(node_x + node_width / 2 + 1, node_y + node_height - padding)
+        ctx.rotate(-Math.PI / 2)
+        ctx.fillText(nodeName, 0, 0)
+        ctx.restore()
+      }
+    }
+  }
+}
+
 function drawShimmerAnimation(ctx: CanvasRenderingContext2D, time: number): void {
   if (!bitmap || !canvas.value || !coordinates) return
 
@@ -376,6 +436,9 @@ function drawNodeCoresMode(
 
   // Draw text overlay on top of stroke
   drawCoresTextOverlay(ctx, node_x, node_y, node_width, node_height, coresUsage)
+
+  // Draw node name (with cores mode flag to check for overlap)
+  drawNodeNameText(ctx, nodeName, node_x, node_y, node_width, node_height, true)
 }
 
 function drawNodeNodesMode(
@@ -398,6 +461,9 @@ function drawNodeNodesMode(
   if (strokeColor) {
     drawNodeStroke(ctx, node_x, node_y, node_width, node_height, strokeColor)
   }
+
+  // Draw node name (not in cores mode)
+  drawNodeNameText(ctx, nodeName, node_x, node_y, node_width, node_height, false)
 }
 
 async function updateCanvas(fullUpdate: boolean = true) {
