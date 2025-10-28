@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     their states from Slurm.
   - Add possibility to display nodes names in clusters graphical representations
     when enough room for text label (#644).
+  - Add general setting to control display of nodes names in clusters graphical
+    representations, enabled by default.
 - gateway: Add `/agent/{cluster}/cache/reset` route to reverse proxy request to
   agent `/cache/reset`.
 - agent: Add `/cache/reset` route to reset cache statistics.
