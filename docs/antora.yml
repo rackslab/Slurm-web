@@ -6,7 +6,7 @@ asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
-    version: 5.1.0
+    version: 5.2.0
     api_version: 0.0.41
     pkgs-derivative: slurmweb-5
 nav:
