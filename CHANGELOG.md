@@ -58,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Restore expected view after authentication error (eg. missing or expired
     token) and successful login.
   - Update dependencies to fix CVE-2025-7783 (form-data), CVE-2025-58751,
-    CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios).
+    CVE-2025-58752 and CVE-2025-62522 (vite), CVE-2025-58754 (axios),
+    GHSA-xffm-g5w8-qvg7 (eslint).
   - Handling of cache hit rate calculation when total number of requests in
     cache statistics is 0.
   - Adjust colors of nodes graphical representation to match more cores
