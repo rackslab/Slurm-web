@@ -36,9 +36,8 @@ class SlurmrestdCrawler(ComponentCrawler):
         cluster: DevelopmentHostCluster,
         auth: SlurmrestdAuthentifier,
     ):
-        self.cluster = cluster
         # Get Slurm version
-        ping = self.cluster.query_slurmrestd_json(f"/slurm/v{cluster.api}/ping")
+        ping = cluster.query_slurmrestd_json(f"/slurm/v{cluster.api}/ping")
         release = ping["meta"]["slurm"]["release"]
         version = release.rsplit(".", 1)[0]
         logger.info("Slurm version: %s release: %s", version, release)
@@ -180,6 +179,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             "slurmrestd",
             asset_set,
             SlurmrestdAssetsManager(version),
+            cluster,
         )
         self.auth = auth
         self._cleanup_state = None

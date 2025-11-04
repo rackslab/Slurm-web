@@ -237,6 +237,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
             "gateway",
             asset_set,
             GatewayAssetsManager(),
+            cluster,
             gateway_url(dev_tmp_dir),  # Get gateway HTTP base URL from configuration
             token,
         )

@@ -930,28 +930,37 @@ class ComponentCrawler:
         component: str,
         assets: set[Asset],
         manager: BaseAssetsManager,
+        cluster: DevelopmentHostCluster,
     ):
         self.component = component
         self.assets = assets
         self.manager = manager
         # Create a lookup dict by name for efficient access
         self.assets_map: dict[str, Asset] = {asset.name: asset for asset in assets}
+        self.cluster = cluster
 
-    def get_asset_names(self) -> list[str]:
-        """Return list of all available asset names."""
-        return sorted(self.assets_map.keys())
+    def count_assets_to_crawl(self) -> int:
+        """Count assets that need to be crawled (don't exist yet)."""
+        count = 0
+        for asset in self.assets:
+            if not self.manager.exists(asset):
+                count += 1
+        return count
 
-    def crawl_all_assets(self, cluster: DevelopmentHostCluster) -> None:
+    def crawl_all_assets(self, progress_bar=None) -> None:
         """Crawl all assets, resetting cluster and handling cleanup for each."""
         for asset in self.assets:
-            cluster.reset_minimal()
-            self.crawl(asset)
+            # Track if asset was actually crawled (not skipped)
+            asset_exists_before = self.manager.exists(asset)
+            self.crawl(asset, progress_bar=progress_bar)
+            # Only update progress if asset was actually crawled
+            if progress_bar and not asset_exists_before:
+                progress_bar.update(1)
             if hasattr(self, "_cleanup_state") and self._cleanup_state:
-                if cluster:
-                    cluster.cleanup_after_asset(self._cleanup_state)
+                self.cluster.cleanup_after_asset(self._cleanup_state)
                 self._cleanup_state = None
 
-    def crawl(self, asset: Asset, *args) -> None:
+    def crawl(self, asset: Asset, *args, progress_bar=None) -> None:
         if self.manager.exists(asset):
             logger.info(
                 "Skipping %s/%s: asset already exists",
@@ -972,10 +981,11 @@ class TokenizedComponentCrawler(ComponentCrawler):
         component: str,
         assets: set[Asset],
         manager: BaseAssetsManager,
+        cluster: DevelopmentHostCluster,
         url: str,
         token: str,
     ):
-        super().__init__(component, assets, manager)
+        super().__init__(component, assets, manager, cluster)
         self.url = url
         self.token = token
 

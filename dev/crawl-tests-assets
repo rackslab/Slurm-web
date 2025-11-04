@@ -8,6 +8,7 @@
 
 from pathlib import Path
 import argparse
+import shutil
 import sys
 import getpass
 import logging
@@ -39,6 +40,49 @@ METRICS_PREFERRED_INFRASTRUCTURE = "emulator"
 MAP_CLUSTER_NAMES = {"emulator": "atlas"}
 
 ASSETS_ROOT = Path("tests/assets")
+
+
+class SimpleProgressBar:
+    """Simple progress bar for TTY output, spanning full terminal width."""
+
+    def __init__(self, total: int):
+        self.total = total
+        self.current = 0
+        self._update_display()
+
+    def _update_display(self):
+        """Update the progress bar display."""
+        # Get current terminal width (may change if terminal is resized)
+        terminal_width = shutil.get_terminal_size().columns
+
+        if self.total == 0:
+            percent = 100
+        else:
+            percent = int((self.current / self.total) * 100)
+
+        # Calculate available width for the progress bar
+        # Reserve space for: "Progress: [", "]", " XXX% (XXX/XXX)"
+        prefix = "Progress: ["
+        suffix = f"] {percent}% ({self.current}/{self.total})"
+        reserved_width = len(prefix) + len(suffix)
+        bar_length = max(1, terminal_width - reserved_width)
+
+        filled = int((self.current / self.total) * bar_length) if self.total > 0 else 0
+        bar = "=" * filled + "-" * (bar_length - filled)
+        sys.stdout.write(f"\r{prefix}{bar}{suffix}")
+        sys.stdout.flush()
+
+    def update(self, n: int = 1):
+        """Update progress by n items."""
+        self.current += n
+        if self.current > self.total:
+            self.current = self.total
+        self._update_display()
+
+    def close(self):
+        """Close the progress bar."""
+        sys.stdout.write("\n")
+        sys.stdout.flush()
 
 
 def slurmweb_cluster_name(infrastructure: str):
@@ -135,6 +179,62 @@ def main() -> None:
         dev_tmp_dir,
     )
 
+    # Count total assets to crawl
+    total_assets = 0
+    for infrastructure in clusters_to_process:
+        # Load agent configuration to create cluster
+        settings = load_settings(
+            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
+        )
+        auth = SlurmrestdAuthentifier(
+            settings.slurmrestd.auth,
+            settings.slurmrestd.jwt_mode,
+            settings.slurmrestd.jwt_user,
+            settings.slurmrestd.jwt_key,
+            settings.slurmrestd.jwt_lifespan,
+            settings.slurmrestd.jwt_token,
+        )
+        cluster = DevelopmentHostCluster(
+            dev_host, infrastructure, settings.slurmrestd.uri, auth
+        )
+
+        # Count assets for each component
+        if "slurmrestd" in components_to_process:
+            slurmrestd_crawler = SlurmrestdCrawler(cluster, auth)
+            total_assets += slurmrestd_crawler.count_assets_to_crawl()
+
+        if "gateway" in components_to_process:
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway_crawler = GatewayCrawler(
+                    token,
+                    cluster,
+                    infrastructure,
+                    dev_tmp_dir,
+                )
+                total_assets += gateway_crawler.count_assets_to_crawl()
+
+        # Count agent and prometheus (they don't use ComponentCrawler)
+        if "agent" in components_to_process:
+            agent_path = ASSETS_ROOT / "agent"
+            if not (agent_path.exists() and any(agent_path.glob("*.json"))):
+                total_assets += 1
+
+        if "prometheus" in components_to_process:
+            if infrastructure == METRICS_PREFERRED_INFRASTRUCTURE:
+                prometheus_path = ASSETS_ROOT / "prometheus"
+                if not (
+                    prometheus_path.exists() and any(prometheus_path.glob("*.json"))
+                ):
+                    total_assets += 1
+
+    # Create progress bar if stdout is a TTY
+    use_progress = sys.stdout.isatty() and total_assets > 0
+    if use_progress:
+        progress_bar = SimpleProgressBar(total_assets)
+    else:
+        progress_bar = None
+
+    # Now actually crawl the assets
     for infrastructure in clusters_to_process:
         # Load agent configuration
         settings = load_settings(
@@ -152,10 +252,10 @@ def main() -> None:
             dev_host, infrastructure, settings.slurmrestd.uri, auth
         )
 
-        # Initialize crawlers
+        # Initialize crawlers and crawl
         if "slurmrestd" in components_to_process:
             slurmrestd = SlurmrestdCrawler(cluster, auth)
-            slurmrestd.crawl_all_assets(cluster)
+            slurmrestd.crawl_all_assets(progress_bar)
         else:
             slurmrestd = None
 
@@ -164,12 +264,11 @@ def main() -> None:
             if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
                 gateway = GatewayCrawler(
                     token,
-                    slurmweb_cluster_name(infrastructure),
+                    cluster,
                     infrastructure,
                     dev_tmp_dir,
-                    cluster_obj=cluster,
                 )
-                gateway.crawl_all_assets(cluster)
+                gateway.crawl_all_assets(progress_bar)
             else:
                 logger.info(
                     "Skipping gateway for cluster %s (not preferred infrastructure)",
@@ -188,6 +287,8 @@ def main() -> None:
                 logger.info("Crawling agent")
                 cluster.reset_minimal()
                 crawl_agent(settings.service.port, token, metrics=crawl_metrics)
+                if progress_bar:
+                    progress_bar.update(1)
 
         if "prometheus" in components_to_process:
             # Check if prometheus assets directory exists and has files
@@ -202,11 +303,16 @@ def main() -> None:
                     crawl_prometheus(
                         settings.metrics.host.geturl(), settings.metrics.job
                     )
+                    if progress_bar:
+                        progress_bar.update(1)
             else:
                 logger.info(
                     "Skipping prometheus for cluster %s (not metrics infrastructure)",
                     infrastructure,
                 )
+
+    if progress_bar:
+        progress_bar.close()
 
 
 if __name__ == "__main__":
