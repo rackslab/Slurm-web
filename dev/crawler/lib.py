@@ -980,10 +980,19 @@ class ComponentCrawler:
             )
             return
 
-        logger.info("Crawling asset %s on component %s", asset.name, self.component)
-        asset.method(*args)
+        self.cluster.reset_minimal()
 
-        self.manager.save()
+        logger.info("Crawling asset %s on component %s", asset.name, self.component)
+        try:
+            asset.method(*args)
+            self.manager.save()
+        except CrawlerError as err:
+            logger.error(
+                "Error crawling asset %s on component %s: %s",
+                asset.name,
+                self.component,
+                err,
+            )
 
 
 class TokenizedComponentCrawler(ComponentCrawler):
