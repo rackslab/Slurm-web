@@ -17,6 +17,7 @@ import urllib
 import time
 import random
 import logging
+from datetime import datetime, timedelta
 
 import requests
 import paramiko
@@ -31,7 +32,6 @@ from rfl.settings.errors import (
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 
 if t.TYPE_CHECKING:
-    from datetime import datetime
     from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 logger = logging.getLogger(__name__)
@@ -54,9 +54,12 @@ class BaseAssetsManager:
         else:
             self.statuses = {}
 
-    def exists(self, asset_name: str) -> bool:
+    def exists(self, asset: Asset) -> bool:
         """Return True if asset already exists or False."""
-        return len(list(self.path.glob(f"{asset_name}.*"))) > 0
+        return all(
+            len(list(self.path.glob(f"{Path(output_file).stem}.*"))) > 0
+            for output_file in asset.output_files
+        )
 
     def save(self):
         """Save resulting status file."""
@@ -144,6 +147,7 @@ class DevelopmentHostCluster:
         self.users = [user["login"] for user in self.status["users"]]
         self.groups = self.status["groups"]
         stdout.close()
+        self._gpu_info = None
 
     def query_slurmrestd(self, query: str, headers: dict[str, str] | None = None):
         """Send GET HTTP request to slurmrestd and return JSON result. Raise
@@ -408,6 +412,393 @@ class DevelopmentHostCluster:
             ]
         )
 
+    def setup_for_reservations(self) -> dict:
+        """Setup cluster for reservations asset. Returns cleanup state."""
+        account = self.pick_account()
+        self.reservation(
+            "training",
+            self.partitions()[0],
+            accounts=[account],
+            users=self.pick_account_users(account, 2),
+            start=datetime.now() + timedelta(days=5),
+            end=datetime.now() + timedelta(days=6),
+        )
+        return {"reservation": "training"}
+
+    def setup_for_jobs(self) -> dict:
+        """Setup cluster for jobs asset. Returns cleanup state."""
+        cleanup_state = {"jobs": []}
+        user = self.pick_user()
+        # Submit timeout job
+        job_id = self.submit(
+            user,
+            ["--ntasks", str(1)],
+            duration=90,
+            timelimit=1,
+            wait_running=False,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        # Submit completed job
+        job_id = self.submit(
+            user,
+            ["--ntasks", str(1)],
+            duration=1,
+            wait_running=False,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        # Submit failed job
+        job_id = self.submit(
+            user,
+            ["--ntasks", str(1)],
+            duration=1,
+            wait_running=False,
+            success=False,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        # Submit 10 random running jobs
+        for _ in range(10):
+            job_id = self.submit(
+                user,
+                ["--ntasks", str(random.choice([1, 4, 16, 32, 64, 128]))],
+                duration=random.choice([30, 60, 90]),
+                timelimit=2,
+                wait_running=False,
+            )
+            cleanup_state["jobs"].append((user, job_id))
+        # Submit pending job
+        job_id = self.submit(
+            user,
+            [
+                "--ntasks",
+                str(random.choice([1, 4, 16, 32, 64, 128])),
+                "--begin",
+                "now+1hour",
+            ],
+            duration=30,
+            wait_running=False,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        # Wait for job to timeout
+        logger.info("Waiting for timeout job…")
+        time.sleep(70)
+        return cleanup_state
+
+    def setup_for_nodes(self) -> dict:
+        """Setup cluster for nodes asset. Returns cleanup state."""
+        cleanup_state = {
+            "nodes_down": [],
+            "nodes_drain": [],
+            "jobs": [],
+        }
+        # Set one node DOWN, one DRAIN, ensure some nodes have jobs (MIXED/ALLOCATED)
+        nodes = self.nodes_partition(self.partitions()[0])
+        if len(nodes) >= 2:
+            node_down = random.choice(nodes)
+            node_drain = random.choice([node for node in nodes if node != node_down])
+            self.node_update(node_down, "DOWN", "CPU dead")
+            self.node_update(node_drain, "DRAIN", "ECC memory error")
+            cleanup_state["nodes_down"] = [node_down]
+            cleanup_state["nodes_drain"] = [node_drain]
+        # Submit some jobs to create MIXED/ALLOCATED states
+        user = self.pick_user()
+        for _ in range(3):
+            job_id = self.submit(
+                user,
+                ["--ntasks", str(1)],
+                duration=30,
+                timelimit=2,
+                wait_running=False,
+            )
+            cleanup_state["jobs"].append((user, job_id))
+        return cleanup_state
+
+    def setup_for_stats(self) -> dict:
+        """Setup cluster for stats asset. Returns cleanup state."""
+        cleanup_state = {"jobs": []}
+        user = self.pick_user()
+        for _ in range(3):
+            job_id = self.submit(
+                user,
+                ["--ntasks", str(1)],
+                duration=30,
+                timelimit=2,
+                wait_running=False,
+            )
+            cleanup_state["jobs"].append((user, job_id))
+        return cleanup_state
+
+    def setup_for_job_gpus_running(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-running asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_pending(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-pending asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus",
+                str(gpu_per_node),
+                "--begin",
+                "now+1hour",
+            ],
+            wait_running=False,
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_completed(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-completed asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+            duration=30,
+        )
+        time.sleep(30)
+        return job_id, user
+
+    def setup_for_job_gpus_archived(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-archived asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+            duration=30,
+        )
+        time.sleep(30)
+        # Wait additional time for archival
+        time.sleep(600)
+        return job_id, user
+
+    def setup_for_job_gpus_multi_nodes(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-multi-nodes asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(gpu_per_node * 2)],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_type(
+        self, gpu_partition: str, gpu_type: str
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-type asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", f"{gpu_type}:1"],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_per_node(self, gpu_partition: str) -> tuple[int, str]:
+        """Setup cluster for job-gpus-per-node asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus-per-node",
+                str(1),
+                "--nodes",
+                str(2),
+            ],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_multi_types(
+        self, gpu_partition: str, gpu_types: list[str]
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-multi-types asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus-per-node",
+                ",".join([f"{gpu_type}:1" for gpu_type in gpu_types]),
+            ],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_per_socket(self, gpu_partition: str) -> tuple[int, str]:
+        """Setup cluster for job-gpus-per-socket asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus-per-socket",
+                str(2),
+                "--sockets-per-node",
+                str(2),
+            ],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_per_task(self, gpu_partition: str) -> tuple[int, str]:
+        """Setup cluster for job-gpus-per-task asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus-per-task",
+                str(2),
+                "--ntasks",
+                str(2),
+            ],
+        )
+        return job_id, user
+
+    def setup_for_job_gpus_gres(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for job-gpus-gres asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gres", f"gpu:{gpu_per_node}"],
+        )
+        return job_id, user
+
+    def setup_for_node_gpus_allocated(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str]:
+        """Setup cluster for node-gpus-allocated asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            [
+                "--partition",
+                gpu_partition,
+                "--gpus",
+                str(gpu_per_node),
+                "--nodes",
+                str(1),
+            ],
+        )
+        return job_id, user
+
+    def setup_for_node_gpus_mixed(self, gpu_partition: str) -> tuple[int, str]:
+        """Setup cluster for node-gpus-mixed asset. Returns (job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(1)],
+        )
+        return job_id, user
+
+    def setup_for_node_gpus_idle(self, gpu_partition: str) -> tuple[str, int, str]:
+        """Setup cluster for node-gpus-idle asset. Returns (node_name, job_id, user)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            ["--partition", gpu_partition, "--gpus", str(1)],
+        )
+        # Get node before canceling
+        node = self.job_nodes(job_id)[0]
+        # Cancel job and wait for idle
+        self.cancel(user, job_id)
+        self.wait_idle(node)
+        return node, job_id, user
+
+    def cleanup_after_asset(self, cleanup_state: dict) -> None:
+        """Cleanup cluster state after asset crawl."""
+        # Cancel all jobs
+        for user, job_id in cleanup_state.get("jobs", []):
+            try:
+                self.cancel(user, job_id)
+            except Exception:
+                pass  # Job may already be completed/cancelled
+
+        # Resume nodes
+        for node in cleanup_state.get("nodes_down", []):
+            try:
+                self.node_resume(node)
+            except Exception:
+                pass
+        for node in cleanup_state.get("nodes_drain", []):
+            try:
+                self.node_resume(node)
+            except Exception:
+                pass
+
+        # Delete reservation
+        if cleanup_state.get("reservation"):
+            try:
+                self.reservation_delete(cleanup_state["reservation"])
+            except Exception:
+                pass
+
+    @property
+    def gpu_info(self) -> dict:
+        """Get GPU information from cluster. Cached after first access."""
+        if self._gpu_info is None:
+            nodes = self.query_slurmrestd_json(f"/slurm/v{self.api}/nodes")
+            has_gpu = False
+            gpu_per_node = 0
+            gpu_types = []
+            gpu_partition = None
+
+            for node in nodes["nodes"]:
+                all_gres = node["gres"].split(",")
+                if len(all_gres) and any(
+                    [gres_s.startswith("gpu") for gres_s in all_gres]
+                ):
+                    has_gpu = True
+                    for gres_s in all_gres:
+                        gres = gres_s.split(":")
+                        # skip non-gpu gres
+                        if gres[0] != "gpu":
+                            continue
+                        if len(gres) > 2:
+                            gpu_types.append(gres[1])
+                            gpu_per_node += int(gres[2])
+                        else:
+                            gpu_types.append("n/a")
+                            gpu_per_node += int(gres[1])
+                        gpu_partition = node["partitions"][0]
+                    break
+
+            self._gpu_info = {
+                "has_gpu": has_gpu,
+                "gpu_per_node": gpu_per_node,
+                "gpu_types": gpu_types,
+                "gpu_partition": gpu_partition,
+            }
+        return self._gpu_info
+
+    def has_gpu(self) -> bool:
+        """Check if cluster has GPU support."""
+        return self.gpu_info["has_gpu"]
+
+    def reset_minimal(self) -> None:
+        """Reset cluster to minimal baseline state."""
+        logger.info("Resetting cluster to minimal state")
+        self.cancel_all()
+        self.nodes_resume()
+
 
 def get_component_response(
     url: str,
@@ -513,32 +904,78 @@ class CrawlerError(Exception):
     pass
 
 
+class Asset:
+    """Represents an asset to be crawled, with its name, output files, and method."""
+
+    def __init__(
+        self,
+        name: str,
+        output_files: str | list[str] | dict[int, str],
+        method: t.Callable,
+    ):
+        self.name = name
+        if isinstance(output_files, dict):
+            # For status-code-based assets, check all possible output files
+            self.output_files = list(output_files.values())
+        elif isinstance(output_files, list):
+            self.output_files = output_files
+        else:
+            self.output_files = [output_files]
+        self.method = method
+
+
 class ComponentCrawler:
     def __init__(
-        self, component: str, _map: dict[str, t.Callable], assets: BaseAssetsManager
+        self,
+        component: str,
+        assets: set[Asset],
+        manager: BaseAssetsManager,
     ):
         self.component = component
-        self.map = _map
         self.assets = assets
+        self.manager = manager
+        # Create a lookup dict by name for efficient access
+        self.assets_map: dict[str, Asset] = {asset.name: asset for asset in assets}
 
-    def crawl(self, assets: list[str], *args) -> None:
-        for asset in assets:
-            logger.info("Crawling asset %s on component %s", asset, self.component)
-            self.map[asset](*args)
+    def get_asset_names(self) -> list[str]:
+        """Return list of all available asset names."""
+        return sorted(self.assets_map.keys())
 
-        self.assets.save()
+    def crawl_all_assets(self, cluster: DevelopmentHostCluster) -> None:
+        """Crawl all assets, resetting cluster and handling cleanup for each."""
+        for asset in self.assets:
+            cluster.reset_minimal()
+            self.crawl(asset)
+            if hasattr(self, "_cleanup_state") and self._cleanup_state:
+                if cluster:
+                    cluster.cleanup_after_asset(self._cleanup_state)
+                self._cleanup_state = None
+
+    def crawl(self, asset: Asset, *args) -> None:
+        if self.manager.exists(asset):
+            logger.info(
+                "Skipping %s/%s: asset already exists",
+                self.component,
+                asset.name,
+            )
+            return
+
+        logger.info("Crawling asset %s on component %s", asset.name, self.component)
+        asset.method(*args)
+
+        self.manager.save()
 
 
 class TokenizedComponentCrawler(ComponentCrawler):
     def __init__(
         self,
         component: str,
-        _map: dict[str, t.Callable],
-        assets: BaseAssetsManager,
+        assets: set[Asset],
+        manager: BaseAssetsManager,
         url: str,
         token: str,
     ):
-        super().__init__(component, _map, assets)
+        super().__init__(component, assets, manager)
         self.url = url
         self.token = token
 
@@ -559,11 +996,11 @@ class TokenizedComponentCrawler(ComponentCrawler):
         if headers is None:
             headers = {"Authorization": f"Bearer {self.token}"}
         return dump_component_query(
-            self.assets.statuses,
+            self.manager.statuses,
             self.url,
             query,
             headers,
-            self.assets.path,
+            self.manager.path,
             asset_name,
             **kwargs,
         )
@@ -572,5 +1009,5 @@ class TokenizedComponentCrawler(ComponentCrawler):
         self, asset_name: dict[int, str] | str, response, **kwargs
     ):
         return dump_component_response(
-            self.assets.statuses, self.assets.path, asset_name, response, **kwargs
+            self.manager.statuses, self.manager.path, asset_name, response, **kwargs
         )
