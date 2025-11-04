@@ -329,20 +329,29 @@ class DevelopmentHostCluster:
         )
 
     def cancel_all(self) -> None:
-        """Cancel all jobs."""
-        # FIXME: use REST API
-        for partition in self.partitions():
-            self.dev_host.exec(
-                [
-                    "firehpc",
-                    "ssh",
-                    f"root@{self.login_container()}.{self.name}",
-                    "--",
-                    "scancel",
-                    "-p",
-                    partition,
-                ]
-            )
+        """Cancel all jobs using REST API."""
+        # Get all jobs
+        jobs = self.query_slurmrestd_json(f"/slurm/v{self.api}/jobs")
+        headers = self.auth.headers()
+
+        # Cancel each job
+        for job in jobs.get("jobs", []):
+            job_id = job["job_id"]
+            try:
+                response = self.session.delete(
+                    f"{self.prefix}/slurm/v{self.api}/job/{job_id}",
+                    headers=headers,
+                )
+                if response.status_code == 200:
+                    logger.debug("Cancelled job %s", job_id)
+                else:
+                    logger.warning(
+                        "Failed to cancel job %s: status code %s",
+                        job_id,
+                        response.status_code,
+                    )
+            except requests.exceptions.ConnectionError as err:
+                raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
 
     def job_nodes(self, job_id: int) -> list[str]:
         job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
