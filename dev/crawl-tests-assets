@@ -7,6 +7,7 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
+import argparse
 import sys
 import getpass
 import logging
@@ -46,8 +47,21 @@ def slurmweb_cluster_name(infrastructure: str):
 
 def main() -> None:
     """Crawl and save test assets from Slurm-web gateway, agent and slurmrestd."""
-
-    # FIXME: support possibility to restrict cluster
+    parser = argparse.ArgumentParser(
+        description="Crawl and save test assets from Slurm-web components"
+    )
+    parser.add_argument(
+        "--clusters",
+        nargs="+",
+        help="Restrict crawling to specific cluster names (default: all clusters)",
+    )
+    parser.add_argument(
+        "--components",
+        nargs="+",
+        choices=["slurmrestd", "gateway", "agent", "prometheus"],
+        help="Restrict crawling to specific components (default: all components)",
+    )
+    args = parser.parse_args()
 
     # Setup logger
     setup_logger(
@@ -73,7 +87,38 @@ def main() -> None:
 
     # Load cluster list from RacksDB database
     db = RacksDB.load(db="dev/firehpc/db", schema="../RacksDB/schemas/racksdb.yml")
-    logger.info("List of clusters: %s", db.infrastructures.keys())
+    all_clusters = list(db.infrastructures.keys())
+    logger.info("Available clusters: %s", all_clusters)
+
+    # Filter clusters based on argument
+    if args.clusters:
+        selected_clusters = [
+            cluster for cluster in args.clusters if cluster in all_clusters
+        ]
+        invalid_clusters = [
+            cluster for cluster in args.clusters if cluster not in all_clusters
+        ]
+        if invalid_clusters:
+            logger.error("Invalid cluster names: %s", invalid_clusters)
+            logger.error("Available clusters: %s", all_clusters)
+            sys.exit(1)
+        if not selected_clusters:
+            logger.error("No valid clusters selected")
+            sys.exit(1)
+        clusters_to_process = selected_clusters
+        logger.info("Restricting to clusters: %s", clusters_to_process)
+    else:
+        clusters_to_process = all_clusters
+        logger.info("Processing all clusters: %s", clusters_to_process)
+
+    # Determine which components to process
+    all_components = ["slurmrestd", "gateway", "agent", "prometheus"]
+    if args.components:
+        components_to_process = args.components
+        logger.info("Restricting to components: %s", components_to_process)
+    else:
+        components_to_process = all_components
+        logger.info("Processing all components: %s", components_to_process)
 
     dev_host = DevelopmentHostClient(DEV_HOST, USER)
     try:
@@ -90,7 +135,7 @@ def main() -> None:
         dev_tmp_dir,
     )
 
-    for infrastructure in db.infrastructures.keys():
+    for infrastructure in clusters_to_process:
         # Load agent configuration
         settings = load_settings(
             "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
@@ -108,42 +153,60 @@ def main() -> None:
         )
 
         # Initialize crawlers
-        slurmrestd = SlurmrestdCrawler(cluster, auth)
-        slurmrestd.crawl_all_assets(cluster)
+        if "slurmrestd" in components_to_process:
+            slurmrestd = SlurmrestdCrawler(cluster, auth)
+            slurmrestd.crawl_all_assets(cluster)
+        else:
+            slurmrestd = None
 
         gateway = None
-        if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
-            gateway = GatewayCrawler(
-                token,
-                slurmweb_cluster_name(infrastructure),
-                infrastructure,
-                dev_tmp_dir,
-                cluster_obj=cluster,
-            )
-
-        if gateway:
-            gateway.crawl_all_assets(cluster)
+        if "gateway" in components_to_process:
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway = GatewayCrawler(
+                    token,
+                    slurmweb_cluster_name(infrastructure),
+                    infrastructure,
+                    dev_tmp_dir,
+                    cluster_obj=cluster,
+                )
+                gateway.crawl_all_assets(cluster)
+            else:
+                logger.info(
+                    "Skipping gateway for cluster %s (not preferred infrastructure)",
+                    infrastructure,
+                )
 
         # Agent and Prometheus (coarse skip if directory has files)
         crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
 
-        # Check if agent assets directory exists and has files
-        agent_path = ASSETS_ROOT / "agent"
-        if agent_path.exists() and any(agent_path.glob("*.json")):
-            logger.info("Skipping agent: assets directory already populated")
-        else:
-            logger.info("Crawling agent")
-            cluster.reset_minimal()
-            crawl_agent(settings.service.port, token, metrics=crawl_metrics)
-
-        # Check if prometheus assets directory exists and has files
-        if crawl_metrics:
-            prometheus_path = ASSETS_ROOT / "prometheus"
-            if prometheus_path.exists() and any(prometheus_path.glob("*.json")):
-                logger.info("Skipping prometheus: assets directory already populated")
+        if "agent" in components_to_process:
+            # Check if agent assets directory exists and has files
+            agent_path = ASSETS_ROOT / "agent"
+            if agent_path.exists() and any(agent_path.glob("*.json")):
+                logger.info("Skipping agent: assets directory already populated")
             else:
-                logger.info("Crawling prometheus")
-                crawl_prometheus(settings.metrics.host.geturl(), settings.metrics.job)
+                logger.info("Crawling agent")
+                cluster.reset_minimal()
+                crawl_agent(settings.service.port, token, metrics=crawl_metrics)
+
+        if "prometheus" in components_to_process:
+            # Check if prometheus assets directory exists and has files
+            if crawl_metrics:
+                prometheus_path = ASSETS_ROOT / "prometheus"
+                if prometheus_path.exists() and any(prometheus_path.glob("*.json")):
+                    logger.info(
+                        "Skipping prometheus: assets directory already populated"
+                    )
+                else:
+                    logger.info("Crawling prometheus")
+                    crawl_prometheus(
+                        settings.metrics.host.geturl(), settings.metrics.job
+                    )
+            else:
+                logger.info(
+                    "Skipping prometheus for cluster %s (not metrics infrastructure)",
+                    infrastructure,
+                )
 
 
 if __name__ == "__main__":
