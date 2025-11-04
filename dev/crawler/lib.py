@@ -112,9 +112,20 @@ class DevelopmentHostClient:
                 f"Unable to connect on {self.user}@{self.host}: {err}"
             ) from err
 
-    def exec(self, cmd: list[str]):
+    def exec(self, cmd: list[str], retries: int = 3, reconnect: bool = False):
+        if not retries:
+            raise CrawlerError(
+                f"Unable to execute command on development host: {shlex.join(cmd)}"
+            )
+
         logger.debug("Running command on development host: %s", shlex.join(cmd))
-        return self._client.exec_command(shlex.join(cmd))
+        try:
+            if reconnect:
+                self.connect()
+            return self._client.exec_command(shlex.join(cmd))
+        except paramiko.ssh_exception.ChannelException:
+            logger.warning("Channel exception occurred, reconnecting to %s", self.host)
+            self.exec(cmd, retries - 1, reconnect=True)
 
 
 class DevelopmentHostCluster:
