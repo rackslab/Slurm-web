@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+#### Fixed
+- gateway: Use agent provided version instead of agent minimal version from
+  settings to reverse proxy the requests (#656).
+
 ## [5.2.0] - 2025-11-03
 
 ### Added
