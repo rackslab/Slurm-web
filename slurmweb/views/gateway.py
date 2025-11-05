@@ -203,7 +203,7 @@ def request_agent(
         if with_version:
             url = (
                 f"{current_app.agents[cluster].url}/"
-                f"v{current_app.settings.agents.version}/{query}"
+                f"v{current_app.agents[cluster].version}/{query}"
             )
         else:
             url = f"{current_app.agents[cluster].url}/{query}"
