@@ -89,15 +89,14 @@ def slurmweb_cluster_name(infrastructure: str):
     return MAP_CLUSTER_NAMES.get(infrastructure, infrastructure)
 
 
-def _run_crawl(
+def _count_total_assets(
     clusters_to_process: list[str],
     components_to_process: list[str],
     dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
     token: str,
-) -> None:
-    """Count, crawl and dump assets with progress bar."""
-    # Count total assets to crawl
+) -> int:
+    """Return the number of assets that need to be crawled."""
     total_assets = 0
     for infrastructure in clusters_to_process:
         # Load agent configuration to create cluster
@@ -144,93 +143,127 @@ def _run_crawl(
                     prometheus_path.exists() and any(prometheus_path.glob("*.json"))
                 ):
                     total_assets += 1
+    return total_assets
 
+
+def _crawl_assets(
+    clusters_to_process: list[str],
+    components_to_process: list[str],
+    dev_host: DevelopmentHostClient,
+    dev_tmp_dir: Path,
+    token: str,
+    progress_bar: SimpleProgressBar | None,
+) -> None:
+    """Perform crawling for all selected infrastructures and components."""
+    for infrastructure in clusters_to_process:
+        # Load agent configuration
+        settings = load_settings(
+            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
+        )
+        auth = SlurmrestdAuthentifier(
+            settings.slurmrestd.auth,
+            settings.slurmrestd.jwt_mode,
+            settings.slurmrestd.jwt_user,
+            settings.slurmrestd.jwt_key,
+            settings.slurmrestd.jwt_lifespan,
+            settings.slurmrestd.jwt_token,
+        )
+        cluster = DevelopmentHostCluster(
+            dev_host, infrastructure, settings.slurmrestd.uri, auth
+        )
+
+        # Initialize crawlers and crawl
+        if "slurmrestd" in components_to_process:
+            slurmrestd = SlurmrestdCrawler(cluster, auth)
+            slurmrestd.crawl_all_assets(progress_bar)
+        else:
+            slurmrestd = None
+
+        gateway = None
+        if "gateway" in components_to_process:
+            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+                gateway = GatewayCrawler(
+                    token,
+                    cluster,
+                    infrastructure,
+                    dev_tmp_dir,
+                )
+                gateway.crawl_all_assets(progress_bar)
+            else:
+                logger.info(
+                    "Skipping gateway for cluster %s (not preferred infrastructure)",
+                    infrastructure,
+                )
+
+        # Agent and Prometheus (coarse skip if directory has files)
+        crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
+
+        if "agent" in components_to_process:
+            # Check if agent assets directory exists and has files
+            agent_path = ASSETS_ROOT / "agent"
+            if agent_path.exists() and any(agent_path.glob("*.json")):
+                logger.info("Skipping agent: assets directory already populated")
+            else:
+                logger.info("Crawling agent")
+                cluster.reset_minimal()
+                crawl_agent(settings.service.port, token, metrics=crawl_metrics)
+                if progress_bar:
+                    progress_bar.update(1)
+
+        if "prometheus" in components_to_process:
+            # Check if prometheus assets directory exists and has files
+            if crawl_metrics:
+                prometheus_path = ASSETS_ROOT / "prometheus"
+                exists_prom = prometheus_path.exists() and any(
+                    prometheus_path.glob("*.json")
+                )
+                if exists_prom:
+                    logger.info(
+                        "Skipping prometheus: assets directory already populated"
+                    )
+                else:
+                    logger.info("Crawling prometheus")
+                    crawl_prometheus(
+                        settings.metrics.host.geturl(), settings.metrics.job
+                    )
+                    if progress_bar:
+                        progress_bar.update(1)
+            else:
+                logger.info(
+                    "Skipping prometheus for cluster %s (not metrics infrastructure)",
+                    infrastructure,
+                )
+
+
+def _run_crawl(
+    clusters_to_process: list[str],
+    components_to_process: list[str],
+    dev_host: DevelopmentHostClient,
+    dev_tmp_dir: Path,
+    token: str,
+) -> None:
+    """Count, crawl and dump assets with progress bar."""
+    # Count total assets to crawl
+    total_assets = _count_total_assets(
+        clusters_to_process,
+        components_to_process,
+        dev_host,
+        dev_tmp_dir,
+        token,
+    )
     # Create progress bar if stdout is a TTY
     use_progress = sys.stdout.isatty() and total_assets > 0
     progress_bar = SimpleProgressBar(total_assets) if use_progress else None
 
     try:
-        # Now actually crawl the assets
-        for infrastructure in clusters_to_process:
-            # Load agent configuration
-            settings = load_settings(
-                "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
-            )
-            auth = SlurmrestdAuthentifier(
-                settings.slurmrestd.auth,
-                settings.slurmrestd.jwt_mode,
-                settings.slurmrestd.jwt_user,
-                settings.slurmrestd.jwt_key,
-                settings.slurmrestd.jwt_lifespan,
-                settings.slurmrestd.jwt_token,
-            )
-            cluster = DevelopmentHostCluster(
-                dev_host, infrastructure, settings.slurmrestd.uri, auth
-            )
-
-            # Initialize crawlers and crawl
-            if "slurmrestd" in components_to_process:
-                slurmrestd = SlurmrestdCrawler(cluster, auth)
-                slurmrestd.crawl_all_assets(progress_bar)
-            else:
-                slurmrestd = None
-
-            gateway = None
-            if "gateway" in components_to_process:
-                if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
-                    gateway = GatewayCrawler(
-                        token,
-                        cluster,
-                        infrastructure,
-                        dev_tmp_dir,
-                    )
-                    gateway.crawl_all_assets(progress_bar)
-                else:
-                    logger.info(
-                        "Skipping gateway for cluster %s (not preferred "
-                        "infrastructure)",
-                        infrastructure,
-                    )
-
-            # Agent and Prometheus (coarse skip if directory has files)
-            crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
-
-            if "agent" in components_to_process:
-                # Check if agent assets directory exists and has files
-                agent_path = ASSETS_ROOT / "agent"
-                if agent_path.exists() and any(agent_path.glob("*.json")):
-                    logger.info("Skipping agent: assets directory already populated")
-                else:
-                    logger.info("Crawling agent")
-                    cluster.reset_minimal()
-                    crawl_agent(settings.service.port, token, metrics=crawl_metrics)
-                    if progress_bar:
-                        progress_bar.update(1)
-
-            if "prometheus" in components_to_process:
-                # Check if prometheus assets directory exists and has files
-                if crawl_metrics:
-                    prometheus_path = ASSETS_ROOT / "prometheus"
-                    exists_prom = prometheus_path.exists() and any(
-                        prometheus_path.glob("*.json")
-                    )
-                    if exists_prom:
-                        logger.info(
-                            "Skipping prometheus: assets directory already populated"
-                        )
-                    else:
-                        logger.info("Crawling prometheus")
-                        crawl_prometheus(
-                            settings.metrics.host.geturl(), settings.metrics.job
-                        )
-                        if progress_bar:
-                            progress_bar.update(1)
-                else:
-                    logger.info(
-                        "Skipping prometheus for cluster %s (not metrics "
-                        "infrastructure)",
-                        infrastructure,
-                    )
+        _crawl_assets(
+            clusters_to_process,
+            components_to_process,
+            dev_host,
+            dev_tmp_dir,
+            token,
+            progress_bar,
+        )
     finally:
         if progress_bar:
             progress_bar.close()
