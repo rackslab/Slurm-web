@@ -6,76 +6,150 @@
 #
 # SPDX-License-Identifier: MIT
 
-import json
 import logging
+from pathlib import Path
 
-from .lib import ASSETS, dump_component_query
+from .lib import (
+    Asset,
+    BaseAssetsManager,
+    ComponentCrawler,
+    DevelopmentHostCluster,
+    dump_component_query,
+)
 
 from slurmweb.metrics.db import SlurmwebMetricsDB, SlurmwebMetricQuery, SlurmwebMetricId
 
 logger = logging.getLogger(__name__)
 
 
-def crawl_prometheus(url: str, job: str) -> None:
-    """Crawl and save test assets from Prometheus."""
-    # Check assets directory
-    assets_path = ASSETS / "prometheus"
-    if not assets_path.exists():
-        assets_path.mkdir(parents=True)
+class PrometheusAssetsManager(BaseAssetsManager):
+    def __init__(self):
+        super().__init__(Path("prometheus"))
 
-    # Save requests status
-    status_file = assets_path / "status.json"
-    if status_file.exists():
-        with open(status_file) as fh:
-            requests_statuses = json.load(fh)
-    else:
-        requests_statuses = {}
 
-    headers = {}
-    db = SlurmwebMetricsDB(url, job)
+class PrometheusCrawler(ComponentCrawler):
+    def __init__(
+        self,
+        url: str,
+        job: str,
+        cluster: DevelopmentHostCluster,
+    ):
+        self.url = url
+        self.job = job
+        self.db = SlurmwebMetricsDB(url, job)
 
-    for metric in ["nodes", "cores", "gpus", "jobs", "cache"]:
-        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS[metric]
-        for _range in ["hour"]:
-            for _id in params.ids:
-                _, _, _query = db._query(_id, params, _range)
-                dump_component_query(
-                    requests_statuses,
-                    url,
-                    f"{db.REQUEST_BASE_PATH}{_query}",
-                    headers,
-                    assets_path,
-                    f"{metric}-{_range}",
-                    prettify=False,
-                )
+        # Build asset set with explicit output file names
+        asset_set = {
+            Asset("nodes-hour", "nodes-hour", self._crawl_nodes_hour),
+            Asset("cores-hour", "cores-hour", self._crawl_cores_hour),
+            Asset("gpus-hour", "gpus-hour", self._crawl_gpus_hour),
+            Asset("jobs-hour", "jobs-hour", self._crawl_jobs_hour),
+            Asset("cache-hour", "cache-hour", self._crawl_cache_hour),
+            Asset("unknown-metric", "unknown-metric", self._crawl_unknown_metric),
+            Asset("unknown-path", "unknown-path", self._crawl_unknown_path),
+        }
 
-    # query unexisting metric
-    params = SlurmwebMetricQuery(
-        "query",
-        [SlurmwebMetricId("fail")],
-        SlurmwebMetricsDB.RANGE_RESOLUTIONS["30s"],
-    )
-    _, _, _query = db._query(params.ids[0], params, "hour")
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"{db.REQUEST_BASE_PATH}{_query}",
-        headers,
-        assets_path,
-        "unknown-metric",
-    )
+        super().__init__(
+            "prometheus",
+            asset_set,
+            PrometheusAssetsManager(),
+            cluster,
+        )
 
-    # query unknown API path
-    dump_component_query(
-        requests_statuses,
-        url,
-        f"{db.REQUEST_BASE_PATH}/fail",
-        headers,
-        assets_path,
-        "unknown-path",
-    )
+    def _crawl_nodes_hour(self):
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["nodes"]
+        for _id in params.ids:
+            _, _, _query = self.db._query(_id, params, "hour")
+            dump_component_query(
+                self.manager.statuses,
+                self.url,
+                f"{self.db.REQUEST_BASE_PATH}{_query}",
+                {},
+                self.manager.path,
+                "nodes-hour",
+                prettify=False,
+            )
 
-    # Save resulting status file
-    with open(status_file, "w+") as fh:
-        json.dump(requests_statuses, fh, indent=2)
-        fh.write("\n")
+    def _crawl_cores_hour(self):
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["cores"]
+        for _id in params.ids:
+            _, _, _query = self.db._query(_id, params, "hour")
+            dump_component_query(
+                self.manager.statuses,
+                self.url,
+                f"{self.db.REQUEST_BASE_PATH}{_query}",
+                {},
+                self.manager.path,
+                "cores-hour",
+                prettify=False,
+            )
+
+    def _crawl_gpus_hour(self):
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["gpus"]
+        for _id in params.ids:
+            _, _, _query = self.db._query(_id, params, "hour")
+            dump_component_query(
+                self.manager.statuses,
+                self.url,
+                f"{self.db.REQUEST_BASE_PATH}{_query}",
+                {},
+                self.manager.path,
+                "gpus-hour",
+                prettify=False,
+            )
+
+    def _crawl_jobs_hour(self):
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["jobs"]
+        for _id in params.ids:
+            _, _, _query = self.db._query(_id, params, "hour")
+            dump_component_query(
+                self.manager.statuses,
+                self.url,
+                f"{self.db.REQUEST_BASE_PATH}{_query}",
+                {},
+                self.manager.path,
+                "jobs-hour",
+                prettify=False,
+            )
+
+    def _crawl_cache_hour(self):
+        params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["cache"]
+        for _id in params.ids:
+            _, _, _query = self.db._query(_id, params, "hour")
+            dump_component_query(
+                self.manager.statuses,
+                self.url,
+                f"{self.db.REQUEST_BASE_PATH}{_query}",
+                {},
+                self.manager.path,
+                "cache-hour",
+                prettify=False,
+            )
+
+    def _crawl_unknown_metric(self):
+        # query unexisting metric
+        params = SlurmwebMetricQuery(
+            "query",
+            [SlurmwebMetricId("fail")],
+            SlurmwebMetricsDB.RANGE_RESOLUTIONS["30s"],
+        )
+        _, _, _query = self.db._query(params.ids[0], params, "hour")
+        dump_component_query(
+            self.manager.statuses,
+            self.url,
+            f"{self.db.REQUEST_BASE_PATH}{_query}",
+            {},
+            self.manager.path,
+            "unknown-metric",
+        )
+
+    def _crawl_unknown_path(self):
+        # query unknown API path
+        dump_component_query(
+            self.manager.statuses,
+            self.url,
+            f"{self.db.REQUEST_BASE_PATH}/fail",
+            {},
+            self.manager.path,
+            "unknown-path",
+        )
