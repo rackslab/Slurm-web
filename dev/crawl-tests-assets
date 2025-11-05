@@ -39,8 +39,6 @@ METRICS_PREFERRED_INFRASTRUCTURE = "emulator"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
 MAP_CLUSTER_NAMES = {"emulator": "atlas"}
 
-ASSETS_ROOT = Path("tests/assets")
-
 
 class SimpleProgressBar:
     """Simple progress bar for TTY output, spanning full terminal width."""
@@ -183,10 +181,7 @@ def _crawl_assets(
         if "slurmrestd" in components_to_process:
             slurmrestd = SlurmrestdCrawler(cluster, auth)
             slurmrestd.crawl_all_assets(progress_bar)
-        else:
-            slurmrestd = None
 
-        gateway = None
         if "gateway" in components_to_process:
             if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
                 gateway = GatewayCrawler(
