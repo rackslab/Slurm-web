@@ -877,7 +877,13 @@ def dump_component_query(
     else:
         raise RuntimeError(f"Unsupport request method {method}")
     return dump_component_response(
-        requests_statuses, assets_path, asset_name, response, prettify, limit_dump
+        requests_statuses,
+        assets_path,
+        asset_name,
+        response,
+        skip_exist,
+        prettify,
+        limit_dump,
     )
 
 
@@ -886,6 +892,7 @@ def dump_component_response(
     assets_path: Path,
     asset_name: dict[int, str] | str,
     response,
+    skip_exist: bool = True,
     prettify: bool = True,
     limit_dump=0,
 ):
@@ -906,7 +913,8 @@ def dump_component_response(
         data = response.text
 
     if asset.exists():
-        logger.warning("Asset %s already exists, skipping dump", asset)
+        if skip_exist:
+            logger.warning("Asset %s already exists, skipping dump", asset)
     else:
         with open(asset, "w+") as fh:
             if asset.suffix == ".json":
