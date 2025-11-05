@@ -56,10 +56,27 @@ class BaseAssetsManager:
 
     def exists(self, asset: Asset) -> bool:
         """Return True if asset already exists or False."""
-        return all(
-            len(list(self.path.glob(f"{Path(output_file).stem}.*"))) > 0
-            for output_file in asset.output_files
+        checked_patterns: list[str] = []
+        missing_patterns: list[str] = []
+        for output_file in asset.output_files:
+            stem = Path(output_file).stem
+            pattern = f"{stem}.*"
+            checked_patterns.append(pattern)
+            if not any(self.path.glob(pattern)):
+                missing_patterns.append(pattern)
+        if missing_patterns:
+            logger.debug(
+                "Missing asset outputs for %s: %s",
+                asset.name,
+                ", ".join(missing_patterns),
+            )
+            return False
+        logger.debug(
+            "All asset outputs exist for %s: %s",
+            asset.name,
+            ", ".join(checked_patterns),
         )
+        return True
 
     def save(self):
         """Save resulting status file."""
