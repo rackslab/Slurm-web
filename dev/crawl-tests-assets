@@ -22,9 +22,9 @@ from crawler.lib import (
     DevelopmentHostCluster,
 )
 from crawler.slurmrestd import SlurmrestdCrawler
-from crawler.agent import crawl_agent
+from crawler.agent import AgentCrawler
 from crawler.gateway import slurmweb_token, GatewayCrawler
-from crawler.prometheus import crawl_prometheus
+from crawler.prometheus import PrometheusCrawler
 
 from racksdb import RacksDB
 from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
@@ -130,19 +130,26 @@ def _count_total_assets(
                 )
                 total_assets += gateway_crawler.count_assets_to_crawl()
 
-        # Count agent and prometheus (they don't use ComponentCrawler)
+        # Count agent assets
         if "agent" in components_to_process:
-            agent_path = ASSETS_ROOT / "agent"
-            if not (agent_path.exists() and any(agent_path.glob("*.json"))):
-                total_assets += 1
+            crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
+            agent_crawler = AgentCrawler(
+                settings.service.port,
+                token,
+                crawl_metrics,
+                cluster,
+            )
+            total_assets += agent_crawler.count_assets_to_crawl()
 
+        # Count prometheus assets
         if "prometheus" in components_to_process:
             if infrastructure == METRICS_PREFERRED_INFRASTRUCTURE:
-                prometheus_path = ASSETS_ROOT / "prometheus"
-                if not (
-                    prometheus_path.exists() and any(prometheus_path.glob("*.json"))
-                ):
-                    total_assets += 1
+                prometheus_crawler = PrometheusCrawler(
+                    settings.metrics.host.geturl(),
+                    settings.metrics.job,
+                    cluster,
+                )
+                total_assets += prometheus_crawler.count_assets_to_crawl()
     return total_assets
 
 
@@ -195,39 +202,26 @@ def _crawl_assets(
                     infrastructure,
                 )
 
-        # Agent and Prometheus (coarse skip if directory has files)
+        # Agent and Prometheus
         crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
 
         if "agent" in components_to_process:
-            # Check if agent assets directory exists and has files
-            agent_path = ASSETS_ROOT / "agent"
-            if agent_path.exists() and any(agent_path.glob("*.json")):
-                logger.info("Skipping agent: assets directory already populated")
-            else:
-                logger.info("Crawling agent")
-                cluster.reset_minimal()
-                crawl_agent(settings.service.port, token, metrics=crawl_metrics)
-                if progress_bar:
-                    progress_bar.update(1)
+            agent_crawler = AgentCrawler(
+                settings.service.port,
+                token,
+                crawl_metrics,
+                cluster,
+            )
+            agent_crawler.crawl_all_assets(progress_bar)
 
         if "prometheus" in components_to_process:
-            # Check if prometheus assets directory exists and has files
             if crawl_metrics:
-                prometheus_path = ASSETS_ROOT / "prometheus"
-                exists_prom = prometheus_path.exists() and any(
-                    prometheus_path.glob("*.json")
+                prometheus_crawler = PrometheusCrawler(
+                    settings.metrics.host.geturl(),
+                    settings.metrics.job,
+                    cluster,
                 )
-                if exists_prom:
-                    logger.info(
-                        "Skipping prometheus: assets directory already populated"
-                    )
-                else:
-                    logger.info("Crawling prometheus")
-                    crawl_prometheus(
-                        settings.metrics.host.geturl(), settings.metrics.job
-                    )
-                    if progress_bar:
-                        progress_bar.update(1)
+                prometheus_crawler.crawl_all_assets(progress_bar)
             else:
                 logger.info(
                     "Skipping prometheus for cluster %s (not metrics infrastructure)",
