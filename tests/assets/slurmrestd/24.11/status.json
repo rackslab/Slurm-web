@@ -79,6 +79,22 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-jwt-expired-token": {
+    "content-type": "application/json",
+    "status": 511
+  },
+  "slurm-jwt-invalid-headers": {
+    "content-type": "text/plain",
+    "status": 401
+  },
+  "slurm-jwt-invalid-token": {
+    "content-type": "application/json",
+    "status": 511
+  },
+  "slurm-jwt-missing-headers": {
+    "content-type": "text/plain",
+    "status": 401
+  },
   "slurm-node-allocated": {
     "content-type": "application/json",
     "status": 200
