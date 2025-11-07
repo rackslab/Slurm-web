@@ -1,0 +1,135 @@
+{
+  "nodes": [
+    {
+      "architecture": "x86_64",
+      "burstbuffer_network_address": "",
+      "boards": 1,
+      "boot_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1758266697
+      },
+      "cluster_name": "",
+      "cores": 32,
+      "specialized_cores": 0,
+      "cpu_binding": 0,
+      "cpu_load": 72,
+      "free_mem": {
+        "set": true,
+        "infinite": false,
+        "number": 341
+      },
+      "cpus": 64,
+      "effective_cpus": 64,
+      "specialized_cpus": "",
+      "energy": {
+        "average_watts": 0,
+        "base_consumed_energy": 0,
+        "consumed_energy": 0,
+        "current_watts": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "previous_consumed_energy": 0,
+        "last_collected": 0
+      },
+      "external_sensors": {},
+      "extra": "",
+      "power": {},
+      "features": [],
+      "active_features": [],
+      "gpu_spec": "",
+      "gres": "",
+      "gres_drained": "N/A",
+      "gres_used": "",
+      "instance_id": "",
+      "instance_type": "",
+      "last_busy": {
+        "set": true,
+        "infinite": false,
+        "number": 1762528258
+      },
+      "mcs_label": "",
+      "specialized_memory": 0,
+      "name": "cn3",
+      "next_state_after_reboot": [
+        "INVALID"
+      ],
+      "address": "cn3",
+      "hostname": "cn3",
+      "state": [
+        "IDLE",
+        "DRAIN"
+      ],
+      "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
+      "owner": "",
+      "partitions": [
+        "normal"
+      ],
+      "port": 6818,
+      "real_memory": 131072,
+      "res_cores_per_gpu": 0,
+      "comment": "",
+      "reason": "ECC memory error",
+      "reason_changed_at": {
+        "set": true,
+        "infinite": false,
+        "number": 1762528954
+      },
+      "reason_set_by_user": "root",
+      "resume_after": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "reservation": "",
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
+      "slurmd_start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762515553
+      },
+      "sockets": 2,
+      "threads": 1,
+      "temporary_disk": 0,
+      "weight": 1,
+      "tres": "cpu=64,mem=128G,billing=64",
+      "version": "25.11.0"
+    }
+  ],
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1762528957
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.41",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:50)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "25.11.0",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
