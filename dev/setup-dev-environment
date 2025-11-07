@@ -34,13 +34,11 @@ DEV_HOST = "firehpc.dev.rackslab.io"
 # Dict of clusters settings to control cluster names in UI, slurmrestd access
 # (TCP/IP or Unix socket) and authentication.
 CLUSTERS = {
-    "tiny": {"auth": "local"},
-    "emulator": {
-        "name": "atlas",  # cluster name in UI
-        "auth": "jwt",
-        "mode": "static",
-    },
-    "pocket": {"auth": "jwt", "scheme": "http"},
+    "nova": {"auth": "jwt", "scheme": "http", "policy_extra_user_group": True},
+    "zenith": {"auth": "jwt", "scheme": "http"},
+    "quark": {"auth": "local", "racksdb": False, "metrics": False},
+    "vortex": {"auth": "jwt", "scheme": "http", "metrics": False},
+    "titan": {"auth": "jwt", "mode": "static"},
 }
 USER = getpass.getuser()
 
@@ -193,6 +191,9 @@ class SlurmwebAgent:
                     users=self.cluster_status["users"],
                     groups=self.cluster_status["groups"],
                     anonymous=anonymous,
+                    policy_extra_user_group=CLUSTERS[self.name].get(
+                        "policy_extra_user_group", False
+                    ),
                 )
             )
 
@@ -201,6 +202,7 @@ class SlurmwebAgent:
         tmpdir: Path,
         jwt_key_path: Path,
         cache_enabled: bool,
+        racksdb_enabled: bool,
         metrics_enabled: bool,
     ) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
@@ -276,6 +278,7 @@ class SlurmwebAgent:
                     slurmrestd_token=slurmrestd_token,
                     jwt_key=jwt_key_path,
                     cache_enabled=cache_enabled,
+                    racksdb_enabled=racksdb_enabled,
                     policy_path=self.policy_path,
                     redis_port=self.forwards["redis"].local,
                     redis_password=redis_password,
@@ -472,7 +475,16 @@ def main():
         )
         # Generate agent configuration file
         agent.render_policy(tmpdir, args.anonymous)
-        agent.render_conf(tmpdir, jwt_key_path, args.cache, args.metrics)
+        cluster_cfg = CLUSTERS[infrastructure.name]
+        cluster_racksdb_enabled = cluster_cfg.get("racksdb", True)
+        cluster_metrics_enabled = args.metrics and cluster_cfg.get("metrics", True)
+        agent.render_conf(
+            tmpdir,
+            jwt_key_path,
+            args.cache,
+            cluster_racksdb_enabled,
+            cluster_metrics_enabled,
+        )
         # Launch agent in backgroup
         agent.launch()
         agents.append(agent)

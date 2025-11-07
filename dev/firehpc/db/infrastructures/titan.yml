@@ -1,4 +1,4 @@
-description: HPC cluster
+description: Titan HPC cluster
 layout:
 - rack: R1-A01
   nodes:
@@ -63,64 +63,6 @@ layout:
     tags:
     - compute
   - name: cn[461-532]
-    slot: 24
-    type: blade
-    tags:
-    - compute
-
-- rack: R2-A03
-  nodes:
-  - name: gn[21-40]
-    slot: 1
-    type: gpgpu
-    tags:
-    - compute
-- rack: R2-A04
-  nodes:
-  - name: gn[01-20]
-    slot: 1
-    type: gpgpu
-    tags:
-    - compute
-- rack: R1-A07
-  nodes:
-  - name: cn[533-604]
-    slot: 2
-    type: blade
-    tags:
-    - compute
-  - name: cn[605-676]
-    slot: 24
-    type: blade
-    tags:
-    - compute
-- rack: R2-A05
-  nodes:
-  - name: cn[965-980]
-    slot: 2
-    type: blade
-    tags:
-    - compute
-- rack: R2-A06
-  nodes:
-  - name: cn[821-892]
-    slot: 2
-    type: blade
-    tags:
-    - compute
-  - name: cn[893-964]
-    slot: 24
-    type: blade
-    tags:
-    - compute
-- rack: R2-A07
-  nodes:
-  - name: cn[677-748]
-    slot: 2
-    type: blade
-    tags:
-    - compute
-  - name: cn[749-820]
     slot: 24
     type: blade
     tags:

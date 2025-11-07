@@ -1,0 +1,26 @@
+description: Zenith HPC cluster
+layout:
+- rack: R2-A04
+  nodes:
+  - name: cn[1-4]
+    slot: 5
+    type: container
+    tags:
+    - compute
+    - standard
+  - name: gpu[1-2]
+    slot: 9
+    type: gpu-xl
+    tags:
+    - compute
+    - gpu
+  - name: login
+    slot: 12
+    type: container
+    tags:
+    - login
+  - name: admin
+    slot: 15
+    type: container
+    tags:
+    - admin

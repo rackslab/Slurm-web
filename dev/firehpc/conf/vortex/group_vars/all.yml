@@ -1,0 +1,40 @@
+common_pkgs_derivatives:
+- main
+- slurmweb-5
+common_pkgs_priorities:
+  slurmweb-5: 90
+common_with_devs_repos: true
+common_devs_derivatives:
+- main
+- slurmweb-5
+common_devs_priorities:
+  slurmweb-5: 90
+common_hpckit_derivatives:
+- main
+- slurm24.11
+fhpc_slurm_with_jwt: true
+fhpc_slurmrestd_with_unix_socket: false
+slurm_params:
+  PriorityType: priority/multifactor
+  PriorityWeightFairshare: 1000
+  PriorityWeightQOS: 100
+  SelectType: select/cons_tres
+slurm_partitions:
+- name: standard
+  nodes: cn[1-4]
+  default: yes
+  params:
+    MaxTime: "2:0:0"
+    State: UP
+    DefMemPerCPU: 512
+- name: ia
+  nodes: ia[1-2]
+  params:
+    MaxTime: "2:0:0"
+    State: UP
+    DefMemPerCPU: 512
+slurm_gpus_models_map:
+  Nvidia H100: h100
+  Nvidia H200: h200
+slurmweb_enabled: true
+redis_enabled: true

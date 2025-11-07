@@ -34,10 +34,10 @@ logger = logging.getLogger("crawl-tests-assets")
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "crawler"]
 DEV_HOST = "firehpc.dev.rackslab.io"
 USER = getpass.getuser()
-GATEWAY_PREFERRED_INFRASTRUCTURE = "tiny"
-METRICS_PREFERRED_INFRASTRUCTURE = "emulator"
+GATEWAY_PREFERRED_INFRASTRUCTURE = "nova"
+METRICS_PREFERRED_INFRASTRUCTURE = "titan"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
-MAP_CLUSTER_NAMES = {"emulator": "atlas"}
+MAP_CLUSTER_NAMES = {}
 
 
 class SimpleProgressBar:
