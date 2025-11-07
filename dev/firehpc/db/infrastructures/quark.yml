@@ -1,12 +1,19 @@
-description: HPC cluster
+description: Quark HPC cluster
 layout:
-- rack: R1-A04
+- rack: R2-A02
   nodes:
-  - name: cn[1-2]
+  - name: cn[1-4]
     slot: 5
     type: container
     tags:
     - compute
+    - standard
+  - name: gpu[1-2]
+    slot: 9
+    type: gpu-xl
+    tags:
+    - compute
+    - gpu
   - name: login
     slot: 12
     type: container

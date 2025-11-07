@@ -34,7 +34,7 @@
   netifs:
   - bandwidth: 1Gb
     type: ethernet
-- id: gpgpu
+- id: gpu-xl
   model: systemd-nspawn container in fat nodes
   height: 2u
   width: 1
@@ -51,6 +51,37 @@
     memory: 80GB
   - model: Nvidia H100
     memory: 80GB
+  ram:
+    dimm: 16
+    size: 32GB
+  storage:
+  - model: Samsung 980 Pro
+    size: 256GB
+    type: nvme
+  netifs:
+  - bandwidth: 1Gb
+    type: ethernet
+- id: ai-xl
+  model: systemd-nspawn container in fat nodes
+  height: 2u
+  width: 1
+  cpu:
+    cores: 16
+    model: Emulated CPU
+    sockets: 2
+  gpu:
+  - model: Nvidia H100
+    memory: 80GB
+  - model: Nvidia H100
+    memory: 80GB
+  - model: Nvidia H200
+    memory: 141GB
+  - model: Nvidia H200
+    memory: 141GB
+  - model: Nvidia H200
+    memory: 141GB
+  - model: Nvidia H200
+    memory: 141GB
   ram:
     dimm: 16
     size: 32GB

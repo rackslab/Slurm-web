@@ -6,7 +6,7 @@ anonymous
 actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos
 {% else %}
 
-{% if cluster == "tiny" %}
+{% if policy_extra_user_group %}
 user=@{{ groups[2].name }},@{{ groups[3].name }}
 {% else %}
 user=@{{ groups[2].name }}

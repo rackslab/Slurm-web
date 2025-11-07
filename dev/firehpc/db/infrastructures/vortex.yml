@@ -1,12 +1,18 @@
-description: Pocket HPC cluster
+description: Vortex HPC cluster
 layout:
-- rack: R1-A04
+- rack: R2-A03
   nodes:
   - name: cn[1-4]
     slot: 15
     type: container
     tags:
     - compute
+  - name: ia[1-2]
+    slot: 19
+    type: ai-xl
+    tags:
+    - compute
+    - gpu
   - name: login
     slot: 22
     type: container

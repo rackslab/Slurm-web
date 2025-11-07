@@ -1,8 +1,17 @@
+common_pkgs_derivatives:
+- main
+- slurmweb-5
+common_pkgs_priorities:
+  slurmweb-5: 90
 common_with_devs_repos: true
+common_devs_derivatives:
+- main
+- slurmweb-5
+common_devs_priorities:
+  slurmweb-5: 90
 common_hpckit_derivatives:
 - main
-- slurm24.11
-slurm_with_jwt: false
+- slurm24.05
 slurm_params:
   PriorityType: priority/multifactor
   PriorityWeightFairshare: 1000
@@ -16,23 +25,27 @@ slurm_qos:
   - GrpJobs=60
   - MaxTRES=cpu=128
   - MaxWall=8:00:00
-  - MaxTRESPU=cpu=10,mem=65536
-  - MaxTRESPA=cpu=15,mem=131072
+  - MaxTRESPU=cpu=128,mem=65536
+  - MaxTRESPA=cpu=196,mem=131072
   - MaxJobsPU=10
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
   - Priority=100
 slurm_partitions:
 - name: normal
-  nodes: cn[1-2]
+  nodes: cn[1-4]
   default: yes
   params:
     MaxTime: "2:0:0"
     State: UP
     DefMemPerCPU: 512
+- name: gpu
+  nodes: gpu[1-2]
+  params:
+    MaxTime: "2:0:0"
+    State: UP
+    DefMemPerCPU: 512
+slurm_gpus_models_map:
+  Nvidia H100: h100
 slurmweb_enabled: true
-slurmweb_agent_settings:
-  metrics:
-    enabled: true
 redis_enabled: true
-metrics_enabled: true

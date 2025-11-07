@@ -12,9 +12,11 @@ Deploy emulated clusters on development server:
 
 ```console
 $ ssh firehpc.dev.rackslab.io
-$ firehpc deploy --db firehpc/db --cluster tiny --os debian13 --custom firehpc/conf/tiny
-$ firehpc deploy --db firehpc/db --cluster emulator --os debian12 --custom firehpc/conf/emulator --slurm-emulator --users tiny
-$ firehpc deploy --db firehpc/db --cluster pocket --os rocky8 --custom firehpc/conf/pocket --users tiny
+$ firehpc deploy --db firehpc/db --cluster nova --os debian14 --custom firehpc/conf/nova
+$ firehpc deploy --db firehpc/db --cluster zenith --os debian13 --custom firehpc/conf/zenith --users nova
+$ firehpc deploy --db firehpc/db --cluster quark --os rocky8 --custom firehpc/conf/quark --users nova
+$ firehpc deploy --db firehpc/db --cluster vortex --os rocky9 --custom firehpc/conf/vortex --users nova
+$ firehpc deploy --db firehpc/db --cluster titan --os debian13 --custom firehpc/conf/titan --slurm-emulator --users nova
 ```
 
 Create a Python virtual environment on your personal host and load it:
@@ -24,7 +26,7 @@ $ python -m venv ~/.venvs/slurmweb  # or any other path of your choice
 $ source ~/.venvs/slurmweb/bin/activate
 ```
 
-Install `sshtunnel` (required by `dev/setup-dev-environment` and Slurm-web
+Install `sshtunnel` (required by `dev/setup-dev-environment`) and Slurm-web
 (with all its dependencies) in this virtual environment:
 
 ```console
@@ -75,7 +77,7 @@ The first one is admin on all clusters. Run this command to view users generated
 on a cluster:
 
 ```
-$ firehpc status --cluster tiny
+$ firehpc status --cluster nova
 ```
 
 ## Slurmrestd tests
@@ -84,8 +86,8 @@ Remote `slurmrestd` instances can be accessed through local sockets in `/tmp/`
 directory. For example:
 
 ```console
-$ curl --silent --unix-socket /tmp/slurmrestd-pocket.socket  \
-  http://slurm/slurm/v0.0.40/jobs
+$ curl --silent --unix-socket /tmp/slurmrestd-nova.socket  \
+  http://slurm/slurm/v0.0.41/jobs
 ```
 
 ## Remote Installation
@@ -99,11 +101,11 @@ $ ssh -D 2223 firehpc.dev.rackslab.io
 
 Setup your browser to use this SOCKS5 proxy with remote DNS resolution.
 
-Slurm-web can be accessed on all clusters:
+Slurm-web can be accessed on all clusters, eg.:
 
-* http://admin.emulator/
-* http://admin.tiny/
-* http://admin.pocket/
+* http://admin.titan/
+* http://admin.nova/
+* http://admin.vortex/
 
 ## Additional tests
 
