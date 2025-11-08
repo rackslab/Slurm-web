@@ -14,6 +14,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
+import InfoAlert from '@/components/InfoAlert.vue'
 
 const gateway = useGatewayAPI()
 
@@ -69,6 +70,9 @@ async function submitLogin() {
   <main>
     <section class="bg-slurmweb-light dark:bg-gray-900">
       <div class="mx-auto flex h-screen flex-col items-center justify-center px-6 py-4 lg:py-0">
+        <InfoAlert v-if="authStore.returnUrl !== null" class="mb-4">
+          Please log in to access the requested page.
+        </InfoAlert>
         <div
           class="w-full rounded-lg bg-white shadow-sm sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800"
         >
