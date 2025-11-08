@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     cluster stats if permitted.
   - Adapt individual job and qos typed interfaces to match new format exported
     by Slurm REST API v0.0.42 and v0.0.43.
+  - Display an informational message above the login form when users are
+    redirected due to expired or missing authentication token (#664).
 - agent:
   - Consider HTTP/500 and specific error message as
     SlurmrestdAuthenticationError as a workaround for a regression in
