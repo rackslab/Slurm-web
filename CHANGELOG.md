@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-#### Fixed
+### Added
+- front: Display an informational message above the login form when users are
+  redirected due to expired or missing authentication token (#664).
+
+### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
   settings to reverse proxy the requests (#656).
 

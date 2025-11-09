@@ -14,6 +14,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
+import InfoAlert from '@/components/InfoAlert.vue'
 
 const gateway = useGatewayAPI()
 
@@ -75,6 +76,9 @@ async function submitLogin() {
           <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
             <img src="/logo/slurm-web_logo.png" class="m-auto mb-8 block dark:hidden" />
             <img src="/logo/slurm-web_logo_dark.png" class="m-auto mb-8 hidden dark:block" />
+            <InfoAlert v-if="authStore.returnUrl !== null" class="mb-4">
+              Please log in to access the requested page.
+            </InfoAlert>
             <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submitLogin">
               <div>
                 <label
