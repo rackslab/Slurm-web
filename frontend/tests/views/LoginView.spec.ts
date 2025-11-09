@@ -1,11 +1,12 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, mount } from '@vue/test-utils'
 import LoginView from '@/views/LoginView.vue'
 import { init_plugins } from '../lib/common'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
+import InfoAlert from '@/components/InfoAlert.vue'
 
 const mockGatewayAPI = {
   login: vi.fn()
@@ -31,9 +32,11 @@ describe('LoginView.vue', () => {
     wrapper.get('input#password')
     // Check presence and type of submit button.
     const button = wrapper.get('button')
+    expect(button.attributes('type')).toBe('submit')
     // Check presence of login service message component
     wrapper.getComponent(LoginServiceMessage)
-    expect(button.attributes('type')).toBe('submit')
+    // Check InfoAlert component is not present (when not redirected)
+    expect(wrapper.findComponent(InfoAlert).exists()).toBe(false)
   })
   test('error on login form submission with empty user input', async () => {
     const wrapper = shallowMount(LoginView, {})
@@ -108,5 +111,17 @@ describe('LoginView.vue', () => {
     expect(wrapper.get('button').classes('animate-horizontal-shake')).toBe(true)
     // Check not redirected on clusters list but stayed on login page.
     expect(router.push).toHaveBeenCalledTimes(0)
+  })
+  test('should display info alert when redirected to login page', () => {
+    const authStore = useAuthStore()
+    // Set returnUrl to simulate redirect from another page
+    authStore.returnUrl = '/clusters/foo/dashboard'
+    const wrapper = mount(LoginView, {})
+    // Check InfoAlert component is present
+    const infoAlert = wrapper.getComponent(InfoAlert)
+    // Check the message content
+    expect(infoAlert.text()).toBe('Please log in to access the requested page.')
+    // Clean up
+    authStore.returnUrl = null
   })
 })
