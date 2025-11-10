@@ -19,7 +19,7 @@ from slurmweb.slurmrestd.errors import (
 from slurmweb.errors import SlurmwebCacheError
 from slurmweb.cache import CachingService
 from ..lib.agent import TestAgentBase
-from ..lib.utils import all_slurm_versions
+from ..lib.utils import all_slurm_api_versions
 
 
 class TestAgentMetricsCollector(TestAgentBase):
@@ -29,11 +29,12 @@ class TestAgentMetricsCollector(TestAgentBase):
     def tearDown(self):
         self.app.metrics_collector.unregister()
 
-    @all_slurm_versions
-    def test_request_metrics(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_metrics(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
         )
         response = self.client.get("/metrics")
@@ -61,11 +62,12 @@ class TestAgentMetricsCollector(TestAgentBase):
             if family.name == "slurm_jobs_total":
                 self.assertEqual(family.samples[0].value, len(jobs_asset))
 
-    @all_slurm_versions
-    def test_request_metrics_with_cache(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_metrics_with_cache(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
         )
         self.app.metrics_collector.cache = mock.Mock(spec=CachingService)
@@ -183,8 +185,7 @@ class TestAgentMetricsCollector(TestAgentBase):
             ],
         )
 
-    @all_slurm_versions
-    def test_request_metrics_slurmrestd_not_found(self, slurm_version):
+    def test_request_metrics_slurmrestd_not_found(self):
         self.app.slurmrestd._request = mock.Mock(
             side_effect=SlurmrestdNotFoundError("/unfound")
         )
@@ -202,8 +203,7 @@ class TestAgentMetricsCollector(TestAgentBase):
             ],
         )
 
-    @all_slurm_versions
-    def test_request_metrics_cache_error(self, slurm_version):
+    def test_request_metrics_cache_error(self):
         # Collector first calls slurmrestd.nodes() then trigger SlurmwebCacheError on
         # this method call.
         self.app.slurmrestd.nodes = mock.Mock(

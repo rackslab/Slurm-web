@@ -7,7 +7,7 @@
 import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
-from ..lib.utils import all_slurm_versions
+from ..lib.utils import all_slurm_api_versions
 from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
@@ -17,15 +17,17 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         self.slurmrestd = SlurmrestdFiltered(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            "1.0.0",
+            ["0.0.44"],
             self.settings.filters,
         )
 
-    @all_slurm_versions
-    def test_jobs(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_jobs(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
         jobs = self.slurmrestd.jobs()
         for idx in range(len(jobs)):
@@ -37,11 +39,12 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             self.assertIn("accrue_time", asset[idx])
             self.assertNotIn("accrue_time", jobs[idx])
 
-    @all_slurm_versions
-    def test_job(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_job(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_asset, slurm_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
         )
         job = self.slurmrestd.job(1)
@@ -52,11 +55,13 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         self.assertIn("array_job_id", slurm_asset[0])
         self.assertNotIn("array_job_id", job)
 
-    @all_slurm_versions
-    def test_nodes(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_nodes(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-nodes", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-nodes", "nodes")],
         )
         nodes = self.slurmrestd.nodes()
         for idx in range(len(nodes)):
@@ -68,11 +73,13 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             self.assertIn("specialized_cpus", asset[idx])
             self.assertNotIn("specialized_cpus", nodes[idx])
 
-    @all_slurm_versions
-    def test_node(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_node(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-idle", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-idle", "nodes")],
         )
         node = self.slurmrestd.node("node1")
         # Check there are less keys for the item in result than in original asset.
@@ -82,11 +89,13 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         self.assertIn("specialized_cpus", asset[0])
         self.assertNotIn("specialized_cpus", node)
 
-    @all_slurm_versions
-    def test_partitions(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_partitions(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-partitions", "partitions")]
+            slurm_version,
+            api_version,
+            [("slurm-partitions", "partitions")],
         )
         partitions = self.slurmrestd.partitions()
         for idx in range(len(partitions)):
@@ -98,11 +107,13 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             self.assertIn("suspend_time", asset[idx])
             self.assertNotIn("suspend_time", partitions[idx])
 
-    @all_slurm_versions
-    def test_accounts(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_accounts(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-accounts", "accounts")]
+            slurm_version,
+            api_version,
+            [("slurm-accounts", "accounts")],
         )
         accounts = self.slurmrestd.accounts()
         for idx in range(len(accounts)):
@@ -114,11 +125,13 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             self.assertIn("flags", asset[idx])
             self.assertNotIn("flags", accounts[idx])
 
-    @all_slurm_versions
-    def test_reservations(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_reservations(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-reservations", "reservations")]
+            slurm_version,
+            api_version,
+            [("slurm-reservations", "reservations")],
         )
         reservations = self.slurmrestd.reservations()
         for idx in range(len(reservations)):
@@ -130,10 +143,14 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             self.assertIn("core_specializations", asset[idx])
             self.assertNotIn("core_specializations", reservations[idx])
 
-    @all_slurm_versions
-    def test_qos(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
-        [asset] = self.mock_slurmrestd_responses(slurm_version, [("slurm-qos", "qos")])
+    @all_slurm_api_versions
+    def test_qos(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurm-qos", "qos")],
+        )
         qos = self.slurmrestd.qos()
         for idx in range(len(qos)):
             # Check there are less keys for the 1st item in result than in original

@@ -16,7 +16,7 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInvalidResponseError,
     SlurmrestdInternalError,
 )
-from ..lib.utils import all_slurm_versions, SlurmwebAssetUnavailable
+from ..lib.utils import all_slurm_api_versions, SlurmwebAssetUnavailable
 from ..lib.agent import TestSlurmrestdClient
 
 
@@ -82,12 +82,14 @@ class TestConnectCheckApp(TestSlurmrestdClient):
             cm.output, ["CRITICAL:slurmweb.apps.connect:Configuration error: fail"]
         )
 
-    @all_slurm_versions
-    def test_app_run(self, slurm_version):
+    @all_slurm_api_versions
+    def test_app_run(self, slurm_version, api_version):
         self.setup()
         try:
             [node_asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-ping", "meta")]
+                slurm_version,
+                api_version,
+                [("slurm-ping", "meta")],
             )
         except SlurmwebAssetUnavailable:
             return

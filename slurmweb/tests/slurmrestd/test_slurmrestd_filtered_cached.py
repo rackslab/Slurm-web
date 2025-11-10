@@ -11,7 +11,7 @@ from slurmweb.slurmrestd import SlurmrestdFilteredCached
 from slurmweb.cache import CachingService, CacheKey
 from slurmweb.errors import SlurmwebCacheError
 
-from ..lib.utils import all_slurm_versions
+from ..lib.utils import all_slurm_api_versions
 from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
@@ -27,16 +27,19 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd = SlurmrestdFilteredCached(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            "1.0.0",
+            ["0.0.44"],
             self.settings.filters,
             self.settings.cache,
             self.cache,
         )
 
-    @all_slurm_versions
-    def test_not_in_cache(self, slurm_version):
+    @all_slurm_api_versions
+    def test_not_in_cache(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
         self.slurmrestd.service.get = mock.Mock(return_value=None)
         self.slurmrestd.service.put = mock.Mock()
@@ -55,10 +58,13 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd.service.count_hit.assert_not_called()
         self.slurmrestd.service.count_miss.assert_called_once_with(CacheKey("jobs"))
 
-    @all_slurm_versions
-    def test_in_cache(self, slurm_version):
+    @all_slurm_api_versions
+    def test_in_cache(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
         self.slurmrestd.service.get = mock.Mock(return_value=asset)
         self.slurmrestd.service.put = mock.Mock()
@@ -74,10 +80,13 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd.service.count_hit.assert_called_once_with(CacheKey("jobs"))
         self.slurmrestd.service.count_miss.assert_not_called()
 
-    @all_slurm_versions
-    def test_cache_get_error(self, slurm_version):
+    @all_slurm_api_versions
+    def test_cache_get_error(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
         # Check behaviour when SlurmwebCacheError in raised at get()
         self.slurmrestd.service.get = mock.Mock(
@@ -89,10 +98,13 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd.service.get.assert_called_once_with(CacheKey("jobs"))
         self.slurmrestd.service.put.assert_not_called()
 
-    @all_slurm_versions
-    def test_cache_put_error(self, slurm_version):
+    @all_slurm_api_versions
+    def test_cache_put_error(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
         # Check behaviour when SlurmwebCacheError in raised at put()
         self.slurmrestd.service.get = mock.Mock(return_value=None)
