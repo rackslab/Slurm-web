@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `/ping` endpoint.
 
 ### Changed
+- front: Get Slurm version with ping endpoint in clusters list before getting
+  cluster stats if permitted.
 - agent:
   - Consider HTTP/500 and specific error message as
     SlurmrestdAuthenticationError as a workaround for a regression in

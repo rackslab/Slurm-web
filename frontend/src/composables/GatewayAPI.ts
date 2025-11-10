@@ -24,6 +24,7 @@ export interface ClusterDescription {
   metrics: boolean
   cache: boolean
   permissions: ClusterPermissions
+  version?: string
   stats?: ClusterStats
   error?: boolean
 }
@@ -51,6 +52,10 @@ interface GatewayAnonymousLoginResponse {
   token: string
 }
 
+interface ClusterPingResponse {
+  version: string
+}
+
 export interface ClusterStats {
   resources: {
     nodes: number
@@ -62,7 +67,6 @@ export interface ClusterStats {
     running: number
     total: number
   }
-  version: string
 }
 
 export interface ClusterJob {
@@ -805,6 +809,10 @@ export function useGatewayAPI() {
     return await restAPI.get<UserDescription[]>(`/users`)
   }
 
+  async function ping(cluster: string): Promise<ClusterPingResponse> {
+    return await restAPI.get<ClusterPingResponse>(`/agents/${cluster}/ping`)
+  }
+
   async function stats(cluster: string): Promise<ClusterStats> {
     return await restAPI.get<ClusterStats>(`/agents/${cluster}/stats`)
   }
@@ -972,6 +980,7 @@ export function useGatewayAPI() {
     message_login,
     clusters,
     users,
+    ping,
     stats,
     jobs,
     job,
