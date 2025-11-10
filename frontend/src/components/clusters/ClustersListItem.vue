@@ -33,7 +33,7 @@ async function getClustersPing() {
   }
   try {
     const response = await gateway.ping(cluster.name)
-    cluster.version = response.version
+    cluster.versions = response.versions
   } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
@@ -69,11 +69,11 @@ onMounted(() => {
         {{ cluster.name }}
       </RouterLink>
       <span
-        v-if="cluster.version"
+        v-if="cluster.versions"
         class="dark:bg-slurmweb-dark ml-2 hidden items-center gap-x-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-normal text-gray-600 md:inline-flex dark:text-gray-300"
       >
         <TagIcon class="h-3" />
-        Slurm {{ cluster.version }}
+        Slurm {{ cluster.versions.slurm }}
       </span>
     </span>
     <ClusterStats
