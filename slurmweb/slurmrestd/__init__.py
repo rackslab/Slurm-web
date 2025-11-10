@@ -35,7 +35,7 @@ class Slurmrestd:
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        version: str,
+        supported_versions: t.List[str],
     ):
         self.session = requests.Session()
 
@@ -51,9 +51,14 @@ class Slurmrestd:
             self.session.mount(self.prefix, SlurmrestdUnixAdapter(uri.path))
         else:
             self.prefix = uri.geturl()
-        self.api_version = version
 
         self.auth = auth
+        self.supported_versions = supported_versions
+
+        # Initialized in discover()
+        self.cluster_name = None
+        self.slurm_version = None
+        self.api_version = None
 
     def _validate_response(self, response, ignore_notfound: bool) -> None:
         """Validate slurmrestd response or abort agent resquest with error."""
@@ -87,7 +92,24 @@ class Slurmrestd:
                 f"{content_type}"
             )
 
-    def _request(self, query, key, ignore_notfound=False):
+    def _execute_request(
+        self, component: str, api_version: str, endpoint: str, ignore_notfound=False
+    ) -> dict:
+        """Execute HTTP request to slurmrestd API with provided API version and return
+        parsed JSON result.
+
+        Args:
+            component: API component name ("slurm" or "slurmdb")
+            api_version: API version to use
+            endpoint: API endpoint path (e.g., "ping", "jobs", "job/123")
+            ignore_notfound: If True, don't raise error on HTTP 404
+
+        Returns:
+            Parsed JSON response as a dictionary
+        """
+        # Compose query path with provided API version
+        query = f"/{component}/v{api_version}/{endpoint}"
+
         try:
             response = self.session.get(
                 f"{self.prefix}{query}", headers=self.auth.headers()
@@ -116,15 +138,81 @@ class Slurmrestd:
             logger.warning(
                 "slurmrestd query %s warnings: %s", query, result["warnings"]
             )
+        return result
+
+    def _request(self, component: str, endpoint: str, key: str, ignore_notfound=False):
+        """Make a request to slurmrestd API with detected API version.
+
+        Args:
+            component: API component name ("slurm" or "slurmdb")
+            endpoint: API endpoint path (e.g., "ping", "jobs", "job/123")
+            key: Key to extract from response JSON
+            ignore_notfound: If True, don't raise error on HTTP 404
+        """
+        # Ensure API version is discovered before making request
+        if self.api_version is None:
+            self.discover()
+
+        result = self._execute_request(
+            component, self.api_version, endpoint, ignore_notfound
+        )
         return result[key]
 
-    def version(self, **kwargs):
-        return self._request(f"/slurm/v{self.api_version}/ping", "meta", **kwargs)[
-            "slurm"
-        ]
+    def discover(self) -> t.Tuple[str, str, str]:
+        """Discover the actual slurmrestd API version and Slurm version by trying
+        versions from the configured list. Returns a tuple of
+        (cluster_name, slurm_version, api_version) and stores them in self.cluster_name,
+        self.slurm_version and self.api_version."""
+        if (
+            self.cluster_name is not None
+            and self.slurm_version is not None
+            and self.api_version is not None
+        ):
+            return (self.cluster_name, self.slurm_version, self.api_version)
+
+        # Try each configured supported slurmrestd API version in descending order
+        for version in self.supported_versions:
+            try:
+                result = self._execute_request(
+                    "slurm", version, "ping", ignore_notfound=True
+                )
+                # If we get here, the request was successful
+                self.cluster_name = result["meta"]["slurm"]["cluster"]
+                self.slurm_version = result["meta"]["slurm"]["release"]
+                self.api_version = version
+                logger.info(
+                    "Discovered slurmrestd Slurm version: %s and API version: %s",
+                    self.slurm_version,
+                    self.api_version,
+                )
+                return (self.cluster_name, self.slurm_version, self.api_version)
+            except SlurmrestdNotFoundError:
+                # Version not supported, try next
+                logger.debug(
+                    "Slurmrestd API version %s not supported, trying next", version
+                )
+                continue
+            except (
+                SlurmrestdInvalidResponseError,
+                SlurmrestdInternalError,
+                KeyError,
+                ValueError,
+            ) as err:
+                logger.warning(
+                    "Unable to parse Slurmrestd API ping response for version %s: %s",
+                    version,
+                    err,
+                )
+                continue
+
+        # If we get here, no version worked
+        raise SlurmrestConnectionError(
+            f"Unable to discover slurmrestd API version. "
+            f"Tried versions: {', '.join(self.supported_versions)}"
+        )
 
     def jobs(self, **kwargs):
-        return self._request(f"/slurm/v{self.api_version}/jobs", "jobs", **kwargs)
+        return self._request("slurm", "jobs", "jobs", **kwargs)
 
     def jobs_by_node(self, node: str):
         """Select jobs not completed which are allocated the given node."""
@@ -176,17 +264,13 @@ class Slurmrestd:
         return jobs, total
 
     def _ctldjob(self, job_id: int, **kwargs):
-        return self._request(
-            f"/slurm/v{self.api_version}/job/{job_id}", "jobs", **kwargs
-        )[0]
+        return self._request("slurm", f"job/{job_id}", "jobs", **kwargs)[0]
 
     def _acctjob(self, job_id: int, **kwargs):
-        return self._request(
-            f"/slurmdb/v{self.api_version}/job/{job_id}", "jobs", **kwargs
-        )[0]
+        return self._request("slurmdb", f"job/{job_id}", "jobs", **kwargs)[0]
 
     def nodes(self, **kwargs):
-        return self._request(f"/slurm/v{self.api_version}/nodes", "nodes", **kwargs)
+        return self._request("slurm", "nodes", "nodes", **kwargs)
 
     def resources_states(self):
         # All Slurm nodes base states and some interesting flags such as drain and fail.
@@ -278,31 +362,23 @@ class Slurmrestd:
 
     def node(self, node_name: str, **kwargs):
         try:
-            return self._request(
-                f"/slurm/v{self.api_version}/node/{node_name}", "nodes", **kwargs
-            )[0]
+            return self._request("slurm", f"node/{node_name}", "nodes", **kwargs)[0]
         except SlurmrestdInternalError as err:
             if err.description.startswith("Failure to query node "):
                 raise SlurmrestdNotFoundError(f"Node {node_name} not found")
             raise err
 
     def partitions(self, **kwargs):
-        return self._request(
-            f"/slurm/v{self.api_version}/partitions", "partitions", **kwargs
-        )
+        return self._request("slurm", "partitions", "partitions", **kwargs)
 
     def accounts(self, **kwargs):
-        return self._request(
-            f"/slurmdb/v{self.api_version}/accounts", "accounts", **kwargs
-        )
+        return self._request("slurmdb", "accounts", "accounts", **kwargs)
 
     def reservations(self: str, **kwargs):
-        return self._request(
-            f"/slurm/v{self.api_version}/reservations", "reservations", **kwargs
-        )
+        return self._request("slurm", "reservations", "reservations", **kwargs)
 
     def qos(self: str, **kwargs):
-        return self._request(f"/slurmdb/v{self.api_version}/qos", "qos", **kwargs)
+        return self._request("slurmdb", "qos", "qos", **kwargs)
 
     @staticmethod
     def node_gres_extract_gpus(gres_full: str) -> int:
@@ -324,10 +400,10 @@ class SlurmrestdFiltered(Slurmrestd):
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        version: str,
+        supported_versions: t.List[str],
         filters: "RuntimeSettings",
     ):
-        super().__init__(uri, auth, version)
+        super().__init__(uri, auth, supported_versions)
         self.filters = filters
 
     @staticmethod
@@ -408,12 +484,12 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        version: str,
+        supported_versions: t.List[str],
         filters: "RuntimeSettings",
         cache: "RuntimeSettings",
         service: "CachingService",
     ):
-        super().__init__(uri, auth, version, filters)
+        super().__init__(uri, auth, supported_versions, filters)
         self.cache = cache
         self.service = service
 
