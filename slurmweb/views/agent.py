@@ -22,9 +22,6 @@ from ..slurmrestd.errors import (
     SlurmrestdInternalError,
 )
 
-# Tuple used for comparaison with Slurm version retrieved from slurmrestd and
-# check for minimal supported version.
-MINIMAL_SLURM_VERSION = (23, 11, 0)
 
 logger = logging.getLogger(__name__)
 
@@ -59,55 +56,66 @@ def permissions():
     )
 
 
-def slurmrest(method: str, *args: Tuple[Any, ...]):
-    try:
-        return getattr(current_app.slurmrestd, method)(*args)
-    except SlurmrestdNotFoundError as err:
-        msg = f"URL not found on slurmrestd: {err}"
-        logger.error(msg)
-        abort(404, msg)
-    except SlurmrestdInvalidResponseError as err:
-        msg = f"Invalid response from slurmrestd: {err}"
-        logger.error(msg)
-        abort(500, msg)
-    except SlurmrestConnectionError as err:
-        msg = f"Unable to connect to slurmrestd: {err}"
-        logger.error(msg)
-        abort(500, msg)
-    except SlurmrestdAuthenticationError as err:
-        msg = f"Authentication error on slurmrestd: {err}"
-        logger.error(msg)
-        abort(401, msg)
-    except SlurmrestdInternalError as err:
-        msg = f"slurmrestd error: {err.description} ({err.source})"
-        if err.error != -1:
-            msg += f" [{err.message}/{err.error}]"
-        logger.error(msg)
-        abort(500, msg)
-    except SlurmwebCacheError as err:
-        msg = f"Cache error: {str(err)}"
-        logger.error(msg)
-        abort(500, msg)
+def handle_slurmrestd_errors(func):
+    """Wrapper function to handle slurmrestd-related exceptions consistently.
+
+    Handles all slurmrestd exceptions and converts them to appropriate HTTP
+    error responses. Also handles SlurmwebCacheError for cache-related issues.
+    """
+
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except SlurmrestdNotFoundError as err:
+            msg = f"URL not found on slurmrestd: {err}"
+            logger.error(msg)
+            abort(404, msg)
+        except SlurmrestdInvalidResponseError as err:
+            msg = f"Invalid response from slurmrestd: {err}"
+            logger.error(msg)
+            abort(500, msg)
+        except SlurmrestConnectionError as err:
+            msg = f"Unable to connect to slurmrestd: {err}"
+            logger.error(msg)
+            abort(500, msg)
+        except SlurmrestdAuthenticationError as err:
+            msg = f"Authentication error on slurmrestd: {err}"
+            logger.error(msg)
+            abort(401, msg)
+        except SlurmrestdInternalError as err:
+            msg = f"slurmrestd error: {err.description} ({err.source})"
+            if err.error != -1:
+                msg += f" [{err.message}/{err.error}]"
+            logger.error(msg)
+            abort(500, msg)
+        except SlurmwebCacheError as err:
+            msg = f"Cache error: {str(err)}"
+            logger.error(msg)
+            abort(500, msg)
+
+    return wrapper
 
 
+@handle_slurmrestd_errors
 def ping():
-    """Check if Slurm version is supported and returns it."""
-    version = slurmrest("version")
+    """Ping endpoint that discovers slurmrestd API version and returns it along with
+    Slurm version information."""
+    # Discover and save both API version and Slurm version
+    _, slurm_version, api_version = current_app.slurmrestd.discover()
 
-    # Check Slurm version is supported or fail with HTTP/500
-    if (
-        not (
-            int(version["version"]["major"]),
-            int(version["version"]["minor"]),
-            int(version["version"]["micro"]),
-        )
-        >= MINIMAL_SLURM_VERSION
-    ):
-        error = f"Unsupported Slurm version {version['release']}"
-        logger.error(error)
-        abort(500, error)
+    return jsonify(
+        {
+            "versions": {
+                "slurm": slurm_version,
+                "api": api_version,
+            },
+        }
+    )
 
-    return jsonify({"version": version["release"]})
+
+@handle_slurmrestd_errors
+def slurmrest(method: str, *args: Tuple[Any, ...]):
+    return getattr(current_app.slurmrestd, method)(*args)
 
 
 @rbac_action("view-stats")
