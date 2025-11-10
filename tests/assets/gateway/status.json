@@ -167,6 +167,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "ping": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "qos": {
     "content-type": "application/json",
     "status": 200

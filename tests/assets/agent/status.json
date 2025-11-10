@@ -3,11 +3,11 @@
     "content-type": "application/json",
     "status": 200
   },
-  "cache-stats": {
+  "cache-reset": {
     "content-type": "application/json",
     "status": 200
   },
-  "cache-reset": {
+  "cache-stats": {
     "content-type": "application/json",
     "status": 200
   },
@@ -48,6 +48,10 @@
     "status": 200
   },
   "permissions": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "ping": {
     "content-type": "application/json",
     "status": 200
   },
