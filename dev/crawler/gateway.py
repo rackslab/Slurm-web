@@ -125,6 +125,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 },
                 self._crawl_login,
             ),
+            Asset("ping", "ping", self._crawl_ping),
             Asset("stats", "stats", self._crawl_stats),
             Asset(
                 "jobs",
@@ -262,14 +263,20 @@ class GatewayCrawler(TokenizedComponentCrawler):
             },
         )
 
+    def _crawl_ping(self):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/ping",
+            "ping",
+        )
+
     def _crawl_stats(self):
         self._cleanup_state = self.cluster.setup_for_stats()
-        self.dump_component_query(f"/api/agents/{self.cluster}/stats", "stats")
+        self.dump_component_query(f"/api/agents/{self.cluster.name}/stats", "stats")
 
     def _crawl_jobs(self):
         self._cleanup_state = self.cluster.setup_for_jobs()
         jobs = self.dump_component_query(
-            f"/api/agents/{self.cluster}/jobs",
+            f"/api/agents/{self.cluster.name}/jobs",
             "jobs",
             skip_exist=False,
             limit_dump=100,
@@ -286,7 +293,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
             def dump_job_state() -> None:
                 if state in _job["job_state"]:
                     self.dump_component_query(
-                        f"/api/agents/{self.cluster}/job/{_job['job_id']}",
+                        f"/api/agents/{self.cluster.name}/job/{_job['job_id']}",
                         f"job-{state.lower()}",
                     )
 
@@ -297,7 +304,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                     dump_job_state()
 
             self.dump_component_query(
-                f"/api/agents/{self.cluster}/job/{min_job_id - 1}",
+                f"/api/agents/{self.cluster.name}/job/{min_job_id - 1}",
                 "job-archived",
             )
 
@@ -315,7 +322,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-running",
         )
 
@@ -331,7 +338,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-pending",
         )
 
@@ -347,7 +354,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-completed",
         )
 
@@ -363,7 +370,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-archived",
         )
 
@@ -380,7 +387,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-multi-nodes",
         )
 
@@ -396,7 +403,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-type",
         )
 
@@ -411,7 +418,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-per-node",
         )
 
@@ -428,7 +435,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-multi-types",
         )
 
@@ -443,7 +450,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-per-socket",
         )
 
@@ -458,7 +465,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-per-task",
         )
 
@@ -474,7 +481,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_component_query(
-            f"/api/agents/{self.cluster}/job/{job_id}",
+            f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-gres",
         )
 
