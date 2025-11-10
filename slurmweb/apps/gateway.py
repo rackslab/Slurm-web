@@ -104,6 +104,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         SlurmwebAppRoute("/api/messages/login", views.message_login),
         SlurmwebAppRoute("/api/clusters", views.clusters),
         SlurmwebAppRoute("/api/users", views.users),
+        SlurmwebAppRoute("/api/agents/<cluster>/ping", views.ping),
         SlurmwebAppRoute("/api/agents/<cluster>/stats", views.stats),
         SlurmwebAppRoute("/api/agents/<cluster>/metrics/<metric>", views.metrics),
         SlurmwebAppRoute("/api/agents/<cluster>/cache/stats", views.cache_stats),

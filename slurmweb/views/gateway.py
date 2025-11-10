@@ -262,6 +262,12 @@ def proxy_agent(*args, **kwargs):
 
 @check_jwt
 @validate_cluster
+def ping(cluster: str):
+    return proxy_agent(cluster, "ping", request.token)
+
+
+@check_jwt
+@validate_cluster
 def stats(cluster: str):
     return proxy_agent(cluster, "stats", request.token)
 
