@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - agent: Add `/ping` route to get Slurm version version.
+- gateway: Add `/agent/{cluster}/ping` route to reverse-proxy request to agent
+  `/ping` endpoint.
 
 ### Changed
 - agent:
