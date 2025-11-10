@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import typing as t
 from unittest import mock
 import urllib
 
@@ -15,7 +16,7 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInvalidResponseError,
     SlurmrestdInternalError,
 )
-from ..lib.utils import all_slurm_versions, load_json_asset, ASSETS
+from ..lib.utils import all_slurm_api_versions, load_json_asset, ASSETS
 from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
 
 
@@ -30,12 +31,14 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
     def setup_execute_request_mock(
         self,
         slurm_version: str,
-        responses: list[Exception | str],
-    ) -> tuple[dict | None, ...]:
+        api_version: str,
+        responses: t.List[t.Union[Exception, str]],
+    ) -> t.Tuple[t.Optional[t.Dict[str, t.Any]], ...]:
         """Set up mock for _execute_request() method.
 
         Args:
             slurm_version: Slurm version to load assets from.
+            api_version: API version to load assets from.
             responses: List of responses/exceptions/asset names to return. Each item
                 can be:
                 - An Exception (to raise)
@@ -51,7 +54,11 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         for response in responses:
             if isinstance(response, str):
                 asset = load_json_asset(
-                    ASSETS / "slurmrestd" / slurm_version / f"{response}.json"
+                    ASSETS
+                    / "slurmrestd"
+                    / slurm_version
+                    / api_version
+                    / f"{response}.json"
                 )
                 processed_responses.append(asset)
                 returned_assets.append(asset)
@@ -75,10 +82,14 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
             )
         return tuple(returned_assets)
 
-    @all_slurm_versions
-    def test_discover_success_first_version(self, slurm_version):
+    @all_slurm_api_versions
+    def test_discover_success_first_version(self, slurm_version, api_version):
         """Test successful discovery on first API version."""
-        (ping_asset,) = self.setup_execute_request_mock(slurm_version, ["slurm-ping"])
+        (ping_asset,) = self.setup_execute_request_mock(
+            slurm_version,
+            api_version,
+            ["slurm-ping"],
+        )
 
         with self.assertLogs("slurmweb.slurmrestd", level="INFO") as cm:
             cluster_name, discovered_slurm_version, api_version = (
@@ -105,12 +116,13 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
             cm.output,
         )
 
-    @all_slurm_versions
-    def test_discover_success_second_version(self, slurm_version):
+    @all_slurm_api_versions
+    def test_discover_success_second_version(self, slurm_version, api_version):
         """Test successful discovery on second API version (first returns 404)."""
         # Mock _execute_request: first call raises NotFound, second succeeds
         _, ping_asset = self.setup_execute_request_mock(
             slurm_version,
+            api_version,
             [
                 SlurmrestdNotFoundError("/slurm/v0.0.44/ping"),
                 "slurm-ping",
@@ -162,7 +174,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
     def test_discover_connection_error(self):
         """Test that connection error breaks the loop and raises."""
         self.setup_execute_request_mock(
-            "25.11", [SlurmrestConnectionError("connection failed")]
+            "25.11", "0.0.44", [SlurmrestConnectionError("connection failed")]
         )
 
         with self.assertRaisesRegex(SlurmrestConnectionError, "^connection failed$"):
@@ -176,7 +188,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
     def test_discover_authentication_error(self):
         """Test that authentication error breaks the loop and raises."""
         self.setup_execute_request_mock(
-            "25.11", [SlurmrestdAuthenticationError("/slurm/v0.0.44/ping")]
+            "25.11", "0.0.44", [SlurmrestdAuthenticationError("/slurm/v0.0.44/ping")]
         )
 
         with self.assertRaises(SlurmrestdAuthenticationError):
@@ -190,7 +202,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
     def test_discover_all_versions_fail_404(self):
         """Test that all versions returning 404 raises connection error."""
         self.setup_execute_request_mock(
-            "25.11", [SlurmrestdNotFoundError("/slurm/v0.0.44/ping")]
+            "25.11", "0.0.44", [SlurmrestdNotFoundError("/slurm/v0.0.44/ping")]
         )
 
         with self.assertLogs("slurmweb.slurmrestd", level="DEBUG") as cm:
@@ -223,6 +235,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         # Mock _execute_request: first call raises InvalidResponse, second succeeds
         _, ping_asset = self.setup_execute_request_mock(
             "25.11",
+            "0.0.44",
             [
                 SlurmrestdInvalidResponseError(
                     "Unsupported Content-Type for slurmrestd response: text/plain"
@@ -257,6 +270,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         # Mock _execute_request: first call raises InternalError, second succeeds
         _, ping_asset = self.setup_execute_request_mock(
             "25.11",
+            "0.0.44",
             [
                 SlurmrestdInternalError("test", -1, "test description", "test source"),
                 "slurm-ping",
@@ -290,6 +304,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         # second succeeds
         _, ping_asset = self.setup_execute_request_mock(
             "25.11",
+            "0.0.44",
             [
                 KeyError("meta"),  # Simulates missing "meta" key in response
                 "slurm-ping",
@@ -316,11 +331,12 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
             cm.output,
         )
 
-    @all_slurm_versions
-    def test_discover_called_by_request(self, slurm_version):
+    @all_slurm_api_versions
+    def test_discover_called_by_request(self, slurm_version, api_version):
         """Test that _request() calls discover() if api_version is None."""
         [ping_asset, jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-ping", "meta"), ("slurm-jobs", "jobs")],
         )
 

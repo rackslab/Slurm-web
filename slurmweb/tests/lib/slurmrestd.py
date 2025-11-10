@@ -26,16 +26,19 @@ def basic_authentifier():
 
 
 class TestSlurmrestdBase(unittest.TestCase):
-    def mock_slurmrestd_responses(self, slurm_version, assets):
+    def mock_slurmrestd_responses(self, slurm_version, api_version, assets):
         try:
-            return mock_slurmrestd_responses(self.slurmrestd, slurm_version, assets)
+            return mock_slurmrestd_responses(
+                self.slurmrestd, slurm_version, api_version, assets
+            )
         except SlurmwebAssetUnavailable as err:
             self.skipTest(str(err))
 
-    def setup_slurmrestd(self, slurm_version: str):
+    def setup_slurmrestd(self, slurm_version, api_version):
+        """Set slurmrestd cluster name, Slurm version and API version for the test."""
         self.slurmrestd.cluster_name = "foo"
         self.slurmrestd.slurm_version = slurm_version
-        self.slurmrestd.api_version = "0.0.41"
+        self.slurmrestd.api_version = api_version
 
     def load_agent_settings_definition(self):
         return RuntimeSettings.yaml_definition(
