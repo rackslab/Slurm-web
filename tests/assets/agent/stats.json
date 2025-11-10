@@ -1,13 +1,12 @@
 {
   "jobs": {
-    "running": 5,
-    "total": 15
+    "running": 0,
+    "total": 3
   },
   "resources": {
     "cores": 320,
     "gpus": 8,
     "memory": 1572864,
     "nodes": 6
-  },
-  "version": "24.11.5"
+  }
 }
