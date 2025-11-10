@@ -120,16 +120,18 @@ class TestAgentConfBase(unittest.TestCase):
 
 
 class TestSlurmrestdClient(TestAgentConfBase):
-    def mock_slurmrestd_responses(self, slurm_version, assets):
+    def mock_slurmrestd_responses(self, slurm_version, api_version, assets):
         try:
-            return mock_slurmrestd_responses(self.app.slurmrestd, slurm_version, assets)
+            return mock_slurmrestd_responses(
+                self.app.slurmrestd, slurm_version, api_version, assets
+            )
         except SlurmwebAssetUnavailable as err:
             self.skipTest(str(err))
 
-    def setup_slurmrestd(self, slurm_version: str):
+    def setup_slurmrestd(self, slurm_version: str, api_version: str):
         self.app.slurmrestd.cluster_name = "foo"
         self.app.slurmrestd.slurm_version = slurm_version
-        self.app.slurmrestd.api_version = "0.0.41"
+        self.app.slurmrestd.api_version = api_version
 
 
 class TestAgentBase(TestSlurmrestdClient):

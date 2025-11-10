@@ -18,8 +18,19 @@ import parameterized
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / ".." / "tests" / "assets"
 
 
-def slurm_versions():
-    return [path.name for path in (ASSETS / "slurmrestd").iterdir()]
+def slurm_api_version_combinations():
+    """Return all combinations of (slurm_version, api_version) from available assets."""
+    combinations = []
+    for slurm_version_path in (ASSETS / "slurmrestd").iterdir():
+        if not slurm_version_path.is_dir():
+            continue
+        slurm_version = slurm_version_path.name
+        for api_version_path in slurm_version_path.iterdir():
+            if not api_version_path.is_dir():
+                continue
+            api_version = api_version_path.name
+            combinations.append((slurm_version, api_version))
+    return combinations
 
 
 def load_asset(path: Path):
@@ -32,18 +43,9 @@ def load_json_asset(path: Path):
         return json.load(f)
 
 
-all_slurm_versions = parameterized.parameterized.expand(slurm_versions())
-
-
-def any_slurm_version(test):
-    """Return test with first slurm version"""
-
-    def inner(self, *args, **kwargs):
-        for slurm_version in slurm_versions():
-            test(self, slurm_version, *args, **kwargs)
-            break
-
-    return inner
+all_slurm_api_versions = parameterized.parameterized.expand(
+    slurm_api_version_combinations()
+)
 
 
 def flask_version():
@@ -76,29 +78,47 @@ class SlurmwebAssetUnavailable(Exception):
     pass
 
 
-def mock_slurmrestd_responses(slurmrestd, slurm_version, assets):
+def mock_slurmrestd_responses(slurmrestd, slurm_version, api_version, assets):
+    """Mock slurmrestd responses for given assets.
+
+    Args:
+        slurmrestd: Slurmrestd instance to mock
+        slurm_version: Slurm version (e.g., "24.05")
+        api_version: API version (e.g., "0.0.44")
+        assets: List of (asset_name, key) tuples
+    """
     responses = []
     results = []
 
-    with open(ASSETS / f"slurmrestd/{slurm_version}/status.json") as fh:
+    status_path = ASSETS / f"slurmrestd/{slurm_version}/{api_version}/status.json"
+    if not status_path.exists():
+        raise SlurmwebAssetUnavailable(
+            f"Status file not found for Slurm {slurm_version}, API {api_version}"
+        )
+
+    with open(status_path) as fh:
         requests_statuses = json.load(fh)
 
     for asset_name, key in assets:
         if asset_name not in requests_statuses:
             raise SlurmwebAssetUnavailable(
                 f"Unable to find asset {asset_name} in requests status file for Slurm "
-                f"{slurm_version}"
+                f"{slurm_version}, API {api_version}"
             )
 
         is_json = True
         if requests_statuses[asset_name]["content-type"] == "application/json":
-            asset = load_json_asset(f"slurmrestd/{slurm_version}/{asset_name}.json")
+            asset = load_json_asset(
+                f"slurmrestd/{slurm_version}/{api_version}/{asset_name}.json"
+            )
             # Copy asset as it is modified during test processing and we need to keep
             # original value for comparison.
             original = copy.deepcopy(asset)
         else:
             is_json = False
-            asset = load_asset(f"slurmrestd/{slurm_version}/{asset_name}.txt")
+            asset = load_asset(
+                f"slurmrestd/{slurm_version}/{api_version}/{asset_name}.txt"
+            )
             original = asset
         fake_response = mock.create_autospec(requests.Response)
         fake_response.url = "/mocked/query"

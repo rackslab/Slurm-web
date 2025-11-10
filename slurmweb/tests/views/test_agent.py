@@ -20,7 +20,7 @@ from slurmweb.slurmrestd.errors import (
 from slurmweb.cache import CachingService
 
 from ..lib.agent import TestAgentBase
-from ..lib.utils import all_slurm_versions, flask_404_description
+from ..lib.utils import all_slurm_api_versions, flask_404_description
 
 
 class TestAgentViews(TestAgentBase):
@@ -91,11 +91,12 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
-    @all_slurm_versions
-    def test_request_slurmrestd_not_found(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_slurmrestd_not_found(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurm_not_found_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-not-found", None)],
         )
 
@@ -110,11 +111,12 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
-    @all_slurm_versions
-    def test_request_slurmrestd_authentication_error(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_slurmrestd_authentication_error(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurm_not_found_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-jwt-invalid-headers", None)],
         )
         response = self.client.get(f"/v{get_version()}/jobs")
@@ -157,11 +159,13 @@ class TestAgentViews(TestAgentBase):
     # slurmrestd ressources
     #
 
-    @all_slurm_versions
-    def test_request_jobs(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_jobs(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [jobs_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
 
         response = self.client.get(f"/v{get_version()}/jobs")
@@ -171,11 +175,13 @@ class TestAgentViews(TestAgentBase):
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["job_id"], jobs_asset[idx]["job_id"])
 
-    @all_slurm_versions
-    def test_request_jobs_node(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_jobs_node(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [jobs_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-jobs", "jobs")]
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
         )
 
         def terminated(job):
@@ -207,11 +213,12 @@ class TestAgentViews(TestAgentBase):
                 ClusterShell.NodeSet.NodeSet(job["nodes"]),
             )
 
-    @all_slurm_versions
-    def test_request_job_running(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_running(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -225,11 +232,12 @@ class TestAgentViews(TestAgentBase):
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
         )
 
-    @all_slurm_versions
-    def test_request_job_pending(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_pending(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-pending", "jobs"), ("slurm-job-pending", "jobs")],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -243,11 +251,12 @@ class TestAgentViews(TestAgentBase):
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
         )
 
-    @all_slurm_versions
-    def test_request_job_completed(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_completed(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-completed", "jobs"), ("slurm-job-completed", "jobs")],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -261,11 +270,12 @@ class TestAgentViews(TestAgentBase):
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
         )
 
-    @all_slurm_versions
-    def test_request_job_failed(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_failed(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-failed", "jobs"), ("slurm-job-failed", "jobs")],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -279,11 +289,12 @@ class TestAgentViews(TestAgentBase):
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
         )
 
-    @all_slurm_versions
-    def test_request_job_timeout(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_timeout(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-timeout", "jobs"), ("slurm-job-timeout", "jobs")],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -297,11 +308,12 @@ class TestAgentViews(TestAgentBase):
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
         )
 
-    @all_slurm_versions
-    def test_request_job_archived(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_archived(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-archived", "jobs"), ("slurm-job-archived", None)],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -314,11 +326,12 @@ class TestAgentViews(TestAgentBase):
         # Unable to retrieve tres_req_str only provided by slurmctld
         self.assertNotIn("tres_req_str", response.json)
 
-    @all_slurm_versions
-    def test_request_job_not_found(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_job_not_found(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurmdb-job-unfound", "jobs"), ("slurm-job-unfound", None)],
         )
         response = self.client.get(f"/v{get_version()}/job/1")
@@ -332,11 +345,13 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
-    @all_slurm_versions
-    def test_request_nodes(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_nodes(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [nodes_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-nodes", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-nodes", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/nodes")
         self.assertEqual(response.status_code, 200)
@@ -345,11 +360,13 @@ class TestAgentViews(TestAgentBase):
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["name"], nodes_asset[idx]["name"])
 
-    @all_slurm_versions
-    def test_request_node_idle(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_idle(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-idle", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-idle", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
         self.assertEqual(response.status_code, 200)
@@ -357,11 +374,12 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["name"], node_asset[0]["name"])
         self.assertIn("IDLE", response.json["state"])
 
-    @all_slurm_versions
-    def test_request_node_allocated(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_allocated(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-node-allocated", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
@@ -370,11 +388,13 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["name"], node_asset[0]["name"])
         self.assertIn("ALLOCATED", response.json["state"])
 
-    @all_slurm_versions
-    def test_request_node_mixed(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_mixed(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-mixed", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-mixed", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
         self.assertEqual(response.status_code, 200)
@@ -382,11 +402,13 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["name"], node_asset[0]["name"])
         self.assertIn("MIXED", response.json["state"])
 
-    @all_slurm_versions
-    def test_request_node_down(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_down(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-down", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-down", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
         self.assertEqual(response.status_code, 200)
@@ -394,11 +416,13 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["name"], node_asset[0]["name"])
         self.assertIn("DOWN", response.json["state"])
 
-    @all_slurm_versions
-    def test_request_node_drained(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_drained(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-drain", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-drain", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
         self.assertEqual(response.status_code, 200)
@@ -406,11 +430,13 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.json["name"], node_asset[0]["name"])
         self.assertIn("DRAIN", response.json["state"])
 
-    @all_slurm_versions
-    def test_request_node_draining(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_node_draining(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [node_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-node-draining", "nodes")]
+            slurm_version,
+            api_version,
+            [("slurm-node-draining", "nodes")],
         )
         response = self.client.get(f"/v{get_version()}/node/cn01")
         self.assertEqual(response.status_code, 200)
@@ -421,10 +447,14 @@ class TestAgentViews(TestAgentBase):
             "MIXED" in response.json["state"] or "ALLOCATED" in response.json["state"]
         )
 
-    @all_slurm_versions
-    def test_request_node_not_found(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
-        self.mock_slurmrestd_responses(slurm_version, [("slurm-node-unfound", None)])
+    @all_slurm_api_versions
+    def test_request_node_not_found(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurm-node-unfound", None)],
+        )
         response = self.client.get(f"/v{get_version()}/node/not-found")
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -436,29 +466,12 @@ class TestAgentViews(TestAgentBase):
             },
         )
 
-    @all_slurm_versions
-    def test_request_ping(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
-        [ping_asset] = self.mock_slurmrestd_responses(
-            slurm_version,
-            [("slurm-ping", "meta")],
-        )
-        response = self.client.get(f"/v{get_version()}/ping")
-        self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.json, dict)
-
-        self.assertEqual(
-            response.json["versions"]["api"], self.app.slurmrestd.api_version
-        )
-        self.assertEqual(
-            response.json["versions"]["slurm"], self.app.slurmrestd.slurm_version
-        )
-
-    @all_slurm_versions
-    def test_request_stats(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_stats(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [
                 ("slurm-jobs", "jobs"),
                 ("slurm-nodes", "nodes"),
@@ -496,11 +509,12 @@ class TestAgentViews(TestAgentBase):
             ),
         )
 
-    @all_slurm_versions
-    def test_request_partitions(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_partitions(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [partitions_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-partitions", "partitions")],
         )
         response = self.client.get(f"/v{get_version()}/partitions")
@@ -510,11 +524,13 @@ class TestAgentViews(TestAgentBase):
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["name"], partitions_asset[idx]["name"])
 
-    @all_slurm_versions
-    def test_request_qos(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_qos(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [qos_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-qos", "qos")]
+            slurm_version,
+            api_version,
+            [("slurm-qos", "qos")],
         )
         response = self.client.get(f"/v{get_version()}/qos")
         self.assertEqual(response.status_code, 200)
@@ -523,11 +539,12 @@ class TestAgentViews(TestAgentBase):
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["name"], qos_asset[idx]["name"])
 
-    @all_slurm_versions
-    def test_request_reservations(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_reservations(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [reservations_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [("slurm-reservations", "reservations")],
         )
         response = self.client.get(f"/v{get_version()}/reservations")
@@ -539,11 +556,13 @@ class TestAgentViews(TestAgentBase):
                 response.json[idx]["name"], reservations_asset[idx]["name"]
             )
 
-    @all_slurm_versions
-    def test_request_accounts(self, slurm_version):
-        self.setup_slurmrestd(slurm_version)
+    @all_slurm_api_versions
+    def test_request_accounts(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
         [accounts_asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-accounts", "accounts")]
+            slurm_version,
+            api_version,
+            [("slurm-accounts", "accounts")],
         )
         response = self.client.get(f"/v{get_version()}/accounts")
         self.assertEqual(response.status_code, 200)

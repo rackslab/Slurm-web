@@ -7,7 +7,7 @@
 from slurmweb.version import get_version
 
 from ..lib.agent import TestAgentBase
-from ..lib.utils import any_slurm_version
+from ..lib.utils import all_slurm_api_versions
 
 
 class TestAgentPermissions(TestAgentBase):
@@ -70,12 +70,13 @@ class TestAgentPermissions(TestAgentBase):
             },
         )
 
-    @any_slurm_version
-    def test_action_anonymous_ok(self, slurm_version):
+    @all_slurm_api_versions
+    def test_action_anonymous_ok(self, slurm_version, api_version):
         # stats endpoint is authorized to anonymous role in default policy.
         self.setup_client(anonymous_user=True)
         [ping_asset, jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
             slurm_version,
+            api_version,
             [
                 ("slurm-ping", "meta"),
                 ("slurm-jobs", "jobs"),
