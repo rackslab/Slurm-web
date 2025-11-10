@@ -31,6 +31,7 @@ class TestAgentMetricsCollector(TestAgentBase):
 
     @all_slurm_versions
     def test_request_metrics(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],
@@ -62,6 +63,7 @@ class TestAgentMetricsCollector(TestAgentBase):
 
     @all_slurm_versions
     def test_request_metrics_with_cache(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [nodes_asset, jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-nodes", "nodes"), ("slurm-jobs", "jobs")],

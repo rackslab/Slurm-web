@@ -23,6 +23,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_jobs(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -38,6 +39,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_job(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_asset, slurm_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
@@ -52,6 +54,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_nodes(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-nodes", "nodes")]
         )
@@ -67,6 +70,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_node(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-idle", "nodes")]
         )
@@ -80,6 +84,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_partitions(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-partitions", "partitions")]
         )
@@ -95,6 +100,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_accounts(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-accounts", "accounts")]
         )
@@ -110,6 +116,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_reservations(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-reservations", "reservations")]
         )
@@ -125,6 +132,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_qos(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(slurm_version, [("slurm-qos", "qos")])
         qos = self.slurmrestd.qos()
         for idx in range(len(qos)):

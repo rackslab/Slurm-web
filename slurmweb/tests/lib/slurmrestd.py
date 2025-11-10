@@ -32,6 +32,11 @@ class TestSlurmrestdBase(unittest.TestCase):
         except SlurmwebAssetUnavailable as err:
             self.skipTest(str(err))
 
+    def setup_slurmrestd(self, slurm_version: str):
+        self.slurmrestd.cluster_name = "foo"
+        self.slurmrestd.slurm_version = slurm_version
+        self.slurmrestd.api_version = "0.0.41"
+
     def load_agent_settings_definition(self):
         return RuntimeSettings.yaml_definition(
             os.path.join(

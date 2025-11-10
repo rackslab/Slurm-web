@@ -93,6 +93,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_slurmrestd_not_found(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurm_not_found_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-not-found", None)],
@@ -111,6 +112,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_slurmrestd_authentication_error(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurm_not_found_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-jwt-invalid-headers", None)],
@@ -157,6 +159,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_jobs(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -170,6 +173,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_jobs_node(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [jobs_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -205,6 +209,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_running(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-running", "jobs"), ("slurm-job-running", "jobs")],
@@ -222,6 +227,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_pending(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-pending", "jobs"), ("slurm-job-pending", "jobs")],
@@ -239,6 +245,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_completed(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-completed", "jobs"), ("slurm-job-completed", "jobs")],
@@ -256,6 +263,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_failed(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-failed", "jobs"), ("slurm-job-failed", "jobs")],
@@ -273,6 +281,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_timeout(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-timeout", "jobs"), ("slurm-job-timeout", "jobs")],
@@ -290,6 +299,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_archived(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-archived", "jobs"), ("slurm-job-archived", None)],
@@ -306,6 +316,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_job_not_found(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurmdb-job-unfound", "jobs"), ("slurm-job-unfound", None)],
@@ -323,6 +334,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_nodes(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [nodes_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-nodes", "nodes")]
         )
@@ -335,6 +347,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_idle(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-idle", "nodes")]
         )
@@ -346,6 +359,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_allocated(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-node-allocated", "nodes")],
@@ -358,6 +372,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_mixed(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-mixed", "nodes")]
         )
@@ -369,6 +384,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_down(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-down", "nodes")]
         )
@@ -380,6 +396,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_drained(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-drain", "nodes")]
         )
@@ -391,6 +408,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_draining(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [node_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-draining", "nodes")]
         )
@@ -405,6 +423,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_node_not_found(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         self.mock_slurmrestd_responses(slurm_version, [("slurm-node-unfound", None)])
         response = self.client.get(f"/v{get_version()}/node/not-found")
         self.assertEqual(response.status_code, 404)
@@ -419,6 +438,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_ping(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [ping_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-ping", "meta")],
@@ -436,10 +456,10 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_stats(self, slurm_version):
-        [ping_asset, jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
+        self.setup_slurmrestd(slurm_version)
+        [jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [
-                ("slurm-ping", "meta"),
                 ("slurm-jobs", "jobs"),
                 ("slurm-nodes", "nodes"),
             ],
@@ -478,6 +498,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_partitions(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [partitions_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-partitions", "partitions")],
@@ -491,6 +512,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_qos(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [qos_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-qos", "qos")]
         )
@@ -503,6 +525,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_reservations(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [reservations_asset] = self.mock_slurmrestd_responses(
             slurm_version,
             [("slurm-reservations", "reservations")],
@@ -518,6 +541,7 @@ class TestAgentViews(TestAgentBase):
 
     @all_slurm_versions
     def test_request_accounts(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [accounts_asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-accounts", "accounts")]
         )

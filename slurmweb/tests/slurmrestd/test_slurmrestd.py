@@ -28,17 +28,18 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.slurmrestd = Slurmrestd(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            "1.0.0",
+            ["0.0.41"],
         )
 
     @all_slurm_versions
     def test_request(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         # We can use basically any successful asset such as slurm-jobs for this test.
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
 
-        response = self.slurmrestd._request("/whatever", key="jobs")
+        response = self.slurmrestd._request("slurm", "/whatever", key="jobs")
         self.assertEqual(response, asset)
 
     def test_request_connection_error(self):
@@ -49,10 +50,11 @@ class TestSlurmrestd(TestSlurmrestdBase):
             SlurmrestConnectionError,
             "^test connection error$",
         ):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_internal_error(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         # We can use slurm-node-unfound asset for this test.
         self.mock_slurmrestd_responses(slurm_version, [("slurm-node-unfound", None)])
 
@@ -61,9 +63,10 @@ class TestSlurmrestd(TestSlurmrestdBase):
             r"^SlurwebRestdError\(No error, 0, Failure to query node unexisting-node, "
             r"_dump_nodes\)$",
         ):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     def test_request_slurm_invalid_content_type(self):
+        self.setup_slurmrestd("25.11.0")
         fake_response = requests.Response()
         fake_response.headers = {"content-type": "text/plain"}
         fake_response.json = lambda: "whatever"
@@ -73,38 +76,42 @@ class TestSlurmrestd(TestSlurmrestdBase):
             SlurmrestdInvalidResponseError,
             "^Unsupported Content-Type for slurmrestd response None: text/plain$",
         ):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_not_found(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         # We can use slurm-not-found asset for this test.
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-not-found", None)]
         )
 
         with self.assertRaisesRegex(SlurmrestdNotFoundError, "^/mocked/query$"):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_jwt_missing_headers(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jwt-missing-headers", None)]
         )
 
         with self.assertRaisesRegex(SlurmrestdAuthenticationError, "^/mocked/query$"):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_jwt_invalid_headers(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jwt-invalid-headers", None)]
         )
 
         with self.assertRaisesRegex(SlurmrestdAuthenticationError, "^/mocked/query$"):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_jwt_invalid_token(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jwt-invalid-token", None)]
         )
@@ -112,10 +119,11 @@ class TestSlurmrestd(TestSlurmrestdBase):
         with self.assertRaisesRegex(
             SlurmrestdInternalError, r"^SlurwebRestdError\(.*\)$"
         ):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
     @all_slurm_versions
     def test_request_slurm_jwt_expired_token(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jwt-expired-token", None)]
         )
@@ -123,19 +131,13 @@ class TestSlurmrestd(TestSlurmrestdBase):
         with self.assertRaisesRegex(
             SlurmrestdInternalError, r"^SlurwebRestdError\(.*\)$"
         ):
-            self.slurmrestd._request("/whatever", key="whatever")
+            self.slurmrestd._request("slurm", "/whatever", key="whatever")
 
-    @all_slurm_versions
-    def test_version(self, slurm_version):
-        [asset] = self.mock_slurmrestd_responses(
-            slurm_version, [("slurm-ping", "meta")]
-        )
-
-        version = self.slurmrestd.version()
-        self.assertCountEqual(version, asset["slurm"])
+    # FIXME: test discover()
 
     @all_slurm_versions
     def test_jobs(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -145,6 +147,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_jobs_by_node(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -183,6 +186,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_jobs_states(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-jobs", "jobs")]
         )
@@ -200,6 +204,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_nodes(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-nodes", "nodes")]
         )
@@ -247,8 +252,8 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_node(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         # We can use slurm-node-allocated asset for this test.
-
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-allocated", "nodes")]
         )
@@ -258,6 +263,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_node_not_found(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         # We can use slurm-node-unfound asset for this test.
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-node-unfound", None)]
@@ -270,6 +276,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_partitions(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-partitions", "partitions")]
         )
@@ -279,6 +286,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_accounts(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-accounts", "accounts")]
         )
@@ -288,6 +296,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_reservations(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(
             slurm_version, [("slurm-reservations", "reservations")]
         )
@@ -297,6 +306,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
 
     @all_slurm_versions
     def test_qos(self, slurm_version):
+        self.setup_slurmrestd(slurm_version)
         [asset] = self.mock_slurmrestd_responses(slurm_version, [("slurm-qos", "qos")])
 
         qos = self.slurmrestd.qos()
