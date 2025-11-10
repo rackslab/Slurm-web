@@ -24,7 +24,7 @@ export interface ClusterDescription {
   metrics: boolean
   cache: boolean
   permissions: ClusterPermissions
-  version?: string
+  versions?: ClusterVersions
   stats?: ClusterStats
   error?: boolean
 }
@@ -52,8 +52,13 @@ interface GatewayAnonymousLoginResponse {
   token: string
 }
 
+export interface ClusterVersions {
+  slurm: string
+  api: string
+}
+
 interface ClusterPingResponse {
-  version: string
+  versions: ClusterVersions
 }
 
 export interface ClusterStats {
