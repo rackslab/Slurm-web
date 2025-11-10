@@ -13,11 +13,11 @@
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 72,
+      "cpu_load": 29,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 341
+        "number": 384
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -48,7 +48,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1762528900
+        "number": 1763376815
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -59,7 +59,7 @@
       "address": "gpu1",
       "hostname": "gpu1",
       "state": [
-        "ALLOCATED"
+        "MIXED"
       ],
       "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
       "owner": "",
@@ -83,15 +83,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 32,
-      "tres_used": "",
+      "alloc_memory": 1024,
+      "alloc_cpus": 1,
+      "alloc_idle_cpus": 31,
+      "tres_used": "cpu=1,mem=1G",
       "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1762515553
+        "number": 1763120974
       },
       "sockets": 2,
       "threads": 1,
@@ -104,7 +104,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1762528901
+    "number": 1763377245
   },
   "meta": {
     "plugin": {
@@ -114,7 +114,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:50)",
+      "source": "admin:6820(fd:48)",
       "user": "root",
       "group": "root"
     },

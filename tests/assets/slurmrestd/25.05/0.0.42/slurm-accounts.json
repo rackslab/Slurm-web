@@ -1,0 +1,85 @@
+{
+  "accounts": [
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "acoustic",
+      "name": "acoustic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "admin",
+      "name": "admin",
+      "organization": "admin",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "biology",
+      "name": "biology",
+      "organization": "biology",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "optic",
+      "name": "optic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "physic",
+      "name": "physic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "default root account",
+      "name": "root",
+      "organization": "root",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "scientists",
+      "name": "scientists",
+      "organization": "scientists",
+      "flags": []
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.42",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:49)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "4",
+        "minor": "05"
+      },
+      "release": "25.05.4",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

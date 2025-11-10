@@ -1,0 +1,231 @@
+{
+  "jobs": [
+    {
+      "account": "biology",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 0,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "biology",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "jbeck",
+        "id": 12
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "time": {
+        "elapsed": 0,
+        "eligible": 1762792385,
+        "end": 0,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": -3527
+        },
+        "start": 0,
+        "submission": 1762788785,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [
+        "START_RECEIVED"
+      ],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 6370,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "None assigned",
+      "partition": "standard",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 545
+      },
+      "qos": "normal",
+      "qosreq": "",
+      "required": {
+        "CPUs": 4,
+        "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "kill_request_user": "",
+      "restart_cnt": 0,
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/jbeck/slurm-6370.out",
+      "stderr_expanded": "",
+      "stdout": "/home/jbeck/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
+      "state": {
+        "current": [
+          "PENDING"
+        ],
+        "reason": "None"
+      },
+      "steps": [],
+      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 4 --begin now+1hour",
+      "tres": {
+        "allocated": [],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 4
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 2048
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 4
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "jbeck",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/jbeck"
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.42",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "[admin]:42010(fd:11)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "5",
+        "minor": "11"
+      },
+      "release": "24.11.5",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
