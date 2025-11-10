@@ -138,9 +138,34 @@ slurmrestd:
       _static_.
   version:
     type: str
-    default: '0.0.41'
+    deprecated:
+      section: slurmrestd
+      parameter: versions
     doc: |
-      Slurm REST API version.
+      Slurm REST API version (deprecated).
+
+      This parameter is deprecated. Use `versions` instead to specify a list of
+      supported slurmrestd API versions.
+
+      CAUTION: You SHOULD NOT change this parameter unless you really know what
+      you are doing. This parameter is more intented for Slurm-web developers
+      rather than end users. Slurm-web is officially tested and validated with
+      the default value only.
+  versions:
+    type: list
+    content: str
+    default:
+    - '0.0.44'
+    - '0.0.43'
+    - '0.0.42'
+    - '0.0.41'
+    doc: |
+      List of supported slurmrestd REST API versions to try during discovery,
+      in descending order (newest first).
+
+      The agent will try each version in order until it finds one that works.
+      This allows the agent to support multiple slurmrestd API versions
+      automatically.
 
       CAUTION: You SHOULD NOT change this parameter unless you really know what
       you are doing. This parameter is more intented for Slurm-web developers

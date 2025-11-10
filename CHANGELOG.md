@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: Add `/ping` route to get Slurm version version.
 - gateway: Add `/agent/{cluster}/ping` route to reverse-proxy request to agent
   `/ping` endpoint.
+- conf: Introduce `[slurmrestd]` > `versions` parameter with list of all
+  supported Slurm REST API versions.
 
 ### Changed
 - front: Get Slurm version with ping endpoint in clusters list before getting
@@ -20,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     SlurmrestdAuthenticationError as a workaround for a regression in
     Slurm 25.11.0.
   - Remove Slurm version from `/stats` response.
+- conf: Deprecate `[slurmrestd]` > `version` parameter in favor of
+  `[slurmrestd]` > `versions` parameter.
 
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
