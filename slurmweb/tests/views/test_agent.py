@@ -418,6 +418,23 @@ class TestAgentViews(TestAgentBase):
         )
 
     @all_slurm_versions
+    def test_request_ping(self, slurm_version):
+        [ping_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            [("slurm-ping", "meta")],
+        )
+        response = self.client.get(f"/v{get_version()}/ping")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, dict)
+
+        self.assertEqual(
+            response.json["versions"]["api"], self.app.slurmrestd.api_version
+        )
+        self.assertEqual(
+            response.json["versions"]["slurm"], self.app.slurmrestd.slurm_version
+        )
+
+    @all_slurm_versions
     def test_request_stats(self, slurm_version):
         [ping_asset, jobs_asset, nodes_asset] = self.mock_slurmrestd_responses(
             slurm_version,
@@ -432,7 +449,6 @@ class TestAgentViews(TestAgentBase):
         self.assertIsInstance(response.json, dict)
         self.assertIn("jobs", response.json)
         self.assertIn("resources", response.json)
-        self.assertIn("version", response.json)
         self.assertEqual(response.json["jobs"]["total"], len(jobs_asset))
         self.assertEqual(
             response.json["jobs"]["running"],
@@ -459,7 +475,6 @@ class TestAgentViews(TestAgentBase):
                 ]
             ),
         )
-        self.assertEqual(response.json["version"], ping_asset["slurm"]["release"])
 
     @all_slurm_versions
     def test_request_partitions(self, slurm_version):
