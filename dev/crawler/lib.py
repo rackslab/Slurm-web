@@ -38,6 +38,10 @@ logger = logging.getLogger(__name__)
 
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / "tests" / "assets"
 
+# Supported slurmrestd API versions to try during discovery, in descending order
+# (newest first)
+SUPPORTED_SLURMRESTD_API_VERSIONS = ["0.0.44", "0.0.43", "0.0.42", "0.0.41"]
+
 
 class BaseAssetsManager:
     def __init__(self, subdir: Path | str):
@@ -155,7 +159,6 @@ class DevelopmentHostCluster:
     ):
         self.dev_host = dev_host
         self.name = name
-        self.api = "0.0.41"
         self.auth = auth
         self.session = requests.Session()
 
@@ -176,6 +179,9 @@ class DevelopmentHostCluster:
         self.groups = self.status["groups"]
         stdout.close()
         self._gpu_info = None
+
+        # Discover and save the latest supported slurmrestd API version
+        self.api = self._discover_latest_api_version()
 
     def query_slurmrestd(self, query: str, headers: dict[str, str] | None = None):
         """Send GET HTTP request to slurmrestd and return JSON result. Raise
@@ -212,6 +218,86 @@ class DevelopmentHostCluster:
             )
 
         return response.json()
+
+    def _discover_latest_api_version(self) -> str:
+        """Discover the latest supported slurmrestd API version on the cluster.
+
+        Uses discover_api_versions() to find all supported versions and returns the
+        latest (first) one.
+
+        Returns:
+            The latest supported API version (e.g., "0.0.44")
+        """
+        discovered = self.discover_api_versions()
+        _, api_version = discovered[0]
+        logger.info("Discovered latest slurmrestd API version: %s", api_version)
+        return api_version
+
+    def discover_api_versions(self) -> list[tuple[str, str]]:
+        """Discover slurmrestd API versions and Slurm versions.
+
+        Tries each API version in the URL and extracts the Slurm version from
+        the response.
+
+        Returns:
+            List of tuples (slurm_version, api_version) for each successfully discovered
+            version. slurm_version is the major.minor version (e.g., "23.11").
+        """
+
+        discovered_versions = []
+
+        for api_version in SUPPORTED_SLURMRESTD_API_VERSIONS:
+            try:
+                text, content_type, status = self.query_slurmrestd(
+                    f"/slurm/v{api_version}/ping", self.auth.headers()
+                )
+
+                if status == 200 and content_type == "application/json":
+                    try:
+                        result = json.loads(text)
+                        if len(result.get("errors", [])):
+                            continue
+
+                        # Extract Slurm version
+                        slurm_meta = result.get("meta", {}).get("slurm", {})
+                        if slurm_meta:
+                            release = slurm_meta.get("release", "")
+                            # Extract major.minor version (e.g., "23.11" from "23.11.0")
+                            slurm_version = release.rsplit(".", 1)[0] if release else ""
+
+                            if slurm_version:
+                                discovered_versions.append((slurm_version, api_version))
+                                logger.info(
+                                    "Discovered Slurm %s API version %s",
+                                    slurm_version,
+                                    api_version,
+                                )
+                    except (KeyError, ValueError, json.JSONDecodeError) as err:
+                        logger.debug(
+                            "Unable to parse version information from response "
+                            "for version %s: %s",
+                            api_version,
+                            err,
+                        )
+                        continue
+                elif status == 401:
+                    logger.warning(
+                        "Authentication error when trying API version %s, stopping",
+                        api_version,
+                    )
+                    break
+                elif status == 404:
+                    logger.debug(
+                        "API version %s not found (404), trying next", api_version
+                    )
+                    continue
+            except Exception as err:
+                logger.debug(
+                    "Error trying API version %s: %s, continuing", api_version, err
+                )
+                continue
+
+        return discovered_versions
 
     def has_jobs(self):
         """Return True if cluster has jobs in queue or False."""
