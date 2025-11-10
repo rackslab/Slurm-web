@@ -90,11 +90,8 @@ def slurmrest(method: str, *args: Tuple[Any, ...]):
         abort(500, msg)
 
 
-@rbac_action("view-stats")
-def stats():
-    total = 0
-    running = 0
-
+def ping():
+    """Check if Slurm version is supported and returns it."""
     version = slurmrest("version")
 
     # Check Slurm version is supported or fail with HTTP/500
@@ -109,6 +106,14 @@ def stats():
         error = f"Unsupported Slurm version {version['release']}"
         logger.error(error)
         abort(500, error)
+
+    return jsonify({"version": version["release"]})
+
+
+@rbac_action("view-stats")
+def stats():
+    total = 0
+    running = 0
 
     for job in slurmrest("jobs"):
         total += 1
@@ -126,7 +131,6 @@ def stats():
         gpus += current_app.slurmrestd.node_gres_extract_gpus(node["gres"])
     return jsonify(
         {
-            "version": version["release"],
             "resources": {
                 "nodes": nodes,
                 "cores": cores,
