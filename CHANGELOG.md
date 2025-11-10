@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- agent: Add `/ping` route to get Slurm version version.
+
 ### Changed
-- agent: Consider HTTP/500 and specific error message as
-  SlurmrestdAuthenticationError as a workaround for a regression in
-  Slurm 25.11.0.
+- agent:
+  - Consider HTTP/500 and specific error message as
+    SlurmrestdAuthenticationError as a workaround for a regression in
+    Slurm 25.11.0.
+  - Remove Slurm version from `/stats` response.
 
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
