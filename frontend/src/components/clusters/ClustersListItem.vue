@@ -14,8 +14,7 @@ import { AuthenticationError } from '@/composables/HTTPErrors'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { TagIcon } from '@heroicons/vue/20/solid'
-import { ServerIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import ClusterStats from '@/components/clusters/ClusterStats.vue'
 
 const { clusterName } = defineProps<{ clusterName: string }>()
 
@@ -27,13 +26,14 @@ const { reportAuthenticationError, reportServerError } = useErrorsHandler()
 const gateway = useGatewayAPI()
 const router = useRouter()
 
-async function getClusterStats() {
-  if (!runtimeStore.hasClusterPermission(cluster.name, 'view-stats')) {
+async function getClustersPing() {
+  if (cluster.permissions.actions.length == 0) {
     loading.value = false
     return
   }
   try {
-    cluster.stats = await gateway.stats(cluster.name)
+    const response = await gateway.ping(cluster.name)
+    cluster.version = response.version
   } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
@@ -41,12 +41,13 @@ async function getClusterStats() {
       reportServerError(error)
       cluster.error = true
     }
+  } finally {
+    loading.value = false
   }
-  loading.value = false
 }
 
 onMounted(() => {
-  getClusterStats()
+  getClustersPing()
 })
 </script>
 <template>
@@ -68,28 +69,19 @@ onMounted(() => {
         {{ cluster.name }}
       </RouterLink>
       <span
-        v-if="cluster.stats"
+        v-if="cluster.version"
         class="dark:bg-slurmweb-dark ml-2 hidden items-center gap-x-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-normal text-gray-600 md:inline-flex dark:text-gray-300"
       >
         <TagIcon class="h-3" />
-        Slurm {{ cluster.stats.version }}
+        Slurm {{ cluster.version }}
       </span>
     </span>
-    <LoadingSpinner v-if="loading" class="animate-pulse text-gray-400" :size="5" />
-    <span v-else-if="cluster.stats" class="hidden text-center md:flex">
-      <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
-        <ServerIcon class="h-6 w-full" />
-        <p class="w-full">
-          {{ cluster.stats.resources.nodes }} node{{ cluster.stats.resources.nodes > 1 ? 's' : '' }}
-        </p>
-      </span>
-      <span class="mt-1 w-20 text-xs leading-5 text-gray-500">
-        <PlayCircleIcon class="h-6 w-full" />
-        <p class="w-full">
-          {{ cluster.stats.jobs.running }} job{{ cluster.stats.jobs.running > 1 ? 's' : '' }}
-        </p>
-      </span>
-    </span>
+    <ClusterStats
+      v-if="
+        runtimeStore.hasClusterPermission(cluster.name, 'view-stats') && !loading && !cluster.error
+      "
+      :cluster-name="cluster.name"
+    />
     <div class="mr-0 w-64 shrink-0 items-end gap-x-4">
       <div class="hidden sm:flex sm:flex-col sm:items-end">
         <div v-if="loading" class="mt-1 flex items-center gap-x-1.5">
