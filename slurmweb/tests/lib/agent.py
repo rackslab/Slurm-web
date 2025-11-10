@@ -126,6 +126,11 @@ class TestSlurmrestdClient(TestAgentConfBase):
         except SlurmwebAssetUnavailable as err:
             self.skipTest(str(err))
 
+    def setup_slurmrestd(self, slurm_version: str):
+        self.app.slurmrestd.cluster_name = "foo"
+        self.app.slurmrestd.slurm_version = slurm_version
+        self.app.slurmrestd.api_version = "0.0.41"
+
 
 class TestAgentBase(TestSlurmrestdClient):
     def setup_client(
