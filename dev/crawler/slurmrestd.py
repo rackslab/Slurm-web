@@ -26,8 +26,14 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmrestdAssetsManager(BaseAssetsManager):
-    def __init__(self, version):
-        super().__init__(Path("slurmrestd") / version)
+    def __init__(self, slurm_version: str, api_version: str):
+        """Initialize assets manager with slurm_version and api_version.
+
+        Args:
+            slurm_version: Slurm version (e.g., "23.11")
+            api_version: slurmrestd API version (e.g., "0.0.44")
+        """
+        super().__init__(Path("slurmrestd") / slurm_version / api_version)
 
 
 class SlurmrestdCrawler(ComponentCrawler):
@@ -35,13 +41,9 @@ class SlurmrestdCrawler(ComponentCrawler):
         self,
         cluster: DevelopmentHostCluster,
         auth: SlurmrestdAuthentifier,
+        slurm_version: str,
+        api_version: str,
     ):
-        # Get Slurm version
-        ping = cluster.query_slurmrestd_json(f"/slurm/v{cluster.api}/ping")
-        release = ping["meta"]["slurm"]["release"]
-        version = release.rsplit(".", 1)[0]
-        logger.info("Slurm version: %s release: %s", version, release)
-
         # Build asset set with explicit output file names for special cases
         asset_set = {
             Asset("ping", "slurm-ping", self._crawl_ping),
@@ -178,10 +180,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         super().__init__(
             "slurmrestd",
             asset_set,
-            SlurmrestdAssetsManager(version),
+            SlurmrestdAssetsManager(slurm_version, api_version),
             cluster,
         )
         self.auth = auth
+        self.api_version = api_version
         self._cleanup_state = None
 
     def get_slurmrestd_json_response(
@@ -240,43 +243,43 @@ class SlurmrestdCrawler(ComponentCrawler):
     def _crawl_ping(self):
         # Download ping
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/ping",
+            f"/slurm/v{self.api_version}/ping",
             "slurm-ping",
         )
 
     def _crawl_errors(self):
         # Download URL not found for both slurm and slurmdb
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/not-found",
+            f"/slurm/v{self.api_version}/not-found",
             "slurm-not-found",
         )
 
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/not-found",
+            f"/slurmdb/v{self.api_version}/not-found",
             "slurmdb-not-found",
         )
 
         if self.auth.method == "jwt":
             # if JWT auth, test missing headers
             self.dump_slurmrestd_query(
-                f"/slurm/v{self.cluster.api}/jobs", "slurm-jwt-missing-headers", {}
+                f"/slurm/v{self.api_version}/jobs", "slurm-jwt-missing-headers", {}
             )
             # if JWT auth, test invalid headers
             self.dump_slurmrestd_query(
-                f"/slurm/v{self.cluster.api}/jobs",
+                f"/slurm/v{self.api_version}/jobs",
                 "slurm-jwt-invalid-headers",
                 {"X-SLURM-USER-FAIL": "tail"},
             )
             # if JWT auth, test invalid token
             self.dump_slurmrestd_query(
-                f"/slurm/v{self.cluster.api}/jobs",
+                f"/slurm/v{self.api_version}/jobs",
                 "slurm-jwt-invalid-token",
                 {"X-SLURM-USER-NAME": self.auth.jwt_user, "X-SLURM-USER-TOKEN": "fail"},
             )
             # if JWT auth and ability to generate token, test expired token
             if self.auth.jwt_mode == "auto":
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/jobs",
+                    f"/slurm/v{self.api_version}/jobs",
                     "slurm-jwt-expired-token",
                     {
                         "X-SLURM-USER-NAME": self.auth.jwt_user,
@@ -290,7 +293,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         self._cleanup_state = self.cluster.setup_for_jobs()
         # Download jobs
         jobs = self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/jobs",
+            f"/slurm/v{self.api_version}/jobs",
             "slurm-jobs",
             skip_exist=False,
             limit_dump=30,
@@ -300,11 +303,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         def dump_job_state(state: str):
             if state in _job["job_state"]:
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/job/{_job['job_id']}",
+                    f"/slurm/v{self.api_version}/job/{_job['job_id']}",
                     f"slurm-job-{state.lower()}",
                 )
                 self.dump_slurmrestd_query(
-                    f"/slurmdb/v{self.cluster.api}/job/{_job['job_id']}",
+                    f"/slurmdb/v{self.api_version}/job/{_job['job_id']}",
                     f"slurmdb-job-{state.lower()}",
                 )
 
@@ -326,20 +329,20 @@ class SlurmrestdCrawler(ComponentCrawler):
                     dump_job_state(state)
 
             self.dump_slurmrestd_query(
-                f"/slurm/v{self.cluster.api}/job/{min_job_id - 1}",
+                f"/slurm/v{self.api_version}/job/{min_job_id - 1}",
                 "slurm-job-archived",
             )
             self.dump_slurmrestd_query(
-                f"/slurmdb/v{self.cluster.api}/job/{min_job_id - 1}",
+                f"/slurmdb/v{self.api_version}/job/{min_job_id - 1}",
                 "slurmdb-job-archived",
             )
 
             self.dump_slurmrestd_query(
-                f"/slurm/v{self.cluster.api}/job/{max_job_id * 2}",
+                f"/slurm/v{self.api_version}/job/{max_job_id * 2}",
                 "slurm-job-unfound",
             )
             self.dump_slurmrestd_query(
-                f"/slurmdb/v{self.cluster.api}/job/{max_job_id * 2}",
+                f"/slurmdb/v{self.api_version}/job/{max_job_id * 2}",
                 "slurmdb-job-unfound",
             )
 
@@ -347,7 +350,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         self._cleanup_state = self.cluster.setup_for_nodes()
         # Download nodes
         nodes = self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/nodes",
+            f"/slurm/v{self.api_version}/nodes",
             "slurm-nodes",
             skip_exist=False,
             limit_dump=100,
@@ -359,43 +362,43 @@ class SlurmrestdCrawler(ComponentCrawler):
             if "IDLE" in _node["state"]:
                 if "PLANNED" in _node["state"]:
                     self.dump_slurmrestd_query(
-                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        f"/slurm/v{self.api_version}/node/{_node['name']}",
                         "slurm-node-planned",
                     )
                 elif "DRAIN" in _node["state"]:
                     self.dump_slurmrestd_query(
-                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        f"/slurm/v{self.api_version}/node/{_node['name']}",
                         "slurm-node-drain",
                     )
                 else:
                     self.dump_slurmrestd_query(
-                        f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                        f"/slurm/v{self.api_version}/node/{_node['name']}",
                         "slurm-node-idle",
                     )
             elif "DRAIN" in _node["state"]:
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    f"/slurm/v{self.api_version}/node/{_node['name']}",
                     "slurm-node-draining",
                 )
             if "MIXED" in _node["state"]:
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    f"/slurm/v{self.api_version}/node/{_node['name']}",
                     "slurm-node-mixed",
                 )
             if "ALLOCATED" in _node["state"]:
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    f"/slurm/v{self.api_version}/node/{_node['name']}",
                     "slurm-node-allocated",
                 )
             if "DOWN" in _node["state"]:
                 self.dump_slurmrestd_query(
-                    f"/slurm/v{self.cluster.api}/node/{_node['name']}",
+                    f"/slurm/v{self.api_version}/node/{_node['name']}",
                     "slurm-node-down",
                 )
 
         # Request node not found
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/node/unexisting-node",
+            f"/slurm/v{self.api_version}/node/unexisting-node",
             "slurm-node-unfound",
         )
 
@@ -411,11 +414,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-running",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-running",
         )
 
@@ -431,11 +434,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-pending",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-pending",
         )
 
@@ -451,11 +454,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-completed",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-completed",
         )
 
@@ -471,11 +474,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-archived",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-archived",
         )
 
@@ -492,11 +495,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-multi-nodes",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-multi-nodes",
         )
 
@@ -512,11 +515,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-type",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-type",
         )
 
@@ -531,11 +534,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-per-node",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-per-node",
         )
 
@@ -552,11 +555,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-multi-types",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-multi-types",
         )
 
@@ -571,11 +574,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-per-socket",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-per-socket",
         )
 
@@ -590,11 +593,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-per-task",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-per-task",
         )
 
@@ -610,11 +613,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)]}
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/job/{job_id}",
+            f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-gres",
         )
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/job/{job_id}",
+            f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-gres",
         )
 
@@ -631,7 +634,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
-            f"/slurm/v{self.cluster.api}/node/{node}"
+            f"/slurm/v{self.api_version}/node/{node}"
         )
         has_model = any(
             [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
@@ -654,7 +657,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
-            f"/slurm/v{self.cluster.api}/node/{node}"
+            f"/slurm/v{self.api_version}/node/{node}"
         )
         has_model = any(
             [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
@@ -676,7 +679,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
         self._cleanup_state = {"jobs": [(user, job_id)], "gpu_node": node}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
-            f"/slurm/v{self.cluster.api}/node/{node}"
+            f"/slurm/v{self.api_version}/node/{node}"
         )
         has_model = any(
             [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
@@ -694,7 +697,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             )
             return
         nodes_json = self.cluster.query_slurmrestd_json(
-            f"/slurm/v{self.cluster.api}/nodes"
+            f"/slurm/v{self.api_version}/nodes"
         )
         for _node in nodes_json["nodes"]:
             if not len(_node.get("gres", "")):
@@ -702,28 +705,28 @@ class SlurmrestdCrawler(ComponentCrawler):
                 break
 
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/node/{node}",
+            f"/slurm/v{self.api_version}/node/{node}",
             "slurm-node-without-gpu",
         )
 
     def _crawl_partitions(self):
         # Download partitions
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/partitions",
+            f"/slurm/v{self.api_version}/partitions",
             "slurm-partitions",
         )
 
     def _crawl_qos(self):
         # Download qos
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/qos",
+            f"/slurmdb/v{self.api_version}/qos",
             "slurm-qos",
         )
 
     def _crawl_accounts(self):
         # Download accounts
         self.dump_slurmrestd_query(
-            f"/slurmdb/v{self.cluster.api}/accounts",
+            f"/slurmdb/v{self.api_version}/accounts",
             "slurm-accounts",
         )
 
@@ -731,6 +734,6 @@ class SlurmrestdCrawler(ComponentCrawler):
         self._cleanup_state = self.cluster.setup_for_reservations()
         # Download reservations
         self.dump_slurmrestd_query(
-            f"/slurm/v{self.cluster.api}/reservations",
+            f"/slurm/v{self.api_version}/reservations",
             "slurm-reservations",
         )

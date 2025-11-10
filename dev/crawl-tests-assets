@@ -115,8 +115,10 @@ def _count_total_assets(
 
         # Count assets for each component
         if "slurmrestd" in components_to_process:
-            slurmrestd_crawler = SlurmrestdCrawler(cluster, auth)
-            total_assets += slurmrestd_crawler.count_assets_to_crawl()
+            discovered = cluster.discover_api_versions()
+            for slurm_version, api_version in discovered:
+                crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
+                total_assets += crawler.count_assets_to_crawl()
 
         if "gateway" in components_to_process:
             if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
@@ -179,8 +181,15 @@ def _crawl_assets(
 
         # Initialize crawlers and crawl
         if "slurmrestd" in components_to_process:
-            slurmrestd = SlurmrestdCrawler(cluster, auth)
-            slurmrestd.crawl_all_assets(progress_bar)
+            discovered = cluster.discover_api_versions()
+            for slurm_version, api_version in discovered:
+                logger.info(
+                    "Crawling assets for Slurm %s API version %s",
+                    slurm_version,
+                    api_version,
+                )
+                crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
+                crawler.crawl_all_assets(progress_bar)
 
         if "gateway" in components_to_process:
             if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
