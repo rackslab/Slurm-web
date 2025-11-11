@@ -385,7 +385,10 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["name"], node_asset[0]["name"])
-        self.assertIn("DRAINING", response.json["state"])
+        self.assertIn("DRAIN", response.json["state"])
+        self.assertTrue(
+            "MIXED" in response.json["state"] or "ALLOCATED" in response.json["state"]
+        )
 
     @all_slurm_versions
     def test_request_node_not_found(self, slurm_version):
