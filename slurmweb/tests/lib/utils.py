@@ -109,7 +109,7 @@ def mock_slurmrestd_responses(slurmrestd, slurm_version, assets):
         if is_json:
             fake_response.json = mock.Mock(return_value=asset)
         else:
-            fake_response.text = mock.PropertyMock(return_value=asset)
+            type(fake_response).text = mock.PropertyMock(return_value=asset)
         responses.append(fake_response)
         if key is not None:
             results.append(original[key])
@@ -175,7 +175,7 @@ def mock_component_response(component, asset_name):
     if is_json:
         response.json = mock.Mock(return_value=asset)
     else:
-        response.text = mock.PropertyMock(return_value=asset)
+        type(response).text = mock.PropertyMock(return_value=asset)
 
     return asset, response
 
