@@ -116,15 +116,28 @@ class TestAgentViews(TestAgentBase):
             [("slurm-jwt-invalid-headers", None)],
         )
         response = self.client.get(f"/v{get_version()}/jobs")
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(
-            response.json,
-            {
-                "code": 401,
-                "description": "Authentication error on slurmrestd: /mocked/query",
-                "name": "Unauthorized",
-            },
-        )
+        # FIXME: There is a regression in Slurm 25.11.0 which return HTTP/500 in this
+        # case, see https://support.schedmd.com/show_bug.cgi?id=24052 for details.
+        # This is a temporary workaround to accept both HTTP/401 and HTTP/500.
+        self.assertIn(response.status_code, [401, 500])
+        if response.status_code == 401:
+            self.assertEqual(
+                response.json,
+                {
+                    "code": 401,
+                    "description": "Authentication error on slurmrestd: /mocked/query",
+                    "name": "Unauthorized",
+                },
+            )
+        else:
+            self.assertEqual(
+                response.json,
+                {
+                    "code": 500,
+                    "description": "Authentication error on slurmrestd: /mocked/query",
+                    "name": "Internal Server Error",
+                },
+            )
 
     def test_request_agent_not_found(self):
         response = self.client.get("/fail")

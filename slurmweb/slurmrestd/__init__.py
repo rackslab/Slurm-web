@@ -64,7 +64,13 @@ class Slurmrestd:
         """Check response status code. When HTTP/401, raise
         SlurmrestdAuthenticationError. When HTTP/404 and ignore_notfound is False, raise
         SlurmrestdNotFoundError."""
-        if response.status_code == 401:
+        # FIXME: There is a regression in Slurm 25.11.0 which return HTTP/500 in this
+        # case, see https://support.schedmd.com/show_bug.cgi?id=24052 for details.
+        # This is a temporary workaround to accept both HTTP/401 and HTTP/500.
+        if response.status_code == 401 or (
+            response.status_code == 500
+            and response.text.strip() == "Authentication does not apply to request"
+        ):
             raise SlurmrestdAuthenticationError(response.url)
         if not ignore_notfound and response.status_code == 404:
             raise SlurmrestdNotFoundError(response.url)
