@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-#### Fixed
+### Changed
+- agent: Consider HTTP/500 and specific error message as
+  SlurmrestdAuthenticationError as a workaround for a regression in
+  Slurm 25.11.0.
+
+### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
   settings to reverse proxy the requests (#656).
 
