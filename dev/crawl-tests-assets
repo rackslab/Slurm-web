@@ -14,12 +14,14 @@ import getpass
 import logging
 
 from rfl.log import setup_logger
+from rfl.settings import RuntimeSettings
 
 from crawler.lib import (
     load_settings,
     DevelopmentHostClient,
     DevelopmentHostConnectionError,
     DevelopmentHostCluster,
+    SUPPORTED_SLURMRESTD_API_VERSIONS,
 )
 from crawler.slurmrestd import SlurmrestdCrawler
 from crawler.agent import AgentCrawler
@@ -87,41 +89,101 @@ def slurmweb_cluster_name(infrastructure: str):
     return MAP_CLUSTER_NAMES.get(infrastructure, infrastructure)
 
 
+def _create_cluster(
+    infrastructure: str,
+    dev_host: DevelopmentHostClient,
+    dev_tmp_dir: Path,
+) -> tuple[DevelopmentHostCluster, RuntimeSettings]:
+    """Create and return a DevelopmentHostCluster instance for the given infrastructure.
+
+    Args:
+        infrastructure: The infrastructure/cluster name
+        dev_host: Development host client
+        dev_tmp_dir: Temporary directory for development environment
+
+    Returns:
+        Tuple of (cluster, settings) where cluster is the DevelopmentHostCluster
+        instance and settings is the loaded RuntimeSettings.
+    """
+    # Load agent configuration
+    settings = load_settings(
+        "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
+    )
+    auth = SlurmrestdAuthentifier(
+        settings.slurmrestd.auth,
+        settings.slurmrestd.jwt_mode,
+        settings.slurmrestd.jwt_user,
+        settings.slurmrestd.jwt_key,
+        settings.slurmrestd.jwt_lifespan,
+        settings.slurmrestd.jwt_token,
+    )
+    cluster = DevelopmentHostCluster(
+        dev_host, infrastructure, settings.slurmrestd.uri, auth
+    )
+    return cluster, settings
+
+
+def _get_clusters_with_latest_api(
+    clusters_to_process: list[str],
+    dev_host: DevelopmentHostClient,
+    dev_tmp_dir: Path,
+) -> set[str]:
+    """Discover which clusters support the latest slurmrestd API version.
+
+    Returns:
+        Set of infrastructure names that support the latest API version.
+    """
+    latest_api_version = SUPPORTED_SLURMRESTD_API_VERSIONS[0]
+    clusters_with_latest_api = set()
+
+    for infrastructure in clusters_to_process:
+        cluster, _ = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
+
+        # Discover API versions for this cluster
+        discovered = cluster.discover_api_versions()
+        discovered_api_versions = {api_version for _, api_version in discovered}
+
+        if latest_api_version in discovered_api_versions:
+            clusters_with_latest_api.add(infrastructure)
+            logger.info(
+                "Cluster %s supports latest API version %s",
+                infrastructure,
+                latest_api_version,
+            )
+        else:
+            logger.info(
+                "Cluster %s does not support latest API version %s (supports: %s)",
+                infrastructure,
+                latest_api_version,
+                sorted(discovered_api_versions),
+            )
+
+    return clusters_with_latest_api
+
+
 def _count_total_assets(
     clusters_to_process: list[str],
     components_to_process: list[str],
     dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
     token: str,
+    clusters_with_latest_api: set[str],
 ) -> int:
     """Return the number of assets that need to be crawled."""
     total_assets = 0
     for infrastructure in clusters_to_process:
-        # Load agent configuration to create cluster
-        settings = load_settings(
-            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
-        )
-        auth = SlurmrestdAuthentifier(
-            settings.slurmrestd.auth,
-            settings.slurmrestd.jwt_mode,
-            settings.slurmrestd.jwt_user,
-            settings.slurmrestd.jwt_key,
-            settings.slurmrestd.jwt_lifespan,
-            settings.slurmrestd.jwt_token,
-        )
-        cluster = DevelopmentHostCluster(
-            dev_host, infrastructure, settings.slurmrestd.uri, auth
-        )
+        cluster, settings = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
 
         # Count assets for each component
         if "slurmrestd" in components_to_process:
             discovered = cluster.discover_api_versions()
             for slurm_version, api_version in discovered:
+                auth = cluster.auth
                 crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
                 total_assets += crawler.count_assets_to_crawl()
 
         if "gateway" in components_to_process:
-            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+            if infrastructure in clusters_with_latest_api:
                 gateway_crawler = GatewayCrawler(
                     token,
                     cluster,
@@ -132,14 +194,15 @@ def _count_total_assets(
 
         # Count agent assets
         if "agent" in components_to_process:
-            crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
-            agent_crawler = AgentCrawler(
-                settings.service.port,
-                token,
-                crawl_metrics,
-                cluster,
-            )
-            total_assets += agent_crawler.count_assets_to_crawl()
+            if infrastructure in clusters_with_latest_api:
+                crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
+                agent_crawler = AgentCrawler(
+                    settings.service.port,
+                    token,
+                    crawl_metrics,
+                    cluster,
+                )
+                total_assets += agent_crawler.count_assets_to_crawl()
 
         # Count prometheus assets
         if "prometheus" in components_to_process:
@@ -160,24 +223,11 @@ def _crawl_assets(
     dev_tmp_dir: Path,
     token: str,
     progress_bar: SimpleProgressBar | None,
+    clusters_with_latest_api: set[str],
 ) -> None:
     """Perform crawling for all selected infrastructures and components."""
     for infrastructure in clusters_to_process:
-        # Load agent configuration
-        settings = load_settings(
-            "conf/vendor/agent.yml", dev_tmp_dir, f"agent-{infrastructure}.ini"
-        )
-        auth = SlurmrestdAuthentifier(
-            settings.slurmrestd.auth,
-            settings.slurmrestd.jwt_mode,
-            settings.slurmrestd.jwt_user,
-            settings.slurmrestd.jwt_key,
-            settings.slurmrestd.jwt_lifespan,
-            settings.slurmrestd.jwt_token,
-        )
-        cluster = DevelopmentHostCluster(
-            dev_host, infrastructure, settings.slurmrestd.uri, auth
-        )
+        cluster, settings = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
 
         # Initialize crawlers and crawl
         if "slurmrestd" in components_to_process:
@@ -188,11 +238,12 @@ def _crawl_assets(
                     slurm_version,
                     api_version,
                 )
+                auth = cluster.auth
                 crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
                 crawler.crawl_all_assets(progress_bar)
 
         if "gateway" in components_to_process:
-            if infrastructure == GATEWAY_PREFERRED_INFRASTRUCTURE:
+            if infrastructure in clusters_with_latest_api:
                 gateway = GatewayCrawler(
                     token,
                     cluster,
@@ -202,7 +253,8 @@ def _crawl_assets(
                 gateway.crawl_all_assets(progress_bar)
             else:
                 logger.info(
-                    "Skipping gateway for cluster %s (not preferred infrastructure)",
+                    "Skipping gateway for cluster %s "
+                    "(does not support latest API version)",
                     infrastructure,
                 )
 
@@ -210,13 +262,20 @@ def _crawl_assets(
         crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
 
         if "agent" in components_to_process:
-            agent_crawler = AgentCrawler(
-                settings.service.port,
-                token,
-                crawl_metrics,
-                cluster,
-            )
-            agent_crawler.crawl_all_assets(progress_bar)
+            if infrastructure in clusters_with_latest_api:
+                agent_crawler = AgentCrawler(
+                    settings.service.port,
+                    token,
+                    crawl_metrics,
+                    cluster,
+                )
+                agent_crawler.crawl_all_assets(progress_bar)
+            else:
+                logger.info(
+                    "Skipping agent for cluster %s "
+                    "(does not support latest API version)",
+                    infrastructure,
+                )
 
         if "prometheus" in components_to_process:
             if crawl_metrics:
@@ -241,6 +300,25 @@ def _run_crawl(
     token: str,
 ) -> None:
     """Count, crawl and dump assets with progress bar."""
+    # Discover which clusters support the latest API version
+    clusters_with_latest_api = _get_clusters_with_latest_api(
+        clusters_to_process, dev_host, dev_tmp_dir
+    )
+
+    if "gateway" in components_to_process or "agent" in components_to_process:
+        if not clusters_with_latest_api:
+            logger.warning(
+                "No clusters found supporting latest API version %s. "
+                "Gateway and agent assets will not be crawled.",
+                SUPPORTED_SLURMRESTD_API_VERSIONS[0],
+            )
+        else:
+            logger.info(
+                "Clusters supporting latest API version %s: %s",
+                SUPPORTED_SLURMRESTD_API_VERSIONS[0],
+                sorted(clusters_with_latest_api),
+            )
+
     # Count total assets to crawl
     total_assets = _count_total_assets(
         clusters_to_process,
@@ -248,6 +326,7 @@ def _run_crawl(
         dev_host,
         dev_tmp_dir,
         token,
+        clusters_with_latest_api,
     )
     # Create progress bar if stdout is a TTY
     use_progress = sys.stdout.isatty() and total_assets > 0
@@ -261,6 +340,7 @@ def _run_crawl(
             dev_tmp_dir,
             token,
             progress_bar,
+            clusters_with_latest_api,
         )
     finally:
         if progress_bar:
