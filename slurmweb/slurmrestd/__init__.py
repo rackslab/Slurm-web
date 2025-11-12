@@ -13,6 +13,7 @@ import ClusterShell
 
 from .unix import SlurmrestdUnixAdapter
 from .auth import SlurmrestdAuthentifier
+from .adapters import build_adaptation_chain
 from ..cache import CacheKey
 from .errors import (
     SlurmrestdNotFoundError,
@@ -395,7 +396,51 @@ class Slurmrestd:
         return result
 
 
-class SlurmrestdFiltered(Slurmrestd):
+class SlurmrestdAdapter(Slurmrestd):
+    """Class that adapts responses from older slurmrestd API versions
+    to the latest supported version using chained version adapters."""
+
+    def __init__(
+        self,
+        uri: urllib.parse.ParseResult,
+        auth: SlurmrestdAuthentifier,
+        supported_versions: t.List[str],
+    ):
+        super().__init__(uri, auth, supported_versions)
+        # Will be set after discover() is called
+        self._adaptation_chain = []
+
+    def discover(self) -> t.Tuple[str, str, str]:
+        """Discover API version and build adaptation chain if needed."""
+        result = super().discover()
+
+        # Target version is the highest supported version (first in descending list)
+        target_version = self.supported_versions[0]
+
+        # Build adaptation chain if API version is older than target
+        if self.api_version != target_version:
+            self._adaptation_chain = build_adaptation_chain(
+                self.api_version, target_version, self.supported_versions
+            )
+        else:
+            self._adaptation_chain = []
+
+        return result
+
+    def _request(self, component: str, endpoint: str, key: str, ignore_notfound=False):
+        """Make request and adapt response data under the key if needed."""
+        result = super()._request(component, endpoint, key, ignore_notfound)
+
+        # Apply adaptation chain to data under the key, passing component
+        # for differentiation between slurmctld and slurmdbd jobs
+        if self._adaptation_chain:
+            for adapter in self._adaptation_chain:
+                result = adapter.adapt(component, key, result)
+
+        return result
+
+
+class SlurmrestdFiltered(SlurmrestdAdapter):
     def __init__(
         self,
         uri: urllib.parse.ParseResult,
