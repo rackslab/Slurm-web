@@ -63,11 +63,13 @@ class BaseAssetsManager:
         checked_patterns: list[str] = []
         missing_patterns: list[str] = []
         for output_file in asset.output_files:
-            stem = Path(output_file).stem
+            output_path = self.path / Path(output_file)
+            base_dir = output_path.parent
+            stem = output_path.stem
             pattern = f"{stem}.*"
-            checked_patterns.append(pattern)
-            if not any(self.path.glob(pattern)):
-                missing_patterns.append(pattern)
+            checked_patterns.append(str(base_dir / pattern))
+            if not any(base_dir.glob(pattern)):
+                missing_patterns.append(str(base_dir / pattern))
         if missing_patterns:
             logger.debug(
                 "Missing asset outputs for %s: %s",
