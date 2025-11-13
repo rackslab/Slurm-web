@@ -32,8 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     SlurmrestdAuthenticationError as a workaround for a regression in
     Slurm 25.11.0.
   - Remove Slurm version from `/stats` response.
-- conf: Deprecate `[slurmrestd]` > `version` parameter in favor of
-  `[slurmrestd]` > `versions` parameter.
+- conf:
+  - Deprecate `[slurmrestd]` > `version` parameter in favor of
+    `[slurmrestd]` > `versions` parameter.
+  - Replace `exclusive` by `shared` in filtered fields of individual job
+    responses from Slurm controler for compatibility with v0.0.42 REST API.
 
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
