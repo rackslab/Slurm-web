@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     older supported versions to the latest version of this API (#654).
   - Implement Slurm REST API adapter from v0.0.41 to v0.0.42.
   - Implement Slurm REST API adapter from v0.0.42 to v0.0.43.
+  - Implement Slurm REST API adapter from v0.0.43 to v0.0.44.
 - gateway: Add `/agent/{cluster}/ping` route to reverse-proxy request to agent
   `/ping` endpoint.
 - connect: Discover and report latest Slurm REST API version supported by
