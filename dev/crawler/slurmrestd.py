@@ -48,6 +48,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         asset_set = {
             Asset("ping", "slurm-ping", self._crawl_ping),
             Asset(
+                "openapi",
+                "../openapi-v3",
+                self._crawl_openapi,
+            ),
+            Asset(
                 "errors",
                 [
                     "slurm-not-found",
@@ -203,29 +208,45 @@ class SlurmrestdCrawler(ComponentCrawler):
         skip_exist=True,
         limit_dump=0,
         limit_key=None,
+        shared_asset: bool = False,
     ) -> t.Any:
         """Send GET HTTP request to slurmrestd and save JSON result in assets
         directory."""
 
         text, content_type, status = self.cluster.query_slurmrestd(query, headers)
         return self.dump_slurmrestd_response(
-            asset_name, text, content_type, status, limit_dump, limit_key
+            asset_name,
+            text,
+            content_type,
+            status,
+            limit_dump,
+            limit_key,
+            shared_asset=shared_asset,
         )
 
     def dump_slurmrestd_response(
-        self, asset_name, text, content_type, status, limit_dump=0, limit_key=None
+        self,
+        asset_name,
+        text,
+        content_type,
+        status,
+        limit_dump=0,
+        limit_key=None,
+        shared_asset: bool = False,
     ):
         """Save slurmrestd response asset."""
-        if asset_name not in self.manager.statuses:
-            self.manager.statuses[asset_name] = {}
-        self.manager.statuses[asset_name]["content-type"] = content_type
-        self.manager.statuses[asset_name]["status"] = status
+        target_dir = self.manager.path if not shared_asset else self.manager.path.parent
+        if not shared_asset:
+            if asset_name not in self.manager.statuses:
+                self.manager.statuses[asset_name] = {}
+            self.manager.statuses[asset_name]["content-type"] = content_type
+            self.manager.statuses[asset_name]["status"] = status
 
         if content_type == "application/json":
-            asset = self.manager.path / f"{asset_name}.json"
+            asset = target_dir / f"{asset_name}.json"
             data = json.loads(text)
         else:
-            asset = self.manager.path / f"{asset_name}.txt"
+            asset = target_dir / f"{asset_name}.txt"
             data = text
 
         with open(asset, "w+") as fh:
@@ -288,6 +309,13 @@ class SlurmrestdCrawler(ComponentCrawler):
                         ),
                     },
                 )
+
+    def _crawl_openapi(self):
+        self.dump_slurmrestd_query(
+            "/openapi/v3",
+            "openapi-v3",
+            shared_asset=True,
+        )
 
     def _crawl_jobs(self):
         self._cleanup_state = self.cluster.setup_for_jobs()
