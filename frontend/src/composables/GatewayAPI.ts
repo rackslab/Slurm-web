@@ -234,9 +234,9 @@ export interface ClusterIndividualJob {
   qos: string
   script: string
   sockets_per_node?: ClusterOptionalNumber
-  standard_error?: string
-  standard_input?: string
-  standard_output?: string
+  stderr_expanded?: string
+  stdin_expanded?: string
+  stdout_expanded?: string
   state: { current: string[]; reason: string }
   steps: ClusterJobStep[]
   submit_line: string
