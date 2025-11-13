@@ -56,8 +56,9 @@ def user_token(url: str, user: str):
         password = os.environ[ADMIN_PASSWORD_ENV_VAR]
     except KeyError:
         logger.info(
-            "Unable to read admin password from environment, opening interactive "
-            "prompt."
+            "Unable to read admin password from environment variable %s, opening "
+            "interactive prompt.",
+            ADMIN_PASSWORD_ENV_VAR,
         )
         password = getpass.getpass(prompt=f"Password for {user} on gateway: ")
 
