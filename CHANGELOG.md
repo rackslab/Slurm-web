@@ -26,8 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   supported Slurm REST API versions.
 
 ### Changed
-- front: Get Slurm version with ping endpoint in clusters list before getting
-  cluster stats if permitted.
+- front:
+  - Get Slurm version with ping endpoint in clusters list before getting
+    cluster stats if permitted.
+  - Adapt individual job and qos typed interfaces to match new format exported
+    by Slurm REST API v0.0.42.
 - agent:
   - Consider HTTP/500 and specific error message as
     SlurmrestdAuthenticationError as a workaround for a regression in
