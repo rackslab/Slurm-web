@@ -42,6 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `[slurmrestd]` > `versions` parameter.
   - Replace `exclusive` by `shared` in filtered fields of individual job
     responses from Slurm controler for compatibility with v0.0.42 REST API.
+  - Replace `standard_{error,input,output}` by `{stderr,stdin,stdout}_expanded`
+    in filtered fields of individual job responses from Slurm controler for
+    compatibility with v0.0.43 REST API.
 
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
