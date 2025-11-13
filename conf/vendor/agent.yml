@@ -234,11 +234,11 @@ filters:
     - command
     - cpus
     - current_working_directory
-    - exclusive
     - gres_detail
     - last_sched_evaluation
     - node_count
     - partition
+    - shared
     - sockets_per_node
     - standard_error
     - standard_input
