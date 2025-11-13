@@ -240,9 +240,9 @@ filters:
     - partition
     - shared
     - sockets_per_node
-    - standard_error
-    - standard_input
-    - standard_output
+    - stderr_expanded
+    - stdin_expanded
+    - stdout_expanded
     - tasks
     - tres_per_job
     - tres_per_node
