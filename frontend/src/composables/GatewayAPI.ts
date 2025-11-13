@@ -221,7 +221,7 @@ export interface ClusterIndividualJob {
   cpus?: ClusterOptionalNumber
   current_working_directory?: string
   derived_exit_code: ClusterJobExitCode
-  exclusive?: string[]
+  shared?: string[]
   exit_code: ClusterJobExitCode
   gres_detail?: string[]
   group: string
@@ -561,6 +561,7 @@ export interface ClusterQos {
             user: ClusterOptionalNumber // MaxJobsPerUser
           }
         }
+        count: ClusterOptionalNumber // ?
         per: {
           account: ClusterOptionalNumber // MaxJobsSubmitPerAccount
           user: ClusterOptionalNumber // MaxJobsSubmitPerUser
@@ -574,6 +575,7 @@ export interface ClusterQos {
             qos: ClusterTRES[] // GrpTRESMins
             user: ClusterTRES[] // MaxTRESRunMinsPerUser
           }
+          total: ClusterTRES[] // ?
         }
         per: {
           account: ClusterTRES[] // MaxTRESPA
