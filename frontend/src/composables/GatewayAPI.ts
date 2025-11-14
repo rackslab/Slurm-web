@@ -24,6 +24,7 @@ export interface ClusterDescription {
   metrics: boolean
   cache: boolean
   permissions: ClusterPermissions
+  versions?: ClusterVersions
   stats?: ClusterStats
   error?: boolean
 }
@@ -51,6 +52,15 @@ interface GatewayAnonymousLoginResponse {
   token: string
 }
 
+export interface ClusterVersions {
+  slurm: string
+  api: string
+}
+
+interface ClusterPingResponse {
+  versions: ClusterVersions
+}
+
 export interface ClusterStats {
   resources: {
     nodes: number
@@ -62,7 +72,6 @@ export interface ClusterStats {
     running: number
     total: number
   }
-  version: string
 }
 
 export interface ClusterJob {
@@ -212,7 +221,7 @@ export interface ClusterIndividualJob {
   cpus?: ClusterOptionalNumber
   current_working_directory?: string
   derived_exit_code: ClusterJobExitCode
-  exclusive?: string[]
+  shared?: string[]
   exit_code: ClusterJobExitCode
   gres_detail?: string[]
   group: string
@@ -225,9 +234,9 @@ export interface ClusterIndividualJob {
   qos: string
   script: string
   sockets_per_node?: ClusterOptionalNumber
-  standard_error?: string
-  standard_input?: string
-  standard_output?: string
+  stderr_expanded?: string
+  stdin_expanded?: string
+  stdout_expanded?: string
   state: { current: string[]; reason: string }
   steps: ClusterJobStep[]
   submit_line: string
@@ -552,6 +561,7 @@ export interface ClusterQos {
             user: ClusterOptionalNumber // MaxJobsPerUser
           }
         }
+        count: ClusterOptionalNumber // ?
         per: {
           account: ClusterOptionalNumber // MaxJobsSubmitPerAccount
           user: ClusterOptionalNumber // MaxJobsSubmitPerUser
@@ -565,6 +575,7 @@ export interface ClusterQos {
             qos: ClusterTRES[] // GrpTRESMins
             user: ClusterTRES[] // MaxTRESRunMinsPerUser
           }
+          total: ClusterTRES[] // ?
         }
         per: {
           account: ClusterTRES[] // MaxTRESPA
@@ -805,6 +816,10 @@ export function useGatewayAPI() {
     return await restAPI.get<UserDescription[]>(`/users`)
   }
 
+  async function ping(cluster: string): Promise<ClusterPingResponse> {
+    return await restAPI.get<ClusterPingResponse>(`/agents/${cluster}/ping`)
+  }
+
   async function stats(cluster: string): Promise<ClusterStats> {
     return await restAPI.get<ClusterStats>(`/agents/${cluster}/stats`)
   }
@@ -972,6 +987,7 @@ export function useGatewayAPI() {
     message_login,
     clusters,
     users,
+    ping,
     stats,
     jobs,
     job,

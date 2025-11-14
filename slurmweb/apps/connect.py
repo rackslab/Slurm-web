@@ -71,7 +71,7 @@ class SlurmwebAppConnectCheck(SlurmwebGenericApp):
                     self.settings.slurmrestd.jwt_lifespan,
                     self.settings.slurmrestd.jwt_token,
                 ),
-                self.settings.slurmrestd.version,
+                self.settings.slurmrestd.versions,
             )
         except SlurmwebConfigurationError as err:
             logger.critical("Configuration error: %s", err)
@@ -81,10 +81,10 @@ class SlurmwebAppConnectCheck(SlurmwebGenericApp):
         logger.info("Running %s", self.NAME)
 
         try:
-            meta = self.slurmrestd.version()
+            cluster_name, slurm_version, api_version = self.slurmrestd.discover()
             print(
-                f"✅ connection successful (slurm: {meta['release']}, cluster: "
-                f"{meta['cluster']})"
+                f"✅ connection successful: cluster: {cluster_name}, "
+                f"slurm: {slurm_version}, api: {api_version})"
             )
         except SlurmrestdNotFoundError as err:
             fail(f"URL not found on slurmrestd: {err}")

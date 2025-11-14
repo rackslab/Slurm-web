@@ -1,0 +1,231 @@
+{
+  "jobs": [
+    {
+      "account": "optic",
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "allocation_nodes": 0,
+      "array": {
+        "job_id": 0,
+        "limits": {
+          "max": {
+            "running": {
+              "tasks": 0
+            }
+          }
+        },
+        "task_id": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        },
+        "task": ""
+      },
+      "association": {
+        "account": "optic",
+        "cluster": "hpc",
+        "partition": "",
+        "user": "rcarson",
+        "id": 17
+      },
+      "block": "",
+      "cluster": "hpc",
+      "constraints": "",
+      "container": "",
+      "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "time": {
+        "elapsed": 0,
+        "eligible": 1762793488,
+        "end": 0,
+        "planned": {
+          "set": true,
+          "infinite": false,
+          "number": -3528
+        },
+        "start": 0,
+        "submission": 1762789888,
+        "suspended": 0,
+        "system": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "limit": {
+          "set": true,
+          "infinite": false,
+          "number": 1
+        },
+        "total": {
+          "seconds": 0,
+          "microseconds": 0
+        },
+        "user": {
+          "seconds": 0,
+          "microseconds": 0
+        }
+      },
+      "exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "extra": "",
+      "failed_node": "",
+      "flags": [
+        "START_RECEIVED"
+      ],
+      "group": "scientists",
+      "het": {
+        "job_id": 0,
+        "job_offset": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_id": 4774,
+      "name": "wrap",
+      "licenses": "",
+      "mcs": {
+        "label": ""
+      },
+      "nodes": "None assigned",
+      "partition": "normal",
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 454
+      },
+      "qos": "normal",
+      "qosreq": "",
+      "required": {
+        "CPUs": 128,
+        "memory_per_cpu": {
+          "set": true,
+          "infinite": false,
+          "number": 512
+        },
+        "memory_per_node": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "kill_request_user": "",
+      "restart_cnt": 0,
+      "reservation": {
+        "id": 0,
+        "name": ""
+      },
+      "script": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "/home/rcarson/slurm-4774.out",
+      "stderr_expanded": "",
+      "stdout": "/home/rcarson/slurm-%j.out",
+      "stderr": "",
+      "stdin": "/dev/null",
+      "state": {
+        "current": [
+          "PENDING"
+        ],
+        "reason": "None"
+      },
+      "steps": [],
+      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 128 --begin now+1hour",
+      "tres": {
+        "allocated": [],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 128
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 65536
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 128
+          }
+        ]
+      },
+      "used_gres": "",
+      "user": "rcarson",
+      "wckey": {
+        "wckey": "",
+        "flags": []
+      },
+      "working_directory": "/home/rcarson"
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.42",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:49)",
+      "user": "",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "4",
+        "minor": "05"
+      },
+      "release": "25.05.4",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -41,6 +41,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute("/version", views.version),
         SlurmwebAppRoute("/info", views.info),
         SlurmwebAppRoute(f"/v{get_version()}/permissions", views.permissions),
+        SlurmwebAppRoute(f"/v{get_version()}/ping", views.ping),
         SlurmwebAppRoute(f"/v{get_version()}/stats", views.stats),
         SlurmwebAppRoute(f"/v{get_version()}/jobs", views.jobs),
         SlurmwebAppRoute(f"/v{get_version()}/job/<int:job>", views.job),
@@ -126,6 +127,14 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                 "recommended to migrate to jwt authentication"
             )
 
+        # Warn deprecated slurmrestd version parameter
+        if self.settings.slurmrestd.version:
+            logger.warning(
+                "Deprecated parameter [slurmrestd]>version is defined but ignored. "
+                "Use [slurmrestd]>versions instead to specify a list of supported "
+                "slurmrestd API versions."
+            )
+
         try:
             self.slurmrestd = SlurmrestdFilteredCached(
                 self.settings.slurmrestd.uri,
@@ -137,7 +146,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                     self.settings.slurmrestd.jwt_lifespan,
                     self.settings.slurmrestd.jwt_token,
                 ),
-                self.settings.slurmrestd.version,
+                self.settings.slurmrestd.versions,
                 self.settings.filters,
                 self.settings.cache,
                 self.cache,

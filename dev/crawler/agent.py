@@ -43,6 +43,7 @@ class AgentCrawler(TokenizedComponentCrawler):
         asset_set = {
             Asset("info", "info", self._crawl_info),
             Asset("permissions", "permissions", self._crawl_permissions),
+            Asset("ping", "ping", self._crawl_ping),
             Asset("stats", "stats", self._crawl_stats),
             Asset("jobs", "jobs", self._crawl_jobs),
             Asset("nodes", "nodes", self._crawl_nodes),
@@ -89,6 +90,12 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/permissions",
             "permissions",
+        )
+
+    def _crawl_ping(self):
+        self.dump_component_query(
+            f"/v{get_version()}/ping",
+            "ping",
         )
 
     def _crawl_stats(self):

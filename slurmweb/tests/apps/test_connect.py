@@ -16,7 +16,7 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInvalidResponseError,
     SlurmrestdInternalError,
 )
-from ..lib.utils import all_slurm_versions, SlurmwebAssetUnavailable
+from ..lib.utils import all_slurm_api_versions, SlurmwebAssetUnavailable
 from ..lib.agent import TestSlurmrestdClient
 
 
@@ -82,12 +82,14 @@ class TestConnectCheckApp(TestSlurmrestdClient):
             cm.output, ["CRITICAL:slurmweb.apps.connect:Configuration error: fail"]
         )
 
-    @all_slurm_versions
-    def test_app_run(self, slurm_version):
+    @all_slurm_api_versions
+    def test_app_run(self, slurm_version, api_version):
         self.setup()
         try:
             [node_asset] = self.mock_slurmrestd_responses(
-                slurm_version, [("slurm-ping", "meta")]
+                slurm_version,
+                api_version,
+                [("slurm-ping", "meta")],
             )
         except SlurmwebAssetUnavailable:
             return
@@ -95,7 +97,7 @@ class TestConnectCheckApp(TestSlurmrestdClient):
 
     def test_app_slurmrestd_connection_error(self):
         self.setup()
-        self.app.slurmrestd._request = mock.Mock(
+        self.app.slurmrestd._execute_request = mock.Mock(
             side_effect=SlurmrestConnectionError("fake connection error")
         )
         with self.assertRaisesRegex(SystemExit, "1"):
@@ -111,7 +113,7 @@ class TestConnectCheckApp(TestSlurmrestdClient):
 
     def test_app_slurmrestd_authentication_error(self):
         self.setup()
-        self.app.slurmrestd._request = mock.Mock(
+        self.app.slurmrestd._execute_request = mock.Mock(
             side_effect=SlurmrestdAuthenticationError("fake authentication error")
         )
         with self.assertRaisesRegex(SystemExit, "1"):
@@ -127,7 +129,7 @@ class TestConnectCheckApp(TestSlurmrestdClient):
 
     def test_app_slurmrestd_not_found_error(self):
         self.setup()
-        self.app.slurmrestd._request = mock.Mock(
+        self.app.slurmrestd._execute_request = mock.Mock(
             side_effect=SlurmrestdNotFoundError("fake not found error")
         )
         with self.assertRaisesRegex(SystemExit, "1"):
@@ -136,14 +138,15 @@ class TestConnectCheckApp(TestSlurmrestdClient):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.apps.connect:URL not found on slurmrestd: fake not "
-                "found error"
+                "ERROR:slurmweb.apps.connect:Unable to connect to slurmrestd: Unable "
+                "to discover slurmrestd API version. Tried versions: "
+                f"{', '.join(self.app.slurmrestd.supported_versions)}"
             ],
         )
 
     def test_app_slurmrestd_invalid_response_error(self):
         self.setup()
-        self.app.slurmrestd._request = mock.Mock(
+        self.app.slurmrestd._execute_request = mock.Mock(
             side_effect=SlurmrestdInvalidResponseError("fake invalid response error")
         )
         with self.assertRaisesRegex(SystemExit, "1"):
@@ -152,14 +155,15 @@ class TestConnectCheckApp(TestSlurmrestdClient):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.apps.connect:Invalid response from slurmrestd: fake "
-                "invalid response error"
+                "ERROR:slurmweb.apps.connect:Unable to connect to slurmrestd: Unable "
+                "to discover slurmrestd API version. Tried versions: "
+                f"{', '.join(self.app.slurmrestd.supported_versions)}"
             ],
         )
 
     def test_app_slurmrestd_internal_error(self):
         self.setup()
-        self.app.slurmrestd._request = mock.Mock(
+        self.app.slurmrestd._execute_request = mock.Mock(
             side_effect=SlurmrestdInternalError(
                 "slurmrestd fake error",
                 -1,
@@ -173,7 +177,8 @@ class TestConnectCheckApp(TestSlurmrestdClient):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.apps.connect:slurmrestd error: fake error description "
-                "(fake error source)"
+                "ERROR:slurmweb.apps.connect:Unable to connect to slurmrestd: Unable "
+                "to discover slurmrestd API version. Tried versions: "
+                f"{', '.join(self.app.slurmrestd.supported_versions)}"
             ],
         )

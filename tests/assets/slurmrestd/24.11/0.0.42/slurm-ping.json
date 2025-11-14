@@ -1,0 +1,37 @@
+{
+  "pings": [
+    {
+      "hostname": "admin.vortex",
+      "pinged": "UP",
+      "responding": true,
+      "latency": 3761,
+      "mode": "primary",
+      "primary": true
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.42",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "[admin]:42010(fd:11)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "24",
+        "micro": "5",
+        "minor": "11"
+      },
+      "release": "24.11.5",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

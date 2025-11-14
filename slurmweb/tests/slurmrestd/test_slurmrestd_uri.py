@@ -29,7 +29,7 @@ class TestSlurmrestdUri(unittest.TestCase):
                 3600,
                 None,
             ),
-            "1.0.0",
+            ["0.0.44"],
         )
         self.assertEqual(slurmrestd.prefix, "http+unix://slurmrestd")
         self.assertIsInstance(
@@ -50,7 +50,7 @@ class TestSlurmrestdUri(unittest.TestCase):
                     3600,
                     None,
                 ),
-                "1.0.0",
+                ["0.0.44"],
             )
         self.assertEqual(slurmrestd.prefix, "http://localhost:6820")
 
@@ -69,5 +69,5 @@ class TestSlurmrestdUri(unittest.TestCase):
                     3600,
                     None,
                 ),
-                "1.0.0",
+                ["0.0.44"],
             )

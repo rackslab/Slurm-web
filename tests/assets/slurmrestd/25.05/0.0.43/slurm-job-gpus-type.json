@@ -1,0 +1,630 @@
+{
+  "jobs": [
+    {
+      "account": "biology",
+      "accrue_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762788992
+      },
+      "admin_comment": "",
+      "allocating_node": "login",
+      "array_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_id": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "array_max_tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "array_task_string": "",
+      "association_id": 10,
+      "batch_features": "",
+      "batch_flag": true,
+      "batch_host": "gpu1",
+      "flags": [
+        "ACCRUE_COUNT_CLEARED",
+        "JOB_WAS_RUNNING",
+        "USING_DEFAULT_ACCOUNT",
+        "USING_DEFAULT_QOS",
+        "USING_DEFAULT_WCKEY"
+      ],
+      "burst_buffer": "",
+      "burst_buffer_state": "",
+      "cluster": "hpc",
+      "cluster_features": "",
+      "command": "",
+      "comment": "",
+      "container": "",
+      "container_id": "",
+      "contiguous": false,
+      "core_spec": 0,
+      "thread_spec": 32766,
+      "cores_per_socket": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "billable_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 1.0
+      },
+      "cpus_per_task": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "cpu_frequency_minimum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_maximum": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpu_frequency_governor": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus_per_tres": "",
+      "cron": "",
+      "deadline": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "delay_boot": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "dependency": "",
+      "derived_exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "eligible_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762788992
+      },
+      "end_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762789053
+      },
+      "excluded_nodes": "",
+      "exit_code": {
+        "status": [
+          "SUCCESS"
+        ],
+        "return_code": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "signal": {
+          "id": {
+            "set": false,
+            "infinite": false,
+            "number": 0
+          },
+          "name": ""
+        }
+      },
+      "extra": "",
+      "failed_node": "",
+      "features": "",
+      "federation_origin": "",
+      "federation_siblings_active": "",
+      "federation_siblings_viable": "",
+      "gres_detail": [
+        "gpu:h100:1(IDX:0)"
+      ],
+      "group_id": 10001,
+      "group_name": "scientists",
+      "het_job_id": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "het_job_id_set": "",
+      "het_job_offset": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "job_id": 4729,
+      "job_resources": {
+        "select_type": [
+          "CORE"
+        ],
+        "nodes": {
+          "count": 1,
+          "select_type": [
+            "ONE_ROW"
+          ],
+          "list": "gpu1",
+          "whole": false,
+          "allocation": [
+            {
+              "index": 0,
+              "name": "gpu1",
+              "cpus": {
+                "count": 1,
+                "used": 0
+              },
+              "memory": {
+                "used": 0,
+                "allocated": 512
+              },
+              "sockets": [
+                {
+                  "index": 0,
+                  "cores": [
+                    {
+                      "index": 0,
+                      "status": [
+                        "ALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 1,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 2,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 3,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 4,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 5,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 6,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 7,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 8,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 9,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 10,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 11,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 12,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 13,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 14,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 15,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "index": 1,
+                  "cores": [
+                    {
+                      "index": 0,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 1,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 2,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 3,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 4,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 5,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 6,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 7,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 8,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 9,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 10,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 11,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 12,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 13,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 14,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    },
+                    {
+                      "index": 15,
+                      "status": [
+                        "UNALLOCATED"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "cpus": 1,
+        "threads_per_core": {
+          "set": false,
+          "infinite": false,
+          "number": 0
+        }
+      },
+      "job_size_str": [],
+      "job_state": [
+        "RUNNING"
+      ],
+      "last_sched_evaluation": {
+        "set": true,
+        "infinite": false,
+        "number": 1762788993
+      },
+      "licenses": "",
+      "licenses_allocated": "",
+      "mail_type": [],
+      "mail_user": "progers",
+      "max_cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "max_nodes": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "mcs_label": "",
+      "memory_per_tres": "",
+      "name": "wrap",
+      "network": "",
+      "nodes": "gpu1",
+      "nice": 0,
+      "tasks_per_core": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_tres": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "tasks_per_socket": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "tasks_per_board": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "cpus": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "node_count": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "tasks": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "partition": "gpu",
+      "prefer": "",
+      "memory_per_cpu": {
+        "set": true,
+        "infinite": false,
+        "number": 512
+      },
+      "memory_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "minimum_cpus_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "minimum_tmp_disk_per_node": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "power": {
+        "flags": []
+      },
+      "preempt_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "preemptable_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "pre_sus_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "hold": false,
+      "priority": {
+        "set": true,
+        "infinite": false,
+        "number": 545
+      },
+      "priority_by_partition": [],
+      "profile": [
+        "NOT_SET"
+      ],
+      "qos": "normal",
+      "reboot": false,
+      "required_nodes": "",
+      "required_switches": 0,
+      "requeue": true,
+      "resize_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "restart_cnt": 0,
+      "resv_name": "",
+      "scheduled_nodes": "",
+      "segment_size": 0,
+      "selinux_context": "",
+      "shared": [],
+      "sockets_per_board": 0,
+      "sockets_per_node": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762788993
+      },
+      "state_description": "",
+      "state_reason": "None",
+      "standard_input": "/dev/null",
+      "standard_output": "",
+      "standard_error": "",
+      "stdin_expanded": "/dev/null",
+      "stdout_expanded": "",
+      "stderr_expanded": "",
+      "submit_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1762788992
+      },
+      "suspend_time": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "system_comment": "",
+      "time_limit": {
+        "set": true,
+        "infinite": false,
+        "number": 1
+      },
+      "time_minimum": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "threads_per_core": {
+        "set": false,
+        "infinite": false,
+        "number": 0
+      },
+      "tres_bind": "",
+      "tres_freq": "",
+      "tres_per_job": "gres/gpu:h100:1",
+      "tres_per_node": "",
+      "tres_per_socket": "",
+      "tres_per_task": "",
+      "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
+      "tres_alloc_str": "cpu=1,mem=512M,node=1,billing=1",
+      "user_id": 10002,
+      "user_name": "progers",
+      "maximum_switch_wait_time": 0,
+      "wckey": "",
+      "current_working_directory": "/home/progers"
+    }
+  ],
+  "last_backfill": {
+    "set": true,
+    "infinite": false,
+    "number": 1762788904
+  },
+  "last_update": {
+    "set": true,
+    "infinite": false,
+    "number": 1762788994
+  },
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser/v0.0.43",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:49)",
+      "user": "root",
+      "group": "root"
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "4",
+        "minor": "05"
+      },
+      "release": "25.05.4",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
