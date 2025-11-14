@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import typing as t
 import logging
 
 from .base import BaseAdapter
@@ -16,7 +17,7 @@ from .v0_0_43 import AdapterV0_0_43
 logger = logging.getLogger(__name__)
 
 # Hard-coded registry of adapters
-_ADAPTERS: dict[str, type[BaseAdapter]] = {
+_ADAPTERS = {
     "0.0.41": AdapterV0_0_41,
     "0.0.42": AdapterV0_0_42,
     "0.0.43": AdapterV0_0_43,
@@ -24,8 +25,8 @@ _ADAPTERS: dict[str, type[BaseAdapter]] = {
 
 
 def build_adaptation_chain(
-    from_version: str, to_version: str, supported_versions: list[str]
-) -> list[BaseAdapter]:
+    from_version: str, to_version: str, supported_versions: t.List[str]
+) -> t.List[BaseAdapter]:
     """Build a chain of adapters from one version to another.
 
     Args:
