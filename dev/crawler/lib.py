@@ -322,6 +322,62 @@ class DevelopmentHostCluster:
             node["name"] for node in nodes["nodes"] if partition in node["partitions"]
         ]
 
+    def find_gpu_nodes_with_model(self, partition: str | None = None) -> list[str]:
+        """Find GPU nodes with model information (gres format: gpu:model:count).
+
+        Args:
+            partition: Optional partition name to filter nodes. If None,
+                searches all partitions.
+
+        Returns:
+            List of node names with GPU model information.
+        """
+        nodes = self.query_slurmrestd_json(f"/slurm/v{self.api}/nodes")
+        result = []
+        for node in nodes["nodes"]:
+            if partition and partition not in node["partitions"]:
+                continue
+            all_gres = node.get("gres", "").split(",")
+            for gres_s in all_gres:
+                if not gres_s.strip():
+                    continue
+                gres = gres_s.split(":")
+                if gres[0] == "gpu" and len(gres) > 2:
+                    result.append(node["name"])
+                    break
+        return result
+
+    def find_gpu_nodes_without_model(self, partition: str | None = None) -> list[str]:
+        """Find GPU nodes without model information (gres format: gpu:count).
+
+        Args:
+            partition: Optional partition name to filter nodes. If None,
+                searches all partitions.
+
+        Returns:
+            List of node names without GPU model information.
+        """
+        nodes = self.query_slurmrestd_json(f"/slurm/v{self.api}/nodes")
+        result = []
+        for node in nodes["nodes"]:
+            if partition and partition not in node["partitions"]:
+                continue
+            all_gres = node.get("gres", "").split(",")
+            has_gpu = False
+            has_model = False
+            for gres_s in all_gres:
+                if not gres_s.strip():
+                    continue
+                gres = gres_s.split(":")
+                if gres[0] == "gpu":
+                    has_gpu = True
+                    if len(gres) > 2:
+                        has_model = True
+                        break
+            if has_gpu and not has_model:
+                result.append(node["name"])
+        return result
+
     def node_update(self, nodename, state, reason):
         # FIXME: use REST API
         self.dev_host.exec(
@@ -626,10 +682,10 @@ class DevelopmentHostCluster:
             cleanup_state["nodes_drain"] = [node_drain]
         # Submit some jobs to create MIXED/ALLOCATED states
         user = self.pick_user()
-        for _ in range(3):
+        for _ in range(60):
             job_id = self.submit(
                 user,
-                ["--ntasks", str(1)],
+                ["--ntasks", str(2)],
                 duration=30,
                 timelimit=2,
                 wait_running=False,
@@ -808,39 +864,62 @@ class DevelopmentHostCluster:
         return job_id, user
 
     def setup_for_node_gpus_allocated(
-        self, gpu_partition: str, gpu_per_node: int
+        self, gpu_partition: str, gpu_per_node: int, node_name: str | None = None
     ) -> tuple[int, str]:
-        """Setup cluster for node-gpus-allocated asset. Returns (job_id, user)."""
+        """Setup cluster for node-gpus-allocated asset. Returns (job_id, user).
+
+        Args:
+            gpu_partition: Partition name with GPU nodes.
+            gpu_per_node: Number of GPUs per node.
+            node_name: Optional specific node name to target. If None,
+                any node in partition is used.
+        """
         user = self.pick_user()
-        job_id = self.submit(
-            user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus",
-                str(gpu_per_node),
-                "--nodes",
-                str(1),
-            ],
-        )
+        args = [
+            "--partition",
+            gpu_partition,
+            "--gpus",
+            str(gpu_per_node),
+            "--nodes",
+            str(1),
+        ]
+        if node_name:
+            args.extend(["--nodelist", node_name])
+        job_id = self.submit(user, args)
         return job_id, user
 
-    def setup_for_node_gpus_mixed(self, gpu_partition: str) -> tuple[int, str]:
-        """Setup cluster for node-gpus-mixed asset. Returns (job_id, user)."""
+    def setup_for_node_gpus_mixed(
+        self, gpu_partition: str, node_name: str | None = None
+    ) -> tuple[int, str]:
+        """Setup cluster for node-gpus-mixed asset. Returns (job_id, user).
+
+        Args:
+            gpu_partition: Partition name with GPU nodes.
+            node_name: Optional specific node name to target. If None,
+                any node in partition is used.
+        """
         user = self.pick_user()
-        job_id = self.submit(
-            user,
-            ["--partition", gpu_partition, "--gpus", str(1)],
-        )
+        args = ["--partition", gpu_partition, "--gpus", str(1)]
+        if node_name:
+            args.extend(["--nodelist", node_name])
+        job_id = self.submit(user, args)
         return job_id, user
 
-    def setup_for_node_gpus_idle(self, gpu_partition: str) -> tuple[str, int, str]:
-        """Setup cluster for node-gpus-idle asset. Returns (node_name, job_id, user)."""
+    def setup_for_node_gpus_idle(
+        self, gpu_partition: str, node_name: str | None = None
+    ) -> tuple[str, int, str]:
+        """Setup cluster for node-gpus-idle asset. Returns (node_name, job_id, user).
+
+        Args:
+            gpu_partition: Partition name with GPU nodes.
+            node_name: Optional specific node name to target. If None,
+                any node in partition is used.
+        """
         user = self.pick_user()
-        job_id = self.submit(
-            user,
-            ["--partition", gpu_partition, "--gpus", str(1)],
-        )
+        args = ["--partition", gpu_partition, "--gpus", str(1)]
+        if node_name:
+            args.extend(["--nodelist", node_name])
+        job_id = self.submit(user, args)
         # Get node before canceling
         node = self.job_nodes(job_id)[0]
         # Cancel job and wait for idle
