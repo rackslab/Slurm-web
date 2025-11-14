@@ -36,7 +36,7 @@ class Slurmrestd:
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        supported_versions: list[str],
+        supported_versions: t.List[str],
     ):
         self.session = requests.Session()
 
@@ -159,7 +159,7 @@ class Slurmrestd:
         )
         return result[key]
 
-    def discover(self) -> tuple[str, str, str]:
+    def discover(self) -> t.Tuple[str, str, str]:
         """Discover the actual slurmrestd API version and Slurm version by trying
         versions from the configured list. Returns a tuple of
         (cluster_name, slurm_version, api_version) and stores them in self.cluster_name,
@@ -445,7 +445,7 @@ class SlurmrestdFiltered(SlurmrestdAdapter):
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        supported_versions: list[str],
+        supported_versions: t.List[str],
         filters: "RuntimeSettings",
     ):
         super().__init__(uri, auth, supported_versions)
