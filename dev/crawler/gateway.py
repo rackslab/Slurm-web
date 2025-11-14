@@ -191,28 +191,34 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 self._crawl_nodes,
             ),
             Asset(
-                "node-gpus-allocated",
-                [
-                    "node-with-gpus-model-allocated",
-                    "node-with-gpus-allocated",
-                ],
-                self._crawl_node_gpus_allocated,
+                "node-gpus-allocated-with-model",
+                "node-with-gpus-model-allocated",
+                self._crawl_node_gpus_allocated_with_model,
             ),
             Asset(
-                "node-gpus-mixed",
-                [
-                    "node-with-gpus-model-mixed",
-                    "node-with-gpus-mixed",
-                ],
-                self._crawl_node_gpus_mixed,
+                "node-gpus-allocated-without-model",
+                "node-with-gpus-allocated",
+                self._crawl_node_gpus_allocated_without_model,
             ),
             Asset(
-                "node-gpus-idle",
-                [
-                    "node-with-gpus-model-idle",
-                    "node-with-gpus-idle",
-                ],
-                self._crawl_node_gpus_idle,
+                "node-gpus-mixed-with-model",
+                "node-with-gpus-model-mixed",
+                self._crawl_node_gpus_mixed_with_model,
+            ),
+            Asset(
+                "node-gpus-mixed-without-model",
+                "node-with-gpus-mixed",
+                self._crawl_node_gpus_mixed_without_model,
+            ),
+            Asset(
+                "node-gpus-idle-with-model",
+                "node-with-gpus-model-idle",
+                self._crawl_node_gpus_idle_with_model,
+            ),
+            Asset(
+                "node-gpus-idle-without-model",
+                "node-with-gpus-idle",
+                self._crawl_node_gpus_idle_without_model,
             ),
             Asset("node-without-gpu", "node-without-gpu", self._crawl_node_without_gpu),
             Asset("partitions", "partitions", self._crawl_partitions),
@@ -548,74 +554,179 @@ class GatewayCrawler(TokenizedComponentCrawler):
 
         # FIXME: download unknown node
 
-    def _crawl_node_gpus_allocated(self):
+    def _crawl_node_gpus_allocated_with_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-allocated", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-allocated-with-model",
+                self.cluster.name,
             )
             return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-allocated-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
         job_id, user = self.cluster.setup_for_node_gpus_allocated(
             self.cluster.gpu_info["gpu_partition"],
             self.cluster.gpu_info["gpu_per_node"],
+            node_name=node_name,
         )
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
-        )
-        if has_model:
-            asset = "node-with-gpus-model-allocated"
-        else:
-            asset = "node-with-gpus-allocated"
-        self.dump_component_response(asset, response)
+        self.dump_component_response("node-with-gpus-model-allocated", response)
 
-    def _crawl_node_gpus_mixed(self):
+    def _crawl_node_gpus_allocated_without_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-mixed", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-allocated-without-model",
+                self.cluster.name,
             )
             return
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-allocated-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        job_id, user = self.cluster.setup_for_node_gpus_allocated(
+            self.cluster.gpu_info["gpu_partition"],
+            self.cluster.gpu_info["gpu_per_node"],
+            node_name=node_name,
+        )
+        node = self.cluster.job_nodes(job_id)[0]
+        self._cleanup_state = {"jobs": [(user, job_id)]}
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster.name}/node/{node}"
+        )
+        self.dump_component_response("node-with-gpus-allocated", response)
+
+    def _crawl_node_gpus_mixed_with_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-mixed-with-model",
+                self.cluster.name,
+            )
+            return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-mixed-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
         job_id, user = self.cluster.setup_for_node_gpus_mixed(
-            self.cluster.gpu_info["gpu_partition"]
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
         )
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
-        )
-        if has_model:
-            asset = "node-with-gpus-model-mixed"
-        else:
-            asset = "node-with-gpus-mixed"
-        self.dump_component_response(asset, response)
+        self.dump_component_response("node-with-gpus-model-mixed", response)
 
-    def _crawl_node_gpus_idle(self):
+    def _crawl_node_gpus_mixed_without_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-idle", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-mixed-without-model",
+                self.cluster.name,
             )
             return
-        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
             self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-mixed-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        job_id, user = self.cluster.setup_for_node_gpus_mixed(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
+        )
+        node = self.cluster.job_nodes(job_id)[0]
+        self._cleanup_state = {"jobs": [(user, job_id)]}
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster.name}/node/{node}"
+        )
+        self.dump_component_response("node-with-gpus-mixed", response)
+
+    def _crawl_node_gpus_idle_with_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-idle-with-model",
+                self.cluster.name,
+            )
+            return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-idle-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
+        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
         )
         self._cleanup_state = {"jobs": [(user, job_id)], "gpu_node": node}
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in response.json()["gres"].split(",")]
+        self.dump_component_response("node-with-gpus-model-idle", response)
+
+    def _crawl_node_gpus_idle_without_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-idle-without-model",
+                self.cluster.name,
+            )
+            return
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
+            self.cluster.gpu_info["gpu_partition"]
         )
-        if has_model:
-            asset = "node-with-gpus-model-idle"
-        else:
-            asset = "node-with-gpus-idle"
-        self.dump_component_response(asset, response)
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-idle-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
+        )
+        self._cleanup_state = {"jobs": [(user, job_id)], "gpu_node": node}
+        response = self.get_component_response(
+            f"/api/agents/{self.cluster.name}/node/{node}"
+        )
+        self.dump_component_response("node-with-gpus-idle", response)
 
     def _crawl_node_without_gpu(self):
         if not self.cluster.has_gpu():

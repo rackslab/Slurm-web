@@ -148,28 +148,34 @@ class SlurmrestdCrawler(ComponentCrawler):
                 self._crawl_job_gpus_gres,
             ),
             Asset(
-                "node-gpus-allocated",
-                [
-                    "slurm-node-with-gpus-model-allocated",
-                    "slurm-node-with-gpus-allocated",
-                ],
-                self._crawl_node_gpus_allocated,
+                "node-gpus-allocated-with-model",
+                "slurm-node-with-gpus-model-allocated",
+                self._crawl_node_gpus_allocated_with_model,
             ),
             Asset(
-                "node-gpus-mixed",
-                [
-                    "slurm-node-with-gpus-model-mixed",
-                    "slurm-node-with-gpus-mixed",
-                ],
-                self._crawl_node_gpus_mixed,
+                "node-gpus-allocated-without-model",
+                "slurm-node-with-gpus-allocated",
+                self._crawl_node_gpus_allocated_without_model,
             ),
             Asset(
-                "node-gpus-idle",
-                [
-                    "slurm-node-with-gpus-model-idle",
-                    "slurm-node-with-gpus-idle",
-                ],
-                self._crawl_node_gpus_idle,
+                "node-gpus-mixed-with-model",
+                "slurm-node-with-gpus-model-mixed",
+                self._crawl_node_gpus_mixed_with_model,
+            ),
+            Asset(
+                "node-gpus-mixed-without-model",
+                "slurm-node-with-gpus-mixed",
+                self._crawl_node_gpus_mixed_without_model,
+            ),
+            Asset(
+                "node-gpus-idle-with-model",
+                "slurm-node-with-gpus-model-idle",
+                self._crawl_node_gpus_idle_with_model,
+            ),
+            Asset(
+                "node-gpus-idle-without-model",
+                "slurm-node-with-gpus-idle",
+                self._crawl_node_gpus_idle_without_model,
             ),
             Asset(
                 "node-without-gpu",
@@ -649,74 +655,191 @@ class SlurmrestdCrawler(ComponentCrawler):
             "slurmdb-job-gpus-gres",
         )
 
-    def _crawl_node_gpus_allocated(self):
+    def _crawl_node_gpus_allocated_with_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-allocated", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-allocated-with-model",
+                self.cluster.name,
             )
             return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-allocated-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
         job_id, user = self.cluster.setup_for_node_gpus_allocated(
             self.cluster.gpu_info["gpu_partition"],
             self.cluster.gpu_info["gpu_per_node"],
+            node_name=node_name,
         )
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
             f"/slurm/v{self.api_version}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-model-allocated", text, content_type, status
         )
-        if has_model:
-            asset = "slurm-node-with-gpus-model-allocated"
-        else:
-            asset = "slurm-node-with-gpus-allocated"
-        self.dump_slurmrestd_response(asset, text, content_type, status)
 
-    def _crawl_node_gpus_mixed(self):
+    def _crawl_node_gpus_allocated_without_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-mixed", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-allocated-without-model",
+                self.cluster.name,
             )
             return
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-allocated-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        job_id, user = self.cluster.setup_for_node_gpus_allocated(
+            self.cluster.gpu_info["gpu_partition"],
+            self.cluster.gpu_info["gpu_per_node"],
+            node_name=node_name,
+        )
+        node = self.cluster.job_nodes(job_id)[0]
+        self._cleanup_state = {"jobs": [(user, job_id)]}
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.api_version}/node/{node}"
+        )
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-allocated", text, content_type, status
+        )
+
+    def _crawl_node_gpus_mixed_with_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-mixed-with-model",
+                self.cluster.name,
+            )
+            return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-mixed-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
         job_id, user = self.cluster.setup_for_node_gpus_mixed(
-            self.cluster.gpu_info["gpu_partition"]
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
         )
         node = self.cluster.job_nodes(job_id)[0]
         self._cleanup_state = {"jobs": [(user, job_id)]}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
             f"/slurm/v{self.api_version}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-model-mixed", text, content_type, status
         )
-        if has_model:
-            asset = "slurm-node-with-gpus-model-mixed"
-        else:
-            asset = "slurm-node-with-gpus-mixed"
-        self.dump_slurmrestd_response(asset, text, content_type, status)
 
-    def _crawl_node_gpus_idle(self):
+    def _crawl_node_gpus_mixed_without_model(self):
         if not self.cluster.has_gpu():
             logger.warning(
-                "Cluster %s has no GPU, skipping node-gpus-idle", self.cluster.name
+                "Cluster %s has no GPU, skipping node-gpus-mixed-without-model",
+                self.cluster.name,
             )
             return
-        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
             self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-mixed-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        job_id, user = self.cluster.setup_for_node_gpus_mixed(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
+        )
+        node = self.cluster.job_nodes(job_id)[0]
+        self._cleanup_state = {"jobs": [(user, job_id)]}
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.api_version}/node/{node}"
+        )
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-mixed", text, content_type, status
+        )
+
+    def _crawl_node_gpus_idle_with_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-idle-with-model",
+                self.cluster.name,
+            )
+            return
+        nodes_with_model = self.cluster.find_gpu_nodes_with_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_with_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes with model, "
+                "skipping node-gpus-idle-with-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_with_model[0]
+        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
         )
         self._cleanup_state = {"jobs": [(user, job_id)], "gpu_node": node}
         _json, text, content_type, status = self.get_slurmrestd_json_response(
             f"/slurm/v{self.api_version}/node/{node}"
         )
-        has_model = any(
-            [len(gres.split(":")) > 2 for gres in _json["nodes"][0]["gres"].split(",")]
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-model-idle", text, content_type, status
         )
-        if has_model:
-            asset = "slurm-node-with-gpus-model-idle"
-        else:
-            asset = "slurm-node-with-gpus-idle"
-        self.dump_slurmrestd_response(asset, text, content_type, status)
+
+    def _crawl_node_gpus_idle_without_model(self):
+        if not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no GPU, skipping node-gpus-idle-without-model",
+                self.cluster.name,
+            )
+            return
+        nodes_without_model = self.cluster.find_gpu_nodes_without_model(
+            self.cluster.gpu_info["gpu_partition"]
+        )
+        if not nodes_without_model:
+            logger.warning(
+                "Cluster %s has no GPU nodes without model, "
+                "skipping node-gpus-idle-without-model",
+                self.cluster.name,
+            )
+            return
+        node_name = nodes_without_model[0]
+        node, job_id, user = self.cluster.setup_for_node_gpus_idle(
+            self.cluster.gpu_info["gpu_partition"],
+            node_name=node_name,
+        )
+        self._cleanup_state = {"jobs": [(user, job_id)], "gpu_node": node}
+        _json, text, content_type, status = self.get_slurmrestd_json_response(
+            f"/slurm/v{self.api_version}/node/{node}"
+        )
+        self.dump_slurmrestd_response(
+            "slurm-node-with-gpus-idle", text, content_type, status
+        )
 
     def _crawl_node_without_gpu(self):
         if not self.cluster.has_gpu():
