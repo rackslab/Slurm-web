@@ -378,36 +378,65 @@ class DevelopmentHostCluster:
                 result.append(node["name"])
         return result
 
-    def node_update(self, nodename, state, reason):
-        # FIXME: use REST API
-        self.dev_host.exec(
-            [
-                "firehpc",
-                "ssh",
-                self.name,
-                "--",
-                "scontrol",
-                "update",
-                f"nodename={nodename}",
-                f"state={state}",
-                f"reason='{reason}'",
-            ]
-        )
+    def _update_node(
+        self, nodename: str, state: str | None = None, reason: str | None = None
+    ) -> bool:
+        """Update a node using REST API.
 
-    def node_resume(self, nodename):
-        # FIXME: use REST API
-        self.dev_host.exec(
-            [
-                "firehpc",
-                "ssh",
-                self.name,
-                "--",
-                "scontrol",
-                "update",
-                f"nodename={nodename}",
-                "state=RESUME",
-            ]
-        )
+        Args:
+            nodename: The node name to update.
+            state: Optional new state for the node (e.g., "DOWN", "DRAIN", "RESUME").
+            reason: Optional reason for the state change.
+
+        Returns:
+            True if node was successfully updated, False otherwise.
+        """
+        headers = self.auth.headers()
+        headers["Content-Type"] = "application/json"
+
+        # Build update request body
+        update_data: dict[str, str] = {}
+        if state:
+            update_data["state"] = state
+        if reason:
+            update_data["reason"] = reason
+
+        try:
+            response = self.session.post(
+                f"{self.prefix}/slurm/v{self.api}/node/{nodename}",
+                headers=headers,
+                json=update_data,
+            )
+            if response.status_code == 200:
+                logger.debug("Updated node %s", nodename)
+                return True
+            else:
+                logger.warning(
+                    "Failed to update node %s: status code %s",
+                    nodename,
+                    response.status_code,
+                )
+                return False
+        except requests.exceptions.ConnectionError as err:
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+
+    def node_update(self, nodename: str, state: str, reason: str) -> None:
+        """Update a node state using REST API.
+
+        Args:
+            nodename: The node name to update.
+            state: New state for the node (e.g., "DOWN", "DRAIN").
+            reason: Reason for the state change.
+        """
+        self._update_node(nodename, state=state, reason=reason)
+
+    def node_resume(self, nodename: str) -> None:
+        """Resume a node using REST API.
+
+        Args:
+            nodename: The node name to resume.
+        """
+        self._update_node(nodename, state="RESUME")
 
     def nodes_resume(self):
         for node in self.query_slurmrestd_json(f"/slurm/v{self.api}/nodes")["nodes"]:
@@ -431,88 +460,152 @@ class DevelopmentHostCluster:
     def submit(
         self,
         user: str,
-        args: list[str],
+        job_params: dict[str, t.Any],
         duration: int = 30,
         timelimit: int = 1,
         wait_running: bool = True,
         success: bool = True,
     ) -> int:
-        # FIXME: use REST API
-        logger.info("Submitting job as %s with args: %s", user, args)
-        _, stdout, stderr = self.dev_host.exec(
-            [
-                "firehpc",
-                "ssh",
-                f"{user}@{self.login_container()}.{self.name}",
-                "--",
-                "sbatch",
-                "--time",
-                str(timelimit),
-                "--wrap",
-                f"'sleep {duration} && {'true' if success else 'false'}'",
-            ]
-            + args
-        )
-        output = stdout.read().decode()
-        stdout.close()
-        errors = stderr.read().decode()
-        stderr.close()
-        if not output.startswith("Submitted batch job"):
-            raise CrawlerError(
-                "Unable to submit batch job on GPU: "
-                f"[stdout: {output}][stderr: {errors}]"
+        """Submit a job using REST API.
+
+        Args:
+            user: User submitting the job (kept for compatibility, not used).
+            job_params: Dictionary of job parameters for REST API (e.g.,
+                {"partition": "gpu", "tres_per_job": "gres/gpu:2"}).
+            duration: Job sleep duration in seconds.
+            timelimit: Job time limit in minutes.
+            wait_running: If True, wait for job to reach RUNNING state.
+            success: If True, job exits successfully, otherwise fails.
+
+        Returns:
+            The submitted job ID.
+        """
+
+        # Build job script
+        script = f"#!/bin/bash\nsleep {duration} && {'true' if success else 'false'}"
+
+        # Create a copy of job_params to avoid modifying the original
+        job_params_copy = job_params.copy()
+        # job_params_copy["script"] = script
+        job_params_copy["user_id"] = user
+        job_params_copy["current_working_directory"] = f"/home/{user}"
+        job_params_copy["environment"] = [
+            f"USERNAME={user}",
+        ]
+        # Add time limit if not already specified
+        if "time_limit" not in job_params_copy:
+            job_params_copy["time_limit"] = timelimit * 60  # Convert minutes to seconds
+
+        headers = self.auth.headers()
+        headers["Content-Type"] = "application/json"
+
+        try:
+            logger.info(
+                "Submitting job as %s with params: %s, script: %s",
+                user,
+                job_params_copy,
+                script,
             )
-        job_id = int(output.split(" ")[3])
-        if wait_running:
-            max_tries = 10
-            for idx in range(max_tries):
-                job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
-                if "RUNNING" in job["jobs"][0]["job_state"]:
-                    break
-                if idx == max_tries - 1:
-                    raise CrawlerError(f"Unable to get job {job_id} in RUNNING state")
-                else:
-                    time.sleep(1)
-        return job_id
+            response = self.session.post(
+                f"{self.prefix}/slurm/v{self.api}/job/submit",
+                headers=headers,
+                json={
+                    "script": script,
+                    "job": job_params_copy,
+                },
+            )
+
+            if response.status_code != 200:
+                error_text = response.text
+                raise CrawlerError(
+                    f"Unable to submit batch job: "
+                    f"status code {response.status_code}, {error_text}"
+                )
+
+            result = response.json()
+
+            # Check for errors in response
+            if result.get("errors"):
+                error = result["errors"][0]
+                error_desc = error.get("description", "Unknown error")
+                raise CrawlerError(f"Unable to submit batch job: {error_desc}")
+
+            # Check for warnings in response
+            if len(result.get("warnings", [])):
+                for warning in result["warnings"]:
+                    logger.warning("Batch job submission warning: %s", warning)
+
+            # Extract job ID from response
+            # Response format: {"job_id": 123, "step_id": null, "errors": [], ...}
+            if "job_id" not in result:
+                raise CrawlerError("Unable to extract job ID from submission response")
+
+            job_id = result["job_id"]
+            logger.debug("Submitted job %s", job_id)
+
+            if wait_running:
+                max_tries = 10
+                for idx in range(max_tries):
+                    job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
+                    if "RUNNING" in job["jobs"][0]["job_state"]:
+                        break
+                    if idx == max_tries - 1:
+                        raise CrawlerError(
+                            f"Unable to get job {job_id} in RUNNING state"
+                        )
+                    else:
+                        time.sleep(1)
+            return job_id
+
+        except requests.exceptions.ConnectionError as err:
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+
+    def _cancel(self, job_id: int) -> bool:
+        """Cancel a single job using REST API.
+
+        Args:
+            job_id: The job ID to cancel.
+
+        Returns:
+            True if job was successfully cancelled, False otherwise.
+        """
+        headers = self.auth.headers()
+        try:
+            response = self.session.delete(
+                f"{self.prefix}/slurm/v{self.api}/job/{job_id}",
+                headers=headers,
+            )
+            if response.status_code == 200:
+                logger.debug("Cancelled job %s", job_id)
+                return True
+            else:
+                logger.warning(
+                    "Failed to cancel job %s: status code %s",
+                    job_id,
+                    response.status_code,
+                )
+                return False
+        except requests.exceptions.ConnectionError as err:
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
 
     def cancel(self, user: str, job_id: int) -> None:
-        """Cancel a job."""
-        # FIXME: use REST API
-        self.dev_host.exec(
-            [
-                "firehpc",
-                "ssh",
-                f"{user}@{self.login_container()}.{self.name}",
-                "--",
-                "scancel",
-                str(job_id),
-            ]
-        )
+        """Cancel a job using REST API.
+
+        Args:
+            user: User who owns the job (kept for compatibility, not used).
+            job_id: The job ID to cancel.
+        """
+        self._cancel(job_id)
 
     def cancel_all(self) -> None:
         """Cancel all jobs using REST API."""
         # Get all jobs
         jobs = self.query_slurmrestd_json(f"/slurm/v{self.api}/jobs")
-        headers = self.auth.headers()
 
         # Cancel each job
         for job in jobs.get("jobs", []):
             job_id = job["job_id"]
-            try:
-                response = self.session.delete(
-                    f"{self.prefix}/slurm/v{self.api}/job/{job_id}",
-                    headers=headers,
-                )
-                if response.status_code == 200:
-                    logger.debug("Cancelled job %s", job_id)
-                else:
-                    logger.warning(
-                        "Failed to cancel job %s: status code %s",
-                        job_id,
-                        response.status_code,
-                    )
-            except requests.exceptions.ConnectionError as err:
-                raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+            self._cancel(job_id)
 
     def job_nodes(self, job_id: int) -> list[str]:
         job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
@@ -557,41 +650,83 @@ class DevelopmentHostCluster:
         end: datetime,
     ) -> None:
         """Create reservation."""
-        # FIXME: use REST API
-        cmd = [
-            "firehpc",
-            "ssh",
-            self.name,
-            "--",
-            "scontrol",
-            "create",
-            "reservation",
-            f"Reservation={name}",
-            f"StartTime={start.strftime('%Y-%m-%dT%H:%M:%S')}",
-            f"EndTime={end.strftime('%Y-%m-%dT%H:%M:%S')}",
-            f"Partition={partition}",
-            "Flags=ANY_NODES,FLEX,IGNORE_JOBS",
-        ]
+        headers = self.auth.headers()
+        headers["Content-Type"] = "application/json"
+
+        reservation_payload: dict[str, object] = {
+            "name": name,
+            "partition": partition,
+            "flags": ["ANY_NODES", "FLEX", "IGNORE_JOBS"],
+            "start_time": start.strftime("%Y-%m-%dT%H:%M:%S"),
+            "end_time": end.strftime("%Y-%m-%dT%H:%M:%S"),
+        }
+
         if users:
-            cmd.append(f"Users={','.join(users)}")
+            reservation_payload["users"] = users
         if accounts:
-            cmd.append(f"Accounts={','.join(accounts)}")
-        self.dev_host.exec(cmd)
+            reservation_payload["accounts"] = accounts
+
+        try:
+            response = self.session.post(
+                f"{self.prefix}/slurm/v{self.api}/reservation",
+                headers=headers,
+                json=reservation_payload,
+            )
+        except requests.exceptions.ConnectionError as err:
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+
+        if response.headers.get("content-type") != "application/json":
+            raise CrawlerError(
+                "Unexpected content-type for reservation creation: "
+                f"{response.headers.get('content-type')}"
+            )
+
+        if response.status_code != 200:
+            raise CrawlerError(
+                "Unable to create reservation "
+                f"{name}: status code {response.status_code}, {response.text}"
+            )
+
+        result = response.json()
+        if len(result.get("errors", [])):
+            error = result["errors"][0]
+            description = error.get("description", "slurmrestd undefined error")
+            raise CrawlerError(f"Unable to create reservation {name}: {description}")
+
+        for warning in result.get("warnings", []):
+            logger.warning("Reservation %s creation warning: %s", name, warning)
+
+        logger.debug("Created reservation %s via slurmrestd", name)
 
     def reservation_delete(self, name: str) -> None:
-        # FIXME: use REST API
-        self.dev_host.exec(
-            [
-                "firehpc",
-                "ssh",
-                self.name,
-                "--",
-                "scontrol",
-                "delete",
-                "reservation",
-                name,
-            ]
-        )
+        headers = self.auth.headers()
+        try:
+            response = self.session.delete(
+                f"{self.prefix}/slurm/v{self.api}/reservation/{name}",
+                headers=headers,
+            )
+        except requests.exceptions.ConnectionError as err:
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+
+        if response.headers.get("content-type") != "application/json":
+            raise CrawlerError(
+                "Unexpected content-type for reservation deletion: "
+                f"{response.headers.get('content-type')}"
+            )
+
+        if response.status_code != 200:
+            raise CrawlerError(
+                "Unable to delete reservation "
+                f"{name}: status code {response.status_code}, {response.text}"
+            )
+
+        result = response.json()
+        if len(result.get("errors", [])):
+            error = result["errors"][0]
+            description = error.get("description", "slurmrestd undefined error")
+            raise CrawlerError(f"Unable to delete reservation {name}: {description}")
+
+        logger.debug("Deleted reservation %s via slurmrestd", name)
 
     def setup_for_reservations(self) -> dict:
         """Setup cluster for reservations asset. Returns cleanup state."""
@@ -613,7 +748,7 @@ class DevelopmentHostCluster:
         # Submit timeout job
         job_id = self.submit(
             user,
-            ["--ntasks", str(1)],
+            {"tasks": 1},
             duration=90,
             timelimit=1,
             wait_running=False,
@@ -622,7 +757,7 @@ class DevelopmentHostCluster:
         # Submit completed job
         job_id = self.submit(
             user,
-            ["--ntasks", str(1)],
+            {"tasks": 1},
             duration=1,
             wait_running=False,
         )
@@ -630,7 +765,7 @@ class DevelopmentHostCluster:
         # Submit failed job
         job_id = self.submit(
             user,
-            ["--ntasks", str(1)],
+            {"tasks": 1},
             duration=1,
             wait_running=False,
             success=False,
@@ -640,7 +775,7 @@ class DevelopmentHostCluster:
         for _ in range(10):
             job_id = self.submit(
                 user,
-                ["--ntasks", str(random.choice([1, 4, 16, 32, 64, 128]))],
+                {"tasks": random.choice([1, 4, 16, 32, 64, 128])},
                 duration=random.choice([30, 60, 90]),
                 timelimit=2,
                 wait_running=False,
@@ -649,12 +784,10 @@ class DevelopmentHostCluster:
         # Submit pending job
         job_id = self.submit(
             user,
-            [
-                "--ntasks",
-                str(random.choice([1, 4, 16, 32, 64, 128])),
-                "--begin",
-                "now+1hour",
-            ],
+            {
+                "tasks": random.choice([1, 4, 16, 32, 64, 128]),
+                "begin_time": "now+1hour",
+            },
             duration=30,
             wait_running=False,
         )
@@ -685,7 +818,7 @@ class DevelopmentHostCluster:
         for _ in range(60):
             job_id = self.submit(
                 user,
-                ["--ntasks", str(2)],
+                {"tasks": 2},
                 duration=30,
                 timelimit=2,
                 wait_running=False,
@@ -700,7 +833,7 @@ class DevelopmentHostCluster:
         for _ in range(3):
             job_id = self.submit(
                 user,
-                ["--ntasks", str(1)],
+                {"tasks": 1},
                 duration=30,
                 timelimit=2,
                 wait_running=False,
@@ -715,7 +848,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_per_node}",
+            },
         )
         return job_id, user
 
@@ -726,14 +862,11 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus",
-                str(gpu_per_node),
-                "--begin",
-                "now+1hour",
-            ],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_per_node}",
+                "begin_time": "now+1hour",
+            },
             wait_running=False,
         )
         return job_id, user
@@ -745,7 +878,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_per_node}",
+            },
             duration=30,
         )
         time.sleep(30)
@@ -758,7 +894,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gpus", str(gpu_per_node)],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_per_node}",
+            },
             duration=30,
         )
         time.sleep(30)
@@ -773,7 +912,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gpus", str(gpu_per_node * 2)],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_per_node * 2}",
+            },
         )
         return job_id, user
 
@@ -784,7 +926,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gpus", f"{gpu_type}:1"],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gres/gpu:{gpu_type}:1",
+            },
         )
         return job_id, user
 
@@ -793,14 +938,11 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus-per-node",
-                str(1),
-                "--nodes",
-                str(2),
-            ],
+            {
+                "partition": gpu_partition,
+                "tres_per_node": "gres/gpu:1",
+                "nodes": "2",
+            },
         )
         return job_id, user
 
@@ -809,14 +951,14 @@ class DevelopmentHostCluster:
     ) -> tuple[int, str]:
         """Setup cluster for job-gpus-multi-types asset. Returns (job_id, user)."""
         user = self.pick_user()
+        # Format: "gres/gpu:type1:1,gres/gpu:type2:1"
+        tres_per_node = ",".join([f"gres/gpu:{gpu_type}:1" for gpu_type in gpu_types])
         job_id = self.submit(
             user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus-per-node",
-                ",".join([f"{gpu_type}:1" for gpu_type in gpu_types]),
-            ],
+            {
+                "partition": gpu_partition,
+                "tres_per_node": tres_per_node,
+            },
         )
         return job_id, user
 
@@ -825,14 +967,11 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus-per-socket",
-                str(2),
-                "--sockets-per-node",
-                str(2),
-            ],
+            {
+                "partition": gpu_partition,
+                "tres_per_socket": "gres/gpu:2",
+                "sockets_per_node": 2,
+            },
         )
         return job_id, user
 
@@ -841,14 +980,11 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            [
-                "--partition",
-                gpu_partition,
-                "--gpus-per-task",
-                str(2),
-                "--ntasks",
-                str(2),
-            ],
+            {
+                "partition": gpu_partition,
+                "tres_per_task": "gres/gpu:2",
+                "tasks": 2,
+            },
         )
         return job_id, user
 
@@ -859,7 +995,10 @@ class DevelopmentHostCluster:
         user = self.pick_user()
         job_id = self.submit(
             user,
-            ["--partition", gpu_partition, "--gres", f"gpu:{gpu_per_node}"],
+            {
+                "partition": gpu_partition,
+                "tres_per_job": f"gpu:{gpu_per_node}",
+            },
         )
         return job_id, user
 
@@ -875,17 +1014,14 @@ class DevelopmentHostCluster:
                 any node in partition is used.
         """
         user = self.pick_user()
-        args = [
-            "--partition",
-            gpu_partition,
-            "--gpus",
-            str(gpu_per_node),
-            "--nodes",
-            str(1),
-        ]
+        job_params: dict[str, t.Any] = {
+            "partition": gpu_partition,
+            "tres_per_job": f"gres/gpu:{gpu_per_node}",
+            "nodes": "1",
+        }
         if node_name:
-            args.extend(["--nodelist", node_name])
-        job_id = self.submit(user, args)
+            job_params["required_nodes"] = [node_name]
+        job_id = self.submit(user, job_params)
         return job_id, user
 
     def setup_for_node_gpus_mixed(
@@ -899,10 +1035,13 @@ class DevelopmentHostCluster:
                 any node in partition is used.
         """
         user = self.pick_user()
-        args = ["--partition", gpu_partition, "--gpus", str(1)]
+        job_params: dict[str, t.Any] = {
+            "partition": gpu_partition,
+            "tres_per_job": "gres/gpu:1",
+        }
         if node_name:
-            args.extend(["--nodelist", node_name])
-        job_id = self.submit(user, args)
+            job_params["nodelist"] = node_name
+        job_id = self.submit(user, job_params)
         return job_id, user
 
     def setup_for_node_gpus_idle(
@@ -916,10 +1055,13 @@ class DevelopmentHostCluster:
                 any node in partition is used.
         """
         user = self.pick_user()
-        args = ["--partition", gpu_partition, "--gpus", str(1)]
+        job_params: dict[str, t.Any] = {
+            "partition": gpu_partition,
+            "tres_per_job": "gres/gpu:1",
+        }
         if node_name:
-            args.extend(["--nodelist", node_name])
-        job_id = self.submit(user, args)
+            job_params["required_nodes"] = [node_name]
+        job_id = self.submit(user, job_params)
         # Get node before canceling
         node = self.job_nodes(job_id)[0]
         # Cancel job and wait for idle
