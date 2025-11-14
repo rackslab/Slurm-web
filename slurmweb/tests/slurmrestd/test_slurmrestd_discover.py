@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import typing as t
 from unittest import mock
 import urllib
 
@@ -31,8 +32,8 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         self,
         slurm_version: str,
         api_version: str,
-        responses: list[Exception | str],
-    ) -> tuple[dict | None, ...]:
+        responses: t.List[t.Union[Exception, str]],
+    ) -> t.Tuple[t.Optional[t.Dict[str, t.Any]], ...]:
         """Set up mock for _execute_request() method.
 
         Args:
@@ -53,7 +54,11 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         for response in responses:
             if isinstance(response, str):
                 asset = load_json_asset(
-                    ASSETS / "slurmrestd" / slurm_version / api_version / f"{response}.json"
+                    ASSETS
+                    / "slurmrestd"
+                    / slurm_version
+                    / api_version
+                    / f"{response}.json"
                 )
                 processed_responses.append(asset)
                 returned_assets.append(asset)
