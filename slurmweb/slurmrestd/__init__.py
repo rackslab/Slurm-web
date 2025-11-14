@@ -529,7 +529,7 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        supported_versions: list[str],
+        supported_versions: t.List[str],
         filters: "RuntimeSettings",
         cache: "RuntimeSettings",
         service: "CachingService",
