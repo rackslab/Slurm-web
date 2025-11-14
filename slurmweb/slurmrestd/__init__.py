@@ -404,13 +404,13 @@ class SlurmrestdAdapter(Slurmrestd):
         self,
         uri: urllib.parse.ParseResult,
         auth: SlurmrestdAuthentifier,
-        supported_versions: list[str],
+        supported_versions: t.List[str],
     ):
         super().__init__(uri, auth, supported_versions)
         # Will be set after discover() is called
         self._adaptation_chain = []
 
-    def discover(self) -> tuple[str, str, str]:
+    def discover(self) -> t.Tuple[str, str, str]:
         """Discover API version and build adaptation chain if needed."""
         result = super().discover()
 
