@@ -1151,17 +1151,34 @@ class ComponentCrawler:
         self.assets_map: dict[str, Asset] = {asset.name: asset for asset in assets}
         self.cluster = cluster
 
-    def count_assets_to_crawl(self) -> int:
-        """Count assets that need to be crawled (don't exist yet)."""
+    def count_assets_to_crawl(self, asset_filter: list[str] | None = None) -> int:
+        """Count assets that need to be crawled (don't exist yet).
+
+        Args:
+            asset_filter: Optional list of asset names to filter. If provided,
+                only count assets matching these names.
+        """
         count = 0
         for asset in self.assets:
+            if asset_filter and asset.name not in asset_filter:
+                continue
             if not self.manager.exists(asset):
                 count += 1
         return count
 
-    def crawl_all_assets(self, progress_bar=None) -> None:
-        """Crawl all assets, resetting cluster and handling cleanup for each."""
+    def crawl_all_assets(
+        self, progress_bar=None, asset_filter: list[str] | None = None
+    ) -> None:
+        """Crawl all assets, resetting cluster and handling cleanup for each.
+
+        Args:
+            progress_bar: Optional progress bar to update.
+            asset_filter: Optional list of asset names to filter. If provided,
+                only crawl assets matching these names.
+        """
         for asset in self.assets:
+            if asset_filter and asset.name not in asset_filter:
+                continue
             # Track if asset was actually crawled (not skipped)
             asset_exists_before = self.manager.exists(asset)
             self.crawl(asset, progress_bar=progress_bar)

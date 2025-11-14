@@ -168,6 +168,7 @@ def _count_total_assets(
     dev_tmp_dir: Path,
     token: str,
     clusters_with_latest_api: set[str],
+    asset_filter: list[str] | None = None,
 ) -> int:
     """Return the number of assets that need to be crawled."""
     total_assets = 0
@@ -180,7 +181,7 @@ def _count_total_assets(
             for slurm_version, api_version in discovered:
                 auth = cluster.auth
                 crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
-                total_assets += crawler.count_assets_to_crawl()
+                total_assets += crawler.count_assets_to_crawl(asset_filter)
 
         if "gateway" in components_to_process:
             if infrastructure in clusters_with_latest_api:
@@ -190,7 +191,7 @@ def _count_total_assets(
                     infrastructure,
                     dev_tmp_dir,
                 )
-                total_assets += gateway_crawler.count_assets_to_crawl()
+                total_assets += gateway_crawler.count_assets_to_crawl(asset_filter)
 
         # Count agent assets
         if "agent" in components_to_process:
@@ -202,7 +203,7 @@ def _count_total_assets(
                     crawl_metrics,
                     cluster,
                 )
-                total_assets += agent_crawler.count_assets_to_crawl()
+                total_assets += agent_crawler.count_assets_to_crawl(asset_filter)
 
         # Count prometheus assets
         if "prometheus" in components_to_process:
@@ -212,7 +213,7 @@ def _count_total_assets(
                     settings.metrics.job,
                     cluster,
                 )
-                total_assets += prometheus_crawler.count_assets_to_crawl()
+                total_assets += prometheus_crawler.count_assets_to_crawl(asset_filter)
     return total_assets
 
 
@@ -224,6 +225,7 @@ def _crawl_assets(
     token: str,
     progress_bar: SimpleProgressBar | None,
     clusters_with_latest_api: set[str],
+    asset_filter: list[str] | None = None,
 ) -> None:
     """Perform crawling for all selected infrastructures and components."""
     for infrastructure in clusters_to_process:
@@ -240,7 +242,7 @@ def _crawl_assets(
                 )
                 auth = cluster.auth
                 crawler = SlurmrestdCrawler(cluster, auth, slurm_version, api_version)
-                crawler.crawl_all_assets(progress_bar)
+                crawler.crawl_all_assets(progress_bar, asset_filter)
 
         if "gateway" in components_to_process:
             if infrastructure in clusters_with_latest_api:
@@ -250,7 +252,7 @@ def _crawl_assets(
                     infrastructure,
                     dev_tmp_dir,
                 )
-                gateway.crawl_all_assets(progress_bar)
+                gateway.crawl_all_assets(progress_bar, asset_filter)
             else:
                 logger.info(
                     "Skipping gateway for cluster %s "
@@ -269,7 +271,7 @@ def _crawl_assets(
                     crawl_metrics,
                     cluster,
                 )
-                agent_crawler.crawl_all_assets(progress_bar)
+                agent_crawler.crawl_all_assets(progress_bar, asset_filter)
             else:
                 logger.info(
                     "Skipping agent for cluster %s "
@@ -284,7 +286,7 @@ def _crawl_assets(
                     settings.metrics.job,
                     cluster,
                 )
-                prometheus_crawler.crawl_all_assets(progress_bar)
+                prometheus_crawler.crawl_all_assets(progress_bar, asset_filter)
             else:
                 logger.info(
                     "Skipping prometheus for cluster %s (not metrics infrastructure)",
@@ -298,6 +300,7 @@ def _run_crawl(
     dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
     token: str,
+    asset_filter: list[str] | None = None,
 ) -> None:
     """Count, crawl and dump assets with progress bar."""
     # Discover which clusters support the latest API version
@@ -327,6 +330,7 @@ def _run_crawl(
         dev_tmp_dir,
         token,
         clusters_with_latest_api,
+        asset_filter,
     )
     # Create progress bar if stdout is a TTY
     use_progress = sys.stdout.isatty() and total_assets > 0
@@ -341,6 +345,7 @@ def _run_crawl(
             token,
             progress_bar,
             clusters_with_latest_api,
+            asset_filter,
         )
     finally:
         if progress_bar:
@@ -362,6 +367,11 @@ def main() -> None:
         nargs="+",
         choices=["slurmrestd", "gateway", "agent", "prometheus"],
         help="Restrict crawling to specific components (default: all components)",
+    )
+    parser.add_argument(
+        "--assets",
+        nargs="+",
+        help="Restrict crawling to specific asset names (default: all assets)",
     )
     args = parser.parse_args()
 
@@ -437,6 +447,11 @@ def main() -> None:
         dev_tmp_dir,
     )
 
+    # Get asset filter from arguments
+    asset_filter = args.assets if args.assets else None
+    if asset_filter:
+        logger.info("Restricting to assets: %s", asset_filter)
+
     try:
         _run_crawl(
             clusters_to_process,
@@ -444,6 +459,7 @@ def main() -> None:
             dev_host,
             dev_tmp_dir,
             token,
+            asset_filter,
         )
     except KeyboardInterrupt:
         logger.warning("Interrupted by user (Ctrl-C)")
