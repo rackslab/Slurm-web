@@ -13,7 +13,6 @@ import json
 import socket
 from pathlib import Path
 import shlex
-import urllib
 import time
 import random
 import logging
@@ -156,14 +155,16 @@ class DevelopmentHostCluster:
         self,
         dev_host: DevelopmentHostClient,
         name: str,
-        uri: urllib.parse.ParseResult,
+        settings: RuntimeSettings,
         auth: SlurmrestdAuthentifier,
     ):
         self.dev_host = dev_host
         self.name = name
+        self.settings = settings
         self.auth = auth
         self.session = requests.Session()
 
+        uri = settings.slurmrestd.uri
         if uri.scheme == "unix":
             self.prefix = "http+unix://slurmrestd"
             self.session.mount(self.prefix, SlurmrestdUnixAdapter(uri.path))
