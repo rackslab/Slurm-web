@@ -14,7 +14,6 @@ import getpass
 import logging
 
 from rfl.log import setup_logger
-from rfl.settings import RuntimeSettings
 
 from crawler.lib import (
     load_settings,
@@ -93,7 +92,7 @@ def _create_cluster(
     infrastructure: str,
     dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
-) -> tuple[DevelopmentHostCluster, RuntimeSettings]:
+) -> DevelopmentHostCluster:
     """Create and return a DevelopmentHostCluster instance for the given infrastructure.
 
     Args:
@@ -102,8 +101,7 @@ def _create_cluster(
         dev_tmp_dir: Temporary directory for development environment
 
     Returns:
-        Tuple of (cluster, settings) where cluster is the DevelopmentHostCluster
-        instance and settings is the loaded RuntimeSettings.
+        DevelopmentHostCluster instance.
     """
     # Load agent configuration
     settings = load_settings(
@@ -117,18 +115,23 @@ def _create_cluster(
         settings.slurmrestd.jwt_lifespan,
         settings.slurmrestd.jwt_token,
     )
-    cluster = DevelopmentHostCluster(
-        dev_host, infrastructure, settings.slurmrestd.uri, auth
-    )
-    return cluster, settings
+    cluster = DevelopmentHostCluster(dev_host, infrastructure, settings, auth)
+    return cluster
 
 
 def _get_clusters_with_latest_api(
     clusters_to_process: list[str],
     dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
+    clusters_cache: dict[str, DevelopmentHostCluster],
 ) -> set[str]:
     """Discover which clusters support the latest slurmrestd API version.
+
+    Args:
+        clusters_to_process: List of infrastructure names to check.
+        dev_host: Development host client.
+        dev_tmp_dir: Temporary directory for development environment.
+        clusters_cache: Dictionary mapping infrastructure names to clusters.
 
     Returns:
         Set of infrastructure names that support the latest API version.
@@ -137,7 +140,11 @@ def _get_clusters_with_latest_api(
     clusters_with_latest_api = set()
 
     for infrastructure in clusters_to_process:
-        cluster, _ = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
+        if infrastructure not in clusters_cache:
+            clusters_cache[infrastructure] = _create_cluster(
+                infrastructure, dev_host, dev_tmp_dir
+            )
+        cluster = clusters_cache[infrastructure]
 
         # Discover API versions for this cluster
         discovered = cluster.discover_api_versions()
@@ -164,7 +171,7 @@ def _get_clusters_with_latest_api(
 def _count_total_assets(
     clusters_to_process: list[str],
     components_to_process: list[str],
-    dev_host: DevelopmentHostClient,
+    clusters_cache: dict[str, DevelopmentHostCluster],
     dev_tmp_dir: Path,
     token: str,
     clusters_with_latest_api: set[str],
@@ -173,7 +180,7 @@ def _count_total_assets(
     """Return the number of assets that need to be crawled."""
     total_assets = 0
     for infrastructure in clusters_to_process:
-        cluster, settings = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
+        cluster = clusters_cache[infrastructure]
 
         # Count assets for each component
         if "slurmrestd" in components_to_process:
@@ -198,7 +205,7 @@ def _count_total_assets(
             if infrastructure in clusters_with_latest_api:
                 crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
                 agent_crawler = AgentCrawler(
-                    settings.service.port,
+                    cluster.settings.service.port,
                     token,
                     crawl_metrics,
                     cluster,
@@ -209,8 +216,8 @@ def _count_total_assets(
         if "prometheus" in components_to_process:
             if infrastructure == METRICS_PREFERRED_INFRASTRUCTURE:
                 prometheus_crawler = PrometheusCrawler(
-                    settings.metrics.host.geturl(),
-                    settings.metrics.job,
+                    cluster.settings.metrics.host.geturl(),
+                    cluster.settings.metrics.job,
                     cluster,
                 )
                 total_assets += prometheus_crawler.count_assets_to_crawl(asset_filter)
@@ -220,7 +227,7 @@ def _count_total_assets(
 def _crawl_assets(
     clusters_to_process: list[str],
     components_to_process: list[str],
-    dev_host: DevelopmentHostClient,
+    clusters_cache: dict[str, DevelopmentHostCluster],
     dev_tmp_dir: Path,
     token: str,
     progress_bar: SimpleProgressBar | None,
@@ -229,7 +236,7 @@ def _crawl_assets(
 ) -> None:
     """Perform crawling for all selected infrastructures and components."""
     for infrastructure in clusters_to_process:
-        cluster, settings = _create_cluster(infrastructure, dev_host, dev_tmp_dir)
+        cluster = clusters_cache[infrastructure]
 
         # Initialize crawlers and crawl
         if "slurmrestd" in components_to_process:
@@ -266,7 +273,7 @@ def _crawl_assets(
         if "agent" in components_to_process:
             if infrastructure in clusters_with_latest_api:
                 agent_crawler = AgentCrawler(
-                    settings.service.port,
+                    cluster.settings.service.port,
                     token,
                     crawl_metrics,
                     cluster,
@@ -282,8 +289,8 @@ def _crawl_assets(
         if "prometheus" in components_to_process:
             if crawl_metrics:
                 prometheus_crawler = PrometheusCrawler(
-                    settings.metrics.host.geturl(),
-                    settings.metrics.job,
+                    cluster.settings.metrics.host.geturl(),
+                    cluster.settings.metrics.job,
                     cluster,
                 )
                 prometheus_crawler.crawl_all_assets(progress_bar, asset_filter)
@@ -303,9 +310,16 @@ def _run_crawl(
     asset_filter: list[str] | None = None,
 ) -> None:
     """Count, crawl and dump assets with progress bar."""
+    # Initialize clusters once and cache them
+    clusters_cache: dict[str, DevelopmentHostCluster] = {}
+    for infrastructure in clusters_to_process:
+        clusters_cache[infrastructure] = _create_cluster(
+            infrastructure, dev_host, dev_tmp_dir
+        )
+
     # Discover which clusters support the latest API version
     clusters_with_latest_api = _get_clusters_with_latest_api(
-        clusters_to_process, dev_host, dev_tmp_dir
+        clusters_to_process, dev_host, dev_tmp_dir, clusters_cache
     )
 
     if "gateway" in components_to_process or "agent" in components_to_process:
@@ -326,7 +340,7 @@ def _run_crawl(
     total_assets = _count_total_assets(
         clusters_to_process,
         components_to_process,
-        dev_host,
+        clusters_cache,
         dev_tmp_dir,
         token,
         clusters_with_latest_api,
@@ -340,7 +354,7 @@ def _run_crawl(
         _crawl_assets(
             clusters_to_process,
             components_to_process,
-            dev_host,
+            clusters_cache,
             dev_tmp_dir,
             token,
             progress_bar,
