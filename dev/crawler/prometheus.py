@@ -6,15 +6,18 @@
 #
 # SPDX-License-Identifier: MIT
 
+from __future__ import annotations
 import logging
 from pathlib import Path
+import typing as t
+
+import requests
 
 from .lib import (
     Asset,
     BaseAssetsManager,
     ComponentCrawler,
     DevelopmentHostCluster,
-    dump_component_query,
 )
 
 from slurmweb.metrics.db import SlurmwebMetricsDB, SlurmwebMetricQuery, SlurmwebMetricId
@@ -56,16 +59,26 @@ class PrometheusCrawler(ComponentCrawler):
             cluster,
         )
 
+    def get_component_response(
+        self,
+        query: str,
+        headers: dict[str, str] | None = None,
+        method: str = "GET",
+        content: dict[str, t.Any] | None = None,
+    ) -> requests.Response:
+        """Get HTTP response from Prometheus."""
+        if headers is None:
+            headers = {}
+        if method != "GET":
+            raise RuntimeError(f"Unsupported request method {method} for Prometheus")
+        return requests.get(f"{self.url}{query}", headers=headers)
+
     def _crawl_nodes_hour(self):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["nodes"]
         for _id in params.ids:
             _, _, _query = self.db._query(_id, params, "hour")
-            dump_component_query(
-                self.manager.statuses,
-                self.url,
+            self.dump_component_query(
                 f"{self.db.REQUEST_BASE_PATH}{_query}",
-                {},
-                self.manager.path,
                 "nodes-hour",
                 prettify=False,
             )
@@ -74,12 +87,8 @@ class PrometheusCrawler(ComponentCrawler):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["cores"]
         for _id in params.ids:
             _, _, _query = self.db._query(_id, params, "hour")
-            dump_component_query(
-                self.manager.statuses,
-                self.url,
+            self.dump_component_query(
                 f"{self.db.REQUEST_BASE_PATH}{_query}",
-                {},
-                self.manager.path,
                 "cores-hour",
                 prettify=False,
             )
@@ -88,12 +97,8 @@ class PrometheusCrawler(ComponentCrawler):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["gpus"]
         for _id in params.ids:
             _, _, _query = self.db._query(_id, params, "hour")
-            dump_component_query(
-                self.manager.statuses,
-                self.url,
+            self.dump_component_query(
                 f"{self.db.REQUEST_BASE_PATH}{_query}",
-                {},
-                self.manager.path,
                 "gpus-hour",
                 prettify=False,
             )
@@ -102,12 +107,8 @@ class PrometheusCrawler(ComponentCrawler):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["jobs"]
         for _id in params.ids:
             _, _, _query = self.db._query(_id, params, "hour")
-            dump_component_query(
-                self.manager.statuses,
-                self.url,
+            self.dump_component_query(
                 f"{self.db.REQUEST_BASE_PATH}{_query}",
-                {},
-                self.manager.path,
                 "jobs-hour",
                 prettify=False,
             )
@@ -116,12 +117,8 @@ class PrometheusCrawler(ComponentCrawler):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["cache"]
         for _id in params.ids:
             _, _, _query = self.db._query(_id, params, "hour")
-            dump_component_query(
-                self.manager.statuses,
-                self.url,
+            self.dump_component_query(
                 f"{self.db.REQUEST_BASE_PATH}{_query}",
-                {},
-                self.manager.path,
                 "cache-hour",
                 prettify=False,
             )
@@ -134,22 +131,14 @@ class PrometheusCrawler(ComponentCrawler):
             SlurmwebMetricsDB.RANGE_RESOLUTIONS["30s"],
         )
         _, _, _query = self.db._query(params.ids[0], params, "hour")
-        dump_component_query(
-            self.manager.statuses,
-            self.url,
+        self.dump_component_query(
             f"{self.db.REQUEST_BASE_PATH}{_query}",
-            {},
-            self.manager.path,
             "unknown-metric",
         )
 
     def _crawl_unknown_path(self):
         # query unknown API path
-        dump_component_query(
-            self.manager.statuses,
-            self.url,
+        self.dump_component_query(
             f"{self.db.REQUEST_BASE_PATH}/fail",
-            {},
-            self.manager.path,
             "unknown-path",
         )

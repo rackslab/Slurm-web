@@ -186,17 +186,27 @@ class DevelopmentHostCluster:
         # Discover and save the latest supported slurmrestd API version
         self.api = self._discover_latest_api_version()
 
-    def query_slurmrestd(self, query: str, headers: dict[str, str] | None = None):
-        """Send GET HTTP request to slurmrestd and return JSON result. Raise
-        RuntimeError in case of connection error or not JSON result."""
+    def query_slurmrestd(
+        self, query: str, headers: dict[str, str] | None = None
+    ) -> requests.Response:
+        """Send GET HTTP request to slurmrestd and return Response object.
+
+        Args:
+            query: Query path to append to prefix.
+            headers: Optional HTTP headers. If None, uses auth headers.
+
+        Returns:
+            requests.Response object.
+
+        Raises:
+            RuntimeError: In case of connection error.
+        """
         if headers is None:
             headers = self.auth.headers()
         try:
-            response = self.session.get(f"{self.prefix}/{query}", headers=headers)
+            return self.session.get(f"{self.prefix}/{query}", headers=headers)
         except requests.exceptions.ConnectionError as err:
-            raise RuntimeError(f"Unable to connect to slurmrestd: {err}")
-
-        return response.text, response.headers.get("content-type"), response.status_code
+            raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
 
     def query_slurmrestd_json(self, query: str, headers: dict[str, str] | None = None):
         """Send GET HTTP request to slurmrestd and return JSON result. Raise
@@ -251,13 +261,16 @@ class DevelopmentHostCluster:
 
         for api_version in SUPPORTED_SLURMRESTD_API_VERSIONS:
             try:
-                text, content_type, status = self.query_slurmrestd(
+                response = self.query_slurmrestd(
                     f"/slurm/v{api_version}/ping", self.auth.headers()
                 )
 
-                if status == 200 and content_type == "application/json":
+                if (
+                    response.status_code == 200
+                    and response.headers.get("content-type") == "application/json"
+                ):
                     try:
-                        result = json.loads(text)
+                        result = response.json()
                         if len(result.get("errors", [])):
                             continue
 
@@ -283,13 +296,13 @@ class DevelopmentHostCluster:
                             err,
                         )
                         continue
-                elif status == 401:
+                elif response.status_code == 401:
                     logger.warning(
                         "Authentication error when trying API version %s, stopping",
                         api_version,
                     )
                     break
-                elif status == 404:
+                elif response.status_code == 404:
                     logger.debug(
                         "API version %s not found (404), trying next", api_version
                     )
@@ -1147,114 +1160,6 @@ class DevelopmentHostCluster:
         self.nodes_resume()
 
 
-def get_component_response(
-    url: str,
-    query: str,
-    headers: str,
-    method: str = "GET",
-    content: t.Optional[t.Dict] = None,
-):
-    if method == "GET":
-        response = requests.get(f"{url}{query}", headers=headers)
-    elif method == "POST":
-        kwargs = {}
-        if content:
-            kwargs["json"] = content
-        response = requests.post(f"{url}{query}", headers=headers, **kwargs)
-    else:
-        raise RuntimeError(f"Unsupport request method {method}")
-    return response
-
-
-def dump_component_query(
-    requests_statuses,
-    url: str,
-    query: str,
-    headers: str,
-    assets_path: Path,
-    asset_name: dict[int, str] | str,
-    skip_exist: bool = True,
-    prettify: bool = True,
-    limit_dump=0,
-    method: str = "GET",
-    content: t.Optional[t.Dict] = None,
-) -> t.Any:
-    """Send GET HTTP request to Slurm-web component pointed by URL and save JSON result
-    in assets directory."""
-    if skip_exist:
-        if isinstance(asset_name, dict):
-            all_asset_exist = True
-            for _asset_name in asset_name.values():
-                if not len(list(assets_path.glob(f"{_asset_name}.*"))):
-                    all_asset_exist = False
-                    break
-            if all_asset_exist:
-                return
-        else:
-            assert isinstance(asset_name, str)
-            if len(list(assets_path.glob(f"{asset_name}.*"))):
-                return
-    if method == "GET":
-        response = requests.get(f"{url}{query}", headers=headers)
-    elif method == "POST":
-        kwargs = {}
-        if content:
-            kwargs["json"] = content
-        response = requests.post(f"{url}{query}", headers=headers, **kwargs)
-    else:
-        raise RuntimeError(f"Unsupport request method {method}")
-    return dump_component_response(
-        requests_statuses,
-        assets_path,
-        asset_name,
-        response,
-        skip_exist,
-        prettify,
-        limit_dump,
-    )
-
-
-def dump_component_response(
-    requests_statuses,
-    assets_path: Path,
-    asset_name: dict[int, str] | str,
-    response,
-    skip_exist: bool = True,
-    prettify: bool = True,
-    limit_dump=0,
-):
-    if isinstance(asset_name, dict):
-        _asset_name = asset_name[response.status_code]
-    else:
-        _asset_name = asset_name
-    content_type = response.headers.get("content-type")
-    if _asset_name not in requests_statuses:
-        requests_statuses[_asset_name] = {}
-    requests_statuses[_asset_name]["content-type"] = content_type
-    requests_statuses[_asset_name]["status"] = response.status_code
-    if content_type == "application/json":
-        asset = assets_path / f"{_asset_name}.json"
-        data = json.loads(response.text)
-    else:
-        asset = assets_path / f"{_asset_name}.txt"
-        data = response.text
-
-    if asset.exists():
-        if skip_exist:
-            logger.warning("Asset %s already exists, skipping dump", asset)
-    else:
-        with open(asset, "w+") as fh:
-            if asset.suffix == ".json":
-                _data = data
-                if limit_dump:
-                    _data = _data[:limit_dump]
-                fh.write(json.dumps(_data, indent=2 if prettify else None))
-                # FIXME: add newline
-            else:
-                fh.write(data)
-    return data
-
-
 class CrawlerError(Exception):
     pass
 
@@ -1293,6 +1198,174 @@ class ComponentCrawler:
         # Create a lookup dict by name for efficient access
         self.assets_map: dict[str, Asset] = {asset.name: asset for asset in assets}
         self.cluster = cluster
+
+    def get_component_response(
+        self,
+        query: str,
+        headers: dict[str, str] | None = None,
+        method: str = "GET",
+        content: dict[str, t.Any] | None = None,
+    ) -> requests.Response:
+        """Get HTTP response from component. Must be implemented by subclasses.
+
+        Args:
+            query: Query path.
+            headers: Optional HTTP headers.
+            method: HTTP method ("GET" or "POST").
+            content: Optional content for POST requests.
+
+        Returns:
+            requests.Response object.
+        """
+        raise NotImplementedError("Subclasses must implement get_component_response()")
+
+    def dump_component_response(
+        self,
+        asset_name: dict[int, str] | str,
+        response: requests.Response,
+        shared_asset: bool = False,
+        limit_dump: int = 0,
+        limit_key: str | None = None,
+        skip_exist: bool = True,
+        prettify: bool = True,
+    ) -> t.Any:
+        """Save component response to asset file.
+
+        Args:
+            asset_name: Asset name (string) or dict mapping status codes to asset names.
+            response: HTTP response object.
+            shared_asset: If True, save to parent directory (for shared assets).
+            limit_dump: Limit number of items to dump (for arrays or dict keys).
+            limit_key: Optional key in dict to limit (for nested limiting).
+            skip_exist: If True, skip if asset already exists.
+            prettify: If True, format JSON with indentation.
+
+        Returns:
+            Parsed data (dict/list for JSON, string for text).
+        """
+        # Handle status-code-based asset names
+        if isinstance(asset_name, dict):
+            _asset_name = asset_name.get(response.status_code, asset_name.get(200, ""))
+            if not _asset_name:
+                raise CrawlerError(
+                    f"No asset name found for status {response.status_code} "
+                    f"in {asset_name}"
+                )
+        else:
+            _asset_name = asset_name
+
+        # Determine target directory
+        target_dir = self.manager.path if not shared_asset else self.manager.path.parent
+
+        # Save status information
+        if not shared_asset:
+            if _asset_name not in self.manager.statuses:
+                self.manager.statuses[_asset_name] = {}
+            self.manager.statuses[_asset_name]["content-type"] = response.headers.get(
+                "content-type", ""
+            )
+            self.manager.statuses[_asset_name]["status"] = response.status_code
+
+        # Determine file path and parse data
+        content_type = response.headers.get("content-type", "")
+        if content_type == "application/json":
+            asset = target_dir / f"{_asset_name}.json"
+            data = response.json()
+        else:
+            asset = target_dir / f"{_asset_name}.txt"
+            data = response.text
+
+        # Check if asset exists
+        if asset.exists():
+            if skip_exist:
+                logger.warning("Asset %s already exists, skipping dump", asset)
+                return data
+
+        # Write asset file
+        with open(asset, "w+") as fh:
+            if content_type == "application/json":
+                _data = data
+                # Apply limit if specified
+                if limit_dump:
+                    if limit_key:
+                        # Nested limiting: limit a specific key in dict
+                        _data = data.copy()
+                        _data[limit_key] = _data[limit_key][:limit_dump]
+                    elif isinstance(data, list):
+                        # Array limiting: limit the list itself
+                        _data = data[:limit_dump]
+                fh.write(json.dumps(_data, indent=2 if prettify else None))
+                # FIXME: add newline
+            else:
+                fh.write(data)
+
+        return data
+
+    def dump_component_query(
+        self,
+        query: str,
+        asset_name: dict[int, str] | str,
+        headers: dict[str, str] | None = None,
+        shared_asset: bool = False,
+        limit_dump: int = 0,
+        limit_key: str | None = None,
+        skip_exist: bool = True,
+        prettify: bool = True,
+        method: str = "GET",
+        content: dict[str, t.Any] | None = None,
+    ) -> t.Any:
+        """Send HTTP request and save result in assets directory.
+
+        Args:
+            query: Query path for the request.
+            asset_name: Asset name (string) or dict mapping status codes to asset names.
+            headers: Optional HTTP headers.
+            shared_asset: If True, save to parent directory.
+            limit_dump: Limit number of items to dump.
+            limit_key: Optional key in dict to limit.
+            skip_exist: If True, skip if asset already exists.
+            prettify: If True, format JSON with indentation.
+            method: HTTP method ("GET" or "POST").
+            content: Optional content for POST requests.
+
+        Returns:
+            Parsed data (dict/list for JSON, string for text).
+        """
+        # Check if asset exists (for skip_exist optimization)
+        if skip_exist:
+            if isinstance(asset_name, dict):
+                all_asset_exist = True
+                target_dir = (
+                    self.manager.path if not shared_asset else self.manager.path.parent
+                )
+                for _asset_name in asset_name.values():
+                    if not len(list(target_dir.glob(f"{_asset_name}.*"))):
+                        all_asset_exist = False
+                        break
+                if all_asset_exist:
+                    return
+            else:
+                target_dir = (
+                    self.manager.path if not shared_asset else self.manager.path.parent
+                )
+                if len(list(target_dir.glob(f"{asset_name}.*"))):
+                    return
+
+        # Make HTTP request
+        response = self.get_component_response(
+            query, headers=headers, method=method, content=content
+        )
+
+        # Dump response using base method
+        return self.dump_component_response(
+            asset_name=asset_name,
+            response=response,
+            shared_asset=shared_asset,
+            limit_dump=limit_dump,
+            limit_key=limit_key,
+            skip_exist=skip_exist,
+            prettify=prettify,
+        )
 
     def count_assets_to_crawl(self, asset_filter: list[str] | None = None) -> int:
         """Count assets that need to be crawled (don't exist yet).
@@ -1371,34 +1444,21 @@ class TokenizedComponentCrawler(ComponentCrawler):
         self.token = token
 
     def get_component_response(
-        self, query: str, headers: dict[str, str] | None = None, **kwargs
-    ):
-        if headers is None:
-            headers = {"Authorization": f"Bearer {self.token}"}
-        return get_component_response(self.url, query, headers, **kwargs)
-
-    def dump_component_query(
         self,
         query: str,
-        asset_name: dict[int, str] | str,
         headers: dict[str, str] | None = None,
-        **kwargs,
-    ):
+        method: str = "GET",
+        content: dict[str, t.Any] | None = None,
+    ) -> requests.Response:
+        """Get HTTP response from component using token authentication."""
         if headers is None:
             headers = {"Authorization": f"Bearer {self.token}"}
-        return dump_component_query(
-            self.manager.statuses,
-            self.url,
-            query,
-            headers,
-            self.manager.path,
-            asset_name,
-            **kwargs,
-        )
-
-    def dump_component_response(
-        self, asset_name: dict[int, str] | str, response, **kwargs
-    ):
-        return dump_component_response(
-            self.manager.statuses, self.manager.path, asset_name, response, **kwargs
-        )
+        if method == "GET":
+            return requests.get(f"{self.url}{query}", headers=headers)
+        elif method == "POST":
+            kwargs = {}
+            if content:
+                kwargs["json"] = content
+            return requests.post(f"{self.url}{query}", headers=headers, **kwargs)
+        else:
+            raise RuntimeError(f"Unsupported request method {method}")
