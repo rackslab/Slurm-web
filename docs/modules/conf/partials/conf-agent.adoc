@@ -281,7 +281,33 @@ _No default value_
 
 |version
 |str
-|Slurm REST API version.
+|Slurm REST API version (deprecated).
+
+This parameter is deprecated. Use `versions` instead to specify a list of
+supported slurmrestd API versions.
+
+CAUTION: You SHOULD NOT change this parameter unless you really know what
+you are doing. This parameter is more intented for Slurm-web developers
+rather than end users. Slurm-web is officially tested and validated with
+the default value only.
+
+
+WARNING: This parameter is *deprecated* in favor of `[slurmrestd]` > `versions`.
+
+
+
+_No default value_
+
+|-
+
+|versions
+|list[str]
+|List of supported slurmrestd REST API versions to try during discovery,
+in descending order (newest first).
+
+The agent will try each version in order until it finds one that works.
+This allows the agent to support multiple slurmrestd API versions
+automatically.
 
 CAUTION: You SHOULD NOT change this parameter unless you really know what
 you are doing. This parameter is more intented for Slurm-web developers
@@ -292,7 +318,17 @@ the default value only.
 
 
 
-*Default:* `0.0.41`
+*Default:*
+
+
+* `0.0.44`
+
+* `0.0.43`
+
+* `0.0.42`
+
+* `0.0.41`
+
 
 |-
 
@@ -436,8 +472,6 @@ unique job, all other fields are filtered out.
 
 * `current_working_directory`
 
-* `exclusive`
-
 * `gres_detail`
 
 * `last_sched_evaluation`
@@ -446,13 +480,15 @@ unique job, all other fields are filtered out.
 
 * `partition`
 
+* `shared`
+
 * `sockets_per_node`
 
-* `standard_error`
+* `stderr_expanded`
 
-* `standard_input`
+* `stdin_expanded`
 
-* `standard_output`
+* `stdout_expanded`
 
 * `tasks`
 
