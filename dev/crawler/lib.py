@@ -616,10 +616,10 @@ class DevelopmentHostCluster:
         # Get all jobs
         jobs = self.query_slurmrestd_json(f"/slurm/v{self.api}/jobs")
 
-        # Cancel each job
+        # Cancel every running or pending job
         for job in jobs.get("jobs", []):
-            job_id = job["job_id"]
-            self._cancel(job_id)
+            if "RUNNING" in job["job_state"] or "PENDING" in job["job_state"]:
+                self._cancel(job["job_id"])
 
     def job_nodes(self, job_id: int) -> list[str]:
         job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
