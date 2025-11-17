@@ -769,13 +769,13 @@ class DevelopmentHostCluster:
         )
         cleanup_state["jobs"].append((user, job_id))
         # Submit completed job
-        job_id = self.submit(
+        job_id_completed = self.submit(
             user,
             {"tasks": 1},
             duration=1,
             wait_running=False,
         )
-        cleanup_state["jobs"].append((user, job_id))
+        cleanup_state["jobs"].append((user, job_id_completed))
         # Submit failed job
         job_id = self.submit(
             user,
@@ -809,7 +809,7 @@ class DevelopmentHostCluster:
         # Wait for job to timeout
         logger.info("Waiting for timeout job…")
         time.sleep(70)
-        return cleanup_state
+        return cleanup_state, job_id_completed
 
     def setup_for_nodes(self) -> dict:
         """Setup cluster for nodes asset. Returns cleanup state."""
