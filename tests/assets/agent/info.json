@@ -1,10 +1,10 @@
 {
   "cache": true,
-  "cluster": "atlas",
+  "cluster": "nova",
   "metrics": true,
   "racksdb": {
     "enabled": true,
-    "infrastructure": "emulator",
+    "infrastructure": "nova",
     "version": "0.5.0"
   },
   "version": "5.2.0"
