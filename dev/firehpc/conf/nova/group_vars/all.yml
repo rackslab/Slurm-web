@@ -42,13 +42,14 @@ slurm_partitions:
     State: UP
     DefMemPerCPU: 512
 - name: gpu
-  nodes: gpu[1-2]
+  nodes: gpu[1-4]
   params:
     MaxTime: "2:0:0"
     State: UP
     DefMemPerCPU: 512
 slurm_gpus_models_map:
   Nvidia H100: h100
+  generic: null
 slurmweb_enabled: true
 slurmweb_agent_settings:
   metrics:

@@ -9,8 +9,14 @@ layout:
     - compute
     - standard
   - name: gpu[1-2]
-    slot: 9
+    slot: 13
     type: gpu-xl
+    tags:
+    - compute
+    - gpu
+  - name: gpu[3-4]
+    slot: 9
+    type: gpu-xl-generic
     tags:
     - compute
     - gpu
