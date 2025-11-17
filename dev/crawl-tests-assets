@@ -310,6 +310,8 @@ def _run_crawl(
     asset_filter: list[str] | None = None,
 ) -> None:
     """Count, crawl and dump assets with progress bar."""
+
+    print("Discovering development clusters")
     # Initialize clusters once and cache them
     clusters_cache: dict[str, DevelopmentHostCluster] = {}
     for infrastructure in clusters_to_process:
@@ -336,6 +338,7 @@ def _run_crawl(
                 sorted(clusters_with_latest_api),
             )
 
+    print("Counting missing assets")
     # Count total assets to crawl
     total_assets = _count_total_assets(
         clusters_to_process,
@@ -350,6 +353,7 @@ def _run_crawl(
     use_progress = sys.stdout.isatty() and total_assets > 0
     progress_bar = SimpleProgressBar(total_assets) if use_progress else None
 
+    print("Crawling assets")
     try:
         _crawl_assets(
             clusters_to_process,

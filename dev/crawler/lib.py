@@ -1303,9 +1303,11 @@ class ComponentCrawler:
                     elif isinstance(data, list):
                         # Array limiting: limit the list itself
                         _data = data[:limit_dump]
+                logger.info("Dumping json asset %s", asset)
                 fh.write(json.dumps(_data, indent=2 if prettify else None))
                 # FIXME: add newline
             else:
+                logger.info("Dumping text asset %s", asset)
                 fh.write(data)
 
         return data
@@ -1425,7 +1427,7 @@ class ComponentCrawler:
 
         self.cluster.reset_minimal()
 
-        logger.info("Crawling asset %s on component %s", asset.name, self.component)
+        print(f"Crawling asset {asset.name} on component {self.component}")
         try:
             asset.method(*args)
             self.manager.save()
