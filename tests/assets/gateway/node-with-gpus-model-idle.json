@@ -5,7 +5,7 @@
   "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
-    "number": 1741793226,
+    "number": 1758266697,
     "set": true
   },
   "cores": 16,
@@ -14,13 +14,13 @@
   "gres_used": "gpu:h100:0(IDX:N/A)",
   "last_busy": {
     "infinite": false,
-    "number": 1747776069,
+    "number": 1763129095,
     "set": true
   },
   "name": "gpu1",
-  "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
+  "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
   "partitions": [
-    "normal"
+    "gpu"
   ],
   "real_memory": 524288,
   "reason": "",

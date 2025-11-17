@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1747751625,
+    "number": 1763129240,
     "set": true
   },
   "association": {
-    "account": "biology",
+    "account": "",
     "cluster": "hpc",
-    "id": 13,
+    "id": 9,
     "partition": "",
-    "user": "emendoza"
+    "user": ""
   },
   "batch_flag": true,
   "command": "",
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/emendoza",
+  "current_working_directory": "/home/jwilson",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -42,7 +42,6 @@
       "SUCCESS"
     ]
   },
-  "exclusive": [],
   "exit_code": {
     "return_code": {
       "infinite": false,
@@ -65,7 +64,7 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747751628,
+    "number": 1763129240,
     "set": true
   },
   "name": "wrap",
@@ -78,25 +77,26 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 727,
+    "number": 454,
     "set": true
   },
   "qos": "normal",
   "script": "",
+  "shared": [],
   "sockets_per_node": {
     "infinite": false,
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/emendoza/slurm-5980.out",
-  "standard_input": "/dev/null",
-  "standard_output": "/home/emendoza/slurm-5980.out",
   "state": {
     "current": [
       "COMPLETED"
     ],
     "reason": "None"
   },
+  "stderr_expanded": "",
+  "stdin_expanded": "/dev/null",
+  "stdout_expanded": "/home/jwilson/slurm-50.out",
   "steps": [
     {
       "CPU": {
@@ -157,8 +157,14 @@
         }
       },
       "step": {
-        "id": "5980.batch",
-        "name": "batch"
+        "id": "50.batch",
+        "name": "batch",
+        "stderr": "",
+        "stderr_expanded": "",
+        "stdin": "",
+        "stdin_expanded": "",
+        "stdout": "",
+        "stdout_expanded": ""
       },
       "task": {
         "distribution": "Unknown"
@@ -167,15 +173,20 @@
         "count": 1
       },
       "time": {
-        "elapsed": 30,
+        "elapsed": 31,
         "end": {
           "infinite": false,
-          "number": 1747751658,
+          "number": 1763129271,
           "set": true
+        },
+        "limit": {
+          "infinite": true,
+          "number": 0,
+          "set": false
         },
         "start": {
           "infinite": false,
-          "number": 1747751628,
+          "number": 1763129240,
           "set": true
         },
         "suspended": 0,
@@ -235,9 +246,9 @@
     "set": true
   },
   "time": {
-    "elapsed": 30,
-    "eligible": 1747751625,
-    "end": 1747751658,
+    "elapsed": 31,
+    "eligible": 1763129240,
+    "end": 1763129271,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -245,11 +256,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 3,
+      "number": 0,
       "set": true
     },
-    "start": 1747751628,
-    "submission": 1747751625,
+    "start": 1763129240,
+    "submission": 1763129240,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -330,10 +341,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "emendoza",
+  "user": "jwilson",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/emendoza"
+  "working_directory": "/home/jwilson"
 }

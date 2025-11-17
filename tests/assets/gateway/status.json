@@ -119,6 +119,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "node-draining": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "node-idle": {
     "content-type": "application/json",
     "status": 200
@@ -176,7 +180,7 @@
     "status": 200
   },
   "racksdb-draw-coordinates": {
-    "content-type": "multipart/form-data; boundary=f4a560fe88f04e8f89a1f9428fda1c9b",
+    "content-type": "multipart/form-data; boundary=fe783686d04f4c43935adf23e32a210d",
     "status": 200
   },
   "reservations": {

@@ -5,11 +5,11 @@
     "set": true
   },
   "association": {
-    "account": "biology",
+    "account": "",
     "cluster": "hpc",
-    "id": 13,
+    "id": 17,
     "partition": "",
-    "user": "emendoza"
+    "user": ""
   },
   "batch_flag": true,
   "command": "",
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/emendoza",
+  "current_working_directory": "/home/rcarson",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -42,7 +42,6 @@
       "SUCCESS"
     ]
   },
-  "exclusive": [],
   "exit_code": {
     "return_code": {
       "infinite": false,
@@ -65,7 +64,7 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747751622,
+    "number": 1763129109,
     "set": true
   },
   "name": "wrap",
@@ -78,25 +77,26 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 727,
+    "number": 909,
     "set": true
   },
   "qos": "normal",
   "script": "",
+  "shared": [],
   "sockets_per_node": {
     "infinite": false,
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/emendoza/slurm-5979.out",
-  "standard_input": "/dev/null",
-  "standard_output": "/home/emendoza/slurm-5979.out",
   "state": {
     "current": [
       "PENDING"
     ],
     "reason": "None"
   },
+  "stderr_expanded": "",
+  "stdin_expanded": "/dev/null",
+  "stdout_expanded": "/home/rcarson/slurm-33.out",
   "steps": [],
   "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4 --begin now+1hour",
   "tasks": {
@@ -106,7 +106,7 @@
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1747755222,
+    "eligible": 1763132709,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -119,7 +119,7 @@
       "set": true
     },
     "start": 0,
-    "submission": 1747751622,
+    "submission": 1763129109,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -169,10 +169,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "emendoza",
+  "user": "rcarson",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/emendoza"
+  "working_directory": "/home/rcarson"
 }
