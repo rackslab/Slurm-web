@@ -46,7 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Replace `standard_{error,input,output}` by `{stderr,stdin,stdout}_expanded`
     in filtered fields of individual job responses from Slurm controler for
     compatibility with v0.0.43 REST API.
-- docs: Update Slurm REST API supported versions section in architecture page.
+- docs:
+  - Update Slurm REST API supported versions section in architecture page.
+  - Update configuration reference documentation.
 
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
