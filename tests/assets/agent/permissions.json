@@ -1,12 +1,14 @@
 {
   "actions": [
+    "view-jobs",
+    "cache-view",
+    "view-reservations",
+    "view-stats",
     "view-qos",
-    "view-nodes",
     "view-partitions",
     "view-accounts",
-    "view-reservations",
-    "view-jobs",
-    "view-stats"
+    "view-nodes",
+    "cache-reset"
   ],
   "roles": [
     "admin"
