@@ -9,6 +9,7 @@
 from __future__ import annotations
 import typing as t
 import socket
+import time
 from pathlib import Path
 import logging
 
@@ -270,7 +271,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
 
     def _crawl_jobs(self):
-        self._cleanup_state = self.cluster.setup_for_jobs()
+        self._cleanup_state, job_id_completed = self.cluster.setup_for_jobs()
         # Download jobs
         jobs = self.dump_component_query(
             f"/slurm/v{self.api_version}/jobs",
@@ -296,35 +297,38 @@ class SlurmrestdCrawler(ComponentCrawler):
             logger.warning(
                 "No jobs found in queue on socket %s, unable to crawl jobs data", socket
             )
-        else:
-            min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
+            return
 
-            for _job in jobs["jobs"]:
-                if _job["job_id"] < min_job_id:
-                    min_job_id = _job["job_id"]
-                if _job["job_id"] > max_job_id:
-                    max_job_id = _job["job_id"]
+        min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
 
-                for state in ["RUNNING", "PENDING", "COMPLETED", "FAILED", "TIMEOUT"]:
-                    dump_job_state(state)
+        for _job in jobs["jobs"]:
+            if _job["job_id"] < min_job_id:
+                min_job_id = _job["job_id"]
+            if _job["job_id"] > max_job_id:
+                max_job_id = _job["job_id"]
 
-            self.dump_component_query(
-                f"/slurm/v{self.api_version}/job/{min_job_id - 1}",
-                "slurm-job-archived",
-            )
-            self.dump_component_query(
-                f"/slurmdb/v{self.api_version}/job/{min_job_id - 1}",
-                "slurmdb-job-archived",
-            )
+            for state in ["RUNNING", "PENDING", "COMPLETED", "FAILED", "TIMEOUT"]:
+                dump_job_state(state)
 
-            self.dump_component_query(
-                f"/slurm/v{self.api_version}/job/{max_job_id * 2}",
-                "slurm-job-unfound",
-            )
-            self.dump_component_query(
-                f"/slurmdb/v{self.api_version}/job/{max_job_id * 2}",
-                "slurmdb-job-unfound",
-            )
+        logger.info("Waiting for job completed to be archived…")
+        time.sleep(300)  # wait job completed to be archived
+        self.dump_component_query(
+            f"/slurm/v{self.api_version}/job/{job_id_completed}",
+            "slurm-job-archived",
+        )
+        self.dump_component_query(
+            f"/slurmdb/v{self.api_version}/job/{job_id_completed}",
+            "slurmdb-job-archived",
+        )
+
+        self.dump_component_query(
+            f"/slurm/v{self.api_version}/job/{max_job_id * 2}",
+            "slurm-job-unfound",
+        )
+        self.dump_component_query(
+            f"/slurmdb/v{self.api_version}/job/{max_job_id * 2}",
+            "slurmdb-job-unfound",
+        )
 
     def _crawl_nodes(self):
         self._cleanup_state = self.cluster.setup_for_nodes()

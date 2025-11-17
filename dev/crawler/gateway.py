@@ -13,6 +13,7 @@ import os
 import json
 import random
 import getpass
+import time
 from pathlib import Path
 import logging
 
@@ -281,7 +282,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(f"/api/agents/{self.cluster.name}/stats", "stats")
 
     def _crawl_jobs(self):
-        self._cleanup_state = self.cluster.setup_for_jobs()
+        self._cleanup_state, job_id_completed = self.cluster.setup_for_jobs()
         jobs = self.dump_component_query(
             f"/api/agents/{self.cluster.name}/jobs",
             "jobs",
@@ -294,26 +295,29 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "No jobs found in queue of cluster %s, unable to crawl jobs data",
                 self.cluster,
             )
-        else:
-            min_job_id = jobs[0]["job_id"]
+            return
 
-            def dump_job_state() -> None:
-                if state in _job["job_state"]:
-                    self.dump_component_query(
-                        f"/api/agents/{self.cluster.name}/job/{_job['job_id']}",
-                        f"job-{state.lower()}",
-                    )
+        min_job_id = jobs[0]["job_id"]
 
-            for _job in jobs:
-                if _job["job_id"] < min_job_id:
-                    min_job_id = _job["job_id"]
-                for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
-                    dump_job_state()
+        def dump_job_state() -> None:
+            if state in _job["job_state"]:
+                self.dump_component_query(
+                    f"/api/agents/{self.cluster.name}/job/{_job['job_id']}",
+                    f"job-{state.lower()}",
+                )
 
-            self.dump_component_query(
-                f"/api/agents/{self.cluster.name}/job/{min_job_id - 1}",
-                "job-archived",
-            )
+        for _job in jobs:
+            if _job["job_id"] < min_job_id:
+                min_job_id = _job["job_id"]
+            for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
+                dump_job_state()
+
+        logger.info("Waiting for job completed to be archived…")
+        time.sleep(300)  # wait job completed to be archived
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/job/{job_id_completed}",
+            "job-archived",
+        )
 
         # FIXME: Download unknown job
 
@@ -641,6 +645,13 @@ class GatewayCrawler(TokenizedComponentCrawler):
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "MIXED" not in response.json()["state"]:
+            logger.warning(
+                "Node %s is not in mixed state, skipping node-gpus-mixed-with-model",
+                node,
+            )
+            return
         self.dump_component_response("node-with-gpus-model-mixed", response)
 
     def _crawl_node_gpus_mixed_without_model(self):
@@ -670,6 +681,13 @@ class GatewayCrawler(TokenizedComponentCrawler):
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "MIXED" not in response.json()["state"]:
+            logger.warning(
+                "Node %s is not in mixed state, skipping node-gpus-mixed-without-model",
+                node,
+            )
+            return
         self.dump_component_response("node-with-gpus-mixed", response)
 
     def _crawl_node_gpus_idle_with_model(self):
@@ -698,6 +716,13 @@ class GatewayCrawler(TokenizedComponentCrawler):
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "IDLE" not in response.json()["state"]:
+            logger.warning(
+                "Node %s is not in idle state, skipping node-gpus-idle-with-model",
+                node,
+            )
+            return
         self.dump_component_response("node-with-gpus-model-idle", response)
 
     def _crawl_node_gpus_idle_without_model(self):
@@ -726,6 +751,13 @@ class GatewayCrawler(TokenizedComponentCrawler):
         response = self.get_component_response(
             f"/api/agents/{self.cluster.name}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "IDLE" not in response.json()["state"]:
+            logger.warning(
+                "Node %s is not in idle state, skipping node-gpus-idle-without-model",
+                node,
+            )
+            return
         self.dump_component_response("node-with-gpus-idle", response)
 
     def _crawl_node_without_gpu(self):
