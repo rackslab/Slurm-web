@@ -1048,14 +1048,23 @@ class DevelopmentHostCluster:
             node_name: Optional specific node name to target. If None,
                 any node in partition is used.
         """
+        # Tests have shown that timing is required to get nodes in mixed state, before
+        # and after submitting job, for unknown reasons…
+        logger.debug("Sleeping for 10 seconds before setting up nodes with gpus mixed")
+        time.sleep(10)
         user = self.pick_user()
         job_params: dict[str, t.Any] = {
             "partition": gpu_partition,
+            "tasks": 1,
+            "memory_per_cpu": "1G",
             "tres_per_job": "gres/gpu:1",
         }
         if node_name:
-            job_params["nodelist"] = node_name
+            job_params["required_nodes"] = [node_name]
         job_id = self.submit(user, job_params)
+        logger.debug("Sleeping for 10 seconds after submitting job with gpus mixed")
+        time.sleep(10)
+
         return job_id, user
 
     def setup_for_node_gpus_idle(

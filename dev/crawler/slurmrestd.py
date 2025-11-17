@@ -688,6 +688,13 @@ class SlurmrestdCrawler(ComponentCrawler):
         response = self.get_component_response(
             f"/slurm/v{self.api_version}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "MIXED" not in response.json()["nodes"][0]["state"]:
+            logger.warning(
+                "Node %s is not in mixed state, skipping node-gpus-mixed-with-model",
+                node,
+            )
+            return
         self.dump_component_response("slurm-node-with-gpus-model-mixed", response)
 
     def _crawl_node_gpus_mixed_without_model(self):
@@ -717,6 +724,13 @@ class SlurmrestdCrawler(ComponentCrawler):
         response = self.get_component_response(
             f"/slurm/v{self.api_version}/node/{node}"
         )
+        # Ensure mixed state is set
+        if "MIXED" not in response.json()["nodes"][0]["state"]:
+            logger.warning(
+                "Node %s is not in mixed state, skipping node-gpus-mixed-without-model",
+                node,
+            )
+            return
         self.dump_component_response("slurm-node-with-gpus-mixed", response)
 
     def _crawl_node_gpus_idle_with_model(self):
