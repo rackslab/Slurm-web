@@ -1,7 +1,7 @@
 [
   {
-    "alloc_cpus": 1,
-    "alloc_idle_cpus": 63,
+    "alloc_cpus": 64,
+    "alloc_idle_cpus": 0,
     "cores": 32,
     "cpus": 64,
     "gres": "",
@@ -14,8 +14,7 @@
     "reason": "",
     "sockets": 2,
     "state": [
-      "MIXED",
-      "PLANNED"
+      "ALLOCATED"
     ]
   },
   {
@@ -56,8 +55,8 @@
     ]
   },
   {
-    "alloc_cpus": 0,
-    "alloc_idle_cpus": 64,
+    "alloc_cpus": 56,
+    "alloc_idle_cpus": 8,
     "cores": 32,
     "cpus": 64,
     "gres": "",
@@ -70,8 +69,7 @@
     "reason": "",
     "sockets": 2,
     "state": [
-      "IDLE",
-      "PLANNED"
+      "MIXED"
     ]
   },
   {
@@ -100,6 +98,42 @@
     "gres": "gpu:h100:4",
     "gres_used": "gpu:h100:0(IDX:N/A)",
     "name": "gpu2",
+    "partitions": [
+      "gpu"
+    ],
+    "real_memory": 524288,
+    "reason": "",
+    "sockets": 2,
+    "state": [
+      "IDLE"
+    ]
+  },
+  {
+    "alloc_cpus": 0,
+    "alloc_idle_cpus": 32,
+    "cores": 16,
+    "cpus": 32,
+    "gres": "gpu:4",
+    "gres_used": "gpu:0",
+    "name": "gpu3",
+    "partitions": [
+      "gpu"
+    ],
+    "real_memory": 524288,
+    "reason": "",
+    "sockets": 2,
+    "state": [
+      "IDLE"
+    ]
+  },
+  {
+    "alloc_cpus": 0,
+    "alloc_idle_cpus": 32,
+    "cores": 16,
+    "cpus": 32,
+    "gres": "gpu:4",
+    "gres_used": "gpu:0",
+    "name": "gpu4",
     "partitions": [
       "gpu"
     ],

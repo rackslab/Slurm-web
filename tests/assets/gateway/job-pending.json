@@ -1,15 +1,15 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 0,
+    "number": 1763129126,
     "set": true
   },
   "association": {
-    "account": "biology",
+    "account": "",
     "cluster": "hpc",
-    "id": 12,
+    "id": 17,
     "partition": "",
-    "user": "tnixon"
+    "user": ""
   },
   "batch_flag": true,
   "command": "",
@@ -20,10 +20,10 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 64,
+    "number": 128,
     "set": true
   },
-  "current_working_directory": "/home/tnixon",
+  "current_working_directory": "/home/rcarson",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -42,7 +42,6 @@
       "SUCCESS"
     ]
   },
-  "exclusive": [],
   "exit_code": {
     "return_code": {
       "infinite": false,
@@ -65,61 +64,62 @@
   "group": "scientists",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1747751544,
+    "number": 1763129190,
     "set": true
   },
   "name": "wrap",
   "node_count": {
     "infinite": false,
-    "number": 1,
+    "number": 2,
     "set": true
   },
   "nodes": "None assigned",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 818,
+    "number": 909,
     "set": true
   },
   "qos": "normal",
   "script": "",
+  "shared": [],
   "sockets_per_node": {
     "infinite": false,
     "number": 0,
     "set": false
   },
-  "standard_error": "/home/tnixon/slurm-5977.out",
-  "standard_input": "/dev/null",
-  "standard_output": "/home/tnixon/slurm-5977.out",
   "state": {
     "current": [
       "PENDING"
     ],
     "reason": "None"
   },
+  "stderr_expanded": "",
+  "stdin_expanded": "/dev/null",
+  "stdout_expanded": "/home/rcarson/slurm-42.out",
   "steps": [],
-  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 64 --begin now+1hour",
+  "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 128",
   "tasks": {
     "infinite": false,
-    "number": 64,
+    "number": 128,
     "set": true
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1747755144,
+    "eligible": 1763129126,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": -3529,
+      "number": 80,
       "set": true
     },
     "start": 0,
-    "submission": 1747751544,
+    "submission": 1763129126,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -138,13 +138,13 @@
     "allocated": [],
     "requested": [
       {
-        "count": 64,
+        "count": 128,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 32768,
+        "count": 65536,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -156,7 +156,7 @@
         "type": "node"
       },
       {
-        "count": 64,
+        "count": 128,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -167,12 +167,12 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
+  "tres_req_str": "cpu=128,mem=64G,node=1,billing=128",
   "used_gres": "",
-  "user": "tnixon",
+  "user": "rcarson",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/tnixon"
+  "working_directory": "/home/rcarson"
 }

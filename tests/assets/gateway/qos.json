@@ -51,6 +51,11 @@
               }
             }
           },
+          "count": {
+            "infinite": true,
+            "number": 0,
+            "set": false
+          },
           "per": {
             "account": {
               "infinite": true,
@@ -71,7 +76,8 @@
               "job": [],
               "qos": [],
               "user": []
-            }
+            },
+            "total": []
           },
           "per": {
             "account": [],
@@ -170,6 +176,11 @@
               }
             }
           },
+          "count": {
+            "infinite": true,
+            "number": 0,
+            "set": false
+          },
           "per": {
             "account": {
               "infinite": false,
@@ -190,7 +201,8 @@
               "job": [],
               "qos": [],
               "user": []
-            }
+            },
+            "total": []
           },
           "per": {
             "account": [

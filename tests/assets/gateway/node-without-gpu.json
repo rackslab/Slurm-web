@@ -1,11 +1,11 @@
 {
-  "alloc_cpus": 0,
-  "alloc_idle_cpus": 64,
-  "alloc_memory": 0,
+  "alloc_cpus": 1,
+  "alloc_idle_cpus": 63,
+  "alloc_memory": 512,
   "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
-    "number": 1741793226,
+    "number": 1758266697,
     "set": true
   },
   "cores": 32,
@@ -14,19 +14,20 @@
   "gres_used": "",
   "last_busy": {
     "infinite": false,
-    "number": 1747753876,
+    "number": 1763129235,
     "set": true
   },
   "name": "cn1",
-  "operating_system": "Linux 6.1.0-31-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.128-1 (2025-02-07)",
+  "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
   "partitions": [
     "normal"
   ],
   "real_memory": 131072,
-  "reason": "",
+  "reason": "ECC memory error",
   "sockets": 2,
   "state": [
-    "IDLE"
+    "MIXED",
+    "DRAIN"
   ],
   "threads": 1
 }

@@ -1,10 +1,10 @@
 {
   "association": {
-    "account": "biology",
+    "account": "",
     "cluster": "hpc",
-    "id": 13,
+    "id": 14,
     "partition": "",
-    "user": "emendoza"
+    "user": ""
   },
   "comment": {
     "administrator": "",
@@ -53,7 +53,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 727,
+    "number": 636,
     "set": true
   },
   "qos": "normal",
@@ -124,8 +124,14 @@
         }
       },
       "step": {
-        "id": "5980.batch",
-        "name": "batch"
+        "id": "56.batch",
+        "name": "batch",
+        "stderr": "",
+        "stderr_expanded": "",
+        "stdin": "",
+        "stdin_expanded": "",
+        "stdout": "",
+        "stdout_expanded": ""
       },
       "task": {
         "distribution": "Unknown"
@@ -137,12 +143,17 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1747751658,
+          "number": 1763129323,
           "set": true
+        },
+        "limit": {
+          "infinite": true,
+          "number": 0,
+          "set": false
         },
         "start": {
           "infinite": false,
-          "number": 1747751628,
+          "number": 1763129293,
           "set": true
         },
         "suspended": 0,
@@ -198,8 +209,8 @@
   "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
   "time": {
     "elapsed": 30,
-    "eligible": 1747751625,
-    "end": 1747751658,
+    "eligible": 1763129292,
+    "end": 1763129323,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -207,11 +218,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 3,
+      "number": 1,
       "set": true
     },
-    "start": 1747751628,
-    "submission": 1747751625,
+    "start": 1763129293,
+    "submission": 1763129292,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -287,10 +298,10 @@
     ]
   },
   "used_gres": "",
-  "user": "emendoza",
+  "user": "dperez",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/emendoza"
+  "working_directory": "/home/dperez"
 }

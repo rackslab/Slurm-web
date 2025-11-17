@@ -1,26 +1,26 @@
 [
   {
-    "account": "admin",
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 5964,
+    "job_id": 15,
     "job_state": [
-      "RUNNING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "cn1",
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 909,
+      "number": 1000,
       "set": true
     },
     "qos": "normal",
@@ -39,30 +39,30 @@
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "tmcgrath"
+    "user_name": "sevans"
   },
   {
-    "account": "admin",
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 5972,
+    "job_id": 16,
     "job_state": [
-      "RUNNING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "cn1",
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 909,
+      "number": 1000,
       "set": true
     },
     "qos": "normal",
@@ -81,26 +81,68 @@
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "tmcgrath"
+    "user_name": "sevans"
   },
   {
-    "account": "admin",
+    "account": "optic",
+    "cpus": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "gres_detail": [],
+    "job_id": 17,
+    "job_state": [
+      "CANCELLED"
+    ],
+    "node_count": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "nodes": "cn2",
+    "partition": "normal",
+    "priority": {
+      "infinite": false,
+      "number": 1000,
+      "set": true
+    },
+    "qos": "normal",
+    "sockets_per_node": {
+      "infinite": false,
+      "number": 0,
+      "set": false
+    },
+    "state_reason": "None",
+    "tasks": {
+      "infinite": false,
+      "number": 1,
+      "set": true
+    },
+    "tres_per_job": "",
+    "tres_per_node": "",
+    "tres_per_socket": "",
+    "tres_per_task": "",
+    "user_name": "sevans"
+  },
+  {
+    "account": "optic",
     "cpus": {
       "infinite": false,
       "number": 64,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 5975,
+    "job_id": 38,
     "job_state": [
-      "RUNNING"
+      "CANCELLED"
     ],
     "node_count": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "nodes": "cn[1-2]",
+    "nodes": "cn2",
     "partition": "normal",
     "priority": {
       "infinite": false,
@@ -123,6 +165,6 @@
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "tmcgrath"
+    "user_name": "rcarson"
   }
 ]
