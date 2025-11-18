@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update configuration reference documentation.
 
 ### Fixed
+- front: Dark mode rendering of info and error messages in clusters list (#661).
 - gateway: Use agent provided version instead of agent minimal version from
   settings to reverse proxy the requests (#656).
 - front: Update dependencies to fix CVE-2025-64718 (js-yaml), CVE-2025-64756
