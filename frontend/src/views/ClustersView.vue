@@ -17,7 +17,8 @@ import { AuthenticationError } from '@/composables/HTTPErrors'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { XCircleIcon } from '@heroicons/vue/20/solid'
+import InfoAlert from '@/components/InfoAlert.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 const runtimeStore = useRuntimeStore()
@@ -116,16 +117,12 @@ onMounted(() => {
     <section
       class="bg-slurmweb-light flex h-screen items-center justify-center gap-y-6 dark:bg-gray-900"
     >
-      <div v-if="unable" class="w-full rounded-md bg-red-50 p-4 lg:w-[60%]">
-        <div class="flex">
-          <div class="shrink-0">
-            <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
-          </div>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium text-red-800">Unable to load cluster list</h3>
-            <p class="mt-2 text-sm text-red-700">Try to refresh…</p>
-          </div>
-        </div>
+      <div v-if="unable" class="w-full lg:w-[60%]">
+        <ErrorAlert>
+          <strong>Unable to load cluster list</strong>
+          <br />
+          Try to refresh…
+        </ErrorAlert>
       </div>
       <div
         v-else-if="!loaded"
@@ -134,16 +131,12 @@ onMounted(() => {
         <LoadingSpinner :size="5" />
         Loading clusters…
       </div>
-      <div v-else-if="!clusters.length" class="w-full rounded-md bg-blue-50 p-4 lg:w-[60%]">
-        <div class="flex">
-          <div class="shrink-0">
-            <XCircleIcon class="h-5 w-5 text-blue-400" aria-hidden="true" />
-          </div>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium text-blue-800">Empty cluster list</h3>
-            <p class="mt-2 text-sm text-blue-700">Try to refresh…</p>
-          </div>
-        </div>
+      <div v-else-if="!clusters.length" class="w-full lg:w-[60%]">
+        <InfoAlert>
+          <strong>Empty cluster list</strong>
+          <br />
+          Try to refresh…
+        </InfoAlert>
       </div>
       <div
         v-else
