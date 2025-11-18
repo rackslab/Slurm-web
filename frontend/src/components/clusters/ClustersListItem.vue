@@ -9,7 +9,7 @@
 import { onMounted, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
-import { useGatewayAPI } from '@/composables/GatewayAPI'
+import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
@@ -25,10 +25,14 @@ const { reportAuthenticationError, reportServerError } = useErrorsHandler()
 
 const gateway = useGatewayAPI()
 const router = useRouter()
+const emit = defineEmits<{
+  pinged: [cluster: ClusterDescription]
+}>()
 
 async function getClustersPing() {
   if (cluster.permissions.actions.length == 0) {
     loading.value = false
+    emit('pinged', cluster)
     return
   }
   try {
@@ -43,6 +47,7 @@ async function getClustersPing() {
     }
   } finally {
     loading.value = false
+    emit('pinged', cluster)
   }
 }
 
