@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - gateway: Use agent provided version instead of agent minimal version from
   settings to reverse proxy the requests (#656).
+- front: Update dependencies to fix CVE-2025-64718 (js-yaml).
 
 ## [5.2.0] - 2025-11-03
 
