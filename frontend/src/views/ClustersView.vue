@@ -7,9 +7,9 @@
 -->
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import type { Ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
@@ -27,6 +27,16 @@ const { reportAuthenticationError, reportServerError } = useErrorsHandler()
 const clusters: Ref<Array<ClusterDescription>> = ref([])
 const loaded: Ref<boolean> = ref(false)
 const unable: Ref<boolean> = ref(false)
+const router = useRouter()
+const awaitingAutoRedirect = ref<boolean>(false)
+const awaitingClusterName = ref<string | null>(null)
+/* Check if there is at least one cluster with error. This is useful when there
+ * is only one cluster with permissions but this cluster is not available. In
+ * this case, we want to display the list of clusters with the error to the
+ * user. */
+const clusterWithError = computed(() => {
+  return clusters.value.find((cluster) => cluster.error)
+})
 
 async function getClustersDescriptions() {
   try {
@@ -40,6 +50,17 @@ async function getClustersDescriptions() {
       runtimeStore.addCluster(element)
     })
     loaded.value = true
+
+    /* Get list of clusters with permissions. If there is only one, set some
+     * refs to make handleClusterPing() redirect automatically to the
+     * dashboard of this cluster. */
+    const clustersWithPermissions = clusters.value.filter(
+      (cluster) => cluster.permissions.actions.length > 0
+    )
+    if (clustersWithPermissions.length === 1) {
+      awaitingAutoRedirect.value = true
+      awaitingClusterName.value = clustersWithPermissions[0].name
+    }
   } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error)
@@ -48,6 +69,26 @@ async function getClustersDescriptions() {
       unable.value = true
     }
   }
+}
+
+/* Handle cluster ping response. If there is only one cluster with permissions,
+ * redirect to the dashboard of this cluster if the ping response is successful. */
+function handleClusterPing(cluster: ClusterDescription) {
+  /* If we are not awaiting auto redirect or the cluster name is not the one
+   * we are awaiting, return. */
+  if (!awaitingAutoRedirect.value || awaitingClusterName.value !== cluster.name) {
+    return
+  }
+
+  /* If the cluster has an error, set loaded to true to remove the loading spinner
+   * and skip the redirect. */
+  if (cluster.error) {
+    loaded.value = true
+    return
+  }
+
+  /* Redirect to the dashboard of the cluster. */
+  router.push({ name: 'dashboard', params: { cluster: cluster.name } })
 }
 
 onMounted(() => {
@@ -104,7 +145,11 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else class="flex w-full flex-col lg:w-[80%] xl:w-[60%]">
+      <div
+        v-else
+        v-show="!awaitingAutoRedirect || clusterWithError"
+        class="flex w-full flex-col lg:w-[80%] xl:w-[60%]"
+      >
         <h1 class="flex px-4 text-left text-lg font-medium text-gray-700 dark:text-gray-400">
           Select a cluster
         </h1>
@@ -116,6 +161,7 @@ onMounted(() => {
             v-for="cluster in clusters"
             :key="cluster.name"
             :cluster-name="cluster.name"
+            @pinged="handleClusterPing"
           />
         </ul>
       </div>
