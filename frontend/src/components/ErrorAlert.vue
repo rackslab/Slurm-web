@@ -8,6 +8,8 @@
 
 <script setup lang="ts">
 import { XCircleIcon } from '@heroicons/vue/20/solid'
+
+const { showErrorsLink = true } = defineProps<{ showErrorsLink?: boolean }>()
 </script>
 
 <template>
@@ -18,7 +20,7 @@ import { XCircleIcon } from '@heroicons/vue/20/solid'
       </div>
       <div class="ml-3 flex-1 md:flex md:justify-between">
         <p class="text-sm text-red-700 dark:text-red-400"><slot></slot></p>
-        <p class="mt-3 text-sm md:mt-0 md:ml-6">
+        <p v-if="showErrorsLink" class="mt-3 text-sm md:mt-0 md:ml-6">
           <RouterLink
             :to="{ name: 'settings-errors' }"
             class="font-medium whitespace-nowrap text-red-700 hover:text-red-600 dark:text-red-400 hover:dark:text-red-300"

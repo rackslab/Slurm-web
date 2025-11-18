@@ -118,7 +118,7 @@ onMounted(() => {
       class="bg-slurmweb-light flex h-screen items-center justify-center gap-y-6 dark:bg-gray-900"
     >
       <div v-if="unable" class="w-full lg:w-[60%]">
-        <ErrorAlert>
+        <ErrorAlert :show-errors-link="false">
           <strong>Unable to load cluster list</strong>
           <br />
           Try to refresh…
