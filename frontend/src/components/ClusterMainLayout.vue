@@ -78,6 +78,7 @@ onMounted(() => {
           <!-- Selects clusters button-->
           <RouterLink :to="{ name: 'clusters' }" custom v-slot="{ navigate }">
             <button
+              v-if="runtimeStore.getAllowedClusters().length > 1"
               @click="navigate"
               role="link"
               class="p-2.5 text-gray-400 hover:text-gray-500 lg:-m-2.5 dark:text-gray-400 hover:dark:text-gray-200"
