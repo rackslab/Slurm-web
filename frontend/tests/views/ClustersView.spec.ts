@@ -3,6 +3,7 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 import ClustersView from '@/views/ClustersView.vue'
 import clusters from '../assets/clusters.json'
 import { init_plugins } from '../lib/common'
+import type { ClusterDescription } from '@/composables/GatewayAPI'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import { APIServerError, AuthenticationError } from '@/composables/HTTPErrors'
@@ -62,5 +63,48 @@ describe('ClustersView.vue', () => {
     // Wait for result of clusters requests
     await flushPromises()
     expect(wrapper.get('div h3').text()).toBe('Unable to load cluster list')
+  })
+  test('auto redirect when a single cluster is available', async () => {
+    const singleCluster: ClusterDescription = clusters[0]
+    mockGatewayAPI.clusters.mockReturnValueOnce(Promise.resolve([singleCluster]))
+    const wrapper = shallowMount(ClustersView)
+    await flushPromises()
+    const clusterItem = wrapper.findComponent(ClusterListItem)
+    expect(clusterItem.exists()).toBe(true)
+    clusterItem.vm.$emit('pinged', singleCluster)
+    await flushPromises()
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'dashboard',
+      params: { cluster: singleCluster.name }
+    })
+  })
+  test('no redirect when multiple clusters are available', async () => {
+    // Check at least 2 clusters are present in test asset
+    expect(clusters.length).toBeGreaterThanOrEqual(2)
+    mockGatewayAPI.clusters.mockReturnValueOnce(Promise.resolve(clusters))
+    const wrapper = shallowMount(ClustersView)
+    await flushPromises()
+    // Verify cluster list is displayed
+    expect(wrapper.get('h1').text()).toBe('Select a cluster')
+    expect(wrapper.findAllComponents(ClusterListItem).length).toBe(clusters.length)
+    // Emit pinged events from all cluster items
+    const clusterItems = wrapper.findAllComponents(ClusterListItem)
+    clusterItems.forEach((item, index) => {
+      item.vm.$emit('pinged', clusters[index])
+    })
+    await flushPromises()
+    // Verify no redirect was called
+    expect(router.push).not.toHaveBeenCalled()
+  })
+  test('show cluster list when the single cluster has errors', async () => {
+    const singleCluster: ClusterDescription = clusters[0]
+    mockGatewayAPI.clusters.mockReturnValueOnce(Promise.resolve([singleCluster]))
+    const wrapper = shallowMount(ClustersView)
+    await flushPromises()
+    singleCluster.error = true
+    wrapper.findComponent(ClusterListItem).vm.$emit('pinged', singleCluster)
+    await flushPromises()
+    expect(router.push).not.toHaveBeenCalled()
+    expect(wrapper.findComponent(ClusterListItem).exists()).toBe(true)
   })
 })

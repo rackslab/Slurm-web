@@ -145,4 +145,55 @@ describe('ClustersListItem.vue', () => {
     // Check that returnUrl was set to current route
     expect(useAuthStore().returnUrl).toBe('/clusters')
   })
+  test('emit pinged event when cluster with permissions successfully pings', async () => {
+    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    mockGatewayAPI.ping.mockReturnValueOnce(Promise.resolve(ping))
+    const wrapper = shallowMount(ClusterListItem, {
+      props: {
+        clusterName: useRuntimeStore().availableClusters[0].name
+      }
+    })
+    await flushPromises()
+    // Check pinged event was emitted
+    expect(wrapper.emitted('pinged')).toBeTruthy()
+    expect(wrapper.emitted('pinged')).toHaveLength(1)
+    // Check event payload is the cluster object
+    const cluster = useRuntimeStore().getCluster('foo')
+    expect(wrapper.emitted('pinged')?.[0]?.[0]).toBe(cluster)
+  })
+  test('emit pinged event when cluster with permissions fails to ping', async () => {
+    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    mockGatewayAPI.ping.mockImplementationOnce(() => {
+      throw new APIServerError(500, 'fake error')
+    })
+    const wrapper = shallowMount(ClusterListItem, {
+      props: {
+        clusterName: useRuntimeStore().availableClusters[0].name
+      }
+    })
+    await flushPromises()
+    // Check pinged event was emitted
+    expect(wrapper.emitted('pinged')).toBeTruthy()
+    expect(wrapper.emitted('pinged')).toHaveLength(1)
+    // Check event payload is the cluster object with error flag set
+    const cluster = useRuntimeStore().getCluster('foo')
+    expect(wrapper.emitted('pinged')?.[0]?.[0]).toBe(cluster)
+    expect(cluster.error).toBeTruthy()
+  })
+  test('emit pinged event when cluster has no permissions', async () => {
+    const wrapper = shallowMount(ClusterListItem, {
+      props: {
+        clusterName: useRuntimeStore().availableClusters[0].name
+      }
+    })
+    await flushPromises()
+    // Check pinged event was emitted
+    expect(wrapper.emitted('pinged')).toBeTruthy()
+    expect(wrapper.emitted('pinged')).toHaveLength(1)
+    // Check event payload is the cluster object
+    const cluster = useRuntimeStore().getCluster('foo')
+    expect(wrapper.emitted('pinged')?.[0]?.[0]).toBe(cluster)
+    // Check ping was not called
+    expect(mockGatewayAPI.ping).not.toBeCalled()
+  })
 })
