@@ -6,6 +6,8 @@ import { init_plugins } from '../lib/common'
 import type { ClusterDescription } from '@/composables/GatewayAPI'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
+import ErrorAlert from '@/components/ErrorAlert.vue'
+import InfoAlert from '@/components/InfoAlert.vue'
 import { APIServerError, AuthenticationError } from '@/composables/HTTPErrors'
 import { useAuthStore } from '@/stores/auth'
 
@@ -36,6 +38,10 @@ describe('ClustersView.vue', () => {
     expect(wrapper.get('h1').text()).toBe('Select a cluster')
     // Check there are as many ClusterListItem as the number of clusters in test asset.
     expect(wrapper.findAllComponents(ClusterListItem).length).toBe(clusters.length)
+    // Check absence of error alert
+    expect(wrapper.findComponent(ErrorAlert).exists()).toBeFalsy()
+    // Check absence of info alert
+    expect(wrapper.findComponent(InfoAlert).exists()).toBeFalsy()
   })
   test('show loading spinner before loaded', async () => {
     const wrapper = shallowMount(ClustersView)
@@ -55,14 +61,21 @@ describe('ClustersView.vue', () => {
     // Check that returnUrl was set to current route
     expect(useAuthStore().returnUrl).toBe('/clusters')
   })
-  test('server error', async () => {
+  test('show error alert on server error', async () => {
     mockGatewayAPI.clusters.mockImplementationOnce(() => {
       throw new APIServerError(500, 'fake error')
     })
     const wrapper = shallowMount(ClustersView)
     // Wait for result of clusters requests
     await flushPromises()
-    expect(wrapper.get('div h3').text()).toBe('Unable to load cluster list')
+    expect(wrapper.findComponent(ErrorAlert).exists()).toBeTruthy()
+  })
+  test('show info alert when cluster list is empty', async () => {
+    mockGatewayAPI.clusters.mockReturnValueOnce(Promise.resolve([]))
+    const wrapper = shallowMount(ClustersView)
+    // Wait for result of clusters requests
+    await flushPromises()
+    expect(wrapper.findComponent(InfoAlert).exists()).toBeTruthy()
   })
   test('auto redirect when a single cluster is available', async () => {
     const singleCluster: ClusterDescription = clusters[0]
