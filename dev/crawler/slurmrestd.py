@@ -188,6 +188,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             Asset("qos", "slurm-qos", self._crawl_qos),
             Asset("accounts", "slurm-accounts", self._crawl_accounts),
             Asset("reservations", "slurm-reservations", self._crawl_reservations),
+            Asset("associations", "slurmdb-associations", self._crawl_associations),
         }
 
         super().__init__(
@@ -839,4 +840,11 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurm/v{self.api_version}/reservations",
             "slurm-reservations",
+        )
+
+    def _crawl_associations(self):
+        # Download associations
+        self.dump_component_query(
+            f"/slurmdb/v{self.api_version}/associations",
+            "slurmdb-associations",
         )
