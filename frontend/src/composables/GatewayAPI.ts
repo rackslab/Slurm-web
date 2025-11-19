@@ -647,6 +647,16 @@ export interface ClusterAssociation {
   user: string
 }
 
+export interface ClusterAccountTreeNode {
+  children: ClusterAccountTreeNode[]
+  level: number
+  account: string
+  max: ClusterAssociation['max']
+  parent_account: string
+  qos: string[]
+  users: string[]
+}
+
 export interface ClusterReservation {
   accounts: string
   end_time: ClusterOptionalNumber
