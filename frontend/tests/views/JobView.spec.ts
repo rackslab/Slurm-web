@@ -3,6 +3,7 @@ import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
 import JobView from '@/views/JobView.vue'
+import JobBackButton from '@/components/job/JobBackButton.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import jobRunning from '../assets/job-running.json'
@@ -38,6 +39,11 @@ describe('JobView.vue', () => {
         id: 1234
       }
     })
+    // Check JobBackButton component is rendered
+    const backButton = wrapper.findComponent(JobBackButton)
+    expect(backButton.exists()).toBe(true)
+    expect(backButton.props('cluster')).toBe('foo')
+    expect(backButton.text()).toBe('Back to jobs')
     // Check some jobs fields
     expect(wrapper.get('dl div#user dd').text()).toBe(jobRunning.user)
     expect(wrapper.get('dl div#group dd').text()).toBe(jobRunning.group)
