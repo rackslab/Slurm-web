@@ -131,6 +131,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         SlurmwebAppRoute("/api/agents/<cluster>/qos", views.qos),
         SlurmwebAppRoute("/api/agents/<cluster>/reservations", views.reservations),
         SlurmwebAppRoute("/api/agents/<cluster>/accounts", views.accounts),
+        SlurmwebAppRoute("/api/agents/<cluster>/associations", views.associations),
         SlurmwebAppRoute(
             "/api/agents/<cluster>/racksdb/<path:query>",
             views.racksdb,
