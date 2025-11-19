@@ -194,6 +194,11 @@ def accounts():
     return jsonify(slurmrest("accounts"))
 
 
+@rbac_action("associations-view")
+def associations():
+    return jsonify(slurmrest("associations"))
+
+
 @rbac_action("cache-view")
 def cache_stats():
     if current_app.cache is None:
