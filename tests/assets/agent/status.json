@@ -3,6 +3,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "associations": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "cache-reset": {
     "content-type": "application/json",
     "status": 200
