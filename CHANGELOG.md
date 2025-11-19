@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implement Slurm REST API adapter from v0.0.41 to v0.0.42.
   - Implement Slurm REST API adapter from v0.0.42 to v0.0.43.
   - Implement Slurm REST API adapter from v0.0.43 to v0.0.44.
+  - Add `/associations` route to get list of accounts, users and limits.
 - gateway:
   - Add `/agent/{cluster}/ping` route to reverse-proxy request to agent `/ping`
     endpoint.

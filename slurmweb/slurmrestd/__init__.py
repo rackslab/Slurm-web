@@ -375,6 +375,9 @@ class Slurmrestd:
     def accounts(self, **kwargs):
         return self._request("slurmdb", "accounts", "accounts", **kwargs)
 
+    def associations(self: str, **kwargs):
+        return self._request("slurmdb", "associations", "associations", **kwargs)
+
     def reservations(self: str, **kwargs):
         return self._request("slurm", "reservations", "reservations", **kwargs)
 
@@ -515,6 +518,11 @@ class SlurmrestdFiltered(SlurmrestdAdapter):
             super().accounts(), self.filters.accounts
         )
 
+    def associations(self: str):
+        return SlurmrestdFiltered.filter_fields(
+            super().associations(), self.filters.associations
+        )
+
     def reservations(self: str):
         return SlurmrestdFiltered.filter_fields(
             super().reservations(), self.filters.reservations
@@ -587,10 +595,15 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
     def accounts(self):
         return self._cached(CacheKey("accounts"), self.cache.accounts, super().accounts)
 
-    def reservations(self: str):
+    def associations(self):
+        return self._cached(
+            CacheKey("associations"), self.cache.associations, super().associations
+        )
+
+    def reservations(self):
         return self._cached(
             CacheKey("reservations"), self.cache.reservations, super().reservations
         )
 
-    def qos(self: str):
+    def qos(self):
         return self._cached(CacheKey("qos"), self.cache.qos, super().qos)
