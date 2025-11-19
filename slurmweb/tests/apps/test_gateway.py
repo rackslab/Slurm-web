@@ -7,12 +7,19 @@
 import sys
 import unittest
 from unittest import mock
+import tempfile
 
 import aiohttp.client_exceptions
 import aiohttp
 
 from ..lib.gateway import TestGatewayBase
-from slurmweb.apps.gateway import SlurmwebAgent, version_greater_or_equal
+from slurmweb.apps.gateway import (
+    SlurmwebAgent,
+    SlurmwebAppGateway,
+    version_greater_or_equal,
+)
+from slurmweb.apps import SlurmwebAppSeed
+from slurmweb.errors import SlurmwebConfigurationError
 
 from ..lib.utils import mock_agent_aio_response
 
@@ -231,3 +238,40 @@ class TestGatewayApp(TestGatewayBase):
                 "http://localhost: [SlurmwebAgentError] unexpected status code 404"
             ],
         )
+
+
+class TestGatewayAppAgentConnector(TestGatewayBase):
+    @mock.patch("slurmweb.apps.gateway.ssl.create_default_context")
+    @mock.patch("slurmweb.apps.gateway.aiohttp.TCPConnector")
+    def test_agent_connector(self, mock_connector, mock_context):
+        with tempfile.NamedTemporaryFile(mode="w") as cacert:
+            mock_context.return_value = mock.sentinel.agent_ssl_context
+            mock_connector.return_value = mock.sentinel.agent_connector
+            self.setup_app(agents_extra={"cacert": cacert.name})
+            connector = self.app.get_agent_connector()
+            self.assertIs(connector, mock.sentinel.agent_connector)
+            mock_context.assert_called_once_with(cafile=cacert.name)
+            mock_connector.assert_called_once_with(ssl=mock.sentinel.agent_ssl_context)
+
+    def test_agent_connector_no_cacert(self):
+        self.setup_app()
+        connector = self.app.get_agent_connector()
+        self.assertIsNone(connector)
+
+    def test_agent_connector_missing_cacert_file(self):
+        self.setup_gateway_conf(agents_extra={"cacert": "/dev/fail"})
+        app = SlurmwebAppGateway(
+            SlurmwebAppSeed.with_parameters(
+                debug=False,
+                log_flags=["ALL"],
+                log_component=None,
+                debug_flags=[],
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
+            )
+        )
+        with self.assertRaisesRegex(
+            SlurmwebConfigurationError,
+            r"^Agent CA certificate file /dev/fail not found$",
+        ):
+            app.get_agent_connector()
