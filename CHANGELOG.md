@@ -26,8 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - connect: Discover and report latest Slurm REST API version supported by
   `slurmrestd` among the list of Slurm-web supported versions declared in
   configuration.
-- conf: Introduce `[slurmrestd]` > `versions` parameter with list of all
-  supported Slurm REST API versions.
+- conf:
+  - Introduce `[slurmrestd]` > `versions` parameter with list of all
+    supported Slurm REST API versions.
+  - Introduce `[agents]` > `cacert` gateway parameter for custom path to CA
+    certificate to validate agent SSL/TLS certificate.
 
 ### Changed
 - front:
