@@ -42,6 +42,40 @@ class AdapterV0_0_41(BaseAdapter):
         → not used by Slurm-web
       + responses.200.properties.jobs.items.properties.qosreq
         → not used by Slurm-web
+
+    GET /slurmdb/v{version}/associations/
+      + responses.200.properties.associations.items.properties.accounting.items
+        .properties.id_alt
+        → not used by Slurm-web
+      - parameters.with_deleted
+        → not used by Slurm-web
+      - parameters.only_defaults
+        → not used by Slurm-web
+      - parameters.without_parent_info
+        → not used by Slurm-web
+      - parameters.with_sub_accts
+        → not used by Slurm-web
+      - parameters.with_raw_qos
+        → not used by Slurm-web
+      - parameters.without_parent_limits
+        → not used by Slurm-web
+      - parameters.with_usage
+        → not used by Slurm-web
+      + parameters.Include sub acct information
+        → not used by Slurm-web
+      + parameters.Include the raw QOS or delta_qos
+        → not used by Slurm-web
+      + parameters.Exclude limits from parents
+        → not used by Slurm-web
+      + parameters.Exclude parent id/name
+        → not used by Slurm-web
+      + parameters.Include usage
+        → not used by Slurm-web
+      + parameters.Include deleted associations
+        → not used by Slurm-web
+      + parameters.Filter to only defaults
+        → not used by Slurm-web
+
     """
 
     def adapt_slurmdb_qos(self, data: t.Any) -> t.Any:

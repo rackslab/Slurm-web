@@ -51,6 +51,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/qos", views.qos),
         SlurmwebAppRoute(f"/v{get_version()}/reservations", views.reservations),
         SlurmwebAppRoute(f"/v{get_version()}/accounts", views.accounts),
+        SlurmwebAppRoute(f"/v{get_version()}/associations", views.associations),
         SlurmwebAppRoute(f"/v{get_version()}/cache/stats", views.cache_stats),
         SlurmwebAppRoute(
             f"/v{get_version()}/cache/reset", views.cache_reset, methods=["POST"]

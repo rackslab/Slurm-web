@@ -50,6 +50,10 @@ class BaseAdapter:
         """Adapt accounts data."""
         return data
 
+    def adapt_slurmdb_associations(self, data: t.Any) -> t.Any:
+        """Adapt associations data."""
+        return data
+
     def adapt_slurm_reservations(self, data: t.Any) -> t.Any:
         """Adapt reservations data."""
         return data
