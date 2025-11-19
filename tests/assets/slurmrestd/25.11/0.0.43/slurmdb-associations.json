@@ -1,0 +1,1829 @@
+{
+  "associations": [
+    {
+      "accounting": [],
+      "account": "root",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 1,
+      "is_default": false,
+      "lineage": "/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "root",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 2,
+      "is_default": true,
+      "lineage": "/0-root/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "root"
+    },
+    {
+      "accounting": [],
+      "account": "admin",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 4,
+      "is_default": false,
+      "lineage": "/admin/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "root",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "admin",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 9,
+      "is_default": true,
+      "lineage": "/admin/0-jwilson/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "jwilson"
+    },
+    {
+      "accounting": [],
+      "account": "biology",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 5,
+      "is_default": false,
+      "lineage": "/biology/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "root",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "biology",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 12,
+      "is_default": true,
+      "lineage": "/biology/0-jbeck/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "jbeck"
+    },
+    {
+      "accounting": [],
+      "account": "biology",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 13,
+      "is_default": true,
+      "lineage": "/biology/0-jthomas/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "jthomas"
+    },
+    {
+      "accounting": [],
+      "account": "biology",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 10,
+      "is_default": true,
+      "lineage": "/biology/0-progers/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "progers"
+    },
+    {
+      "accounting": [],
+      "account": "biology",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 11,
+      "is_default": true,
+      "lineage": "/biology/0-vhartman/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "vhartman"
+    },
+    {
+      "accounting": [],
+      "account": "physic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 6,
+      "is_default": false,
+      "lineage": "/physic/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "root",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "acoustic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 7,
+      "is_default": false,
+      "lineage": "/physic/acoustic/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "physic",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "acoustic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 16,
+      "is_default": true,
+      "lineage": "/physic/acoustic/0-acuevas/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "acuevas"
+    },
+    {
+      "accounting": [],
+      "account": "acoustic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 14,
+      "is_default": true,
+      "lineage": "/physic/acoustic/0-dperez/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "dperez"
+    },
+    {
+      "accounting": [],
+      "account": "acoustic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 15,
+      "is_default": true,
+      "lineage": "/physic/acoustic/0-mcarrillo/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "mcarrillo"
+    },
+    {
+      "accounting": [],
+      "account": "optic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 8,
+      "is_default": false,
+      "lineage": "/physic/optic/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "physic",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    },
+    {
+      "accounting": [],
+      "account": "optic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 17,
+      "is_default": true,
+      "lineage": "/physic/optic/0-rcarson/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "rcarson"
+    },
+    {
+      "accounting": [],
+      "account": "optic",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 18,
+      "is_default": true,
+      "lineage": "/physic/optic/0-sevans/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": "sevans"
+    },
+    {
+      "accounting": [],
+      "account": "scientists",
+      "cluster": "hpc",
+      "comment": "",
+      "default": {
+        "qos": ""
+      },
+      "flags": [],
+      "max": {
+        "jobs": {
+          "per": {
+            "count": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "accruing": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "submitted": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            },
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          },
+          "active": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "accruing": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          },
+          "total": {
+            "set": false,
+            "infinite": true,
+            "number": 0
+          }
+        },
+        "tres": {
+          "total": [],
+          "group": {
+            "minutes": [],
+            "active": []
+          },
+          "minutes": {
+            "total": [],
+            "per": {
+              "job": []
+            }
+          },
+          "per": {
+            "job": [],
+            "node": []
+          }
+        },
+        "per": {
+          "account": {
+            "wall_clock": {
+              "set": false,
+              "infinite": true,
+              "number": 0
+            }
+          }
+        }
+      },
+      "id": 3,
+      "is_default": false,
+      "lineage": "/scientists/",
+      "min": {
+        "priority_threshold": {
+          "set": false,
+          "infinite": true,
+          "number": 0
+        }
+      },
+      "parent_account": "root",
+      "partition": "",
+      "priority": {
+        "set": false,
+        "infinite": true,
+        "number": 0
+      },
+      "qos": [
+        "normal",
+        "study"
+      ],
+      "shares_raw": 1,
+      "user": ""
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.43",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "admin:6820(fd:48)",
+      "user": "nobody",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "25",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "25.11.0",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
