@@ -105,6 +105,13 @@ agents:
     ex:
     - https://cluster1/agent
     - https://cluster2/agent
+  cacert:
+    type: path
+    doc: |
+      Path to CA certificate used to validate signature of agent server
+      certificate when using HTTPS. By default, system CA certificates are
+      used.
+    ex: /path/to/certificate.pem
   version:
     type: str
     default: 5.1.0
