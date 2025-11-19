@@ -16,7 +16,8 @@ import {
   PlayCircleIcon,
   CpuChipIcon,
   SwatchIcon,
-  XMarkIcon
+  XMarkIcon,
+  UserGroupIcon
 } from '@heroicons/vue/24/outline'
 import { TagIcon } from '@heroicons/vue/16/solid'
 
@@ -41,6 +42,12 @@ const navigation = [
     route: 'reservations',
     icon: CalendarIcon,
     permission: 'view-reservations'
+  },
+  {
+    name: 'Accounts',
+    route: 'accounts',
+    icon: UserGroupIcon,
+    permission: 'associations-view'
   }
 ]
 </script>
