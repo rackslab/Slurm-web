@@ -163,7 +163,11 @@ watch(
                     <ul v-if="jobs.data.value.length">
                       <li v-for="job in jobs.data.value" :key="job.job_id" class="inline">
                         <RouterLink
-                          :to="{ name: 'job', params: { cluster: cluster, id: job.job_id } }"
+                          :to="{
+                            name: 'job',
+                            params: { cluster: cluster, id: job.job_id },
+                            query: { returnTo: 'node', nodeName: nodeName }
+                          }"
                         >
                           <JobStatusBadge
                             :status="job.job_state"

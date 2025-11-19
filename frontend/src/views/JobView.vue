@@ -9,18 +9,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import type { LocationQueryRaw } from 'vue-router'
+import { useRoute } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { jobRequestedGPU, jobAllocatedGPU } from '@/composables/GatewayAPI'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import JobProgress from '@/components/job/JobProgress.vue'
-import { useRuntimeStore } from '@/stores/runtime'
+import JobBackButton from '@/components/job/JobBackButton.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { HashtagIcon } from '@heroicons/vue/24/outline'
 import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 import JobFieldComment from '@/components/job/JobFieldComment.vue'
@@ -29,17 +27,7 @@ import JobResources from '@/components/job/JobResources.vue'
 
 const { cluster, id } = defineProps<{ cluster: string; id: number }>()
 
-const runtimeStore = useRuntimeStore()
-const router = useRouter()
 const route = useRoute()
-
-function backToJobs() {
-  router.push({
-    name: 'jobs',
-    params: { cluster: runtimeStore.currentCluster?.name },
-    query: runtimeStore.jobs.query() as LocationQueryRaw
-  })
-}
 
 const JobsFields = [
   'user',
@@ -205,15 +193,7 @@ onMounted(() => {
     :cluster="cluster"
     :breadcrumb="[{ title: 'Jobs', routeName: 'jobs' }, { title: `Job ${id}` }]"
   >
-    <button
-      @click="backToJobs()"
-      type="button"
-      class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark mt-8 mb-16 inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
-    >
-      <ChevronLeftIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
-      Back to jobs
-    </button>
-
+    <JobBackButton :cluster="cluster" />
     <ErrorAlert v-if="unable"
       >Unable to retrieve job {{ id }} from cluster
       <span class="font-medium">{{ cluster }}</span></ErrorAlert
