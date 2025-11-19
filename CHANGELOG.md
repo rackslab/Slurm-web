@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- front: Automatically redirect to cluster dashboard when only one cluster is
-  available with permission without error in clusters list (#481).
+- front:
+  - Automatically redirect to cluster dashboard when only one cluster is
+    available with permission without error in clusters list (#481).
+  - Back button in job details page redirect to node details page when clicking
+    on a job running on a node (#663).
 - agent:
   - Automatically discover latest Slurm REST API version supported by
     `slurmrestd` among the list of Slurm-web supported versions declared in
