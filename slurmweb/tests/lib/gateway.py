@@ -25,6 +25,11 @@ from .utils import SlurmwebCustomTestResponse
 CONF_TPL = """
 [agents]
 url=http://localhost
+{% if agents_extra %}
+{% for key, value in agents_extra.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
 
 [jwt]
 key={{ key }}
@@ -53,7 +58,7 @@ def fake_slurmweb_agent(cluster: str):
 
 
 class TestGatewayConfBase(unittest.TestCase):
-    def setup_gateway_conf(self, ldap=False):
+    def setup_gateway_conf(self, ldap=False, agents_extra=None):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
         self.key.write("hey")
@@ -66,7 +71,11 @@ class TestGatewayConfBase(unittest.TestCase):
         # Generate configuration file
         self.conf = tempfile.NamedTemporaryFile(mode="w+")
         conf_template = jinja2.Template(CONF_TPL)
-        self.conf.write(conf_template.render(key=self.key.name, ldap=ldap))
+        self.conf.write(
+            conf_template.render(
+                key=self.key.name, ldap=ldap, agents_extra=agents_extra
+            )
+        )
         self.conf.seek(0)
 
         # Configuration definition path
@@ -74,8 +83,8 @@ class TestGatewayConfBase(unittest.TestCase):
 
 
 class TestGatewayBase(TestGatewayConfBase):
-    def setup_app(self, anonymous_user=False, use_token=True):
-        self.setup_gateway_conf()
+    def setup_app(self, anonymous_user=False, use_token=True, agents_extra=None):
+        self.setup_gateway_conf(agents_extra=agents_extra)
 
         self.app = SlurmwebAppGateway(
             SlurmwebAppSeed.with_parameters(
