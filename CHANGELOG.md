@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     supported Slurm REST API versions.
   - Introduce `[agents]` > `cacert` gateway parameter for custom path to CA
     certificate to validate agent SSL/TLS certificate.
+  - Introduce `associations-view` action in authorization policy.
 
 ### Changed
 - front:
