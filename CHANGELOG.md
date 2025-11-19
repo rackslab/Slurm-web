@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     on a job running on a node (#663).
   - Add support for running under a subfolder prefix on HTTP server.
   - Add catch-all route to report page not found with button to clusters.
+  - Support requesting accounts and users associations with their limits.
 - agent:
   - Automatically discover latest Slurm REST API version supported by
     `slurmrestd` among the list of Slurm-web supported versions declared in
