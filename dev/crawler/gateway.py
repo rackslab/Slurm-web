@@ -226,6 +226,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
             Asset("qos", "qos", self._crawl_qos),
             Asset("reservations", "reservations", self._crawl_reservations),
             Asset("accounts", "accounts", self._crawl_accounts),
+            Asset("associations", "associations", self._crawl_associations),
             Asset("racksdb", "racksdb-draw-coordinates", self._crawl_racksdb),
             Asset(
                 "metrics",
@@ -801,6 +802,12 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/api/agents/{self.cluster.name}/accounts",
             "accounts",
+        )
+
+    def _crawl_associations(self):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/associations",
+            "associations",
         )
 
     def _crawl_racksdb(self):
