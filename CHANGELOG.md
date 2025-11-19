@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `[agents]` > `cacert` gateway parameter for custom path to CA
     certificate to validate agent SSL/TLS certificate.
   - Introduce `associations-view` action in authorization policy.
+  - Add permission on `associations-view` to all authenticated users in default
+    authorization policy.
 - cli: Introduce `slurm-web` unified executable with subcommands (#655).
 - docs: Add manpage for unified `slurm-web` command.
 
