@@ -338,6 +338,12 @@ def accounts(cluster: str):
 
 @check_jwt
 @validate_cluster
+def associations(cluster: str):
+    return proxy_agent(cluster, "associations", request.token)
+
+
+@check_jwt
+@validate_cluster
 def metrics(cluster: str, metric: str):
     return proxy_agent(cluster, f"metrics/{metric}", request.token)
 
