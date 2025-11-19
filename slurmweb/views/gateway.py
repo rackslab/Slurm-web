@@ -126,7 +126,9 @@ async def get_cluster(agent):
     """Return dict with cluster information, for the cluster managed by the given agent.
     The dict contains permissions on the cluster for the request token. Return None if
     request to get permissions failed."""
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(
+        connector=current_app.get_agent_connector()
+    ) as session:
         async with request_agent(
             session, agent.cluster, "permissions", request.token
         ) as response:
@@ -233,7 +235,9 @@ async def async_proxy_agent(
 ):
     """Initialize an asynchronous client session, send the request to the agent and
     return Flask response."""
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(
+        connector=current_app.get_agent_connector()
+    ) as session:
         async with request_agent(
             session, cluster, query, token, with_version
         ) as response:

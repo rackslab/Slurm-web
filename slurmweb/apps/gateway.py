@@ -8,6 +8,7 @@ import time
 import collections
 import asyncio
 import logging
+import ssl
 
 from rfl.web.tokens import RFLTokenizedWebApp
 from rfl.authentication.ldap import LDAPAuthentifier
@@ -126,12 +127,28 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         ),
     }
 
+    def get_agent_connector(self):
+        """Return a TCPConnector configured for agent connections with custom CA if
+        configured, or None if no custom CA is configured."""
+        if not self.settings.agents.cacert:
+            return None
+
+        if not self.settings.agents.cacert.is_file():
+            raise SlurmwebConfigurationError(
+                f"Agent CA certificate file {self.settings.agents.cacert} not found"
+            )
+        return aiohttp.TCPConnector(
+            ssl=ssl.create_default_context(cafile=str(self.settings.agents.cacert))
+        )
+
     async def _get_agent_info(self, url) -> SlurmwebAgent:
         """Retrieve information from one agent, check values and return SlurmwebAgent
         object if checks pass. Return None on error."""
         try:
             logger.info("Retrieving info from agent at url %s", url)
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(
+                connector=self.get_agent_connector()
+            ) as session:
                 async with session.get(f"{url}/info") as response:
                     if response.status != 200:
                         raise SlurmwebAgentError(
