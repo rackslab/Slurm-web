@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `associations-view` action in authorization policy.
   - Add permission on `associations-view` to all authenticated users in default
     authorization policy.
+  - Introduce `[filters]` > `associations` parameter in agent configuration.
+  - Introduce `[cache]` > `associations` parameter in agent configuration.
 
 ### Changed
 - front:
