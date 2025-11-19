@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway:
   - Add `/agent/{cluster}/ping` route to reverse-proxy request to agent `/ping`
     endpoint.
+  - Add `/agent/{cluster}/associations` route to reverse-proxy request to agent
+    `/associations` endpoint.
   - Possibility to validate agent SSL/TLS certificate with custom CA certificate
     as an alternative to system default CA certificates (#254).
   - Replace at runtime base path placeholder in pre-built UI assets by URL path
