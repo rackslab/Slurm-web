@@ -107,11 +107,19 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-node-draining": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-node-idle": {
     "content-type": "application/json",
     "status": 200
   },
   "slurm-node-mixed": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-planned": {
     "content-type": "application/json",
     "status": 200
   },
