@@ -605,6 +605,48 @@ export interface ClusterQos {
   priority: ClusterOptionalNumber
 }
 
+export interface ClusterAssociation {
+  account: string
+  max: {
+    jobs: {
+      accruing: ClusterOptionalNumber // MaxJobsAccrue
+      active: ClusterOptionalNumber // MaxJobs
+      per: {
+        accruing: ClusterOptionalNumber // GrpJobsAccrue
+        count: ClusterOptionalNumber // GrpJobs
+        submitted: ClusterOptionalNumber // GrpSubmit
+        wall_clock: ClusterOptionalNumber // MaxWall in minutes
+      }
+      total: ClusterOptionalNumber // MaxSubmit
+    }
+    per: {
+      account: {
+        wall_clock: ClusterOptionalNumber // GrpWall in minutes
+      }
+    }
+    tres: {
+      group: {
+        active: ClusterTRES[] // GrpTRESRunMins
+        minutes: ClusterTRES[] // GrpTRESMins
+      }
+      minutes: {
+        per: {
+          job: ClusterTRES[] // MaxTRESMins
+        }
+        total: ClusterTRES[] // ?
+      }
+      per: {
+        job: ClusterTRES[] // MaxTRES
+        node: ClusterTRES[] // MaxTRESPerNode
+      }
+      total: ClusterTRES[] // GrpTRES
+    }
+  }
+  parent_account: string
+  qos: string[]
+  user: string
+}
+
 export interface ClusterReservation {
   accounts: string
   end_time: ClusterOptionalNumber
@@ -756,6 +798,7 @@ const GatewayClusterAPIKeys = [
   'qos',
   'reservations',
   'accounts',
+  'associations',
   'cache_stats'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
@@ -855,6 +898,10 @@ export function useGatewayAPI() {
 
   async function accounts(cluster: string): Promise<Array<AccountDescription>> {
     return await restAPI.get<AccountDescription[]>(`/agents/${cluster}/accounts`)
+  }
+
+  async function associations(cluster: string): Promise<Array<ClusterAssociation>> {
+    return await restAPI.get<ClusterAssociation[]>(`/agents/${cluster}/associations`)
   }
 
   async function cache_stats(cluster: string): Promise<CacheStatistics> {
@@ -997,6 +1044,7 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    associations,
     cache_stats,
     cache_reset,
     metrics_nodes,
