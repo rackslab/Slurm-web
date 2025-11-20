@@ -57,6 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     SlurmrestdAuthenticationError as a workaround for a regression in
     Slurm 25.11.0.
   - Remove Slurm version from `/stats` response.
+- gateway: Wrap all gateway endpoints under the configured UI public URL path
+  prefix when defined. By default, the path prefix is empty and the endpoints
+  are at root path of HTTP server.
 - conf:
   - Deprecate `[slurmrestd]` > `version` parameter in favor of
     `[slurmrestd]` > `versions` parameter.

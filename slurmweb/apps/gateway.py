@@ -14,6 +14,16 @@ from rfl.web.tokens import RFLTokenizedWebApp
 from rfl.authentication.ldap import LDAPAuthentifier
 from rfl.core.asyncio import asyncio_run
 import aiohttp
+from flask import Response
+
+try:
+    from werkzeug.middleware import dispatcher
+except ModuleNotFoundError:
+    # In Werkzeug < 0.15, dispatcher was not in a dedicated module, it was included in a
+    # big wsgi module. This old version of werkzeug must be fully supported because it
+    # is included in el8. See https://github.com/rackslab/Slurm-web/issues/419 for
+    # reference.
+    from werkzeug import wsgi as dispatcher
 
 from . import SlurmwebWebApp, load_ldap_password_from_file
 from ..ui import prepare_ui_assets
@@ -235,6 +245,16 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         normalized = host.path.rstrip("/")
         return normalized
 
+    def _mount_under_prefix(self, prefix: str):
+        """Wrap the application endpoints under the provided URL prefix."""
+        if prefix == "":
+            return
+        logger.info("Mounting application under URL prefix %s", prefix)
+        self.wsgi_app = dispatcher.DispatcherMiddleware(
+            Response("Not Found", status=404),
+            {prefix: self.wsgi_app},
+        )
+
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
 
@@ -280,11 +300,16 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             algorithm=self.settings.jwt.algorithm,
             key=self.settings.jwt.key,
         )
+
+        # Mount application under URL prefix if configured
+        prefix = self._infer_ui_prefix()
+        self._mount_under_prefix(prefix)
+
         # Add UI rules if enabled.
         if self.settings.ui.enabled:
             ui_path = prepare_ui_assets(
                 self.settings.ui.path,
-                self._infer_ui_prefix(),
+                prefix,
             )
             self.add_url_rule("/config.json", view_func=views.ui_config)
             self.static_folder = str(ui_path)
