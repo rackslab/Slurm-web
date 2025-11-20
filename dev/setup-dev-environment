@@ -317,6 +317,7 @@ class SlurmwebAgent:
 @dataclass
 class SlurmwebGateway:
     conf_path: Path = None
+    gateway_prefix: str = "/"
 
     def render_conf(
         self,
@@ -325,7 +326,9 @@ class SlurmwebGateway:
         agents: list[SlurmwebAgent],
         ui: Path | None,
         anonymous: bool,
+        gateway_prefix: str = "/",
     ):
+        self.gateway_prefix = gateway_prefix
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader("dev/conf/"))
         template = environment.get_template("gateway.ini.j2")
         self.conf_path = tmpdir / "gateway.ini"
@@ -341,6 +344,7 @@ class SlurmwebGateway:
                     ui=ui,
                     message=self.message_path,
                     anonymous=anonymous,
+                    gateway_prefix=gateway_prefix,
                 )
             )
 
@@ -427,6 +431,14 @@ def main():
         action="store_false",
         help="Disable metrics collection globally",
     )
+    parser.add_argument(
+        "--gateway-prefix",
+        default="/",
+        help=(
+            "URL path prefix under which to serve the gateway application "
+            "(default: %(default)s)"
+        ),
+    )
     args = parser.parse_args()
 
     # Load cluster list from RacksDB database
@@ -495,7 +507,9 @@ def main():
 
     # Launch gateway
     gateway = SlurmwebGateway()
-    gateway.render_conf(tmpdir, jwt_key_path, agents, args.ui, args.anonymous)
+    gateway.render_conf(
+        tmpdir, jwt_key_path, agents, args.ui, args.anonymous, args.gateway_prefix
+    )
     if args.service_message:
         gateway.render_message(
             tmpdir,

@@ -3,7 +3,7 @@ cors=yes
 port={{ service_port }}
 
 [ui]
-host=http://localhost:{{ service_port }}
+host=http://localhost:{{ service_port }}{{ gateway_prefix }}
 {%- if ui is defined and ui %}
 path={{ ui }}
 {%- else %}
