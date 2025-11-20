@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     available with permission without error in clusters list (#481).
   - Back button in job details page redirect to node details page when clicking
     on a job running on a node (#663).
+  - Add support for running under a subfolder prefix on HTTP server.
 - agent:
   - Automatically discover latest Slurm REST API version supported by
     `slurmrestd` among the list of Slurm-web supported versions declared in
