@@ -32,7 +32,9 @@ export const runtimeConfiguration: Plugin = {
  * Loads runtime configuration from static file (in /public folder).
  */
 export const initRuntimeConfiguration = async (): Promise<RuntimeConfiguration> => {
-  const resp = await fetch('/config.json')
+  // remove trailing slash from base path
+  const basePath = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '')
+  const resp = await fetch(`${basePath}/config.json`)
   const value = await resp.json()
 
   return {
