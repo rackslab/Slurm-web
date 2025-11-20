@@ -16,6 +16,7 @@ from rfl.core.asyncio import asyncio_run
 import aiohttp
 
 from . import SlurmwebWebApp, load_ldap_password_from_file
+from ..ui import prepare_ui_assets
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
 from ..errors import (
@@ -226,6 +227,14 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
 
         return self._agents
 
+    def _infer_ui_prefix(self) -> str:
+        """Infer the UI URL prefix from configured UI public host."""
+        host = self.settings.ui.host
+        if host is None:
+            return ""
+        normalized = host.path.rstrip("/")
+        return normalized
+
     def __init__(self, seed):
         SlurmwebWebApp.__init__(self, seed)
 
@@ -273,8 +282,12 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         )
         # Add UI rules if enabled.
         if self.settings.ui.enabled:
+            ui_path = prepare_ui_assets(
+                self.settings.ui.path,
+                self._infer_ui_prefix(),
+            )
             self.add_url_rule("/config.json", view_func=views.ui_config)
-            self.static_folder = self.settings.ui.path
+            self.static_folder = str(ui_path)
             self.add_url_rule("/", view_func=views.ui_files)
             self.add_url_rule("/<path:name>", view_func=views.ui_files)
 
