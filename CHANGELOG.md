@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     endpoint.
   - Possibility to validate agent SSL/TLS certificate with custom CA certificate
     as an alternative to system default CA certificates (#254).
+  - Replace at runtime base path placeholder in pre-built UI assets by URL path
+    extracted from configured UI public host to support running under under a
+    subfolder prefix on HTTP server (#388).
 - connect: Discover and report latest Slurm REST API version supported by
   `slurmrestd` among the list of Slurm-web supported versions declared in
   configuration.
