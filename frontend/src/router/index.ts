@@ -30,6 +30,7 @@ import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
 import JobsStatusBadges from '@/views/tests/JobsStatusBadges.vue'
 import NodesStatusBadges from '@/views/tests/NodesStatusBadges.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -169,6 +170,11 @@ const router = createRouter({
       path: '/tests/nodes-status-badges',
       name: 'tests-nodes-status-badges',
       component: NodesStatusBadges
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
     }
   ]
 })
@@ -182,7 +188,7 @@ router.beforeEach(async (to, from) => {
     '/tests/jobs-status-badges',
     '/tests/nodes-status-badges'
   ]
-  const authRequired = !publicPages.includes(to.path)
+  const authRequired = !publicPages.includes(to.path) && to.name !== 'not-found'
   const auth = useAuthStore()
   const runtime = useRuntimeStore()
   const runtimeConfiguration = useRuntimeConfiguration()
