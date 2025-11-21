@@ -8,6 +8,7 @@ import sys
 import unittest
 from unittest import mock
 import tempfile
+from urllib.parse import urlparse
 
 import aiohttp.client_exceptions
 import aiohttp
@@ -275,3 +276,94 @@ class TestGatewayAppAgentConnector(TestGatewayBase):
             r"^Agent CA certificate file /dev/fail not found$",
         ):
             app.get_agent_connector()
+
+
+class TestInferUIPrefix(TestGatewayBase):
+    def setUp(self):
+        self.setup_app()
+
+    def test_infer_ui_prefix_none(self):
+        """Test _infer_ui_prefix() when host is None."""
+        self.app.settings.ui.host = None
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "")
+
+    def test_infer_ui_prefix_empty_path(self):
+        """Test _infer_ui_prefix() with empty path."""
+        self.app.settings.ui.host = urlparse("http://example.com")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "")
+
+    def test_infer_ui_prefix_root_path(self):
+        """Test _infer_ui_prefix() with root path '/'."""
+        self.app.settings.ui.host = urlparse("http://example.com/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "")
+
+    def test_infer_ui_prefix_single_segment_with_trailing_slash(self):
+        """Test _infer_ui_prefix() with single segment path ending with '/'."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_single_segment_without_trailing_slash(self):
+        """Test _infer_ui_prefix() with single segment path without trailing '/'."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_multiple_segments_with_trailing_slash(self):
+        """Test _infer_ui_prefix() with multiple segments ending with '/'."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix/sub/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix/sub")
+
+    def test_infer_ui_prefix_multiple_segments_without_trailing_slash(self):
+        """Test _infer_ui_prefix() with multiple segments without trailing '/'."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix/sub")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix/sub")
+
+    def test_infer_ui_prefix_deep_path(self):
+        """Test _infer_ui_prefix() with deep nested path."""
+        self.app.settings.ui.host = urlparse("http://example.com/a/b/c/d/e/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/a/b/c/d/e")
+
+    def test_infer_ui_prefix_path_with_query(self):
+        """Test _infer_ui_prefix() ignores query parameters."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix?param=value")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_path_with_fragment(self):
+        """Test _infer_ui_prefix() ignores fragment."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix#fragment")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_path_with_query_and_fragment(self):
+        """Test _infer_ui_prefix() ignores both query and fragment."""
+        self.app.settings.ui.host = urlparse(
+            "http://example.com/prefix?param=value#fragment"
+        )
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_https_scheme(self):
+        """Test _infer_ui_prefix() with HTTPS scheme."""
+        self.app.settings.ui.host = urlparse("https://example.com/prefix/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_with_port(self):
+        """Test _infer_ui_prefix() with port in URL."""
+        self.app.settings.ui.host = urlparse("http://example.com:8080/prefix/")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
+
+    def test_infer_ui_prefix_multiple_trailing_slashes(self):
+        """Test _infer_ui_prefix() with multiple trailing slashes."""
+        self.app.settings.ui.host = urlparse("http://example.com/prefix///")
+        result = self.app._infer_ui_prefix()
+        self.assertEqual(result, "/prefix")
