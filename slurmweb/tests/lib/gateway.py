@@ -34,6 +34,15 @@ url=http://localhost
 [jwt]
 key={{ key }}
 
+[ui]
+{% if ui_enabled is defined and ui_enabled %}
+enabled=yes
+{% if ui_host is defined %}host={{ ui_host }}{% endif %}
+{% if ui_path is defined %}path={{ ui_path }}{% endif %}
+{% else %}
+enabled=no
+{% endif %}
+
 {% if ldap %}
 [authentication]
 enabled=yes
@@ -58,7 +67,7 @@ def fake_slurmweb_agent(cluster: str):
 
 
 class TestGatewayConfBase(unittest.TestCase):
-    def setup_gateway_conf(self, ldap=False, agents_extra=None):
+    def setup_gateway_conf(self, **template_overrides):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
         self.key.write("hey")
@@ -71,11 +80,9 @@ class TestGatewayConfBase(unittest.TestCase):
         # Generate configuration file
         self.conf = tempfile.NamedTemporaryFile(mode="w+")
         conf_template = jinja2.Template(CONF_TPL)
-        self.conf.write(
-            conf_template.render(
-                key=self.key.name, ldap=ldap, agents_extra=agents_extra
-            )
-        )
+        template_vars = {"key": self.key.name}
+        template_vars.update(template_overrides)
+        self.conf.write(conf_template.render(**template_vars))
         self.conf.seek(0)
 
         # Configuration definition path
@@ -83,8 +90,13 @@ class TestGatewayConfBase(unittest.TestCase):
 
 
 class TestGatewayBase(TestGatewayConfBase):
-    def setup_app(self, anonymous_user=False, use_token=True, agents_extra=None):
-        self.setup_gateway_conf(agents_extra=agents_extra)
+    def setup_app(
+        self,
+        anonymous_user=False,
+        use_token=True,
+        conf_overrides=None,
+    ):
+        self.setup_gateway_conf(**(conf_overrides or {}))
 
         self.app = SlurmwebAppGateway(
             SlurmwebAppSeed.with_parameters(
