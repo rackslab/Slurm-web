@@ -127,7 +127,12 @@ flags.
 
 |host
 |uri
-|Public URL to access the gateway component
+|Public URL to access the gateway component. This is used to setup the
+frontend application with base URL to gateway endpoints. The path part is
+used to replace the base path placeholder in pre-built UI assets at
+runtime. When path is defined in the URI, it is also used to wrap all
+gateway endpoints under it.
+
 
 
 *Example:* `https://dashboard.corp.com/`
@@ -266,6 +271,21 @@ representations.
 _No default value_
 
 |✅
+
+|cacert
+|path
+|Path to CA certificate used to validate signature of agent server
+certificate when using HTTPS. By default, system CA certificates are
+used.
+
+
+
+*Example:* `/path/to/certificate.pem`
+
+
+_No default value_
+
+|-
 
 |version
 |str
