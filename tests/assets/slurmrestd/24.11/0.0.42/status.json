@@ -115,6 +115,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-node-planned": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-node-unfound": {
     "content-type": "application/json",
     "status": 200
@@ -156,6 +160,10 @@
     "status": 200
   },
   "slurm-reservations": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-associations": {
     "content-type": "application/json",
     "status": 200
   },

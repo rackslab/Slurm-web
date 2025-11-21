@@ -52,6 +52,7 @@ class AgentCrawler(TokenizedComponentCrawler):
             Asset("qos", "qos", self._crawl_qos),
             Asset("reservations", "reservations", self._crawl_reservations),
             Asset("accounts", "accounts", self._crawl_accounts),
+            Asset("associations", "associations", self._crawl_associations),
             Asset(
                 "metrics-nodes-hour",
                 "metrics-nodes-hour",
@@ -157,6 +158,12 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/accounts",
             "accounts",
+        )
+
+    def _crawl_associations(self):
+        self.dump_component_query(
+            f"/v{get_version()}/associations",
+            "associations",
         )
 
     def _crawl_metrics_nodes_hour(self):

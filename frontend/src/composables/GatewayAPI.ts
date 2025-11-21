@@ -605,6 +605,47 @@ export interface ClusterQos {
   priority: ClusterOptionalNumber
 }
 
+export interface ClusterAssociation {
+  account: string
+  max: {
+    jobs: {
+      accruing: ClusterOptionalNumber
+      active: ClusterOptionalNumber
+      per: {
+        account: ClusterOptionalNumber
+        count: ClusterOptionalNumber
+        submitted: ClusterOptionalNumber
+        wall_clock: ClusterOptionalNumber
+      }
+      total: ClusterOptionalNumber
+    }
+    per: {
+      account: ClusterOptionalNumber
+      wall_clock: ClusterOptionalNumber
+    }
+    tres: {
+      group: {
+        active: ClusterTRES[]
+        minutes: ClusterTRES[]
+      }
+      minutes: {
+        per: {
+          job: ClusterTRES[]
+        }
+        total: ClusterTRES[]
+      }
+      per: {
+        job: ClusterTRES[]
+        node: ClusterTRES[]
+      }
+      total: ClusterTRES[]
+    }
+  }
+  parent_account: string
+  qos: string[]
+  user: string
+}
+
 export interface ClusterReservation {
   accounts: string
   end_time: ClusterOptionalNumber
@@ -756,6 +797,7 @@ const GatewayClusterAPIKeys = [
   'qos',
   'reservations',
   'accounts',
+  'associations',
   'cache_stats'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
@@ -855,6 +897,10 @@ export function useGatewayAPI() {
 
   async function accounts(cluster: string): Promise<Array<AccountDescription>> {
     return await restAPI.get<AccountDescription[]>(`/agents/${cluster}/accounts`)
+  }
+
+  async function associations(cluster: string): Promise<Array<ClusterAssociation>> {
+    return await restAPI.get<ClusterAssociation[]>(`/agents/${cluster}/associations`)
   }
 
   async function cache_stats(cluster: string): Promise<CacheStatistics> {
@@ -997,6 +1043,7 @@ export function useGatewayAPI() {
     qos,
     reservations,
     accounts,
+    associations,
     cache_stats,
     cache_reset,
     metrics_nodes,

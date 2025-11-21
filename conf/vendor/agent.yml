@@ -340,6 +340,17 @@ filters:
     doc: |
       List of accounts fields selected in slurmrestd API, all other fields are
       filtered out.
+  associations:
+    type: list
+    content: str
+    default:
+    - account
+    - max
+    - parent_account
+    - qos
+    - user
+    doc: |
+      List of associations fields selected in slurmrestd API, all other fields are filtered out.
 
 policy:
   definition:
@@ -483,6 +494,10 @@ cache:
     type: int
     default: 60
     doc: Expiration delay in seconds for accounts in cache
+  associations:
+    type: int
+    default: 120
+    doc: Expiration delay in seconds for associations in cache
 
 metrics:
   enabled:
