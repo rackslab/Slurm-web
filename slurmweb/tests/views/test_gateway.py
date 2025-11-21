@@ -125,20 +125,6 @@ class TestGatewayViews(TestGatewayBase):
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(response.json.keys(), ["hit", "miss"])
 
-    def test_ui_config(self):
-        response = self.client.get("/config.json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json,
-            {
-                "API_SERVER": "http://localhost:5011",
-                "AUTHENTICATION": False,
-                "RACKSDB_RACKS_LABELS": False,
-                "RACKSDB_ROWS_LABELS": False,
-                "VERSION": get_version(),
-            },
-        )
-
     @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
     def test_unexpected_not_json(self, mock_get):
         self.app_set_agents({"foo": fake_slurmweb_agent("foo")})

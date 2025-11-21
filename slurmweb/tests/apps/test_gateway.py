@@ -247,7 +247,7 @@ class TestGatewayAppAgentConnector(TestGatewayBase):
         with tempfile.NamedTemporaryFile(mode="w") as cacert:
             mock_context.return_value = mock.sentinel.agent_ssl_context
             mock_connector.return_value = mock.sentinel.agent_connector
-            self.setup_app(agents_extra={"cacert": cacert.name})
+            self.setup_app(conf_overrides={"agents_extra": {"cacert": cacert.name}})
             connector = self.app.get_agent_connector()
             self.assertIs(connector, mock.sentinel.agent_connector)
             mock_context.assert_called_once_with(cafile=cacert.name)
