@@ -571,6 +571,26 @@ class TestAgentViews(TestAgentBase):
         for idx in range(len(response.json)):
             self.assertEqual(response.json[idx]["name"], accounts_asset[idx]["name"])
 
+    @all_slurm_api_versions
+    def test_request_associations(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [associations_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurmdb-associations", "associations")],
+        )
+        response = self.client.get(f"/v{get_version()}/associations")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, list)
+        self.assertEqual(len(response.json), len(associations_asset))
+        for idx in range(len(response.json)):
+            self.assertEqual(
+                response.json[idx]["account"], associations_asset[idx]["account"]
+            )
+            self.assertEqual(
+                response.json[idx]["user"], associations_asset[idx]["user"]
+            )
+
     def test_cache_stats_disabled(self):
         with self.assertLogs("slurmweb", level="WARNING") as cm:
             response = self.client.get(f"/v{get_version()}/cache/stats")
