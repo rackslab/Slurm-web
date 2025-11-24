@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Support requesting accounts and users associations with their limits.
   - Add page to list account tree from Slurm accounting (#262).
   - Add entry in left menu to access accounts page.
+  - Add page to get details of a specific account with all its user
+    associations.
 - agent:
   - Automatically discover latest Slurm REST API version supported by
     `slurmrestd` among the list of Slurm-web supported versions declared in

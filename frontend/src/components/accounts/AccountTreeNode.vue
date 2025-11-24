@@ -87,11 +87,11 @@ function toggle() {
       <!-- Main content card -->
       <div
         :id="`account-tree-node-${node.account}`"
-        class="relative flex items-center gap-x-4 rounded-lg bg-white px-4 py-4 shadow-sm ring-1 ring-gray-200 transition-shadow ring-inset hover:shadow-md dark:bg-gray-800 dark:ring-gray-700"
+        class="group relative flex items-center gap-x-4 rounded-lg bg-white shadow-sm ring-1 ring-gray-200 transition-all ring-inset hover:bg-gray-50 hover:shadow-md dark:bg-gray-800 dark:ring-gray-700 dark:hover:bg-gray-700/70"
         :class="node.level > 0 ? 'ml-12' : ''"
       >
         <!-- Expand/Collapse button -->
-        <div class="flex-shrink-0">
+        <div class="-mr-4 ml-4 flex-shrink-0">
           <button
             v-if="hasChildren"
             type="button"
@@ -115,38 +115,46 @@ function toggle() {
         </div>
 
         <!-- Account content -->
-        <div class="flex min-w-0 flex-auto items-center justify-between gap-3">
+        <RouterLink
+          :to="{ name: 'account', params: { cluster, account: node.account } }"
+          class="hover:text-slurmweb dark:hover:text-slurmweb-light flex min-w-0 flex-auto items-center justify-between gap-3 px-4 py-4 text-gray-900 no-underline transition-colors focus:outline-none dark:text-gray-100"
+        >
           <p class="text-sm leading-6 font-semibold text-gray-900 dark:text-gray-100">
             {{ node.account }}
           </p>
-          <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400">
-            <template v-if="!isExpanded && hasChildren">
-              <div
-                class="flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 dark:bg-gray-700"
-              >
-                <QueueListIcon class="h-3.5 w-3.5" />
-                <span>{{ subaccountCount }} subaccount{{ subaccountCount > 1 ? 's' : '' }}</span>
-              </div>
-              <div
-                class="flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 dark:bg-gray-700"
-              >
-                <UsersIcon class="h-3.5 w-3.5" />
-                <span
-                  >{{ subaccountUsersCount }} user{{ subaccountUsersCount > 1 ? 's' : '' }}</span
+          <div class="flex items-center gap-3">
+            <div class="flex gap-2 text-xs text-gray-600 dark:text-gray-400">
+              <template v-if="!isExpanded && hasChildren">
+                <div
+                  class="bg-slurmweb dark:bg-slurmweb-dark flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-white dark:bg-gray-700"
                 >
-              </div>
-            </template>
-            <template v-else>
-              <div
-                v-if="node.users && node.users.length > 0"
-                class="flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 dark:bg-gray-700"
-              >
-                <UsersIcon class="h-3.5 w-3.5" />
-                <span>{{ node.users.length }} user{{ node.users.length > 1 ? 's' : '' }}</span>
-              </div>
-            </template>
+                  <QueueListIcon class="h-3.5 w-3.5" />
+                  <span>{{ subaccountCount }} subaccount{{ subaccountCount > 1 ? 's' : '' }}</span>
+                </div>
+                <div
+                  class="bg-slurmweb dark:bg-slurmweb-dark flex items-center gap-1 rounded-full px-2 py-0.5 text-white dark:bg-gray-700"
+                >
+                  <UsersIcon class="h-3.5 w-3.5" />
+                  <span
+                    >{{ subaccountUsersCount }} user{{ subaccountUsersCount > 1 ? 's' : '' }}</span
+                  >
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  v-if="node.users && node.users.length > 0"
+                  class="bg-slurmweb dark:bg-slurmweb-dark flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-white dark:bg-gray-700"
+                >
+                  <UsersIcon class="h-3.5 w-3.5" />
+                  <span>{{ node.users.length }} user{{ node.users.length > 1 ? 's' : '' }}</span>
+                </div>
+              </template>
+            </div>
+            <ChevronRightIcon
+              class="group-hover:text-slurmweb h-4 w-4 text-gray-300 dark:text-gray-500"
+            />
           </div>
-        </div>
+        </RouterLink>
       </div>
       <!-- Children -->
       <Transition
