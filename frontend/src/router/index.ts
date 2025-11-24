@@ -29,6 +29,7 @@ import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
 import AccountsView from '@/views/AccountsView.vue'
+import AccountView from '@/views/AccountView.vue'
 import JobsStatusBadges from '@/views/tests/JobsStatusBadges.vue'
 import NodesStatusBadges from '@/views/tests/NodesStatusBadges.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
@@ -164,6 +165,12 @@ const router = createRouter({
           path: 'accounts',
           name: 'accounts',
           component: AccountsView,
+          props: true
+        },
+        {
+          path: 'accounts/:account',
+          name: 'account',
+          component: AccountView,
           props: true
         }
       ]
