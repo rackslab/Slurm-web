@@ -187,6 +187,15 @@ onMounted(() => {
       (parameter) => parameter in route.query
     )
   ) {
+    /* Reinitialize filters if route has query parameters */
+    runtimeStore.jobs.filters = {
+      states: [],
+      users: [],
+      accounts: [],
+      qos: [],
+      partitions: []
+    }
+
     if (route.query.sort && runtimeStore.jobs.isValidSortCriterion(route.query.sort)) {
       /* Retrieve the sort criteria from query and update the store */
       runtimeStore.jobs.sort = route.query.sort as JobSortCriterion
