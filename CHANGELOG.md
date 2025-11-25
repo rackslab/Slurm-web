@@ -105,7 +105,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   command.
 
 ### Fixed
-- front: Dark mode rendering of info and error messages in clusters list (#661).
+- front:
+  - Dark mode rendering of info and error messages in clusters list (#661).
+  - Re-initialize all jobs filters in runtime store as soon as a filter is
+    present in query.
 - gateway: Use agent provided version instead of agent minimal version from
   settings to reverse proxy the requests (#656).
 - front: Update dependencies to fix CVE-2025-64718 (js-yaml), CVE-2025-64756
