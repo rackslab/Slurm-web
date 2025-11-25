@@ -32,4 +32,6 @@ shadowed:
 - screenshot_cores_tablet.png
 - screenshot_qos.png
 - screenshot_reservations.png
+- screenshot_accounts_tree.png
+- screenshot_account_page.png
 - screenshot_perms.png
