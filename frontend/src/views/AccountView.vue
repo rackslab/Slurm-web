@@ -284,7 +284,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
       Account <span class="font-semibold">{{ account }}</span> does not exist on this cluster.
     </InfoAlert>
     <div v-else-if="accountAssociation" id="account-heading">
-      <div class="flex justify-between">
+      <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="px-4 pb-8 sm:px-0">
           <h3 class="text-base leading-7 font-semibold text-gray-900 dark:text-gray-100">
             Account {{ account }}
@@ -293,6 +293,12 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
             Account information, limits, and user associations.
           </p>
         </div>
+        <RouterLink
+          :to="{ name: 'jobs', params: { cluster }, query: { accounts: account } }"
+          class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          View jobs
+        </RouterLink>
       </div>
       <div class="flex flex-wrap">
         <div class="w-full">
