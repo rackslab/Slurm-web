@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
@@ -150,7 +150,7 @@ function qosLabel(list: string[]): string {
       User <span class="font-semibold">{{ user }}</span> has no associations on this cluster.
     </InfoAlert>
     <div v-else>
-      <div id="user-heading" class="flex flex-wrap justify-between gap-4">
+      <div id="user-heading" class="flex flex-wrap items-start justify-between gap-4">
         <div class="px-4 pb-8 sm:px-0">
           <h3 class="text-base leading-7 font-semibold text-gray-900 dark:text-gray-100">
             User {{ user }}
@@ -159,13 +159,21 @@ function qosLabel(list: string[]): string {
             Detailed view of every account association configured for this user.
           </p>
         </div>
-        <div class="hidden text-right sm:block">
-          <div class="text-4xl font-semibold text-gray-900 dark:text-gray-100">
-            {{ associatedAccounts.size }}
+        <div class="ml-auto flex flex-col items-end gap-4">
+          <div class="hidden text-right sm:block">
+            <div class="text-4xl font-semibold text-gray-900 dark:text-gray-100">
+              {{ associatedAccounts.size }}
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-300">
+              account{{ associatedAccounts.size > 1 ? 's' : '' }} associated
+            </div>
           </div>
-          <div class="text-sm text-gray-500 dark:text-gray-300">
-            account{{ associatedAccounts.size > 1 ? 's' : '' }} associated
-          </div>
+          <RouterLink
+            :to="{ name: 'jobs', params: { cluster }, query: { users: user } }"
+            class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            View jobs
+          </RouterLink>
         </div>
       </div>
 
@@ -282,7 +290,7 @@ function qosLabel(list: string[]): string {
                     </dl>
                   </td>
                   <td
-                    class="hidden px-3 py-4 text-sm text-gray-300 2xl:table-cell dark:text-gray-400"
+                    class="hidden px-3 py-4 align-top text-sm text-gray-300 2xl:table-cell dark:text-gray-400"
                   >
                     {{ qosLabel(association.qos) }}
                   </td>
