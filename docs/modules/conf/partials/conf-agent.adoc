@@ -687,6 +687,30 @@ filtered out.
 
 |-
 
+|associations
+|list[str]
+|List of associations fields selected in slurmrestd API, all other fields are filtered out.
+
+
+
+
+
+*Default:*
+
+
+* `account`
+
+* `max`
+
+* `parent_account`
+
+* `qos`
+
+* `user`
+
+
+|-
+
 
 |===
 
@@ -1052,6 +1076,17 @@ _No default value_
 
 
 *Default:* `60`
+
+|-
+
+|associations
+|int
+|Expiration delay in seconds for associations in cache
+
+
+
+
+*Default:* `120`
 
 |-
 

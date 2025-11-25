@@ -36,6 +36,11 @@ compute nodes in cluster with their status in Slurm.
 |Permission to filter jobs by account.
 
 
+|associations-view
+|Get _Accounts_ entry in main menu and permission to view the list of
+associations (accounts, users and limits).
+
+
 |view-reservations
 |Get _Reservations_ entry in main menu and permission to view the list of
 defined reservations.
