@@ -472,7 +472,16 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                     <td
                       class="py-4 pr-3 pl-4 text-sm font-semibold whitespace-nowrap text-gray-900 sm:pl-6 dark:text-gray-100"
                     >
-                      {{ association.user }}
+                      <RouterLink
+                        v-if="association.user"
+                        :to="{
+                          name: 'user',
+                          params: { cluster, user: association.user }
+                        }"
+                        class="text-slurmweb hover:text-slurmweb-dark dark:text-slurmweb-light"
+                      >
+                        {{ association.user }}
+                      </RouterLink>
                     </td>
                     <td
                       class="hidden px-3 py-4 align-top text-sm text-gray-700 sm:table-cell dark:text-gray-300"

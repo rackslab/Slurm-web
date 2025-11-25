@@ -12,10 +12,11 @@ import { RouterLink } from 'vue-router'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import type { ClusterAssociation } from '@/composables/GatewayAPI'
 
-const { cluster, account, associations } = defineProps<{
+const { cluster, account, associations, showCurrent } = defineProps<{
   cluster: string
   account: string
   associations: ClusterAssociation[]
+  showCurrent?: boolean
 }>()
 
 const breadcrumb = computed(() => {
@@ -41,20 +42,26 @@ const breadcrumb = computed(() => {
     currentAccount = accountMap.get(currentAccount)!.parent_account
   }
 
-  return parents
+  const items = parents.map((name) => ({ name }))
+  if (showCurrent) {
+    items.push({ name: account })
+  }
+
+  return items
 })
 </script>
 
 <template>
   <div v-if="breadcrumb.length === 0" class="text-gray-400 dark:text-gray-500">∅</div>
   <div v-else class="flex items-center gap-2">
-    <template v-for="(parent, index) in breadcrumb" :key="parent">
+    <template v-for="(entry, index) in breadcrumb" :key="`${entry.name}-${index}`">
       <RouterLink
-        :to="{ name: 'account', params: { cluster, account: parent } }"
+        :to="{ name: 'account', params: { cluster, account: entry.name } }"
         class="text-slurmweb hover:text-slurmweb-dark dark:text-slurmweb-light font-semibold"
       >
-        {{ parent }}
+        {{ entry.name }}
       </RouterLink>
+
       <span v-if="index < breadcrumb.length - 1" class="text-gray-400">
         <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
       </span>
