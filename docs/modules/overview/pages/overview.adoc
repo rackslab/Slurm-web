@@ -103,6 +103,27 @@ job-specific GPU usage, and troubleshoot — without needing deep knowledge of
 Slurm's CLI commands. This streamlined visibility significantly improves
 productivity and resource efficiency in GPU-accelerated workloads.
 
+== Account Hierarchy
+
+Slurm-web provides an interactive accounts page that displays the account
+hierarchy for each cluster. This feature enables users and administrators to:
+
+- **Visualize Account Structure:** Display parent/child account relationships in
+  a tree view, helping users and admins understand project or organizational
+  hierarchies at a glance.
+- **Intuitive Insights:** Inspect account-specific information, such as resource
+  limits with visual representation of their overrides, associated users, and
+  QOS assignments, directly from the interface.
+- **Easy Navigation:** Links allow you to traverse account structures, with
+  users and their associations.
+
+image::screenshot_accounts_tree.png[width=80%]
+
+image::screenshot_account_page.png[width=80%]
+
+The accounts interface streamlines account management, improves clarity into
+Slurm account policies, and reduces the need for complex CLI queries.
+
 == Advanced Reservations
 
 Resources can be pre-allocated for a particular usage in Slurm with *advanced
