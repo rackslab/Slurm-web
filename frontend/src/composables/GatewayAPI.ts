@@ -771,6 +771,13 @@ export function renderQosFlag(flag: string): string {
   }
 }
 
+export function renderQosLabel(list?: string[]): string {
+  if (!list || list.length === 0) {
+    return '∅'
+  }
+  return list.join(', ')
+}
+
 export function renderWalltime(value: ClusterOptionalNumber): string {
   if (!value.set) {
     return '-'

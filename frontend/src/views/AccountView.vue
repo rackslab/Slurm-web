@@ -20,6 +20,7 @@ import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import {
   renderClusterOptionalNumber,
   renderClusterTRES,
+  renderQosLabel,
   renderWalltime
 } from '@/composables/GatewayAPI'
 
@@ -85,13 +86,6 @@ const accountKnown = computed(() => {
   }
   return data.value.some((association) => association.account === account)
 })
-
-function qosLabel(list: string[]): string {
-  if (!list || list.length === 0) {
-    return '∅'
-  }
-  return list.join(', ')
-}
 
 const jobLimits = computed(() => {
   if (!accountAssociation.value) {
@@ -350,7 +344,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                 <dd
                   class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                 >
-                  {{ qosLabel(accountAssociation.qos) }}
+                  {{ renderQosLabel(accountAssociation.qos) }}
                 </dd>
               </div>
 
@@ -578,7 +572,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                           : 'text-gray-300 dark:text-gray-600'
                       "
                     >
-                      {{ qosLabel(association.qos) }}
+                      {{ renderQosLabel(association.qos) }}
                     </td>
                   </tr>
                 </tbody>

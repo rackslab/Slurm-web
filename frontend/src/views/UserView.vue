@@ -19,6 +19,7 @@ import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import {
   renderClusterOptionalNumber,
   renderClusterTRES,
+  renderQosLabel,
   renderWalltime
 } from '@/composables/GatewayAPI'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
@@ -113,13 +114,6 @@ function timeLimits(association: ClusterAssociation) {
       value: association.max.jobs.per.wall_clock
     }
   ]
-}
-
-function qosLabel(list: string[]): string {
-  if (!list || list.length === 0) {
-    return '∅'
-  }
-  return list.join(', ')
 }
 </script>
 
@@ -292,7 +286,7 @@ function qosLabel(list: string[]): string {
                   <td
                     class="hidden px-3 py-4 align-top text-sm text-gray-300 2xl:table-cell dark:text-gray-400"
                   >
-                    {{ qosLabel(association.qos) }}
+                    {{ renderQosLabel(association.qos) }}
                   </td>
                 </tr>
               </tbody>
