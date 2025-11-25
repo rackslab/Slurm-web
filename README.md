@@ -34,7 +34,7 @@ Many features in a reactive & responsive web UI:
 * Colored badges to visualize job status at a glance
 * GPU resources utilization monitoring
 * Advanced visualization of node status with racking topology
-* Intuitive visualization of QOS and advanced reservations
+* Intuitive visualization of account tree, QOS and advanced reservations
 * Dark mode support
 * Multi-clusters support
 * LDAP authentication (including Active Directory support)
