@@ -8,6 +8,7 @@ import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import jobRunning from '../assets/job-running.json'
 import type { RouterMock } from 'vue-router-mock'
+import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 
 const mockClusterDataPoller = getMockClusterDataPoller<ClusterIndividualJob>()
 
@@ -33,6 +34,7 @@ describe('JobView.vue', () => {
   })
   test('display job details', () => {
     mockClusterDataPoller.data.value = jobRunning
+    mockClusterDataPoller.loaded.value = true
     const wrapper = mount(JobView, {
       props: {
         cluster: 'foo',
@@ -45,9 +47,25 @@ describe('JobView.vue', () => {
     expect(backButton.props('cluster')).toBe('foo')
     expect(backButton.text()).toBe('Back to jobs')
     // Check some jobs fields
-    expect(wrapper.get('dl div#user dd').text()).toBe(jobRunning.user)
+
+    // User field has RouterLink, so check RouterLink component and props
+    const userField = wrapper.get('dl div#user').getComponent(JobFieldRaw)
+    expect(userField.props('field')).toBe(jobRunning.user)
+    expect(userField.props('to')).toEqual({
+      name: 'user',
+      params: { cluster: 'foo', user: jobRunning.user }
+    })
+
+    // Account field has RouterLink, so check RouterLink component and props
+    const accountField = wrapper.get('dl div#account').getComponent(JobFieldRaw)
+    expect(accountField.props('field')).toBe(jobRunning.association.account)
+    expect(accountField.props('to')).toEqual({
+      name: 'account',
+      params: { cluster: 'foo', account: jobRunning.association.account }
+    })
+
+    // Fields without RouterLink should have text directly accessible
     expect(wrapper.get('dl div#group dd').text()).toBe(jobRunning.group)
-    expect(wrapper.get('dl div#account dd').text()).toBe(jobRunning.association.account)
     expect(wrapper.get('dl div#priority dd').text()).toBe(jobRunning.priority.number.toString())
     expect(wrapper.get('dl div#workdir dd').text()).toBe(jobRunning.working_directory)
     expect(wrapper.get('dl div#nodes dd').text()).toBe(jobRunning.nodes)
