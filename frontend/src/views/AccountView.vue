@@ -9,11 +9,12 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import {
@@ -47,32 +48,6 @@ const accountAssociation = computed<ClusterAssociation | undefined>(() => {
     return undefined
   }
   return data.value.find((association) => association.account === account && !association.user)
-})
-
-/* Build parent account breadcrumb */
-const parentBreadcrumb = computed(() => {
-  if (!data.value || !accountAssociation.value) {
-    return []
-  }
-  const breadcrumb: string[] = []
-  let currentAccount = accountAssociation.value.parent_account
-  const accountMap = new Map<string, ClusterAssociation>()
-
-  // Build map of all account-level associations
-  for (const assoc of data.value) {
-    if (!assoc.user && assoc.account) {
-      accountMap.set(assoc.account, assoc)
-    }
-  }
-
-  // Traverse up to root
-  while (currentAccount && accountMap.has(currentAccount)) {
-    breadcrumb.unshift(currentAccount)
-    const parentAssoc = accountMap.get(currentAccount)!
-    currentAccount = parentAssoc.parent_account
-  }
-
-  return breadcrumb
 })
 
 /* Find subaccounts (accounts where parent_account === current account) */
@@ -331,25 +306,11 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                 <dd
                   class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                 >
-                  <div
-                    v-if="parentBreadcrumb.length === 0"
-                    class="text-gray-400 dark:text-gray-500"
-                  >
-                    ∅
-                  </div>
-                  <div v-else class="flex items-center gap-2">
-                    <template v-for="(parent, index) in parentBreadcrumb" :key="parent">
-                      <RouterLink
-                        :to="{ name: 'account', params: { cluster, account: parent } }"
-                        class="text-slurmweb hover:text-slurmweb-dark dark:text-slurmweb-light font-semibold"
-                      >
-                        {{ parent }}
-                      </RouterLink>
-                      <span v-if="index < parentBreadcrumb.length - 1" class="text-gray-400"
-                        ><ChevronRightIcon class="h-5 w-5" aria-hidden="true"
-                      /></span>
-                    </template>
-                  </div>
+                  <AccountBreadcrumb
+                    :cluster="cluster"
+                    :account="account"
+                    :associations="data ?? []"
+                  />
                 </dd>
               </div>
 
