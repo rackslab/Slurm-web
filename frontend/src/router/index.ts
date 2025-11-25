@@ -30,6 +30,7 @@ import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
 import AccountsView from '@/views/AccountsView.vue'
 import AccountView from '@/views/AccountView.vue'
+import UserView from '@/views/UserView.vue'
 import JobsStatusBadges from '@/views/tests/JobsStatusBadges.vue'
 import NodesStatusBadges from '@/views/tests/NodesStatusBadges.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
@@ -171,6 +172,12 @@ const router = createRouter({
           path: 'accounts/:account',
           name: 'account',
           component: AccountView,
+          props: true
+        },
+        {
+          path: 'users/:user',
+          name: 'user',
+          component: UserView,
           props: true
         }
       ]
