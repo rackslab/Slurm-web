@@ -83,13 +83,24 @@ const jobFieldsContent = computed(
   (): { id: JobField; label: string; component: Component; props: object }[] => {
     if (!data.value) return []
     return [
-      { id: 'user', label: 'User', component: JobFieldRaw, props: { field: data.value.user } },
+      {
+        id: 'user',
+        label: 'User',
+        component: JobFieldRaw,
+        props: {
+          field: data.value.user,
+          to: { name: 'user', params: { cluster, user: data.value.user } }
+        }
+      },
       { id: 'group', label: 'Group', component: JobFieldRaw, props: { field: data.value.group } },
       {
         id: 'account',
         label: 'Account',
         component: JobFieldRaw,
-        props: { field: data.value.association.account }
+        props: {
+          field: data.value.association.account,
+          to: { name: 'account', params: { cluster, account: data.value.association.account } }
+        }
       },
       {
         id: 'wckeys',

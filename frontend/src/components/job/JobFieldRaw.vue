@@ -7,9 +7,17 @@
 -->
 
 <script setup lang="ts">
-const { field, monospace = false } = defineProps<{
+import type { RouteLocationRaw } from 'vue-router'
+import { RouterLink } from 'vue-router'
+
+const {
+  field,
+  monospace = false,
+  to
+} = defineProps<{
   field: string | number
   monospace?: boolean
+  to?: RouteLocationRaw
 }>()
 </script>
 
@@ -20,6 +28,15 @@ const { field, monospace = false } = defineProps<{
       'mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300'
     ]"
   >
-    {{ field }}
+    <RouterLink
+      v-if="to"
+      :to="to"
+      class="text-slurmweb hover:text-slurmweb-dark dark:text-slurmweb-light font-semibold"
+    >
+      {{ field }}
+    </RouterLink>
+    <template v-else>
+      {{ field }}
+    </template>
   </dd>
 </template>
