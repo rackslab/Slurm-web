@@ -222,17 +222,16 @@ Caddy:: Run this command:
 == LDAP Settings
 
 The command
-xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web-ldap-check`] is
-automatically installed with Slurm-web gateway component. This is a utility to
-validate xref:conf:conf/gateway.adoc#_ldap[LDAP settings] in gateway
-configuration file.
+xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web ldap-check`] is
+automatically installed with Slurm-web. This is a utility to validate
+xref:conf:conf/gateway.adoc#_ldap[LDAP settings] in gateway configuration file.
 
 Run this utility with this command:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-ldap-check
-INFO ⸬ Running slurm-web-ldap-check
+# slurm-web ldap-check
+INFO ⸬ Running slurm-web ldap-check
 Found 10 user(s) in LDAP directory:
 - sstevenson (Scott Stevenson) [users, admin]
 - jwalls (Jennifer Walls) [users, biology]
@@ -254,7 +253,7 @@ More debug messages can be printed with these options:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-ldap-check --debug --debug-flags rfl
+# slurm-web ldap-check --debug --debug-flags rfl
 ----
 
 This notably adds all LDAP requests with filters sent to the LDAP server and

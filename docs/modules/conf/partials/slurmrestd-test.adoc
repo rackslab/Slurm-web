@@ -5,6 +5,6 @@ configuration parameters and reports the status. For example:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-connect-check
-✅ connection successful (slurm: 24.11.0, cluster: hpc)
+# slurm-web connect-check
+✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
 ----

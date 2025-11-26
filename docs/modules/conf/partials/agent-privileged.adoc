@@ -2,7 +2,7 @@ Add permission to _slurm_ user on Slurm-web JWT signing key:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-gen-jwt-key --with-slurm
+# slurm-web gen-jwt-key --with-slurm
 INFO ⸬ Setting read permission on key for slurm user
 ----
 
