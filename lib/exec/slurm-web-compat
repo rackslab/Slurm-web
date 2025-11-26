@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+#
+# Copyright (c) 2025 Rackslab
+#
+# This file is part of Slurm-web.
+#
+# SPDX-License-Identifier: MIT
+
+# Compatibility wrapper for legacy slurm-web-* commands.
+# This script is intended to be symlinked under previous command names
+# (slurm-web-agent, slurm-web-gateway, ...) and will invoke the new
+# unified `slurm-web` command while warning about deprecation.
+
+cmd_name=$(basename "$0")
+
+legacy_to_subcommand() {
+    case "$1" in
+        slurm-web-agent) echo "agent" ;;
+        slurm-web-gateway) echo "gateway" ;;
+        slurm-web-ldap-check) echo "ldap-check" ;;
+        slurm-web-gen-jwt-key) echo "gen-jwt-key" ;;
+        slurm-web-show-conf) echo "show-conf" ;;
+        slurm-web-connect-check) echo "connect-check" ;;
+        *)
+            echo ""
+            ;;
+    esac
+}
+
+subcmd=""
+
+case "$cmd_name" in
+    slurm-web-compat)
+        # Generic entrypoint: expect the subcommand as first argument.
+        if [ $# -lt 1 ]; then
+            echo "Usage: slurm-web-compat <subcommand> [args...]" >&2
+            exit 1
+        fi
+        subcmd=$1
+        shift
+        ;;
+    *)
+        subcmd=$(legacy_to_subcommand "$cmd_name")
+        if [ -z "$subcmd" ]; then
+            echo "WARNING: Unknown legacy command name '$cmd_name', forwarding to slurm-web as-is." >&2
+            exec slurm-web "$@"
+        fi
+        echo "WARNING: '$cmd_name' is deprecated, use 'slurm-web $subcmd' instead." >&2
+        ;;
+esac
+
+exec slurm-web "$subcmd" "$@"
