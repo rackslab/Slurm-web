@@ -4,20 +4,25 @@
 #
 # SPDX-License-Identifier: MIT
 
-import unittest
-from unittest import mock
 import io
 from pathlib import Path
+import unittest
+from unittest import mock
 
 from slurmweb.version import get_version
+from slurmweb.exec.main import SlurmwebExecMain
 from slurmweb.exec.genjwt import SlurmwebExecGenJWT
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
 
 
 class TestGenJWTExec(unittest.TestCase):
+    def _parse(self, args):
+        parser = SlurmwebExecMain.register_args()
+        return parser.parse_args(["gen-jwt-key", *args], namespace=SlurmwebAppSeed())
+
     def test_seed_no_args(self):
-        seed = SlurmwebExecGenJWT.seed([])
+        seed = self._parse([])
         self.assertIsInstance(seed, SlurmwebAppSeed)
         self.assertEqual(seed.debug, False)
         self.assertEqual(seed.log_flags, "ALL")
@@ -32,19 +37,17 @@ class TestGenJWTExec(unittest.TestCase):
     def test_seed_version(self):
         with mock.patch("sys.stdout", new=io.StringIO()) as stdout:
             with self.assertRaisesRegex(SystemExit, "0"):
-                SlurmwebExecGenJWT.seed(["--version"])
+                self._parse(["--version"])
             self.assertIn(get_version(), stdout.getvalue())
 
     def test_seed_debug(self):
-        seed = SlurmwebExecGenJWT.seed(["--debug", "--debug-flags", "slurmweb", "rfl"])
+        seed = self._parse(["--debug", "--debug-flags", "slurmweb", "rfl"])
         self.assertIsInstance(seed, SlurmwebAppSeed)
         self.assertEqual(seed.debug, True)
         self.assertEqual(seed.debug_flags, ["slurmweb", "rfl"])
 
     def test_seed_conf(self):
-        seed = SlurmwebExecGenJWT.seed(
-            ["--conf-defs", "/dev/null1", "--conf", "/dev/null2"]
-        )
+        seed = self._parse(["--conf-defs", "/dev/null1", "--conf", "/dev/null2"])
         self.assertIsInstance(seed, SlurmwebAppSeed)
         self.assertIsInstance(seed.conf_defs, Path)
         self.assertEqual(seed.conf_defs, Path("/dev/null1"))
@@ -52,16 +55,17 @@ class TestGenJWTExec(unittest.TestCase):
         self.assertEqual(seed.conf, Path("/dev/null2"))
 
     def test_with_slurm(self):
-        seed = SlurmwebExecGenJWT.seed(["--with-slurm"])
+        seed = self._parse(["--with-slurm"])
         self.assertIsInstance(seed, SlurmwebAppSeed)
         self.assertEqual(seed.with_slurm, True)
 
     def test_seed_wrong_args(self):
         with self.assertRaisesRegex(SystemExit, "2"):
-            SlurmwebExecGenJWT.seed(["--fail"])
+            self._parse(["--fail"])
 
     @mock.patch("slurmweb.exec.genjwt.SlurmwebAppGenJWT")
     def test_app(self, mock_slurmweb_app):
-        app = SlurmwebExecGenJWT.app([])
-        mock_slurmweb_app.assert_called_once()
+        seed = self._parse([])
+        app = SlurmwebExecGenJWT.app(seed)
+        mock_slurmweb_app.assert_called_once_with(seed)
         self.assertEqual(app, mock_slurmweb_app.return_value)
