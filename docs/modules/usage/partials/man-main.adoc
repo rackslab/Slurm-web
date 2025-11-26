@@ -1,0 +1,28 @@
+== Synopsis
+
+[.cli-opt]#*slurm-web*# `[_SUBCOMMAND_]` `[_OPTIONS_]`
+
+== Description
+
+*slurm-web* is the unified command line interface to all Slurm-web components
+and utilities.
+
+Each subcommand has its own set of options.  Refer to the dedicated manual
+pages listed below for detailed usage and configuration.
+
+== Subcommands
+
+The following subcommands are available:
+
+*agent*:: Start the Slurm-web agent component (see
+  xref:manpages/slurm-web-agent.adoc[*slurm-web-agent*](1)).
+*gateway*:: Start the Slurm-web gateway component (see
+  xref:manpages/slurm-web-gateway.adoc[*slurm-web-gateway*](1)).
+*ldap-check*:: Check LDAP settings for Slurm-web (see
+  xref:manpages/slurm-web-ldap-check.adoc[*slurm-web-ldap-check*](1)).
+*gen-jwt-key*:: Generate a secret JWT signing key for Slurm-web (see
+  xref:manpages/slurm-web-gen-jwt-key.adoc[*slurm-web-gen-jwt-key*](1)).
+*show-conf*:: Dump Slurm-web components configuration settings (see
+  xref:manpages/slurm-web-show-conf.adoc[*slurm-web-show-conf*](1)).
+*connect-check*:: Check connection from Slurm-web agent to *slurmrestd* (see
+  xref:manpages/slurm-web-connect-check.adoc[*slurm-web-connect-check*](1)).

@@ -1,6 +1,6 @@
 == Synopsis
 
-[.cli-opt]#*slurm-web-ldap-check*# `[_GENERAL OPTIONS_]`
+[.cli-opt]#*slurm-web ldap-check*# `[_GENERAL OPTIONS_]`
 
 == Description
 
@@ -13,7 +13,7 @@ include::gateway-opts.adoc[]
 == Exit status
 
 *0*::
-  `slurm-web-ldap-check` has processed command with success.
+  `slurm-web ldap-check` has processed command with success.
 
 *1*::
-  `slurm-web-ldap-check` encountered an error.
+  `slurm-web ldap-check` encountered an error.

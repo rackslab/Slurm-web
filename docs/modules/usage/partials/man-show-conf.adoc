@@ -1,6 +1,6 @@
 == Synopsis
 
-[.cli-opt]#*slurm-web-show-conf*# `[_GENERAL OPTIONS_] {gateway,agent}`
+[.cli-opt]#*slurm-web show-conf*# `[_GENERAL OPTIONS_] {gateway,agent}`
 
 == Description
 
@@ -53,7 +53,7 @@ Other general options are available:
 == Exit status
 
 *0*::
-  `slurm-web-show-conf` has processed command with success.
+  `slurm-web show-conf` has processed command with success.
 
 *1*::
-  `slurm-web-show-conf` encountered an error.
+  `slurm-web show-conf` encountered an error.
