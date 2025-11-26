@@ -15,9 +15,18 @@ from ..apps.gateway import SlurmwebAppGateway
 
 
 class SlurmwebExecGenJWT(SlurmwebExecBase):
+    """CLI entrypoint for the JWT key generation utility."""
+
     @staticmethod
-    def seed(args=None):
-        parser = argparse.ArgumentParser(description=SlurmwebAppGenJWT.NAME)
+    def register_subcommand(
+        subparsers: argparse._SubParsersAction,
+    ) -> argparse.ArgumentParser:
+        """Declare the 'gen-jwt-key' subcommand arguments on the provided subparsers."""
+        parser = subparsers.add_parser(
+            "gen-jwt-key",
+            help="Generate secret JWT signing key for Slurm-web",
+            description=SlurmwebAppGenJWT.NAME,
+        )
         parser.add_argument(
             "-v",
             "--version",
@@ -70,8 +79,9 @@ class SlurmwebExecGenJWT(SlurmwebExecBase):
             help="Also give read permission on JWT key to slurm user",
         )
 
-        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+        parser.set_defaults(app=SlurmwebExecGenJWT.app)
+        return parser
 
     @staticmethod
-    def app(args=None):
-        return SlurmwebAppGenJWT(SlurmwebExecGenJWT.seed(args=args))
+    def app(seed: SlurmwebAppSeed):
+        return SlurmwebAppGenJWT(seed)

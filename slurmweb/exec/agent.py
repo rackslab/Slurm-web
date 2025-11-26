@@ -14,9 +14,18 @@ from ..apps.agent import SlurmwebAppAgent
 
 
 class SlurmwebExecAgent(SlurmwebExecBase):
+    """CLI entrypoint for the Slurm-web agent component."""
+
     @staticmethod
-    def seed(args=None):
-        parser = argparse.ArgumentParser(description=SlurmwebAppAgent.NAME)
+    def register_subcommand(
+        subparsers: argparse._SubParsersAction,
+    ) -> argparse.ArgumentParser:
+        """Declare the 'agent' subcommand arguments on the provided subparsers."""
+        parser = subparsers.add_parser(
+            "agent",
+            help="Start Slurm-web agent component",
+            description=SlurmwebAppAgent.NAME,
+        )
         parser.add_argument(
             "-v",
             "--version",
@@ -62,8 +71,9 @@ class SlurmwebExecAgent(SlurmwebExecBase):
             default=SlurmwebAppAgent.SITE_CONFIGURATION,
             type=Path,
         )
-        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+        parser.set_defaults(app=SlurmwebExecAgent.app)
+        return parser
 
     @staticmethod
-    def app(args=None):
-        return SlurmwebAppAgent(SlurmwebExecAgent.seed(args=args))
+    def app(seed: SlurmwebAppSeed):
+        return SlurmwebAppAgent(seed)
