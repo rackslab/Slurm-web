@@ -291,7 +291,8 @@ class SlurmwebAgent:
     def launch(self) -> None:
         cmd = (
             [
-                "slurm-web-agent",
+                "slurm-web",
+                "agent",
                 "--log-component",
                 f"agent-{self.name}",
                 "--debug",
@@ -362,7 +363,8 @@ class SlurmwebGateway:
     def launch(self):
         cmd = (
             [
-                "slurm-web-gateway",
+                "slurm-web",
+                "gateway",
                 "--log-component",
                 "gateway",
                 "--debug",
