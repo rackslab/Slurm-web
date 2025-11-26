@@ -1,6 +1,6 @@
 == Synopsis
 
-[.cli-opt]#*slurm-web-gateway*# `[_GENERAL OPTIONS_]`
+[.cli-opt]#*slurm-web gateway*# `[_GENERAL OPTIONS_]`
 
 == Description
 
@@ -14,7 +14,7 @@ include::gateway-opts.adoc[]
 == Exit status
 
 *0*::
-  `slurm-web-gateway` has processed command with success.
+  `slurm-web gateway` has processed command with success.
 
 *1*::
-  `slurm-web-gateway` encountered an error.
+  `slurm-web gateway` encountered an error.

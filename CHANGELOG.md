@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce `[agents]` > `cacert` gateway parameter for custom path to CA
     certificate to validate agent SSL/TLS certificate.
 - cli: Introduce `slurm-web` unified executable with subcommands (#655).
+- docs: Add manpage for unified `slurm-web` command.
 
 ### Changed
 - front:
@@ -75,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update Slurm REST API supported versions section in architecture page.
   - Update configuration reference documentation.
+  - Rename `slurm-web-*` commands to `slurm-web` with subcommand in manpages.
 - cli:
   - All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
     `slurm-web` command in `$PATH` with subcommands (eg.

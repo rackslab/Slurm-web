@@ -1,6 +1,6 @@
 == Synopsis
 
-[.cli-opt]#*slurm-web-connect-check*# `[_GENERAL OPTIONS_]`
+[.cli-opt]#*slurm-web connect-check*# `[_GENERAL OPTIONS_]`
 
 == Description
 
@@ -13,7 +13,7 @@ include::agent-opts.adoc[]
 == Exit status
 
 *0*::
-  `slurm-web-connect-check` has processed command with success.
+  `slurm-web connect-check` has processed command with success.
 
 *1*::
-  `slurm-web-connect-check` encountered an error.
+  `slurm-web connect-check` encountered an error.

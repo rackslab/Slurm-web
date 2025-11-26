@@ -1,6 +1,6 @@
 == Synopsis
 
-[.cli-opt]#*slurm-web-gen-jwt-key*# `[_GENERAL OPTIONS_]`
+[.cli-opt]#*slurm-web gen-jwt-key*# `[_GENERAL OPTIONS_]`
 
 == Description
 
@@ -17,7 +17,7 @@ include::gateway-opts.adoc[]
 == Exit status
 
 *0*::
-  `slurm-web-gen-jwt-key` has processed command with success.
+  `slurm-web gen-jwt-key` has processed command with success.
 
 *1*::
-  `slurm-web-gen-jwt-key` encountered an error.
+  `slurm-web gen-jwt-key` encountered an error.
