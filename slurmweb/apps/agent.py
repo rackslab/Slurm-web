@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
-    NAME = "slurm-web-agent"
+    NAME = "slurm-web agent"
     SITE_CONFIGURATION = "/etc/slurm-web/agent.ini"
     SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/agent.yml"
     VIEWS = {

@@ -31,7 +31,7 @@ def fail(msg):
 
 
 class SlurmwebAppConnectCheck(SlurmwebGenericApp):
-    NAME = "slurm-web-connect-check"
+    NAME = "slurm-web connect-check"
 
     def __init__(self, seed):
         SlurmwebGenericApp.__init__(self, seed)
