@@ -83,7 +83,7 @@ class SlurmwebAppConnectCheck(SlurmwebGenericApp):
         try:
             cluster_name, slurm_version, api_version = self.slurmrestd.discover()
             print(
-                f"✅ connection successful: cluster: {cluster_name}, "
+                f"✅ connection successful! (cluster: {cluster_name}, "
                 f"slurm: {slurm_version}, api: {api_version})"
             )
         except SlurmrestdNotFoundError as err:
