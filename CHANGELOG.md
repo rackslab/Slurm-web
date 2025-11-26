@@ -75,9 +75,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update Slurm REST API supported versions section in architecture page.
   - Update configuration reference documentation.
-- cli: All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
-  `slurm-web` command in `$PATH` with subcommands (eg.
-  `slurm-web connect-check`).
+- cli:
+  - All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
+    `slurm-web` command in `$PATH` with subcommands (eg.
+    `slurm-web connect-check`).
+  - Add shell wrapper `slurm-web-compat` designed to replace previous command
+    and warn with deprecation notice.
 - lib: Update native agent and gateway services to execute unified `slurm-web`
   command.
 
