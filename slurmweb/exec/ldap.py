@@ -15,9 +15,18 @@ from ..apps.gateway import SlurmwebAppGateway
 
 
 class SlurmwebExecLDAPCheck(SlurmwebExecBase):
+    """CLI entrypoint for the LDAP settings check utility."""
+
     @staticmethod
-    def seed(args=None):
-        parser = argparse.ArgumentParser(description=SlurmwebAppLDAPCheck.NAME)
+    def register_subcommand(
+        subparsers: argparse._SubParsersAction,
+    ) -> argparse.ArgumentParser:
+        """Declare the 'ldap-check' subcommand arguments on the provided subparsers."""
+        parser = subparsers.add_parser(
+            "ldap-check",
+            help="Check LDAP settings for Slurm-web",
+            description=SlurmwebAppLDAPCheck.NAME,
+        )
         parser.add_argument(
             "-v",
             "--version",
@@ -64,8 +73,9 @@ class SlurmwebExecLDAPCheck(SlurmwebExecBase):
             type=Path,
         )
 
-        return parser.parse_args(args=args, namespace=SlurmwebAppSeed())
+        parser.set_defaults(app=SlurmwebExecLDAPCheck.app)
+        return parser
 
     @staticmethod
-    def app(args=None):
-        return SlurmwebAppLDAPCheck(SlurmwebExecLDAPCheck.seed(args=args))
+    def app(seed: SlurmwebAppSeed):
+        return SlurmwebAppLDAPCheck(seed)

@@ -16,9 +16,18 @@ from ..apps.agent import SlurmwebAppAgent
 
 
 class SlurmwebExecShowConf(SlurmwebExecBase):
+    """CLI entrypoint for the configuration dump utility."""
+
     @staticmethod
-    def seed(args=None):
-        parser = argparse.ArgumentParser(description=SlurmwebAppShowConf.NAME)
+    def register_subcommand(
+        subparsers: argparse._SubParsersAction,
+    ) -> argparse.ArgumentParser:
+        """Declare the 'show-conf' subcommand arguments on the provided subparsers."""
+        parser = subparsers.add_parser(
+            "show-conf",
+            help="Dump Slurm-web components configuration settings",
+            description=SlurmwebAppShowConf.NAME,
+        )
         parser.add_argument(
             "-v",
             "--version",
@@ -62,25 +71,23 @@ class SlurmwebExecShowConf(SlurmwebExecBase):
         )
         parser.add_argument(
             "component",
-            help="Path to configuration file",
+            help="Component to inspect",
             choices=["gateway", "agent"],
         )
 
-        args = parser.parse_args(args=args, namespace=SlurmwebAppSeed())
-
-        if args.component == "gateway":
-            if args.conf is None:
-                args.conf = Path(SlurmwebAppGateway.SITE_CONFIGURATION)
-            if args.conf_defs is None:
-                args.conf_defs = Path(SlurmwebAppGateway.SETTINGS_DEFINITION)
-        else:
-            if args.conf is None:
-                args.conf = Path(SlurmwebAppAgent.SITE_CONFIGURATION)
-            if args.conf_defs is None:
-                args.conf_defs = Path(SlurmwebAppAgent.SETTINGS_DEFINITION)
-
-        return args
+        parser.set_defaults(app=SlurmwebExecShowConf.app)
+        return parser
 
     @staticmethod
-    def app(args=None):
-        return SlurmwebAppShowConf(SlurmwebExecShowConf.seed(args=args))
+    def app(seed: SlurmwebAppSeed):
+        if seed.component == "gateway":
+            if seed.conf is None:
+                seed.conf = Path(SlurmwebAppGateway.SITE_CONFIGURATION)
+            if seed.conf_defs is None:
+                seed.conf_defs = Path(SlurmwebAppGateway.SETTINGS_DEFINITION)
+        else:
+            if seed.conf is None:
+                seed.conf = Path(SlurmwebAppAgent.SITE_CONFIGURATION)
+            if seed.conf_defs is None:
+                seed.conf_defs = Path(SlurmwebAppAgent.SETTINGS_DEFINITION)
+        return SlurmwebAppShowConf(seed)

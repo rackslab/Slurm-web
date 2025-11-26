@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     supported Slurm REST API versions.
   - Introduce `[agents]` > `cacert` gateway parameter for custom path to CA
     certificate to validate agent SSL/TLS certificate.
+- cli: Introduce `slurm-web` unified executable with subcommands (#655).
 
 ### Changed
 - front:
@@ -74,6 +75,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update Slurm REST API supported versions section in architecture page.
   - Update configuration reference documentation.
+- cli: All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
+  `slurm-web` command in `$PATH` with subcommands (eg.
+  `slurm-web connect-check`).
 
 ### Fixed
 - front: Dark mode rendering of info and error messages in clusters list (#661).
