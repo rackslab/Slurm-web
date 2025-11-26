@@ -89,11 +89,11 @@ def main():
     if "man" in targets or "all" in targets:
         manpages = (DOCS_DIR / "man").glob("*.adoc")
         for manpage in manpages:
-            implicit = (
-                DOCS_DIR
-                / "modules/usage/partials"
-                / f"man-{manpage.name.split('-', 2)[-1]}"
-            )
+            if manpage.name == "slurm-web.adoc":
+                source = "man-main.adoc"
+            else:
+                source = f"man-{manpage.name.split('-', 2)[-1]}"
+            implicit = DOCS_DIR / "modules/usage/partials" / source
             target = (DOCS_DIR / "man" / manpage.stem).with_suffix(".1")
             builder.build(
                 outputs=[target], rule="manpage", inputs=[manpage], implicit=[implicit]
