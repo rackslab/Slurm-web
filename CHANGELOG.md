@@ -78,6 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - cli: All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
   `slurm-web` command in `$PATH` with subcommands (eg.
   `slurm-web connect-check`).
+- lib: Update native agent and gateway services to execute unified `slurm-web`
+  command.
 
 ### Fixed
 - front: Dark mode rendering of info and error messages in clusters list (#661).
