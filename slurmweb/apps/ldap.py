@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
-    NAME = "slurm-web-ldap-check"
+    NAME = "slurm-web ldap-check"
 
     def run(self):
         logger.info("Running %s", self.NAME)

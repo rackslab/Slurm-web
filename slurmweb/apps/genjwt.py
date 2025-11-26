@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAppGenJWT(SlurmwebGenericApp):
-    NAME = "slurm-web-gen-jwt-key"
+    NAME = "slurm-web gen-jwt-key"
 
     def __init__(self, seed: SlurmwebAppSeed):
         super().__init__(seed)

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class SlurmwebAppShowConf:
-    NAME = "slurm-web-show-conf"
+    NAME = "slurm-web show-conf"
 
     def __init__(self, seed: SlurmwebAppSeed):
         # load configuration files
