@@ -274,8 +274,8 @@ cryptographically sign generated tokens. Run this command to generate this key:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-gen-jwt-key
-INFO ⸬ Running slurm-web-gen-jwt-key
+# slurm-web gen-jwt-key
+INFO ⸬ Running slurm-web gen-jwt-key
 INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
 INFO ⸬ Setting read permission on key for slurm-web user
 ----
@@ -284,7 +284,7 @@ INFO ⸬ Setting read permission on key for slurm-web user
 --
 .More links
 * xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
-* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web-gen-jwt-key` command manpage]
+* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web gen-jwt-key` command manpage]
 --
 
 == Slurm JWT siging key
@@ -311,14 +311,15 @@ alternative, Slurm-web supports _static_ tokens. Please refer to
 xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
 
 To test Slurm-web agent and `slurmrestd` service configuration parameters, you
-can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web-connect-check`]
-utility. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
+can run
+xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web connect-check`]
+command. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
 configuration parameters and reports the status. For example:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-connect-check
-✅ connection successful (slurm: 25.05.0, cluster: hpc)
+# slurm-web connect-check
+✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
 ----
 
 == First Access
@@ -424,7 +425,7 @@ image:slurm-web_login.png[]
 Upon successfull LDAP authentication, users have access to the clusters.
 
 TIP: Any problem to setup LDAP authentication?
-xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web-ldap-check`] utility
+xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web ldap-check`] command
 might help. More details in xref:misc:troubleshooting.adoc#ldap[Troubleshooting
 page].
 

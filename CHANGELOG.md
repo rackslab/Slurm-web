@@ -77,6 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update Slurm REST API supported versions section in architecture page.
   - Update configuration reference documentation.
   - Rename `slurm-web-*` commands to `slurm-web` with subcommand in manpages.
+  - Update references to `slurm-web-*` commands with new `slurm-web` unified
+    command and subcommand.
 - cli:
   - All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
     `slurm-web` command in `$PATH` with subcommands (eg.

@@ -431,14 +431,14 @@ alternative, Slurm-web supports _static_ tokens. Please refer to
 xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
 
 To test Slurm-web agent and `slurmrestd` service configuration parameters, you
-can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web-connect-check`]
+can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web connect-check`]
 utility. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
 configuration parameters and reports the status. For example:
 
 [source,console]
 ----
-# /usr/libexec/slurm-web/slurm-web-connect-check
-✅ connection successful (slurm: 25.05.0, cluster: hpc)
+# slurm-web connect-check
+✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
 ----
 
 ==== Agent uWSGI service
