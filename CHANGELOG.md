@@ -96,6 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update references to `slurm-web-*` commands with new `slurm-web` unified
     command and subcommand.
   - Update quickstart guide with skipped unique clusters list with permission.
+  - Update upgrade guide for migration from v5 to v6.
 - cli:
   - All `/usr/libexec/slurm-web/slurm-web-*` executables are replaced by
     `slurm-web` command in `$PATH` with subcommands (eg.
