@@ -99,29 +99,16 @@ Services must be *active* and *running*.
 Connect to Slurm-web web interface with your browser to check it is
 up-and-running.
 
-== Notes for Slurm-web 5
+== Notes for Slurm-web 6
 
-To update Slurm-web from version 4 to version 5, some manual additional steps
-must be performed because default `slurmrestd` authentication method has been
-changed from _local_ to _jwt_.
+To update Slurm-web from version 5 to version 6, some manual additional steps
+must be performed.
 
-NOTE: This breaking change has been introduced because Slurm 25.05 dropped
-support of running `slurmrestd` as _slurm_ system user, which is a requirement
-for using _local_ authentication in Slurm-web.
+To avoid impacting users with automatic upgrades, Slurm-web 6 packages are
+published to a separate repository. Package repositories settings must be
+updated to install this version.
 
-It is *highly recommended* to
-xref:update.adoc#migrate-jwt[migrate your Slurm-web installation to _jwt_ authentication].
-However, documentation is also provided to
-xref:update.adoc#keep-local[keep using _local_ authentication]
-despite the recommendation.
-
-To avoid impacting users with automatic upgrades, Slurm-web 5 packages have been
-moved to a separate repository. Packages repositories settings must be updated
-to install this version.
-
-=== Package Repositories
-
-==== DNF
+=== DNF
 
 NOTE: This procedure works on
 https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
@@ -129,7 +116,8 @@ https://www.centos.org/[CentOS],
 https://rockylinux.org/[Rocky Linux] and
 https://almalinux.org/[AlmaLinux OS].
 
-Edit [.path]#`/etc/yum.repos.d/rackslab.repo`# to add _slurmweb-5_ repository:
+Edit [.path]#`/etc/yum.repos.d/rackslab.repo`# to change repository from
+_slurmweb-5_ to _slurmweb-6_:
 
 [tabs]
 ======
@@ -140,16 +128,18 @@ RHEL 8::
 ----
 --- a/etc/yum.repos.d/rackslab.repo
 +++ b/etc/yum.repos.d/rackslab.repo
-@@ -3,3 +3,9 @@
- baseurl=https://pkgs.rackslab.io/rpm/el8/main/$basearch/
+@@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-+
-+[rackslab-slurmweb-5]
-+name=Rackslab slurmweb-5
-+baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-5/$basearch/
-+gpgcheck=1
-+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-5]
+-name=Rackslab slurmweb-5
+-baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-5/$basearch/
++[rackslab-slurmweb-6]
++name=Rackslab slurmweb-6
++baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-6/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
 
@@ -161,15 +151,18 @@ RHEL 9::
 --- a/etc/yum.repos.d/rackslab.repo
 +++ b/etc/yum.repos.d/rackslab.repo
 @@ -3,3 +3,9 @@
- baseurl=https://pkgs.rackslab.io/rpm/el9/main/$basearch/
+@@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-+
-+[rackslab-slurmweb-5]
-+name=Rackslab slurmweb-5
-+baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-5/$basearch/
-+gpgcheck=1
-+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-5]
+-name=Rackslab slurmweb-5
+-baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-5/$basearch/
++[rackslab-slurmweb-6]
++name=Rackslab slurmweb-6
++baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-6/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
 
@@ -180,16 +173,19 @@ Fedora 41::
 ----
 --- a/etc/yum.repos.d/rackslab.repo
 +++ b/etc/yum.repos.d/rackslab.repo
-@@ -3,3 +3,9 @@
- baseurl=https://pkgs.rackslab.io/rpm/fc41/main/$basearch/
+@@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-+
-+[rackslab-slurmweb-5]
-+name=Rackslab slurmweb-5
-+baseurl=https://pkgs.rackslab.io/rpm/fc41/slurmweb-5/$basearch/
-+gpgcheck=1
-+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-5]
+-name=Rackslab slurmweb-5
+-baseurl=https://pkgs.rackslab.io/rpm/fc41/slurmweb-5/$basearch/
++[rackslab-slurmweb-6]
++name=Rackslab slurmweb-6
++baseurl=https://pkgs.rackslab.io/rpm/fc41/slurmweb-6/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
 ----
 ====
 
@@ -198,18 +194,18 @@ Fedora 42::
 ====
 [source,diff]
 ----
---- a/etc/yum.repos.d/rackslab.repo
-+++ b/etc/yum.repos.d/rackslab.repo
-@@ -3,3 +3,9 @@
- baseurl=https://pkgs.rackslab.io/rpm/fc42/main/$basearch/
+@@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-+
-+[rackslab-slurmweb-5]
-+name=Rackslab slurmweb-5
-+baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-5/$basearch/
-+gpgcheck=1
-+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-5]
+-name=Rackslab slurmweb-5
+-baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-5/$basearch/
++[rackslab-slurmweb-6]
++name=Rackslab slurmweb-6
++baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-6/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
 ======
@@ -221,12 +217,13 @@ Run this command to update repositories and packages:
 # dnf update
 ----
 
-==== APT
+=== APT
 
 NOTE: This procedure works https://debian.org/[Debian] and
 https://ubuntu.com/[Ubuntu].
 
-Edit [.path]#`/etc/apt/sources.list.d/rackslab.sources`# to add _slurmweb-5_ distribution:
+Edit [.path]#`/etc/apt/sources.list.d/rackslab.sources`# to change distribution
+from _slurmweb-5_ to _slurmweb-6_:
 
 [tabs]
 ======
@@ -241,8 +238,8 @@ Debian 12 _« bookworm »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: bookworm
--Components: main
-+Components: main slurmweb-5
+-Components: main slurmweb-5
++Components: main slurmweb-6
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -259,8 +256,8 @@ Debian 13 _« trixie »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: trixie
--Components: main
-+Components: main slurmweb-5
+-Components: main slurmweb-5
++Components: main slurmweb-6
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -277,8 +274,8 @@ Debian unstable _« sid »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: sid
--Components: main
-+Components: main slurmweb-5
+-Components: main slurmweb-5
++Components: main slurmweb-6
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -295,8 +292,8 @@ Ubuntu 24.04 LTS::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: ubuntu24.04
--Components: main
-+Components: main slurmweb-5
+-Components: main slurmweb-5
++Components: main slurmweb-6
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -309,173 +306,3 @@ Run this command to update repositories and packages:
 ----
 # apt update && apt upgrade
 ----
-
-=== Already using JWT?
-
-You were already using slurmrest JWT authentication with Slurm-web 4? Then you
-can do some cleanup in your configuration.
-
-You can edit [.path]#`/etc/slurm-web/agent.ini`# to remove `[slurmrestd]` >
-`auth` setting as _jwt_ is the new default value:
-
-[source,diff]
-----
---- a/etc/slurm-web/agent.ini
-+++ b/etc/slurm-web/agent.ini
-@@ -3,5 +3,2 @@
-
--[slurmrestd]
--auth=jwt
--
- [cache]
-----
-
-If you are using Slurm-web default native service, you can also remove the
-override that was used to force running the agent as _slurm_ system user:
-
-[source,console]
-----
-# rm /etc/systemd/system/slurm-web-agent.service.d/override.conf
-----
-
-New system service file [.path]#`/lib/systemd/system/slurm-web-agent.service`#
-can be used without override.
-
-[#migrate-jwt]
-=== Migrate to JWT authentication
-
-==== Setup Slurm JWT
-
-include::conf:partial$slurm-jwt.adoc[]
-
-==== Setup `slurmrestd`
-
-Edit [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`# with
-these settings:
-
-[source,ini]
-----
-[Service]
-# Unset vendor unit ExecStart and Environment to avoid cumulative definition
-ExecStart=
-Environment=
-Environment="SLURM_JWT=daemon"
-ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/jwt unix:/run/slurmrestd/slurmrestd.socket
-RuntimeDirectory=slurmrestd
-RuntimeDirectoryMode=0755
-User=slurmrestd
-Group=slurmrestd
-DynamicUser=yes
-----
-
-NOTE: With this configuration, `slurmrestd` listens for incoming connections on
-Unix socket with _jwt_ authentication method. It is also possible to configure
-`slurmrestd` to listen on TCP/IP socket. Please refer to
-xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
-
-Make `systemd` reload units changes on disk:
-
-[source,console]
-----
-# systemctl daemon-reload
-----
-
-Enable and start `slurmrestd` service:
-
-[source,console]
-----
-# systemctl restart slurmrestd.service
-----
-
-To check `slurmrestd` daemon is properly running with JWT authentication, run
-this command:
-
-[source,console,subs=attributes]
-----
-# export $(scontrol token)
-# curl -H X-SLURM-USER-TOKEN:$SLURM_JWT --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v{api_version}/diag
-{
-   "meta": {
-     "plugin": {
-      "type": "openapi\/slurmctld",
-      "name": "Slurm OpenAPI slurmctld",
-      "data_parser": "data_parser\/v{api_version}",
-      "accounting_storage": "accounting_storage\/slurmdbd"
-    },
-   }
-  …
-}
-----
-
-==== Slurm JWT signing key
-
-For Slurm-web authentication to `slurmrestd`, copy Slurm JWT signing key:
-
-[source,console]
-----
-# cp /var/spool/slurm/jwt_hs256.key /var/lib/slurm-web/slurmrestd.key
-----
-
-Restrict access to this sensitive file with read permission to _slurm-web_
-system user only:
-
-[source,console]
-----
-# chown slurm-web:slurm-web /var/lib/slurm-web/slurmrestd.key
-# chmod 400 /var/lib/slurm-web/slurmrestd.key
-----
-
-NOTE: With this configuration, Slurm-web agent automatically generates its
-tokens with short lifespan for authentication to `slurmrestd`. As an
-alternative, Slurm-web supports _static_ tokens. Please refer to
-xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
-
-To test Slurm-web agent and `slurmrestd` service configuration parameters, you
-can run xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web connect-check`]
-utility. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
-configuration parameters and reports the status. For example:
-
-[source,console]
-----
-# slurm-web connect-check
-✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
-----
-
-==== Agent uWSGI service
-
-If you are using Slurm-web with
-xref:conf:wsgi/index.adoc[production HTTP servers], update uWSGI agent service
-file:
-
-[source,console]
-----
-# cp -v /usr/share/slurm-web/wsgi/agent/slurm-web-agent-uwsgi.service /etc/systemd/system/
-----
-
-Reload systemd services:
-
-[source,console]
-----
-# systemctl daemon-reload
-----
-
-Restart the service to apply changes:
-
-[source,console]
-----
-# systemctl restart slurm-web-agent-uwsgi.service
-----
-
-[#keep-local]
-=== Keep using local authentication
-
-You want to keep using `slurmrestd` local authentication despite the
-recommendation?
-
-include::conf:partial$agent-local.adoc[]
-
-include::conf:partial$agent-privileged.adoc[]
-
-include::conf:partial$slurmrestd-test.adoc[]
-
-include::conf:partial$agent-restart.adoc[]
