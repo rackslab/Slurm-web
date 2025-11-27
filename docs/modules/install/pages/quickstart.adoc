@@ -243,7 +243,7 @@ cluster name, for example:
 [source,ini]
 ----
 [service]
-cluster=atlas
+cluster=nova
 ----
 
 Create _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`# with
@@ -334,9 +334,9 @@ native services:
 ----
 
 Connect your browser to the _gateway_ on http://localhost:5011. You should see
-the configured cluster:
+the dashboard of the configured cluster:
 
-image:slurm-web_clusters.png[]
+image:slurm-web_policy_admin.png[]
 
 [NOTE]
 ====
@@ -447,20 +447,20 @@ Consider this example:
 ----
 [roles]
 user=@biology
-admin=jwalls
+admin=njones
 
 [user]
-actions=view-stats,view-jobs,view-nodes
+actions=view-stats,view-jobs
 
 [admin]
-actions=view-partitions,view-qos,view-accounts,view-reservations
+actions=view-partitions,view-qos,view-accounts,view-reservations,associations-view
 ----
 
 This policy defines *two roles*:
 
 * *user* for members of _biology_ group. This role has permission on
   `view-stats`, `view-jobs` and `view-nodes` actions.
-* *admin* for _jwalls_ user. This role has permission on `view-partitions`,
+* *admin* for _njones_ user. This role has permission on `view-partitions`,
   `view-qos`,`view-accounts` and `view-reservations` actions.
 
 NOTE: Please refer to
@@ -475,12 +475,12 @@ Restart the _agent_ component to apply the new configuration:
 # systemctl restart slurm-web-agent.service
 ----
 
-User _jwalls_ who is also member of _biology_ group is granted both _user_ and
+User _njones_ who is also member of _biology_ group is granted both _user_ and
 _admin_ roles, she has access to everything:
 
 image:slurm-web_policy_admin.png[]
 
-Another user in _biology_ group can only view jobs and resources:
+Another user in _biology_ group can only view jobs:
 
 image:slurm-web_policy_user.png[]
 
