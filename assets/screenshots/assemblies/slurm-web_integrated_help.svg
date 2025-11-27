@@ -7,7 +7,7 @@
    viewBox="0 0 153.65027 54.877441"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="slurm-web_integrated_help.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -29,14 +29,16 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="0.77771464"
-     inkscape:cx="905.85925"
-     inkscape:cy="159.44151"
+     inkscape:cx="906.50216"
+     inkscape:cy="160.72733"
      inkscape:window-width="2835"
      inkscape:window-height="1437"
      inkscape:window-x="26"
      inkscape:window-y="23"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1">
+     inkscape:current-layer="layer1"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid1576"
@@ -86,10 +88,10 @@
        y="8.3974781"
        transform="matrix(0.37479567,0,0,0.37479567,-5.836038,4.2576283)" />
     <image
-       width="78.637604"
+       width="78.637599"
        height="51.36731"
        preserveAspectRatio="none"
-       xlink:href="../raw/screenshost_included_help.png"
+       xlink:href="../raw/screenshot_included_help.png"
        id="image848"
        x="-9.334609"
        y="6.809979" />
