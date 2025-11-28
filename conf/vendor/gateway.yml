@@ -119,7 +119,7 @@ agents:
     ex: /path/to/certificate.pem
   version:
     type: str
-    default: 5.1.0
+    default: 6.0.0
     doc: |
       Minimal support version of Slurm-web agent API
 
