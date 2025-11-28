@@ -137,11 +137,11 @@ Build development packages with Fatbuildr:
 For example, Debian _bookworm_ packages:
 
 ```console
-$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d bookworm --sources 5.2.0~dev1@.
+$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d bookworm --sources 6.0.0~dev1@.
 ```
 
 Or RPM _el8_ packages:
 
 ```console
-$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d el8 --sources 5.2.0~dev1@.
+$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d el8 --sources 6.0.0~dev1@.
 ```

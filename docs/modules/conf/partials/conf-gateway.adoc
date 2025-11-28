@@ -300,7 +300,7 @@ the default value only.
 
 
 
-*Default:* `5.1.0`
+*Default:* `6.0.0`
 
 |-
 

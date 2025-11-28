@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Slurm-web"
-version = "5.2.0"
+version = "6.0.0"
 description = "Web interface to Slurm HPC clusters"
 license = {text = "MIT"}
 requires-python = ">=3.6"
