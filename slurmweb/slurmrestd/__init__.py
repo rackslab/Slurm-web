@@ -9,7 +9,7 @@ import urllib
 import logging
 
 import requests
-import ClusterShell
+from ClusterShell.NodeSet import NodeSet
 
 from .unix import SlurmrestdUnixAdapter
 from .auth import SlurmrestdAuthentifier
@@ -222,7 +222,7 @@ class Slurmrestd:
             """Return True if job is allocated this node."""
             if job["nodes"] == "":
                 return False
-            return node in ClusterShell.NodeSet.NodeSet(job["nodes"])
+            return node in NodeSet(job["nodes"])
 
         def terminated(job):
             """Return True if job is terminated."""
