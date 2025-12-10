@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configuration guides to setup production HTTP server (apache2, nginx and
     caddy) on SLES.
 
+### Changed
+- agent: Make RacksDB library optional with lazy loading only when enabled in
+  configuration (#683). Contribution from @faganihajizada.
+
 ### Fixed
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
   @faganihajizada.

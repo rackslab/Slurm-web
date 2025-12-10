@@ -8,7 +8,7 @@ import unittest
 from unittest import mock
 import tempfile
 import os
-
+from importlib.util import find_spec
 
 import werkzeug
 from flask import Blueprint, jsonify
@@ -18,13 +18,17 @@ from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from rfl.permissions.rbac import ANONYMOUS_ROLE
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
-from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
 
 from .utils import (
     mock_slurmrestd_responses,
     SlurmwebAssetUnavailable,
     SlurmwebCustomTestResponse,
 )
+
+
+def is_racksdb_available():
+    """Check if RacksDB is available for testing."""
+    return find_spec("racksdb") is not None
 
 
 CONF_TPL = """
@@ -147,6 +151,13 @@ class TestAgentBase(TestSlurmrestdClient):
         anonymous_enabled=True,
         use_token=True,
     ):
+        # Check if RacksDB is available for mocking
+        try:
+            from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
+        except ModuleNotFoundError:
+            # RacksDB not available, disable it in config
+            racksdb = False
+
         self.setup_agent_conf(
             slurmrestd_parameters=slurmrestd_parameters,
             racksdb=racksdb,
@@ -154,14 +165,27 @@ class TestAgentBase(TestSlurmrestdClient):
             cache=cache,
         )
 
-        # Start the app with mocked RacksDB web blueprint
-        with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
-            if racksdb_format_error:
-                m.side_effect = RacksDBFormatError("fake db format error")
-            elif racksdb_schema_error:
-                m.side_effect = RacksDBSchemaError("fake db schema error")
-            else:
-                m.return_value = FakeRacksDBWebBlueprint()
+        if racksdb:
+            # RacksDB is available, start app with mocked RacksDB web blueprint
+            with mock.patch("racksdb.web.app.RacksDBWebBlueprint") as m:
+                if racksdb_format_error:
+                    m.side_effect = RacksDBFormatError("fake db format error")
+                elif racksdb_schema_error:
+                    m.side_effect = RacksDBSchemaError("fake db schema error")
+                else:
+                    m.return_value = FakeRacksDBWebBlueprint()
+                self.app = SlurmwebAppAgent(
+                    SlurmwebAppSeed.with_parameters(
+                        debug=False,
+                        log_flags=["ALL"],
+                        log_component=None,
+                        debug_flags=[],
+                        conf_defs=self.conf_defs,
+                        conf=self.conf.name,
+                    )
+                )
+        else:
+            # RacksDB disabled in config or not available
             self.app = SlurmwebAppAgent(
                 SlurmwebAppSeed.with_parameters(
                     debug=False,
@@ -172,6 +196,7 @@ class TestAgentBase(TestSlurmrestdClient):
                     conf=self.conf.name,
                 )
             )
+
         if not anonymous_enabled:
             self.app.policy.disable_anonymous()
 
