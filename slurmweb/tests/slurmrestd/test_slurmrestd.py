@@ -9,7 +9,7 @@ import random
 import urllib
 
 import requests
-import ClusterShell
+from ClusterShell.NodeSet import NodeSet
 
 from slurmweb.slurmrestd import Slurmrestd
 from slurmweb.slurmrestd.errors import (
@@ -177,7 +177,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
             return False
 
         # Select random busy node on cluster
-        busy_nodes = ClusterShell.NodeSet.NodeSet()
+        busy_nodes = NodeSet()
         for job in asset:
             if not terminated(job):
                 busy_nodes.update(job["nodes"])
@@ -195,7 +195,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
             self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
             self.assertIn(
                 random_busy_node,
-                ClusterShell.NodeSet.NodeSet(job["nodes"]),
+                NodeSet(job["nodes"]),
             )
 
         # Test get jobs on nonexistent node.

@@ -8,7 +8,7 @@
 from unittest import mock
 import random
 
-import ClusterShell
+from ClusterShell.NodeSet import NodeSet
 
 from racksdb.version import get_version as racksdb_get_version
 
@@ -191,7 +191,7 @@ class TestAgentViews(TestAgentBase):
             return False
 
         # Select random busy node on cluster
-        busy_nodes = ClusterShell.NodeSet.NodeSet()
+        busy_nodes = NodeSet()
         for job in jobs_asset:
             if not terminated(job):
                 busy_nodes.update(job["nodes"])
@@ -210,7 +210,7 @@ class TestAgentViews(TestAgentBase):
             self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
             self.assertIn(
                 random_busy_node,
-                ClusterShell.NodeSet.NodeSet(job["nodes"]),
+                NodeSet(job["nodes"]),
             )
 
     @all_slurm_api_versions
