@@ -4,11 +4,13 @@
 #
 # SPDX-License-Identifier: MIT
 
+import unittest
 
-from ..lib.agent import TestAgentBase
+from ..lib.agent import TestAgentBase, is_racksdb_available
 from ..lib.utils import flask_404_description
 
 
+@unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
 class TestAgentRacksDBEnabledRequest(TestAgentBase):
     def setUp(self):
         self.setup_client()
@@ -23,6 +25,7 @@ class TestAgentRacksDBEnabledRequest(TestAgentBase):
         )
 
 
+@unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
 class TestAgentRacksDBUnabledRequest(TestAgentBase):
     def setUp(self):
         self.setup_client(racksdb_format_error=True)

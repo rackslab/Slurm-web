@@ -5,11 +5,12 @@
 # SPDX-License-Identifier: MIT
 
 import sys
+import unittest
 from unittest import mock
 
 from slurmweb.errors import SlurmwebConfigurationError
 
-from ..lib.agent import TestAgentBase
+from ..lib.agent import TestAgentBase, is_racksdb_available
 
 
 class TestAgentApp(TestAgentBase):
@@ -22,6 +23,7 @@ class TestAgentApp(TestAgentBase):
             with self.assertNoLogs("slurmweb", level="ERROR"):
                 self.setup_client()
 
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
     def test_app_racksdb_format_error(self):
         with self.assertLogs("slurmweb", level="ERROR") as cm:
             self.setup_client(racksdb_format_error=True)
@@ -33,6 +35,7 @@ class TestAgentApp(TestAgentBase):
             ],
         )
 
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
     def test_app_racksdb_schema_error(self):
         with self.assertLogs("slurmweb", level="ERROR") as cm:
             self.setup_client(racksdb_schema_error=True)

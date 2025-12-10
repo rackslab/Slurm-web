@@ -10,14 +10,13 @@ import random
 
 from ClusterShell.NodeSet import NodeSet
 
-from racksdb.version import get_version as racksdb_get_version
-
 from slurmweb.version import get_version
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
     SlurmrestdInvalidResponseError,
 )
 from slurmweb.cache import CachingService
+from slurmweb.views.agent import racksdb_get_version
 
 from ..lib.agent import TestAgentBase
 from ..lib.utils import all_slurm_api_versions, flask_404_description

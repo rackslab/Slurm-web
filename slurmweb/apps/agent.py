@@ -9,8 +9,6 @@ import urllib
 import logging
 
 from rfl.web.tokens import RFLTokenizedRBACWebApp
-from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
-from racksdb.web.app import RacksDBWebBlueprint
 
 try:
     from werkzeug.middleware import dispatcher
@@ -65,6 +63,11 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         # If enabled, load RacksDB blueprint and fail with error if unable to load
         # schema or database.
         if self.settings.racksdb.enabled:
+            # Lazy load RacksDB module to avoid failing on missing optional external
+            # dependency when feature is actually disabled.
+            from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
+            from racksdb.web.app import RacksDBWebBlueprint
+
             try:
                 self.register_blueprint(
                     RacksDBWebBlueprint(
