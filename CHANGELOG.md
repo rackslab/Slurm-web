@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
   @faganihajizada.
+- docs: Fix user/group name in agent uWSGI service diff context.
 
 ## [6.0.0] - 2025-11-28
 
