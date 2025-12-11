@@ -88,3 +88,45 @@ Reload Apache2 service to apply new configuration:
 ----
 
 include::partial$http-available.adoc[]
+
+== SLES
+
+NOTE: This procedure works on SUSE Linux Enterprise Server (SLES) and openSUSE.
+
+Install Apache2 HTTP server and uWSGI:
+
+[source,console]
+----
+# zypper install apache2 apache2-mod_uwsgi uwsgi uwsgi-python3
+----
+
+Enable Apache2 _proxy_ and _uwsgi_ module:
+
+[source,console]
+----
+# a2enmod proxy
+# a2enmod uwsgi
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Create file [.path]#`/etc/apache2/vhosts.d/slurm-web.conf`#:
+
+[source]
+----
+<VirtualHost *:80>
+
+    ProxyPass /agent unix:/run/slurm-web-agent/uwsgi.sock|uwsgi://agent/
+    ProxyPass / unix:/run/slurm-web-gateway/uwsgi.sock|uwsgi://gateway/
+
+</VirtualHost>
+----
+
+Start and enable `apache2` service:
+
+[source,console]
+----
+# systemctl enable --now apache2.service
+----
+
+include::partial$http-available.adoc[]
