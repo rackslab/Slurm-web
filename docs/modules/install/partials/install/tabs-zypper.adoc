@@ -1,0 +1,33 @@
+{tab} 15::
++
+====
+
+ifdef::tab-el-note[]
+NOTE: These packages are also compatible with https://www.opensuse.org/[openSUSE Leap 15].
+endif::[]
+
+[source,console,subs=attributes]
+----
+# zypper addrepo --check --gpgcheck-allow-unsigned-repo --refresh \
+  https://pkgs.rackslab.io/rpm/suse15/main/x86_64 rackslab-main
+# zypper addrepo --check --gpgcheck-allow-unsigned-repo --refresh \
+  https://pkgs.rackslab.io/rpm/suse15/{pkgs-derivative}/x86_64 rackslab-{pkgs-derivative}
+----
+====
+
+{tab} 16::
++
+====
+
+ifdef::tab-el-note[]
+NOTE: These packages are also compatible with https://www.opensuse.org/[openSUSE Leap 16].
+endif::[]
+
+[source,console,subs=attributes]
+----
+# zypper addrepo --check --gpgcheck-allow-unsigned-repo --refresh \
+  https://pkgs.rackslab.io/rpm/suse16/main/x86_64 rackslab-main
+# zypper addrepo --check --gpgcheck-allow-unsigned-repo --refresh \
+  https://pkgs.rackslab.io/rpm/suse16/{pkgs-derivative}/x86_64 rackslab-{pkgs-derivative}
+----
+====
