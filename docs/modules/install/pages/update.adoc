@@ -34,6 +34,15 @@ Debian and Ubuntu::
 # apt update && apt upgrade
 ----
 ====
+
+SLES and openSUSE::
++
+====
+[source,console]
+----
+# zypper update
+----
+====
 ======
 
 === Restart Services
