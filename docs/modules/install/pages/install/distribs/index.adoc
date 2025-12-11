@@ -27,4 +27,10 @@ packages on all supported GNU/Linux distributions:
 
 |image:{distribsdir}/ubuntu.png[Ubuntu,xref=install/distribs/ubuntu.adoc]
 .^|xref:install/distribs/ubuntu.adoc[Ubuntu]
+
+|image:{distribsdir}/sles.png[SLES,xref=install/distribs/sles.adoc]
+.^|xref:install/distribs/sles.adoc[SUSE Linux Enterprise Server (SLES)]
+
+|image:{distribsdir}/opensuse.png[opensuse,xref=install/distribs/opensuse.adoc]
+.^|xref:install/distribs/opensuse.adoc[openSUSE]
 |===

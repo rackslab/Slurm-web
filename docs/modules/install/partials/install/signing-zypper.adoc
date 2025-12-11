@@ -1,0 +1,6 @@
+Import RPM siging key:
+
+[source,console]
+----
+# rpm --import https://pkgs.rackslab.io/keyring.asc
+----
