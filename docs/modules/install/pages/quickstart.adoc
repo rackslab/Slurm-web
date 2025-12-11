@@ -227,6 +227,29 @@ include::partial$install/tabs-ubuntu.adoc[]
 
 include::partial$install/install-apt.adoc[]
 
+[#zypper]
+=== Zypper
+
+This procedure works on
+https://www.suse.com/products/server/[SUSE Linux Entreprise Server (SLES)] and
+https://www.opensuse.org/[openSUSE LEAP].
+
+include::partial$install/signing-zypper.adoc[]
+
+include::partial$install/repo-zypper.adoc[]
+
+:tab: SLES
+:tab-el-note:
+
+[tabs]
+======
+include::partial$install/tabs-zypper.adoc[]
+======
+
+:!tab-el-note:
+:!tab:
+
+include::partial$install/install-zypper.adoc[]
 
 [sidebar]
 --

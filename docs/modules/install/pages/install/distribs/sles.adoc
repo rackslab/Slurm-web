@@ -1,0 +1,20 @@
+= SUSE Linux Enterprise Server (SLES)
+
+image:https://rackslab.io/images/distribs/sles.png[SLES,float=right]
+
+This installation procedure works on SUSE Linux Enterprise Server 15 and 16.
+
+include::partial$install/signing-zypper.adoc[]
+
+include::partial$install/repo-zypper.adoc[]
+
+:tab: SLES
+
+[tabs]
+======
+include::partial$install/tabs-zypper.adoc[]
+======
+
+:!tab:
+
+include::partial$install/install-zypper.adoc[]

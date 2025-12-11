@@ -6,6 +6,8 @@ Slurm-web RPM source packages are available at these URL:
 * el9 : https://pkgs.rackslab.io/rpm/el9/{pkgs-derivative}/source/Packages
 * Fedora 41 : https://pkgs.rackslab.io/rpm/fc41/{pkgs-derivative}/source/Packages
 * Fedora 42 : https://pkgs.rackslab.io/rpm/fc42/{pkgs-derivative}/source/Packages
+* SLES 15 : https://pkgs.rackslab.io/rpm/suse15/{pkgs-derivative}/source/Packages
+* SLES 16 : https://pkgs.rackslab.io/rpm/suse16/{pkgs-derivative}/source/Packages
 
 Select version at your convenience and download the `*.src.rpm` file, for
 example `slurm-web-{version}-1.el8.src.rpm`.
