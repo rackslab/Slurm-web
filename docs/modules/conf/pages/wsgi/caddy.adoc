@@ -81,3 +81,36 @@ Reload _caddy_ configuration to apply configuration changes:
 ----
 
 include::partial$http-available.adoc[]
+
+== SLES
+
+NOTE: This procedure works on SUSE Linux Enterprise Server (SLES) and openSUSE.
+
+Install Caddy HTTP server and uWSGI:
+
+[source,console]
+----
+# zypper install caddy uwsgi-core uwsgi-plugin-python3
+----
+
+include::partial$uwsgi-services-http.adoc[]
+
+Edit [.path]#`/etc/caddy/Caddyfile`# to add the following directives in default
+site block:
+
+[source]
+----
+    reverse_proxy unix//run/slurm-web-gateway/uwsgi.sock
+    handle_path /agent/* {
+        reverse_proxy unix//run/slurm-web-agent/uwsgi.sock
+    }
+----
+
+Reload _caddy_ configuration to apply configuration changes:
+
+[source,console]
+----
+# systemctl reload caddy.service
+----
+
+include::partial$http-available.adoc[]
