@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configuration guides to setup production HTTP server (apache2, nginx and
     caddy) on SLES.
 
+### Fixed
+- docs: Fix user/group name in agent uWSGI service diff context.
+
 ## [5.2.0] - 2025-11-03
 
 ### Added
