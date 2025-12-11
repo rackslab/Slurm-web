@@ -34,6 +34,15 @@ Debian and Ubuntu::
 # apt update && apt upgrade
 ----
 ====
+
+SLES and openSUSE::
++
+====
+[source,console]
+----
+# zypper update
+----
+====
 ======
 
 === Restart Services
@@ -305,4 +314,64 @@ Run this command to update repositories and packages:
 [source,console]
 ----
 # apt update && apt upgrade
+----
+
+=== Zypper
+
+This procedure works on
+https://www.suse.com/products/server/[SUSE Linux Entreprise Server (SLES)] and
+https://www.opensuse.org/[openSUSE LEAP].
+
+Rename file [.path]#`/etc/zypp/repos.d/rackslab-slurmweb-5.repo`# to
+[.path]#`/etc/zypp/repos.d/rackslab-slurmweb-6.repo`# and edit its content to
+change repository from _slurmweb-5_ to _slurmweb-6_:
+
+[tabs]
+======
+SLES 15::
++
+====
+[source,diff]
+----
+--- /etc/zypp/repos.d/rackslab-slurmweb-5.repo
++++ /etc/zypp/repos.d/rackslab-slurmweb-6.repo
+@@ -1,7 +1,7 @@
+-[rackslab-slurmweb-5]
++[rackslab-slurmweb-6]
+ enabled=1
+ autorefresh=1
+-baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-5/x86_64
++baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-6/x86_64
+ type=rpm-md
+ gpgcheck=1
+ repo_gpgcheck=0
+----
+====
+
+SLES 16::
++
+====
+[source,diff]
+----
+--- /etc/zypp/repos.d/rackslab-slurmweb-5.repo
++++ /etc/zypp/repos.d/rackslab-slurmweb-6.repo
+@@ -1,7 +1,7 @@
+-[rackslab-slurmweb-5]
++[rackslab-slurmweb-6]
+ enabled=1
+ autorefresh=1
+-baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-5/x86_64
++baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-6/x86_64
+ type=rpm-md
+ gpgcheck=1
+ repo_gpgcheck=0
+----
+====
+======
+
+Run this command to update repositories and packages:
+
+[source,console]
+----
+# zypper update
 ----
