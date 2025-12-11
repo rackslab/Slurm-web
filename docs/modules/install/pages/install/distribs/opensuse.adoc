@@ -1,0 +1,20 @@
+= openSUSE
+
+image:https://rackslab.io/images/distribs/opensuse.png[openSUSE,float=right]
+
+This installation procedure works on openSUSE Leap 15 and 16.
+
+include::partial$install/signing-zypper.adoc[]
+
+include::partial$install/repo-zypper.adoc[]
+
+:tab: openSUSE Leap
+
+[tabs]
+======
+include::partial$install/tabs-zypper.adoc[]
+======
+
+:!tab:
+
+include::partial$install/install-zypper.adoc[]
