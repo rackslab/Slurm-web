@@ -1,0 +1,49 @@
+# Slurm-web Docker Compose
+#
+# This compose file runs both gateway and agent components for local development.
+# Note: This requires a running slurmrestd service accessible from the containers.
+#
+# Usage:
+#   docker compose up --build
+#
+# Access:
+#   Gateway UI: http://localhost:5011
+#   Agent API:  http://localhost:5012
+
+services:
+  gateway:
+    build: .
+    environment:
+      SLURM_WEB_MODE: gateway
+    ports:
+      - "5011:5011"
+    volumes:
+      - ./dev/gateway.ini:/etc/slurm-web/gateway.ini:ro
+      - jwt-key:/var/lib/slurm-web:ro
+    depends_on:
+      - agent
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5011/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agent:
+    build: .
+    environment:
+      SLURM_WEB_MODE: agent
+    ports:
+      - "5012:5012"
+    volumes:
+      - ./dev/agent.ini:/etc/slurm-web/agent.ini:ro
+      - jwt-key:/var/lib/slurm-web:ro
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5012/version')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  jwt-key:
+    # Mount your JWT key file here for slurmrestd authentication
+
