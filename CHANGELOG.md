@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- docs: Add procedure to install Slurm-web on SLES (and openSUSE Leap) 15 and 16
-  in quickstart guide and installation guide (#684).
+- docs:
+  - Add procedure to install Slurm-web on SLES (and openSUSE Leap) 15 and 16 in
+    quickstart guide and installation guide (#684).
+  - Add procedure to upgrade Slurm-web on SLES in update guide.
 
 ### Fixed
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
