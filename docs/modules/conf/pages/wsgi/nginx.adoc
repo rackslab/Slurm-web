@@ -103,3 +103,47 @@ Reload Nginx service to apply new configuration:
 ----
 
 include::partial$http-available.adoc[]
+
+== SLES
+
+NOTE: This procedure works on SUSE Linux Enterprise Server (SLES) and openSUSE.
+
+Install Nginx HTTP server and uWSGI:
+
+[source,console]
+----
+# zypper install nginx uwsgi uwsgi-python3
+----
+
+include::partial$uwsgi-services.adoc[]
+
+Create file [.path]#`/etc/nginx/vhosts.d/slurm-web.conf`#:
+
+[source]
+----
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $HOST;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/run/slurm-web-gateway/uwsgi.sock;
+    }
+
+    location /agent/ {
+        include uwsgi_params;
+        rewrite ^/agent/(.*)$ /$1 break;
+        uwsgi_pass unix:/run/slurm-web-agent/uwsgi.sock;
+    }
+}
+----
+
+Where [.cli-optval]#$HOST#  is the public hostname of your server.
+
+[source,console]
+----
+# systemctl reload nginx.service
+----
+
+include::partial$http-available.adoc[]
