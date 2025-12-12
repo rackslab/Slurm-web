@@ -18,7 +18,13 @@ from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from rfl.permissions.rbac import ANONYMOUS_ROLE
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
-from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
+
+try:
+    from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
+except ModuleNotFoundError:
+    # RacksDB is optional, import stub classes from app module
+    from slurmweb.apps.agent import RacksDBFormatError, RacksDBSchemaError
+
 
 from .utils import (
     mock_slurmrestd_responses,
@@ -155,23 +161,24 @@ class TestAgentBase(TestSlurmrestdClient):
         )
 
         # Start the app with mocked RacksDB web blueprint
-        with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
-            if racksdb_format_error:
-                m.side_effect = RacksDBFormatError("fake db format error")
-            elif racksdb_schema_error:
-                m.side_effect = RacksDBSchemaError("fake db schema error")
-            else:
-                m.return_value = FakeRacksDBWebBlueprint()
-            self.app = SlurmwebAppAgent(
-                SlurmwebAppSeed.with_parameters(
-                    debug=False,
-                    log_flags=["ALL"],
-                    log_component=None,
-                    debug_flags=[],
-                    conf_defs=self.conf_defs,
-                    conf=self.conf.name,
+        with mock.patch("slurmweb.apps.agent.RACKSDB_AVAILABLE", racksdb):
+            with mock.patch("slurmweb.apps.agent.RacksDBWebBlueprint") as m:
+                if racksdb_format_error:
+                    m.side_effect = RacksDBFormatError("fake db format error")
+                elif racksdb_schema_error:
+                    m.side_effect = RacksDBSchemaError("fake db schema error")
+                else:
+                    m.return_value = FakeRacksDBWebBlueprint()
+                self.app = SlurmwebAppAgent(
+                    SlurmwebAppSeed.with_parameters(
+                        debug=False,
+                        log_flags=["ALL"],
+                        log_component=None,
+                        debug_flags=[],
+                        conf_defs=self.conf_defs,
+                        conf=self.conf.name,
+                    )
                 )
-            )
         if not anonymous_enabled:
             self.app.policy.disable_anonymous()
 

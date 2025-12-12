@@ -9,7 +9,14 @@ import logging
 
 from flask import Response, current_app, jsonify, abort, request
 from rfl.web.tokens import rbac_action, check_jwt
-from racksdb.version import get_version as racksdb_get_version
+
+try:
+    from racksdb.version import get_version as racksdb_get_version
+except ModuleNotFoundError:
+    # RacksDB is optional, provide fallback if not installed
+    def racksdb_get_version():
+        return "N/A (not installed)"
+
 
 from ..version import get_version
 from ..errors import SlurmwebCacheError, SlurmwebMetricsDBError

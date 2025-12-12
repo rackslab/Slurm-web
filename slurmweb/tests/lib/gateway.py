@@ -14,7 +14,15 @@ import werkzeug
 import jinja2
 
 from rfl.authentication.user import AuthenticatedUser, AnonymousUser
-from racksdb.version import get_version as racksdb_get_version
+
+try:
+    from racksdb.version import get_version as racksdb_get_version
+except ModuleNotFoundError:
+    # RacksDB is optional, provide fallback if not installed
+    def racksdb_get_version():
+        return "N/A (not installed)"
+
+
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway

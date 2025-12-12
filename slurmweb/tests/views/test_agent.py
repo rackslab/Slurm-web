@@ -10,7 +10,13 @@ import random
 
 from ClusterShell.NodeSet import NodeSet
 
-from racksdb.version import get_version as racksdb_get_version
+try:
+    from racksdb.version import get_version as racksdb_get_version
+except ModuleNotFoundError:
+    # RacksDB is optional, provide fallback if not installed
+    def racksdb_get_version():
+        return "N/A (not installed)"
+
 
 from slurmweb.version import get_version
 from slurmweb.slurmrestd.errors import (

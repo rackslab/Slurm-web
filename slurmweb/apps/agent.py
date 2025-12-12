@@ -9,8 +9,24 @@ import urllib
 import logging
 
 from rfl.web.tokens import RFLTokenizedRBACWebApp
-from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
-from racksdb.web.app import RacksDBWebBlueprint
+
+try:
+    from racksdb.errors import RacksDBSchemaError, RacksDBFormatError
+    from racksdb.web.app import RacksDBWebBlueprint
+
+    RACKSDB_AVAILABLE = True
+except ModuleNotFoundError:
+    # RacksDB is optional, only required when racksdb.enabled is true
+    RACKSDB_AVAILABLE = False
+
+    # Provide stub exception classes for code that catches these exceptions
+    class RacksDBSchemaError(Exception):
+        pass
+
+    class RacksDBFormatError(Exception):
+        pass
+
+    RacksDBWebBlueprint = None
 
 try:
     from werkzeug.middleware import dispatcher
@@ -65,6 +81,10 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         # If enabled, load RacksDB blueprint and fail with error if unable to load
         # schema or database.
         if self.settings.racksdb.enabled:
+            if not RACKSDB_AVAILABLE:
+                raise SlurmwebConfigurationError(
+                    "RacksDB is enabled in configuration but library is not installed"
+                )
             try:
                 self.register_blueprint(
                     RacksDBWebBlueprint(
