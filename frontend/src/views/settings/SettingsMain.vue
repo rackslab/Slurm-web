@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import SettingsTabs from '@/components/settings/SettingsTabs.vue'
+import SettingsHeader from '@/components/settings/SettingsHeader.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { Switch } from '@headlessui/vue'
 
@@ -17,16 +18,10 @@ const runtimeStore = useRuntimeStore()
 <template>
   <SettingsTabs entry="General" />
   <div class="px-4 pt-16 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
-          General Settings
-        </h1>
-        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Configure general application preferences.
-        </p>
-      </div>
-    </div>
+    <SettingsHeader
+      title="General Settings"
+      description="Configure general application preferences."
+    />
     <div>
       <dl
         class="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm/6 dark:divide-gray-700 dark:border-gray-700"

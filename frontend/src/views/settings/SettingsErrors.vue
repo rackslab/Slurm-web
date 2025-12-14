@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import SettingsTabs from '@/components/settings/SettingsTabs.vue'
+import SettingsHeader from '@/components/settings/SettingsHeader.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 
 const runtimeStore = useRuntimeStore()
@@ -16,14 +17,7 @@ const runtimeStore = useRuntimeStore()
 <template>
   <SettingsTabs entry="Errors" />
   <div class="px-4 pt-16 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">Errors</h1>
-        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          List of errors triggered by application.
-        </p>
-      </div>
-    </div>
+    <SettingsHeader title="Errors" description="List of errors triggered by application." />
     <div class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
