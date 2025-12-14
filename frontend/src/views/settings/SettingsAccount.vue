@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import SettingsTabs from '@/components/settings/SettingsTabs.vue'
+import SettingsHeader from '@/components/settings/SettingsHeader.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useAuthStore } from '@/stores/auth'
 
@@ -18,14 +19,7 @@ const authStore = useAuthStore()
 <template>
   <SettingsTabs entry="Account" />
   <div class="px-4 pt-16 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">Account</h1>
-        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Personal account information and permissions.
-        </p>
-      </div>
-    </div>
+    <SettingsHeader title="Account" description="Personal account information and permissions." />
     <div class="mt-6 border-t border-gray-100 dark:border-gray-700">
       <dl class="divide-y divide-gray-100 dark:divide-gray-700">
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

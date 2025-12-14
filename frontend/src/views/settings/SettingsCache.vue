@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import SettingsTabs from '@/components/settings/SettingsTabs.vue'
+import SettingsHeader from '@/components/settings/SettingsHeader.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import SettingsCacheStatistics from '@/components/settings/SettingsCacheStatistics.vue'
 import SettingsCacheMetrics from '@/components/settings/SettingsCacheMetrics.vue'
@@ -18,16 +19,7 @@ const runtimeStore = useRuntimeStore()
 <template>
   <SettingsTabs entry="Cache" />
   <div class="px-4 pt-16 sm:px-6 lg:px-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h1 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
-          Cache Service
-        </h1>
-        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-          Cache service information and metrics.
-        </p>
-      </div>
-    </div>
+    <SettingsHeader title="Cache Service" description="Cache service information and metrics." />
     <div class="mt-8 flow-root">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <template v-for="cluster in runtimeStore.availableClusters" :key="cluster.name">
