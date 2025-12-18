@@ -8,6 +8,7 @@
 
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.agent import SlurmwebAppAgent
+from slurmweb.apps._defaults import SlurmwebAppDefaults
 
 application = SlurmwebAppAgent(
     SlurmwebAppSeed.with_parameters(
@@ -15,7 +16,7 @@ application = SlurmwebAppAgent(
         log_flags=["ALL"],
         log_component=None,
         debug_flags=[],
-        conf_defs=SlurmwebAppAgent.SETTINGS_DEFINITION,
-        conf=SlurmwebAppAgent.SITE_CONFIGURATION,
+        conf_defs=SlurmwebAppDefaults.AGENT.settings_definition,
+        conf=SlurmwebAppDefaults.AGENT.site_configuration,
     )
 )

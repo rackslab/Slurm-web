@@ -8,6 +8,7 @@
 
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
+from slurmweb.apps._defaults import SlurmwebAppDefaults
 
 application = SlurmwebAppGateway(
     SlurmwebAppSeed.with_parameters(
@@ -15,7 +16,7 @@ application = SlurmwebAppGateway(
         log_flags=["ALL"],
         log_component=None,
         debug_flags=[],
-        conf_defs=SlurmwebAppGateway.SETTINGS_DEFINITION,
-        conf=SlurmwebAppGateway.SITE_CONFIGURATION,
+        conf_defs=SlurmwebAppDefaults.GATEWAY.settings_definition,
+        conf=SlurmwebAppDefaults.GATEWAY.site_configuration,
     )
 )
