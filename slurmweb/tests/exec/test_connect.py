@@ -13,7 +13,7 @@ from slurmweb.version import get_version
 from slurmweb.exec.main import SlurmwebExecMain
 from slurmweb.exec.connect import SlurmwebExecConnectCheck
 from slurmweb.apps import SlurmwebAppSeed
-from slurmweb.apps.agent import SlurmwebAppAgent
+from slurmweb.apps._defaults import SlurmwebAppDefaults
 
 
 class TestConnectCheckExec(unittest.TestCase):
@@ -29,9 +29,11 @@ class TestConnectCheckExec(unittest.TestCase):
         self.assertEqual(seed.log_component, None)
         self.assertEqual(seed.debug_flags, "slurmweb")
         self.assertIsInstance(seed.conf_defs, Path)
-        self.assertEqual(seed.conf_defs, Path(SlurmwebAppAgent.SETTINGS_DEFINITION))
+        self.assertEqual(
+            seed.conf_defs, Path(SlurmwebAppDefaults.AGENT.settings_definition)
+        )
         self.assertIsInstance(seed.conf, Path)
-        self.assertEqual(seed.conf, Path(SlurmwebAppAgent.SITE_CONFIGURATION))
+        self.assertEqual(seed.conf, Path(SlurmwebAppDefaults.AGENT.site_configuration))
 
     def test_seed_version(self):
         with mock.patch("sys.stdout", new=io.StringIO()) as stdout:
@@ -57,7 +59,7 @@ class TestConnectCheckExec(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "2"):
             self._parse(["--fail"])
 
-    @mock.patch("slurmweb.exec.connect.SlurmwebAppConnectCheck")
+    @mock.patch("slurmweb.apps.connect.SlurmwebAppConnectCheck")
     def test_app(self, mock_slurmweb_app):
         seed = self._parse([])
         app = SlurmwebExecConnectCheck.app(seed)
