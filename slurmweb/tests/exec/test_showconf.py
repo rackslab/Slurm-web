@@ -13,7 +13,7 @@ from slurmweb.version import get_version
 from slurmweb.exec.main import SlurmwebExecMain
 from slurmweb.exec.showconf import SlurmwebExecShowConf
 from slurmweb.apps import SlurmwebAppSeed
-from slurmweb.apps.gateway import SlurmwebAppGateway
+from slurmweb.apps._defaults import SlurmwebAppDefaults
 
 
 class TestShowConfExec(unittest.TestCase):
@@ -71,7 +71,7 @@ class TestShowConfExec(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "2"):
             self._parse(["--fail"])
 
-    @mock.patch("slurmweb.exec.showconf.SlurmwebAppShowConf")
+    @mock.patch("slurmweb.apps.showconf.SlurmwebAppShowConf")
     def test_app(self, mock_slurmweb_app):
         seed = self._parse(["gateway"])
         app = SlurmwebExecShowConf.app(seed)
@@ -80,7 +80,11 @@ class TestShowConfExec(unittest.TestCase):
         called_seed = mock_slurmweb_app.call_args[0][0]
         self.assertIsInstance(called_seed, SlurmwebAppSeed)
         self.assertEqual(
-            called_seed.conf_defs, Path(SlurmwebAppGateway.SETTINGS_DEFINITION)
+            called_seed.conf_defs,
+            Path(SlurmwebAppDefaults.GATEWAY.settings_definition),
         )
-        self.assertEqual(called_seed.conf, Path(SlurmwebAppGateway.SITE_CONFIGURATION))
+        self.assertEqual(
+            called_seed.conf,
+            Path(SlurmwebAppDefaults.GATEWAY.site_configuration),
+        )
         self.assertEqual(app, mock_slurmweb_app.return_value)

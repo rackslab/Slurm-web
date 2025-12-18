@@ -45,7 +45,7 @@ class TestMainExec(unittest.TestCase):
             # Check error about invalid subcommand
             self.assertIn("invalid-subcommand", stderr.getvalue())
 
-    @mock.patch("slurmweb.exec.agent.SlurmwebAppAgent")
+    @mock.patch("slurmweb.apps.agent.SlurmwebAppAgent")
     def test_run_with_subcommand_agent(self, mock_slurmweb_app):
         """Test that run() correctly delegates to agent subcommand."""
         mock_app_instance = mock.Mock()

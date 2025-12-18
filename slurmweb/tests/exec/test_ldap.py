@@ -13,7 +13,7 @@ from slurmweb.version import get_version
 from slurmweb.exec.main import SlurmwebExecMain
 from slurmweb.exec.ldap import SlurmwebExecLDAPCheck
 from slurmweb.apps import SlurmwebAppSeed
-from slurmweb.apps.gateway import SlurmwebAppGateway
+from slurmweb.apps._defaults import SlurmwebAppDefaults
 
 
 class TestLDAPCheckExec(unittest.TestCase):
@@ -29,9 +29,13 @@ class TestLDAPCheckExec(unittest.TestCase):
         self.assertEqual(seed.log_component, None)
         self.assertEqual(seed.debug_flags, "slurmweb")
         self.assertIsInstance(seed.conf_defs, Path)
-        self.assertEqual(seed.conf_defs, Path(SlurmwebAppGateway.SETTINGS_DEFINITION))
+        self.assertEqual(
+            seed.conf_defs, Path(SlurmwebAppDefaults.GATEWAY.settings_definition)
+        )
         self.assertIsInstance(seed.conf, Path)
-        self.assertEqual(seed.conf, Path(SlurmwebAppGateway.SITE_CONFIGURATION))
+        self.assertEqual(
+            seed.conf, Path(SlurmwebAppDefaults.GATEWAY.site_configuration)
+        )
 
     def test_seed_version(self):
         with mock.patch("sys.stdout", new=io.StringIO()) as stdout:
@@ -57,7 +61,7 @@ class TestLDAPCheckExec(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "2"):
             self._parse(["--fail"])
 
-    @mock.patch("slurmweb.exec.ldap.SlurmwebAppLDAPCheck")
+    @mock.patch("slurmweb.apps.ldap.SlurmwebAppLDAPCheck")
     def test_app(self, mock_slurmweb_app):
         seed = self._parse([])
         app = SlurmwebExecLDAPCheck.app(seed)
