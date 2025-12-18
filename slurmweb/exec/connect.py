@@ -10,8 +10,7 @@ from pathlib import Path
 from ..version import get_version
 from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
-from ..apps.connect import SlurmwebAppConnectCheck
-from ..apps.agent import SlurmwebAppAgent
+from ..apps._defaults import SlurmwebAppDefaults
 
 
 class SlurmwebExecConnectCheck(SlurmwebExecBase):
@@ -27,7 +26,7 @@ class SlurmwebExecConnectCheck(SlurmwebExecBase):
         parser = subparsers.add_parser(
             "connect-check",
             help="Check connection from Slurm-web agent to slurmrestd",
-            description=SlurmwebAppConnectCheck.NAME,
+            description="slurm-web connect-check",
         )
         parser.add_argument(
             "-v",
@@ -65,13 +64,13 @@ class SlurmwebExecConnectCheck(SlurmwebExecBase):
             help=(
                 "Path to configuration settings definition file (default: %(default)s)"
             ),
-            default=SlurmwebAppAgent.SETTINGS_DEFINITION,
+            default=SlurmwebAppDefaults.AGENT.settings_definition,
             type=Path,
         )
         parser.add_argument(
             "--conf",
             help="Path to configuration file (default: %(default)s)",
-            default=SlurmwebAppAgent.SITE_CONFIGURATION,
+            default=SlurmwebAppDefaults.AGENT.site_configuration,
             type=Path,
         )
 
@@ -80,4 +79,6 @@ class SlurmwebExecConnectCheck(SlurmwebExecBase):
 
     @staticmethod
     def app(seed: SlurmwebAppSeed):
+        from ..apps.connect import SlurmwebAppConnectCheck
+
         return SlurmwebAppConnectCheck(seed)

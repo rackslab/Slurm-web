@@ -10,7 +10,7 @@ from pathlib import Path
 from ..version import get_version
 from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
-from ..apps.agent import SlurmwebAppAgent
+from ..apps._defaults import SlurmwebAppDefaults
 
 
 class SlurmwebExecAgent(SlurmwebExecBase):
@@ -24,7 +24,7 @@ class SlurmwebExecAgent(SlurmwebExecBase):
         parser = subparsers.add_parser(
             "agent",
             help="Start Slurm-web agent component",
-            description=SlurmwebAppAgent.NAME,
+            description="slurm-web agent",
         )
         parser.add_argument(
             "-v",
@@ -62,13 +62,13 @@ class SlurmwebExecAgent(SlurmwebExecBase):
             help=(
                 "Path to configuration settings definition file (default: %(default)s)"
             ),
-            default=SlurmwebAppAgent.SETTINGS_DEFINITION,
+            default=SlurmwebAppDefaults.AGENT.settings_definition,
             type=Path,
         )
         parser.add_argument(
             "--conf",
             help="Path to configuration file (default: %(default)s)",
-            default=SlurmwebAppAgent.SITE_CONFIGURATION,
+            default=SlurmwebAppDefaults.AGENT.site_configuration,
             type=Path,
         )
         parser.set_defaults(app=SlurmwebExecAgent.app)
@@ -76,4 +76,6 @@ class SlurmwebExecAgent(SlurmwebExecBase):
 
     @staticmethod
     def app(seed: SlurmwebAppSeed):
+        from ..apps.agent import SlurmwebAppAgent
+
         return SlurmwebAppAgent(seed)

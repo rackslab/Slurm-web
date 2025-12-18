@@ -107,8 +107,6 @@ def version_greater_or_equal(reference_s: str, version_s: str) -> bool:
 
 class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
     NAME = "slurm-web gateway"
-    SITE_CONFIGURATION = "/etc/slurm-web/gateway.ini"
-    SETTINGS_DEFINITION = "/usr/share/slurm-web/conf/gateway.yml"
     VIEWS = {
         SlurmwebAppRoute("/api/version", views.version),
         SlurmwebAppRoute("/api/login", views.login, methods=["POST"]),
