@@ -65,8 +65,6 @@ class SlurmwebAppSeed:
 
 class SlurmwebGenericApp:
     NAME = None
-    SITE_CONFIGURATION = None
-    SETTINGS_DEFINITION = None
 
     def __init__(self, seed: SlurmwebAppSeed):
         # load configuration files

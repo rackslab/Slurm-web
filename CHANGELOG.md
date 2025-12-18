@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   configuration (#683). Contribution from @faganihajizada.
 
 ### Fixed
+- Lazy import apps modules to break down _agent_ and _gateway_ specific
+  dependencies when setting up CLI arguments (#690).
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
   @faganihajizada.
 - docs: Fix user/group name in agent uWSGI service diff context.

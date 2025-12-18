@@ -10,9 +10,7 @@ from pathlib import Path
 from ..version import get_version
 from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
-from ..apps.showconf import SlurmwebAppShowConf
-from ..apps.gateway import SlurmwebAppGateway
-from ..apps.agent import SlurmwebAppAgent
+from ..apps._defaults import SlurmwebAppDefaults
 
 
 class SlurmwebExecShowConf(SlurmwebExecBase):
@@ -26,7 +24,7 @@ class SlurmwebExecShowConf(SlurmwebExecBase):
         parser = subparsers.add_parser(
             "show-conf",
             help="Dump Slurm-web components configuration settings",
-            description=SlurmwebAppShowConf.NAME,
+            description="slurm-web show-conf",
         )
         parser.add_argument(
             "-v",
@@ -82,12 +80,15 @@ class SlurmwebExecShowConf(SlurmwebExecBase):
     def app(seed: SlurmwebAppSeed):
         if seed.component == "gateway":
             if seed.conf is None:
-                seed.conf = Path(SlurmwebAppGateway.SITE_CONFIGURATION)
+                seed.conf = Path(SlurmwebAppDefaults.GATEWAY.site_configuration)
             if seed.conf_defs is None:
-                seed.conf_defs = Path(SlurmwebAppGateway.SETTINGS_DEFINITION)
+                seed.conf_defs = Path(SlurmwebAppDefaults.GATEWAY.settings_definition)
         else:
             if seed.conf is None:
-                seed.conf = Path(SlurmwebAppAgent.SITE_CONFIGURATION)
+                seed.conf = Path(SlurmwebAppDefaults.AGENT.site_configuration)
             if seed.conf_defs is None:
-                seed.conf_defs = Path(SlurmwebAppAgent.SETTINGS_DEFINITION)
+                seed.conf_defs = Path(SlurmwebAppDefaults.AGENT.settings_definition)
+
+        from ..apps.showconf import SlurmwebAppShowConf
+
         return SlurmwebAppShowConf(seed)

@@ -10,8 +10,7 @@ from pathlib import Path
 from ..version import get_version
 from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
-from ..apps.ldap import SlurmwebAppLDAPCheck
-from ..apps.gateway import SlurmwebAppGateway
+from ..apps._defaults import SlurmwebAppDefaults
 
 
 class SlurmwebExecLDAPCheck(SlurmwebExecBase):
@@ -25,7 +24,7 @@ class SlurmwebExecLDAPCheck(SlurmwebExecBase):
         parser = subparsers.add_parser(
             "ldap-check",
             help="Check LDAP settings for Slurm-web",
-            description=SlurmwebAppLDAPCheck.NAME,
+            description="slurm-web ldap-check",
         )
         parser.add_argument(
             "-v",
@@ -63,13 +62,13 @@ class SlurmwebExecLDAPCheck(SlurmwebExecBase):
             help=(
                 "Path to configuration settings definition file (default: %(default)s)"
             ),
-            default=SlurmwebAppGateway.SETTINGS_DEFINITION,
+            default=SlurmwebAppDefaults.GATEWAY.settings_definition,
             type=Path,
         )
         parser.add_argument(
             "--conf",
             help="Path to configuration file (default: %(default)s)",
-            default=SlurmwebAppGateway.SITE_CONFIGURATION,
+            default=SlurmwebAppDefaults.GATEWAY.site_configuration,
             type=Path,
         )
 
@@ -78,4 +77,6 @@ class SlurmwebExecLDAPCheck(SlurmwebExecBase):
 
     @staticmethod
     def app(seed: SlurmwebAppSeed):
+        from ..apps.ldap import SlurmwebAppLDAPCheck
+
         return SlurmwebAppLDAPCheck(seed)

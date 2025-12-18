@@ -10,7 +10,7 @@ from pathlib import Path
 from ..version import get_version
 from . import SlurmwebExecBase
 from ..apps import SlurmwebAppSeed
-from ..apps.gateway import SlurmwebAppGateway
+from ..apps._defaults import SlurmwebAppDefaults
 
 
 class SlurmwebExecGateway(SlurmwebExecBase):
@@ -24,7 +24,7 @@ class SlurmwebExecGateway(SlurmwebExecBase):
         parser = subparsers.add_parser(
             "gateway",
             help="Start Slurm-web gateway component",
-            description=SlurmwebAppGateway.NAME,
+            description="slurm-web gateway",
         )
         parser.add_argument(
             "-v",
@@ -62,13 +62,13 @@ class SlurmwebExecGateway(SlurmwebExecBase):
             help=(
                 "Path to configuration settings definition file (default: %(default)s)"
             ),
-            default=SlurmwebAppGateway.SETTINGS_DEFINITION,
+            default=SlurmwebAppDefaults.GATEWAY.settings_definition,
             type=Path,
         )
         parser.add_argument(
             "--conf",
             help="Path to configuration file (default: %(default)s)",
-            default=SlurmwebAppGateway.SITE_CONFIGURATION,
+            default=SlurmwebAppDefaults.GATEWAY.site_configuration,
             type=Path,
         )
 
@@ -77,4 +77,6 @@ class SlurmwebExecGateway(SlurmwebExecBase):
 
     @staticmethod
     def app(seed: SlurmwebAppSeed):
+        from ..apps.gateway import SlurmwebAppGateway
+
         return SlurmwebAppGateway(seed)
