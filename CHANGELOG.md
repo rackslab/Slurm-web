@@ -11,8 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Add procedure to install Slurm-web on SLES (and openSUSE Leap) 15 and 16 in
     quickstart guide and installation guide (#684).
-  - Mention official support of RHEL 10 and compatibles (#653).
   - Add procedure to upgrade Slurm-web on SLES in update guide.
+  - Mention official support of RHEL 10 and compatibles (#653).
+  - Mention official support of Fedora 43 (#662).
   - Configuration guides to setup production HTTP server (apache2, nginx and
     caddy) on SLES.
 
@@ -26,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
   @faganihajizada.
 - docs: Fix user/group name in agent uWSGI service diff context.
+
+### Removed
+- docs: Drop support of Fedora 41.
 
 ## [6.0.0] - 2025-11-28
 
