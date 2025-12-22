@@ -2,7 +2,7 @@
 
 image:https://rackslab.io/images/distribs/redhat.png[Red Hat,float=right]
 
-This installation procedure works on RHEL version 8 and 9.
+This installation procedure works on RHEL version 8, 9 and 10.
 
 :tab: RHEL
 
