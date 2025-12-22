@@ -49,3 +49,29 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
+
+{tab} 10::
++
+====
+
+ifdef::tab-el-note[]
+NOTE: These packages are also compatible with https://www.centos.org/[CentOS 10],
+https://rockylinux.org/[Rocky Linux 10] and
+https://almalinux.org/[AlmaLinux OS 10].
+endif::[]
+
+[source,subs=attributes]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/el10/main/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-{pkgs-derivative}]
+name=Rackslab {pkgs-derivative}
+baseurl=https://pkgs.rackslab.io/rpm/el10/{pkgs-derivative}/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====

@@ -2,7 +2,7 @@
 
 image:https://rackslab.io/images/distribs/alma.png[AlmaLinux,float=right]
 
-This installation procedure works on AlmaLinux version 8 and 9.
+This installation procedure works on AlmaLinux version 8, 9 and 10.
 
 :tab: Alma Linux
 
