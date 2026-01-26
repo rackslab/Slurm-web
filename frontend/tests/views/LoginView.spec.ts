@@ -1,5 +1,6 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { shallowMount, mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import LoginView from '@/views/LoginView.vue'
 import { init_plugins } from '../lib/common'
 import { useAuthStore } from '@/stores/auth'
@@ -112,11 +113,12 @@ describe('LoginView.vue', () => {
     // Check not redirected on clusters list but stayed on login page.
     expect(router.push).toHaveBeenCalledTimes(0)
   })
-  test('should display info alert when redirected to login page', () => {
+  test('should display info alert when redirected to login page', async () => {
+    const wrapper = mount(LoginView, {})
     const authStore = useAuthStore()
     // Set returnUrl to simulate redirect from another page
     authStore.returnUrl = '/clusters/foo/dashboard'
-    const wrapper = mount(LoginView, {})
+    await nextTick()
     // Check InfoAlert component is present
     const infoAlert = wrapper.getComponent(InfoAlert)
     // Check the message content
