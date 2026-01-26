@@ -1,24 +1,29 @@
 import { nextTick } from 'vue'
-import { describe, test, beforeEach, vi, expect } from 'vitest'
+import { describe, test, beforeEach, afterEach, vi, expect } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
 import { APIServerError } from '@/composables/HTTPErrors'
 import { init_plugins } from '../../lib/common'
 import nodes from '../../assets/nodes.json'
-import requestsStatus from '../../assets/status.json'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-
-import fs from 'fs'
-import path from 'path'
-
-const mockRESTAPI = {
-  postRaw: vi.fn()
+// Mock the GatewayAPI to avoid exercising undici multipart parsing here.
+// The multipart parsing is covered in GatewayAPI.spec; this spec focuses on UI.
+const mockGatewayAPI = {
+  infrastructureImagePng: vi.fn()
 }
 
-vi.mock('@/composables/RESTAPI', () => ({
-  useRESTAPI: () => mockRESTAPI
-}))
+vi.mock('@/composables/GatewayAPI', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/composables/GatewayAPI')>()
+  return {
+    ...actual,
+    useGatewayAPI: () => mockGatewayAPI
+  }
+})
+
+const mockCoordinates = { node1: [0, 0, 10, 10] }
+const mockImage = new Blob([new Uint8Array([0x89, 0x50, 0x4e, 0x47])], { type: 'image/png' })
+const mockBitmap = { width: 10, height: 10 }
 
 describe('ResourcesCanvas.vue', () => {
   beforeEach(() => {
@@ -33,17 +38,15 @@ describe('ResourcesCanvas.vue', () => {
         cache: true
       }
     ]
+    mockGatewayAPI.infrastructureImagePng.mockResolvedValue([mockImage, mockCoordinates])
+    vi.stubGlobal('createImageBitmap', vi.fn().mockResolvedValue(mockBitmap))
+    vi.spyOn(CanvasRenderingContext2D.prototype, 'drawImage').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
   })
   test('display resources canvas', async () => {
-    const message = fs.readFileSync(
-      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
-    )
-    mockRESTAPI.postRaw.mockReturnValueOnce(
-      Promise.resolve({
-        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
-        data: message
-      })
-    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -80,9 +83,9 @@ describe('ResourcesCanvas.vue', () => {
     expect(wrapper.emitted()).toHaveProperty('imageSize')
   })
   test('report API server error', async () => {
-    mockRESTAPI.postRaw.mockImplementationOnce(() => {
-      throw new APIServerError(500, 'fake API server error')
-    })
+    mockGatewayAPI.infrastructureImagePng.mockRejectedValueOnce(
+      new APIServerError(500, 'fake API server error')
+    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -100,9 +103,9 @@ describe('ResourcesCanvas.vue', () => {
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
   })
   test('report other errors', async () => {
-    mockRESTAPI.postRaw.mockImplementationOnce(() => {
-      throw new Error('fake other server error')
-    })
+    mockGatewayAPI.infrastructureImagePng.mockRejectedValueOnce(
+      new Error('fake other server error')
+    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -120,15 +123,6 @@ describe('ResourcesCanvas.vue', () => {
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
   })
   test('display resources canvas in cores mode', async () => {
-    const message = fs.readFileSync(
-      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
-    )
-    mockRESTAPI.postRaw.mockReturnValueOnce(
-      Promise.resolve({
-        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
-        data: message
-      })
-    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -153,15 +147,6 @@ describe('ResourcesCanvas.vue', () => {
     expect(wrapper.props('mode')).toBe('cores')
   })
   test('tooltip shows cores information in cores mode', async () => {
-    const message = fs.readFileSync(
-      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
-    )
-    mockRESTAPI.postRaw.mockReturnValueOnce(
-      Promise.resolve({
-        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
-        data: message
-      })
-    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -200,15 +185,6 @@ describe('ResourcesCanvas.vue', () => {
   })
 
   test('shimmer animation starts when nodes are loading', async () => {
-    const message = fs.readFileSync(
-      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
-    )
-    mockRESTAPI.postRaw.mockReturnValueOnce(
-      Promise.resolve({
-        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
-        data: message
-      })
-    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
@@ -233,15 +209,6 @@ describe('ResourcesCanvas.vue', () => {
   })
 
   test('shimmer animation stops when nodes are loaded', async () => {
-    const message = fs.readFileSync(
-      path.resolve(__dirname, '../../assets/racksdb-draw-coordinates.txt')
-    )
-    mockRESTAPI.postRaw.mockReturnValueOnce(
-      Promise.resolve({
-        headers: { 'content-type': requestsStatus['racksdb-draw-coordinates']['content-type'] },
-        data: message
-      })
-    )
     const wrapper = mount(ResourcesCanvas, {
       props: {
         cluster: 'foo',
