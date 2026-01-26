@@ -30,7 +30,6 @@ describe('AccountBreadcrumb.vue', () => {
       }
     })
 
-    console.log(wrapper.html())
     expect(wrapper.text()).toBe('∅')
   })
 
