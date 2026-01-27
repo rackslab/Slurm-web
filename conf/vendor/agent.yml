@@ -458,6 +458,26 @@ cache:
       Password to connect to protected Redis server. When this parameter is
       not defined, Redis server is accessed without password.
     ex: SECR3T
+  cluster_mode:
+    type: bool
+    default: false
+    doc: |
+      Enable Redis cluster mode for high-availability caching.
+      When enabled, the agent connects to a Redis cluster instead of
+      a standalone instance, providing automatic failover and load distribution.
+      Requires cluster_nodes to be specified.
+    ex: yes
+  cluster_nodes:
+    type: list
+    content: str
+    doc: |
+      List of Redis cluster node addresses in format host:port.
+      Only used when cluster_mode is enabled.
+      Minimum 3 nodes recommended for production HA clusters.
+    ex:
+    - "10.0.0.1:6379"
+    - "10.0.0.2:6379"
+    - "10.0.0.3:6379"
   version:
     type: int
     default: 1800

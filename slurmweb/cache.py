@@ -8,6 +8,7 @@ import typing as t
 import logging
 
 import redis
+from redis.cluster import RedisCluster, ClusterNode
 import pickle
 
 from .errors import SlurmwebCacheError
@@ -31,10 +32,64 @@ class CachingService:
     KEY_PREFIX_MISS = "cache-miss-"
     KEY_PREFIX_HIT = "cache-hit-"
 
-    def __init__(self, host: str, port: int, password: t.Union[str, None]):
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        password: t.Union[str, None],
+        cluster_mode: bool = False,
+        cluster_nodes: t.Optional[t.List[str]] = None,
+    ):
+        """Initialize Redis connection (standalone or cluster mode).
+
+        Args:
+            host: Redis server hostname (used in standalone mode)
+            port: Redis server port (used in standalone mode)
+            password: Redis password (optional, used in both modes)
+            cluster_mode: Enable Redis cluster mode (default: False)
+            cluster_nodes: List of cluster nodes in "host:port" format
+                          Example: ["10.0.0.1:6379", "10.0.0.2:6379"]
+                          Required when cluster_mode=True
+        """
         self.host = host
         self.port = port
-        self.connection = redis.Redis(host=host, port=port, password=password)
+        self.cluster_mode = cluster_mode
+
+        if cluster_mode:
+            if not cluster_nodes:
+                raise ValueError(
+                    "cluster_nodes must be provided when cluster_mode=True"
+                )
+
+            # Parse cluster_nodes from "host:port" string format to ClusterNode objects
+            startup_nodes = [
+                ClusterNode(host, int(port))
+                for node in cluster_nodes
+                for host, port in [node.split(":", 1)]
+            ]
+
+            logger.info(
+                "Initializing Redis cluster connection with %d nodes",
+                len(startup_nodes),
+            )
+
+            self.connection = RedisCluster(
+                startup_nodes=startup_nodes,
+                password=password,
+                decode_responses=False,  # Binary mode for pickle
+                skip_full_coverage_check=True,  # Allow partial clusters
+            )
+        else:
+            logger.info("Initializing Redis standalone connection to %s:%d", host, port)
+            self.connection = redis.Redis(host=host, port=port, password=password)
+
+        # Validate connection at initialization (fail-fast)
+        try:
+            self.connection.ping()
+            logger.info("Redis connection established successfully")
+        except redis.exceptions.ConnectionError as error:
+            logger.error("Failed to connect to Redis: %s", error)
+            raise
 
     def put(self, key: CacheKey, value: t.Any, expiration: int):
         try:

@@ -108,6 +108,8 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
                 host=self.settings.cache.host,
                 port=self.settings.cache.port,
                 password=self.settings.cache.password,
+                cluster_mode=getattr(self.settings.cache, 'cluster_mode', False),
+                cluster_nodes=getattr(self.settings.cache, 'cluster_nodes', None),
             )
         else:
             logger.warning("Caching is disabled")
