@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dependencies when setting up CLI arguments (#690).
 - agent: Import of ClusterShell NodeSet class (#682). Contribution from
   @faganihajizada.
-- front: Update dependencies to fix CVE-2025-13465 (lodash).
+- front: Update dependencies to fix CVE-2025-13465 (lodash) and CVE-2026-25639
+  (axios).
 - docs: Fix user/group name in agent uWSGI service diff context.
 
 ### Removed
