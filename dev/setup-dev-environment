@@ -183,7 +183,11 @@ class SlurmwebAgent:
         _, stdout, _ = self.channel.connection.exec_command(
             shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
         )
-        self.cluster_status = json.loads(stdout.read())
+        try:
+            self.cluster_status = json.loads(stdout.read())
+        except json.decoder.JSONDecodeError:
+            logger.critical(f"Unable to load {self.name} cluster status")
+            raise
         with open(self.policy_path, "w+") as fh:
             fh.write(
                 template.render(
@@ -242,7 +246,11 @@ class SlurmwebAgent:
                     ]
                 )
                 _, stdout, _ = self.channel.connection.exec_command(cmd)
-                slurmrestd_token = stdout.read().decode().split("=")[1]
+                try:
+                    slurmrestd_token = stdout.read().decode().split("=")[1]
+                except IndexError:
+                    logger.critical(f"Unable to get static JWT on cluster {self.name}")
+                    raise
             else:
                 logger.info(
                     "Downloading remote Slurm JWT signing key for cluster %s", self.name
