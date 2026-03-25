@@ -28,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   @faganihajizada.
 - front: Update dependencies to fix CVE-2025-13465 (lodash), CVE-2026-25639
   (axios), CVE-2026-27606 (rollup), CVE-2026-27903, CVE-2026-27904,
-  CVE-2026-26996 (minimatch), CVE-2026-32141 and CVE-2026-33228 (flatted).
+  CVE-2026-26996 (minimatch), CVE-2026-32141, CVE-2026-33228 (flatted),
+  CVE-2026-33671 and CVE-2026-33672 (picomatch).
 - docs: Fix user/group name in agent uWSGI service diff context.
 
 ### Removed
