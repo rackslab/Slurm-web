@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - agent: Make RacksDB library optional with lazy loading only when enabled in
   configuration (#683). Contribution from @faganihajizada.
+- docs: brush up grammar in quickstart guide. Contribution from @fschlich.
 
 ### Fixed
 - Lazy import apps modules to break down _agent_ and _gateway_ specific

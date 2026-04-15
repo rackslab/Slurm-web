@@ -369,10 +369,10 @@ By default, Slurm-web gateway native service listens for incoming network
 connections on port TCP/5011. This can be changed with `port` parameter in
 xref:conf:conf/gateway.adoc#_service[`service` section of gateway configuration].
 
-Also, the gateway native service is binded to loopback network interface by
-default. It restricts access to localhost for security reason. It is recommended
-to setup <<#production,production HTTP server>> for external access to
-Slurm-web. However, this can be changed anyway with the following lines in
+Also, the gateway native service is bound to the loopback network interface by
+default. This restricts access to localhost for security reasons. It is
+recommended to setup <<#production,production HTTP server>> for external access
+to Slurm-web. However, this can be changed with the following lines in the
 _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`#:
 
 [source,ini]
@@ -384,9 +384,9 @@ interface=HOSTNAME_OR_IP
 host=http://HOSTNAME_OR_IP:5011
 ----
 
-Real values depend on the DNS hostname or the public IP address of the host.
+Actual values depend on your DNS hostname or the public IP address of the host.
 
-Slurm-web is now be available on: http://HOSTNAME_OR_IP:5011
+Slurm-web is now available on: http://HOSTNAME_OR_IP:5011
 
 Please refer to
 xref:conf:conf/gateway.adoc[gateway configuration reference documentation] for
