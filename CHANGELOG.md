@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   CVE-2026-27903, CVE-2026-27904, CVE-2026-26996 (minimatch), CVE-2026-32141,
   CVE-2026-33228 (flatted), CVE-2026-33671, CVE-2026-33672 (picomatch),
   CVE-2026-39363 (vite) and GHSA-r4q5-vmmm-2653 (follow-redirects).
+- conf: Fix extension of filename mentioned in policy configuration file
+  comment. Contribution from @fschlich.
 - docs: Fix user/group name in agent uWSGI service diff context.
 
 ### Removed
