@@ -13,12 +13,10 @@ import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
-  const token: Ref<string | null> = ref(localStorage.getItem('token'))
-  const username: Ref<string | null> = ref(localStorage.getItem('username'))
-  const fullname: Ref<string | null> = ref(localStorage.getItem('fullname'))
-  const groups: Ref<Array<string> | null> = ref(
-    JSON.parse(localStorage.getItem('groups') || '[]') as string[]
-  )
+  const token: Ref<string | null> = ref(null)
+  const username: Ref<string | null> = ref(null)
+  const fullname: Ref<string | null> = ref(null)
+  const groups: Ref<Array<string> | null> = ref([])
   const returnUrl: Ref<string | null> = ref(null)
 
   function login(_token: string, _username: string, _fullname: string, _groups: string[]) {
@@ -27,12 +25,6 @@ export const useAuthStore = defineStore('auth', () => {
     username.value = _username
     fullname.value = _fullname
     groups.value = _groups
-
-    // store user details and jwt in local storage to keep user logged in between page refreshes
-    localStorage.setItem('token', _token)
-    localStorage.setItem('username', _username)
-    localStorage.setItem('fullname', _fullname)
-    localStorage.setItem('groups', JSON.stringify(_groups))
 
     // redirect to previous url or default to clusters page
     const redirectUrl = returnUrl.value || { name: 'clusters' }
@@ -46,10 +38,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   function logout() {
     token.value = null
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    localStorage.removeItem('fullname')
-    localStorage.removeItem('groups')
+    username.value = null
+    fullname.value = null
+    groups.value = []
   }
 
   return { token, username, fullname, groups, returnUrl, login, anonymousLogin, logout }
