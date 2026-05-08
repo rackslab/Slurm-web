@@ -11,6 +11,7 @@ import { computed, useTemplateRef, watch } from 'vue'
 import { useGatewayDataGetter } from '@/composables/DataGetter'
 import { ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
 import { APIServerError } from '@/composables/HTTPErrors'
+import DOMPurify from 'dompurify'
 
 /*
  * This component displays the login service message. The message is displayed
@@ -34,7 +35,7 @@ const content = computed(() => {
   if (!message.loaded.value) {
     return ''
   }
-  return message.data.value
+  return DOMPurify.sanitize(message.data.value)
 })
 
 // Adjust iframe height when its scrollHeight is updated after being loaded.
