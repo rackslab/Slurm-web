@@ -51,6 +51,7 @@ describe('ResourcesView.vue', () => {
     // Check that loading prop is passed correctly (should be false when loaded
     // is true)
     expect(thumbnail.props('loading')).toBe(false)
+    expect(thumbnail.props('mode')).toBe('nodes')
     // Check presence of ResourcesFiltersBar component
     wrapper.getComponent(ResourcesFiltersBar)
     // Check presence of table
@@ -119,5 +120,32 @@ describe('ResourcesView.vue', () => {
     runtime.resources.filters.states = ['up']
     await nextTick()
     expect(router.push).toHaveBeenCalledTimes(2)
+  })
+
+  test('initializes representation from query parameter', async () => {
+    mockClusterDataPoller.data.value = nodes
+    router.setQuery({ representation: 'cores' })
+    const wrapper = mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    await nextTick()
+    const thumbnail = wrapper.getComponent(ResourcesDiagramThumbnail)
+    expect(thumbnail.props('mode')).toBe('cores')
+  })
+
+  test('syncs representation changes with URL query', async () => {
+    const runtime = useRuntimeStore()
+    mockClusterDataPoller.data.value = nodes
+    mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    const callsBeforeClick = router.push.mock.calls.length
+    runtime.resources.representation = 'cores'
+    await nextTick()
+    const lastCall = router.push.mock.calls.at(-1)?.[0] as { query: { representation: string } }
+    expect(router.push.mock.calls.length).toBe(callsBeforeClick + 1)
+    expect(lastCall.query.representation).toBe('cores')
   })
 })
