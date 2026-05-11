@@ -12,7 +12,10 @@ import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
-import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
+import {
+  isFiltersClusterNodeMainState,
+  isResourcesRepresentation
+} from '@/stores/runtime/resources'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
 import type { ClusterNode } from '@/composables/GatewayAPI'
@@ -127,6 +130,12 @@ watch(
     updateQueryParameters()
   }
 )
+watch(
+  () => runtimeStore.resources.representation,
+  () => {
+    updateQueryParameters()
+  }
+)
 /*
  * Update foldedNodesShow record when foldedNodes.value is updated. This is not
  * a computed ref because computed refs are read-only and we need to modify
@@ -156,7 +165,10 @@ watch(
 )
 
 onMounted(() => {
-  if (['states', 'partitions'].some((parameter) => parameter in route.query)) {
+  if (['states', 'partitions', 'representation'].some((parameter) => parameter in route.query)) {
+    if (route.query.representation && isResourcesRepresentation(route.query.representation)) {
+      runtimeStore.resources.representation = route.query.representation
+    }
     if (route.query.states) {
       /* Retrieve the states filters from query and update the store */
       runtimeStore.resources.filters.states = []
@@ -206,6 +218,7 @@ onMounted(() => {
         v-if="runtimeStore.getCluster(cluster).racksdb"
         :cluster="cluster"
         :nodes="filteredNodes"
+        :mode="runtimeStore.resources.representation"
         :loading="!loaded"
       />
       <ResourcesFiltersBar />

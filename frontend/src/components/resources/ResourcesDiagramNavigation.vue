@@ -8,10 +8,11 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 
 const { cluster, currentView } = defineProps<{
   cluster: string
-  currentView: 'nodes' | 'cores'
+  currentView: ResourcesRepresentation
 }>()
 
 const router = useRouter()

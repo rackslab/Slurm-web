@@ -12,6 +12,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
+import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import { APIServerError } from '@/composables/HTTPErrors'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -27,7 +28,7 @@ const {
   cluster: string
   nodes: ClusterNode[]
   fullscreen: boolean
-  mode?: 'nodes' | 'cores'
+  mode?: ResourcesRepresentation
   loading?: boolean
 }>()
 
@@ -654,11 +655,19 @@ watch(
 )
 
 /*
- * If nodes states change, update the canvas but not fully (ie. re-download
- * image/coordinates).
+ * If nodes states or resources representation mode change, update the canvas
+ * but not fully (ie. re-download image/coordinates).
  */
 watch(
   () => nodes,
+  () => {
+    allNodesPaths = {}
+    updateCanvas(false)
+  }
+)
+
+watch(
+  () => mode,
   () => {
     allNodesPaths = {}
     updateCanvas(false)

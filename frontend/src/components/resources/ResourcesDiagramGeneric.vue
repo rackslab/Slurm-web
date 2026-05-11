@@ -15,6 +15,7 @@ import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterNode } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
+import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
 import ResourcesDiagramNavigation from '@/components/resources/ResourcesDiagramNavigation.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
@@ -22,7 +23,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 const { cluster, mode } = defineProps<{
   cluster: string
-  mode: 'nodes' | 'cores'
+  mode: ResourcesRepresentation
 }>()
 
 const runtimeStore = useRuntimeStore()
