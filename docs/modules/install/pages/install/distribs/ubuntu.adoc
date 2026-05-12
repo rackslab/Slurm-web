@@ -2,7 +2,8 @@
 
 image:https://rackslab.io/images/distribs/ubuntu.png[Ubuntu,float=right]
 
-This installation procedure works on Ubuntu 24.04 LTS _« Noble Numbat »_.
+This installation procedure works on Ubuntu 24.04 LTS _« Noble Numbat »_ and
+26.04 LTS _« Resolute Raccoon »_.
 
 include::partial$install/signing-apt.adoc[]
 
