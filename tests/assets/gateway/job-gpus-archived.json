@@ -2,7 +2,7 @@
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 14,
+    "id": 15,
     "partition": "",
     "user": ""
   },
@@ -47,8 +47,8 @@
       "SUCCESS"
     ]
   },
-  "group": "scientists",
-  "name": "wrap",
+  "group": "slurm",
+  "name": "allocation",
   "nodes": "gpu1",
   "partition": "gpu",
   "priority": {
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "56.batch",
+        "id": "1185.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -133,6 +133,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -143,7 +144,7 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1763129323,
+          "number": 1779131483,
           "set": true
         },
         "limit": {
@@ -153,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129293,
+          "number": 1779131453,
           "set": true
         },
         "suspended": 0,
@@ -206,23 +207,23 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+  "submit_line": "",
   "time": {
     "elapsed": 30,
-    "eligible": 1763129292,
-    "end": 1763129323,
+    "eligible": 1779131451,
+    "end": 1779131483,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 60,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
-    "start": 1763129293,
-    "submission": 1763129292,
+    "start": 1779131453,
+    "submission": 1779131451,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -298,10 +299,10 @@
     ]
   },
   "used_gres": "",
-  "user": "dperez",
+  "user": "madams",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/dperez"
+  "working_directory": "/home/madams"
 }

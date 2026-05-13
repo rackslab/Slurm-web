@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129112,
+    "number": 1779131421,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 10,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/progers",
+  "current_working_directory": "/home/jrasmussen",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,13 +64,13 @@
     "gpu:h100:4(IDX:0-3)",
     "gpu:h100:4(IDX:0-3)"
   ],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129112,
+    "number": 1779131422,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 2,
@@ -80,7 +80,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 272,
+    "number": 181,
     "set": true
   },
   "qos": "normal",
@@ -98,8 +98,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/progers/slurm-34.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/jrasmussen/slurm-1180.out",
   "steps": [
     {
       "CPU": {
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "34.batch",
+        "id": "1180.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -169,6 +169,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -189,7 +190,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129112,
+          "number": 1779131422,
           "set": true
         },
         "suspended": 0,
@@ -242,7 +243,7 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 8",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 2,
@@ -250,20 +251,20 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1763129112,
+    "eligible": 1779131421,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 60,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 0,
+      "number": 1,
       "set": true
     },
-    "start": 1763129112,
-    "submission": 1763129112,
+    "start": 1779131422,
+    "submission": 1779131421,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -344,10 +345,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "progers",
+  "user": "jrasmussen",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/progers"
+  "working_directory": "/home/jrasmussen"
 }

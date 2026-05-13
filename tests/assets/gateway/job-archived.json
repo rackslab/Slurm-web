@@ -2,7 +2,7 @@
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 15,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "3636.batch",
+        "id": "1161.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -133,6 +133,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -140,10 +141,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 2,
         "end": {
           "infinite": false,
-          "number": 1763387484,
+          "number": 1779131022,
           "set": true
         },
         "limit": {
@@ -153,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763387483,
+          "number": 1779131020,
           "set": true
         },
         "suspended": 0,
@@ -208,9 +209,9 @@
   ],
   "submit_line": "",
   "time": {
-    "elapsed": 1,
-    "eligible": 1763387482,
-    "end": 1763387484,
+    "elapsed": 2,
+    "eligible": 1779131019,
+    "end": 1779131022,
     "limit": {
       "infinite": false,
       "number": 60,
@@ -221,8 +222,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1763387483,
-    "submission": 1763387482,
+    "start": 1779131020,
+    "submission": 1779131019,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -298,10 +299,10 @@
     ]
   },
   "used_gres": "",
-  "user": "mcarrillo",
+  "user": "jrasmussen",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/mcarrillo"
+  "working_directory": "/home/jrasmussen"
 }

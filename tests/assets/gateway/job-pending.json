@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129126,
+    "number": 1779131019,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 17,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 128,
     "set": true
   },
-  "current_working_directory": "/home/rcarson",
+  "current_working_directory": "/home/jrasmussen",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,13 +61,13 @@
     ]
   },
   "gres_detail": [],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129190,
+    "number": 1779131081,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 2,
@@ -77,7 +77,7 @@
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 909,
+    "number": 363,
     "set": true
   },
   "qos": "normal",
@@ -95,10 +95,10 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/rcarson/slurm-42.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/jrasmussen/slurm-1166.out",
   "steps": [],
-  "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 128",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 128,
@@ -106,20 +106,20 @@
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1763129126,
+    "eligible": 1779131019,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 2,
+      "number": 120,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 80,
+      "number": 71,
       "set": true
     },
     "start": 0,
-    "submission": 1763129126,
+    "submission": 1779131019,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -169,10 +169,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=128,mem=64G,node=1,billing=128",
   "used_gres": "",
-  "user": "rcarson",
+  "user": "jrasmussen",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rcarson"
+  "working_directory": "/home/jrasmussen"
 }

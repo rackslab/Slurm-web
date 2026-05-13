@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129102,
+    "number": 1779131446,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 18,
+    "id": 15,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/sevans",
+  "current_working_directory": "/home/madams",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,25 +61,25 @@
     ]
   },
   "gres_detail": [
-    "gpu:h100:2(IDX:0-1)"
+    "gpu:2(IDX:0-1)"
   ],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129103,
+    "number": 1779131447,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "gpu1",
+  "nodes": "gpu4",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 818,
+    "number": 636,
     "set": true
   },
   "qos": "normal",
@@ -97,8 +97,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/sevans/slurm-31.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/madams/slurm-1183.out",
   "steps": [
     {
       "CPU": {
@@ -138,9 +138,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu1"
+          "gpu4"
         ],
-        "range": "gpu1"
+        "range": "gpu4"
       },
       "pid": "",
       "state": [
@@ -159,7 +159,7 @@
         }
       },
       "step": {
-        "id": "31.batch",
+        "id": "1183.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -168,6 +168,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -175,7 +176,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 0,
+        "elapsed": 1,
         "end": {
           "infinite": false,
           "number": 0,
@@ -188,7 +189,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129103,
+          "number": 1779131447,
           "set": true
         },
         "suspended": 0,
@@ -241,19 +242,19 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-socket 2 --sockets-per-node 2",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 0,
-    "eligible": 1763129102,
+    "elapsed": 1,
+    "eligible": 1779131446,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 60,
       "set": true
     },
     "planned": {
@@ -261,8 +262,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1763129103,
-    "submission": 1763129102,
+    "start": 1779131447,
+    "submission": 1779131446,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -343,10 +344,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "sevans",
+  "user": "madams",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/sevans"
+  "working_directory": "/home/madams"
 }

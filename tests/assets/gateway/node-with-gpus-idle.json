@@ -5,7 +5,7 @@
   "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
-    "number": 1758266697,
+    "number": 1776887518,
     "set": true
   },
   "cores": 16,
@@ -14,11 +14,11 @@
   "gres_used": "gpu:0",
   "last_busy": {
     "infinite": false,
-    "number": 1763385508,
+    "number": 1779176648,
     "set": true
   },
   "name": "gpu3",
-  "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
+  "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
   "partitions": [
     "gpu"
   ],

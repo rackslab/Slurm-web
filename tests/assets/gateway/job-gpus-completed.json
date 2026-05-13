@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129240,
+    "number": 1779130986,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 9,
+    "id": 14,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jwilson",
+  "current_working_directory": "/home/tkirby",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,13 +61,13 @@
     ]
   },
   "gres_detail": [],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129240,
+    "number": 1779130987,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 1,
@@ -77,7 +77,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 454,
+    "number": 545,
     "set": true
   },
   "qos": "normal",
@@ -95,8 +95,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/jwilson/slurm-50.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/tkirby/slurm-1159.out",
   "steps": [
     {
       "CPU": {
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "50.batch",
+        "id": "1159.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -166,6 +166,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -173,10 +174,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 31,
+        "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1763129271,
+          "number": 1779131017,
           "set": true
         },
         "limit": {
@@ -186,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129240,
+          "number": 1779130987,
           "set": true
         },
         "suspended": 0,
@@ -239,28 +240,28 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 31,
-    "eligible": 1763129240,
-    "end": 1763129271,
+    "elapsed": 30,
+    "eligible": 1779130986,
+    "end": 1779131017,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 60,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 0,
+      "number": 1,
       "set": true
     },
-    "start": 1763129240,
-    "submission": 1763129240,
+    "start": 1779130987,
+    "submission": 1779130986,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -341,10 +342,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "jwilson",
+  "user": "tkirby",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jwilson"
+  "working_directory": "/home/tkirby"
 }

@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129119,
+    "number": 1779131019,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 17,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -20,10 +20,10 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 64,
+    "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/rcarson",
+  "current_working_directory": "/home/jrasmussen",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,23 +61,23 @@
     ]
   },
   "gres_detail": [],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129121,
+    "number": 1779131020,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "cn2",
+  "nodes": "cn1",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 909,
+    "number": 363,
     "set": true
   },
   "qos": "normal",
@@ -95,8 +95,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/rcarson/slurm-38.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/jrasmussen/slurm-1160.out",
   "steps": [
     {
       "CPU": {
@@ -136,9 +136,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "cn2"
+          "cn1"
         ],
-        "range": "cn2"
+        "range": "cn1"
       },
       "pid": "",
       "state": [
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "38.batch",
+        "id": "1160.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -166,6 +166,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -173,7 +174,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 85,
+        "elapsed": 70,
         "end": {
           "infinite": false,
           "number": 0,
@@ -186,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129121,
+          "number": 1779131020,
           "set": true
         },
         "suspended": 0,
@@ -206,13 +207,13 @@
       "tres": {
         "allocated": [
           {
-            "count": 64,
+            "count": 1,
             "id": 1,
             "name": "",
             "type": "cpu"
           },
           {
-            "count": 32768,
+            "count": 512,
             "id": 2,
             "name": "",
             "type": "mem"
@@ -239,28 +240,28 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 64",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
-    "number": 64,
+    "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 85,
-    "eligible": 1763129119,
+    "elapsed": 70,
+    "eligible": 1779131019,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 2,
+      "number": 60,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "start": 1763129121,
-    "submission": 1763129119,
+    "start": 1779131020,
+    "submission": 1779131019,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -278,13 +279,13 @@
   "tres": {
     "allocated": [
       {
-        "count": 64,
+        "count": 1,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 32768,
+        "count": 512,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -302,7 +303,7 @@
         "type": "node"
       },
       {
-        "count": 64,
+        "count": 1,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -310,13 +311,13 @@
     ],
     "requested": [
       {
-        "count": 64,
+        "count": 1,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 32768,
+        "count": 512,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -328,7 +329,7 @@
         "type": "node"
       },
       {
-        "count": 64,
+        "count": 1,
         "id": 5,
         "name": "",
         "type": "billing"
@@ -339,12 +340,12 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=64,mem=32G,node=1,billing=64",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "rcarson",
+  "user": "jrasmussen",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rcarson"
+  "working_directory": "/home/jrasmussen"
 }

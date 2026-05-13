@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129118,
+    "number": 1779131019,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 17,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/rcarson",
+  "current_working_directory": "/home/jrasmussen",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,13 +61,13 @@
     ]
   },
   "gres_detail": [],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129121,
+    "number": 1779131020,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 1,
@@ -77,7 +77,7 @@
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 909,
+    "number": 363,
     "set": true
   },
   "qos": "normal",
@@ -95,8 +95,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/rcarson/slurm-37.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/jrasmussen/slurm-1162.out",
   "steps": [
     {
       "CPU": {
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "37.batch",
+        "id": "1162.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -166,6 +166,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -173,10 +174,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 2,
         "end": {
           "infinite": false,
-          "number": 1763129122,
+          "number": 1779131022,
           "set": true
         },
         "limit": {
@@ -186,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129121,
+          "number": 1779131020,
           "set": true
         },
         "suspended": 0,
@@ -239,28 +240,28 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 1,
-    "eligible": 1763129118,
-    "end": 1763129122,
+    "elapsed": 2,
+    "eligible": 1779131019,
+    "end": 1779131022,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 60,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 3,
+      "number": 1,
       "set": true
     },
-    "start": 1763129121,
-    "submission": 1763129118,
+    "start": 1779131020,
+    "submission": 1779131019,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -341,10 +342,10 @@
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
   "used_gres": "",
-  "user": "rcarson",
+  "user": "jrasmussen",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rcarson"
+  "working_directory": "/home/jrasmussen"
 }

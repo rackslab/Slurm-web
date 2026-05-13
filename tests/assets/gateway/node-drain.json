@@ -5,7 +5,7 @@
   "architecture": "x86_64",
   "boot_time": {
     "infinite": false,
-    "number": 1758266697,
+    "number": 1776887518,
     "set": true
   },
   "cores": 32,
@@ -14,11 +14,11 @@
   "gres_used": "",
   "last_busy": {
     "infinite": false,
-    "number": 1763129285,
+    "number": 1779131170,
     "set": true
   },
-  "name": "cn2",
-  "operating_system": "Linux 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27)",
+  "name": "cn3",
+  "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
   "partitions": [
     "normal"
   ],
