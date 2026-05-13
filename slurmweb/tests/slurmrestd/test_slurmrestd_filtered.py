@@ -8,7 +8,11 @@ import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
 from ..lib.utils import all_slurm_api_versions
-from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
+from ..lib.slurmrestd import (
+    TestSlurmrestdBase,
+    basic_authentifier,
+    LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+)
 
 
 class TestSlurmrestdFiltered(TestSlurmrestdBase):
@@ -17,7 +21,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         self.slurmrestd = SlurmrestdFiltered(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            ["0.0.44"],
+            [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
             self.settings.filters,
         )
 

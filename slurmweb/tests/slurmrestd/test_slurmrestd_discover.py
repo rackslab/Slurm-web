@@ -17,7 +17,14 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdInternalError,
 )
 from ..lib.utils import all_slurm_api_versions, load_json_asset, ASSETS
-from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
+from ..lib.slurmrestd import (
+    TestSlurmrestdBase,
+    basic_authentifier,
+    SUPPORTED_SLURMRESTD_API_VERSIONS,
+    LATEST_SUPPORTED_SLURM_VERSION,
+    LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+    SECOND_SUPPORTED_SLURMRESTD_API_VERSION,
+)
 
 
 class TestSlurmrestdDiscover(TestSlurmrestdBase):
@@ -25,7 +32,7 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         self.slurmrestd = Slurmrestd(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            ["0.0.44", "0.0.43", "0.0.42", "0.0.41"],
+            SUPPORTED_SLURMRESTD_API_VERSIONS,
         )
 
     def setup_execute_request_mock(
@@ -100,14 +107,17 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         self.assertEqual(
             discovered_slurm_version, ping_asset["meta"]["slurm"]["release"]
         )
-        self.assertEqual(api_version, "0.0.44")
+        self.assertEqual(api_version, LATEST_SUPPORTED_SLURMRESTD_API_VERSION)
         # Verify values are cached
         self.assertEqual(self.slurmrestd.cluster_name, cluster_name)
         self.assertEqual(self.slurmrestd.slurm_version, discovered_slurm_version)
         self.assertEqual(self.slurmrestd.api_version, api_version)
         # Verify _execute_request was called with correct parameters
         self.slurmrestd._execute_request.assert_called_once_with(
-            "slurm", "0.0.44", "ping", ignore_notfound=True
+            "slurm",
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            "ping",
+            ignore_notfound=True,
         )
         # Verify INFO log was emitted
         self.assertIn(
@@ -124,7 +134,9 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
             slurm_version,
             api_version,
             [
-                SlurmrestdNotFoundError("/slurm/v0.0.44/ping"),
+                SlurmrestdNotFoundError(
+                    f"/slurm/v{LATEST_SUPPORTED_SLURMRESTD_API_VERSION}/ping"
+                ),
                 "slurm-ping",
             ],
         )
@@ -138,17 +150,21 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         self.assertEqual(
             discovered_slurm_version, ping_asset["meta"]["slurm"]["release"]
         )
-        self.assertEqual(api_version, "0.0.43")
+        self.assertEqual(api_version, SECOND_SUPPORTED_SLURMRESTD_API_VERSION)
         # Verify _execute_request was called twice
         self.assertEqual(self.slurmrestd._execute_request.call_count, 2)
         # Verify calls were made with correct versions
         calls = self.slurmrestd._execute_request.call_args_list
-        self.assertEqual(calls[0][0], ("slurm", "0.0.44", "ping"))
-        self.assertEqual(calls[1][0], ("slurm", "0.0.43", "ping"))
+        self.assertEqual(
+            calls[0][0], ("slurm", LATEST_SUPPORTED_SLURMRESTD_API_VERSION, "ping")
+        )
+        self.assertEqual(
+            calls[1][0], ("slurm", SECOND_SUPPORTED_SLURMRESTD_API_VERSION, "ping")
+        )
         # Verify DEBUG log for first version and INFO log for second
         self.assertIn(
-            "DEBUG:slurmweb.slurmrestd:Slurmrestd API version 0.0.44 not supported, "
-            "trying next",
+            "DEBUG:slurmweb.slurmrestd:Slurmrestd API version "
+            f"{LATEST_SUPPORTED_SLURMRESTD_API_VERSION} not supported, trying next",
             cm.output,
         )
         self.assertIn(
@@ -162,19 +178,28 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         # Mock _execute_request to verify it's not called
         self.slurmrestd._execute_request = mock.Mock()
         self.slurmrestd.cluster_name = "foo"
-        self.slurmrestd.slurm_version = "25.11.0"
-        self.slurmrestd.api_version = "0.0.44"
+        self.slurmrestd.slurm_version = f"{LATEST_SUPPORTED_SLURM_VERSION}.0"
+        self.slurmrestd.api_version = LATEST_SUPPORTED_SLURMRESTD_API_VERSION
 
         result = self.slurmrestd.discover()
 
-        self.assertEqual(result, ("foo", "25.11.0", "0.0.44"))
+        self.assertEqual(
+            result,
+            (
+                "foo",
+                f"{LATEST_SUPPORTED_SLURM_VERSION}.0",
+                LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            ),
+        )
         # Verify _execute_request was not called
         self.slurmrestd._execute_request.assert_not_called()
 
     def test_discover_connection_error(self):
         """Test that connection error breaks the loop and raises."""
         self.setup_execute_request_mock(
-            "25.11", "0.0.44", [SlurmrestConnectionError("connection failed")]
+            LATEST_SUPPORTED_SLURM_VERSION,
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            [SlurmrestConnectionError("connection failed")],
         )
 
         with self.assertRaisesRegex(SlurmrestConnectionError, "^connection failed$"):
@@ -182,13 +207,22 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
 
         # Should only try first version before breaking
         self.slurmrestd._execute_request.assert_called_once_with(
-            "slurm", "0.0.44", "ping", ignore_notfound=True
+            "slurm",
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            "ping",
+            ignore_notfound=True,
         )
 
     def test_discover_authentication_error(self):
         """Test that authentication error breaks the loop and raises."""
         self.setup_execute_request_mock(
-            "25.11", "0.0.44", [SlurmrestdAuthenticationError("/slurm/v0.0.44/ping")]
+            LATEST_SUPPORTED_SLURM_VERSION,
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            [
+                SlurmrestdAuthenticationError(
+                    f"/slurm/v{LATEST_SUPPORTED_SLURMRESTD_API_VERSION}/ping"
+                )
+            ],
         )
 
         with self.assertRaises(SlurmrestdAuthenticationError):
@@ -196,13 +230,22 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
 
         # Should only try first version before breaking
         self.slurmrestd._execute_request.assert_called_once_with(
-            "slurm", "0.0.44", "ping", ignore_notfound=True
+            "slurm",
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            "ping",
+            ignore_notfound=True,
         )
 
     def test_discover_all_versions_fail_404(self):
         """Test that all versions returning 404 raises connection error."""
         self.setup_execute_request_mock(
-            "25.11", "0.0.44", [SlurmrestdNotFoundError("/slurm/v0.0.44/ping")]
+            LATEST_SUPPORTED_SLURM_VERSION,
+            LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+            [
+                SlurmrestdNotFoundError(
+                    f"/slurm/v{LATEST_SUPPORTED_SLURMRESTD_API_VERSION}/ping"
+                )
+            ],
         )
 
         with self.assertLogs("slurmweb.slurmrestd", level="DEBUG") as cm:
@@ -213,16 +256,17 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
             ):
                 self.slurmrestd.discover()
 
-        # Should try all 4 versions
-        self.assertEqual(self.slurmrestd._execute_request.call_count, 4)
-        # Verify all versions were tried
+        # Should try all supported versions
+        self.assertEqual(
+            self.slurmrestd._execute_request.call_count,
+            len(SUPPORTED_SLURMRESTD_API_VERSIONS),
+        )
+        # Verify all versions were tried in order
         calls = [call[0] for call in self.slurmrestd._execute_request.call_args_list]
-        self.assertEqual(calls[0], ("slurm", "0.0.44", "ping"))
-        self.assertEqual(calls[1], ("slurm", "0.0.43", "ping"))
-        self.assertEqual(calls[2], ("slurm", "0.0.42", "ping"))
-        self.assertEqual(calls[3], ("slurm", "0.0.41", "ping"))
+        for call, version in zip(calls, SUPPORTED_SLURMRESTD_API_VERSIONS):
+            self.assertEqual(call, ("slurm", version, "ping"))
         # Verify DEBUG logs for all versions
-        self.assertEqual(len(cm.output), 4)
+        self.assertEqual(len(cm.output), len(SUPPORTED_SLURMRESTD_API_VERSIONS))
         for version in self.slurmrestd.supported_versions:
             self.assertIn(
                 f"DEBUG:slurmweb.slurmrestd:Slurmrestd API version {version} not "
@@ -234,8 +278,8 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         """Test that invalid response error continues to next version."""
         # Mock _execute_request: first call raises InvalidResponse, second succeeds
         _, ping_asset = self.setup_execute_request_mock(
-            "25.11",
-            "0.0.44",
+            LATEST_SUPPORTED_SLURM_VERSION,
+            SECOND_SUPPORTED_SLURMRESTD_API_VERSION,
             [
                 SlurmrestdInvalidResponseError(
                     "Unsupported Content-Type for slurmrestd response: text/plain"
@@ -249,14 +293,16 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
                 self.slurmrestd.discover()
             )
 
-        self.assertEqual(api_version, "0.0.43")
+        self.assertEqual(api_version, SECOND_SUPPORTED_SLURMRESTD_API_VERSION)
         # Should try first version (fails), then second version (succeeds)
         self.assertEqual(self.slurmrestd._execute_request.call_count, 2)
         # Verify WARNING log for first version and INFO log for second
         self.assertIn(
             "WARNING:slurmweb.slurmrestd:Unable to parse Slurmrestd API ping response "
-            "for version 0.0.44: Unsupported Content-Type for slurmrestd response: "
-            "text/plain",
+            "for version "
+            f"{LATEST_SUPPORTED_SLURMRESTD_API_VERSION}: Unsupported Content-Type "
+            "for slurmrestd "
+            "response: text/plain",
             cm.output,
         )
         self.assertIn(
@@ -269,8 +315,8 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         """Test that internal error continues to next version."""
         # Mock _execute_request: first call raises InternalError, second succeeds
         _, ping_asset = self.setup_execute_request_mock(
-            "25.11",
-            "0.0.44",
+            LATEST_SUPPORTED_SLURM_VERSION,
+            SECOND_SUPPORTED_SLURMRESTD_API_VERSION,
             [
                 SlurmrestdInternalError("test", -1, "test description", "test source"),
                 "slurm-ping",
@@ -282,14 +328,16 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
                 self.slurmrestd.discover()
             )
 
-        self.assertEqual(api_version, "0.0.43")
+        self.assertEqual(api_version, SECOND_SUPPORTED_SLURMRESTD_API_VERSION)
         # Should try first version (fails), then second version (succeeds)
         self.assertEqual(self.slurmrestd._execute_request.call_count, 2)
         # Verify WARNING log for first version and INFO log for second
         self.assertIn(
             "WARNING:slurmweb.slurmrestd:Unable to parse Slurmrestd API ping response "
-            "for version 0.0.44: SlurwebRestdError(test, -1, test description, "
-            "test source)",
+            "for version "
+            f"{LATEST_SUPPORTED_SLURMRESTD_API_VERSION}: SlurwebRestdError(test, "
+            "-1, test "
+            "description, test source)",
             cm.output,
         )
         self.assertIn(
@@ -303,8 +351,8 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
         # Mock _execute_request: first call raises KeyError (missing "meta" key),
         # second succeeds
         _, ping_asset = self.setup_execute_request_mock(
-            "25.11",
-            "0.0.44",
+            LATEST_SUPPORTED_SLURM_VERSION,
+            SECOND_SUPPORTED_SLURMRESTD_API_VERSION,
             [
                 KeyError("meta"),  # Simulates missing "meta" key in response
                 "slurm-ping",
@@ -316,13 +364,13 @@ class TestSlurmrestdDiscover(TestSlurmrestdBase):
                 self.slurmrestd.discover()
             )
 
-        self.assertEqual(api_version, "0.0.43")
+        self.assertEqual(api_version, SECOND_SUPPORTED_SLURMRESTD_API_VERSION)
         # Should try first version (fails), then second version (succeeds)
         self.assertEqual(self.slurmrestd._execute_request.call_count, 2)
         # Verify WARNING log for first version and INFO log for second
         self.assertIn(
             "WARNING:slurmweb.slurmrestd:Unable to parse Slurmrestd API ping response "
-            "for version 0.0.44: 'meta'",
+            f"for version {LATEST_SUPPORTED_SLURMRESTD_API_VERSION}: 'meta'",
             cm.output,
         )
         self.assertIn(

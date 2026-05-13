@@ -16,6 +16,8 @@ from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 from slurmweb.errors import SlurmwebConfigurationError
 
+from ..lib.slurmrestd import LATEST_SUPPORTED_SLURMRESTD_API_VERSION
+
 
 class TestSlurmrestdUri(unittest.TestCase):
     def test_unix(self):
@@ -29,7 +31,7 @@ class TestSlurmrestdUri(unittest.TestCase):
                 3600,
                 None,
             ),
-            ["0.0.44"],
+            [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
         )
         self.assertEqual(slurmrestd.prefix, "http+unix://slurmrestd")
         self.assertIsInstance(
@@ -50,7 +52,7 @@ class TestSlurmrestdUri(unittest.TestCase):
                     3600,
                     None,
                 ),
-                ["0.0.44"],
+                [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
             )
         self.assertEqual(slurmrestd.prefix, "http://localhost:6820")
 
@@ -69,5 +71,5 @@ class TestSlurmrestdUri(unittest.TestCase):
                     3600,
                     None,
                 ),
-                ["0.0.44"],
+                [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
             )

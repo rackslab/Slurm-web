@@ -12,7 +12,11 @@ from slurmweb.cache import CachingService, CacheKey
 from slurmweb.errors import SlurmwebCacheError
 
 from ..lib.utils import all_slurm_api_versions
-from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
+from ..lib.slurmrestd import (
+    TestSlurmrestdBase,
+    basic_authentifier,
+    LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+)
 
 
 class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
@@ -27,7 +31,7 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
         self.slurmrestd = SlurmrestdFilteredCached(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            ["0.0.44"],
+            [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
             self.settings.filters,
             self.settings.cache,
             self.cache,

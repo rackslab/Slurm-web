@@ -20,7 +20,12 @@ from slurmweb.slurmrestd.errors import (
     SlurmrestdNotFoundError,
 )
 from ..lib.utils import all_slurm_api_versions
-from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
+from ..lib.slurmrestd import (
+    TestSlurmrestdBase,
+    basic_authentifier,
+    LATEST_SUPPORTED_SLURM_VERSION,
+    LATEST_SUPPORTED_SLURMRESTD_API_VERSION,
+)
 
 
 class TestSlurmrestd(TestSlurmrestdBase):
@@ -28,7 +33,7 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.slurmrestd = Slurmrestd(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            ["0.0.44"],
+            [LATEST_SUPPORTED_SLURMRESTD_API_VERSION],
         )
 
     @all_slurm_api_versions
@@ -72,7 +77,9 @@ class TestSlurmrestd(TestSlurmrestdBase):
             self.slurmrestd._request("slurm", "whatever", key="whatever")
 
     def test_request_slurm_invalid_content_type(self):
-        self.setup_slurmrestd("25.11.0", "0.0.44")
+        self.setup_slurmrestd(
+            LATEST_SUPPORTED_SLURM_VERSION, LATEST_SUPPORTED_SLURMRESTD_API_VERSION
+        )
         fake_response = requests.Response()
         fake_response.headers = {"content-type": "text/plain"}
         fake_response.json = lambda: "whatever"

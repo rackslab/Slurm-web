@@ -14,6 +14,12 @@ from .utils import mock_slurmrestd_responses, SlurmwebAssetUnavailable
 from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 
+SUPPORTED_SLURMRESTD_API_VERSIONS = ["0.0.45", "0.0.44", "0.0.43", "0.0.42", "0.0.41"]
+LATEST_SUPPORTED_SLURMRESTD_API_VERSION = SUPPORTED_SLURMRESTD_API_VERSIONS[0]
+SECOND_SUPPORTED_SLURMRESTD_API_VERSION = SUPPORTED_SLURMRESTD_API_VERSIONS[1]
+LATEST_SUPPORTED_SLURM_VERSION = "26.05"
+
+
 def basic_authentifier():
     return SlurmrestdAuthentifier(
         "local",

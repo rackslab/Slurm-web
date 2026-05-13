@@ -8,7 +8,11 @@ import urllib
 
 from slurmweb.slurmrestd import SlurmrestdAdapter
 from ..lib.utils import all_slurm_api_versions
-from ..lib.slurmrestd import TestSlurmrestdBase, basic_authentifier
+from ..lib.slurmrestd import (
+    TestSlurmrestdBase,
+    basic_authentifier,
+    SUPPORTED_SLURMRESTD_API_VERSIONS,
+)
 
 
 class TestSlurmrestdAdapter(TestSlurmrestdBase):
@@ -17,7 +21,7 @@ class TestSlurmrestdAdapter(TestSlurmrestdBase):
         self.slurmrestd = SlurmrestdAdapter(
             urllib.parse.urlparse("unix:///dev/null"),
             basic_authentifier(),
-            ["0.0.44", "0.0.43", "0.0.42", "0.0.41"],
+            SUPPORTED_SLURMRESTD_API_VERSIONS,
         )
 
     def setup_slurmrestd(self, slurm_version, api_version):
