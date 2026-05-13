@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
+- agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
 - docs: Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
 - conf: Prepend default list of supported API versions in `[slurmrestd]` >
   `versions` parameter with _0.0.45_.

@@ -13,6 +13,7 @@ from .base import BaseAdapter
 from .v0_0_41 import AdapterV0_0_41
 from .v0_0_42 import AdapterV0_0_42
 from .v0_0_43 import AdapterV0_0_43
+from .v0_0_44 import AdapterV0_0_44
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ _ADAPTERS = {
     "0.0.41": AdapterV0_0_41,
     "0.0.42": AdapterV0_0_42,
     "0.0.43": AdapterV0_0_43,
+    "0.0.44": AdapterV0_0_44,
 }
 
 
