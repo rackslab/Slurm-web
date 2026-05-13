@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - docs: Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
+- conf: Prepend default list of supported API versions in `[slurmrestd]` >
+  `versions` parameter with _0.0.45_.
 
 ## [6.1.0] - 2026-05-12
 
