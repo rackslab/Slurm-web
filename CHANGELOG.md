@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - conf: Prepend default list of supported API versions in `[slurmrestd]` >
   `versions` parameter with _0.0.45_.
 
+### Changed
+- docs: Update configuration reference documentation.
+
 ## [6.1.0] - 2026-05-12
 
 ### Added
