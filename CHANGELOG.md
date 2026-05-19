@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `versions` parameter with _0.0.45_.
 
 ### Changed
-- docs: Update configuration reference documentation.
+- docs:
+  - Update configuration reference documentation.
+  - Update Slurm REST API supported versions section in architecture page.
 
 ## [6.1.0] - 2026-05-12
 

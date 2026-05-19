@@ -7,9 +7,9 @@ asciidoc:
   attributes:
     source-language: asciidoc@
     table-caption: false
-    version: 6.1.0
+    version: 7.0.0
     api_version: 0.0.41
-    api_version_latest: 0.0.44
+    api_version_latest: 0.0.45
     pkgs-derivative: slurmweb-6
 nav:
 - modules/overview/nav.adoc

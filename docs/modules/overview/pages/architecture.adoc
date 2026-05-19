@@ -183,8 +183,8 @@ host, install the `slurm-web-gateway` package.
 
 Slurm-web {version} is officially tested and supported with Slurm REST API
 versions from *v{api_version}* to *v{api_version_latest}*. These versions of
-Slurm REST API are available in Slurm major versions 24.05, 24.11, 25.05 and
-25.11.
+Slurm REST API are available in Slurm major versions 24.05, 24.11, 25.05, 25.11
+and 26.05.
 
 This table represents all Slurm REST API versions supported by the latest Slurm
 releases:
@@ -198,6 +198,12 @@ releases:
 |*Latest*
 2+^|*Compatible*
 |*Deprecated*
+
+|26.05
+|*0.0.45*
+|*0.0.44*
+|*0.0.43*
+|*0.0.42*
 
 |25.11
 |*0.0.44*
