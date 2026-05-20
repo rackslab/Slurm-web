@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="163.74899mm"
+   height="150mm"
+   viewBox="0 0 163.74892 149.99994"
+   version="1.1"
+   id="svg6471"
+   sodipodi:docname="slurm-web_oidc_auth_flow.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="slurm-web_oidc_auth_flow.png"
+   inkscape:export-xdpi="128"
+   inkscape:export-ydpi="128"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6473"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.4330993"
+     inkscape:cx="901.54258"
+     inkscape:cy="350.28976"
+     inkscape:window-width="3840"
+     inkscape:window-height="2091"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6471">
+    <inkscape:grid
+       type="xygrid"
+       id="grid6598"
+       originx="-6.6145701"
+       originy="1.0583333" />
+  </sodipodi:namedview>
+  <defs
+     id="defs6365">
+    <linearGradient
+       id="boxGrad"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         style="stop-color:#4e792a"
+         id="stop6357" />
+      <stop
+         offset="1"
+         style="stop-color:#899d78"
+         id="stop6359" />
+    </linearGradient>
+    <marker
+       id="arrow"
+       markerWidth="8"
+       markerHeight="8"
+       refX="7"
+       refY="3"
+       orient="auto">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path6362" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-2"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-3"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-5"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-2"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-8"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-9"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-5"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-6"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-3"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7-94" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-8"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-29"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7-3" />
+    </marker>
+    <marker
+       id="marker12074"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path12072" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-0"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-88"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       id="arrow-50"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7-96" />
+    </marker>
+  </defs>
+  <style
+     id="style6367">
+    .participant { fill:url(#boxGrad); stroke:#3d5f20; stroke-width:0.3; }
+    .ptext { fill:#fff; font-family:sans-serif; font-size:2.4px; text-anchor:middle; }
+    .lifeline { stroke:#999; stroke-width:0.15; stroke-dasharray:1.2,1.2; }
+    .msg { stroke:#333; stroke-width:0.2; fill:none; marker-end:url(#arrow); }
+    .mlabel { font-family:sans-serif; font-size:2px; fill:#222; }
+    .title { font-family:sans-serif; font-size:3.5px; font-weight:bold; fill:#333; }
+    .note { font-family:sans-serif; font-size:2px; fill:#555; font-style:italic; }
+  </style>
+  <text
+     class="mlabel"
+     x="23.448439"
+     y="36.655376"
+     id="text6403"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Open /login</text>
+  <text
+     class="mlabel"
+     x="57.050522"
+     y="41.947044"
+     id="text6407"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">GET /config.json</text>
+  <text
+     class="mlabel"
+     x="83.231453"
+     y="56.817451"
+     id="text6419"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">OAuth state in session</text>
+  <text
+     class="mlabel"
+     x="151.07707"
+     y="135.73125"
+     id="text13451"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.2px;font-family:Lato;-inkscape-font-specification:Lato;fill:#222222"><tspan
+       sodipodi:role="line"
+       id="tspan13467"
+       x="151.07707"
+       y="135.73125">Enforces</tspan><tspan
+       sodipodi:role="line"
+       id="tspan13469"
+       x="151.07707"
+       y="138.48126">authorization</tspan><tspan
+       sodipodi:role="line"
+       x="151.07707"
+       y="141.23126"
+       id="tspan13471">policy</tspan></text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-0);marker-end:url(#arrow-50)"
+     d="m 149.225,134.67292 c -6.61458,0 -6.61458,6.61458 0,6.61458"
+     id="path13453"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="55.9604"
+     y="69.842949"
+     id="text6427"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">User authenticates</text>
+  <text
+     class="mlabel"
+     x="52.684875"
+     y="75.146759"
+     id="text6431"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Redirect /api/oidc/callback</text>
+  <text
+     class="mlabel"
+     x="88.635422"
+     y="85.724998"
+     id="text6439"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Token exchange, validate</text>
+  <text
+     class="mlabel"
+     x="83.150078"
+     y="93.276207"
+     id="text6443"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Issue JWT, session oidc_login</text>
+  <text
+     class="mlabel"
+     x="21.596355"
+     y="102.90598"
+     id="text6451"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">OidcCallbackView</text>
+  <text
+     class="mlabel"
+     x="51.00193"
+     y="108.20785"
+     id="text6455"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">GET /api/oidc/session (cookie)</text>
+  <text
+     class="mlabel"
+     x="55.562504"
+     y="113.50624"
+     id="text6459"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">token, login, groups</text>
+  <text
+     class="mlabel"
+     x="31.3256"
+     y="121.65436"
+     id="text6463"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Store JWT</text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-8);marker-end:url(#arrow-29)"
+     d="M 13.229171,126.73542 H 82.020838"
+     id="path2901"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-8);marker-end:url(#arrow-29)"
+     d="M 82.020838,132.02708 H 148.96041"
+     id="path2939"
+     sodipodi:nodetypes="cc" />
+  <text
+     x="82.54895"
+     y="12.915195"
+     class="title"
+     text-anchor="middle"
+     id="text14"
+     style="font-weight:bold;font-size:4.93889px;font-family:sans-serif;fill:#333333"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:Raleway;-inkscape-font-specification:Raleway"
+       id="tspan917">Slurm-web OIDC authentication flow</tspan></text>
+  <line
+     class="lifeline"
+     x1="149.48959"
+     y1="31.485416"
+     x2="149.48959"
+     y2="143.93333"
+     id="line1106"
+     style="stroke:#cccccc;stroke-width:0.562369;stroke-dasharray:0.562369, 0.562369;stroke-dashoffset:0;stroke-opacity:1" />
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect686"
+     width="26.458338"
+     height="13.229167"
+     x="136.26041"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#afafaf;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect14344"
+     width="26.458338"
+     height="13.229167"
+     x="103.18749"
+     y="18.25625"
+     rx="1.3229173"
+     ry="1.3229173" />
+  <rect
+     style="fill:#53753a;fill-opacity:0.769175;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect11511"
+     width="26.458338"
+     height="13.229167"
+     x="2.4063713e-13"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect889"
+     width="26.458338"
+     height="13.229167"
+     x="68.791672"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect897"
+     width="26.458338"
+     height="13.229167"
+     x="34.395832"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <text
+     class="ptext"
+     x="13.100403"
+     y="26.105555"
+     id="text18"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway;text-anchor:middle;fill:#ffffff">Browser</text>
+  <text
+     class="ptext"
+     x="47.565033"
+     y="26.140835"
+     id="text22"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway;text-anchor:middle;fill:#ffffff">Frontend</text>
+  <text
+     class="ptext"
+     x="81.982033"
+     y="25.737785"
+     id="text26"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway;text-anchor:middle;fill:#ffffff">Gateway</text>
+  <text
+     class="ptext"
+     x="116.30907"
+     y="26.123194"
+     id="text30"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway;text-anchor:middle;fill:#ffffff">IDP</text>
+  <text
+     class="ptext"
+     x="149.48604"
+     y="25.729845"
+     id="text34"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway;text-anchor:middle;fill:#ffffff">Agent</text>
+  <line
+     class="lifeline"
+     x1="116.40846"
+     y1="31.485416"
+     x2="116.40846"
+     y2="143.93333"
+     id="line7102"
+     style="stroke:#cccccc;stroke-width:0.562369;stroke-dasharray:0.562369, 0.562369;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="82.020836"
+     y1="38.100002"
+     x2="82.020836"
+     y2="143.93333"
+     id="line7110"
+     style="stroke:#cccccc;stroke-width:0.545578;stroke-dasharray:0.545578, 0.545578;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="47.625004"
+     y1="31.485416"
+     x2="47.625004"
+     y2="143.93333"
+     id="line7118"
+     style="stroke:#cccccc;stroke-width:0.562369;stroke-dasharray:0.562369, 0.562369;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="13.237377"
+     y1="31.485416"
+     x2="13.237377"
+     y2="143.93333"
+     id="line7126"
+     style="stroke:#cccccc;stroke-width:0.562369;stroke-dasharray:0.562369, 0.562369;stroke-dashoffset:0;stroke-opacity:1" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 13.229171,38.100001 33.866667,1e-6"
+     id="path1264"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-3);marker-end:url(#arrow-5)"
+     d="m 47.625005,43.391668 33.866667,10e-7"
+     id="path1264-2"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-2);marker-end:url(#arrow-9)"
+     d="m 82.020838,48.683334 -33.866667,10e-7"
+     id="path2051"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 13.493754,53.975 68.527084,10e-7"
+     id="path7973"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="47.889587"
+     y="47.36042"
+     id="text6411"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">AUTHENTICATION_METHOD=oidc</text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 82.285421,65.88125 -68.527084,1e-6"
+     id="path8395"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-5);marker-end:url(#arrow-3)"
+     d="m 82.020838,56.620834 c -6.614583,0 -6.614583,6.614584 0,6.614584"
+     id="path2761"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="40.582855"
+     y="64.541397"
+     id="text6423"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Redirect to IdP</text>
+  <text
+     class="mlabel"
+     x="37.041672"
+     y="52.652084"
+     id="text6415"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">GET /api/oidc/login</text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 13.361462,71.172917 103.055208,10e-7"
+     id="path9068"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 116.68125,76.464583 -103.055205,10e-7"
+     id="path9340"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 13.493754,81.756251 68.527084,10e-7"
+     id="path9612"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="35.771648"
+     y="80.433334"
+     id="text6435"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">GET /api/oidc/callback</text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-3);marker-end:url(#arrow-5)"
+     d="m 82.020838,87.047918 33.866672,10e-7"
+     id="path9938"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-5);marker-end:url(#arrow-3)"
+     d="m 82.020838,89.693751 c -6.614583,0 -6.614583,6.614584 0,6.614584"
+     id="path10210"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 82.020838,98.954167 -68.527084,10e-7"
+     id="path10482"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow-2)"
+     d="m 13.229171,104.24583 33.866667,1e-5"
+     id="path10754"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-3);marker-end:url(#arrow-5)"
+     d="m 47.625004,109.5375 33.866667,1e-5"
+     id="path11026"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-2);marker-end:url(#arrow-9)"
+     d="M 81.756254,114.82917 H 47.889587"
+     id="path11514"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot-5);marker-end:url(#arrow-3)"
+     d="m 47.625004,117.475 c -6.614583,0 -6.614583,6.61459 0,6.61459"
+     id="path11786"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="70.108238"
+     y="124.3002"
+     id="text6467"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">API Bearer JWT to Agent RBAC</text>
+  <text
+     class="mlabel"
+     x="35.525082"
+     y="97.535995"
+     id="text6447"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.11667px;font-family:Lato;-inkscape-font-specification:Lato">Redirect /auth/oidc/callback</text>
+</svg>

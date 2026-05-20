@@ -75,10 +75,11 @@ All communications from the clients web browsers to Slurm-web *agent*
 component are performed with HTTP over TCP/IP network protocols. These
 network communications can be secured with SSL/TLS (aka. HTTPS) over standard
 port TCP/443 with a xref:conf:wsgi/index.adoc[production HTTP server]. After
-initial authentication with LDAP directory, users are authenticated between
-these components with https://jwt.io/[JSON Web Token] (JWT). Slurm-web has its
-own JWT realm, with its dedicated JWT signing key, to secure communication
-between its components.
+initial authentication at the gateway with
+xref:conf:auth/index.adoc[LDAP or OIDC], users are authenticated between these
+components with https://jwt.io/[JSON Web Token] (JWT). Slurm-web has its own JWT
+realm, with its dedicated JWT signing key, to secure communication between its
+components.
 
 Slurm `slurmrestd` supports incoming HTTP requests on:
 

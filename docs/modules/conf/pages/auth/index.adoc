@@ -1,0 +1,27 @@
+= Users Authentication
+
+Slurm-web _gateway_ can authenticate users before granting access to the web
+interface and proxied cluster APIs. Authentication is optional but **strongly
+recommended in production**.
+
+When enabled, users sign in through the gateway. The gateway issues a
+Slurm-web JSON Web Token (JWT) that carries the user identity and group
+memberships. This JWT is sent on subsequent API requests and forwarded to
+_agents_, where xref:conf:policy.adoc[authorization policy] enforces RBAC.
+
+Slurm-web supports **two authentication methods**:
+
+[unordered.stack]
+xref:auth/ldap.adoc[LDAP authentication]:: Username and password validated
+against an LDAP directory (OpenLDAP, FreeIPA, Active Directory, etc.). This is
+the default method.
+
+xref:auth/oidc.adoc[OIDC authentication]:: Single sign-on (SSO) with an OpenID
+Connect identity provider such as https://www.keycloak.org/[Keycloak] or
+https://goauthentik.io/[Authentik]. Password login on the gateway is disabled.
+
+Exactly one method is active per deployment, selected with the `method`
+parameter in the xref:conf:conf/gateway.adoc#_authentication[`authentication`]
+section of the gateway configuration file.
+
+Please refer to the setup guides for each method for detailed instructions.

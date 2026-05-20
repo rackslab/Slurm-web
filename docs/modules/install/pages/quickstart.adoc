@@ -403,16 +403,25 @@ xref:misc:troubleshooting.adoc#native[troubleshooting guide] for help.
 
 == Setup authentication
 
-To restrict access to the dashboard, you must enable authentication. Slurm-web
-supports LDAP authentication.
+To restrict access to the dashboard, enable authentication on the gateway and
+choose either LDAP or OpenID Connect (OIDC). Only one method is active per
+deployment.
 
-Add the following settings in the _gateway_ configuration file
-[.path]#`/etc/slurm-web/gateway.ini`#:
+See xref:conf:auth/index.adoc[authentication documentation] for an overview and
+setup guides:
+
+* xref:conf:auth/ldap.adoc[LDAP authentication] — username and password against a
+  directory (default method)
+* xref:conf:auth/oidc.adoc[OIDC authentication] — single sign-on with Keycloak,
+  Authentik, or another OIDC provider
+
+Minimal LDAP example in [.path]#`/etc/slurm-web/gateway.ini`#:
 
 [source,ini]
 ----
 [authentication]
 enabled=yes
+method=ldap
 
 [ldap]
 uri=ldap://SERVER
@@ -420,42 +429,24 @@ user_base=ou=PEOPLE,dc=EXAMPLE,dc=TLD
 group_base=ou=GROUPS,dc=EXAMPLE,dc=TLD
 ----
 
-`SERVER`, user and groups search bases must be adapted to match your LDAP server
-and directory tree.
-
-[NOTE]
-====
-Slurm-web also supports LDAPS (SSL/TLS) and STARTTLS secured protocols with LDAP
-servers.
-
-The groups of users permitted to authenticate on Slurm-web can also be
-restricted with `restricted_groups` parameter.
-
-Please refer to reference documentation of
-xref:conf:conf/gateway.adoc#_ldap[`ldap` section in gateway configuration] for
-more details.
-====
-
-Restart _gateway_ service to apply the new configuration:
+Adapt `SERVER` and search bases to your directory. Restart the gateway after
+changes:
 
 [source,console]
 ----
 # systemctl restart slurm-web-gateway.service
 ----
 
-The authentication form is now presented on Slurm-web access:
+The login page is then presented on Slurm-web access:
 
 image:slurm-web_login.png[]
 
-Upon successfull LDAP authentication, users have access to the clusters.
-
-TIP: Any problem to setup LDAP authentication?
-xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web ldap-check`] command
-might help. More details in xref:misc:troubleshooting.adoc#ldap[Troubleshooting
-page].
+TIP: LDAP issues? Use xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web
+ldap-check`] and xref:conf:auth/ldap.adoc#troubleshooting[LDAP troubleshooting].
 
 .More details
 ****
+* xref:conf:auth/index.adoc[Authentication documentation]
 * xref:conf:conf/gateway.adoc[Gateway configuration reference documentation]
 ****
 

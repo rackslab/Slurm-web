@@ -17,3 +17,5 @@ diagrams:
   modules/conf/images/slurmrestd/slurmrestd_access_modes_unix_local.svg: large
   modules/conf/images/slurmrestd/slurmrestd_access_modes_inet_jwt_auto.svg: large
   modules/conf/images/slurmrestd/slurmrestd_access_modes_inet_jwt_static.svg: large
+  modules/conf/images/auth/slurm-web_ldap_auth_flow.svg: large
+  modules/conf/images/auth/slurm-web_oidc_auth_flow.svg: large

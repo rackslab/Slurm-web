@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
   - Add upgrade guide for migration from v6 to v7.
+  - Add Authentication pages with detailed LDAP and OIDC authentication flows
+    and setup guides.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.45_.

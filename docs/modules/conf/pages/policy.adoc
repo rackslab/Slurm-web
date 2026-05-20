@@ -33,9 +33,9 @@ The file must have one `[roles]` section to define roles and their memberships.
 In this section:
 
 * Keys are arbitrary *name of roles*,
-* Values are comma separated list of LDAP *users* and *groups* associated to
-  this role. The groups names must be prefixed by `@`. Special value `ALL` can
-  be used to designate all users authenticated on LDAP directory.
+* Values are comma separated list of *users* and *groups* associated to this
+  role. The groups names must be prefixed by `@`. Special value `ALL` can be used
+  to designate all xref:conf:auth/index.adoc[authenticated users].
 
 A special role name is `anonymous`. When this role is defined, it is
 automatically assigned to all users when authentication is disabled on Slurm-web

@@ -1,0 +1,216 @@
+= OIDC Authentication (SSO)
+
+Slurm-web supports users authentication with single sign-on (SSO) with an
+OpenID Connect (OIDC) identity provider (eg. Keycloak or Authentik).
+
+image::auth/slurm-web_oidc_auth.png[width=60%]
+
+Users sign in through the login page with their identity provider credentials.
+The gateway validates the credentials and group memberships with the identity
+provider, then issues a Slurm-web JWT for the session.
+
+== Prerequisites
+
+* HTTPS on the production HTTP server in front of the gateway.
+* Identity provider client configured for the authorization code flow.
+* The identity provider must expose user groups in the ID token or userinfo,
+  under the claim configured with `groups_claim` (default: `groups`).
+
+[CAUTION]
+====
+OIDC authentication is not supported on RHEL 8 (and compatibles), SLES 15 and
+openSUSE Leap 15 because the https://authlib.org/[Authlib library] required by
+the gateway is not available on these platforms.
+====
+
+== Authentication flow
+
+The diagram below shows the browser, frontend, gateway, identity provider, and
+agent interactions involved in OIDC authentication:
+
+.OIDC authentication flow [xref:image$auth/slurm-web_oidc_auth_flow.svg[icon:download[] SVG]]
+image::auth/slurm-web_oidc_auth_flow.png[]
+
+.Steps
+. The user opens the login page. The frontend loads `GET /config.json` and learns
+  that `AUTHENTICATION_METHOD` is `oidc`.
+. The user starts SSO (`GET /api/oidc/login`). The gateway stores OAuth state
+  (and PKCE verifiers when `pkce` is configured) in a session cookie and
+  redirects the browser to the IdP.
+. The user authenticates at the IdP.
+. The IdP redirects the browser to `GET /api/oidc/callback` on the gateway with an
+  authorization code.
+. The gateway exchanges the code with the IdP, validates tokens, and builds the
+  Slurm-web user profile (login, full name, groups from token claims).
+. The gateway issues a Slurm-web JWT and stores login handoff data in the Flask
+  session (`oidc_login`), then redirects to `/auth/oidc/callback` in the
+  frontend (no query parameters).
+. The frontend route calls `GET /api/oidc/session` with the session cookie
+  (`withCredentials`). The gateway returns the JWT and user fields and removes
+  the handoff data from the session.
+. The frontend stores the JWT and sends it as a Bearer token on API requests.
+. Agents enforce xref:conf:policy.adoc[authorization policy] from JWT groups.
+
+== Setup
+
+=== Confidential client (recommended)
+
+Minimal example for [.path]#`/etc/slurm-web/gateway.ini`#:
+
+[source,ini]
+----
+[authentication]
+enabled=yes
+method=oidc
+
+[ui]
+host=https://dashboard.example.com/ <1>
+
+[oidc]
+issuer=https://idp.example.com/realms/org <2>
+client_id=slurm-web <3>
+client_secret=CHANGE_ME <4>
+subject_claim=preferred_username <5>
+groups_claim=groups <6>
+----
+
+<1> Public URL of the web UI; used to derive the OIDC redirect callback URI
+(`{ui.host}/api/oidc/callback`) unless `redirect_uri` is set explicitly.
+<2> OIDC issuer URL used for provider discovery.
+<3> Client identifier registered at the identity provider.
+<4> Client secret. You can also use `client_secret_file` to read the secret from a file.
+<5> Token claim used as the user login in Slurm-web (`preferred_username` is common
+with Keycloak).
+<6> Token or userinfo claim that lists group names for RBAC (must match IdP mapper).
+
+Add `pkce=S256` when the IdP requires or recommends PKCE:
+
+[source,ini]
+----
+pkce=S256
+----
+
+Allowed values for `pkce`: `S256` (recommended) or `plain` (legacy IdPs only).
+When `pkce` is omitted, PKCE is disabled.
+
+By default, the gateway computes the redirect callback URI from `ui.host`
+parameter (in the form `{ui.host}/api/oidc/callback`). You can also set
+`oidc.redirect_uri` explicitly. Either `ui.host` or `oidc.redirect_uri` must be
+set.
+
+Restart the gateway after any change to [.path]#`gateway.ini`#:
+
+[source,console]
+----
+# systemctl restart slurm-web-gateway.service  # or slurm-web-gateway-uwsgi.service
+----
+
+See xref:conf:conf/gateway.adoc#_oidc[full `oidc` parameter reference].
+
+=== Public client
+
+For a public OIDC client (no client secret at the token endpoint), omit
+`client_secret` and `client_secret_file` and set `pkce` (required):
+
+[source,ini]
+----
+[oidc]
+issuer=https://idp.example.com/realms/org
+client_id=slurm-web
+pkce=S256
+subject_claim=preferred_username
+groups_claim=groups
+----
+
+Register the client as *public* at the IdP. PKCE must be enabled on both sides.
+
+== Identity providers
+
+The following sections describe how to register the Slurm-web client at common
+OpenID Connect identity providers.
+
+=== Keycloak
+
+This minimal procedure creates a realm client compatible with Slurm-web.
+
+. Create or select a realm (for example `org`).
+. Create a client:
+** Client ID: `slurm-web`
+** Client authentication: *On* (confidential client) or *Off* (public client)
+** Standard flow: *Enabled*
+** Valid redirect URIs: `https://<gateway-host>/api/oidc/callback`
+** Web origins: gateway and UI origins, or `+` for same-host redirects during
+   development
+. If using PKCE, set `pkce=S256` in `gateway.ini` and under *Advanced* → *Proof
+  Key for Code Exchange Code Challenge Method*, set `S256` on the Keycloak client.
+. Add a *Group Membership* mapper on the client (or client scope) with claim name
+  `groups`, included in ID token and userinfo.
+. Optionally map `preferred_username` if using `subject_claim=preferred_username`.
+. For confidential clients, copy the client secret into `gateway.ini`
+  (`client_secret` or secret file).
+. Set `issuer` to the realm issuer URL (for example
+  `https://idp.example.com/realms/org`).
+
+=== Authentik
+
+Authentik can be used as an OIDC provider with the same gateway settings:
+confidential or public client, authorization code flow, optional `pkce=S256`,
+redirect URI on `/api/oidc/callback`, and group claims exposed for
+`groups_claim`. Refer to
+https://docs.goauthentik.io/[Authentik documentation] for provider and application
+setup.
+
+[#troubleshooting]
+== Troubleshooting
+
+Validate the gateway configuration and test sign-in manually:
+
+. Confirm `issuer`, client credentials (if confidential), `pkce` (if used), and
+  `service.session_key` (or default file) in `gateway.ini`. See
+  xref:conf:conf/gateway.adoc#_oidc[full `oidc` parameter reference].
+. Register the exact callback URL at the identity provider:
+  `{ui.host}/api/oidc/callback` (including any path prefix), unless `redirect_uri`
+  is set explicitly.
+. Restart the gateway.
+. Open the login page, start SSO, complete IdP login, and verify access to
+  clusters.
+. In menu:Settings[Account], confirm group memberships match IdP groups and
+  xref:conf:policy.adoc[policy] permissions.
+
+Some common errors and their potential causes:
+
+|===
+|Symptom |Things to check
+
+|Redirect URI mismatch
+|IdP client redirect URIs must exactly match gateway callback URL (scheme, host,
+port, path, prefix)
+
+|Invalid state / OAuth errors after IdP login
+|`service.session_key` missing, unreadable, or changed; multiple gateway
+instances without shared session secret; cookie blocked; `pkce` mismatch with IdP
+
+|`401` on `/api/oidc/session` (“login session not found”)
+|UI and API not same origin; session cookie not sent; user refreshed callback page
+twice (handoff already consumed); HTTP vs HTTPS cookie `Secure` flag
+
+|Gateway fails to start (OIDC / PKCE error)
+|Public client without `pkce`; invalid `pkce` value (only `S256` or `plain`)
+
+|Empty groups in JWT / wrong permissions
+|IdP group mapper; `groups_claim`; `restricted_groups`
+
+|User cannot sign in
+|`restricted_groups`; IdP account not in allowed groups
+
+|TLS errors to IdP
+|`verify_ssl`, `cacert` when using private CA
+|===
+
+.More details
+****
+* xref:conf:conf/gateway.adoc[Gateway configuration reference]
+* xref:conf:policy.adoc[Authorization policy]
+* xref:overview:architecture.adoc#protocols[Protocols and JWT]
+* xref:conf:auth/index.adoc[Authentication overview]
+****

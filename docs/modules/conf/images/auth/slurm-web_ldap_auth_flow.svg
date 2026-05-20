@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="164.01366mm"
+   height="120mm"
+   viewBox="0 0 164.01366 120"
+   version="1.1"
+   id="svg90"
+   sodipodi:docname="slurm-web_ldap_auth_flow.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="slurm-web_ldap_auth_flow.png"
+   inkscape:export-xdpi="128"
+   inkscape:export-ydpi="128"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview92"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="1.4330992"
+     inkscape:cx="429.48876"
+     inkscape:cy="300.39791"
+     inkscape:window-width="2987"
+     inkscape:window-height="1588"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg90">
+    <inkscape:grid
+       type="xygrid"
+       id="grid403"
+       originx="-9.2604171"
+       originy="3.7041676" />
+  </sodipodi:namedview>
+  <defs
+     id="defs10">
+    <marker
+       style="overflow:visible"
+       id="Dot"
+       refX="-3"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <linearGradient
+       id="boxGrad"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         style="stop-color:#4e792a"
+         id="stop2" />
+      <stop
+         offset="1"
+         style="stop-color:#899d78"
+         id="stop4" />
+    </linearGradient>
+    <marker
+       id="arrow"
+       markerWidth="7"
+       markerHeight="6"
+       refX="6"
+       refY="3"
+       orient="auto"
+       viewBox="0 0 7 6"
+       preserveAspectRatio="none">
+      <path
+         d="M 0,0 7,3 0,6 Z"
+         fill="#333333"
+         id="path7" />
+    </marker>
+  </defs>
+  <style
+     id="style12">
+    .participant { fill:url(#boxGrad); stroke:#3d5f20; stroke-width:0.3; }
+    .ptext { fill:#fff; font-family:sans-serif; font-size:2.6px; text-anchor:middle; }
+    .lifeline { stroke:#999; stroke-width:0.15; stroke-dasharray:1.2,1.2; }
+    .msg { stroke:#333; stroke-width:0.2; fill:none; marker-end:url(#arrow); }
+    .mlabel { font-family:sans-serif; font-size:2.2px; fill:#222; }
+    .title { font-family:sans-serif; font-size:3.5px; font-weight:bold; fill:#333; }
+  </style>
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect686"
+     width="26.458338"
+     height="13.229167"
+     x="136.26041"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#afafaf;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect14344"
+     width="26.458338"
+     height="13.229167"
+     x="103.18749"
+     y="18.25625"
+     rx="1.3229173"
+     ry="1.3229173" />
+  <rect
+     style="fill:#53753a;fill-opacity:0.769175;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect11511"
+     width="26.458338"
+     height="13.229167"
+     x="0"
+     y="18.256252"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect889"
+     width="26.458338"
+     height="13.229167"
+     x="68.791672"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <rect
+     style="fill:#4886ae;fill-opacity:1;stroke-width:0.527656;stroke-linecap:round;stroke-linejoin:round"
+     id="rect897"
+     width="26.458338"
+     height="13.229167"
+     x="34.395832"
+     y="18.25625"
+     rx="1.3229154"
+     ry="1.3229154" />
+  <text
+     x="83.965347"
+     y="12.915195"
+     class="title"
+     text-anchor="middle"
+     id="text14"
+     style="font-size:4.93889px"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:Raleway;-inkscape-font-specification:Raleway"
+       id="tspan917">Slurm-web LDAP authentication flow</tspan></text>
+  <!-- participants -->
+  <text
+     class="ptext"
+     x="13.100405"
+     y="26.105556"
+     id="text18"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway">Browser</text>
+  <text
+     class="ptext"
+     x="47.565029"
+     y="26.140835"
+     id="text22"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway">Frontend</text>
+  <text
+     class="ptext"
+     x="81.982033"
+     y="25.737785"
+     id="text26"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway">Gateway</text>
+  <text
+     class="ptext"
+     x="116.30907"
+     y="26.123196"
+     id="text30"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway">LDAP</text>
+  <text
+     class="ptext"
+     x="149.48604"
+     y="25.729847"
+     id="text34"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:Raleway;-inkscape-font-specification:Raleway">Agent</text>
+  <!-- lifelines -->
+  <line
+     class="lifeline"
+     x1="149.48958"
+     y1="31.485418"
+     x2="149.48958"
+     y2="112.18333"
+     id="line44"
+     style="stroke:#cccccc;stroke-width:0.476406;stroke-dasharray:0.476406, 0.476406;stroke-dashoffset:0;stroke-opacity:1" />
+  <!-- messages -->
+  <text
+     class="mlabel"
+     x="25.348965"
+     y="36.712109"
+     id="text48"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">Open /login</text>
+  <text
+     class="mlabel"
+     x="58.016712"
+     y="42.069332"
+     id="text52"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">GET /config.json</text>
+  <text
+     class="mlabel"
+     x="22.416985"
+     y="51.311569"
+     id="text60"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">Submit credentials</text>
+  <text
+     class="mlabel"
+     x="57.477863"
+     y="56.653633"
+     id="text64"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">POST /api/login</text>
+  <text
+     class="mlabel"
+     x="85.989586"
+     y="61.912502"
+     id="text68"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">Authenticate, fetch groups</text>
+  <text
+     class="mlabel"
+     x="88.324738"
+     y="67.238716"
+     id="text72"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">User identity, groups</text>
+  <text
+     class="mlabel"
+     x="83.142456"
+     y="75.388649"
+     id="text76"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">Issue Slurm-web JWT</text>
+  <text
+     class="mlabel"
+     x="54.504166"
+     y="79.110413"
+     id="text80"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">token, fullname, groups</text>
+  <text
+     class="mlabel"
+     x="50.198231"
+     y="87.030312"
+     id="text84"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">Store JWT</text>
+  <text
+     class="mlabel"
+     x="68.880745"
+     y="92.610558"
+     id="text88"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">API Bearer JWT to Agent RBAC</text>
+  <line
+     class="lifeline"
+     x1="116.45625"
+     y1="31.485418"
+     x2="116.45625"
+     y2="112.18333"
+     id="line1106"
+     style="stroke:#cccccc;stroke-width:0.476406;stroke-dasharray:0.476406, 0.476406;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="82.020836"
+     y1="31.485418"
+     x2="82.020836"
+     y2="112.18333"
+     id="line1114"
+     style="stroke:#cccccc;stroke-width:0.476406;stroke-dasharray:0.476406, 0.476406;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="47.625"
+     y1="31.485418"
+     x2="47.625"
+     y2="112.18333"
+     id="line1150"
+     style="stroke:#cccccc;stroke-width:0.476406;stroke-dasharray:0.476406, 0.476406;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="lifeline"
+     x1="13.189584"
+     y1="31.485418"
+     x2="13.189584"
+     y2="112.18333"
+     id="line1158"
+     style="stroke:#cccccc;stroke-width:0.476406;stroke-dasharray:0.476406, 0.476406;stroke-dashoffset:0;stroke-opacity:1" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 13.229166,38.1 33.866667,10e-7"
+     id="path1264"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 47.625,43.391667 33.866667,1e-6"
+     id="path1835"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 13.229166,52.652083 33.866667,1e-6"
+     id="path1963"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 82.020833,48.683333 -33.866667,1e-6"
+     id="path2051"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 47.625,57.943751 33.866667,1e-6"
+     id="path2291"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 82.020833,63.235417 33.866667,1e-6"
+     id="path2329"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 116.15208,68.527083 -33.866664,10e-7"
+     id="path2467"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 82.020833,80.433334 -33.866667,10e-7"
+     id="path2505"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 82.020833,71.172917 c -6.614583,0 -6.614583,6.614584 0,6.614584"
+     id="path2663"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 47.625,83.079167 c -6.614583,0 -6.614583,6.614584 0,6.614584"
+     id="path2761"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="47.095833"
+     y="47.360416"
+     id="text56"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato">AUTHENTICATION_METHOD=ldap</text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 13.229166,94.985417 68.791667,10e-7"
+     id="path2901"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="M 82.020833,100.27708 H 148.96041"
+     id="path2939"
+     sodipodi:nodetypes="cc" />
+  <text
+     class="mlabel"
+     x="151.34166"
+     y="103.98125"
+     id="text13451"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Lato;-inkscape-font-specification:Lato"><tspan
+       sodipodi:role="line"
+       id="tspan13467"
+       x="151.34166"
+       y="103.98125">Enforces</tspan><tspan
+       sodipodi:role="line"
+       id="tspan13469"
+       x="151.34166"
+       y="106.73125">authorization</tspan><tspan
+       sodipodi:role="line"
+       x="151.34166"
+       y="109.48125"
+       id="tspan13471">policy</tspan></text>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Dot);marker-end:url(#arrow)"
+     d="m 149.48958,102.92292 c -6.61458,0 -6.61458,6.61458 0,6.61458"
+     id="path13453"
+     sodipodi:nodetypes="cc" />
+</svg>

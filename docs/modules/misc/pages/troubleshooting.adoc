@@ -218,46 +218,14 @@ Caddy:: Run this command:
 # journalctl --unit caddy.service
 ----
 
-[#ldap]
-== LDAP Settings
+[#authentication]
+== Authentication
 
-The command
-xref:usage:manpages/slurm-web-ldap-check.adoc[`slurm-web ldap-check`] is
-automatically installed with Slurm-web. This is a utility to validate
-xref:conf:conf/gateway.adoc#_ldap[LDAP settings] in gateway configuration file.
+When users cannot sign in through the gateway, see the dedicated troubleshooting
+guides for each authentication method:
 
-Run this utility with this command:
-
-[source,console]
-----
-# slurm-web ldap-check
-INFO ⸬ Running slurm-web ldap-check
-Found 10 user(s) in LDAP directory:
-- sstevenson (Scott Stevenson) [users, admin]
-- jwalls (Jennifer Walls) [users, biology]
-- strevino (Samantha Trevino) [users, biology]
-- cingram (Christopher Ingram) [users, biology]
-- nlee (Nathan Lee) [users, biology]
-- mdavis (Michael Davis) [users, physic, acoustic]
-- mgardner (Micheal Gardner) [users, physic, acoustic]
-- kthomas (Kevin Thomas) [users, physic, acoustic]
-- clewis (Charles Lewis) [users, physic, optic]
-- msantos (Michelle Santos) [users, physic, optic]
-----
-
-When LDAP is configured successfully, the command prints the list of users in
-LDAP directory with their groups memberships, as visible by Slurm-web gateway.
-In other cases, a message is printed to help diagnose the source of error.
-
-More debug messages can be printed with these options:
-
-[source,console]
-----
-# slurm-web ldap-check --debug --debug-flags rfl
-----
-
-This notably adds all LDAP requests with filters sent to the LDAP server and
-all intermediate results.
+* xref:conf:auth/ldap.adoc#troubleshooting[LDAP]
+* xref:conf:auth/oidc.adoc#troubleshooting[OIDC]
 
 == Authorization Policy
 

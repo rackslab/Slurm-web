@@ -1,0 +1,162 @@
+= LDAP Authentication
+
+Slurm-web supports users authentication with an enterprise LDAP directory
+(OpenLDAP, FreeIPA, Active Directory, etc.).
+
+image::auth/slurm-web_ldap_auth.png[width=60%]
+
+Users enter their directory username and password on the login page. The gateway
+validates credentials and group memberships with LDAP, then issues a Slurm-web
+JWT for the session.
+
+== Prerequisites
+
+* The gateway host must reach the LDAP server (network, firewall, DNS).
+* HTTPS is strongly recommended on the production HTTP server in front of the
+  gateway to protect passwords in transit. See xref:conf:wsgi/index.adoc[production
+  HTTP server setup].
+* LDAP search bases (`user_base`, `group_base`) must match your directory layout.
+
+== Authentication flow
+
+The diagram below shows the main components and message exchanges when a user
+opens the dashboard and signs in with LDAP:
+
+.LDAP authentication flow [xref:image$auth/slurm-web_ldap_auth_flow.svg[icon:download[] SVG]]
+image::auth/slurm-web_ldap_auth_flow.png[]
+
+.Steps
+. The user opens the login page in the browser. The frontend loads
+  xref:conf:conf/gateway.adoc#_ui[`ui`] configuration from `GET /config.json` and
+  learns that `AUTHENTICATION_METHOD` is `ldap`.
+. The user submits username and password in the login form.
+. The frontend sends `POST /api/login` with credentials to the gateway.
+. The gateway connects to the LDAP directory, authenticates the user, and
+  retrieves group memberships.
+. The gateway issues a Slurm-web JWT containing login, full name, and groups.
+. The frontend stores the JWT in the browser and uses it as a Bearer token on
+  later API calls.
+. The gateway proxies requests to cluster agents with the same JWT.
+. Each agent applies xref:conf:policy.adoc[authorization policy] using JWT
+  groups.
+
+[NOTE]
+====
+Group membership lookup supports both RFC 2307 (legacy NIS) and RFC 2307 bis
+layouts:
+
+* *RFC 2307 (NIS)* — groups are usually `posixGroup` entries; members are listed
+  with `memberUid` (login name). The user's primary group (`gidNumber` on the user
+  entry) is included when a `posixGroup` shares the same `gidNumber`.
+* *RFC 2307 bis* — groups often use `groupOfNames` (alongside or instead of
+  `posixGroup`); members are listed with `member` (full user DN).
+
+By default, `group_object_classes` is `posixGroup` and `groupOfNames`. At login,
+the gateway searches under `group_base` for groups matching `memberUid=<login>`,
+`member=<user DN>`, or the user's primary `gidNumber`.
+====
+
+== Setup
+
+Enable LDAP in [.path]#`/etc/slurm-web/gateway.ini`# with `method=ldap` and a
+`[ldap]` section adapted to your directory:
+
+[source,ini]
+----
+[authentication]
+enabled=yes
+method=ldap
+
+[ldap]
+uri=ldap://ldap.example.com <1>
+user_base=ou=people,dc=example,dc=org <2>
+group_base=ou=groups,dc=example,dc=org <3>
+----
+
+<1> LDAP server URI (`ldap://`, `ldaps://`, or `ldap://` with `starttls`).
+<2> Subtree where user entries are searched.
+<3> Subtree where group entries are searched.
+
+Other common `[ldap]` options:
+
+* `bind_dn`, `bind_password`, or `bind_password_file` — service account bind when
+  anonymous search is not permitted
+* `group_object_classes`, `group_name_attribute`, and related parameters — when
+  your directory uses other object classes or attribute names than the defaults
+* `cacert` and `starttls` — TLS to the directory
+* `restricted_groups` — allow sign-in only for listed groups; when omitted, any
+  user who can authenticate in the directory may connect. Names must match
+  `@group` entries in policy
+
+See xref:conf:conf/gateway.adoc#_ldap[full `ldap` parameter reference].
+
+Restart the gateway after any change to [.path]#`gateway.ini`#:
+
+[source,console]
+----
+# systemctl restart slurm-web-gateway.service  # or slurm-web-gateway-uwsgi.service
+----
+
+[#troubleshooting]
+== Troubleshooting
+
+A utility is available to validate LDAP configuration: `slurm-web ldap-check`.
+This command is installed with Slurm-web gateway. It validates
+xref:conf:conf/gateway.adoc#_ldap[LDAP settings] in the gateway configuration
+file:
+
+[source,console]
+----
+# slurm-web ldap-check
+INFO ⸬ Running slurm-web ldap-check
+Found 10 user(s) in LDAP directory:
+- sstevenson (Scott Stevenson) [users, admin]
+- jwalls (Jennifer Walls) [users, biology]
+- strevino (Samantha Trevino) [users, biology]
+- cingram (Christopher Ingram) [users, biology]
+- nlee (Nathan Lee) [users, biology]
+- mdavis (Michael Davis) [users, physic, acoustic]
+- mgardner (Micheal Gardner) [users, physic, acoustic]
+- kthomas (Kevin Thomas) [users, physic, acoustic]
+- clewis (Charles Lewis) [users, physic, optic]
+- msantos (Michelle Santos) [users, physic, optic]
+----
+
+When LDAP is configured successfully, the command prints users in the directory
+with their group memberships, as visible to the Slurm-web gateway. Otherwise, a
+message is printed to help diagnose the error.
+
+To help diagnose errors, use the following flags for more detailed debug output:
+
+[source,console]
+----
+# slurm-web ldap-check --debug --debug-flags rfl
+----
+
+This adds LDAP request filters sent to the server and intermediate results.
+
+Some common errors and their potential causes:
+
+|===
+|Symptom |Things to check
+
+|Bind or connection errors
+|LDAP URI, firewall, TLS settings (`cacert`, STARTTLS), `bind_dn` credentials
+
+|User not found
+|`user_base`, `lookup_user_dn`, username format
+
+|Empty or wrong groups
+|`group_base`, group object classes, `lookup_as_user`
+
+|User cannot sign in despite valid directory account
+|`restricted_groups` on gateway; group names must match policy `@group` entries
+|===
+
+.More details
+****
+* xref:conf:conf/gateway.adoc[Gateway configuration reference]
+* xref:conf:policy.adoc[Authorization policy]
+* xref:overview:architecture.adoc#protocols[Protocols and JWT]
+* xref:auth/index.adoc[Authentication overview]
+****
