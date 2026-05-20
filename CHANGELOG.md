@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add dependency on `RFL.build` >= 1.8.0 for testing.
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
-  - Add upgrade guide for migration from v6 to v7.
+  - Add upgrade guide for migration from v6 to v7, with specific section for
+    gateway session key creation.
   - Add Authentication pages with detailed LDAP and OIDC authentication flows
     and setup guides.
   - Add manpage for `slurm-web gen-session-key` command.

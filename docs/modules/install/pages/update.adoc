@@ -113,11 +113,13 @@ up-and-running.
 To update Slurm-web from version 6 to version 7, some manual additional steps
 must be performed.
 
+=== Package Repositories
+
 To avoid impacting users with automatic upgrades, Slurm-web 7 packages are
 published to a separate repository. Package repositories settings must be
 updated to install this version.
 
-=== DNF
+==== DNF
 
 NOTE: This procedure works on
 https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
@@ -248,7 +250,7 @@ Run this command to update repositories and packages:
 # dnf update
 ----
 
-=== APT
+==== APT
 
 NOTE: This procedure works https://debian.org/[Debian] and
 https://ubuntu.com/[Ubuntu].
@@ -374,7 +376,7 @@ Run this command to update repositories and packages:
 # apt update && apt upgrade
 ----
 
-=== Zypper
+==== Zypper
 
 This procedure works on
 https://www.suse.com/products/server/[SUSE Linux Entreprise Server (SLES)] and
@@ -433,3 +435,28 @@ Run this command to update repositories and packages:
 ----
 # zypper update
 ----
+
+=== Generate gateway session key
+
+Slurm-web 7 requires a gateway session secret file to secure server-side login
+state during authentication flows. Installations upgraded from version 6 do not
+have this file. Generate it as root after upgrading packages and before
+restarting the gateway:
+
+[source,console]
+----
+# slurm-web gen-session-key
+----
+
+NOTE: By default, the session secret key file is generated in
+[.path]#`/var/lib/slurm-web/session.key`#. You can set `session_key` in the
+`[service]` section of [.path]#`/etc/slurm-web/gateway.ini`# to use a custom
+path.
+
+See xref:usage:manpages/slurm-web-gen-session-key.adoc[`slurm-web gen-session-key`
+command manpage] and xref:conf:auth/oidc.adoc[OIDC authentication] for more
+details.
+
+Then follow the xref:#_restart_services[restart services] and
+xref:#_check_status[check status] steps in the general procedure above to
+complete the upgrade.
