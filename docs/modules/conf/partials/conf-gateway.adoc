@@ -113,6 +113,21 @@ flags.
 
 |-
 
+|session_key
+|path
+|Path to file with the secret key used to protect server-side sessions
+during authentication.
+
+
+
+*Example:* `/var/lib/slurm-web/session.key`
+
+
+
+*Default:* `/var/lib/slurm-web/session.key`
+
+|-
+
 
 |===
 
@@ -354,6 +369,7 @@ the default value only.
 
 
 * `ldap`
+* `oidc`
 
 
 *Default:* `ldap`
@@ -365,7 +381,213 @@ the default value only.
 
 
 
+== `oidc`
+
+Parameters in this section apply when `authentication` > `method` is set to
+`oidc`. Slurm-web uses the OAuth 2.0 authorization code flow to authenticate
+users against an OpenID Connect provider such as Keycloak or Authentik. Enable
+PKCE with the optional `pkce` parameter (`S256` or `plain`).
+
+Register the redirect URI `{ui.host}/api/oidc/callback` (including any path
+prefix defined in `ui.host`) in the identity provider. Map user groups into
+the ID token or userinfo endpoint under the configured `groups_claim` for RBAC
+in the policy file.
+
+For setup instructions, see xref:conf:auth/oidc.adoc[].
+
+
+[cols="2l,1,5a,^1"]
+|===
+|Parameter|Type|Description|Required
+
+
+|issuer
+|uri
+|OIDC issuer URL used for discovery
+
+
+*Example:* `https://idp.example.com/realms/org`
+
+
+_No default value_
+
+|-
+
+|client_id
+|str
+|OIDC client identifier
+
+
+
+_No default value_
+
+|-
+
+|client_secret
+|password
+|OIDC client secret for confidential clients. Optional for public clients
+(omit `client_secret` and `client_secret_file`; `pkce` must then be set).
+
+
+
+*Example:* `SECR3T`
+
+
+_No default value_
+
+|-
+
+|client_secret_file
+|path
+|As an alternative to `client_secret` parameter, path to a separate file to
+read OIDC client secret from. When this parameter is defined, the
+`client_secret` parameter is ignored. Optional for public clients.
+
+
+
+*Example:* `/etc/slurm-web/oidc_client_secret`
+
+
+_No default value_
+
+|-
+
+|redirect_uri
+|uri
+|OIDC redirect URI registered at the identity provider. When not defined,
+it is automatically derived from `ui.host` with path `/api/oidc/callback`.
+
+
+
+
+_No default value_
+
+|-
+
+|scope
+|str
+|OIDC authorization scopes
+
+
+
+
+*Default:* `openid profile email`
+
+|-
+
+|subject_claim
+|str
+|Claim used as user login in Slurm-web
+
+
+
+
+*Default:* `sub`
+
+|-
+
+|fullname_claim
+|str
+|Claim used as user full name in Slurm-web
+
+
+
+
+*Default:* `name`
+
+|-
+
+|groups_claim
+|str
+|Claim used for user groups in Slurm-web RBAC. When empty, groups are not
+retrieved from userinfo endpoint.
+
+
+
+
+
+*Default:* `groups`
+
+|-
+
+|restricted_groups
+|list[str]
+|List of user groups allowed to connect. When this parameter is not
+defined, all authenticated OIDC users are authorized to sign in.
+
+
+
+*Example:*
+
+
+* `admins`
+
+* `biology`
+
+
+
+_No default value_
+
+|-
+
+|pkce
+|str
+|PKCE code challenge method for the authorization code flow. When not
+defined, PKCE is disabled (typical for confidential clients). Use S256
+(recommended). `plain` is supported for legacy identity providers only.
+Required for public clients (no client secret).
+
+
+
+
+*Choices:*
+
+
+* `S256`
+* `plain`
+
+_No default value_
+
+|-
+
+|verify_ssl
+|bool
+|Verify TLS certificate when connecting to OIDC provider
+
+
+
+
+*Default:* `True`
+
+|-
+
+|cacert
+|path
+|Path to CA certificate used to validate signature of OIDC provider
+certificate. When not defined, the default system CA certificates is used.
+
+
+
+*Example:* `/path/to/certificate.pem`
+
+
+_No default value_
+
+|-
+
+
+|===
+
+
+
 == `ldap`
+
+Parameters in this section apply when `authentication` > `method` is set to
+`ldap` (the default). The gateway validates username and password against the
+LDAP directory and retrieves group memberships at login.
+
+For setup instructions, see xref:conf:auth/ldap.adoc[].
+
 
 [cols="2l,1,5a,^1"]
 |===

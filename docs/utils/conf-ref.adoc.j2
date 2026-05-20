@@ -15,6 +15,10 @@
 {% for section in definition.sections %}
 
 == `{{ section.name }}`
+{%- if section.doc %}
+
+{{ section.doc }}
+{%- endif %}
 
 [cols="2l,1,5a,^1"]
 |===

@@ -34,7 +34,7 @@
 {%- set default = parameter.default %}
 {%- if parameter._type == "bool" %}
 {%- set default = "yes" if default == True else "no" %}
-{%- elif parameter._type == "uri" %}
+{%- elif parameter._type == "uri" and default is not none %}
 {%- set default = default.geturl() %}
 {%- endif %}
 #
@@ -55,9 +55,10 @@
 {%- set value = parameter.example %}
 {%- else %}
 {%- set value = parameter.default %}
-{%- if parameter._type == "uri" %}
-{%- set value = value.geturl() %}
 {%- endif %}
+{%- if value is not none %}
+{%- if parameter._type == "uri" and value.geturl is defined %}
+{%- set value = value.geturl() %}
 {%- endif %}
 {%- if parameter._type == "bool" %}
 {%- set value = "yes" if value == True else "no" %}
@@ -66,5 +67,6 @@
 {%- set value = "\n  " + value | join('\n  ') %}
 {%- endif %}
 {{ parameter.name }}={{ value }}
+{%- endif %}
 {%- endfor %}
 {%- endfor %}
