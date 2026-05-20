@@ -19,6 +19,7 @@ legacy_to_subcommand() {
         slurm-web-gateway) echo "gateway" ;;
         slurm-web-ldap-check) echo "ldap-check" ;;
         slurm-web-gen-jwt-key) echo "gen-jwt-key" ;;
+        slurm-web-gen-session-key) echo "gen-session-key" ;;
         slurm-web-show-conf) echo "show-conf" ;;
         slurm-web-connect-check) echo "connect-check" ;;
         *)

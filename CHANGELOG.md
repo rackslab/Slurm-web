@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
 - gensession: Add `slurm-web gen-session-key` command to generate gateway
   session secret file.
+- lib: Support `slurm-web gen-session-key` in compat wrapper.
 - pkgs:
   - Add dependency on `RFL.authentication[jwt]` extra package provided
     in RFL >= 1.8.0.
