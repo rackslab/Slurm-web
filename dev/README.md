@@ -130,6 +130,29 @@ $ scontrol update nodename=cn051 state=drain reason="ECC memory error"
 $ scontrol update nodename=cn084 state=down reason="CPU dead"
 ```
 
+## OIDC with Keycloak
+
+To test SSO authentication, install [Podman](https://podman.io/) and start the
+development environment with Keycloak. The realm is federated to the first
+cluster’s FireHPC LDAP tunnel and the gateway is preconfigured for OIDC:
+
+```console
+$ dev/setup-dev-environment --with-keycloak
+```
+
+Keycloak uses the first selected cluster’s LDAP port and DN (for example `nova`
+on port **3390** when all clusters are enabled). The gateway is generated with
+`authentication.method=oidc` and issuer `http://localhost:8080/realms/slurm`.
+
+Sign in with a FireHPC user password (same accounts as LDAP login).
+
+In the Keycloak Admin Console (**realm `slurm`**, not `master`):
+
+- **Users** does not list everyone by default: use the search box (for example
+  `*` or a username) to see the 10 federated users after sync.
+- **Groups** are imported automatically at startup (`sync_ldap_groups`); they
+  come from `ou=groups,dc=cluster,dc=<first-cluster>`.
+
 ## Build Packages
 
 Build development packages with Fatbuildr:

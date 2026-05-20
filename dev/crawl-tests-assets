@@ -13,6 +13,8 @@ import sys
 import getpass
 import logging
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+
 from rfl.log import setup_logger
 
 from crawler.lib import (

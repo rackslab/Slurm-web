@@ -30,12 +30,12 @@ from rfl.settings.errors import (
 
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 
+from paths import ASSETS
+
 if t.TYPE_CHECKING:
     from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 
 logger = logging.getLogger(__name__)
-
-ASSETS = Path(__file__).parent.resolve() / ".." / ".." / "tests" / "assets"
 
 # Supported slurmrestd API versions to try during discovery, in descending order
 # (newest first)

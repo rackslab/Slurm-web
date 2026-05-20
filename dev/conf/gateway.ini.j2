@@ -1,6 +1,7 @@
 [service]
 cors=yes
 port={{ service_port }}
+session_key={{ session_key }}
 
 [ui]
 host=http://localhost:{{ service_port }}{{ gateway_prefix }}
@@ -21,7 +22,20 @@ url =
 [jwt]
 key={{ jwt_key }}
 
-{%- if not anonymous %}
+{%- if oidc %}
+[authentication]
+enabled=yes
+method=oidc
+
+[oidc]
+issuer=http://localhost:{{ keycloak_port }}/realms/slurm
+client_id=slurm-web
+client_secret={{ oidc_client_secret }}
+pkce=S256
+subject_claim=preferred_username
+groups_claim=groups
+verify_ssl=no
+{%- elif not anonymous %}
 [authentication]
 enabled=yes
 
