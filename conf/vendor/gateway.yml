@@ -45,6 +45,13 @@ service:
     doc: |
       List of debug flags to enable. Special value `ALL` enables all debug
       flags.
+  session_key:
+    type: path
+    default: /var/lib/slurm-web/session.key
+    doc: |
+      Path to file with the secret key used to protect server-side sessions
+      during authentication.
+    ex: /var/lib/slurm-web/session.key
 
 ui:
   host:
@@ -137,6 +144,7 @@ agents:
       you are doing. This parameter is more intented for Slurm-web developers
       rather than end users. Slurm-web is officially tested and validated with
       the default value only.
+
 authentication:
   enabled:
     type: bool
@@ -146,8 +154,83 @@ authentication:
     type: str
     choices:
     - ldap
+    - oidc
     default: ldap
     doc: Authentification method
+
+oidc:
+  issuer:
+    type: uri
+    doc: OIDC issuer URL used for discovery
+    ex: https://idp.example.com/realms/org
+  client_id:
+    type: str
+    doc: OIDC client identifier
+  client_secret:
+    type: password
+    doc: |
+      OIDC client secret for confidential clients. Optional for public clients
+      (omit `client_secret` and `client_secret_file`; `pkce` must then be set).
+    ex: SECR3T
+  client_secret_file:
+    type: path
+    doc: |
+      As an alternative to `client_secret` parameter, path to a separate file to
+      read OIDC client secret from. When this parameter is defined, the
+      `client_secret` parameter is ignored. Optional for public clients.
+    ex: /etc/slurm-web/oidc_client_secret
+  redirect_uri:
+    type: uri
+    doc: |
+      OIDC redirect URI registered at the identity provider. When not defined,
+      it is automatically derived from `ui.host` with path `/api/oidc/callback`.
+  scope:
+    type: str
+    default: openid profile email
+    doc: OIDC authorization scopes
+  subject_claim:
+    type: str
+    default: sub
+    doc: Claim used as user login in Slurm-web
+  fullname_claim:
+    type: str
+    default: name
+    doc: Claim used as user full name in Slurm-web
+  groups_claim:
+    type: str
+    default: groups
+    doc: |
+      Claim used for user groups in Slurm-web RBAC. When empty, groups are not
+      retrieved from userinfo endpoint.
+  restricted_groups:
+    type: list
+    content: str
+    doc: |
+      List of user groups allowed to connect. When this parameter is not
+      defined, all authenticated OIDC users are authorized to sign in.
+    ex:
+    - admins
+    - biology
+  pkce:
+    type: str
+    choices:
+    - S256
+    - plain
+    doc: |
+      PKCE code challenge method for the authorization code flow. When not
+      defined, PKCE is disabled (typical for confidential clients). Use S256
+      (recommended). `plain` is supported for legacy identity providers only.
+      Required for public clients (no client secret).
+  verify_ssl:
+    type: bool
+    default: true
+    doc: Verify TLS certificate when connecting to OIDC provider
+  cacert:
+    type: path
+    doc: |
+      Path to CA certificate used to validate signature of OIDC provider
+      certificate. When not defined, the default system CA certificates is used.
+    ex: /path/to/certificate.pem
 
 ldap:
   uri:

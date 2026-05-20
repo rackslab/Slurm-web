@@ -22,8 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
   - Add upgrade guide for migration from v6 to v7.
-- conf: Prepend default list of supported API versions in `[slurmrestd]` >
-  `versions` parameter with _0.0.45_.
+- conf:
+  - Prepend default list of supported API versions in `[slurmrestd]` >
+    `versions` parameter with _0.0.45_.
+  - Add support for _oidc_ value for `[auth]` > `method` gateway parameter.
+  - Introduce new `[oidc]` section in gateway configuration.
 
 ### Changed
 - pkgs: Bump dependency on `RFL.authentication` >= 1.8.0.
