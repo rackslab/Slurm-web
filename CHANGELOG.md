@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     in RFL >= 1.8.0.
   - Add gateway dependency on `RFL.authentication[ldap]` extra package provided
     in RFL >= 1.8.0.
+  - Add gateway dependency on `RFL.authentication[oidc]` extra package provided
+    in RFL >= 1.8.0.
   - Add dependency on `RFL.build` >= 1.8.0 for testing.
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
