@@ -291,11 +291,26 @@ xref:conf:conf/agent.adoc#_service[`service` section of agent configuration].
 * xref:conf:conf/gateway.adoc[]
 --
 
-== Slurm-web JWT signing key
+== Slurm-web secret keys
 
-Slurm-web authenticates users with https://jwt.io/[JSON Web Token] (JWT) for
-communications between its components. A secret key is required to
-cryptographically sign generated tokens. Run this command to generate this key:
+Before starting gateway services, generate two secret files on the gateway host
+as root with the `slurm-web` CLI: a gateway session secret to secure server-side
+login state during authentication flows, and a https://jwt.io/[JSON Web Token]
+(JWT) signing key for authentication between Slurm-web components.
+
+Generate the gateway session secret key (default
+[.path]#`/var/lib/slurm-web/session.key`#) with:
+
+[source,console]
+----
+# slurm-web gen-session-key
+INFO ⸬ Running slurm-web gen-session-key
+INFO ⸬ Generated session key file /var/lib/slurm-web/session.key
+INFO ⸬ Setting ownership of session key for slurm-web user
+----
+
+Generate the JWT signing key (default [.path]#`/var/lib/slurm-web/jwt.key`#)
+with:
 
 [source,console]
 ----
@@ -309,6 +324,7 @@ INFO ⸬ Setting read permission on key for slurm-web user
 --
 .More links
 * xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
+* xref:usage:manpages/slurm-web-gen-session-key.adoc[`slurm-web gen-session-key` command manpage]
 * xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web gen-jwt-key` command manpage]
 --
 
