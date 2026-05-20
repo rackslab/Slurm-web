@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-import json
 import logging
 from functools import wraps
 import asyncio
@@ -13,8 +12,6 @@ import jinja2
 from flask import Response, current_app, jsonify, request, abort, render_template
 import aiohttp
 from rfl.web.tokens import check_jwt
-from rfl.authentication.user import AnonymousUser
-from rfl.authentication.errors import LDAPAuthenticationError
 from rfl.core.asyncio import asyncio_run
 
 from ..markdown import render_html
@@ -43,57 +40,6 @@ def validate_cluster(view):
 
 def version():
     return Response(f"Slurm-web gateway v{get_version()}\n", mimetype="text/plain")
-
-
-def login():
-    idents = json.loads(request.data)
-    # Check authentication is enabled or fail with 500
-    if not current_app.settings.authentication.enabled:
-        logger.warning(
-            "Authentication attempt from user %s but authentication is disabled",
-            idents["user"],
-        )
-        abort(500, "Unable to authenticate")
-    if current_app.settings.authentication.method == "oidc":
-        abort(405, "Password login is not available with OIDC authentication")
-    try:
-        user = current_app.authentifier.login(
-            user=idents["user"], password=idents["password"]
-        )
-    except LDAPAuthenticationError as err:
-        logger.warning(
-            "LDAP authentication error for user %s: %s", idents["user"], str(err)
-        )
-        abort(401, str(err))
-    logger.info("User %s authenticated successfully", user)
-    # generate token
-    token = current_app.jwt.generate(
-        user=user, duration=current_app.settings.jwt.duration
-    )
-    return jsonify(
-        result="Authentication successful",
-        token=token,
-        fullname=user.fullname,
-        groups=user.groups,
-    )
-
-
-def anonymous():
-    # Check authentication is disabled or fail with 401
-    if current_app.settings.authentication.enabled:
-        logger.warning(
-            "Anonymous access attempt but authentication is enabled",
-        )
-        abort(401, "Unauthorized anonymous access")
-    # Generate token
-    token = current_app.jwt.generate(
-        user=AnonymousUser(),
-        duration=current_app.settings.jwt.duration,
-    )
-    return jsonify(
-        result="Successful anonymous access",
-        token=token,
-    )
 
 
 def message_login():

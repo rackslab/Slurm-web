@@ -11,7 +11,6 @@ import logging
 import ssl
 
 from rfl.web.tokens import RFLTokenizedWebApp
-from rfl.authentication.ldap import LDAPAuthentifier
 from rfl.core.asyncio import asyncio_run
 import aiohttp
 from flask import Response
@@ -32,6 +31,8 @@ from ..conf import load_secret_from_file
 from ..ui import prepare_ui_assets
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
+from ..views.auth import anonymous as anonymous_views
+from ..views.auth import ldap as ldap_views
 from ..views.auth import oidc as oidc_views
 from ..errors import (
     SlurmwebConfigurationError,
@@ -113,11 +114,11 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
     NAME = "slurm-web gateway"
     VIEWS = {
         SlurmwebAppRoute("/api/version", views.version),
-        SlurmwebAppRoute("/api/login", views.login, methods=["POST"]),
+        SlurmwebAppRoute("/api/login", ldap_views.login, methods=["POST"]),
         SlurmwebAppRoute("/api/oidc/login", oidc_views.oidc_login),
         SlurmwebAppRoute("/api/oidc/callback", oidc_views.oidc_callback),
         SlurmwebAppRoute("/api/oidc/session", oidc_views.oidc_session),
-        SlurmwebAppRoute("/api/anonymous", views.anonymous),
+        SlurmwebAppRoute("/api/anonymous", anonymous_views.anonymous),
         SlurmwebAppRoute("/api/messages/login", views.message_login),
         SlurmwebAppRoute("/api/clusters", views.clusters),
         SlurmwebAppRoute("/api/users", views.users),
@@ -334,6 +335,8 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
 
     def _setup_ldap_authentifier(self):
         """Instantiate LDAPAuthentifier from gateway ldap settings."""
+        from rfl.authentication.ldap import LDAPAuthentifier
+
         bind_password = (
             load_secret_from_file(
                 self.settings.ldap.bind_password_file, "LDAP bind password"
