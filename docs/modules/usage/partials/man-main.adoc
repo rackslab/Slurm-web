@@ -20,8 +20,10 @@ The following subcommands are available:
   xref:manpages/slurm-web-gateway.adoc[*slurm-web-gateway*](1)).
 *ldap-check*:: Check LDAP settings for Slurm-web (see
   xref:manpages/slurm-web-ldap-check.adoc[*slurm-web-ldap-check*](1)).
-*gen-jwt-key*:: Generate a secret JWT signing key for Slurm-web (see
+*gen-jwt-key*:: Generate secret JWT signing key for Slurm-web (see
   xref:manpages/slurm-web-gen-jwt-key.adoc[*slurm-web-gen-jwt-key*](1)).
+*gen-session-key*:: Generate session secret key for Slurm-web gateway (see
+  xref:manpages/slurm-web-gen-session-key.adoc[*slurm-web-gen-session-key*](1)).
 *show-conf*:: Dump Slurm-web components configuration settings (see
   xref:manpages/slurm-web-show-conf.adoc[*slurm-web-show-conf*](1)).
 *connect-check*:: Check connection from Slurm-web agent to *slurmrestd* (see

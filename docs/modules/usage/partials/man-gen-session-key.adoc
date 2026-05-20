@@ -1,0 +1,20 @@
+== Synopsis
+
+[.cli-opt]#*slurm-web gen-session-key*# `[_GENERAL OPTIONS_]`
+
+== Description
+
+The Slurm-web gateway requires a server-side session secret key at startup
+(`service.session_key`, default [.path]#`/var/lib/slurm-web/session.key`#). This
+command generates the session secret key file and protects it with restrictive
+permissions for the _slurm-web_ system user.
+
+include::gateway-opts.adoc[]
+
+== Exit status
+
+*0*::
+  `slurm-web gen-session-key` has processed command with success.
+
+*1*::
+  `slurm-web gen-session-key` encountered an error.
