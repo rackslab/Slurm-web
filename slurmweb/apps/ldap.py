@@ -10,7 +10,8 @@ import logging
 from rfl.authentication.ldap import LDAPAuthentifier
 from rfl.authentication.errors import LDAPAuthenticationError
 
-from . import SlurmwebGenericApp, load_ldap_password_from_file
+from ..conf import load_secret_from_file
+from . import SlurmwebGenericApp
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,9 @@ class SlurmwebAppLDAPCheck(SlurmwebGenericApp):
             sys.exit(1)
 
         bind_password = (
-            load_ldap_password_from_file(self.settings.ldap.bind_password_file)
+            load_secret_from_file(
+                self.settings.ldap.bind_password_file, "LDAP bind password"
+            )
             or self.settings.ldap.bind_password
         )
         self.authentifier = LDAPAuthentifier(

@@ -54,6 +54,8 @@ def login():
             idents["user"],
         )
         abort(500, "Unable to authenticate")
+    if current_app.settings.authentication.method == "oidc":
+        abort(405, "Password login is not available with OIDC authentication")
     try:
         user = current_app.authentifier.login(
             user=idents["user"], password=idents["password"]
@@ -361,19 +363,20 @@ def racksdb(cluster: str, query: str):
 
 
 def ui_config():
-    return jsonify(
-        {
-            "API_SERVER": (
-                current_app.settings.ui.host.geturl()
-                if current_app.settings.ui.host is not None
-                else f"http://localhost:{current_app.settings.service.port}"
-            ),
-            "AUTHENTICATION": current_app.settings.authentication.enabled,
-            "RACKSDB_ROWS_LABELS": current_app.settings.ui.racksdb_rows_labels,
-            "RACKSDB_RACKS_LABELS": current_app.settings.ui.racksdb_racks_labels,
-            "VERSION": get_version(),
-        }
-    )
+    config = {
+        "API_SERVER": (
+            current_app.settings.ui.host.geturl()
+            if current_app.settings.ui.host is not None
+            else f"http://localhost:{current_app.settings.service.port}"
+        ),
+        "AUTHENTICATION": current_app.settings.authentication.enabled,
+        "RACKSDB_ROWS_LABELS": current_app.settings.ui.racksdb_rows_labels,
+        "RACKSDB_RACKS_LABELS": current_app.settings.ui.racksdb_racks_labels,
+        "VERSION": get_version(),
+    }
+    if current_app.settings.authentication.enabled:
+        config["AUTHENTICATION_METHOD"] = current_app.settings.authentication.method
+    return jsonify(config)
 
 
 def ui_files(name="index.html"):

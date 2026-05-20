@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- gateway: Add support for SSO authentication with OpenID Connect (#268).
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
 - pkgs:
