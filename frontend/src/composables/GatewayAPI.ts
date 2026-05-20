@@ -852,6 +852,21 @@ export function useGatewayAPI() {
     }
   }
 
+  async function oidcSession(): Promise<GatewayLoginResponse> {
+    try {
+      /* withCredentials (last argument) must be true so the browser sends the
+       * gateway session cookie. After OIDC callback, the JWT is stored
+       * server-side in that session until this endpoint returns it; there is no
+       * Bearer token yet (withToken is false). */
+      return (await restAPI.get('/oidc/session', false, 'json', true)) as GatewayLoginResponse
+    } catch (error) {
+      if (error instanceof APIServerError && error.status == 401) {
+        throw new AuthenticationError(error.message)
+      }
+      throw error
+    }
+  }
+
   async function anonymousLogin(): Promise<GatewayAnonymousLoginResponse> {
     try {
       return (await restAPI.get('/anonymous', false)) as GatewayAnonymousLoginResponse
@@ -1047,6 +1062,7 @@ export function useGatewayAPI() {
 
   return {
     login,
+    oidcSession,
     anonymousLogin,
     message_login,
     clusters,

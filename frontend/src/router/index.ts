@@ -12,6 +12,7 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import DashboardView from '@/views/DashboardView.vue'
 import LoginView from '@/views/LoginView.vue'
+import OidcCallbackView from '@/views/OidcCallbackView.vue'
 import AnonymousView from '@/views/AnonymousView.vue'
 import SignoutView from '@/views/SignoutView.vue'
 import SettingsLayout from '@/components/settings/SettingsLayout.vue'
@@ -48,6 +49,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/auth/oidc/callback',
+      name: 'oidc-callback',
+      component: OidcCallbackView
     },
     {
       path: '/anonymous',
@@ -204,6 +210,7 @@ router.beforeEach(async (to, from) => {
   /* redirect to login page if not logged in and trying to access a restricted page */
   const publicPages = [
     '/login',
+    '/auth/oidc/callback',
     '/signout',
     '/anonymous',
     '/tests/jobs-status-badges',

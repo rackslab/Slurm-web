@@ -9,9 +9,12 @@
 import type { App, Plugin } from 'vue'
 import { inject } from 'vue'
 
+export type AuthenticationMethod = 'ldap' | 'oidc'
+
 export interface RuntimeConfiguration {
   api_server: string
   authentication: boolean
+  authentication_method: AuthenticationMethod | null
   racksdb_rows_labels: boolean
   racksdb_racks_labels: boolean
   version: string
@@ -40,6 +43,7 @@ export const initRuntimeConfiguration = async (): Promise<RuntimeConfiguration> 
   return {
     api_server: value.API_SERVER,
     authentication: value.AUTHENTICATION,
+    authentication_method: value.AUTHENTICATION_METHOD ?? null,
     racksdb_rows_labels: value.RACKSDB_ROWS_LABELS,
     racksdb_racks_labels: value.RACKSDB_RACKS_LABELS,
     version: value.VERSION

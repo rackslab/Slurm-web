@@ -22,7 +22,8 @@ export function useRESTAPI() {
 
   function requestConfig(
     withToken: boolean = true,
-    responseType: ResponseType = 'json'
+    responseType: ResponseType = 'json',
+    withCredentials: boolean = false
   ): AxiosRequestConfig {
     const config: AxiosRequestConfig = {
       responseType: responseType,
@@ -30,6 +31,9 @@ export function useRESTAPI() {
     }
     if (withToken === true) {
       config.headers = { Authorization: `Bearer ${authStore.token}` }
+    }
+    if (withCredentials === true) {
+      config.withCredentials = true
     }
     return config
   }
@@ -72,12 +76,13 @@ export function useRESTAPI() {
   async function get<CType>(
     resource: string,
     withToken: boolean = true,
-    responseType: ResponseType = 'json'
+    responseType: ResponseType = 'json',
+    withCredentials: boolean = false
   ): Promise<CType> {
     console.log(`Slurm-web gateway API get ${resource}`)
     return (
       await requestServer(() => {
-        return http.get(resource, requestConfig(withToken, responseType))
+        return http.get(resource, requestConfig(withToken, responseType, withCredentials))
       })
     ).data as CType
   }
