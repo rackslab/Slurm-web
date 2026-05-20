@@ -60,6 +60,7 @@ List of admitted scopes in the first line of Git commit messages:
 * `gateway`: gateway backend application
 * `agent`: agent backend application
 * `genjwt`: `slurm-web-gen-jwt-key` command
+* `gensession`: `slurm-web-gen-session-key` command
 * `conf`: configuration specific modification
 * `dev`: tools for development environment (in `dev/` folder)
 
