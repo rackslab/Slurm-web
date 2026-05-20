@@ -108,12 +108,12 @@ Services must be *active* and *running*.
 Connect to Slurm-web web interface with your browser to check it is
 up-and-running.
 
-== Notes for Slurm-web 6
+== Notes for Slurm-web 7
 
-To update Slurm-web from version 5 to version 6, some manual additional steps
+To update Slurm-web from version 6 to version 7, some manual additional steps
 must be performed.
 
-To avoid impacting users with automatic upgrades, Slurm-web 6 packages are
+To avoid impacting users with automatic upgrades, Slurm-web 7 packages are
 published to a separate repository. Package repositories settings must be
 updated to install this version.
 
@@ -126,7 +126,7 @@ https://rockylinux.org/[Rocky Linux] and
 https://almalinux.org/[AlmaLinux OS].
 
 Edit [.path]#`/etc/yum.repos.d/rackslab.repo`# to change repository from
-_slurmweb-5_ to _slurmweb-6_:
+_slurmweb-6_ to _slurmweb-7_:
 
 [tabs]
 ======
@@ -141,12 +141,12 @@ RHEL 8::
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 
--[rackslab-slurmweb-5]
--name=Rackslab slurmweb-5
--baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-5/$basearch/
-+[rackslab-slurmweb-6]
-+name=Rackslab slurmweb-6
-+baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-6/$basearch/
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/el8/slurmweb-7/$basearch/
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
@@ -159,23 +159,22 @@ RHEL 9::
 ----
 --- a/etc/yum.repos.d/rackslab.repo
 +++ b/etc/yum.repos.d/rackslab.repo
-@@ -3,3 +3,9 @@
 @@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 
--[rackslab-slurmweb-5]
--name=Rackslab slurmweb-5
--baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-5/$basearch/
-+[rackslab-slurmweb-6]
-+name=Rackslab slurmweb-6
-+baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-6/$basearch/
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/el9/slurmweb-7/$basearch/
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
 ====
 
-Fedora 41::
+RHEL 10::
 +
 ====
 [source,diff]
@@ -186,15 +185,14 @@ Fedora 41::
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 
--[rackslab-slurmweb-5]
--name=Rackslab slurmweb-5
--baseurl=https://pkgs.rackslab.io/rpm/fc41/slurmweb-5/$basearch/
-+[rackslab-slurmweb-6]
-+name=Rackslab slurmweb-6
-+baseurl=https://pkgs.rackslab.io/rpm/fc41/slurmweb-6/$basearch/
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/el10/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/el10/slurmweb-7/$basearch/
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-
 ----
 ====
 
@@ -203,16 +201,40 @@ Fedora 42::
 ====
 [source,diff]
 ----
+--- a/etc/yum.repos.d/rackslab.repo
++++ b/etc/yum.repos.d/rackslab.repo
 @@ -4,8 +4,8 @@
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 
--[rackslab-slurmweb-5]
--name=Rackslab slurmweb-5
--baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-5/$basearch/
-+[rackslab-slurmweb-6]
-+name=Rackslab slurmweb-6
-+baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-6/$basearch/
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-7/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====
+
+Fedora 43::
++
+====
+[source,diff]
+----
+--- a/etc/yum.repos.d/rackslab.repo
++++ b/etc/yum.repos.d/rackslab.repo
+@@ -4,8 +4,8 @@
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/fc43/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/fc43/slurmweb-7/$basearch/
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
@@ -232,7 +254,7 @@ NOTE: This procedure works https://debian.org/[Debian] and
 https://ubuntu.com/[Ubuntu].
 
 Edit [.path]#`/etc/apt/sources.list.d/rackslab.sources`# to change distribution
-from _slurmweb-5_ to _slurmweb-6_:
+from _slurmweb-6_ to _slurmweb-7_:
 
 [tabs]
 ======
@@ -247,8 +269,8 @@ Debian 12 _« bookworm »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: bookworm
--Components: main slurmweb-5
-+Components: main slurmweb-6
+-Components: main slurmweb-6
++Components: main slurmweb-7
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -265,8 +287,26 @@ Debian 13 _« trixie »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: trixie
--Components: main slurmweb-5
-+Components: main slurmweb-6
+-Components: main slurmweb-6
++Components: main slurmweb-7
+ Architectures: amd64
+ Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====
+
+Debian 14 _« forky »_::
++
+====
+[source,diff]
+----
+--- a/etc/apt/sources.list.d/rackslab.sources
++++ b/etc/apt/sources.list.d/rackslab.sources
+@@ -1,6 +1,6 @@
+ Types: deb
+ URIs: https://pkgs.rackslab.io/deb
+ Suites: forky
+-Components: main slurmweb-6
++Components: main slurmweb-7
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -283,8 +323,8 @@ Debian unstable _« sid »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: sid
--Components: main slurmweb-5
-+Components: main slurmweb-6
+-Components: main slurmweb-6
++Components: main slurmweb-7
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -301,8 +341,26 @@ Ubuntu 24.04 LTS::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: ubuntu24.04
--Components: main slurmweb-5
-+Components: main slurmweb-6
+-Components: main slurmweb-6
++Components: main slurmweb-7
+ Architectures: amd64
+ Signed-By: /usr/share/keyrings/rackslab.gpg
+----
+====
+
+Ubuntu 26.04 LTS::
++
+====
+[source,diff]
+----
+--- a/etc/apt/sources.list.d/rackslab.sources
++++ b/etc/apt/sources.list.d/rackslab.sources
+@@ -1,6 +1,6 @@
+ Types: deb
+ URIs: https://pkgs.rackslab.io/deb
+ Suites: ubuntu26.04
+-Components: main slurmweb-6
++Components: main slurmweb-7
  Architectures: amd64
  Signed-By: /usr/share/keyrings/rackslab.gpg
 ----
@@ -322,9 +380,9 @@ This procedure works on
 https://www.suse.com/products/server/[SUSE Linux Entreprise Server (SLES)] and
 https://www.opensuse.org/[openSUSE LEAP].
 
-Rename file [.path]#`/etc/zypp/repos.d/rackslab-slurmweb-5.repo`# to
-[.path]#`/etc/zypp/repos.d/rackslab-slurmweb-6.repo`# and edit its content to
-change repository from _slurmweb-5_ to _slurmweb-6_:
+Rename file [.path]#`/etc/zypp/repos.d/rackslab-slurmweb-6.repo`# to
+[.path]#`/etc/zypp/repos.d/rackslab-slurmweb-7.repo`# and edit its content to
+change repository from _slurmweb-6_ to _slurmweb-7_:
 
 [tabs]
 ======
@@ -333,15 +391,15 @@ SLES 15::
 ====
 [source,diff]
 ----
---- /etc/zypp/repos.d/rackslab-slurmweb-5.repo
-+++ /etc/zypp/repos.d/rackslab-slurmweb-6.repo
+--- /etc/zypp/repos.d/rackslab-slurmweb-6.repo
++++ /etc/zypp/repos.d/rackslab-slurmweb-7.repo
 @@ -1,7 +1,7 @@
--[rackslab-slurmweb-5]
-+[rackslab-slurmweb-6]
+-[rackslab-slurmweb-6]
++[rackslab-slurmweb-7]
  enabled=1
  autorefresh=1
--baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-5/x86_64
-+baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-6/x86_64
+-baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-6/x86_64
++baseurl=https://pkgs.rackslab.io/rpm/suse15/slurmweb-7/x86_64
  type=rpm-md
  gpgcheck=1
  repo_gpgcheck=0
@@ -353,15 +411,15 @@ SLES 16::
 ====
 [source,diff]
 ----
---- /etc/zypp/repos.d/rackslab-slurmweb-5.repo
-+++ /etc/zypp/repos.d/rackslab-slurmweb-6.repo
+--- /etc/zypp/repos.d/rackslab-slurmweb-6.repo
++++ /etc/zypp/repos.d/rackslab-slurmweb-7.repo
 @@ -1,7 +1,7 @@
--[rackslab-slurmweb-5]
-+[rackslab-slurmweb-6]
+-[rackslab-slurmweb-6]
++[rackslab-slurmweb-7]
  enabled=1
  autorefresh=1
--baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-5/x86_64
-+baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-6/x86_64
+-baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-6/x86_64
++baseurl=https://pkgs.rackslab.io/rpm/suse16/slurmweb-7/x86_64
  type=rpm-md
  gpgcheck=1
  repo_gpgcheck=0

@@ -10,7 +10,7 @@ asciidoc:
     version: 7.0.0
     api_version: 0.0.41
     api_version_latest: 0.0.45
-    pkgs-derivative: slurmweb-6
+    pkgs-derivative: slurmweb-7
 nav:
 - modules/overview/nav.adoc
 - modules/install/nav.adoc
