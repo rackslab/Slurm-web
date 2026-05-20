@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   authentication.
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
+- gensession: Add `slurm-web gen-session-key` command to generate gateway
+  session secret file.
 - pkgs:
   - Add dependency on `RFL.authentication[jwt]` extra package provided
     in RFL >= 1.8.0.

@@ -15,6 +15,7 @@ from .agent import SlurmwebExecAgent
 from .gateway import SlurmwebExecGateway
 from .ldap import SlurmwebExecLDAPCheck
 from .genjwt import SlurmwebExecGenJWT
+from .gensession import SlurmwebExecGenSessionKey
 from .showconf import SlurmwebExecShowConf
 from .connect import SlurmwebExecConnectCheck
 
@@ -27,6 +28,7 @@ class SlurmwebExecMain(SlurmwebExecBase):
         "gateway": SlurmwebExecGateway,
         "ldap-check": SlurmwebExecLDAPCheck,
         "gen-jwt-key": SlurmwebExecGenJWT,
+        "gen-session-key": SlurmwebExecGenSessionKey,
         "show-conf": SlurmwebExecShowConf,
         "connect-check": SlurmwebExecConnectCheck,
     }
