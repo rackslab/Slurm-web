@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 import aiohttp.client_exceptions
 import aiohttp
 
-from ..lib.gateway import TestGatewayBase
+from ..lib.gateway import TestGatewayBase, TestGatewayConfBase
 from slurmweb.apps.gateway import (
     SlurmwebAgent,
     SlurmwebAppGateway,
@@ -22,6 +22,7 @@ from slurmweb.apps.gateway import (
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.errors import SlurmwebConfigurationError
 
+from ..lib.oidc import skip_unless_oidc
 from ..lib.utils import mock_agent_aio_response
 
 
@@ -241,6 +242,28 @@ class TestGatewayApp(TestGatewayBase):
         )
 
 
+class TestGatewayConf(TestGatewayConfBase):
+    def test_init_missing_session_key_file(self):
+        self.setup_gateway_conf(session_key="/dev/fail")
+        with self.assertRaisesRegex(
+            SlurmwebConfigurationError,
+            r"^Session key file path /dev/fail is not a file$",
+        ):
+            SlurmwebAppGateway(
+                SlurmwebAppSeed.with_parameters(
+                    debug=False,
+                    log_flags=["ALL"],
+                    log_component=None,
+                    debug_flags=[],
+                    conf_defs=self.conf_defs,
+                    conf=self.conf.name,
+                )
+            )
+        self.conf.close()
+        self.key.close()
+        self.session_key.close()
+
+
 class TestGatewayAppAgentConnector(TestGatewayBase):
     @mock.patch("slurmweb.apps.gateway.ssl.create_default_context")
     @mock.patch("slurmweb.apps.gateway.aiohttp.TCPConnector")
@@ -276,6 +299,58 @@ class TestGatewayAppAgentConnector(TestGatewayBase):
             r"^Agent CA certificate file /dev/fail not found$",
         ):
             app.get_agent_connector()
+
+
+@skip_unless_oidc
+class TestGatewayAppOIDCSetup(TestGatewayBase):
+    @mock.patch("rfl.authentication.oidc.OIDCClient")
+    def test_oidc_client_confidential_without_pkce(self, mock_oidc_cls):
+        self.setup_app_with_oidc(oidc_client_secret="client-secret")
+
+        mock_oidc_cls.assert_called_once()
+        kwargs = mock_oidc_cls.call_args.kwargs
+        self.assertEqual(kwargs["client_secret"], "client-secret")
+        self.assertIsNone(kwargs["pkce"])
+
+    @mock.patch("rfl.authentication.oidc.OIDCClient")
+    def test_oidc_client_confidential_with_pkce(self, mock_oidc_cls):
+        self.setup_app_with_oidc(oidc_client_secret="client-secret", pkce="S256")
+
+        kwargs = mock_oidc_cls.call_args.kwargs
+        self.assertEqual(kwargs["client_secret"], "client-secret")
+        self.assertEqual(kwargs["pkce"], "S256")
+
+    @mock.patch("rfl.authentication.oidc.OIDCClient")
+    def test_oidc_client_public_client_wiring(self, mock_oidc_cls):
+        self.setup_app_with_oidc(pkce="S256", oidc_client_secret=None)
+
+        kwargs = mock_oidc_cls.call_args.kwargs
+        self.assertIsNone(kwargs["client_secret"])
+        self.assertEqual(kwargs["pkce"], "S256")
+
+    def test_oidc_public_client_without_pkce_configuration_error(self):
+        self.setup_gateway_conf(
+            oidc=True,
+            ui_enabled=False,
+            oidc_redirect_uri="http://localhost/api/oidc/callback",
+        )
+        with self.assertRaisesRegex(
+            SlurmwebConfigurationError,
+            r"PKCE is required for public OIDC clients",
+        ):
+            SlurmwebAppGateway(
+                SlurmwebAppSeed.with_parameters(
+                    debug=False,
+                    log_flags=["ALL"],
+                    log_component=None,
+                    debug_flags=[],
+                    conf_defs=self.conf_defs,
+                    conf=self.conf.name,
+                )
+            )
+        self.conf.close()
+        self.key.close()
+        self.session_key.close()
 
 
 class TestInferUIPrefix(TestGatewayBase):
