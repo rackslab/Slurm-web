@@ -16,9 +16,12 @@ assemblies:
   - medium
   slurm-web_dark_mode.svg:
   - tiny
+  slurm-web_auth.svg:
+  - small
 # List raw screenshots for which versions with dropped shadow must be generated.
 shadowed:
-- screenshot_auth.png
+- screenshot_auth_ldap.png
+- screenshot_auth_oidc.png
 - screenshot_rbac.png
 - screenshot_cluster_change.png
 - screenshot_clusters.png
