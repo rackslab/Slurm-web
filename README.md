@@ -38,6 +38,7 @@ Many features in a reactive & responsive web UI:
 * Dark mode support
 * Multi-clusters support
 * LDAP authentication (including Active Directory support)
+* SSO OpenID Connect (OIDC) authentication (ex: Keycloak, Authentik, etc)
 * Advanced RBAC permissions management
 * Transparent caching
 * Integration with Prometheus to collect and chart timeseries metrics of Slurm
