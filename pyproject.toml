@@ -44,7 +44,7 @@ gateway = [
 tests = [
     "coverage",
     "Jinja2",
-    "parameterized",
+    "RFL.build >= 1.8.0",
     "pytest",
     "pytest-cov",
 ]
