@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `versions` parameter with _0.0.45_.
   - Add support for _oidc_ value for `[auth]` > `method` gateway parameter.
   - Introduce new `[oidc]` section in gateway configuration.
+  - Mention OIDC authentication feature in overview page.
 
 ### Changed
 - gateway: Add user login in LDAP successful authentication JSON response, for

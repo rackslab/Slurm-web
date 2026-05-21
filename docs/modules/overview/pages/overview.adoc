@@ -173,13 +173,19 @@ accessible contrast across the application.
 
 == Enterprise Authentication
 
-Slurm-web supports users authentication with enterprise LDAP directory (FreeIPA,
-Active Directory, OpenLDAP, etc…).
+Slurm-web supports user authentication with enterprise LDAP directories
+(FreeIPA, Active Directory, OpenLDAP, etc.) and single sign-on (SSO) with
+OpenID Connect identity providers (eg. Keycloak or Authentik).
 
 image::screenshot_auth.png[width=80%]
 
-Access can be restricted to specific groups of users. Both legacy NIS and RFC
-2307 bis schemas are fully supported.
+Access can be restricted to specific groups of users.
+
+[sidebar]
+--
+.More links
+* xref:conf:auth/index.adoc[Authentication documentation]
+--
 
 == Advanced RBAC Permissions
 
