@@ -41,7 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - gateway: Add user login in LDAP successful authentication JSON response, for
   consistency with OIDC authentication response format.
-- pkgs: Bump dependency on `RFL.authentication` >= 1.8.0.
+- pkgs:
+  - Bump minimal version of `RFL.authentication` to 1.8.0.
+  - Bump minimal version of `RFL.settings` to v1.8.0.
 - docs:
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.
