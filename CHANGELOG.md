@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - front: Update bundled dependencies to fix CVE-2026-46625 (js-cookie).
 
 ### Removed
-- pkgs: Testing dependency on _parameterized_ external library.
+- pkgs: Drop testing dependency on _parameterized_ external library.
 
 ## [6.1.0] - 2026-05-12
 
