@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.
 
+### Fixed
+- front: Update bundled dependencies to fix CVE-2026-46625 (js-cookie).
+
 ## [6.1.0] - 2026-05-12
 
 ### Added
