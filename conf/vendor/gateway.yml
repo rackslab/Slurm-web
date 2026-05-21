@@ -159,6 +159,18 @@ authentication:
     doc: Authentification method
 
 oidc:
+  _doc: |
+    Parameters in this section apply when `authentication` > `method` is set to
+    `oidc`. Slurm-web uses the OAuth 2.0 authorization code flow to authenticate
+    users against an OpenID Connect provider such as Keycloak or Authentik. Enable
+    PKCE with the optional `pkce` parameter (`S256` or `plain`).
+
+    Register the redirect URI `{ui.host}/api/oidc/callback` (including any path
+    prefix defined in `ui.host`) in the identity provider. Map user groups into
+    the ID token or userinfo endpoint under the configured `groups_claim` for RBAC
+    in the policy file.
+
+    For setup instructions, see xref:conf:auth/oidc.adoc[].
   issuer:
     type: uri
     doc: OIDC issuer URL used for discovery
@@ -233,6 +245,12 @@ oidc:
     ex: /path/to/certificate.pem
 
 ldap:
+  _doc: |
+    Parameters in this section apply when `authentication` > `method` is set to
+    `ldap` (the default). The gateway validates username and password against the
+    LDAP directory and retrieves group memberships at login.
+
+    For setup instructions, see xref:conf:auth/ldap.adoc[].
   uri:
     type: uri
     doc: URI to connect to LDAP server
