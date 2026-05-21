@@ -13,7 +13,7 @@ import copy
 import requests
 import flask
 import aiohttp
-import parameterized
+from rfl.build.testing.params import expand
 
 ASSETS = Path(__file__).parent.resolve() / ".." / ".." / ".." / "tests" / "assets"
 
@@ -43,9 +43,7 @@ def load_json_asset(path: Path):
         return json.load(f)
 
 
-all_slurm_api_versions = parameterized.parameterized.expand(
-    slurm_api_version_combinations()
-)
+all_slurm_api_versions = expand(slurm_api_version_combinations())
 
 
 def flask_version():
