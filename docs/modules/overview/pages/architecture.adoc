@@ -41,9 +41,12 @@ external services and data sources:
 .Slurm-web integration with external components [xref:image$arch/slurm-web_integration.svg[icon:download[] SVG]]
 image::arch/slurm-web_integration.png[]
 
-The *gateway* component authenticates users with an enterprise LDAP
-directory. Slurm-web supports all major LDAP services implementation such as
-OpenLDAP, FreeIPA and Active Directory with legacy NIS and RFC 2307 bis schemas.
+The *gateway* component authenticates users with either:
+
+* *LDAP* — enterprise directories such as OpenLDAP, FreeIPA, and Active Directory,
+  including legacy NIS and RFC 2307 bis schemas for groups.
+* *OIDC* — single sign-on (SSO) with OpenID Connect identity providers such as
+  https://www.keycloak.org/[Keycloak] or https://goauthentik.io/[Authentik].
 
 The *agent* component reads the
 xref:conf:policy.adoc[RBAC autorization policy] from a plain INI file with
