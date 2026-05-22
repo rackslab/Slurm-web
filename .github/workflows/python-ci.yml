@@ -156,6 +156,8 @@ jobs:
           rackslab-repo: sid
         - container: ubuntu:noble
           rackslab-repo: ubuntu24.04
+        - container: ubuntu:resolute
+          rackslab-repo: ubuntu26.04
     runs-on: ubuntu-latest
     container:
       image: ${{ matrix.envs.container }}
