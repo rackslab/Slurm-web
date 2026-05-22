@@ -63,19 +63,34 @@ jobs:
           repo: powertools
           rackslab-repo: el8
           racksdb-pkg: python3-racksdb-web
+          rfl-auth-pkgs: >-
+            python3-rfl-authentication-jwt
+            python3-rfl-authentication-ldap
         - container: rockylinux/rockylinux:9
           epel: 9
           rackslab-repo: el9
           repo: crb
           racksdb-pkg: python3-racksdb+web
+          rfl-auth-pkgs: >-
+            python3-rfl-authentication+jwt
+            python3-rfl-authentication+ldap
+            python3-rfl-authentication+oidc
         - container: rockylinux/rockylinux:10
           epel: 10
           rackslab-repo: el10
           repo: crb
           racksdb-pkg: python3-racksdb+web
+          rfl-auth-pkgs: >-
+            python3-rfl-authentication+jwt
+            python3-rfl-authentication+ldap
+            python3-rfl-authentication+oidc
         - container: fedora:43
           rackslab-repo: fc43
           racksdb-pkg: python3-racksdb+web
+          rfl-auth-pkgs: >-
+            python3-rfl-authentication+jwt
+            python3-rfl-authentication+ldap
+            python3-rfl-authentication+oidc
     runs-on: ubuntu-latest
     container:
       image: ${{ matrix.envs.container }}
@@ -116,6 +131,7 @@ jobs:
             python3-redis \
             python3-requests \
             python3-rfl-authentication \
+            ${{ matrix.envs.rfl-auth-pkgs }} \
             python3-rfl-build \
             python3-rfl-core \
             python3-rfl-log \
@@ -198,6 +214,9 @@ jobs:
             python3-redis \
             python3-requests \
             python3-rfl-authentication \
+            python3-rfl-authentication-jwt \
+            python3-rfl-authentication-ldap \
+            python3-rfl-authentication-oidc \
             python3-rfl-build \
             python3-rfl-core \
             python3-rfl-log \
