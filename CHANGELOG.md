@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
+- pkgs:
+  - Add dependency on `RFL.authentication[jwt]` extra package provided
+    in RFL >= 1.8.0.
+  - Add gateway dependency on `RFL.authentication[ldap]` extra package provided
+    in RFL >= 1.8.0.
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
   - Add upgrade guide for migration from v6 to v7.
@@ -17,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `versions` parameter with _0.0.45_.
 
 ### Changed
+- pkgs: Bump dependency on `RFL.authentication` >= 1.8.0.
 - docs:
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.
