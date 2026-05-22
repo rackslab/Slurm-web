@@ -68,8 +68,8 @@ jobs:
           rackslab-repo: el9
           repo: crb
           racksdb-pkg: python3-racksdb+web
-        - container: fedora:42
-          rackslab-repo: fc42
+        - container: fedora:43
+          rackslab-repo: fc43
           racksdb-pkg: python3-racksdb+web
     runs-on: ubuntu-latest
     container:
