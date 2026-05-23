@@ -1,4 +1,4 @@
-Upon succesful test, restart agent service to apply changes:
+Upon successful test, restart agent service to apply changes:
 
 [tabs]
 ======
