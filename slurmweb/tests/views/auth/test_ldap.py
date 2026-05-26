@@ -30,6 +30,7 @@ class TestGatewayLDAP(TestGatewayBase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json["result"], "Authentication successful")
+        self.assertEqual(response.json["login"], "alice")
         self.assertEqual(response.json["fullname"], "Alice User")
         self.assertEqual(response.json["groups"], ["admins"])
         self.assertIn("token", response.json)
