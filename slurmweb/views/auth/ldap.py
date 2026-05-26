@@ -41,6 +41,7 @@ def login():
     return jsonify(
         result="Authentication successful",
         token=token,
+        login=user.login,
         fullname=user.fullname,
         groups=user.groups,
     )

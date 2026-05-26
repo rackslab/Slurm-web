@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce new `[oidc]` section in gateway configuration.
 
 ### Changed
+- gateway: Add user login in LDAP successful authentication JSON response, for
+  consistency with OIDC authentication response format.
 - pkgs: Bump dependency on `RFL.authentication` >= 1.8.0.
 - docs:
   - Update configuration reference documentation.
