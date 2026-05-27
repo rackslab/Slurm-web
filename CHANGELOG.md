@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Mention OIDC authentication feature in overview page.
   - Mention OIDC authentication in integration section of architecture
     documentation.
+  - Introduce a custom branding guide.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.45_.

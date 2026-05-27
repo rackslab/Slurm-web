@@ -7,6 +7,7 @@
 ** xref:auth/ldap.adoc[LDAP]
 ** xref:auth/oidc.adoc[OIDC (SSO)]
 * xref:policy.adoc[]
+* xref:branding.adoc[Custom Branding]
 * xref:messages.adoc[]
 * xref:metrics.adoc[]
 * xref:conf/index.adoc[]

@@ -1,0 +1,126 @@
+= Custom Branding
+
+Slurm-web lets sites customize the web portal appearance to match brand
+identity: colors, logos, and favicon. Branding is optional. When parameters are
+omitted, the default Slurm-web theme and assets are used.
+
+image::overview:slurm-web_themes.png[]
+
+== Settings
+
+=== Colors
+
+Six colors are used in the user interface. They can be customized by defining
+six optional hexadecimal colors in `[ui]`:
+
+[cols="2,5"]
+|===
+|Parameter |Typical use
+
+|`color_light`
+|Light page backgrounds (login), subtle highlights, tags
+
+|`color_main`
+|Sidebar background, primary buttons, links, focus rings, selected controls (dashboard tabs, filters, resource diagram highlights)
+
+|`color_darker`
+|Button hover states, focus outlines
+
+|`color_dark`
+|Active sidebar entries, secondary text, dark-mode button backgrounds
+
+|`color_verydark`
+|Active navigation in dark mode, primary actions on dark backgrounds
+
+|`color_font_disabled`
+|Inactive sidebar menu labels and icons on the main brand background
+|===
+
+All color parameters are optional. Define only those you need to override.
+
+TIP: Pick a coherent palette: `color_main` is the dominant brand fill;
+`color_darker` and `color_dark` should be progressively darker for hovers and
+active states; `color_light` and `color_font_disabled` should remain readable on
+top of `color_main` (the sidebar uses both).
+
+=== Logos
+
+Four optional PNG logos cover light and dark contexts for the login page and
+the sidebar.
+
+[cols="2,2,4"]
+|===
+|Parameter |Context |Notes
+
+|`logo_login`
+|Login page, light mode
+|Portrait layout, about 140×160 pixels; transparent background recommended
+
+|`logo_login_dark`
+|Login page, dark mode
+|Same size as `logo_login`
+
+|`logo_horizontal`
+|Sidebar, light mode (on `color_main` background)
+|Wide layout, about 280×64 pixels; use dark tones for contrast on the sidebar
+
+|`logo_horizontal_dark`
+|Sidebar, dark mode
+|Same size as `logo_horizontal`; lighter tones usually work best
+|===
+
+When not defined, the default Slurm-web logo is used for each slot.
+
+TIP: Set `logo_alt` to the text read by screen readers for all custom logos, for
+example your organization or portal name). When not defined, `Slurm-web` is used.
+
+=== Favicon
+
+Set `favicon` to a custom [.path]#`.ico`# file. Multi-resolution ICO files (for
+example 16×16, 32×32, and 48×48 pixels) keep icons sharp in browser tabs and
+bookmarks.
+
+== File layout
+
+Store branding assets (logos, favicon) in a dedicated directory, for example
+[.path]#`/etc/slurm-web/branding/`#:
+
+[source]
+----
+/etc/slurm-web/branding/
+├── logo_login.png
+├── logo_login_dark.png
+├── logo_horizontal.png
+├── logo_horizontal_dark.png
+└── favicon.ico
+----
+
+Reference these paths in the `[ui]` section of [.path]#`gateway.ini`#.
+
+== Example configuration
+
+The following excerpt shows a minimal branding setup in
+[.path]#`/etc/slurm-web/gateway.ini`#:
+
+[,ini]
+----
+[ui]
+
+color_main=#486a86
+color_dark=#3b5163
+color_light=#ccdbe6
+logo_login=/etc/slurm-web/branding/logo_login.png
+logo_login_dark=/etc/slurm-web/branding/logo_login_dark.png
+logo_horizontal=/etc/slurm-web/branding/logo_horizontal.png
+logo_horizontal_dark=/etc/slurm-web/branding/logo_horizontal_dark.png
+favicon=/etc/slurm-web/branding/favicon.ico
+logo_alt=My HPC Portal
+----
+
+A fuller example with commented parameters is available in the
+xref:conf/gateway.adoc#example[gateway configuration example].
+
+== See also
+
+* xref:conf/gateway.adoc#ui[Gateway `[ui]` section] — full parameter reference
+* xref:messages.adoc[Service Messages] — custom markdown below the login form
