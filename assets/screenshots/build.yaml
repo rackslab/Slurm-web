@@ -18,6 +18,8 @@ assemblies:
   - tiny
   slurm-web_auth.svg:
   - small
+  slurm-web_themes.svg:
+  - tiny
 # List raw screenshots for which versions with dropped shadow must be generated.
 shadowed:
 - screenshot_auth_ldap.png
