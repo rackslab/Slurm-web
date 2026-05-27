@@ -26,10 +26,21 @@ describe('LoginView.vue', () => {
       mockGatewayAPI.login.mockReset()
     })
 
+    test('should display custom logo when configured', () => {
+      init_plugins({
+        authentication_method: 'ldap',
+        logo: { login: '/gateway/logo/brand_login.png', alt: 'Portal' }
+      })
+      const wrapper = shallowMount(LoginView, {})
+      const image = wrapper.get('img')
+      expect(image.attributes('src')).toContain('/gateway/logo/brand_login.png')
+      expect(image.attributes('alt')).toBe('Portal')
+    })
+
     test('should display login form', () => {
       const wrapper = shallowMount(LoginView, {})
       const image = wrapper.get('img')
-      expect(image.attributes('src')).toBe('/logo/slurm-web_logo.png')
+      expect(image.attributes('src')).toContain('/logo/slurm-web_logo.png')
       wrapper.get('input#user')
       wrapper.get('input#password')
       const button = wrapper.get('button')

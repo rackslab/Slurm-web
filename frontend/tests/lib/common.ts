@@ -16,7 +16,9 @@ const defaultRuntimeConfiguration: RuntimeConfiguration = {
   authentication_method: 'ldap',
   racksdb_rows_labels: false,
   racksdb_racks_labels: false,
-  version: '0.0.0'
+  version: '0.0.0',
+  colors: undefined,
+  logo: undefined
 }
 
 export function init_plugins(
