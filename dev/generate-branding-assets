@@ -1,0 +1,259 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) 2026 Rackslab
+#
+# This file is part of Slurm-web.
+#
+# SPDX-License-Identifier: MIT
+#
+# Generate placeholder branding assets for dev/branding/{green,orange}/.
+# Colors and brand names come from dev/lib/devenv/branding.py.
+# Uses dev/branding/leaves.svg (monocolor base logo). Requires ImageMagick (convert).
+
+from __future__ import annotations
+
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+
+from devenv.branding import BASE_LOGO_SVG, BRANDING_ROOT, BRANDING_THEMES
+
+FONT_BOLD = "DejaVu-Sans-Bold"
+PNG32 = ("-define", "png:format=png32")
+
+
+def _require_convert() -> None:
+    if shutil.which("convert") is None:
+        print("ImageMagick convert is required", file=sys.stderr)
+        raise SystemExit(1)
+
+
+def _convert(*args: str) -> None:
+    subprocess.run(["convert", *args], check=True)
+
+
+def _recolor_logo_svg(content: str, fill: str) -> str:
+    if re.search(r"\bfill=", content, flags=re.IGNORECASE):
+        content, _ = re.subn(
+            r'\bfill="[^"]*"',
+            f'fill="{fill}"',
+            content,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+        content, _ = re.subn(
+            r"\bfill='[^']*'",
+            f"fill='{fill}'",
+            content,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+        content = re.sub(
+            r"fill:#[0-9a-fA-F]{6}",
+            f"fill:{fill}",
+            content,
+            flags=re.IGNORECASE,
+        )
+    else:
+        content = re.sub(
+            r"<path ",
+            f'<path fill="{fill}" ',
+            content,
+            count=1,
+        )
+    return content
+
+
+def _render_logo_png(
+    base_logo_svg: Path,
+    out_png: Path,
+    size: int,
+    fill: str,
+    tmp_dir: Path,
+) -> None:
+    svg_tmp = tmp_dir / f"{out_png.stem}.svg"
+    svg_tmp.write_text(_recolor_logo_svg(base_logo_svg.read_text(), fill))
+    _convert(
+        "-background",
+        "none",
+        "-density",
+        "300",
+        str(svg_tmp),
+        "-resize",
+        f"{size}x{size}",
+        *PNG32,
+        str(out_png),
+    )
+
+
+def _generate_theme(theme: str, tmp_dir: Path) -> None:
+    spec = BRANDING_THEMES[theme]
+    colors = spec["colors"]
+    main = colors["color_main"]
+    light = colors["color_light"]
+    dark = colors["color_dark"]
+    brand_name = spec["brand_name"]
+    out_dir = BRANDING_ROOT / theme
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    mark_login = tmp_dir / f"{theme}-login-mark.png"
+    mark_horizontal = tmp_dir / f"{theme}-horizontal-mark.png"
+    mark_horizontal_dark = tmp_dir / f"{theme}-horizontal-dark-mark.png"
+    mark_favicon = tmp_dir / f"{theme}-favicon-mark.png"
+
+    # Login: brand-colored mark (light page background)
+    _render_logo_png(BASE_LOGO_SVG, mark_login, 72, main, tmp_dir)
+    _convert(
+        "-size",
+        "137x158",
+        "xc:none",
+        str(mark_login),
+        "-geometry",
+        "+32+12",
+        "-composite",
+        "-fill",
+        dark,
+        "-font",
+        FONT_BOLD,
+        "-pointsize",
+        "14",
+        "-gravity",
+        "south",
+        "-annotate",
+        "+0+14",
+        brand_name,
+        *PNG32,
+        str(out_dir / "logo_login.png"),
+    )
+
+    # Login dark: light mark (dark page background)
+    _render_logo_png(BASE_LOGO_SVG, mark_login, 72, light, tmp_dir)
+    _convert(
+        "-size",
+        "137x158",
+        "xc:none",
+        str(mark_login),
+        "-geometry",
+        "+32+12",
+        "-composite",
+        "-fill",
+        light,
+        "-font",
+        FONT_BOLD,
+        "-pointsize",
+        "14",
+        "-gravity",
+        "south",
+        "-annotate",
+        "+0+14",
+        brand_name,
+        *PNG32,
+        str(out_dir / "logo_login_dark.png"),
+    )
+
+    # Horizontal on bg-slurmweb (color_main): dark mark, light text
+    _render_logo_png(BASE_LOGO_SVG, mark_horizontal, 48, dark, tmp_dir)
+    _convert(
+        "-size",
+        "273x64",
+        "xc:none",
+        str(mark_horizontal),
+        "-geometry",
+        "+8+8",
+        "-composite",
+        "-fill",
+        light,
+        "-font",
+        FONT_BOLD,
+        "-pointsize",
+        "19",
+        "-annotate",
+        "+64+38",
+        brand_name,
+        *PNG32,
+        str(out_dir / "logo_horizontal.png"),
+    )
+
+    # Horizontal on dark:bg-gray-700: light mark, light text
+    _render_logo_png(BASE_LOGO_SVG, mark_horizontal_dark, 48, light, tmp_dir)
+    _convert(
+        "-size",
+        "273x64",
+        "xc:none",
+        str(mark_horizontal_dark),
+        "-geometry",
+        "+8+8",
+        "-composite",
+        "-fill",
+        light,
+        "-font",
+        FONT_BOLD,
+        "-pointsize",
+        "19",
+        "-annotate",
+        "+64+38",
+        brand_name,
+        *PNG32,
+        str(out_dir / "logo_horizontal_dark.png"),
+    )
+
+    # Favicon: small brand mark
+    _render_logo_png(BASE_LOGO_SVG, mark_favicon, 32, main, tmp_dir)
+    _convert(
+        str(mark_favicon),
+        "(",
+        "-clone",
+        "0",
+        "-background",
+        "none",
+        "-resize",
+        "16x16",
+        ")",
+        "(",
+        "-clone",
+        "0",
+        "-background",
+        "none",
+        "-resize",
+        "32x32",
+        ")",
+        "(",
+        "-clone",
+        "0",
+        "-background",
+        "none",
+        "-resize",
+        "48x48",
+        ")",
+        "-delete",
+        "0",
+        str(out_dir / "favicon.ico"),
+    )
+
+
+def main() -> None:
+    """Regenerate placeholder assets for every development branding theme."""
+    if not BASE_LOGO_SVG.is_file():
+        print(f"Missing base logo source: {BASE_LOGO_SVG}", file=sys.stderr)
+        raise SystemExit(1)
+
+    _require_convert()
+
+    with tempfile.TemporaryDirectory(prefix="slurmweb-branding-") as tmp:
+        tmp_dir = Path(tmp)
+        for theme in BRANDING_THEMES:
+            _generate_theme(theme, tmp_dir)
+
+    themes = ", ".join(BRANDING_THEMES)
+    print(
+        f"Generated assets in {BRANDING_ROOT}/{{{themes}}} (from {BASE_LOGO_SVG.name})"
+    )
+
+
+if __name__ == "__main__":
+    main()

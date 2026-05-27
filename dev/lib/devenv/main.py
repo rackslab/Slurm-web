@@ -101,6 +101,11 @@ def main():
             "(default: %(default)s)"
         ),
     )
+    parser.add_argument(
+        "--branding-theme",
+        choices=["green", "orange"],
+        help=("Apply a development branding theme (colors, logos, favicon)."),
+    )
     args = parser.parse_args()
 
     if args.with_keycloak and args.anonymous:
@@ -205,6 +210,7 @@ def main():
         args.anonymous,
         args.gateway_prefix,
         oidc=args.with_keycloak,
+        branding_theme=args.branding_theme,
     )
     if args.service_message:
         gateway.render_message(
@@ -212,7 +218,10 @@ def main():
             agents[0].cluster_status["users"],
             agents[0].cluster_status["groups"],
         )
-    gateway.launch()
+    gateway.launch(
+        skip_ui_copy=args.ui is None and args.branding_theme is None,
+        dev_ui_assets_dir=(tmpdir / "ui") if args.branding_theme else None,
+    )
 
     logger.info("Development environment is ready, type ^c to stop")
     try:

@@ -12,6 +12,20 @@ enabled=no
 {%- endif %}
 templates=conf/vendor/templates
 message_login={{ message }}
+{%- if branding is defined and branding %}
+color_light={{ branding.colors.color_light }}
+color_main={{ branding.colors.color_main }}
+color_darker={{ branding.colors.color_darker }}
+color_dark={{ branding.colors.color_dark }}
+color_verydark={{ branding.colors.color_verydark }}
+color_font_disabled={{ branding.colors.color_font_disabled }}
+logo_login={{ branding_dir }}/logo_login.png
+logo_login_dark={{ branding_dir }}/logo_login_dark.png
+logo_horizontal={{ branding_dir }}/logo_horizontal.png
+logo_horizontal_dark={{ branding_dir }}/logo_horizontal_dark.png
+favicon={{ branding_dir }}/favicon.ico
+logo_alt={{ branding.logo_alt }}
+{%- endif %}
 
 [agents]
 url =

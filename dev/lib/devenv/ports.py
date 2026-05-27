@@ -6,16 +6,18 @@
 
 from dataclasses import dataclass
 import logging
+import os
 import shlex
 import subprocess
 import sys
+from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
 
-def runcmd(cmd: list[str]) -> subprocess.Popen:
+def runcmd(cmd: List[str], env: Optional[Dict[str, str]] = None) -> subprocess.Popen:
     try:
-        return subprocess.Popen(cmd)
+        return subprocess.Popen(cmd, env=os.environ if env is None else env)
     except FileNotFoundError:
         logger.error("Command not found: %s", shlex.join(cmd))
         sys.exit(1)

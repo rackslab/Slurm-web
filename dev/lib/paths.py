@@ -9,5 +9,6 @@ from pathlib import Path
 DEV_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = DEV_ROOT.parent
 CONF_DIR = DEV_ROOT / "conf"
+FRONTEND_PUBLIC_DIR = REPO_ROOT / "frontend" / "public"
 ASSETS = REPO_ROOT / "tests" / "assets"
 REALM_IMPORT_FILENAME = "slurm-realm.json"

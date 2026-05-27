@@ -6,14 +6,17 @@
 
 from dataclasses import dataclass
 import logging
+import os
 import shlex
 from pathlib import Path
 
 import jinja2
 
-from paths import CONF_DIR, REPO_ROOT
+from paths import CONF_DIR, FRONTEND_PUBLIC_DIR, REPO_ROOT
 from devenv.agent import SlurmwebAgent
+from devenv.branding import BRANDING_THEMES, branding_dir
 from devenv.constants import DEBUG_FLAGS, GATEWAY_SERVICE_PORT
+from slurmweb.ui import SlurmwebFrontendEnvSettings
 from devenv.keycloak import DEFAULT_CLIENT_SECRET, DEFAULT_PORT as KEYCLOAK_PORT
 from devenv.ports import runcmd
 
@@ -38,8 +41,23 @@ class SlurmwebGateway:
         oidc: bool = False,
         keycloak_port: int = KEYCLOAK_PORT,
         oidc_client_secret: str = DEFAULT_CLIENT_SECRET,
+        branding_theme: str | None = None,
     ):
         self.gateway_prefix = gateway_prefix
+        branding = None
+        theme_branding_dir = None
+        if ui is None:
+            ui = FRONTEND_PUBLIC_DIR
+        if branding_theme is not None:
+            if branding_theme not in BRANDING_THEMES:
+                raise ValueError(f"Unknown branding theme: {branding_theme}")
+            branding = BRANDING_THEMES[branding_theme]
+            theme_branding_dir = branding_dir(branding_theme)
+            logger.info(
+                "Development branding theme: %s (%s)",
+                branding_theme,
+                branding["logo_alt"],
+            )
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader(CONF_DIR))
         template = environment.get_template("gateway.ini.j2")
         self.conf_path = tmpdir / "gateway.ini"
@@ -62,6 +80,8 @@ class SlurmwebGateway:
                     keycloak_port=keycloak_port,
                     oidc_client_secret=oidc_client_secret,
                     session_key=session_key,
+                    branding=branding,
+                    branding_dir=theme_branding_dir,
                 )
             )
 
@@ -71,7 +91,12 @@ class SlurmwebGateway:
         with open(self.message_path, "w+") as fh:
             fh.write(template.render(users=users, groups=groups))
 
-    def launch(self):
+    def launch(
+        self,
+        *,
+        skip_ui_copy: bool = False,
+        dev_ui_assets_dir: Path | None = None,
+    ):
         cmd = (
             [
                 "slurm-web",
@@ -89,8 +114,15 @@ class SlurmwebGateway:
                 str(self.conf_path),
             ]
         )
+        env = os.environ.copy()
+        if skip_ui_copy:
+            env[SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_SKIP_COPY] = "1"
+        if dev_ui_assets_dir is not None:
+            env[SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_ASSETS_DIR] = str(
+                dev_ui_assets_dir
+            )
         logging.info("Launching Slurm-web gateway: %s", shlex.join(cmd))
-        self.process = runcmd(cmd)
+        self.process = runcmd(cmd, env=env)
 
     def stop(self):
         logging.info("Stopping slurm-web gateway")
