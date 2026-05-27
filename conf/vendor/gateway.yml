@@ -54,6 +54,13 @@ service:
     ex: /var/lib/slurm-web/session.key
 
 ui:
+  _doc: |
+    This section configures the user interface served by the gateway: public URL,
+    static assets, login messages, RacksDB display options, and optional custom
+    branding (colors, logos, favicon).
+
+    For branding file layout, color usage, logo variants, and examples, see
+    xref:conf:branding.adoc[Custom Branding].
   host:
     type: uri
     doc: |
