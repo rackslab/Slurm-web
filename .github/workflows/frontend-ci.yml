@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20, 22, lts/*]
+        node-version: [20, 22, lts/*]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node
