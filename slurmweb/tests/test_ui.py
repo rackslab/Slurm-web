@@ -11,11 +11,19 @@ import os
 import shutil
 from pathlib import Path
 
-from slurmweb.ui import prepare_ui_assets
-from slurmweb.errors import SlurmwebRuntimeError
+from slurmweb.ui import SlurmwebFrontend, SlurmwebFrontendEnvSettings
+from slurmweb.errors import SlurmwebConfigurationError, SlurmwebRuntimeError
 
 
-class TestPrepareUIAssets(unittest.TestCase):
+class TestingUISettings:
+    """Minimal stand-in for gateway [ui] RFL settings in unit tests."""
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class TestSlurmwebFrontend(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         self.source_dir = Path(tempfile.mkdtemp(prefix="slurmweb-test-source-"))
@@ -31,8 +39,12 @@ class TestPrepareUIAssets(unittest.TestCase):
                 if ui_dir.exists():
                     shutil.rmtree(ui_dir, ignore_errors=True)
 
-    def test_prepare_ui_assets(self):
-        """Comprehensive test for prepare_ui_assets covering multiple scenarios."""
+    def _frontend(self, **settings):
+        """Return a SlurmwebFrontend bound to the test source tree."""
+        return SlurmwebFrontend(TestingUISettings(path=self.source_dir, **settings))
+
+    def test_prepare_assets(self):
+        """Comprehensive test for prepare_assets covering multiple scenarios."""
         # Create a complex directory structure with various file types
         # Root level files with placeholder
         (self.source_dir / "index.html").write_text(
@@ -69,7 +81,7 @@ class TestPrepareUIAssets(unittest.TestCase):
             "body { background: url(/__SLURMWEB_BASE__/bg.png); }"
         )
 
-        target_dir = prepare_ui_assets(self.source_dir, "/gateway")
+        target_dir = self._frontend().prepare_assets("/gateway")
 
         # Verify all files and directories were copied
         self.assertTrue((target_dir / "index.html").exists())
@@ -125,6 +137,106 @@ class TestPrepareUIAssets(unittest.TestCase):
         self.assertEqual((target_dir / "image.png").read_bytes(), b"fake png")
         self.assertEqual((target_dir / "icon.ico").read_bytes(), b"fake ico")
 
+    def test_overlay_branding(self):
+        """Test custom logos and favicon are copied into prepared UI assets."""
+        (self.source_dir / "favicon.ico").write_bytes(b"default favicon")
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as logo_fh:
+            custom_logo = Path(logo_fh.name)
+        with tempfile.NamedTemporaryFile(suffix=".ico", delete=False) as favicon_fh:
+            custom_favicon = Path(favicon_fh.name)
+        self.addCleanup(lambda: custom_logo.unlink())
+        self.addCleanup(lambda: custom_favicon.unlink())
+        custom_logo.write_bytes(b"\x89PNG\r\n\x1a\ncustom logo")
+        custom_favicon.write_bytes(b"custom favicon")
+
+        frontend = self._frontend(logo_login=custom_logo, favicon=custom_favicon)
+        target_dir = frontend.prepare_assets("/gateway")
+
+        self.assertEqual(
+            frontend.runtime_config("/gateway")["LOGO_LOGIN"],
+            "/gateway/logo/brand_login.png",
+        )
+        self.assertEqual(
+            (target_dir / "logo" / "brand_login.png").read_bytes(),
+            b"\x89PNG\r\n\x1a\ncustom logo",
+        )
+        self.assertEqual(
+            (target_dir / "favicon.ico").read_bytes(),
+            b"custom favicon",
+        )
+
+    def test_overlay_branding_replaces_symlink_favicon(self):
+        """Test custom favicon overwrites a symlink left by prepare_assets copy."""
+        (self.source_dir / "default.ico").write_bytes(b"default favicon")
+        (self.source_dir / "favicon.ico").symlink_to("default.ico")
+        with tempfile.NamedTemporaryFile(suffix=".ico", delete=False) as favicon_fh:
+            custom_favicon = Path(favicon_fh.name)
+        self.addCleanup(lambda: custom_favicon.unlink())
+        custom_favicon.write_bytes(b"custom favicon")
+
+        target_dir = self._frontend(favicon=custom_favicon).prepare_assets("/")
+
+        self.assertFalse((target_dir / "favicon.ico").is_symlink())
+        self.assertEqual(
+            (target_dir / "favicon.ico").read_bytes(),
+            b"custom favicon",
+        )
+
+    def test_prepare_assets_skip_copy(self):
+        """Test prepare_assets with SLURMWEB_DEV_UI_SKIP_COPY env set."""
+        (self.source_dir / "config.json").write_text('{"base": "/"}')
+        os.environ[SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_SKIP_COPY] = "1"
+        self.addCleanup(
+            os.environ.pop, SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_SKIP_COPY, None
+        )
+
+        frontend = self._frontend()
+        target_dir = frontend.prepare_assets("/")
+
+        self.assertEqual(target_dir, self.source_dir.resolve())
+        self.assertNotIn("slurmweb-ui-", str(target_dir))
+        self.assertEqual(frontend._logo_files, {})
+
+    def test_prepare_assets_dev_ui_assets_dir(self):
+        """Test SLURMWEB_DEV_UI_ASSETS_DIR copies public tree and overlays branding."""
+        (self.source_dir / "config.json").write_text('{"base": "/"}')
+        assets_dir = Path(tempfile.mkdtemp(prefix="slurmweb-test-ui-assets-"))
+        self.addCleanup(lambda: shutil.rmtree(assets_dir, ignore_errors=True))
+        os.environ[SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_ASSETS_DIR] = str(
+            assets_dir
+        )
+        self.addCleanup(
+            os.environ.pop,
+            SlurmwebFrontendEnvSettings.SLURMWEB_DEV_UI_ASSETS_DIR,
+            None,
+        )
+
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as logo_fh:
+            custom_logo = Path(logo_fh.name)
+        with tempfile.NamedTemporaryFile(suffix=".ico", delete=False) as favicon_fh:
+            custom_favicon = Path(favicon_fh.name)
+        self.addCleanup(lambda: custom_logo.exists() and custom_logo.unlink())
+        self.addCleanup(lambda: custom_favicon.exists() and custom_favicon.unlink())
+        custom_logo.write_bytes(b"\x89PNG\r\n\x1a\ncustom logo")
+        custom_favicon.write_bytes(b"custom favicon")
+
+        frontend = self._frontend(logo_login=custom_logo, favicon=custom_favicon)
+        target_dir = frontend.prepare_assets("/gateway")
+
+        self.assertEqual(target_dir, assets_dir.resolve())
+        self.assertEqual(
+            (target_dir / "logo" / "brand_login.png").read_bytes(),
+            b"\x89PNG\r\n\x1a\ncustom logo",
+        )
+        self.assertEqual(
+            (target_dir / "favicon.ico").read_bytes(),
+            b"custom favicon",
+        )
+        self.assertEqual(
+            frontend.runtime_config("/gateway")["LOGO_LOGIN"],
+            "/gateway/logo/brand_login.png",
+        )
+
     def test_prefix_without_leading_slash(self):
         """Test that prefixes without a leading slash raise an error."""
         (self.source_dir / "test.txt").write_text("/__SLURMWEB_BASE__/test")
@@ -133,13 +245,13 @@ class TestPrepareUIAssets(unittest.TestCase):
             SlurmwebRuntimeError,
             r"^UI prefix 'gateway' must start with a slash or be empty$",
         ):
-            prepare_ui_assets(self.source_dir, "gateway")
+            self._frontend().prepare_assets("gateway")
 
     def test_source_path_not_exists(self):
         """Test that non-existent source path raises SlurmwebRuntimeError."""
         non_existent = Path("/nonexistent/path/that/does/not/exist")
         with self.assertRaises(SlurmwebRuntimeError) as cm:
-            prepare_ui_assets(non_existent, "/")
+            SlurmwebFrontend(TestingUISettings(path=non_existent)).prepare_assets("/")
         self.assertIn("does not exist", str(cm.exception))
 
     def test_binary_files_skipped_from_replacement(self):
@@ -151,7 +263,7 @@ class TestPrepareUIAssets(unittest.TestCase):
         favicon_path.write_bytes(b"fake ico data")
 
         with self.assertLogs("slurmweb.ui", level="DEBUG") as cm:
-            target_dir = prepare_ui_assets(self.source_dir, "/gateway")
+            target_dir = self._frontend().prepare_assets("/gateway")
 
         # Verify debug logs for binary files
         self.assertIn(
@@ -179,16 +291,15 @@ class TestPrepareUIAssets(unittest.TestCase):
         self.assertEqual((target_dir / "favicon.ico").read_bytes(), b"fake ico data")
 
     def test_symlinks(self):
-        """Test that symlinks are preserved."""
-        # Create a file and a symlink to it
+        """Test that symlinks are copied as regular files with resolved content."""
         (self.source_dir / "target.txt").write_text("target content")
         (self.source_dir / "link.txt").symlink_to("target.txt")
 
-        target_dir = prepare_ui_assets(self.source_dir, "/")
+        target_dir = self._frontend().prepare_assets("/")
 
-        # Verify symlink exists and points to correct target
-        self.assertTrue((target_dir / "link.txt").is_symlink())
-        self.assertEqual(os.readlink(target_dir / "link.txt"), "target.txt")
+        self.assertTrue((target_dir / "link.txt").is_file())
+        self.assertFalse((target_dir / "link.txt").is_symlink())
+        self.assertEqual((target_dir / "link.txt").read_text(), "target content")
 
     def test_temporary_directory_creation(self):
         """Test that temporary directory is created when RUNTIME_DIRECTORY not set."""
@@ -199,7 +310,7 @@ class TestPrepareUIAssets(unittest.TestCase):
 
             (self.source_dir / "test.txt").write_text("test")
 
-            target_dir = prepare_ui_assets(self.source_dir, "/")
+            target_dir = self._frontend().prepare_assets("/")
 
             # Verify target directory exists and is a temporary directory
             self.assertTrue(target_dir.exists())
@@ -215,7 +326,7 @@ class TestPrepareUIAssets(unittest.TestCase):
         with mock.patch.dict(os.environ, {"RUNTIME_DIRECTORY": str(runtime_root)}):
             (self.source_dir / "test.txt").write_text("test")
 
-            target_dir = prepare_ui_assets(self.source_dir, "/")
+            target_dir = self._frontend().prepare_assets("/")
 
             # Verify target directory is in runtime directory
             self.assertEqual(target_dir, runtime_root / "ui")
@@ -235,7 +346,7 @@ class TestPrepareUIAssets(unittest.TestCase):
         with mock.patch.dict(os.environ, {"RUNTIME_DIRECTORY": str(runtime_root)}):
             (self.source_dir / "new.txt").write_text("new content")
 
-            target_dir = prepare_ui_assets(self.source_dir, "/")
+            target_dir = self._frontend().prepare_assets("/")
 
             # Verify old content is gone and new content exists
             self.assertFalse((target_dir / "old.txt").exists())
@@ -252,4 +363,34 @@ class TestPrepareUIAssets(unittest.TestCase):
             with self.assertRaisesRegex(
                 SlurmwebRuntimeError, "^Systemd runtime directory .* does not exist$"
             ):
-                prepare_ui_assets(self.source_dir, "/")
+                self._frontend().prepare_assets("/")
+
+    def test_assets_path_before_prepare(self):
+        """Test assets_path raises when assets have not been prepared."""
+        frontend = self._frontend()
+        with self.assertRaisesRegex(
+            SlurmwebRuntimeError, "^UI assets have not been prepared yet$"
+        ):
+            frontend.assets_path
+
+    def test_validate_rejects_missing_logo(self):
+        """Test validate rejects logo paths that do not exist."""
+        with self.assertRaises(SlurmwebConfigurationError):
+            SlurmwebFrontend(
+                TestingUISettings(logo_login=Path("/nonexistent/logo.png"))
+            ).validate()
+
+    def test_runtime_config(self):
+        """Test runtime_config builds config.json branding entries."""
+        frontend = SlurmwebFrontend(
+            TestingUISettings(color_main="#112233", logo_alt="Portal")
+        )
+        frontend._logo_files = {"logo_login": "brand_login.png"}
+        self.assertEqual(
+            frontend.runtime_config("/gateway"),
+            {
+                "COLOR_MAIN": "#112233",
+                "LOGO_LOGIN": "/gateway/logo/brand_login.png",
+                "LOGO_ALT": "Portal",
+            },
+        )

@@ -45,6 +45,9 @@ key={{ key }}
 enabled=yes
 {% if ui_host is defined %}host={{ ui_host }}{% endif %}
 {% if ui_path is defined %}path={{ ui_path }}{% endif %}
+{% if ui_color_main is defined %}color_main={{ ui_color_main }}{% endif %}
+{% if ui_logo_login is defined %}logo_login={{ ui_logo_login }}{% endif %}
+{% if ui_logo_alt is defined %}logo_alt={{ ui_logo_alt }}{% endif %}
 {% else %}
 enabled=no
 {% endif %}
@@ -183,9 +186,9 @@ class TestGatewayBase(TestGatewayConfBase):
             )
             self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
 
-    def setup_app_with_ui(self, ui_enabled=True, host=None):
+    def setup_app_with_ui(self, ui_enabled=True, host=None, **extra_conf):
         """Set up gateway app with UI enabled or disabled."""
-        conf_overrides = {"ui_enabled": ui_enabled}
+        conf_overrides = {"ui_enabled": ui_enabled, **extra_conf}
         if ui_enabled:
             conf_overrides["ui_host"] = host or "http://localhost:5011/"
         self.setup_app(conf_overrides=conf_overrides)
