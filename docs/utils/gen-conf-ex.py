@@ -9,7 +9,7 @@
   command:
 
   $ python3 docs/utils/gen-conf-ex.py conf/vendor/gateway.yml > \
-    docs/modules/admin/examples/conf-gateway.ini
+    docs/modules/conf/examples/gateway.ini
 """
 
 import sys
