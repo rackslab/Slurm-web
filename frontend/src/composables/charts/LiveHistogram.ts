@@ -94,17 +94,18 @@ export function useLiveHistogram<MetricKeyType extends string>(
           continue
         } else {
           /* First remove all values older than new suggested minimal timestamp. */
-          matching_datasets[0].data = matching_datasets[0].data.filter(
-            (value) => (value as Point).x > newSuggestedMin
-          )
+          matching_datasets[0].data = matching_datasets[0].data.filter((value) => {
+            const x = (value as Point).x
+            return x != null && x > newSuggestedMin
+          })
           /* If matching dataset has been found, get the timestamp of the last
            * datapoint. */
-          const last_timestamp = (matching_datasets[0].data.slice(-1)[0] as Point).x
+          const last_timestamp = (matching_datasets[0].data.slice(-1)[0] as Point | undefined)?.x
           /* Iterate over new data to insert in the dataset only the datapoints
            * with a timestamp after the timestamp of the last datapoint in
            * current dataset, and count inserted values. */
           new_data.forEach((item) => {
-            if (item.x > last_timestamp) {
+            if (last_timestamp != null && item.x > last_timestamp) {
               matching_datasets[0].data.push(item)
             }
           })

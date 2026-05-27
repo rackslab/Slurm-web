@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     of gateway configuration.
 
 ### Changed
+- front: Bump core Vue.js ecosystem dependencies: Vue.js (3.5.13 → 3.5.35),
+  Vue Router (4.2.4 → 5.0.7) and Pinia (2.1.6 → 3.0.4).
 - gateway: Add user login in LDAP successful authentication JSON response, for
   consistency with OIDC authentication response format.
 - pkgs:
