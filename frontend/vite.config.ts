@@ -45,6 +45,22 @@ export default defineConfig(({ mode }) => {
           }
         }
       }
-    }
+    },
+    server: mode === 'development' ? {
+      proxy: {
+        '/config.json': {
+          target: 'http://localhost:5012',
+          changeOrigin: true,
+        },
+        '/logo': {
+          target: 'http://localhost:5012',
+          changeOrigin: true,
+        },
+        '/favicon.ico': {
+          target: 'http://localhost:5012',
+          changeOrigin: true,
+        },
+      },
+    } : undefined,
   }
 })
