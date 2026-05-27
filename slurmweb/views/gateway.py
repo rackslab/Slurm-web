@@ -322,6 +322,9 @@ def ui_config():
     }
     if current_app.settings.authentication.enabled:
         config["AUTHENTICATION_METHOD"] = current_app.settings.authentication.method
+    # If UI is enabled, add branding configuration to the response.
+    if current_app.frontend is not None:
+        config.update(current_app.frontend.runtime_config(current_app.prefix))
     return jsonify(config)
 
 

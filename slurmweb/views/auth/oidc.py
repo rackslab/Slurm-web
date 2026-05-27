@@ -15,7 +15,7 @@ OIDC_SESSION_LOGIN = "oidc_login"
 
 
 def _oidc_callback_frontend_url() -> str:
-    return f"{current_app.oidc_ui_prefix}/auth/oidc/callback"
+    return f"{current_app.prefix}/auth/oidc/callback"
 
 
 def oidc_login():

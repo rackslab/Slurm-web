@@ -28,7 +28,7 @@ from urllib.parse import urljoin
 
 from . import SlurmwebWebApp
 from ..conf import load_secret_from_file
-from ..ui import prepare_ui_assets
+from ..ui import SlurmwebFrontend
 from ..views import SlurmwebAppRoute
 from ..views import gateway as views
 from ..views.auth import anonymous as anonymous_views
@@ -176,16 +176,15 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         )
 
         # Mount application under URL prefix if configured
-        prefix = self._infer_ui_prefix()
-        self.oidc_ui_prefix = prefix
-        self._mount_under_prefix(prefix)
+        self.prefix = self._infer_ui_prefix()
+        self._mount_under_prefix(self.prefix)
 
         # Add UI rules if enabled.
+        self.frontend = None
         if self.settings.ui.enabled:
-            ui_path = prepare_ui_assets(
-                self.settings.ui.path,
-                prefix,
-            )
+            self.frontend = SlurmwebFrontend(self.settings.ui)
+            self.frontend.validate()
+            ui_path = self.frontend.prepare_assets(self.prefix)
             self.add_url_rule("/config.json", view_func=views.ui_config)
             self.static_folder = str(ui_path)
             self.add_url_rule("/", view_func=views.ui_files)

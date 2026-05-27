@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
-- gateway: Add support for SSO authentication with OpenID Connect (#268).
+- gateway:
+  - Add support for SSO authentication with OpenID Connect (#268).
+  - Add support for branding of UI with custom colors, logos and favicon (#287).
 - front: Add OIDC login page and callback view for OpenID Connect SSO
   authentication.
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
