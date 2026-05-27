@@ -60,7 +60,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update Slurm REST API supported versions section in architecture page.
 
 ### Fixed
-- front: Update bundled dependencies to fix CVE-2026-46625 (js-cookie).
+- front:
+  - Update bundled dependencies to fix CVE-2026-46625 (js-cookie).
+  - Use custom light color instead of indigo-100 for badge background color in
+    jobs and resources filters panels.
 - docs: typo in configuration guide. Contribution from @yosinn1-blip.
 
 ### Removed

@@ -80,7 +80,7 @@ const state_filters = [
               <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Filters
                 <span
-                  class="text-slurmweb dark:text-slurmweb-light dark:bg-slurmweb-verydark ml-3 hidden rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium md:inline-block"
+                  class="text-slurmweb dark:text-slurmweb-light dark:bg-slurmweb-verydark ml-3 hidden rounded-full bg-slurmweb-light px-2.5 py-0.5 text-xs font-medium md:inline-block"
                   >{{ nbJobs }}</span
                 >
               </h2>
