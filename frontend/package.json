@@ -55,5 +55,9 @@
     "vitest": "^4.1.7",
     "vue-router-mock": "^2.0.2",
     "vue-tsc": "^3.3.2"
+  },
+  "//overrides": "Force glob ^13: js-beautify (via @vue/test-utils) still depends on deprecated glob 10.x, which triggers npm deprecation warnings in CI. Remove this block when js-beautify ships glob >=13.",
+  "overrides": {
+    "glob": "^13.0.0"
   }
 }
