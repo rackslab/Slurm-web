@@ -9,10 +9,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from slurmweb.conf import load_secret_from_file
+from slurmweb.conf import (
+    load_secret_from_file,
+    validate_existing_path,
+    validate_hex_color,
+)
 from slurmweb.errors import SlurmwebConfigurationError
 
 PARAMETER_NAME = "test secret"
+UI_LOGO_PARAMETER = "ui.logo_login"
+UI_COLOR_MAIN_PARAMETER = "ui.color_main"
 
 
 class TestLoadSecretFromFile(unittest.TestCase):
@@ -77,3 +83,45 @@ class TestLoadSecretFromFile(unittest.TestCase):
                 load_secret_from_file(secret_file, PARAMETER_NAME)
         finally:
             secret_file.unlink()
+
+
+class TestValidateExistingPath(unittest.TestCase):
+    def test_valid(self):
+        path = Path(tempfile.NamedTemporaryFile(delete=False).name)
+        path.write_text("logo")
+        try:
+            validate_existing_path(path, UI_LOGO_PARAMETER)
+        finally:
+            path.unlink()
+
+    def test_nonexistent(self):
+        path = Path("/nonexistent/logo.png")
+        with self.assertRaisesRegex(
+            SlurmwebConfigurationError,
+            f"{UI_LOGO_PARAMETER} file does not exist: {path}",
+        ):
+            validate_existing_path(path, UI_LOGO_PARAMETER)
+
+    def test_not_a_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            with self.assertRaisesRegex(
+                SlurmwebConfigurationError,
+                f"{UI_LOGO_PARAMETER} is not a regular file: {path}",
+            ):
+                validate_existing_path(path, UI_LOGO_PARAMETER)
+
+
+class TestValidateHexColor(unittest.TestCase):
+    def test_valid(self):
+        self.assertEqual(validate_hex_color("#abc", UI_COLOR_MAIN_PARAMETER), "#abc")
+        self.assertEqual(
+            validate_hex_color("#aabbcc", UI_COLOR_MAIN_PARAMETER), "#aabbcc"
+        )
+
+    def test_invalid(self):
+        with self.assertRaisesRegex(
+            SlurmwebConfigurationError,
+            f"Invalid hexadecimal color for {UI_COLOR_MAIN_PARAMETER}: red",
+        ):
+            validate_hex_color("red", UI_COLOR_MAIN_PARAMETER)
