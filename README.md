@@ -36,6 +36,7 @@ Many features in a reactive & responsive web UI:
 * Advanced visualization of node status with racking topology
 * Intuitive visualization of account tree, QOS and advanced reservations
 * Dark mode support
+* Custom UI branding (colors, logos, favicon)
 * Multi-clusters support
 * LDAP authentication (including Active Directory support)
 * SSO OpenID Connect (OIDC) authentication (ex: Keycloak, Authentik, etc)
