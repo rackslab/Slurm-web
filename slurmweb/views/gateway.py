@@ -332,5 +332,4 @@ def ui_files(name="index.html"):
         or name.startswith("logo/")
     ):
         return current_app.send_static_file(name)
-    else:
-        return current_app.send_static_file("index.html")
+    return current_app.send_static_file("index.html")
