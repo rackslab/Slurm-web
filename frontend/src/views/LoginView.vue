@@ -16,9 +16,11 @@ import { AuthenticationError } from '@/composables/HTTPErrors'
 import LoginServiceMessage from '@/components/login/LoginServiceMessage.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
+import { useBranding } from '@/composables/Branding'
 
 const gateway = useGatewayAPI()
 const runtimeConfiguration = useRuntimeConfiguration()
+const { logoAlt, logoLogin, logoLoginDark } = useBranding()
 
 const username: Ref<string | null> = ref(null)
 const password: Ref<string | null> = ref(null)
@@ -83,8 +85,8 @@ async function submitLogin() {
           class="w-full rounded-lg bg-white shadow-sm sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800"
         >
           <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <img src="/logo/slurm-web_logo.png" class="m-auto mb-8 block dark:hidden" />
-            <img src="/logo/slurm-web_logo_dark.png" class="m-auto mb-8 hidden dark:block" />
+            <img :src="logoLogin" :alt="logoAlt" class="m-auto mb-8 block dark:hidden" />
+            <img :src="logoLoginDark" :alt="logoAlt" class="m-auto mb-8 hidden dark:block" />
             <div
               v-if="runtimeConfiguration.authentication_method === 'oidc'"
               class="space-y-4 md:space-y-6"

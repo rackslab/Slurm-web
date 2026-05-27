@@ -17,6 +17,7 @@ import { APIServerError } from '@/composables/HTTPErrors'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useBranding } from '@/composables/Branding'
 
 const {
   cluster,
@@ -39,6 +40,7 @@ const router = useRouter()
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
 const gateway = useGatewayAPI()
+const { brandMainRgb } = useBranding()
 
 const container = useTemplateRef<HTMLDivElement>('container')
 const racksLoading: Ref<boolean> = ref(true)
@@ -378,7 +380,7 @@ function createShimmeredColor(intensity: number): string {
   const baseColor = { r: 170, g: 170, b: 170 } // #aaaaaa
 
   // target color (target color when intensity is 1)
-  const targetColor = { r: 117, g: 154, b: 184 } // #759ab8, aka. slurm-web-blue
+  const targetColor = brandMainRgb.value
 
   // Interpolate between baseColor and targetColor based on intensity
   const r = Math.round(baseColor.r + (targetColor.r - baseColor.r) * intensity)

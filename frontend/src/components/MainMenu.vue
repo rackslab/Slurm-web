@@ -23,6 +23,7 @@ import { TagIcon } from '@heroicons/vue/16/solid'
 
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
+import { useBranding } from '@/composables/Branding'
 
 const { entry } = defineProps<{
   entry: string
@@ -32,6 +33,7 @@ const sidebarOpen = defineModel<boolean>()
 
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
+const { logoAlt, logoHorizontal, logoHorizontalDark } = useBranding()
 const navigation = [
   { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permission: 'view-stats' },
   { name: 'Jobs', route: 'jobs', icon: PlayCircleIcon, permission: 'view-jobs' },
@@ -100,7 +102,7 @@ const navigation = [
               class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 dark:bg-gray-700"
             >
               <div class="flex h-16 shrink-0 items-center justify-center">
-                <img class="flex h-12" src="/logo/slurm-web_horizontal.png" alt="Slurm-web" />
+                <img class="flex h-12" :src="logoHorizontal" :alt="logoAlt" />
               </div>
               <div
                 class="text-slurmweb-dark dark:text-slurmweb mx-8 -mt-10 mb-6 text-right text-xs"
@@ -165,8 +167,8 @@ const navigation = [
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="bg-slurmweb flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 dark:bg-gray-700">
       <div class="flex h-24 shrink-0 items-center">
-        <img src="/logo/slurm-web_horizontal.png" alt="Slurm-web" class="block dark:hidden" />
-        <img src="/logo/slurm-web_horizontal_dark.png" alt="Slurm-web" class="hidden dark:block" />
+        <img :src="logoHorizontal" :alt="logoAlt" class="block dark:hidden" />
+        <img :src="logoHorizontalDark" :alt="logoAlt" class="hidden dark:block" />
       </div>
       <div class="text-slurmweb-dark dark:text-slurmweb -mt-12 mb-4 text-right text-xs">
         <TagIcon class="inline size-3" aria-hidden="true" /> {{ runtimeConfiguration.version }}
