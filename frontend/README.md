@@ -1,5 +1,7 @@
 # Slurm-web frontend
 
+Requires [Node.js](https://nodejs.org/) >= 20.19.
+
 ## Project Setup
 
 ```sh
