@@ -107,6 +107,99 @@ ui:
     default: false
     doc: |
       Enable racks labels in RacksDB infrastructure graphical representations.
+  color_light:
+    type: str
+    doc: |
+      Custom light brand color for the frontend interface, as a hexadecimal
+      color (e.g. `#ccdbe6`). Used for light page backgrounds, subtle
+      highlights, and tags. When not defined, the default Slurm-web color is
+      used.
+    ex: "#ccdbe6"
+  color_main:
+    type: str
+    doc: |
+      Custom main brand color for the frontend interface, as a hexadecimal color
+      (e.g. `#759ab8`). Used for the sidebar background, primary buttons, links,
+      focus rings, and selected controls (dashboard tabs, filters, resource
+      diagram highlights). When not defined, the default Slurm-web color is used.
+    ex: "#759ab8"
+  color_darker:
+    type: str
+    doc: |
+      Custom darker brand color for the frontend interface, as a hexadecimal
+      color (e.g. `#6185a3`). Used for button hover states and focus outlines.
+      When not defined, the default Slurm-web color is used.
+    ex: "#6185a3"
+  color_dark:
+    type: str
+    doc: |
+      Custom dark brand color for the frontend interface, as a hexadecimal color
+      (e.g. `#486a86`). Used for active sidebar entries, secondary text, and
+      dark-mode button backgrounds. When not defined, the default Slurm-web color
+      is used.
+    ex: "#486a86"
+  color_verydark:
+    type: str
+    doc: |
+      Custom very dark brand color for the frontend interface, as a hexadecimal
+      color (e.g. `#3b5163`). Used for active navigation in dark mode and
+      primary actions on dark backgrounds. When not defined, the default
+      Slurm-web color is used.
+    ex: "#3b5163"
+  color_font_disabled:
+    type: str
+    doc: |
+      Custom disabled font color for the frontend interface, as a hexadecimal
+      color (e.g. `#dbe9f4`). Used for inactive sidebar menu labels and icons on
+      the main brand background. When not defined, the default Slurm-web color is
+      used.
+    ex: "#dbe9f4"
+  logo_login:
+    type: path
+    doc: |
+      Path to a custom logo image displayed on the login page in light mode.
+      Use a PNG file; a square or portrait layout around 140×160 pixels matches
+      the default Slurm-web logo. When not defined, the default Slurm-web logo is
+      used.
+    ex: /etc/slurm-web/branding/logo.png
+  logo_login_dark:
+    type: path
+    doc: |
+      Path to a custom logo image displayed on the login page in dark mode. Use a
+      PNG file with the same recommended size as logo_login (around 140×160
+      pixels). When not defined, the default Slurm-web logo is used.
+    ex: /etc/slurm-web/branding/logo_dark.png
+  logo_horizontal:
+    type: path
+    doc: |
+      Path to a custom horizontal logo image displayed in the sidebar in light
+      mode. Use a PNG file; a wide layout around 280×64 pixels matches the
+      default Slurm-web logo. When not defined, the default Slurm-web logo is
+      used.
+    ex: /etc/slurm-web/branding/logo_horizontal.png
+  logo_horizontal_dark:
+    type: path
+    doc: |
+      Path to a custom horizontal logo image displayed in the sidebar in dark
+      mode. Use a PNG file with the same recommended size as logo_horizontal
+      (around 280×64 pixels). When not defined, the default Slurm-web logo is
+      used.
+    ex: /etc/slurm-web/branding/logo_horizontal_dark.png
+  logo_alt:
+    type: str
+    doc: |
+      Alternative text for custom logo images in the frontend interface. When
+      not defined, `Slurm-web` is used.
+    ex: My HPC Portal
+  favicon:
+    type: path
+    doc: |
+      Path to a custom favicon file. Only the ICO extension is supported. Use a
+      multi-resolution ICO (for example 16×16, 32×32, and 48×48 pixels) so icons
+      remain sharp in browser tabs and bookmarks. The file is copied to the
+      frontend application at runtime. When not defined, the default Slurm-web
+      favicon is used.
+    ex: /etc/slurm-web/branding/favicon.ico
 
 agents:
   url:
