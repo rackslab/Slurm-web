@@ -171,6 +171,21 @@ browser theme settings. Dark mode affects all interface components, including
 dashboards, job and node views, charts, and menus, ensuring consistent and
 accessible contrast across the application.
 
+== Custom Branding
+
+Sites can customize the user interface appearance with their own brand colors,
+logos, and favicon. Colors are applied across the interface (sidebar, buttons,
+login page, menus). Separate logo images are supported for light and dark modes
+on the login page and in the sidebar.
+
+image::slurm-web_themes.png[]
+
+[sidebar]
+--
+.More links
+* xref:conf:branding.adoc[Custom Branding guide]
+--
+
 == Enterprise Authentication
 
 Slurm-web supports user authentication with enterprise LDAP directories
