@@ -49,6 +49,9 @@ def info():
             "infrastructure": current_app.settings.racksdb.infrastructure,
             "version": racksdb_get_version(),
         },
+        "slurmdbd": {
+            "jobs_max_hours": current_app.settings.slurmdbd.jobs_max_hours,
+        },
         "version": get_version(),
     }
     return jsonify(data)
@@ -132,7 +135,7 @@ def stats():
     total = 0
     running = 0
 
-    for job in slurmrest("jobs"):
+    for job in current_app.slurmrestd.jobs():
         total += 1
         if "RUNNING" in job["job_state"]:
             running += 1
@@ -165,12 +168,25 @@ def jobs():
     if node:
         return jsonify(slurmrest("jobs_by_node", node))
     else:
-        return jsonify(slurmrest("jobs"))
+        return jsonify(slurmrest("jobs_current"))
 
 
 @rbac_action("view-jobs")
 def job(job: int):
     return jsonify(slurmrest("job", job))
+
+
+@rbac_action("jobs-view-past")
+def jobs_past():
+    settings = current_app.settings.slurmdbd
+    if "hours" not in request.args:
+        abort(400, "Missing hours query parameter")
+    try:
+        hours = int(request.args.get("hours"))
+    except (TypeError, ValueError):
+        abort(400, "Invalid hours query parameter")
+    hours = max(1, min(hours, settings.jobs_max_hours))
+    return jsonify(slurmrest("jobs_past", hours))
 
 
 @rbac_action("view-nodes")

@@ -4,9 +4,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+import logging
+import time
 import typing as t
 import urllib
-import logging
 
 import requests
 from ClusterShell.NodeSet import NodeSet
@@ -25,6 +26,50 @@ from .errors import (
 from ..errors import SlurmwebConfigurationError
 
 logger = logging.getLogger(__name__)
+
+# Terminated base job states.
+#
+# Extracted from OpenAPI components.schemas.*_job_state items.enum (ex: GET /openapi/v3
+# on slurmrestd, or tests/assets/slurmrestd/<ver>/openapi-v3.json).
+#
+# For example, run:
+#   $ jq -r '
+#       .components.schemas
+#       | to_entries[]
+#       | select(.key | endswith("_job_state"))
+#       | .value.items.enum[]
+#     ' openapi-v3.json | sort -u
+#
+# Excluded states (OpenAPI *_job_state enum minus TERMINAL_JOB_STATES):
+# - COMPLETING
+# - CONFIGURING
+# - LAUNCH_FAILED
+# - PENDING
+# - POWER_UP_NODE
+# - RECONFIG_FAIL
+# - REQUEUED
+# - REQUEUE_FED
+# - REQUEUE_HOLD
+# - RESIZING
+# - RESV_DEL_HOLD
+# - REVOKED
+# - RUNNING
+# - SIGNALING
+# - SPECIAL_EXIT
+# - STAGE_OUT
+# - STOPPED
+# - SUSPENDED
+TERMINAL_JOB_STATES = (
+    "COMPLETED",
+    "FAILED",
+    "TIMEOUT",
+    "CANCELLED",
+    "PREEMPTED",
+    "OUT_OF_MEMORY",
+    "NODE_FAIL",
+    "BOOT_FAIL",
+    "DEADLINE",
+)
 
 if t.TYPE_CHECKING:
     from rfl.settings import RuntimeSettings
@@ -233,8 +278,71 @@ class Slurmrestd:
             f"Tried versions: {', '.join(self.supported_versions)}"
         )
 
-    def jobs(self, **kwargs):
+    @staticmethod
+    def _job_has_terminal_state(job: t.Dict[str, t.Any]) -> bool:
+        return any(state in TERMINAL_JOB_STATES for state in job.get("job_state", []))
+
+    def jobs(self, **kwargs) -> t.List[t.Dict[str, t.Any]]:
+        """List all jobs from slurmctld."""
+
         return self._request("slurm", "jobs", "jobs", **kwargs)
+
+    def jobs_current(self, **kwargs) -> t.List[t.Dict[str, t.Any]]:
+        """List all jobs from slurmctld that are not in terminal states."""
+
+        return [
+            job
+            for job in self.jobs(**kwargs)
+            if not Slurmrestd._job_has_terminal_state(job)
+        ]
+
+    @staticmethod
+    def _past_jobs_query_params(hours: int) -> t.List[t.Tuple[str, str]]:
+        """Build query parameters for listing jobs that terminated within a time window.
+
+        The intent is to return every finished job whose time_end lies in the last
+        hours.
+
+        Start and end times must use the uts-prefix timestamp form accepted by
+        parse_time(); bare Unix second strings are rejected.
+
+        OpenAPI suggests state can be passed as a comma-separated list, but slurmrestd
+        parses state with JOB_STATE_ID_STRING_LIST, which does not split on commas.
+        Callers must repeat state= once per state (for example state=COMPLETED and
+        state=FAILED), not state=COMPLETED,FAILED. For reference, see corresponding
+        Slurm bug report:
+
+          https://support.schedmd.com/show_bug.cgi?id=25297
+
+        Filtering slurmdbd with start_time and end_time alone (without states) is
+        insufficient because SlurmDBD then matches jobs that merely overlap the window
+        (time_eligible before the end and time_end after the start, or still running),
+        not only those that finished inside it. This helper therefore sends one state=
+        value for each name in TERMINAL_JOB_STATES so slurmdbd restricts terminal states
+        with time_end BETWEEN the window bounds, in the same spirit as sacct with -S,
+        -E, and -s.
+
+        For implementation details in Slurm source code, see data_parser parsers.c and
+        as_mysql_jobacct_process.c.
+        """
+        now = int(time.time())
+        params: t.List[t.Tuple[str, str]] = [
+            ("start_time", f"uts{now - hours * 3600}"),
+            ("end_time", f"uts{now}"),
+        ]
+        params.extend((("state", state) for state in TERMINAL_JOB_STATES))
+        return params
+
+    def jobs_past(self, hours: int, **kwargs) -> t.List[t.Dict[str, t.Any]]:
+        """List all jobs from slurmdbd that terminated within the last hours."""
+
+        return self._request(
+            "slurmdb",
+            "jobs",
+            "jobs",
+            params=self._past_jobs_query_params(hours),
+            **kwargs,
+        )
 
     def jobs_by_node(self, node: str):
         """Select jobs not completed which are allocated the given node."""
@@ -245,14 +353,7 @@ class Slurmrestd:
                 return False
             return node in NodeSet(job["nodes"])
 
-        def terminated(job):
-            """Return True if job is terminated."""
-            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
-                if terminated_state in job["job_state"]:
-                    return True
-            return False
-
-        return [job for job in self.jobs() if on_node(job) and not terminated(job)]
+        return [job for job in self.jobs_current() if on_node(job)]
 
     def jobs_states(self):
         # All Slurm jobs base states. Jobs can have only one of them.
@@ -508,6 +609,11 @@ class SlurmrestdFiltered(SlurmrestdAdapter):
     def jobs(self):
         return SlurmrestdFiltered.filter_fields(super().jobs(), self.filters.jobs)
 
+    def jobs_past(self, hours: int) -> t.List[t.Dict[str, t.Any]]:
+        return SlurmrestdFiltered.filter_fields(
+            super().jobs_past(hours), self.filters.jobs_dbd
+        )
+
     def _ctldjob(self, job_id: int, **kwargs):
         return SlurmrestdFiltered.filter_fields(
             super()._ctldjob(job_id, **kwargs), self.filters.ctldjob
@@ -599,6 +705,14 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
 
     def jobs(self):
         return self._cached(CacheKey("jobs"), self.cache.jobs, super().jobs)
+
+    def jobs_past(self, hours: int):
+        return self._cached(
+            CacheKey(f"jobs-past-{hours}", "jobs-past"),
+            self.cache.jobs_past,
+            super().jobs_past,
+            hours,
+        )
 
     def job(self, job_id: int):
         return self._cached(

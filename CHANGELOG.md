@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway:
   - Add support for SSO authentication with OpenID Connect (#268).
   - Add support for branding of UI with custom colors, logos and favicon (#287).
+- agent: Add route `/jobs/past` to query last terminated jobs from Slurm
+  accounting service.
 - front:
   - Add OIDC login page and callback view for OpenID Connect SSO authentication.
   - Support custom branding parameters as defined in UI runtime configuration
@@ -61,6 +63,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - gateway: Add user login in LDAP successful authentication JSON response, for
   consistency with OIDC authentication response format.
+- agent:
+  - Filter only actives jobs (ie. not terminated) in response of `/jobs`
+    route.
+  - Add `slurmdbd.jobs_max_hours` setting in agent info response.
 - front:
   - Require Node.js >= 20.19.
   - Update dependencies to latest versions (Vite 8, Vitest 4, ESLint 10,
