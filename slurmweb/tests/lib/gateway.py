@@ -19,7 +19,11 @@ from rfl.authentication.user import AuthenticatedUser, AnonymousUser
 from slurmweb.version import get_version
 from slurmweb.apps import SlurmwebAppSeed
 from slurmweb.apps.gateway import SlurmwebAppGateway
-from slurmweb.apps.gateway import SlurmwebAgent, SlurmwebAgentRacksDBSettings
+from slurmweb.apps.gateway import (
+    SlurmwebAgent,
+    SlurmwebAgentRacksDBSettings,
+    SlurmwebAgentSlurmdbdSettings,
+)
 from slurmweb.views.agent import racksdb_get_version
 
 from .utils import SlurmwebCustomTestResponse
@@ -89,6 +93,7 @@ def fake_slurmweb_agent(cluster: str):
         ),
         metrics=True,
         cache=True,
+        slurmdbd=SlurmwebAgentSlurmdbdSettings(jobs_max_hours=168),
         url=f"http://{cluster}",
     )
 

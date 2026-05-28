@@ -34,6 +34,7 @@ class TestGatewayViews(TestGatewayBase):
                 "name": "foo",
                 "permissions": permissions,
                 "racksdb": True,
+                "slurmdbd": {"jobs_max_hours": 168},
             },
         )
 
@@ -63,6 +64,7 @@ class TestGatewayViews(TestGatewayBase):
                     "name": "foo",
                     "permissions": permissions,
                     "racksdb": True,
+                    "slurmdbd": {"jobs_max_hours": 168},
                 },
                 {
                     "infrastructure": "bar",
@@ -71,6 +73,7 @@ class TestGatewayViews(TestGatewayBase):
                     "name": "bar",
                     "permissions": permissions,
                     "racksdb": True,
+                    "slurmdbd": {"jobs_max_hours": 168},
                 },
                 {
                     "infrastructure": "baz",
@@ -79,6 +82,7 @@ class TestGatewayViews(TestGatewayBase):
                     "name": "baz",
                     "permissions": permissions,
                     "racksdb": True,
+                    "slurmdbd": {"jobs_max_hours": 168},
                 },
             ],
         )
@@ -127,6 +131,7 @@ class TestGatewayViews(TestGatewayBase):
                     "name": "foo",
                     "permissions": permissions,
                     "racksdb": True,
+                    "slurmdbd": {"jobs_max_hours": 168},
                 },
                 {
                     "infrastructure": "bar",
@@ -135,6 +140,7 @@ class TestGatewayViews(TestGatewayBase):
                     "name": "bar",
                     "permissions": permissions,
                     "racksdb": True,
+                    "slurmdbd": {"jobs_max_hours": 168},
                 },
             ],
         )
