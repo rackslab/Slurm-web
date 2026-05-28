@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 14
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHWBK100",
+      "sluid": "s88DKSW66D1Z00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1778604940,
+        "elapsed": 0,
+        "eligible": 1780136190,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1778604940,
-        "submission": 1778604940,
+        "start": 1780136191,
+        "submission": 1780136190,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,20 +118,20 @@
           "number": 0
         }
       },
-      "job_id": 80,
+      "job_id": 5191,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu4",
+      "nodes": "gpu1",
       "oversubscribe": "NO",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 363
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHWBK100",
+      "original_sluid": "s88DKSW66D1Z00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/tkirby/slurm-80.out",
+      "stdout_expanded": "/home/arodriguez/slurm-5191.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,7 +173,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604940
+              "number": 1780136191
             },
             "suspended": 0,
             "system": {
@@ -223,9 +223,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu4",
+            "range": "gpu1",
             "list": [
-              "gpu4"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "80.batch",
+            "id": "5191.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -371,16 +395,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "tkirby",
+      "user": "arodriguez",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tkirby"
+      "working_directory": "/home/arodriguez"
     }
   ],
   "meta": {

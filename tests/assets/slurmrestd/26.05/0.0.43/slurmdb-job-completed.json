@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 17
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 30,
-        "eligible": 1778606965,
-        "end": 1778606996,
+        "elapsed": 1,
+        "eligible": 1780138026,
+        "end": 1780138028,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1778606966,
-        "submission": 1778606965,
+        "start": 1780138027,
+        "submission": 1780138026,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 238,
+      "job_id": 5351,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "gpu",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 545
       },
       "qos": "normal",
       "qosreq": "",
@@ -155,7 +155,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/arodriguez/slurm-238.out",
+      "stdout_expanded": "/home/jrasmussen/slurm-5351.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -169,16 +169,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 30,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778606996
+              "number": 1780138028
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778606966
+              "number": 1780138027
             },
             "suspended": 0,
             "system": {
@@ -219,9 +219,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "cn1",
             "list": [
-              "gpu1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "238.batch",
+            "id": "5351.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -370,12 +370,12 @@
         ]
       },
       "used_gres": "",
-      "user": "arodriguez",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/arodriguez"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {

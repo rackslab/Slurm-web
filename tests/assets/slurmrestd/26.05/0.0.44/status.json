@@ -63,6 +63,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-timeout": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-unfound": {
     "content-type": "application/json",
     "status": 404
@@ -116,6 +120,10 @@
     "status": 200
   },
   "slurm-node-with-gpus-idle": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurm-node-with-gpus-mixed": {
     "content-type": "application/json",
     "status": 200
   },
@@ -219,7 +227,15 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-job-timeout": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-job-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-jobs": {
     "content-type": "application/json",
     "status": 200
   },

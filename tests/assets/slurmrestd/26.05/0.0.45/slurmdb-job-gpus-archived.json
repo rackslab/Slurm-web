@@ -35,7 +35,7 @@
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREJ7ZBV00",
+      "sluid": "s88DKSW5HKP600",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -56,15 +56,15 @@
       },
       "time": {
         "elapsed": 30,
-        "eligible": 1778605321,
-        "end": 1778605352,
+        "eligible": 1780135509,
+        "end": 1780135539,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1778605322,
-        "submission": 1778605321,
+        "start": 1780135509,
+        "submission": 1780135509,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,7 +118,7 @@
           "number": 0
         }
       },
-      "job_id": 159,
+      "job_id": 5114,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -131,7 +131,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 90
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREJ7ZBV00",
+      "original_sluid": "s88DKSW5HKP600",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jshelton/slurm-159.out",
+      "stdout_expanded": "/home/jshelton/slurm-5114.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -177,12 +177,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778605352
+              "number": 1780135539
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778605322
+              "number": 1780135509
             },
             "suspended": 0,
             "system": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "159.batch",
+            "id": "5114.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -371,6 +395,12 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },

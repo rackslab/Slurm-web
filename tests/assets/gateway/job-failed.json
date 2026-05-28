@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779131019,
+    "number": 1780303045,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 11,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jrasmussen",
+  "current_working_directory": "/home/rpowers",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,7 +64,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779131020,
+    "number": 1780303045,
     "set": true
   },
   "name": "allocation",
@@ -77,7 +77,7 @@
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 363,
+    "number": 181,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +96,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jrasmussen/slurm-1162.out",
+  "stdout_expanded": "/home/rpowers/slurm-1250.out",
   "steps": [
     {
       "CPU": {
@@ -140,7 +140,6 @@
         ],
         "range": "cn1"
       },
-      "pid": "",
       "state": [
         "FAILED"
       ],
@@ -157,7 +156,7 @@
         }
       },
       "step": {
-        "id": "1162.batch",
+        "id": "1250.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +176,7 @@
         "elapsed": 2,
         "end": {
           "infinite": false,
-          "number": 1779131022,
+          "number": 1780303047,
           "set": true
         },
         "limit": {
@@ -187,7 +186,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131020,
+          "number": 1780303045,
           "set": true
         },
         "suspended": 0,
@@ -248,20 +247,20 @@
   },
   "time": {
     "elapsed": 2,
-    "eligible": 1779131019,
-    "end": 1779131022,
+    "eligible": 1780303045,
+    "end": 1780303047,
     "limit": {
-      "infinite": false,
-      "number": 60,
-      "set": true
-    },
-    "planned": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "start": 1779131020,
-    "submission": 1779131019,
+    "planned": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "start": 1780303045,
+    "submission": 1780303045,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -341,11 +340,10 @@
   "tres_per_socket": "",
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "jrasmussen",
+  "user": "rpowers",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jrasmussen"
+  "working_directory": "/home/rpowers"
 }

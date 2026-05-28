@@ -7,7 +7,7 @@
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 0,
+      "allocation_nodes": 1,
       "array": {
         "job_id": 0,
         "limits": {
@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "vhartman",
-        "id": 11
+        "user": "rpowers",
+        "id": 10
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 0,
+        "elapsed": 1,
+        "eligible": 1780141757,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1762529638,
-        "submission": 1762529638,
+        "start": 1780141757,
+        "submission": 1780141757,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -104,9 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
+        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "root",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,30 +116,30 @@
           "number": 0
         }
       },
-      "job_id": 4,
+      "job_id": 13381,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "",
-      "hold": true,
+      "nodes": "gpu2",
+      "partition": "gpu",
+      "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 727
       },
-      "qos": "",
+      "qos": "normal",
       "required": {
-        "CPUs": 0,
+        "CPUs": 1,
         "memory_per_cpu": {
-          "set": false,
+          "set": true,
           "infinite": false,
-          "number": 0
+          "number": 512
         },
         "memory_per_node": {
-          "set": true,
+          "set": false,
           "infinite": false,
           "number": 0
         }
@@ -150,21 +151,21 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "",
+      "stdout_expanded": "/home/rpowers/slurm-13381.out",
       "stderr_expanded": "",
-      "stdout": "",
+      "stdout": "/home/rpowers/slurm-%j.out",
       "stderr": "",
       "stdin": "",
       "state": {
         "current": [
-          "PENDING"
+          "RUNNING"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 2,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
@@ -173,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529638
+              "number": 1780141757
             },
             "suspended": 0,
             "system": {
@@ -209,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "gpu2",
             "list": [
-              "gpu1"
+              "gpu2"
             ]
           },
           "tasks": {
@@ -250,7 +251,7 @@
             }
           },
           "step": {
-            "id": "4.batch",
+            "id": "13381.batch",
             "name": "batch"
           },
           "task": {
@@ -287,6 +288,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
@@ -294,16 +307,96 @@
       ],
       "submit_line": "",
       "tres": {
-        "allocated": [],
-        "requested": []
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
+          }
+        ]
       },
       "used_gres": "",
-      "user": "vhartman",
+      "user": "rpowers",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": ""
+      "working_directory": "/home/rpowers"
     }
   ],
   "meta": {
@@ -314,7 +407,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893542987] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6088254] (fd 8)",
       "user": "",
       "group": ""
     },

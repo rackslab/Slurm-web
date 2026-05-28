@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jbeck",
-        "id": 12
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1762790650,
+        "elapsed": 0,
+        "eligible": 1780142487,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1762790650,
-        "submission": 1762790650,
+        "start": 1780142488,
+        "submission": 1780142487,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 4783,
-      "name": "wrap",
+      "job_id": 14315,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
+      "nodes": "gpu2",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 181
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-4783.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-14315.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -167,7 +167,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762790650
+              "number": 1780142488
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "gpu2",
             "list": [
-              "gpu1"
+              "gpu2"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "4783.batch",
+            "id": "14315.batch",
             "name": "batch"
           },
           "task": {
@@ -290,12 +290,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-node h100:1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ],
         "requested": [
@@ -353,16 +377,28 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -373,7 +409,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

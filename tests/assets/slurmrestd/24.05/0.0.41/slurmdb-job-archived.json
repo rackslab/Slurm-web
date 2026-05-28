@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "crich",
-        "id": 11
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 42,
-        "eligible": 1747749294,
-        "end": 1747749338,
+        "elapsed": 1,
+        "eligible": 1780141362,
+        "end": 1780141364,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
-        "start": 1747749296,
-        "submission": 1747749294,
+        "start": 1780141363,
+        "submission": 1780141362,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 10
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 649716,
-      "name": "wrap",
+      "job_id": 13367,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn176",
-      "partition": "batch",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 90
       },
       "qos": "normal",
       "required": {
@@ -144,37 +144,37 @@
           "number": 0
         }
       },
-      "kill_request_user": "root",
+      "kill_request_user": "",
       "reservation": {
         "id": 0,
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/dev/null",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-13367.out",
       "stderr_expanded": "",
-      "stdout": "/dev/null",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
-          "CANCELLED"
+          "COMPLETED"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 46,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747749342
+              "number": 1780141364
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747749296
+              "number": 1780141363
             },
             "suspended": 0,
             "system": {
@@ -192,27 +192,27 @@
           },
           "exit_code": {
             "status": [
-              "SIGNALED"
+              "SUCCESS"
             ],
             "return_code": {
-              "set": false,
+              "set": true,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": true,
+                "set": false,
                 "infinite": false,
-                "number": 15
+                "number": 0
               },
-              "name": "TERM"
+              "name": ""
             }
           },
           "nodes": {
             "count": 1,
-            "range": "admin.emulator",
+            "range": "cn1",
             "list": [
-              "admin.emulator"
+              "cn1"
             ]
           },
           "tasks": {
@@ -236,7 +236,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "CANCELLED"
+            "COMPLETED"
           ],
           "statistics": {
             "CPU": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "649716.batch",
+            "id": "13367.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --qos normal --partition batch --time 10 --output /dev/null --wrap /usr/bin/sleep 360 && /bin/false --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "crich",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/crich"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2486000651] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6088113] (fd 8)",
       "user": "",
       "group": ""
     },

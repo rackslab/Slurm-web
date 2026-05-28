@@ -53,7 +53,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 636,
+    "number": 90,
     "set": true
   },
   "qos": "normal",
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "1185.batch",
+        "id": "5518.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -144,7 +144,7 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1779131483,
+          "number": 1780139650,
           "set": true
         },
         "limit": {
@@ -154,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131453,
+          "number": 1780139620,
           "set": true
         },
         "suspended": 0,
@@ -190,6 +190,18 @@
             "id": 4,
             "name": "",
             "type": "node"
+          },
+          {
+            "count": 4,
+            "id": 1001,
+            "name": "gpu",
+            "type": "gres"
+          },
+          {
+            "count": 4,
+            "id": 1002,
+            "name": "gpu:h100",
+            "type": "gres"
           }
         ],
         "consumed": {
@@ -210,20 +222,20 @@
   "submit_line": "",
   "time": {
     "elapsed": 30,
-    "eligible": 1779131451,
-    "end": 1779131483,
+    "eligible": 1780139619,
+    "end": 1780139650,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
-    "start": 1779131453,
-    "submission": 1779131451,
+    "start": 1780139620,
+    "submission": 1780139619,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -269,6 +281,18 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
+      },
+      {
+        "count": 4,
+        "id": 1002,
+        "name": "gpu:h100",
+        "type": "gres"
       }
     ],
     "requested": [
@@ -295,10 +319,15 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
-  "used_gres": "",
   "user": "madams",
   "wckey": {
     "flags": [],

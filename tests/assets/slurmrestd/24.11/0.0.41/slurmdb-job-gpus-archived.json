@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
-        "id": 13
+        "user": "rpowers",
+        "id": 10
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 30,
-        "eligible": 1747751625,
-        "end": 1747751658,
+        "eligible": 1780298558,
+        "end": 1780298589,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 3
+          "number": 1
         },
-        "start": 1747751628,
-        "submission": 1747751625,
+        "start": 1780298559,
+        "submission": 1780298558,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 5980,
-      "name": "wrap",
+      "job_id": 9683,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "gpu",
+      "nodes": "ia1",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 545
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/emendoza/slurm-5980.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/rpowers/slurm-9683.out",
       "stderr_expanded": "",
-      "stdout": "/home/emendoza/slurm-%j.out",
+      "stdout": "/home/rpowers/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "COMPLETED"
@@ -169,12 +169,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747751658
+              "number": 1780298589
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747751628
+              "number": 1780298559
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "ia1",
             "list": [
-              "gpu1"
+              "ia1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "5980.batch",
+            "id": "9683.batch",
             "name": "batch"
           },
           "task": {
@@ -288,12 +288,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h200",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -325,6 +337,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h200",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -351,16 +375,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 6
           }
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "rpowers",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/rpowers"
     }
   ],
   "meta": {
@@ -371,7 +401,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -379,10 +409,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

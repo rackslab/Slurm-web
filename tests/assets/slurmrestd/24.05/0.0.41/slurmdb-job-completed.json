@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "tpearson",
-        "id": 14
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1747754468,
-        "end": 1747754470,
+        "eligible": 1780141362,
+        "end": 1780141364,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1747754469,
-        "submission": 1747754468,
+        "start": 1780141363,
+        "submission": 1780141362,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 649718,
-      "name": "wrap",
+      "job_id": 13367,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn001",
-      "partition": "batch",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 272
+        "number": 90
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/tpearson/slurm-649718.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-13367.out",
       "stderr_expanded": "",
-      "stdout": "/home/tpearson/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "COMPLETED"
@@ -169,12 +169,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747754470
+              "number": 1780141364
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747754469
+              "number": 1780141363
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "admin.emulator",
+            "range": "cn1",
             "list": [
-              "admin.emulator"
+              "cn1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "649718.batch",
+            "id": "13367.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 1 && true --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "tpearson",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tpearson"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485983217] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6080189] (fd 8)",
       "user": "",
       "group": ""
     },

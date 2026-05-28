@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779130986,
+    "number": 1780303045,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 14,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/tkirby",
+  "current_working_directory": "/home/rpowers",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,7 +64,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779130987,
+    "number": 1780303046,
     "set": true
   },
   "name": "allocation",
@@ -73,11 +73,11 @@
     "number": 1,
     "set": true
   },
-  "nodes": "gpu1",
-  "partition": "gpu",
+  "nodes": "cn1",
+  "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 545,
+    "number": 181,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +96,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/tkirby/slurm-1159.out",
+  "stdout_expanded": "/home/rpowers/slurm-1251.out",
   "steps": [
     {
       "CPU": {
@@ -136,11 +136,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu1"
+          "cn1"
         ],
-        "range": "gpu1"
+        "range": "cn1"
       },
-      "pid": "",
       "state": [
         "COMPLETED"
       ],
@@ -157,7 +156,7 @@
         }
       },
       "step": {
-        "id": "1159.batch",
+        "id": "1251.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +176,7 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1779131017,
+          "number": 1780303076,
           "set": true
         },
         "limit": {
@@ -187,7 +186,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779130987,
+          "number": 1780303046,
           "set": true
         },
         "suspended": 0,
@@ -248,11 +247,11 @@
   },
   "time": {
     "elapsed": 30,
-    "eligible": 1779130986,
-    "end": 1779131017,
+    "eligible": 1780303045,
+    "end": 1780303076,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 2,
       "set": true
     },
     "planned": {
@@ -260,8 +259,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1779130987,
-    "submission": 1779130986,
+    "start": 1780303046,
+    "submission": 1780303045,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -336,16 +335,15 @@
       }
     ]
   },
-  "tres_per_job": "gres/gpu:4",
+  "tres_per_job": "",
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "tkirby",
+  "user": "rpowers",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/tkirby"
+  "working_directory": "/home/rpowers"
 }

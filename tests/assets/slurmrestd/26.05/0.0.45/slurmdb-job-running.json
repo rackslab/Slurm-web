@@ -7,7 +7,7 @@
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 1,
+      "allocation_nodes": 2,
       "array": {
         "job_id": 0,
         "limits": {
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 13
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHWGFE00",
+      "sluid": "s88DKSWE28RH00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 69,
-        "eligible": 1778604945,
+        "elapsed": 10,
+        "eligible": 1780144444,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 60
         },
-        "start": 1778604947,
-        "submission": 1778604945,
+        "start": 1780144504,
+        "submission": 1780144444,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -118,25 +118,25 @@
           "number": 0
         }
       },
-      "job_id": 84,
+      "job_id": 5543,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn1",
+      "nodes": "gpu[1-2]",
       "oversubscribe": "NO",
-      "partition": "normal",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 272
+        "number": 818
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 1,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHWGFE00",
+      "original_sluid": "s88DKSWE28RH00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jshelton/slurm-84.out",
+      "stdout_expanded": "/home/mwilliams/slurm-5543.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,7 +173,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 69,
+            "elapsed": 10,
             "end": {
               "set": true,
               "infinite": false,
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604947
+              "number": 1780144504
             },
             "suspended": 0,
             "system": {
@@ -223,9 +223,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn1",
+            "range": "gpu1",
             "list": [
-              "cn1"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "84.batch",
+            "id": "5543.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -295,18 +295,30 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 1
+                "count": 32
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 512
+                "count": 16384
               },
               {
                 "type": "node",
                 "name": "",
                 "id": 4,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
                 "count": 1
               }
             ]
@@ -320,13 +332,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 32768
           },
           {
             "type": "energy",
@@ -338,13 +350,25 @@
             "type": "node",
             "name": "",
             "id": 4,
-            "count": 1
+            "count": 2
           },
           {
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -352,13 +376,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 32768
           },
           {
             "type": "node",
@@ -370,17 +394,29 @@
             "type": "billing",
             "name": "",
             "id": 5,
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
             "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "jshelton",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jshelton"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -391,7 +427,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:9)",
+      "source": "admin:6820(fd:44)",
       "user": "nobody",
       "group": ""
     },

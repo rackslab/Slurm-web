@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "admin",
         "cluster": "hpc",
         "partition": "",
-        "user": "jthomas",
-        "id": 13
+        "user": "jli",
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1762788887,
+        "elapsed": 0,
+        "eligible": 1780298430,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1762788887,
-        "submission": 1762788887,
+        "start": 1780298431,
+        "submission": 1780298430,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 6371,
-      "name": "wrap",
+      "job_id": 9609,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 636
+        "number": 909
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jthomas/slurm-6371.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jli/slurm-9609.out",
       "stderr_expanded": "",
-      "stdout": "/home/jthomas/slurm-%j.out",
+      "stdout": "/home/jli/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -167,7 +167,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788887
+              "number": 1780298431
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6371.batch",
+            "id": "9609.batch",
             "name": "batch"
           },
           "task": {
@@ -290,12 +290,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h200",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gpus 12",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h200",
+            "id": 1002,
+            "count": 8
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 12
           }
         ]
       },
       "used_gres": "",
-      "user": "jthomas",
+      "user": "jli",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jthomas"
+      "working_directory": "/home/jli"
     }
   ],
   "meta": {
@@ -381,10 +411,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

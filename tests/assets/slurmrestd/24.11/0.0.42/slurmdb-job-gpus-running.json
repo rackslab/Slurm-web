@@ -28,7 +28,7 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "vhartman",
+        "user": "jrasmussen",
         "id": 11
       },
       "block": "",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1762788927,
+        "eligible": 1780298489,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1762788927,
-        "submission": 1762788927,
+        "start": 1780298489,
+        "submission": 1780298489,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 6374,
-      "name": "wrap",
+      "job_id": 9614,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "ia1",
+      "nodes": "ia2",
       "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 636
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/vhartman/slurm-6374.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jrasmussen/slurm-9614.out",
       "stderr_expanded": "",
-      "stdout": "/home/vhartman/slurm-%j.out",
+      "stdout": "/home/jrasmussen/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788927
+              "number": 1780298489
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "ia1",
+            "range": "ia2",
             "list": [
-              "ia1"
+              "ia2"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6374.batch",
+            "id": "9614.batch",
             "name": "batch"
           },
           "task": {
@@ -290,12 +290,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h200",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gpus 6",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h200",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 6
           }
         ]
       },
       "used_gres": "",
-      "user": "vhartman",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/vhartman"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {
@@ -381,10 +411,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

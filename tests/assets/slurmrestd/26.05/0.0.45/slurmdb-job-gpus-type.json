@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 12
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHVGD800",
+      "sluid": "s88DKSW669GA00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 1778604912,
+        "elapsed": 0,
+        "eligible": 1780136187,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1778604913,
-        "submission": 1778604912,
+        "start": 1780136188,
+        "submission": 1780136187,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,13 +118,13 @@
           "number": 0
         }
       },
-      "job_id": 76,
+      "job_id": 5179,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu2",
+      "nodes": "gpu1",
       "oversubscribe": "NO",
       "partition": "gpu",
       "hold": false,
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHVGD800",
+      "original_sluid": "s88DKSW669GA00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/mwilliams/slurm-76.out",
+      "stdout_expanded": "/home/madams/slurm-5179.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,7 +173,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 2,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604913
+              "number": 1780136188
             },
             "suspended": 0,
             "system": {
@@ -223,9 +223,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu2",
+            "range": "gpu1",
             "list": [
-              "gpu2"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "76.batch",
+            "id": "5179.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ],
         "requested": [
@@ -371,16 +395,28 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "mwilliams",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/mwilliams"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {

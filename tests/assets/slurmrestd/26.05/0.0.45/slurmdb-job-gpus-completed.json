@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 18
+        "id": 10
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHK9XX00",
+      "sluid": "s88DKSW66EKQ00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -56,15 +56,15 @@
       },
       "time": {
         "elapsed": 30,
-        "eligible": 1778604644,
-        "end": 1778604675,
+        "eligible": 1780136192,
+        "end": 1780136223,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1778604645,
-        "submission": 1778604644,
+        "start": 1780136193,
+        "submission": 1780136192,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,7 +118,7 @@
           "number": 0
         }
       },
-      "job_id": 71,
+      "job_id": 5192,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -131,7 +131,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 636
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHK9XX00",
+      "original_sluid": "s88DKSW66EKQ00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jhayes/slurm-71.out",
+      "stdout_expanded": "/home/rpowers/slurm-5192.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -177,12 +177,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778604675
+              "number": 1780136223
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604645
+              "number": 1780136193
             },
             "suspended": 0,
             "system": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "71.batch",
+            "id": "5192.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -371,16 +395,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jhayes",
+      "user": "rpowers",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jhayes"
+      "working_directory": "/home/rpowers"
     }
   ],
   "meta": {

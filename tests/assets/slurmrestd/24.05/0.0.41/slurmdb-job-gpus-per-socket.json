@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jwilson",
-        "id": 9
+        "user": "arodriguez",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1762529700,
+        "eligible": 1780140719,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 2
         },
-        "start": 1762529700,
-        "submission": 1762529700,
+        "start": 1780140721,
+        "submission": 1780140719,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 15,
-      "name": "wrap",
+      "job_id": 13361,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1000
+        "number": 363
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jwilson/slurm-15.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/arodriguez/slurm-13361.out",
       "stderr_expanded": "",
-      "stdout": "/home/jwilson/slurm-%j.out",
+      "stdout": "/home/arodriguez/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -174,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529700
+              "number": 1780140721
             },
             "suspended": 0,
             "system": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "15.batch",
+            "id": "13361.batch",
             "name": "batch"
           },
           "task": {
@@ -288,12 +288,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 2
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-socket 2 --sockets-per-node 2",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -325,6 +337,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -351,16 +375,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jwilson",
+      "user": "arodriguez",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jwilson"
+      "working_directory": "/home/arodriguez"
     }
   ],
   "meta": {
@@ -371,7 +401,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893545883] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6051753] (fd 8)",
       "user": "",
       "group": ""
     },

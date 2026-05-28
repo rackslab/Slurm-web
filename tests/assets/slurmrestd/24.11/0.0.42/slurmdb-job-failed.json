@@ -28,7 +28,7 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jbeck",
+        "user": "mwilliams",
         "id": 12
       },
       "block": "",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1762788769,
-        "end": 1762788771,
+        "eligible": 1780300450,
+        "end": 1780300452,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1762788770,
-        "submission": 1762788769,
+        "start": 1780300451,
+        "submission": 1780300450,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 6359,
-      "name": "wrap",
+      "job_id": 9746,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn1",
+      "nodes": "cn3",
       "partition": "standard",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-6359.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-9746.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "FAILED"
@@ -171,12 +171,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762788771
+              "number": 1780300452
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788770
+              "number": 1780300451
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn1",
+            "range": "cn3",
             "list": [
-              "cn1"
+              "cn3"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6359.batch",
+            "id": "9746.batch",
             "name": "batch"
           },
           "task": {
@@ -295,7 +295,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -357,12 +357,12 @@
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -381,10 +381,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

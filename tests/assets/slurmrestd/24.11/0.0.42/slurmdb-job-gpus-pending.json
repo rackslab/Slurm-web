@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "progers",
-        "id": 10
+        "user": "mwilliams",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -55,7 +55,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1762792534,
+        "eligible": 1780302027,
         "end": 0,
         "planned": {
           "set": true,
@@ -63,7 +63,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1762788934,
+        "submission": 1780298427,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,8 +115,8 @@
           "number": 0
         }
       },
-      "job_id": 6376,
-      "name": "wrap",
+      "job_id": 9547,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -151,12 +151,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/progers/slurm-6376.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-9547.out",
       "stderr_expanded": "",
-      "stdout": "/home/progers/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -164,7 +164,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gpus 6 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -191,16 +191,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 6
           }
         ]
       },
       "used_gres": "",
-      "user": "progers",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/progers"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -219,10 +225,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "ksoto",
-        "id": 17
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 88,
-        "eligible": 1747754477,
+        "elapsed": 70,
+        "eligible": 1780141362,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1747754478,
-        "submission": 1747754477,
+        "start": 1780141363,
+        "submission": 1780141362,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,23 +116,23 @@
           "number": 0
         }
       },
-      "job_id": 649722,
-      "name": "wrap",
+      "job_id": 13372,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn001",
-      "partition": "batch",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 90
       },
       "qos": "normal",
       "required": {
-        "CPUs": 1,
+        "CPUs": 4,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/ksoto/slurm-649722.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-13372.out",
       "stderr_expanded": "",
-      "stdout": "/home/ksoto/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -165,7 +165,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 88,
+            "elapsed": 70,
             "end": {
               "set": true,
               "infinite": false,
@@ -174,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747754478
+              "number": 1780141363
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "admin.emulator",
+            "range": "cn1",
             "list": [
-              "admin.emulator"
+              "cn1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "649722.batch",
+            "id": "13372.batch",
             "name": "batch"
           },
           "task": {
@@ -275,13 +275,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 1
+                "count": 4
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 512
+                "count": 2048
               },
               {
                 "type": "node",
@@ -293,20 +293,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 4
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 2048
           },
           {
             "type": "energy",
@@ -324,7 +324,7 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 4
           }
         ],
         "requested": [
@@ -332,13 +332,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 4
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 2048
           },
           {
             "type": "node",
@@ -350,17 +350,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "ksoto",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ksoto"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485994113] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6073266] (fd 8)",
       "user": "",
       "group": ""
     },

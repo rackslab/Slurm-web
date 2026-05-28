@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 13
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
@@ -55,7 +55,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1778611756,
+        "eligible": 1780140965,
         "end": 0,
         "planned": {
           "set": true,
@@ -63,7 +63,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1778608156,
+        "submission": 1780137365,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 336,
+      "job_id": 5343,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -127,7 +127,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 909
       },
       "qos": "normal",
       "qosreq": "",
@@ -154,7 +154,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jshelton/slurm-336.out",
+      "stdout_expanded": "/home/jli/slurm-5343.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -193,16 +193,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jshelton",
+      "user": "jli",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jshelton"
+      "working_directory": "/home/jli"
     }
   ],
   "meta": {

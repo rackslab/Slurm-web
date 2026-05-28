@@ -28,7 +28,7 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
+        "user": "jshelton",
         "id": 13
       },
       "block": "",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1747752267,
+        "eligible": 1780298491,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
-        "start": 1747752269,
-        "submission": 1747752267,
+        "start": 1780298492,
+        "submission": 1780298491,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 5983,
-      "name": "wrap",
+      "job_id": 9615,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu[1-2]",
-      "partition": "gpu",
+      "nodes": "ia[1-2]",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 818
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/emendoza/slurm-5983.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jshelton/slurm-9615.out",
       "stderr_expanded": "",
-      "stdout": "/home/emendoza/slurm-%j.out",
+      "stdout": "/home/jshelton/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -174,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747752269
+              "number": 1780298492
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "ia1",
             "list": [
-              "gpu1"
+              "ia1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "5983.batch",
+            "id": "9615.batch",
             "name": "batch"
           },
           "task": {
@@ -288,12 +288,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-node 1 --nodes 2",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -325,6 +331,12 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
           }
         ],
         "requested": [
@@ -351,16 +363,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "jshelton",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/jshelton"
     }
   ],
   "meta": {
@@ -371,7 +389,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -379,10 +397,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

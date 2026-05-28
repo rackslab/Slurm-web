@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "tmcgrath",
-        "id": 9
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 87,
-        "eligible": 1747751515,
-        "end": 1747751604,
+        "elapsed": 79,
+        "eligible": 1780304115,
+        "end": 1780304195,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
-        "start": 1747751517,
-        "submission": 1747751515,
+        "start": 1780304116,
+        "submission": 1780304115,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 5964,
-      "name": "wrap",
+      "job_id": 9923,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "cn1",
-      "partition": "normal",
+      "partition": "standard",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 181
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/tmcgrath/slurm-5964.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-9923.out",
       "stderr_expanded": "",
-      "stdout": "/home/tmcgrath/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "TIMEOUT"
@@ -165,16 +165,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 89,
+            "elapsed": 79,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747751606
+              "number": 1780304195
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747751517
+              "number": 1780304116
             },
             "suspended": 0,
             "system": {
@@ -192,20 +192,20 @@
           },
           "exit_code": {
             "status": [
-              "SIGNALED"
+              "SUCCESS"
             ],
             "return_code": {
-              "set": false,
+              "set": true,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": true,
+                "set": false,
                 "infinite": false,
-                "number": 15
+                "number": 0
               },
-              "name": "TERM"
+              "name": ""
             }
           },
           "nodes": {
@@ -236,7 +236,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "CANCELLED"
+            "TIMEOUT"
           ],
           "statistics": {
             "CPU": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "5964.batch",
+            "id": "9923.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 90 && true --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "tmcgrath",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tmcgrath"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -379,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

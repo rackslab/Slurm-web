@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "ksoto",
-        "id": 17
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 83,
-        "eligible": 1747754465,
-        "end": 1747754549,
+        "elapsed": 69,
+        "eligible": 1780141362,
+        "end": 1780141432,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1747754466,
-        "submission": 1747754465,
+        "start": 1780141363,
+        "submission": 1780141362,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 649717,
-      "name": "wrap",
+      "job_id": 13366,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn001",
-      "partition": "batch",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 90
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/ksoto/slurm-649717.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-13366.out",
       "stderr_expanded": "",
-      "stdout": "/home/ksoto/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "TIMEOUT"
@@ -165,16 +165,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 83,
+            "elapsed": 69,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747754549
+              "number": 1780141432
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747754466
+              "number": 1780141363
             },
             "suspended": 0,
             "system": {
@@ -192,27 +192,27 @@
           },
           "exit_code": {
             "status": [
-              "SIGNALED"
+              "SUCCESS"
             ],
             "return_code": {
-              "set": false,
+              "set": true,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": true,
+                "set": false,
                 "infinite": false,
-                "number": 15
+                "number": 0
               },
-              "name": "TERM"
+              "name": ""
             }
           },
           "nodes": {
             "count": 1,
-            "range": "admin.emulator",
+            "range": "cn1",
             "list": [
-              "admin.emulator"
+              "cn1"
             ]
           },
           "tasks": {
@@ -236,7 +236,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "CANCELLED"
+            "TIMEOUT"
           ],
           "statistics": {
             "CPU": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "649717.batch",
+            "id": "13366.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 90 && true --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "ksoto",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ksoto"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485988250] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6076941] (fd 8)",
       "user": "",
       "group": ""
     },

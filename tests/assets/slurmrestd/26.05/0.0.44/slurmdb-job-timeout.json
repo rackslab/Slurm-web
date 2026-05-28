@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
-        "id": 13
+        "user": "",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1747752281,
-        "end": 0,
+        "elapsed": 65,
+        "eligible": 1780146008,
+        "end": 1780146073,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1747752281,
-        "submission": 1747752281,
+        "start": 1780146008,
+        "submission": 1780146008,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,21 +116,22 @@
           "number": 0
         }
       },
-      "job_id": 5987,
-      "name": "wrap",
+      "job_id": 5949,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "gpu",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 454
       },
       "qos": "normal",
+      "qosreq": "",
       "required": {
         "CPUs": 1,
         "memory_per_cpu": {
@@ -145,41 +146,49 @@
         }
       },
       "kill_request_user": "",
+      "restart_cnt": 0,
       "reservation": {
         "id": 0,
-        "name": ""
+        "name": "",
+        "requested": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/emendoza/slurm-5987.out",
+      "segment_size": 0,
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/arodriguez/slurm-5949.out",
       "stderr_expanded": "",
-      "stdout": "/home/emendoza/slurm-%j.out",
+      "stdout": "slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
-          "RUNNING"
+          "TIMEOUT"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 66,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 0
+              "number": 1780146074
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747752281
+              "number": 1780146008
             },
             "suspended": 0,
             "system": {
               "seconds": 0,
               "microseconds": 0
+            },
+            "limit": {
+              "set": false,
+              "infinite": true,
+              "number": 0
             },
             "total": {
               "seconds": 0,
@@ -192,27 +201,27 @@
           },
           "exit_code": {
             "status": [
-              "SUCCESS"
+              "SIGNALED"
             ],
             "return_code": {
-              "set": true,
+              "set": false,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": false,
+                "set": true,
                 "infinite": false,
-                "number": 0
+                "number": 15
               },
-              "name": ""
+              "name": "TERM"
             }
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "cn1",
             "list": [
-              "gpu1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -236,7 +245,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "RUNNING"
+            "CANCELLED"
           ],
           "statistics": {
             "CPU": {
@@ -251,8 +260,14 @@
             }
           },
           "step": {
-            "id": "5987.batch",
-            "name": "batch"
+            "id": "5949.batch",
+            "name": "batch",
+            "stderr": "",
+            "stdin": "",
+            "stdout": "",
+            "stderr_expanded": "",
+            "stdin_expanded": "",
+            "stdout_expanded": ""
           },
           "task": {
             "distribution": "Unknown"
@@ -293,7 +308,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gres gpu:4",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,34 +370,34 @@
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "arodriguez",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/arodriguez"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.41",
+      "data_parser": "data_parser/v0.0.44",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
-      "user": "",
+      "source": "admin:6820(fd:44)",
+      "user": "nobody",
       "group": ""
     },
     "command": [],
     "slurm": {
       "version": {
-        "major": "24",
-        "micro": "5",
-        "minor": "11"
+        "major": "26",
+        "micro": "0",
+        "minor": "05"
       },
-      "release": "24.11.5",
+      "release": "26.05.0-0rc1",
       "cluster": "hpc"
     }
   },

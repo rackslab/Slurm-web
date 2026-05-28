@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 14
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1778610707,
+        "eligible": 1780138026,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": -3529
+          "number": 71
         },
         "start": 0,
-        "submission": 1778607107,
+        "submission": 1780138026,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -115,24 +115,24 @@
           "number": 0
         }
       },
-      "job_id": 330,
+      "job_id": 5354,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "normal",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 636
+        "number": 545
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 32,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -154,7 +154,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/tkirby/slurm-330.out",
+      "stdout_expanded": "/home/jrasmussen/slurm-5354.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -174,13 +174,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 32
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16384
+            "count": 32768
           },
           {
             "type": "node",
@@ -192,17 +192,29 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 32
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "tkirby",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tkirby"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {

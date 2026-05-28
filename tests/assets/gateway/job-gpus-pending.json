@@ -7,7 +7,7 @@
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 15,
+    "id": 12,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/madams",
+  "current_working_directory": "/home/mwilliams",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,7 +64,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779131415,
+    "number": 1780139617,
     "set": true
   },
   "name": "allocation",
@@ -77,7 +77,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 636,
+    "number": 818,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +96,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/madams/slurm-1176.out",
+  "stdout_expanded": "/home/mwilliams/slurm-5516.out",
   "steps": [],
   "submit_line": "",
   "tasks": {
@@ -106,11 +106,11 @@
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1779135015,
+    "eligible": 1780143217,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
@@ -119,7 +119,7 @@
       "set": true
     },
     "start": 0,
-    "submission": 1779131415,
+    "submission": 1780139617,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -160,6 +160,12 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
@@ -167,12 +173,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "madams",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
+  "user": "mwilliams",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/madams"
+  "working_directory": "/home/mwilliams"
 }

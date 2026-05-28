@@ -27,6 +27,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "jobs-past": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "metrics-cache-hour": {
     "content-type": "application/json",
     "status": 200

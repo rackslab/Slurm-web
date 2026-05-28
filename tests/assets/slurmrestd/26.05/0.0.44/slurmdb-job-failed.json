@@ -1,13 +1,13 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 1,
+      "allocation_nodes": 0,
       "array": {
         "job_id": 0,
         "limits": {
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 17
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 1778606589,
-        "end": 1778606591,
+        "elapsed": 0,
+        "eligible": 1780136190,
+        "end": 1780136190,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1778606589,
-        "submission": 1778606589,
+        "start": 4294967294,
+        "submission": 1780136190,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -104,7 +104,6 @@
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
       "group": "slurm",
@@ -116,24 +115,24 @@
           "number": 0
         }
       },
-      "job_id": 224,
+      "job_id": 5190,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn1",
-      "partition": "normal",
+      "nodes": "None assigned",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 636
+        "number": 909
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 1,
+        "CPUs": 128,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -155,7 +154,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/arodriguez/slurm-224.out",
+      "stdout_expanded": "/home/jli/slurm-5190.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -166,194 +165,22 @@
         ],
         "reason": "None"
       },
-      "steps": [
-        {
-          "time": {
-            "elapsed": 2,
-            "end": {
-              "set": true,
-              "infinite": false,
-              "number": 1778606591
-            },
-            "start": {
-              "set": true,
-              "infinite": false,
-              "number": 1778606589
-            },
-            "suspended": 0,
-            "system": {
-              "seconds": 0,
-              "microseconds": 0
-            },
-            "limit": {
-              "set": false,
-              "infinite": true,
-              "number": 0
-            },
-            "total": {
-              "seconds": 0,
-              "microseconds": 0
-            },
-            "user": {
-              "seconds": 0,
-              "microseconds": 0
-            }
-          },
-          "exit_code": {
-            "status": [
-              "ERROR"
-            ],
-            "return_code": {
-              "set": true,
-              "infinite": false,
-              "number": 1
-            },
-            "signal": {
-              "id": {
-                "set": false,
-                "infinite": false,
-                "number": 0
-              },
-              "name": ""
-            }
-          },
-          "nodes": {
-            "count": 1,
-            "range": "cn1",
-            "list": [
-              "cn1"
-            ]
-          },
-          "tasks": {
-            "count": 1
-          },
-          "pid": "",
-          "CPU": {
-            "requested_frequency": {
-              "min": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              },
-              "max": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              }
-            },
-            "governor": "0"
-          },
-          "kill_request_user": "",
-          "state": [
-            "FAILED"
-          ],
-          "statistics": {
-            "CPU": {
-              "actual_frequency": 0
-            },
-            "energy": {
-              "consumed": {
-                "set": true,
-                "infinite": false,
-                "number": 0
-              }
-            }
-          },
-          "step": {
-            "id": "224.batch",
-            "name": "batch",
-            "stderr": "",
-            "stdin": "",
-            "stdout": "",
-            "stderr_expanded": "",
-            "stdin_expanded": "",
-            "stdout_expanded": ""
-          },
-          "task": {
-            "distribution": "Unknown"
-          },
-          "tres": {
-            "requested": {
-              "max": [],
-              "min": [],
-              "average": [],
-              "total": []
-            },
-            "consumed": {
-              "max": [],
-              "min": [],
-              "average": [],
-              "total": []
-            },
-            "allocated": [
-              {
-                "type": "cpu",
-                "name": "",
-                "id": 1,
-                "count": 1
-              },
-              {
-                "type": "mem",
-                "name": "",
-                "id": 2,
-                "count": 512
-              },
-              {
-                "type": "node",
-                "name": "",
-                "id": 4,
-                "count": 1
-              }
-            ]
-          }
-        }
-      ],
+      "steps": [],
       "submit_line": "",
       "tres": {
-        "allocated": [
-          {
-            "type": "cpu",
-            "name": "",
-            "id": 1,
-            "count": 1
-          },
-          {
-            "type": "mem",
-            "name": "",
-            "id": 2,
-            "count": 512
-          },
-          {
-            "type": "energy",
-            "name": "",
-            "id": 3,
-            "count": -2
-          },
-          {
-            "type": "node",
-            "name": "",
-            "id": 4,
-            "count": 1
-          },
-          {
-            "type": "billing",
-            "name": "",
-            "id": 5,
-            "count": 1
-          }
-        ],
+        "allocated": [],
         "requested": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 1
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 512
+            "count": 65536
           },
           {
             "type": "node",
@@ -365,17 +192,29 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 1
+            "count": 128
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "arodriguez",
+      "user": "jli",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/arodriguez"
+      "working_directory": "/home/jli"
     }
   ],
   "meta": {

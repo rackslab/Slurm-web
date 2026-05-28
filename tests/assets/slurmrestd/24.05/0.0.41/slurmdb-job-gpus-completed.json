@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "acuevas",
-        "id": 16
+        "user": "tkirby",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 30,
-        "eligible": 1762529654,
-        "end": 1762529685,
+        "eligible": 1780140688,
+        "end": 1780140718,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1762529655,
-        "submission": 1762529654,
+        "start": 1780140688,
+        "submission": 1780140688,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 10,
-      "name": "wrap",
+      "job_id": 13360,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/acuevas/slurm-10.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/tkirby/slurm-13360.out",
       "stderr_expanded": "",
-      "stdout": "/home/acuevas/slurm-%j.out",
+      "stdout": "/home/tkirby/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "COMPLETED"
@@ -169,12 +169,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762529685
+              "number": 1780140718
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529655
+              "number": 1780140688
             },
             "suspended": 0,
             "system": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "10.batch",
+            "id": "13360.batch",
             "name": "batch"
           },
           "task": {
@@ -288,12 +288,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -325,6 +337,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -351,16 +375,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "acuevas",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/acuevas"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {
@@ -371,7 +401,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893552139] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6052662] (fd 8)",
       "user": "",
       "group": ""
     },

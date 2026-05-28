@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 10
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1762788992,
+        "eligible": 1780141761,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1762788993,
-        "submission": 1762788992,
+        "start": 1780141761,
+        "submission": 1780141761,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4729,
-      "name": "wrap",
+      "job_id": 14237,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 90
       },
       "qos": "normal",
       "qosreq": "",
@@ -154,12 +154,12 @@
       },
       "script": "",
       "segment_size": 0,
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/progers/slurm-4729.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/tkirby/slurm-14237.out",
       "stderr_expanded": "",
-      "stdout": "/home/progers/slurm-%j.out",
+      "stdout": "/home/tkirby/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -178,7 +178,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788993
+              "number": 1780141761
             },
             "suspended": 0,
             "system": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "4729.batch",
+            "id": "14237.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,12 +303,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus h100:1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ],
         "requested": [
@@ -366,16 +390,28 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "progers",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/progers"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {
@@ -386,7 +422,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

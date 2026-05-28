@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 17
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1762789118,
+        "eligible": 1780142430,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 3
         },
-        "start": 1762789118,
-        "submission": 1762789118,
+        "start": 1780142433,
+        "submission": 1780142430,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4744,
-      "name": "wrap",
+      "job_id": 14244,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 818
       },
       "qos": "normal",
       "qosreq": "",
@@ -154,12 +154,12 @@
       },
       "script": "",
       "segment_size": 0,
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/rcarson/slurm-4744.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jrasmussen/slurm-14244.out",
       "stderr_expanded": "",
-      "stdout": "/home/rcarson/slurm-%j.out",
+      "stdout": "/home/jrasmussen/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -178,7 +178,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762789118
+              "number": 1780142433
             },
             "suspended": 0,
             "system": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "4744.batch",
+            "id": "14244.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,12 +303,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-node 1 --nodes 2",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -366,16 +390,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "rcarson",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/rcarson"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {
@@ -386,7 +416,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

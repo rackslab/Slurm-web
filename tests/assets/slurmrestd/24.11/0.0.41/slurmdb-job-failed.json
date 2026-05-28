@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "ksoto",
-        "id": 17
+        "user": "tkirby",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1747751520,
-        "end": 1747751522,
+        "elapsed": 2,
+        "eligible": 1780300845,
+        "end": 1780300847,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1747751521,
-        "submission": 1747751520,
+        "start": 1780300845,
+        "submission": 1780300845,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 5966,
-      "name": "wrap",
+      "job_id": 9761,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "cn1",
-      "partition": "normal",
+      "partition": "standard",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 363
+        "number": 636
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/ksoto/slurm-5966.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/tkirby/slurm-9761.out",
       "stderr_expanded": "",
-      "stdout": "/home/ksoto/slurm-%j.out",
+      "stdout": "/home/tkirby/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "FAILED"
@@ -165,16 +165,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 2,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747751522
+              "number": 1780300847
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747751521
+              "number": 1780300845
             },
             "suspended": 0,
             "system": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "5966.batch",
+            "id": "9761.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "ksoto",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ksoto"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {
@@ -371,7 +371,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -379,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

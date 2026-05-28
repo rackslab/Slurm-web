@@ -25,10 +25,10 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "",
         "cluster": "hpc",
         "partition": "",
-        "user": "crich",
+        "user": "",
         "id": 11
       },
       "block": "",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1747755329,
-        "end": 0,
+        "elapsed": 65,
+        "eligible": 1780138026,
+        "end": 1780138091,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1747755329,
-        "submission": 1747755329,
+        "start": 1780138026,
+        "submission": 1780138026,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,21 +116,22 @@
           "number": 0
         }
       },
-      "job_id": 24,
-      "name": "wrap",
+      "job_id": 5350,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "ia1",
-      "partition": "ia",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 272
+        "number": 545
       },
       "qos": "normal",
+      "qosreq": "",
       "required": {
         "CPUs": 1,
         "memory_per_cpu": {
@@ -145,41 +146,49 @@
         }
       },
       "kill_request_user": "",
+      "restart_cnt": 0,
       "reservation": {
         "id": 0,
-        "name": ""
+        "name": "",
+        "requested": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/crich/slurm-24.out",
+      "segment_size": 0,
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jrasmussen/slurm-5350.out",
       "stderr_expanded": "",
-      "stdout": "/home/crich/slurm-%j.out",
+      "stdout": "slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
-          "RUNNING"
+          "TIMEOUT"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 66,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 0
+              "number": 1780138092
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747755329
+              "number": 1780138026
             },
             "suspended": 0,
             "system": {
               "seconds": 0,
               "microseconds": 0
+            },
+            "limit": {
+              "set": false,
+              "infinite": true,
+              "number": 0
             },
             "total": {
               "seconds": 0,
@@ -192,27 +201,27 @@
           },
           "exit_code": {
             "status": [
-              "SUCCESS"
+              "SIGNALED"
             ],
             "return_code": {
-              "set": true,
+              "set": false,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": false,
+                "set": true,
                 "infinite": false,
-                "number": 0
+                "number": 15
               },
-              "name": ""
+              "name": "TERM"
             }
           },
           "nodes": {
             "count": 1,
-            "range": "ia1",
+            "range": "cn1",
             "list": [
-              "ia1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -236,7 +245,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "RUNNING"
+            "CANCELLED"
           ],
           "statistics": {
             "CPU": {
@@ -251,8 +260,14 @@
             }
           },
           "step": {
-            "id": "24.batch",
-            "name": "batch"
+            "id": "5350.batch",
+            "name": "batch",
+            "stderr": "",
+            "stdin": "",
+            "stdout": "",
+            "stderr_expanded": "",
+            "stdin_expanded": "",
+            "stdout_expanded": ""
           },
           "task": {
             "distribution": "Unknown"
@@ -293,7 +308,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gres gpu:6",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,34 +370,34 @@
         ]
       },
       "used_gres": "",
-      "user": "crich",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/crich"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.41",
+      "data_parser": "data_parser/v0.0.43",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
       "source": "admin:6820(fd:9)",
-      "user": "",
+      "user": "nobody",
       "group": ""
     },
     "command": [],
     "slurm": {
       "version": {
-        "major": "25",
+        "major": "26",
         "micro": "0",
         "minor": "05"
       },
-      "release": "25.05.0-0rc1",
+      "release": "26.05.0-0rc1",
       "cluster": "hpc"
     }
   },

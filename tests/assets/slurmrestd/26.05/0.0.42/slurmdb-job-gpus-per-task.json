@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jli",
-        "id": 9
+        "user": "jshelton",
+        "id": 13
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 1778609263,
+        "elapsed": 1,
+        "eligible": 1780139165,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1778609263,
-        "submission": 1778609263,
+        "start": 1780139165,
+        "submission": 1780139165,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -104,7 +104,7 @@
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_SCHEDULE",
+        "STARTED_ON_BACKFILL",
         "START_RECEIVED"
       ],
       "group": "slurm",
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 426,
+      "job_id": 5432,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu4",
+      "nodes": "gpu1",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
@@ -153,7 +153,7 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jli/slurm-426.out",
+      "stdout_expanded": "/home/jshelton/slurm-5432.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -167,7 +167,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 2,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778609263
+              "number": 1780139165
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu4",
+            "range": "gpu1",
             "list": [
-              "gpu4"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "426.batch",
+            "id": "5432.batch",
             "name": "batch"
           },
           "task": {
@@ -290,6 +290,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jli",
+      "user": "jshelton",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jli"
+      "working_directory": "/home/jshelton"
     }
   ],
   "meta": {

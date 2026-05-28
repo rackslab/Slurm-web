@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 12
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 0,
-        "eligible": 1762789168,
+        "elapsed": 1,
+        "eligible": 1780142437,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
-        "start": 1762789170,
-        "submission": 1762789168,
+        "start": 1780142438,
+        "submission": 1780142437,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4751,
-      "name": "wrap",
+      "job_id": 14246,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 90
       },
       "qos": "normal",
       "qosreq": "",
@@ -154,12 +154,12 @@
       },
       "script": "",
       "segment_size": 0,
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-4751.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/tkirby/slurm-14246.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/tkirby/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -169,7 +169,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 0,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
@@ -178,7 +178,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762789170
+              "number": 1780142438
             },
             "suspended": 0,
             "system": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "4751.batch",
+            "id": "14246.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,12 +303,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -366,16 +390,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {
@@ -386,7 +416,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

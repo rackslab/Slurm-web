@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 15
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHK5Y600",
+      "sluid": "s88DKSW5HH2P00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1778604640,
+        "elapsed": 2,
+        "eligible": 1780135506,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1778604640,
-        "submission": 1778604640,
+        "start": 1780135506,
+        "submission": 1780135506,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,7 +118,7 @@
           "number": 0
         }
       },
-      "job_id": 69,
+      "job_id": 5112,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -131,7 +131,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 818
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHK5Y600",
+      "original_sluid": "s88DKSW5HH2P00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/madams/slurm-69.out",
+      "stdout_expanded": "/home/mwilliams/slurm-5112.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,7 +173,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 2,
             "end": {
               "set": true,
               "infinite": false,
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604640
+              "number": 1780135506
             },
             "suspended": 0,
             "system": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "69.batch",
+            "id": "5112.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -371,16 +395,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "madams",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/madams"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {

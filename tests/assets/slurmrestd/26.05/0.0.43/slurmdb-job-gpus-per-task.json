@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 15
+        "id": 13
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1778607090,
+        "eligible": 1780137368,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 0
         },
-        "start": 1778607092,
-        "submission": 1778607090,
+        "start": 1780137368,
+        "submission": 1780137368,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,13 +116,13 @@
           "number": 0
         }
       },
-      "job_id": 251,
+      "job_id": 5345,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
+      "nodes": "gpu2",
       "partition": "gpu",
       "hold": false,
       "priority": {
@@ -155,7 +155,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/madams/slurm-251.out",
+      "stdout_expanded": "/home/jshelton/slurm-5345.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -178,7 +178,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778607092
+              "number": 1780137368
             },
             "suspended": 0,
             "system": {
@@ -219,9 +219,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "gpu2",
             "list": [
-              "gpu1"
+              "gpu2"
             ]
           },
           "tasks": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "251.batch",
+            "id": "5345.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,6 +303,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -366,16 +390,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "madams",
+      "user": "jshelton",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/madams"
+      "working_directory": "/home/jshelton"
     }
   ],
   "meta": {

@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "rcarson",
-        "id": 17
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -62,8 +62,8 @@
           "infinite": false,
           "number": 0
         },
-        "start": 1762529697,
-        "submission": 1762529697,
+        "start": 1780140686,
+        "submission": 1780140686,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 14,
+      "job_id": 13359,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -173,7 +173,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529697
+              "number": 1780140686
             },
             "suspended": 0,
             "system": {
@@ -250,7 +250,7 @@
             }
           },
           "step": {
-            "id": "14.batch",
+            "id": "13359.batch",
             "name": "batch"
           },
           "task": {
@@ -287,6 +287,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -298,7 +310,7 @@
         "requested": []
       },
       "used_gres": "",
-      "user": "rcarson",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
@@ -314,7 +326,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893558295] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6059378] (fd 8)",
       "user": "",
       "group": ""
     },

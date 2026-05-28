@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779131417,
+    "number": 1780139579,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 13,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jshelton",
+  "current_working_directory": "/home/rpowers",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -66,7 +66,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779131417,
+    "number": 1780139580,
     "set": true
   },
   "name": "allocation",
@@ -75,11 +75,11 @@
     "number": 1,
     "set": true
   },
-  "nodes": "gpu2",
+  "nodes": "gpu1",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 90,
+    "number": 636,
     "set": true
   },
   "qos": "normal",
@@ -98,7 +98,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jshelton/slurm-1178.out",
+  "stdout_expanded": "/home/rpowers/slurm-5453.out",
   "steps": [
     {
       "CPU": {
@@ -138,9 +138,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu2"
+          "gpu1"
         ],
-        "range": "gpu2"
+        "range": "gpu1"
       },
       "pid": "",
       "state": [
@@ -159,7 +159,7 @@
         }
       },
       "step": {
-        "id": "1178.batch",
+        "id": "5453.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -189,7 +189,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131417,
+          "number": 1780139580,
           "set": true
         },
         "suspended": 0,
@@ -225,6 +225,18 @@
             "id": 4,
             "name": "",
             "type": "node"
+          },
+          {
+            "count": 4,
+            "id": 1001,
+            "name": "gpu",
+            "type": "gres"
+          },
+          {
+            "count": 4,
+            "id": 1002,
+            "name": "gpu:h100",
+            "type": "gres"
           }
         ],
         "consumed": {
@@ -250,20 +262,20 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1779131417,
+    "eligible": 1780139579,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 0,
+      "number": 1,
       "set": true
     },
-    "start": 1779131417,
-    "submission": 1779131417,
+    "start": 1780139580,
+    "submission": 1780139579,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -309,6 +321,18 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
+      },
+      {
+        "count": 4,
+        "id": 1002,
+        "name": "gpu:h100",
+        "type": "gres"
       }
     ],
     "requested": [
@@ -335,6 +359,12 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
@@ -342,12 +372,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "jshelton",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
+  "user": "rpowers",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jshelton"
+  "working_directory": "/home/rpowers"
 }

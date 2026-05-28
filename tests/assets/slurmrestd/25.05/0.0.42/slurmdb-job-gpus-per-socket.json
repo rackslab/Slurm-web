@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "mcarrillo",
-        "id": 15
+        "user": "rpowers",
+        "id": 10
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 1762790003,
+        "elapsed": 0,
+        "eligible": 1780142443,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1762790003,
-        "submission": 1762790003,
+        "start": 1780142444,
+        "submission": 1780142443,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4779,
-      "name": "wrap",
+      "job_id": 14309,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 272
+        "number": 636
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/mcarrillo/slurm-4779.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/rpowers/slurm-14309.out",
       "stderr_expanded": "",
-      "stdout": "/home/mcarrillo/slurm-%j.out",
+      "stdout": "/home/rpowers/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -167,7 +167,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 0,
             "end": {
               "set": true,
               "infinite": false,
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762790003
+              "number": 1780142444
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "4779.batch",
+            "id": "14309.batch",
             "name": "batch"
           },
           "task": {
@@ -290,12 +290,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 2
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus-per-socket 2 --sockets-per-node 2",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "mcarrillo",
+      "user": "rpowers",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/mcarrillo"
+      "working_directory": "/home/rpowers"
     }
   ],
   "meta": {
@@ -373,7 +403,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

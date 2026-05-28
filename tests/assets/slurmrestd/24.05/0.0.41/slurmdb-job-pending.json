@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "tmcgrath",
-        "id": 9
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1747758094,
+        "eligible": 1780144962,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": -3528
+          "number": -3529
         },
         "start": 0,
-        "submission": 1747754494,
+        "submission": 1780141362,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,23 +115,23 @@
           "number": 0
         }
       },
-      "job_id": 649730,
-      "name": "wrap",
+      "job_id": 13379,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "batch",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 90
       },
       "qos": "normal",
       "required": {
-        "CPUs": 64,
+        "CPUs": 128,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -149,12 +149,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/tmcgrath/slurm-649730.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-13379.out",
       "stderr_expanded": "",
-      "stdout": "/home/tmcgrath/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -162,7 +162,7 @@
         "reason": "BeginTime"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 64 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -170,13 +170,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 64
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 32768
+            "count": 65536
           },
           {
             "type": "node",
@@ -188,17 +188,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 64
+            "count": 128
           }
         ]
       },
       "used_gres": "",
-      "user": "tmcgrath",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tmcgrath"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -209,7 +209,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[2485989190] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6065969] (fd 8)",
       "user": "",
       "group": ""
     },

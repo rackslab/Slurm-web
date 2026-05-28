@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 17
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHVJQW00",
+      "sluid": "s88DKSW66B0S00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 0,
-        "eligible": 1778604915,
+        "elapsed": 1,
+        "eligible": 1780136188,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1778604916,
-        "submission": 1778604915,
+        "start": 1780136188,
+        "submission": 1780136188,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,13 +118,13 @@
           "number": 0
         }
       },
-      "job_id": 77,
+      "job_id": 5180,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu[3-4]",
+      "nodes": "gpu[2-3]",
       "oversubscribe": "NO",
       "partition": "gpu",
       "hold": false,
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHVJQW00",
+      "original_sluid": "s88DKSW66B0S00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/arodriguez/slurm-77.out",
+      "stdout_expanded": "/home/jrasmussen/slurm-5180.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,7 +173,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 0,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604916
+              "number": 1780136188
             },
             "suspended": 0,
             "system": {
@@ -223,9 +223,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu3",
+            "range": "gpu2",
             "list": [
-              "gpu3"
+              "gpu2"
             ]
           },
           "tasks": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "77.batch",
+            "id": "5180.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ],
         "requested": [
@@ -371,16 +395,22 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "arodriguez",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/arodriguez"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {

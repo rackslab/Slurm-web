@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "rcarson",
-        "id": 17
+        "user": "mwilliams",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1762793488,
+        "eligible": 1780301649,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": -3528
+          "number": 70
         },
         "start": 0,
-        "submission": 1762789888,
+        "submission": 1780301649,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,24 +115,24 @@
           "number": 0
         }
       },
-      "job_id": 4774,
-      "name": "wrap",
+      "job_id": 15089,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "normal",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 545
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 128,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -151,12 +151,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/rcarson/slurm-4774.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-15089.out",
       "stderr_expanded": "",
-      "stdout": "/home/rcarson/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -164,7 +164,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 128 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -172,13 +172,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 128
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 65536
+            "count": 32768
           },
           {
             "type": "node",
@@ -190,17 +190,29 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 128
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "rcarson",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/rcarson"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -211,7 +223,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "madams",
-        "id": 15
+        "user": "tkirby",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1778608169,
+        "eligible": 1780138462,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 0
         },
-        "start": 1778608171,
-        "submission": 1778608169,
+        "start": 1780138462,
+        "submission": 1780138462,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 401,
+      "job_id": 5366,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu2",
+      "nodes": "gpu1",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 363
+        "number": 181
       },
       "qos": "normal",
       "qosreq": "",
@@ -153,7 +153,7 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/madams/slurm-401.out",
+      "stdout_expanded": "/home/tkirby/slurm-5366.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778608171
+              "number": 1780138462
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu2",
+            "range": "gpu1",
             "list": [
-              "gpu2"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "401.batch",
+            "id": "5366.batch",
             "name": "batch"
           },
           "task": {
@@ -289,6 +289,18 @@
                 "type": "node",
                 "name": "",
                 "id": 4,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
                 "count": 1
               }
             ]
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ],
         "requested": [
@@ -353,16 +377,28 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "madams",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/madams"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {

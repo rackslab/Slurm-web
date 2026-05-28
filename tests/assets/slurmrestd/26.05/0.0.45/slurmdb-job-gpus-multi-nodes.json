@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 16
+        "id": 13
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHVMB100",
+      "sluid": "s88DKSW65HBZ00",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -56,15 +56,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1778604916,
+        "eligible": 1780136162,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 0
         },
-        "start": 1778604918,
-        "submission": 1778604916,
+        "start": 1780136162,
+        "submission": 1780136162,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,7 +118,7 @@
           "number": 0
         }
       },
-      "job_id": 78,
+      "job_id": 5117,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -131,7 +131,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHVMB100",
+      "original_sluid": "s88DKSW65HBZ00",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/ccollins/slurm-78.out",
+      "stdout_expanded": "/home/jshelton/slurm-5117.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -182,7 +182,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604918
+              "number": 1780136162
             },
             "suspended": 0,
             "system": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "78.batch",
+            "id": "5117.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,6 +308,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -345,6 +357,18 @@
             "name": "",
             "id": 5,
             "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 8
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 8
           }
         ],
         "requested": [
@@ -371,16 +395,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 8
           }
         ]
       },
       "used_gres": "",
-      "user": "ccollins",
+      "user": "jshelton",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ccollins"
+      "working_directory": "/home/jshelton"
     }
   ],
   "meta": {

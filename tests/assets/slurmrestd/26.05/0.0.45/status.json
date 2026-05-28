@@ -63,6 +63,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-timeout": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-unfound": {
     "content-type": "application/json",
     "status": 404
@@ -219,7 +223,15 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-job-timeout": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-job-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-jobs": {
     "content-type": "application/json",
     "status": 200
   },

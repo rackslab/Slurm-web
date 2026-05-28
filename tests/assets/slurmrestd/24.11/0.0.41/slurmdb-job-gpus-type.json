@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
-        "id": 13
+        "user": "jrasmussen",
+        "id": 11
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 1747752264,
+        "eligible": 1780140673,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1747752264,
-        "submission": 1747752264,
+        "start": 1780140673,
+        "submission": 1780140673,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -104,10 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_SCHEDULE",
+        "STARTED_ON_BACKFILL",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 5982,
-      "name": "wrap",
+      "job_id": 9349,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu2",
-      "partition": "gpu",
+      "nodes": "ia1",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 636
       },
       "qos": "normal",
       "required": {
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/emendoza/slurm-5982.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jrasmussen/slurm-9349.out",
       "stderr_expanded": "",
-      "stdout": "/home/emendoza/slurm-%j.out",
+      "stdout": "/home/jrasmussen/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -174,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747752264
+              "number": 1780140673
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu2",
+            "range": "ia1",
             "list": [
-              "gpu2"
+              "ia1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "5982.batch",
+            "id": "9349.batch",
             "name": "batch"
           },
           "task": {
@@ -288,12 +288,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus h100:1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -325,6 +331,12 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 1
           }
         ],
         "requested": [
@@ -351,16 +363,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "jrasmussen",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/jrasmussen"
     }
   ],
   "meta": {
@@ -371,7 +389,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -379,10 +397,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

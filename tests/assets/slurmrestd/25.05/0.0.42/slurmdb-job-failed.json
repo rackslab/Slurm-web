@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "rcarson",
-        "id": 17
+        "user": "mwilliams",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 1762789870,
-        "end": 1762789875,
+        "elapsed": 1,
+        "eligible": 1780301649,
+        "end": 1780301652,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 3
+          "number": 2
         },
-        "start": 1762789873,
-        "submission": 1762789870,
+        "start": 1780301651,
+        "submission": 1780301649,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4763,
-      "name": "wrap",
+      "job_id": 15083,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 545
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/rcarson/slurm-4763.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-15083.out",
       "stderr_expanded": "",
-      "stdout": "/home/rcarson/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "FAILED"
@@ -167,16 +167,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 2,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762789875
+              "number": 1780301652
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762789873
+              "number": 1780301651
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "4763.batch",
+            "id": "15083.batch",
             "name": "batch"
           },
           "task": {
@@ -295,7 +295,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -357,12 +357,12 @@
         ]
       },
       "used_gres": "",
-      "user": "rcarson",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/rcarson"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -373,7 +373,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

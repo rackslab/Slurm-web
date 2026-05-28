@@ -5,7 +5,10 @@
   "racksdb": {
     "enabled": true,
     "infrastructure": "nova",
-    "version": "0.6.0"
+    "version": "0.5.0"
+  },
+  "slurmdbd": {
+    "jobs_max_hours": 168
   },
   "version": "6.1.0"
 }

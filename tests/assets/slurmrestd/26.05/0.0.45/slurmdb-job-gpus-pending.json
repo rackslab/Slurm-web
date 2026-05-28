@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 14
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHWEFD00",
+      "sluid": "s88DKSW65H1000",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -56,7 +56,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1778608543,
+        "eligible": 1780139762,
         "end": 0,
         "planned": {
           "set": true,
@@ -64,7 +64,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1778604943,
+        "submission": 1780136162,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -117,7 +117,7 @@
           "number": 0
         }
       },
-      "job_id": 82,
+      "job_id": 5116,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -130,7 +130,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 909
       },
       "qos": "normal",
       "qosreq": "",
@@ -156,9 +156,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHWEFD00",
+      "original_sluid": "s88DKSW65H1000",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/tkirby/slurm-82.out",
+      "stdout_expanded": "/home/jli/slurm-5116.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -197,16 +197,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "tkirby",
+      "user": "jli",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tkirby"
+      "working_directory": "/home/jli"
     }
   ],
   "meta": {

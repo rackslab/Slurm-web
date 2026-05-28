@@ -1,13 +1,13 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 0,
+      "allocation_nodes": 1,
       "array": {
         "job_id": 0,
         "limits": {
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jwilson",
-        "id": 9
+        "user": "arodriguez",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 1,
-        "eligible": 0,
-        "end": 0,
+        "elapsed": 88,
+        "eligible": 1780305243,
+        "end": 1780305332,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1762529704,
-        "submission": 1762529703,
+        "start": 1780305244,
+        "submission": 1780305243,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -104,9 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
+        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "root",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,65 +116,67 @@
           "number": 0
         }
       },
-      "job_id": 16,
+      "job_id": 1748,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "",
-      "hold": true,
+      "nodes": "cn1",
+      "partition": "normal",
+      "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 545
       },
-      "qos": "",
+      "qos": "normal",
+      "qosreq": "",
       "required": {
-        "CPUs": 0,
+        "CPUs": 1,
         "memory_per_cpu": {
-          "set": false,
+          "set": true,
           "infinite": false,
-          "number": 0
+          "number": 512
         },
         "memory_per_node": {
-          "set": true,
+          "set": false,
           "infinite": false,
           "number": 0
         }
       },
       "kill_request_user": "",
+      "restart_cnt": 0,
       "reservation": {
         "id": 0,
         "name": ""
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "",
+      "stdout_expanded": "/home/arodriguez/slurm-1748.out",
       "stderr_expanded": "",
-      "stdout": "",
+      "stdout": "slurm-%j.out",
       "stderr": "",
       "stdin": "",
       "state": {
         "current": [
-          "PENDING"
+          "TIMEOUT"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 89,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 0
+              "number": 1780305333
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529704
+              "number": 1780305244
             },
             "suspended": 0,
             "system": {
@@ -191,27 +194,27 @@
           },
           "exit_code": {
             "status": [
-              "SUCCESS"
+              "SIGNALED"
             ],
             "return_code": {
-              "set": true,
+              "set": false,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": false,
+                "set": true,
                 "infinite": false,
-                "number": 0
+                "number": 15
               },
-              "name": ""
+              "name": "TERM"
             }
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "cn1",
             "list": [
-              "gpu1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -235,7 +238,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "RUNNING"
+            "CANCELLED"
           ],
           "statistics": {
             "CPU": {
@@ -250,7 +253,7 @@
             }
           },
           "step": {
-            "id": "16.batch",
+            "id": "1748.batch",
             "name": "batch"
           },
           "task": {
@@ -294,38 +297,94 @@
       ],
       "submit_line": "",
       "tres": {
-        "allocated": [],
-        "requested": []
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          }
+        ]
       },
       "used_gres": "",
-      "user": "jwilson",
+      "user": "arodriguez",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": ""
+      "working_directory": "/home/arodriguez"
     }
   ],
   "meta": {
     "plugin": {
       "type": "openapi/slurmdbd",
       "name": "Slurm OpenAPI slurmdbd",
-      "data_parser": "data_parser/v0.0.41",
+      "data_parser": "data_parser/v0.0.42",
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893558451] (fd 8)",
-      "user": "",
+      "source": "192.168.170.114:6820(fd:9)",
+      "user": "nobody",
       "group": ""
     },
     "command": [],
     "slurm": {
       "version": {
-        "major": "24",
-        "micro": "3",
+        "major": "26",
+        "micro": "0",
         "minor": "05"
       },
-      "release": "24.05.3",
+      "release": "26.05.0",
       "cluster": "hpc"
     }
   },

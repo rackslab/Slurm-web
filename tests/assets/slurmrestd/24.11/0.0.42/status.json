@@ -239,6 +239,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-jobs": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-not-found": {
     "content-type": "text/plain",
     "status": 404

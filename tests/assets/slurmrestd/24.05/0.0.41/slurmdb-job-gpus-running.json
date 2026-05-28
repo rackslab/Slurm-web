@@ -1,13 +1,13 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
         "system": ""
       },
-      "allocation_nodes": 0,
+      "allocation_nodes": 1,
       "array": {
         "job_id": 0,
         "limits": {
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "dperez",
-        "id": 14
+        "user": "jhayes",
+        "id": 18
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 1,
-        "eligible": 0,
+        "eligible": 1780140725,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 2
         },
-        "start": 1762529652,
-        "submission": 1762529652,
+        "start": 1780140727,
+        "submission": 1780140725,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -104,9 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
+        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "root",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,30 +116,30 @@
           "number": 0
         }
       },
-      "job_id": 9,
+      "job_id": 13363,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
-      "partition": "",
-      "hold": true,
+      "nodes": "gpu2",
+      "partition": "gpu",
+      "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 454
       },
-      "qos": "",
+      "qos": "normal",
       "required": {
-        "CPUs": 0,
+        "CPUs": 1,
         "memory_per_cpu": {
-          "set": false,
+          "set": true,
           "infinite": false,
-          "number": 0
+          "number": 512
         },
         "memory_per_node": {
-          "set": true,
+          "set": false,
           "infinite": false,
           "number": 0
         }
@@ -150,14 +151,14 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "",
+      "stdout_expanded": "/home/jhayes/slurm-13363.out",
       "stderr_expanded": "",
-      "stdout": "",
+      "stdout": "/home/jhayes/slurm-%j.out",
       "stderr": "",
       "stdin": "",
       "state": {
         "current": [
-          "PENDING"
+          "RUNNING"
         ],
         "reason": "None"
       },
@@ -173,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529652
+              "number": 1780140727
             },
             "suspended": 0,
             "system": {
@@ -209,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "gpu2",
             "list": [
-              "gpu1"
+              "gpu2"
             ]
           },
           "tasks": {
@@ -250,7 +251,7 @@
             }
           },
           "step": {
-            "id": "9.batch",
+            "id": "13363.batch",
             "name": "batch"
           },
           "task": {
@@ -287,6 +288,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -294,16 +307,90 @@
       ],
       "submit_line": "",
       "tres": {
-        "allocated": [],
-        "requested": []
+        "allocated": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "energy",
+            "name": "",
+            "id": 3,
+            "count": -2
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
+          }
+        ],
+        "requested": [
+          {
+            "type": "cpu",
+            "name": "",
+            "id": 1,
+            "count": 1
+          },
+          {
+            "type": "mem",
+            "name": "",
+            "id": 2,
+            "count": 512
+          },
+          {
+            "type": "node",
+            "name": "",
+            "id": 4,
+            "count": 1
+          },
+          {
+            "type": "billing",
+            "name": "",
+            "id": 5,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          }
+        ]
       },
       "used_gres": "",
-      "user": "dperez",
+      "user": "jhayes",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": ""
+      "working_directory": "/home/jhayes"
     }
   ],
   "meta": {
@@ -314,7 +401,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893547267] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6060551] (fd 8)",
       "user": "",
       "group": ""
     },

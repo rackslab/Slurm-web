@@ -7,7 +7,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -48,7 +48,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1780296749
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -91,7 +91,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -107,7 +107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -148,7 +148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1780296750
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -159,7 +159,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "MIXED"
       ],
       "operating_system": "",
       "owner": "",
@@ -183,15 +183,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 20480,
+      "alloc_cpus": 40,
+      "alloc_idle_cpus": 24,
+      "tres_used": "cpu=40,mem=20G",
+      "tres_weighted": 40.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -207,7 +207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -248,7 +248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -291,7 +291,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -307,7 +307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -348,7 +348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -391,7 +391,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -407,7 +407,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -448,7 +448,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -491,7 +491,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -507,7 +507,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -548,7 +548,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -591,7 +591,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -607,7 +607,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -648,7 +648,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -691,7 +691,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -707,7 +707,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -748,7 +748,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176302
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -759,7 +759,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -783,15 +783,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 4096,
-      "alloc_cpus": 8,
-      "alloc_idle_cpus": 56,
-      "tres_used": "cpu=8,mem=4G",
-      "tres_weighted": 8.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -807,7 +807,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -848,7 +848,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175581
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -859,7 +859,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -883,15 +883,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 30720,
-      "alloc_cpus": 60,
-      "alloc_idle_cpus": 4,
-      "tres_used": "cpu=60,mem=30G",
-      "tres_weighted": 60.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -907,7 +907,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -948,7 +948,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -991,7 +991,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1007,7 +1007,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1048,7 +1048,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1091,7 +1091,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1107,7 +1107,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1148,7 +1148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1191,7 +1191,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1207,7 +1207,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1248,7 +1248,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1291,7 +1291,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1307,7 +1307,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1348,7 +1348,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173207
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1359,7 +1359,8 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE",
+        "DRAIN"
       ],
       "operating_system": "",
       "owner": "",
@@ -1370,28 +1371,28 @@
       "real_memory": 131072,
       "res_cores_per_gpu": 0,
       "comment": "",
-      "reason": "",
+      "reason": "ECC memory error",
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 0
+        "number": 1780305493
       },
-      "reason_set_by_user": "",
+      "reason_set_by_user": "slurm",
       "resume_after": {
         "set": true,
         "infinite": false,
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 512,
-      "alloc_cpus": 1,
-      "alloc_idle_cpus": 63,
-      "tres_used": "cpu=1,mem=512M",
-      "tres_weighted": 1.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1407,7 +1408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1448,7 +1449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779169778
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1459,7 +1460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -1483,15 +1484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 512,
-      "alloc_cpus": 1,
-      "alloc_idle_cpus": 63,
-      "tres_used": "cpu=1,mem=512M",
-      "tres_weighted": 1.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1507,7 +1508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1548,7 +1549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1591,7 +1592,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1607,7 +1608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1648,7 +1649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173159
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1659,7 +1660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -1683,15 +1684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 6144,
-      "alloc_cpus": 12,
-      "alloc_idle_cpus": 52,
-      "tres_used": "cpu=12,mem=6G",
-      "tres_weighted": 12.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1707,7 +1708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1748,7 +1749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173163
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1759,7 +1760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -1783,15 +1784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 7168,
-      "alloc_cpus": 14,
-      "alloc_idle_cpus": 50,
-      "tres_used": "cpu=14,mem=7G",
-      "tres_weighted": 14.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1807,7 +1808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1848,7 +1849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1891,7 +1892,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -1907,7 +1908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -1948,7 +1949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173950
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -1959,7 +1960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -1983,15 +1984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2007,7 +2008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2048,7 +2049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2059,7 +2060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2083,15 +2084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2107,7 +2108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2148,7 +2149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2159,7 +2160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2183,15 +2184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2207,7 +2208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2248,7 +2249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2259,7 +2260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2283,15 +2284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2307,7 +2308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2348,7 +2349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2359,7 +2360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2383,15 +2384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2407,7 +2408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2448,7 +2449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2459,7 +2460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2483,15 +2484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2507,7 +2508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2548,7 +2549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2559,7 +2560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2583,15 +2584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2607,7 +2608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2648,7 +2649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176812
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2659,7 +2660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2683,15 +2684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2707,7 +2708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2748,7 +2749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176818
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2759,7 +2760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2783,15 +2784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2807,7 +2808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2848,7 +2849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173965
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2859,7 +2860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2883,15 +2884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -2907,7 +2908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -2948,7 +2949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173239
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -2959,7 +2960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -2983,15 +2984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3007,7 +3008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3048,7 +3049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175509
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3059,7 +3060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3083,15 +3084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3107,7 +3108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3148,7 +3149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176776
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3159,7 +3160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3183,15 +3184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3207,7 +3208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3248,7 +3249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176779
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3259,7 +3260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3283,15 +3284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3307,7 +3308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3348,7 +3349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176640
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3359,7 +3360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3383,15 +3384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3407,7 +3408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3448,7 +3449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3459,7 +3460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3483,15 +3484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3507,7 +3508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3548,7 +3549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3559,7 +3560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3583,15 +3584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3607,7 +3608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3648,7 +3649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173975
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3659,7 +3660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3683,15 +3684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3707,7 +3708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3748,7 +3749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3759,7 +3760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3783,15 +3784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3807,7 +3808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3848,7 +3849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3859,7 +3860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3883,15 +3884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -3907,7 +3908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -3948,7 +3949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -3959,7 +3960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -3983,15 +3984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4007,7 +4008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4048,7 +4049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4059,7 +4060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4083,15 +4084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4107,7 +4108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4148,7 +4149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4159,7 +4160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4183,15 +4184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4207,7 +4208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4248,7 +4249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4259,7 +4260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4283,15 +4284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4307,7 +4308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4348,7 +4349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176816
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4359,7 +4360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4383,15 +4384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4407,7 +4408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4448,7 +4449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176816
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4459,7 +4460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4483,15 +4484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4507,7 +4508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4548,7 +4549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176816
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4559,7 +4560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4583,15 +4584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4607,7 +4608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4648,7 +4649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176816
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4659,7 +4660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4683,15 +4684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4707,7 +4708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4748,7 +4749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176816
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4759,7 +4760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4783,15 +4784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4807,7 +4808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4848,7 +4849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176815
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4859,7 +4860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4883,15 +4884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -4907,7 +4908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -4948,7 +4949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176815
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -4959,7 +4960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -4983,15 +4984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5007,7 +5008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5048,7 +5049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5059,7 +5060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5083,15 +5084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5107,7 +5108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5148,7 +5149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779174116
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5159,7 +5160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5183,15 +5184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5207,7 +5208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5248,7 +5249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173202
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5259,7 +5260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5283,15 +5284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5307,7 +5308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5348,7 +5349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176810
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5359,7 +5360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5383,15 +5384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5407,7 +5408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5448,7 +5449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175881
+        "number": 1780146930
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5459,7 +5460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5483,15 +5484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5507,7 +5508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5548,7 +5549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176784
+        "number": 1780146929
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5559,7 +5560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5583,15 +5584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5607,7 +5608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5648,7 +5649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176787
+        "number": 1780146930
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5659,7 +5660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5683,15 +5684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5707,7 +5708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5748,7 +5749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176785
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5759,7 +5760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5783,15 +5784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5807,7 +5808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5848,7 +5849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176785
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5859,7 +5860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5883,15 +5884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -5907,7 +5908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -5948,7 +5949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176811
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -5959,7 +5960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -5983,15 +5984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6007,7 +6008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6048,7 +6049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175508
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6059,7 +6060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6083,15 +6084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6107,7 +6108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6148,7 +6149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176814
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6159,7 +6160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6183,15 +6184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6207,7 +6208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6248,7 +6249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6259,7 +6260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6283,15 +6284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6307,7 +6308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6348,7 +6349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6359,7 +6360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6383,15 +6384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6407,7 +6408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6448,7 +6449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176789
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6459,7 +6460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6483,15 +6484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6507,7 +6508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6548,7 +6549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176789
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6559,7 +6560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6583,15 +6584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6607,7 +6608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6648,7 +6649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176809
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6659,7 +6660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6683,15 +6684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6707,7 +6708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6748,7 +6749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176815
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6759,7 +6760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6783,15 +6784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6807,7 +6808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6848,7 +6849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173244
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6859,7 +6860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6883,15 +6884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -6907,7 +6908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -6948,7 +6949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779173244
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -6959,7 +6960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -6983,15 +6984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7007,7 +7008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7048,7 +7049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7059,7 +7060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7083,15 +7084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7107,7 +7108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7148,7 +7149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7159,7 +7160,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7183,15 +7184,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7207,7 +7208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7248,7 +7249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7259,7 +7260,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7283,15 +7284,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7307,7 +7308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7348,7 +7349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7359,7 +7360,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7383,15 +7384,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7407,7 +7408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7448,7 +7449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7459,7 +7460,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7483,15 +7484,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7507,7 +7508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7548,7 +7549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7559,7 +7560,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7583,15 +7584,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7607,7 +7608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7648,7 +7649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176817
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7659,7 +7660,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7683,15 +7684,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7707,7 +7708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7748,7 +7749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176765
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7759,7 +7760,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7783,15 +7784,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7807,7 +7808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7848,7 +7849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176070
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7859,7 +7860,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7883,15 +7884,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -7907,7 +7908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -7948,7 +7949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176777
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -7959,7 +7960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "ALLOCATED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -7983,15 +7984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 32768,
-      "alloc_cpus": 64,
-      "alloc_idle_cpus": 0,
-      "tres_used": "cpu=64,mem=32G",
-      "tres_weighted": 64.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8007,7 +8008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8048,7 +8049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779167710
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8059,7 +8060,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -8083,15 +8084,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 19456,
-      "alloc_cpus": 38,
-      "alloc_idle_cpus": 26,
-      "tres_used": "cpu=38,mem=19G",
-      "tres_weighted": 38.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8107,7 +8108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8148,7 +8149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176440
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8191,7 +8192,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8207,7 +8208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8248,7 +8249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175359
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8291,7 +8292,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8307,7 +8308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8348,7 +8349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175626
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8391,7 +8392,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8407,7 +8408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8448,7 +8449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175626
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8491,7 +8492,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8507,7 +8508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8548,7 +8549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175626
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8591,7 +8592,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8607,7 +8608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8648,7 +8649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779175626
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8691,7 +8692,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8707,7 +8708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8748,7 +8749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779116226
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8791,7 +8792,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8807,7 +8808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8848,7 +8849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779116464
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8891,7 +8892,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -8907,7 +8908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -8948,7 +8949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779116464
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -8991,7 +8992,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9007,7 +9008,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9048,7 +9049,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779116464
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9091,7 +9092,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9107,7 +9108,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9148,7 +9149,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779116464
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9191,7 +9192,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9207,7 +9208,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9248,7 +9249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779117039
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9291,7 +9292,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9307,7 +9308,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9348,7 +9349,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779118360
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9391,7 +9392,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9407,7 +9408,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9448,7 +9449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779117120
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9491,7 +9492,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9507,7 +9508,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9548,7 +9549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779117120
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9591,7 +9592,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9607,7 +9608,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9648,7 +9649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779117809
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9691,7 +9692,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9707,7 +9708,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9748,7 +9749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779117279
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9791,7 +9792,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9807,7 +9808,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9848,7 +9849,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779119882
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9891,7 +9892,7 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -9907,7 +9908,7 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954834
       },
       "cluster_name": "",
       "cores": 32,
@@ -9948,7 +9949,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176778
+        "number": 1779954948
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -9959,7 +9960,7 @@
       "address": "admin.titan",
       "hostname": "admin.titan",
       "state": [
-        "MIXED"
+        "IDLE"
       ],
       "operating_system": "",
       "owner": "",
@@ -9983,15 +9984,15 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 1024,
-      "alloc_cpus": 2,
-      "alloc_idle_cpus": 62,
-      "tres_used": "cpu=2,mem=1G",
-      "tres_weighted": 2.0,
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778487176
+        "number": 1779954948
       },
       "sockets": 2,
       "threads": 1,
@@ -10004,7 +10005,7 @@
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1779176824
+    "number": 1780305496
   },
   "meta": {
     "plugin": {
@@ -10014,7 +10015,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[526599422] (fd 26)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[11535429] (fd 8)",
       "user": "root",
       "group": "root"
     },

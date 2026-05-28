@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jbeck",
-        "id": 12
+        "user": "rpowers",
+        "id": 10
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 65,
-        "eligible": 1762788766,
-        "end": 1762788831,
+        "elapsed": 70,
+        "eligible": 1780306525,
+        "end": 1780306595,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1762788766,
-        "submission": 1762788766,
+        "start": 1780306525,
+        "submission": 1780306525,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 6357,
-      "name": "wrap",
+      "job_id": 10665,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-6357.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/rpowers/slurm-10665.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/rpowers/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "TIMEOUT"
@@ -167,16 +167,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 66,
+            "elapsed": 71,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762788832
+              "number": 1780306596
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788766
+              "number": 1780306525
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6357.batch",
+            "id": "10665.batch",
             "name": "batch"
           },
           "task": {
@@ -295,7 +295,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 90 && true --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -357,12 +357,12 @@
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "rpowers",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/rpowers"
     }
   ],
   "meta": {
@@ -381,10 +381,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

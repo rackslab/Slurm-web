@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "tkirby",
-        "id": 14
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 31,
-        "eligible": 1778608607,
-        "end": 1778608638,
+        "elapsed": 30,
+        "eligible": 1780138533,
+        "end": 1780138564,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1778608607,
-        "submission": 1778608607,
+        "start": 1780138534,
+        "submission": 1780138533,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,7 +116,7 @@
           "number": 0
         }
       },
-      "job_id": 422,
+      "job_id": 5431,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 636
+        "number": 90
       },
       "qos": "normal",
       "qosreq": "",
@@ -153,7 +153,7 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/tkirby/slurm-422.out",
+      "stdout_expanded": "/home/madams/slurm-5431.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -167,16 +167,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 31,
+            "elapsed": 30,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778608638
+              "number": 1780138564
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778608607
+              "number": 1780138534
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "422.batch",
+            "id": "5431.batch",
             "name": "batch"
           },
           "task": {
@@ -290,6 +290,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "tkirby",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tkirby"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {

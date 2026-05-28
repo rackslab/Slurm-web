@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "acuevas",
-        "id": 16
+        "user": "tkirby",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -62,8 +62,8 @@
           "infinite": false,
           "number": 0
         },
-        "start": 1762529691,
-        "submission": 1762529691,
+        "start": 1780140679,
+        "submission": 1780140679,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 12,
+      "job_id": 13297,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -173,7 +173,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529691
+              "number": 1780140679
             },
             "suspended": 0,
             "system": {
@@ -250,7 +250,7 @@
             }
           },
           "step": {
-            "id": "12.batch",
+            "id": "13297.batch",
             "name": "batch"
           },
           "task": {
@@ -287,6 +287,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
@@ -298,7 +310,7 @@
         "requested": []
       },
       "used_gres": "",
-      "user": "acuevas",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
@@ -314,7 +326,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893547665] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6044147] (fd 8)",
       "user": "",
       "group": ""
     },

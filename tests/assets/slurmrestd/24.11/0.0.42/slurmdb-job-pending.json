@@ -28,7 +28,7 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jbeck",
+        "user": "mwilliams",
         "id": 12
       },
       "block": "",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1762792385,
+        "eligible": 1780300450,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": -3527
+          "number": 71
         },
         "start": 0,
-        "submission": 1762788785,
+        "submission": 1780300450,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,24 +115,24 @@
           "number": 0
         }
       },
-      "job_id": 6370,
-      "name": "wrap",
+      "job_id": 9749,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "standard",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 4,
+        "CPUs": 128,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -151,12 +151,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-6370.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-9749.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -164,7 +164,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 4 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -172,13 +172,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 4
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 2048
+            "count": 65536
           },
           {
             "type": "node",
@@ -190,17 +190,23 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 4
+            "count": 128
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -219,10 +225,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

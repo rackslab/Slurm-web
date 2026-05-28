@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779130986,
+    "number": 1780139583,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 14,
+    "id": 9,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/tkirby",
+  "current_working_directory": "/home/jli",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,7 +64,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779130987,
+    "number": 1780139584,
     "set": true
   },
   "name": "allocation",
@@ -73,11 +73,11 @@
     "number": 1,
     "set": true
   },
-  "nodes": "gpu1",
+  "nodes": "gpu2",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 545,
+    "number": 909,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +96,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/tkirby/slurm-1159.out",
+  "stdout_expanded": "/home/jli/slurm-5455.out",
   "steps": [
     {
       "CPU": {
@@ -136,9 +136,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu1"
+          "gpu2"
         ],
-        "range": "gpu1"
+        "range": "gpu2"
       },
       "pid": "",
       "state": [
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "1159.batch",
+        "id": "5455.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +177,7 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1779131017,
+          "number": 1780139614,
           "set": true
         },
         "limit": {
@@ -187,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779130987,
+          "number": 1780139584,
           "set": true
         },
         "suspended": 0,
@@ -223,6 +223,18 @@
             "id": 4,
             "name": "",
             "type": "node"
+          },
+          {
+            "count": 4,
+            "id": 1001,
+            "name": "gpu",
+            "type": "gres"
+          },
+          {
+            "count": 4,
+            "id": 1002,
+            "name": "gpu:h100",
+            "type": "gres"
           }
         ],
         "consumed": {
@@ -248,11 +260,11 @@
   },
   "time": {
     "elapsed": 30,
-    "eligible": 1779130986,
-    "end": 1779131017,
+    "eligible": 1780139583,
+    "end": 1780139614,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
@@ -260,8 +272,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1779130987,
-    "submission": 1779130986,
+    "start": 1780139584,
+    "submission": 1780139583,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -307,6 +319,18 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
+      },
+      {
+        "count": 4,
+        "id": 1002,
+        "name": "gpu:h100",
+        "type": "gres"
       }
     ],
     "requested": [
@@ -333,6 +357,12 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 4,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
@@ -340,12 +370,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "tkirby",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
+  "user": "jli",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/tkirby"
+  "working_directory": "/home/jli"
 }

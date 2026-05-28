@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "acoustic",
+      "account": "optic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "acoustic",
+        "account": "optic",
         "cluster": "hpc",
         "partition": "",
-        "user": "madams",
-        "id": 15
+        "user": "arodriguez",
+        "id": 17
       },
       "block": "",
       "cluster": "hpc",
@@ -55,7 +55,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1778612865,
+        "eligible": 1780142766,
         "end": 0,
         "planned": {
           "set": true,
@@ -63,7 +63,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1778609265,
+        "submission": 1780139166,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 427,
+      "job_id": 5433,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -127,7 +127,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 727
+        "number": 363
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,7 +152,7 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/madams/slurm-427.out",
+      "stdout_expanded": "/home/arodriguez/slurm-5433.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -191,16 +191,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "madams",
+      "user": "arodriguez",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/madams"
+      "working_directory": "/home/arodriguez"
     }
   ],
   "meta": {

@@ -28,8 +28,8 @@
         "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "dperez",
-        "id": 14
+        "user": "ccollins",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 30,
-        "eligible": 1762788123,
-        "end": 1762788153,
+        "elapsed": 31,
+        "eligible": 1780297795,
+        "end": 1780297826,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 0
         },
-        "start": 1762788123,
-        "submission": 1762788123,
+        "start": 1780297795,
+        "submission": 1780297795,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 6354,
-      "name": "wrap",
+      "job_id": 9546,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 90
+        "number": 181
       },
       "qos": "normal",
       "qosreq": "",
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/dperez/slurm-6354.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/ccollins/slurm-9546.out",
       "stderr_expanded": "",
-      "stdout": "/home/dperez/slurm-%j.out",
+      "stdout": "/home/ccollins/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "COMPLETED"
@@ -167,16 +167,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 30,
+            "elapsed": 31,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762788153
+              "number": 1780297826
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788123
+              "number": 1780297795
             },
             "suspended": 0,
             "system": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6354.batch",
+            "id": "9546.batch",
             "name": "batch"
           },
           "task": {
@@ -290,12 +290,24 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h200",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gpus 6",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -327,6 +339,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h200",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -353,16 +377,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 6
           }
         ]
       },
       "used_gres": "",
-      "user": "dperez",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/dperez"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {
@@ -381,10 +411,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

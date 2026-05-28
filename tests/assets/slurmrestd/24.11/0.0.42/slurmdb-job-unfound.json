@@ -16,17 +16,17 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },
   "errors": [],
   "warnings": [
     {
-      "description": "slurmdb_jobs_get(0x7fa4b40133d0) found nothing",
+      "description": "slurmdb_jobs_get(0x7f9c78010f20) found nothing",
       "source": "_dump_jobs"
     }
   ]

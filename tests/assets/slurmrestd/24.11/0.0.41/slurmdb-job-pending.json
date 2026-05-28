@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "tnixon",
-        "id": 12
+        "user": "tkirby",
+        "id": 14
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1747755144,
+        "eligible": 1780300845,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": -3528
+          "number": 70
         },
         "start": 0,
-        "submission": 1747751544,
+        "submission": 1780300845,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 2
         },
         "total": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,23 +115,23 @@
           "number": 0
         }
       },
-      "job_id": 5977,
-      "name": "wrap",
+      "job_id": 9764,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "normal",
+      "partition": "ia",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 636
       },
       "qos": "normal",
       "required": {
-        "CPUs": 64,
+        "CPUs": 128,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -149,12 +149,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/tnixon/slurm-5977.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/tkirby/slurm-9764.out",
       "stderr_expanded": "",
-      "stdout": "/home/tnixon/slurm-%j.out",
+      "stdout": "/home/tkirby/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -162,7 +162,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --ntasks 64 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -170,13 +170,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 64
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 32768
+            "count": 65536
           },
           {
             "type": "node",
@@ -188,17 +188,23 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 64
+            "count": 128
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1001,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "tnixon",
+      "user": "tkirby",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/tnixon"
+      "working_directory": "/home/tkirby"
     }
   ],
   "meta": {
@@ -209,7 +215,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -217,10 +223,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

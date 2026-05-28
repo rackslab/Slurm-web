@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 18
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -55,7 +55,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1762792722,
+        "eligible": 1780146028,
         "end": 0,
         "planned": {
           "set": true,
@@ -63,7 +63,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1762789122,
+        "submission": 1780142428,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,8 +115,8 @@
           "number": 0
         }
       },
-      "job_id": 4745,
-      "name": "wrap",
+      "job_id": 14242,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -127,7 +127,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 363
+        "number": 272
       },
       "qos": "normal",
       "qosreq": "",
@@ -153,12 +153,12 @@
       },
       "script": "",
       "segment_size": 0,
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/sevans/slurm-4745.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/ccollins/slurm-14242.out",
       "stderr_expanded": "",
-      "stdout": "/home/sevans/slurm-%j.out",
+      "stdout": "/home/ccollins/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -166,7 +166,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -193,16 +193,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "sevans",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/sevans"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {
@@ -213,7 +219,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

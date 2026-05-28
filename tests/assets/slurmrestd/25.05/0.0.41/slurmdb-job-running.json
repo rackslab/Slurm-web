@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "emendoza",
-        "id": 13
+        "user": "ccollins",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 22,
-        "eligible": 1747754583,
+        "elapsed": 69,
+        "eligible": 1780143149,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 65
+          "number": 1
         },
-        "start": 1747754648,
-        "submission": 1747754583,
+        "start": 1780143150,
+        "submission": 1780143149,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,23 +116,23 @@
           "number": 0
         }
       },
-      "job_id": 4,
-      "name": "wrap",
+      "job_id": 14325,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn[1-2]",
-      "partition": "standard",
+      "nodes": "gpu[1-2]",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1000
+        "number": 272
       },
       "qos": "normal",
       "required": {
-        "CPUs": 128,
+        "CPUs": 64,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -150,12 +150,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/emendoza/slurm-4.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/ccollins/slurm-14325.out",
       "stderr_expanded": "",
-      "stdout": "/home/emendoza/slurm-%j.out",
+      "stdout": "/home/ccollins/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -165,7 +165,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 22,
+            "elapsed": 69,
             "end": {
               "set": true,
               "infinite": false,
@@ -174,7 +174,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747754648
+              "number": 1780143150
             },
             "suspended": 0,
             "system": {
@@ -210,9 +210,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn1",
+            "range": "gpu1",
             "list": [
-              "cn1"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "4.batch",
+            "id": "14325.batch",
             "name": "batch"
           },
           "task": {
@@ -275,38 +275,50 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 64
+                "count": 32
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 32768
+                "count": 16384
               },
               {
                 "type": "node",
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 1
               }
             ]
           }
         }
       ],
-      "submit_line": "sbatch --time 2 --wrap sleep 30 && true --ntasks 128",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 128
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 65536
+            "count": 32768
           },
           {
             "type": "energy",
@@ -324,7 +336,19 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 128
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -332,13 +356,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 128
+            "count": 64
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 65536
+            "count": 32768
           },
           {
             "type": "node",
@@ -350,17 +374,29 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 128
+            "count": 64
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "emendoza",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/emendoza"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {
@@ -379,10 +415,10 @@
     "slurm": {
       "version": {
         "major": "25",
-        "micro": "0",
+        "micro": "4",
         "minor": "05"
       },
-      "release": "25.05.0-0rc1",
+      "release": "25.05.4",
       "cluster": "hpc"
     }
   },

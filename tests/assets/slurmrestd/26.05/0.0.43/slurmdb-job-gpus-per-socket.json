@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 0,
-        "eligible": 1778607096,
+        "elapsed": 1,
+        "eligible": 1780138004,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1778607097,
-        "submission": 1778607096,
+        "start": 1780138004,
+        "submission": 1780138004,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,7 +116,7 @@
           "number": 0
         }
       },
-      "job_id": 312,
+      "job_id": 5348,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 363
       },
       "qos": "normal",
       "qosreq": "",
@@ -155,7 +155,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/arodriguez/slurm-312.out",
+      "stdout_expanded": "/home/arodriguez/slurm-5348.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -169,7 +169,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 0,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
@@ -178,7 +178,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778607097
+              "number": 1780138004
             },
             "suspended": 0,
             "system": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "312.batch",
+            "id": "5348.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,6 +303,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 2
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 2
               }
             ]
           }
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 2
           }
         ],
         "requested": [
@@ -366,6 +390,12 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },

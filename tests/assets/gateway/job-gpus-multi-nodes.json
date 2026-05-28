@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779131421,
+    "number": 1780140640,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 11,
+    "id": 12,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/jrasmussen",
+  "current_working_directory": "/home/mwilliams",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -67,7 +67,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779131422,
+    "number": 1780140641,
     "set": true
   },
   "name": "allocation",
@@ -80,7 +80,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 181,
+    "number": 818,
     "set": true
   },
   "qos": "normal",
@@ -99,7 +99,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jrasmussen/slurm-1180.out",
+  "stdout_expanded": "/home/mwilliams/slurm-5535.out",
   "steps": [
     {
       "CPU": {
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "1180.batch",
+        "id": "5535.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +177,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 0,
         "end": {
           "infinite": false,
           "number": 0,
@@ -190,7 +190,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131422,
+          "number": 1780140641,
           "set": true
         },
         "suspended": 0,
@@ -226,6 +226,18 @@
             "id": 4,
             "name": "",
             "type": "node"
+          },
+          {
+            "count": 4,
+            "id": 1001,
+            "name": "gpu",
+            "type": "gres"
+          },
+          {
+            "count": 4,
+            "id": 1002,
+            "name": "gpu:h100",
+            "type": "gres"
           }
         ],
         "consumed": {
@@ -250,12 +262,12 @@
     "set": true
   },
   "time": {
-    "elapsed": 1,
-    "eligible": 1779131421,
+    "elapsed": 0,
+    "eligible": 1780140640,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
@@ -263,8 +275,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1779131422,
-    "submission": 1779131421,
+    "start": 1780140641,
+    "submission": 1780140640,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -310,6 +322,18 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 8,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
+      },
+      {
+        "count": 8,
+        "id": 1002,
+        "name": "gpu:h100",
+        "type": "gres"
       }
     ],
     "requested": [
@@ -336,6 +360,12 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 8,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
@@ -343,12 +373,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "jrasmussen",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=8",
+  "user": "mwilliams",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jrasmussen"
+  "working_directory": "/home/mwilliams"
 }

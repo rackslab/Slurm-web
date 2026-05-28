@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 15
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 31,
-        "eligible": 1778607502,
-        "end": 1778607533,
+        "elapsed": 30,
+        "eligible": 1780137372,
+        "end": 1780137403,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 0
+          "number": 1
         },
-        "start": 1778607502,
-        "submission": 1778607502,
+        "start": 1780137373,
+        "submission": 1780137372,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 333,
+      "job_id": 5347,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu2",
+      "nodes": "gpu1",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 363
+        "number": 272
       },
       "qos": "normal",
       "qosreq": "",
@@ -155,7 +155,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/madams/slurm-333.out",
+      "stdout_expanded": "/home/ccollins/slurm-5347.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -169,16 +169,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 31,
+            "elapsed": 30,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778607533
+              "number": 1780137403
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778607502
+              "number": 1780137373
             },
             "suspended": 0,
             "system": {
@@ -219,9 +219,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu2",
+            "range": "gpu1",
             "list": [
-              "gpu2"
+              "gpu1"
             ]
           },
           "tasks": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "333.batch",
+            "id": "5347.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,6 +303,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -340,6 +352,18 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
+          },
+          {
+            "type": "gres",
+            "name": "gpu:h100",
+            "id": 1002,
+            "count": 4
           }
         ],
         "requested": [
@@ -366,16 +390,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "madams",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/madams"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {

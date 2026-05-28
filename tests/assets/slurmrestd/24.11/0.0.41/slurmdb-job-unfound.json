@@ -8,7 +8,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "unix:/run/slurmrestd/slurmrestd.socket(fd:20)",
+      "source": "[admin]:42010(fd:11)",
       "user": "",
       "group": ""
     },
@@ -16,17 +16,17 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },
   "errors": [],
   "warnings": [
     {
-      "description": "slurmdb_jobs_get(0x7f6e1001f460) found nothing",
+      "description": "slurmdb_jobs_get(0x7f9c7408dc40) found nothing",
       "source": "_dump_jobs"
     }
   ]

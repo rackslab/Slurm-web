@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "admin",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jwilson",
-        "id": 9
+        "user": "madams",
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -55,7 +55,7 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1762793606,
+        "eligible": 1780146043,
         "end": 0,
         "planned": {
           "set": true,
@@ -63,7 +63,7 @@
           "number": -3600
         },
         "start": 0,
-        "submission": 1762790006,
+        "submission": 1780142443,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,8 +115,8 @@
           "number": 0
         }
       },
-      "job_id": 4780,
-      "name": "wrap",
+      "job_id": 14308,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -127,7 +127,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 181
       },
       "qos": "normal",
       "qosreq": "",
@@ -151,12 +151,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jwilson/slurm-4780.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/madams/slurm-14308.out",
       "stderr_expanded": "",
-      "stdout": "/home/jwilson/slurm-%j.out",
+      "stdout": "/home/madams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -164,7 +164,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition gpu --gpus 4 --begin now+1hour",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -191,16 +191,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jwilson",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jwilson"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {
@@ -211,7 +217,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

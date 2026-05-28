@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1763129115,
+    "number": 1780303582,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 17,
+    "id": 18,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/rcarson",
+  "current_working_directory": "/home/jhayes",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -61,23 +61,23 @@
     ]
   },
   "gres_detail": [],
-  "group": "scientists",
+  "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1763129115,
+    "number": 1780303582,
     "set": true
   },
-  "name": "wrap",
+  "name": "allocation",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "cn1",
+  "nodes": "cn4",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 909,
+    "number": 454,
     "set": true
   },
   "qos": "normal",
@@ -95,8 +95,8 @@
     "reason": "None"
   },
   "stderr_expanded": "",
-  "stdin_expanded": "/dev/null",
-  "stdout_expanded": "/home/rcarson/slurm-35.out",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/jhayes/slurm-1291.out",
   "steps": [
     {
       "CPU": {
@@ -136,11 +136,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "cn1"
+          "cn4"
         ],
-        "range": "cn1"
+        "range": "cn4"
       },
-      "pid": "",
       "state": [
         "CANCELLED"
       ],
@@ -157,7 +156,7 @@
         }
       },
       "step": {
-        "id": "35.batch",
+        "id": "1291.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -166,6 +165,7 @@
         "stdout": "",
         "stdout_expanded": ""
       },
+      "submit_line": "",
       "task": {
         "distribution": "Unknown"
       },
@@ -173,10 +173,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 75,
+        "elapsed": 72,
         "end": {
           "infinite": false,
-          "number": 1763129190,
+          "number": 1780303654,
           "set": true
         },
         "limit": {
@@ -186,7 +186,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1763129115,
+          "number": 1780303582,
           "set": true
         },
         "suspended": 0,
@@ -239,16 +239,16 @@
       }
     }
   ],
-  "submit_line": "sbatch --time 1 --wrap sleep 90 && true --ntasks 1",
+  "submit_line": "",
   "tasks": {
     "infinite": false,
     "number": 1,
     "set": true
   },
   "time": {
-    "elapsed": 74,
-    "eligible": 1763129115,
-    "end": 1763129189,
+    "elapsed": 70,
+    "eligible": 1780303582,
+    "end": 1780303652,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -259,8 +259,8 @@
       "number": 0,
       "set": true
     },
-    "start": 1763129115,
-    "submission": 1763129115,
+    "start": 1780303582,
+    "submission": 1780303582,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -340,11 +340,10 @@
   "tres_per_socket": "",
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "used_gres": "",
-  "user": "rcarson",
+  "user": "jhayes",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rcarson"
+  "working_directory": "/home/jhayes"
 }

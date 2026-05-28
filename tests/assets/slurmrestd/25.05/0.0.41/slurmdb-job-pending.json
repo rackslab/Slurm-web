@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "crich",
-        "id": 11
+        "user": "ccollins",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1747754584,
+        "eligible": 1780143149,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 86
+          "number": 70
         },
         "start": 0,
-        "submission": 1747754584,
+        "submission": 1780143149,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -106,7 +106,7 @@
       "flags": [
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -115,23 +115,23 @@
           "number": 0
         }
       },
-      "job_id": 5,
-      "name": "wrap",
+      "job_id": 14326,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
       "nodes": "None assigned",
-      "partition": "standard",
+      "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 1000
+        "number": 272
       },
       "qos": "normal",
       "required": {
-        "CPUs": 16,
+        "CPUs": 128,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -149,12 +149,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/crich/slurm-5.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/ccollins/slurm-14326.out",
       "stderr_expanded": "",
-      "stdout": "/home/crich/slurm-%j.out",
+      "stdout": "/home/ccollins/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "PENDING"
@@ -162,7 +162,7 @@
         "reason": "None"
       },
       "steps": [],
-      "submit_line": "sbatch --time 2 --wrap sleep 30 && true --ntasks 16",
+      "submit_line": "",
       "tres": {
         "allocated": [],
         "requested": [
@@ -170,13 +170,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 16
+            "count": 128
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 8192
+            "count": 65536
           },
           {
             "type": "node",
@@ -188,17 +188,23 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 16
+            "count": 128
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 2
           }
         ]
       },
       "used_gres": "",
-      "user": "crich",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/crich"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {
@@ -217,10 +223,10 @@
     "slurm": {
       "version": {
         "major": "25",
-        "micro": "0",
+        "micro": "4",
         "minor": "05"
       },
-      "release": "25.05.0-0rc1",
+      "release": "25.05.4",
       "cluster": "hpc"
     }
   },

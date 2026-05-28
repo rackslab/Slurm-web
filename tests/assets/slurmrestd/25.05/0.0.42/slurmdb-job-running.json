@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "rcarson",
-        "id": 17
+        "user": "mwilliams",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 72,
-        "eligible": 1762789880,
+        "elapsed": 68,
+        "eligible": 1780301648,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 8
+          "number": 3
         },
-        "start": 1762789888,
-        "submission": 1762789880,
+        "start": 1780301651,
+        "submission": 1780301648,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -104,10 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_BACKFILL",
+        "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,24 +116,24 @@
           "number": 0
         }
       },
-      "job_id": 4769,
-      "name": "wrap",
+      "job_id": 15081,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn4",
+      "nodes": "cn1",
       "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 454
+        "number": 545
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 32,
+        "CPUs": 1,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/rcarson/slurm-4769.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-15081.out",
       "stderr_expanded": "",
-      "stdout": "/home/rcarson/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "RUNNING"
@@ -167,7 +167,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 72,
+            "elapsed": 68,
             "end": {
               "set": true,
               "infinite": false,
@@ -176,7 +176,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762789888
+              "number": 1780301651
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn4",
+            "range": "cn1",
             "list": [
-              "cn4"
+              "cn1"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "4769.batch",
+            "id": "15081.batch",
             "name": "batch"
           },
           "task": {
@@ -277,13 +277,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 32
+                "count": 1
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 16384
+                "count": 512
               },
               {
                 "type": "node",
@@ -295,20 +295,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 2 --wrap sleep 90 && true --ntasks 32",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 32
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16384
+            "count": 512
           },
           {
             "type": "energy",
@@ -326,7 +326,7 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 32
+            "count": 1
           }
         ],
         "requested": [
@@ -334,13 +334,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 32
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16384
+            "count": 512
           },
           {
             "type": "node",
@@ -352,17 +352,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 32
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "rcarson",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/rcarson"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -373,7 +373,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "biology",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "jshelton",
-        "id": 13
+        "user": "ccollins",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 0,
-        "eligible": 1778608236,
+        "eligible": 1780142771,
         "end": 0,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 71
+          "number": -3530
         },
         "start": 0,
-        "submission": 1778608236,
+        "submission": 1780139171,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 120
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 412,
+      "job_id": 5449,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -127,12 +127,12 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 272
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 128,
+        "CPUs": 16,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -152,7 +152,7 @@
       },
       "script": "",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jshelton/slurm-412.out",
+      "stdout_expanded": "/home/ccollins/slurm-5449.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -172,13 +172,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 128
+            "count": 16
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 65536
+            "count": 8192
           },
           {
             "type": "node",
@@ -190,17 +190,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 128
+            "count": 16
           }
         ]
       },
       "used_gres": "",
-      "user": "jshelton",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jshelton"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {

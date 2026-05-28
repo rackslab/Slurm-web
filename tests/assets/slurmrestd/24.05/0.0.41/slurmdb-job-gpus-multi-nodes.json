@@ -28,8 +28,8 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jthomas",
-        "id": 13
+        "user": "mwilliams",
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
@@ -54,7 +54,7 @@
         }
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 2,
         "eligible": 0,
         "end": 0,
         "planned": {
@@ -62,8 +62,8 @@
           "infinite": false,
           "number": 0
         },
-        "start": 1762529688,
-        "submission": 1762529688,
+        "start": 1780141360,
+        "submission": 1780141360,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -115,7 +115,7 @@
           "number": 0
         }
       },
-      "job_id": 11,
+      "job_id": 13365,
       "name": "allocation",
       "licenses": "",
       "mcs": {
@@ -164,7 +164,7 @@
       "steps": [
         {
           "time": {
-            "elapsed": 1,
+            "elapsed": 2,
             "end": {
               "set": true,
               "infinite": false,
@@ -173,7 +173,7 @@
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762529688
+              "number": 1780141360
             },
             "suspended": 0,
             "system": {
@@ -250,7 +250,7 @@
             }
           },
           "step": {
-            "id": "11.batch",
+            "id": "13365.batch",
             "name": "batch"
           },
           "task": {
@@ -287,6 +287,18 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
+              },
+              {
+                "type": "gres",
+                "name": "gpu:h100",
+                "id": 1002,
+                "count": 4
               }
             ]
           }
@@ -298,7 +310,7 @@
         "requested": []
       },
       "used_gres": "",
-      "user": "jthomas",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
@@ -314,7 +326,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "/run/slurmrestd/slurmrestd.socket->socket:[1893549285] (fd 8)",
+      "source": "/run/slurmrestd/slurmrestd.socket->socket:[6068893] (fd 8)",
       "user": "",
       "group": ""
     },

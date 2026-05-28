@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -25,11 +25,11 @@
         "task": ""
       },
       "association": {
-        "account": "optic",
+        "account": "acoustic",
         "cluster": "hpc",
         "partition": "",
-        "user": "ksoto",
-        "id": 17
+        "user": "ccollins",
+        "id": 16
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 2,
-        "eligible": 1747763001,
-        "end": 1747763004,
+        "eligible": 1780143149,
+        "end": 1780143152,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1747763002,
-        "submission": 1747763001,
+        "start": 1780143150,
+        "submission": 1780143149,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 52,
-      "name": "wrap",
+      "job_id": 14322,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "ia1",
-      "partition": "ia",
+      "nodes": "cn1",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 818
+        "number": 272
       },
       "qos": "normal",
       "required": {
@@ -144,37 +144,37 @@
           "number": 0
         }
       },
-      "kill_request_user": "ksoto",
+      "kill_request_user": "",
       "reservation": {
         "id": 0,
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/ksoto/slurm-52.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/ccollins/slurm-14322.out",
       "stderr_expanded": "",
-      "stdout": "/home/ksoto/slurm-%j.out",
+      "stdout": "/home/ccollins/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
-          "CANCELLED"
+          "COMPLETED"
         ],
         "reason": "None"
       },
       "steps": [
         {
           "time": {
-            "elapsed": 3,
+            "elapsed": 2,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1747763005
+              "number": 1780143152
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1747763002
+              "number": 1780143150
             },
             "suspended": 0,
             "system": {
@@ -192,27 +192,27 @@
           },
           "exit_code": {
             "status": [
-              "SIGNALED"
+              "SUCCESS"
             ],
             "return_code": {
-              "set": false,
+              "set": true,
               "infinite": false,
               "number": 0
             },
             "signal": {
               "id": {
-                "set": true,
+                "set": false,
                 "infinite": false,
-                "number": 15
+                "number": 0
               },
-              "name": "TERM"
+              "name": ""
             }
           },
           "nodes": {
             "count": 1,
-            "range": "ia1",
+            "range": "cn1",
             "list": [
-              "ia1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -236,7 +236,7 @@
           },
           "kill_request_user": "",
           "state": [
-            "CANCELLED"
+            "COMPLETED"
           ],
           "statistics": {
             "CPU": {
@@ -251,7 +251,7 @@
             }
           },
           "step": {
-            "id": "52.batch",
+            "id": "14322.batch",
             "name": "batch"
           },
           "task": {
@@ -293,7 +293,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 30 && true --partition ia --gpus 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -355,12 +355,12 @@
         ]
       },
       "used_gres": "",
-      "user": "ksoto",
+      "user": "ccollins",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/ksoto"
+      "working_directory": "/home/ccollins"
     }
   ],
   "meta": {
@@ -379,10 +379,10 @@
     "slurm": {
       "version": {
         "major": "25",
-        "micro": "0",
+        "micro": "4",
         "minor": "05"
       },
-      "release": "25.05.0-0rc1",
+      "release": "25.05.4",
       "cluster": "hpc"
     }
   },

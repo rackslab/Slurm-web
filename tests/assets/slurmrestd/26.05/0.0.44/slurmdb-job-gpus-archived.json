@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "admin",
+      "account": "acoustic",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 9
+        "id": 15
       },
       "block": "",
       "cluster": "hpc",
@@ -55,15 +55,15 @@
       },
       "time": {
         "elapsed": 30,
-        "eligible": 1778605953,
-        "end": 1778605984,
+        "eligible": 1780136670,
+        "end": 1780136701,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1778605954,
-        "submission": 1778605953,
+        "start": 1780136671,
+        "submission": 1780136670,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -116,19 +116,19 @@
           "number": 0
         }
       },
-      "job_id": 160,
+      "job_id": 5214,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
+      "nodes": "gpu4",
       "partition": "gpu",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 909
+        "number": 90
       },
       "qos": "normal",
       "qosreq": "",
@@ -155,7 +155,7 @@
       "script": "",
       "segment_size": 0,
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jli/slurm-160.out",
+      "stdout_expanded": "/home/madams/slurm-5214.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,12 +173,12 @@
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778605984
+              "number": 1780136701
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778605954
+              "number": 1780136671
             },
             "suspended": 0,
             "system": {
@@ -219,9 +219,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "gpu4",
             "list": [
-              "gpu1"
+              "gpu4"
             ]
           },
           "tasks": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "160.batch",
+            "id": "5214.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -303,6 +303,12 @@
                 "name": "",
                 "id": 4,
                 "count": 1
+              },
+              {
+                "type": "gres",
+                "name": "gpu",
+                "id": 1001,
+                "count": 4
               }
             ]
           }
@@ -340,6 +346,12 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ],
         "requested": [
@@ -366,16 +378,22 @@
             "name": "",
             "id": 5,
             "count": 1
+          },
+          {
+            "type": "gres",
+            "name": "gpu",
+            "id": 1001,
+            "count": 4
           }
         ]
       },
       "used_gres": "",
-      "user": "jli",
+      "user": "madams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jli"
+      "working_directory": "/home/madams"
     }
   ],
   "meta": {

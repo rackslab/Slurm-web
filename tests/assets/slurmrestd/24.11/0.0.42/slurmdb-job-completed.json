@@ -28,7 +28,7 @@
         "account": "biology",
         "cluster": "hpc",
         "partition": "",
-        "user": "jbeck",
+        "user": "mwilliams",
         "id": 12
       },
       "block": "",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 61,
-        "eligible": 1762788774,
-        "end": 1762788837,
+        "elapsed": 1,
+        "eligible": 1780300450,
+        "end": 1780300452,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
-        "start": 1762788776,
-        "submission": 1762788774,
+        "start": 1780300451,
+        "submission": 1780300450,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -72,7 +72,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 2
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -107,7 +107,7 @@
         "STARTED_ON_SCHEDULE",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,24 +116,24 @@
           "number": 0
         }
       },
-      "job_id": 6362,
-      "name": "wrap",
+      "job_id": 9745,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "cn1",
+      "nodes": "cn3",
       "partition": "standard",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 727
       },
       "qos": "normal",
       "qosreq": "",
       "required": {
-        "CPUs": 32,
+        "CPUs": 1,
         "memory_per_cpu": {
           "set": true,
           "infinite": false,
@@ -152,12 +152,12 @@
         "name": ""
       },
       "script": "",
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/jbeck/slurm-6362.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/mwilliams/slurm-9745.out",
       "stderr_expanded": "",
-      "stdout": "/home/jbeck/slurm-%j.out",
+      "stdout": "/home/mwilliams/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "COMPLETED"
@@ -167,16 +167,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 61,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762788837
+              "number": 1780300452
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788776
+              "number": 1780300451
             },
             "suspended": 0,
             "system": {
@@ -212,9 +212,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "cn1",
+            "range": "cn3",
             "list": [
-              "cn1"
+              "cn3"
             ]
           },
           "tasks": {
@@ -253,7 +253,7 @@
             }
           },
           "step": {
-            "id": "6362.batch",
+            "id": "9745.batch",
             "name": "batch"
           },
           "task": {
@@ -277,13 +277,13 @@
                 "type": "cpu",
                 "name": "",
                 "id": 1,
-                "count": 32
+                "count": 1
               },
               {
                 "type": "mem",
                 "name": "",
                 "id": 2,
-                "count": 16384
+                "count": 512
               },
               {
                 "type": "node",
@@ -295,20 +295,20 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 2 --wrap sleep 60 && true --ntasks 32",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 32
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16384
+            "count": 512
           },
           {
             "type": "energy",
@@ -326,7 +326,7 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 32
+            "count": 1
           }
         ],
         "requested": [
@@ -334,13 +334,13 @@
             "type": "cpu",
             "name": "",
             "id": 1,
-            "count": 32
+            "count": 1
           },
           {
             "type": "mem",
             "name": "",
             "id": 2,
-            "count": 16384
+            "count": 512
           },
           {
             "type": "node",
@@ -352,17 +352,17 @@
             "type": "billing",
             "name": "",
             "id": 5,
-            "count": 32
+            "count": 1
           }
         ]
       },
       "used_gres": "",
-      "user": "jbeck",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jbeck"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -381,10 +381,10 @@
     "slurm": {
       "version": {
         "major": "24",
-        "micro": "5",
+        "micro": "7",
         "minor": "11"
       },
-      "release": "24.11.5",
+      "release": "24.11.7",
       "cluster": "hpc"
     }
   },

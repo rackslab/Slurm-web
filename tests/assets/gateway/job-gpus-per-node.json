@@ -1,13 +1,13 @@
 {
   "accrue_time": {
     "infinite": false,
-    "number": 1779131415,
+    "number": 1780139581,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 12,
+    "id": 18,
     "partition": "",
     "user": ""
   },
@@ -23,7 +23,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/mwilliams",
+  "current_working_directory": "/home/jhayes",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -67,7 +67,7 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1779131416,
+    "number": 1780139582,
     "set": true
   },
   "name": "allocation",
@@ -80,7 +80,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 363,
+    "number": 454,
     "set": true
   },
   "qos": "normal",
@@ -99,7 +99,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/mwilliams/slurm-1177.out",
+  "stdout_expanded": "/home/jhayes/slurm-5454.out",
   "steps": [
     {
       "CPU": {
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "1177.batch",
+        "id": "5454.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -190,7 +190,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131416,
+          "number": 1780139582,
           "set": true
         },
         "suspended": 0,
@@ -226,6 +226,18 @@
             "id": 4,
             "name": "",
             "type": "node"
+          },
+          {
+            "count": 1,
+            "id": 1001,
+            "name": "gpu",
+            "type": "gres"
+          },
+          {
+            "count": 1,
+            "id": 1002,
+            "name": "gpu:h100",
+            "type": "gres"
           }
         ],
         "consumed": {
@@ -251,11 +263,11 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1779131415,
+    "eligible": 1780139581,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
@@ -263,8 +275,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1779131416,
-    "submission": 1779131415,
+    "start": 1780139582,
+    "submission": 1780139581,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -310,6 +322,18 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 2,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
+      },
+      {
+        "count": 2,
+        "id": 1002,
+        "name": "gpu:h100",
+        "type": "gres"
       }
     ],
     "requested": [
@@ -336,6 +360,12 @@
         "id": 5,
         "name": "",
         "type": "billing"
+      },
+      {
+        "count": 2,
+        "id": 1001,
+        "name": "gpu",
+        "type": "gres"
       }
     ]
   },
@@ -343,12 +373,11 @@
   "tres_per_node": "gres/gpu:1",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=2,mem=1G,node=2,billing=2",
-  "used_gres": "",
-  "user": "mwilliams",
+  "tres_req_str": "cpu=2,mem=1G,node=2,billing=2,gres/gpu=2",
+  "user": "jhayes",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/mwilliams"
+  "working_directory": "/home/jhayes"
 }

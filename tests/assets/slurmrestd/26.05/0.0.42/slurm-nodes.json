@@ -7,17 +7,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 0,
+      "cpu_load": 64,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 992
+        "number": 911
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -48,7 +48,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176366
+        "number": 1780305334
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -59,7 +59,7 @@
       "address": "cn1",
       "hostname": "cn1",
       "state": [
-        "DOWN"
+        "ALLOCATED"
       ],
       "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
       "owner": "",
@@ -70,35 +70,35 @@
       "real_memory": 131072,
       "res_cores_per_gpu": 0,
       "comment": "",
-      "reason": "CPU dead",
+      "reason": "",
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 1779176598
+        "number": 0
       },
-      "reason_set_by_user": "slurm",
+      "reason_set_by_user": "",
       "resume_after": {
         "set": true,
         "infinite": false,
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
+      "alloc_memory": 32768,
+      "alloc_cpus": 64,
+      "alloc_idle_cpus": 0,
+      "tres_used": "cpu=64,mem=32G",
       "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602934
+        "number": 1780255955
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "26.05.0-0rc1"
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -107,17 +107,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 329,
+      "cpu_load": 64,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 992
+        "number": 972
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -148,7 +148,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176366
+        "number": 1780305274
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -175,7 +175,7 @@
       "reason_changed_at": {
         "set": true,
         "infinite": false,
-        "number": 1779176598
+        "number": 1780305361
       },
       "reason_set_by_user": "slurm",
       "resume_after": {
@@ -192,14 +192,14 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602934
+        "number": 1780255955
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "26.05.0-0rc1"
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -208,17 +208,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 32,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 319,
+      "cpu_load": 0,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 1011
+        "number": 964
       },
       "cpus": 64,
       "effective_cpus": 64,
@@ -249,7 +249,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176275
+        "number": 1780305226
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -259,6 +259,106 @@
       ],
       "address": "cn3",
       "hostname": "cn3",
+      "state": [
+        "DOWN"
+      ],
+      "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
+      "owner": "",
+      "partitions": [
+        "normal"
+      ],
+      "port": 6818,
+      "real_memory": 131072,
+      "res_cores_per_gpu": 0,
+      "comment": "",
+      "reason": "CPU dead",
+      "reason_changed_at": {
+        "set": true,
+        "infinite": false,
+        "number": 1780305361
+      },
+      "reason_set_by_user": "slurm",
+      "resume_after": {
+        "set": true,
+        "infinite": false,
+        "number": 0
+      },
+      "reservation": "",
+      "alloc_memory": 0,
+      "alloc_cpus": 0,
+      "alloc_idle_cpus": 64,
+      "tres_used": "",
+      "tres_weighted": 0.0,
+      "slurmd_start_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1780255955
+      },
+      "sockets": 2,
+      "threads": 1,
+      "temporary_disk": 0,
+      "weight": 1,
+      "tres": "cpu=64,mem=128G,billing=64",
+      "version": "26.05.0"
+    },
+    {
+      "architecture": "x86_64",
+      "burstbuffer_network_address": "",
+      "boards": 1,
+      "boot_time": {
+        "set": true,
+        "infinite": false,
+        "number": 1779954835
+      },
+      "cluster_name": "",
+      "cores": 32,
+      "specialized_cores": 0,
+      "cpu_binding": 0,
+      "cpu_load": 64,
+      "free_mem": {
+        "set": true,
+        "infinite": false,
+        "number": 911
+      },
+      "cpus": 64,
+      "effective_cpus": 64,
+      "specialized_cpus": "",
+      "energy": {
+        "average_watts": 0,
+        "base_consumed_energy": 0,
+        "consumed_energy": 0,
+        "current_watts": {
+          "set": true,
+          "infinite": false,
+          "number": 0
+        },
+        "previous_consumed_energy": 0,
+        "last_collected": 0
+      },
+      "external_sensors": {},
+      "extra": "",
+      "power": {},
+      "features": [],
+      "active_features": [],
+      "gpu_spec": "",
+      "gres": "",
+      "gres_drained": "N/A",
+      "gres_used": "",
+      "instance_id": "",
+      "instance_type": "",
+      "last_busy": {
+        "set": true,
+        "infinite": false,
+        "number": 1780305220
+      },
+      "mcs_label": "",
+      "specialized_memory": 0,
+      "name": "cn4",
+      "next_state_after_reboot": [
+        "INVALID"
+      ],
+      "address": "cn4",
+      "hostname": "cn4",
       "state": [
         "MIXED"
       ],
@@ -284,22 +384,22 @@
         "number": 0
       },
       "reservation": "",
-      "alloc_memory": 21504,
-      "alloc_cpus": 42,
-      "alloc_idle_cpus": 22,
-      "tres_used": "cpu=42,mem=21G",
+      "alloc_memory": 22528,
+      "alloc_cpus": 44,
+      "alloc_idle_cpus": 20,
+      "tres_used": "cpu=44,mem=22G",
       "tres_weighted": 0.0,
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602934
+        "number": 1780255955
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
       "tres": "cpu=64,mem=128G,billing=64",
-      "version": "26.05.0-0rc1"
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -308,117 +408,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
-      },
-      "cluster_name": "",
-      "cores": 32,
-      "specialized_cores": 0,
-      "cpu_binding": 0,
-      "cpu_load": 319,
-      "free_mem": {
-        "set": true,
-        "infinite": false,
-        "number": 1011
-      },
-      "cpus": 64,
-      "effective_cpus": 64,
-      "specialized_cpus": "",
-      "energy": {
-        "average_watts": 0,
-        "base_consumed_energy": 0,
-        "consumed_energy": 0,
-        "current_watts": {
-          "set": true,
-          "infinite": false,
-          "number": 0
-        },
-        "previous_consumed_energy": 0,
-        "last_collected": 0
-      },
-      "external_sensors": {},
-      "extra": "",
-      "power": {},
-      "features": [],
-      "active_features": [],
-      "gpu_spec": "",
-      "gres": "",
-      "gres_drained": "N/A",
-      "gres_used": "",
-      "instance_id": "",
-      "instance_type": "",
-      "last_busy": {
-        "set": true,
-        "infinite": false,
-        "number": 1779176343
-      },
-      "mcs_label": "",
-      "specialized_memory": 0,
-      "name": "cn4",
-      "next_state_after_reboot": [
-        "INVALID"
-      ],
-      "address": "cn4",
-      "hostname": "cn4",
-      "state": [
-        "IDLE"
-      ],
-      "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
-      "owner": "",
-      "partitions": [
-        "normal"
-      ],
-      "port": 6818,
-      "real_memory": 131072,
-      "res_cores_per_gpu": 0,
-      "comment": "",
-      "reason": "",
-      "reason_changed_at": {
-        "set": true,
-        "infinite": false,
-        "number": 0
-      },
-      "reason_set_by_user": "",
-      "resume_after": {
-        "set": true,
-        "infinite": false,
-        "number": 0
-      },
-      "reservation": "",
-      "alloc_memory": 0,
-      "alloc_cpus": 0,
-      "alloc_idle_cpus": 64,
-      "tres_used": "",
-      "tres_weighted": 0.0,
-      "slurmd_start_time": {
-        "set": true,
-        "infinite": false,
-        "number": 1778602934
-      },
-      "sockets": 2,
-      "threads": 1,
-      "temporary_disk": 0,
-      "weight": 1,
-      "tres": "cpu=64,mem=128G,billing=64",
-      "version": "26.05.0-0rc1"
-    },
-    {
-      "architecture": "x86_64",
-      "burstbuffer_network_address": "",
-      "boards": 1,
-      "boot_time": {
-        "set": true,
-        "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 329,
+      "cpu_load": 62,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 992
+        "number": 957
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -449,7 +449,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176578
+        "number": 1780305362
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -492,14 +492,14 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602934
+        "number": 1780255955
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=32,mem=512G,billing=32",
-      "version": "26.05.0-0rc1"
+      "tres": "cpu=32,mem=512G,billing=32,gres/gpu=4,gres/gpu:h100=4",
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -508,17 +508,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 319,
+      "cpu_load": 62,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 1011
+        "number": 957
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -549,7 +549,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779131423
+        "number": 1780305304
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -592,14 +592,14 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602936
+        "number": 1780255956
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=32,mem=512G,billing=32",
-      "version": "26.05.0-0rc1"
+      "tres": "cpu=32,mem=512G,billing=32,gres/gpu=4,gres/gpu:h100=4",
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -608,17 +608,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 329,
+      "cpu_load": 62,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 992
+        "number": 957
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -649,7 +649,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779176598
+        "number": 1780305243
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -660,8 +660,7 @@
       "address": "gpu3",
       "hostname": "gpu3",
       "state": [
-        "IDLE",
-        "COMPLETING"
+        "IDLE"
       ],
       "operating_system": "Linux 6.12.74+deb13+1-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.74-2 (2026-03-08)",
       "owner": "",
@@ -693,14 +692,14 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602936
+        "number": 1780255956
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=32,mem=512G,billing=32",
-      "version": "26.05.0-0rc1"
+      "tres": "cpu=32,mem=512G,billing=32,gres/gpu=4",
+      "version": "26.05.0"
     },
     {
       "architecture": "x86_64",
@@ -709,17 +708,17 @@
       "boot_time": {
         "set": true,
         "infinite": false,
-        "number": 1776887518
+        "number": 1779954835
       },
       "cluster_name": "",
       "cores": 16,
       "specialized_cores": 0,
       "cpu_binding": 0,
-      "cpu_load": 319,
+      "cpu_load": 62,
       "free_mem": {
         "set": true,
         "infinite": false,
-        "number": 1011
+        "number": 964
       },
       "cpus": 32,
       "effective_cpus": 32,
@@ -750,7 +749,7 @@
       "last_busy": {
         "set": true,
         "infinite": false,
-        "number": 1779131450
+        "number": 1780302645
       },
       "mcs_label": "",
       "specialized_memory": 0,
@@ -793,20 +792,20 @@
       "slurmd_start_time": {
         "set": true,
         "infinite": false,
-        "number": 1778602936
+        "number": 1780255956
       },
       "sockets": 2,
       "threads": 1,
       "temporary_disk": 0,
       "weight": 1,
-      "tres": "cpu=32,mem=512G,billing=32",
-      "version": "26.05.0-0rc1"
+      "tres": "cpu=32,mem=512G,billing=32,gres/gpu=4",
+      "version": "26.05.0"
     }
   ],
   "last_update": {
     "set": true,
     "infinite": false,
-    "number": 1779176599
+    "number": 1780305363
   },
   "meta": {
     "plugin": {
@@ -816,7 +815,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:9)",
+      "source": "192.168.170.114:6820(fd:9)",
       "user": "root",
       "group": "root"
     },
@@ -827,7 +826,7 @@
         "micro": "0",
         "minor": "05"
       },
-      "release": "26.05.0-0rc1",
+      "release": "26.05.0",
       "cluster": "hpc"
     }
   },

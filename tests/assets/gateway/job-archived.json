@@ -2,7 +2,7 @@
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 11,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -53,7 +53,7 @@
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 363,
+    "number": 636,
     "set": true
   },
   "qos": "normal",
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "1161.batch",
+        "id": "5522.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -141,10 +141,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 2,
+        "elapsed": 1,
         "end": {
           "infinite": false,
-          "number": 1779131022,
+          "number": 1780140257,
           "set": true
         },
         "limit": {
@@ -154,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1779131020,
+          "number": 1780140256,
           "set": true
         },
         "suspended": 0,
@@ -209,12 +209,12 @@
   ],
   "submit_line": "",
   "time": {
-    "elapsed": 2,
-    "eligible": 1779131019,
-    "end": 1779131022,
+    "elapsed": 1,
+    "eligible": 1780140255,
+    "end": 1780140257,
     "limit": {
       "infinite": false,
-      "number": 60,
+      "number": 1,
       "set": true
     },
     "planned": {
@@ -222,8 +222,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1779131020,
-    "submission": 1779131019,
+    "start": 1780140256,
+    "submission": 1780140255,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -298,11 +298,10 @@
       }
     ]
   },
-  "used_gres": "",
-  "user": "jrasmussen",
+  "user": "rpowers",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jrasmussen"
+  "working_directory": "/home/rpowers"
 }

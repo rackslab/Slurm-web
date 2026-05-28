@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "biology",
+      "account": "admin",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,7 +29,7 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 10
+        "id": 9
       },
       "block": "",
       "cluster": "hpc",
@@ -54,16 +54,16 @@
         }
       },
       "time": {
-        "elapsed": 2,
-        "eligible": 1762788998,
-        "end": 1762789001,
+        "elapsed": 1,
+        "eligible": 1780301270,
+        "end": 1780301271,
         "planned": {
           "set": true,
           "infinite": false,
-          "number": 1
+          "number": 0
         },
-        "start": 1762788999,
-        "submission": 1762788998,
+        "start": 1780301270,
+        "submission": 1780301270,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -104,10 +104,10 @@
       "extra": "",
       "failed_node": "",
       "flags": [
-        "STARTED_ON_SCHEDULE",
+        "STARTED_ON_BACKFILL",
         "START_RECEIVED"
       ],
-      "group": "scientists",
+      "group": "slurm",
       "het": {
         "job_id": 0,
         "job_offset": {
@@ -116,8 +116,8 @@
           "number": 0
         }
       },
-      "job_id": 4732,
-      "name": "wrap",
+      "job_id": 15009,
+      "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
@@ -128,7 +128,7 @@
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 909
       },
       "qos": "normal",
       "qosreq": "",
@@ -154,12 +154,12 @@
       },
       "script": "",
       "segment_size": 0,
-      "stdin_expanded": "/dev/null",
-      "stdout_expanded": "/home/progers/slurm-4732.out",
+      "stdin_expanded": "",
+      "stdout_expanded": "/home/jli/slurm-15009.out",
       "stderr_expanded": "",
-      "stdout": "/home/progers/slurm-%j.out",
+      "stdout": "/home/jli/slurm-%j.out",
       "stderr": "",
-      "stdin": "/dev/null",
+      "stdin": "",
       "state": {
         "current": [
           "FAILED"
@@ -169,16 +169,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 2,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1762789001
+              "number": 1780301271
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1762788999
+              "number": 1780301270
             },
             "suspended": 0,
             "system": {
@@ -260,7 +260,7 @@
             }
           },
           "step": {
-            "id": "4732.batch",
+            "id": "15009.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -308,7 +308,7 @@
           }
         }
       ],
-      "submit_line": "sbatch --time 1 --wrap sleep 1 && false --ntasks 1",
+      "submit_line": "",
       "tres": {
         "allocated": [
           {
@@ -370,12 +370,12 @@
         ]
       },
       "used_gres": "",
-      "user": "progers",
+      "user": "jli",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/progers"
+      "working_directory": "/home/jli"
     }
   ],
   "meta": {
@@ -386,7 +386,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:49)",
+      "source": "admin:6820(fd:9)",
       "user": "",
       "group": ""
     },

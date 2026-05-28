@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "account": "optic",
+      "account": "biology",
       "comment": {
         "administrator": "",
         "job": "",
@@ -29,13 +29,13 @@
         "cluster": "hpc",
         "partition": "",
         "user": "",
-        "id": 18
+        "id": 12
       },
       "block": "",
       "cluster": "hpc",
       "constraints": "",
       "container": "",
-      "sluid": "s88DKREHK9XX00",
+      "sluid": "s88DKSWE28P200",
       "derived_exit_code": {
         "status": [
           "SUCCESS"
@@ -55,16 +55,16 @@
         }
       },
       "time": {
-        "elapsed": 30,
-        "eligible": 1778604644,
-        "end": 1778604675,
+        "elapsed": 1,
+        "eligible": 1780144443,
+        "end": 1780144445,
         "planned": {
           "set": true,
           "infinite": false,
           "number": 1
         },
-        "start": 1778604645,
-        "submission": 1778604644,
+        "start": 1780144444,
+        "submission": 1780144443,
         "suspended": 0,
         "system": {
           "seconds": 0,
@@ -73,7 +73,7 @@
         "limit": {
           "set": true,
           "infinite": false,
-          "number": 60
+          "number": 1
         },
         "total": {
           "seconds": 0,
@@ -118,20 +118,20 @@
           "number": 0
         }
       },
-      "job_id": 71,
+      "job_id": 5537,
       "name": "allocation",
       "licenses": "",
       "mcs": {
         "label": ""
       },
-      "nodes": "gpu1",
+      "nodes": "cn1",
       "oversubscribe": "NO",
-      "partition": "gpu",
+      "partition": "normal",
       "hold": false,
       "priority": {
         "set": true,
         "infinite": false,
-        "number": 545
+        "number": 818
       },
       "qos": "normal",
       "qosreq": "",
@@ -157,9 +157,9 @@
       },
       "script": "",
       "segment_size": 0,
-      "original_sluid": "s88DKREHK9XX00",
+      "original_sluid": "s88DKSWE28P200",
       "stdin_expanded": "",
-      "stdout_expanded": "/home/jhayes/slurm-71.out",
+      "stdout_expanded": "/home/mwilliams/slurm-5537.out",
       "stderr_expanded": "",
       "stdout": "slurm-%j.out",
       "stderr": "",
@@ -173,16 +173,16 @@
       "steps": [
         {
           "time": {
-            "elapsed": 30,
+            "elapsed": 1,
             "end": {
               "set": true,
               "infinite": false,
-              "number": 1778604675
+              "number": 1780144445
             },
             "start": {
               "set": true,
               "infinite": false,
-              "number": 1778604645
+              "number": 1780144444
             },
             "suspended": 0,
             "system": {
@@ -223,9 +223,9 @@
           },
           "nodes": {
             "count": 1,
-            "range": "gpu1",
+            "range": "cn1",
             "list": [
-              "gpu1"
+              "cn1"
             ]
           },
           "tasks": {
@@ -264,7 +264,7 @@
             }
           },
           "step": {
-            "id": "71.batch",
+            "id": "5537.batch",
             "name": "batch",
             "stderr": "",
             "stdin": "",
@@ -375,12 +375,12 @@
         ]
       },
       "used_gres": "",
-      "user": "jhayes",
+      "user": "mwilliams",
       "wckey": {
         "wckey": "",
         "flags": []
       },
-      "working_directory": "/home/jhayes"
+      "working_directory": "/home/mwilliams"
     }
   ],
   "meta": {
@@ -391,7 +391,7 @@
       "accounting_storage": "accounting_storage/slurmdbd"
     },
     "client": {
-      "source": "admin:6820(fd:9)",
+      "source": "admin:6820(fd:44)",
       "user": "nobody",
       "group": ""
     },
