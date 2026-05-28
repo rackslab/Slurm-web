@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce new `[oidc]` section in gateway configuration.
   - Introduce new `color_*`, `logo_*` and `favicon` parameters in `[ui]` section
     of gateway configuration.
+  - Introduce _jobs-view-past_ action in authorization polic.
+  - Assign _jobs-view-past_ permission to all authenticated users in default
+    policy.
 
 ### Changed
 - gateway: Add user login in LDAP successful authentication JSON response, for
