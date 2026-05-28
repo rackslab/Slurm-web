@@ -94,7 +94,14 @@ class Slurmrestd:
             )
 
     def _execute_request(
-        self, component: str, api_version: str, endpoint: str, ignore_notfound=False
+        self,
+        component: str,
+        api_version: str,
+        endpoint: str,
+        ignore_notfound=False,
+        params: t.Optional[
+            t.Union[t.Dict[str, str], t.Sequence[t.Tuple[str, str]]]
+        ] = None,
     ) -> dict:
         """Execute HTTP request to slurmrestd API with provided API version and return
         parsed JSON result.
@@ -104,6 +111,8 @@ class Slurmrestd:
             api_version: API version to use
             endpoint: API endpoint path (e.g., "ping", "jobs", "job/123")
             ignore_notfound: If True, don't raise error on HTTP 404
+            params: Query string parameters as a dict or sequence of pairs (for
+                repeated keys such as ``state=COMPLETED&state=FAILED``).
 
         Returns:
             Parsed JSON response as a dictionary
@@ -113,7 +122,9 @@ class Slurmrestd:
 
         try:
             response = self.session.get(
-                f"{self.prefix}{query}", headers=self.auth.headers()
+                f"{self.prefix}{query}",
+                headers=self.auth.headers(),
+                params=params,
             )
         except requests.exceptions.ConnectionError as err:
             raise SlurmrestConnectionError(str(err))
@@ -141,7 +152,16 @@ class Slurmrestd:
             )
         return result
 
-    def _request(self, component: str, endpoint: str, key: str, ignore_notfound=False):
+    def _request(
+        self,
+        component: str,
+        endpoint: str,
+        key: str,
+        ignore_notfound=False,
+        params: t.Optional[
+            t.Union[t.Dict[str, str], t.Sequence[t.Tuple[str, str]]]
+        ] = None,
+    ):
         """Make a request to slurmrestd API with detected API version.
 
         Args:
@@ -149,13 +169,14 @@ class Slurmrestd:
             endpoint: API endpoint path (e.g., "ping", "jobs", "job/123")
             key: Key to extract from response JSON
             ignore_notfound: If True, don't raise error on HTTP 404
+            params: Optional query string parameters (dict or list of pairs)
         """
         # Ensure API version is discovered before making request
         if self.api_version is None:
             self.discover()
 
         result = self._execute_request(
-            component, self.api_version, endpoint, ignore_notfound
+            component, self.api_version, endpoint, ignore_notfound, params=params
         )
         return result[key]
 
@@ -430,9 +451,20 @@ class SlurmrestdAdapter(Slurmrestd):
 
         return result
 
-    def _request(self, component: str, endpoint: str, key: str, ignore_notfound=False):
+    def _request(
+        self,
+        component: str,
+        endpoint: str,
+        key: str,
+        ignore_notfound=False,
+        params: t.Optional[
+            t.Union[t.Dict[str, str], t.Sequence[t.Tuple[str, str]]]
+        ] = None,
+    ):
         """Make request and adapt response data under the key if needed."""
-        result = super()._request(component, endpoint, key, ignore_notfound)
+        result = super()._request(
+            component, endpoint, key, ignore_notfound, params=params
+        )
 
         # Apply adaptation chain to data under the key, passing component
         # for differentiation between slurmctld and slurmdbd jobs
