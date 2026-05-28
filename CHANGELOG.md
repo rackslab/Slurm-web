@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - gateway:
   - Add support for SSO authentication with OpenID Connect (#268).
   - Add support for branding of UI with custom colors, logos and favicon (#287).
+  - Add route to reverse-proxy `/jobs/past` to agents.
 - agent: Add route `/jobs/past` to query last terminated jobs from Slurm
   accounting service.
 - front:
@@ -61,8 +62,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     list of past jobs from SlurmDBD accounting service.
 
 ### Changed
-- gateway: Add user login in LDAP successful authentication JSON response, for
-  consistency with OIDC authentication response format.
+- gateway:
+  - Add user login in LDAP successful authentication JSON response, for
+    consistency with OIDC authentication response format.
+  - Expose `slurmdbd.jobs_max_hours` agent setting in `/clusters` endpoint for
+    frontend.
 - agent:
   - Filter only actives jobs (ie. not terminated) in response of `/jobs`
     route.

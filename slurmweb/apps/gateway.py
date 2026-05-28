@@ -46,6 +46,10 @@ SlurmwebAgentRacksDBSettings = collections.namedtuple(
     "SlurmwebAgentRacksDBSettings", ["enabled", "version", "infrastructure"]
 )
 
+SlurmwebAgentSlurmdbdSettings = collections.namedtuple(
+    "SlurmwebAgentSlurmdbdSettings", ["jobs_max_hours"]
+)
+
 
 class SlurmwebAgent:
     def __init__(
@@ -55,6 +59,7 @@ class SlurmwebAgent:
         racksdb: SlurmwebAgentRacksDBSettings,
         metrics: bool,
         cache: bool,
+        slurmdbd: SlurmwebAgentSlurmdbdSettings,
         url: str,
     ):
         self.version = version
@@ -62,6 +67,7 @@ class SlurmwebAgent:
         self.metrics = metrics
         self.cache = cache
         self.racksdb = racksdb
+        self.slurmdbd = slurmdbd
         self.url = url
 
     @classmethod
@@ -73,6 +79,7 @@ class SlurmwebAgent:
                 SlurmwebAgentRacksDBSettings(**data["racksdb"]),
                 data["metrics"],
                 data["cache"],
+                SlurmwebAgentSlurmdbdSettings(**data["slurmdbd"]),
                 url,
             )
         except KeyError as err:
@@ -130,6 +137,7 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
             "/api/agents/<cluster>/cache/reset", views.cache_reset, methods=["POST"]
         ),
         SlurmwebAppRoute("/api/agents/<cluster>/jobs", views.jobs),
+        SlurmwebAppRoute("/api/agents/<cluster>/jobs/past", views.jobs_past),
         SlurmwebAppRoute("/api/agents/<cluster>/job/<int:job>", views.job),
         SlurmwebAppRoute("/api/agents/<cluster>/nodes", views.nodes),
         SlurmwebAppRoute("/api/agents/<cluster>/node/<name>", views.node),
