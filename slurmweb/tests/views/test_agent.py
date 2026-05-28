@@ -18,6 +18,8 @@ from slurmweb.slurmrestd.errors import (
 from slurmweb.cache import CachingService
 from slurmweb.views.agent import racksdb_get_version
 
+from slurmweb.slurmrestd import TERMINAL_JOB_STATES
+
 from ..lib.agent import TestAgentBase
 from ..lib.utils import all_slurm_api_versions, flask_404_description
 
@@ -39,7 +41,7 @@ class TestAgentViews(TestAgentBase):
         response = self.client.get("/info")
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
-        self.assertEqual(len(response.json.keys()), 5)
+        self.assertEqual(len(response.json.keys()), 6)
         self.assertIn("cluster", response.json)
         self.assertEqual(response.json["cluster"], "test")
         self.assertIn("racksdb", response.json)
@@ -55,6 +57,8 @@ class TestAgentViews(TestAgentBase):
         self.assertIn("version", response.json)
         self.assertIsInstance(response.json["version"], str)
         self.assertEqual(response.json["version"], get_version())
+        self.assertIn("slurmdbd", response.json)
+        self.assertEqual(response.json["slurmdbd"]["jobs_max_hours"], 168)
 
     #
     # General error cases
@@ -170,9 +174,48 @@ class TestAgentViews(TestAgentBase):
         response = self.client.get(f"/v{get_version()}/jobs")
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, list)
-        self.assertEqual(len(response.json), len(jobs_asset))
+        active_jobs_asset = [
+            job
+            for job in jobs_asset
+            if not any(state in TERMINAL_JOB_STATES for state in job["job_state"])
+        ]
+        self.assertGreater(
+            len(jobs_asset) - len(active_jobs_asset),
+            0,
+            "fixture must include terminal jobs to verify exclusion",
+        )
+        self.assertEqual(len(response.json), len(active_jobs_asset))
         for idx in range(len(response.json)):
-            self.assertEqual(response.json[idx]["job_id"], jobs_asset[idx]["job_id"])
+            self.assertEqual(
+                response.json[idx]["job_id"], active_jobs_asset[idx]["job_id"]
+            )
+            self.assertFalse(
+                any(
+                    state in TERMINAL_JOB_STATES
+                    for state in response.json[idx]["job_state"]
+                )
+            )
+
+    @all_slurm_api_versions
+    def test_request_jobs_past(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurmdb-jobs", "jobs")],
+        )
+        response = self.client.get(f"/v{get_version()}/jobs/past?hours=6")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, list)
+        self.assertGreater(len(response.json), 0)
+        for job in response.json:
+            for state in job.get("state", {}).get("current", []):
+                self.assertIn(state, TERMINAL_JOB_STATES)
+
+    def test_request_jobs_past_missing_hours(self):
+        self.setup_client()
+        response = self.client.get(f"/v{get_version()}/jobs/past")
+        self.assertEqual(response.status_code, 400)
 
     @all_slurm_api_versions
     def test_request_jobs_node(self, slurm_version, api_version):
@@ -184,16 +227,17 @@ class TestAgentViews(TestAgentBase):
         )
 
         def terminated(job):
-            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
-                if terminated_state in job["job_state"]:
-                    return True
-            return False
+            return any(
+                state in TERMINAL_JOB_STATES for state in job.get("job_state", [])
+            )
 
         # Select random busy node on cluster
         busy_nodes = NodeSet()
         for job in jobs_asset:
-            if not terminated(job):
+            if not terminated(job) and job["nodes"]:
                 busy_nodes.update(job["nodes"])
+        if not len(busy_nodes):
+            self.skipTest("No current jobs with allocated nodes in test asset")
         random_busy_node = random.choice(busy_nodes)
 
         response = self.client.get(f"/v{get_version()}/jobs?node={random_busy_node}")
@@ -206,7 +250,9 @@ class TestAgentViews(TestAgentBase):
 
         # Check all jobs are not completed and have the random busy node allocated.
         for job in response.json:
-            self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
+            self.assertFalse(
+                any(state in TERMINAL_JOB_STATES for state in job.get("job_state", []))
+            )
             self.assertIn(
                 random_busy_node,
                 NodeSet(job["nodes"]),

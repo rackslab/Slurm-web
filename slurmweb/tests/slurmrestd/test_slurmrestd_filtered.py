@@ -7,7 +7,8 @@
 import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
-from ..lib.utils import all_slurm_api_versions
+from slurmweb.slurmrestd import TERMINAL_JOB_STATES
+from ..lib.utils import SlurmwebAssetUnavailable, all_slurm_api_versions
 from ..lib.slurmrestd import (
     TestSlurmrestdBase,
     basic_authentifier,
@@ -164,3 +165,51 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             # Check arbitrary key has been filtered out.
             self.assertIn("usage_threshold", asset[idx])
             self.assertNotIn("usage_threshold", qos[idx])
+
+    @all_slurm_api_versions
+    def test_jobs_exclude_terminal(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
+        )
+        jobs = self.slurmrestd.jobs_current()
+        for job in jobs:
+            self.assertFalse(
+                any(state in TERMINAL_JOB_STATES for state in job.get("job_state", [])),
+                f"job {job['job_id']} should not be terminal",
+            )
+        terminal_in_asset = sum(
+            1
+            for job in asset
+            if any(state in TERMINAL_JOB_STATES for state in job.get("job_state", []))
+        )
+        self.assertGreater(terminal_in_asset, 0)
+
+    @all_slurm_api_versions
+    def test_past_jobs(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        try:
+            self.mock_slurmrestd_responses(
+                slurm_version,
+                api_version,
+                [("slurmdb-jobs", "jobs")],
+            )
+        except SlurmwebAssetUnavailable:
+            self.skipTest(
+                f"slurmdb-jobs asset missing for {slurm_version} API {api_version}"
+            )
+        result = self.slurmrestd.jobs_past(6)
+        self.assertGreater(len(result), 0)
+        job = result[0]
+        self.assertNotIn("steps", job)
+        self.assertNotIn("allocation_nodes", job)
+        self.assertIn("user", job)
+        self.assertIn("state", job)
+        self.assertIn("tres", job)
+        self.assertNotIn("used_gres", job)
+        self.assertNotIn("user_name", job)
+        for past_job in result:
+            for state in past_job.get("state", {}).get("current", []):
+                self.assertIn(state, TERMINAL_JOB_STATES)

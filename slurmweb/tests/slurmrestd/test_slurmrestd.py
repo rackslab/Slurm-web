@@ -11,7 +11,7 @@ import urllib
 import requests
 from ClusterShell.NodeSet import NodeSet
 
-from slurmweb.slurmrestd import Slurmrestd
+from slurmweb.slurmrestd import TERMINAL_JOB_STATES, Slurmrestd
 from slurmweb.slurmrestd.errors import (
     SlurmrestConnectionError,
     SlurmrestdAuthenticationError,
@@ -169,6 +169,26 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertCountEqual(jobs, asset)
 
     @all_slurm_api_versions
+    def test_jobs_current(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurm-jobs", "jobs")],
+        )
+
+        jobs = self.slurmrestd.jobs_current()
+        expected = [
+            job
+            for job in asset
+            if not any(
+                state in TERMINAL_JOB_STATES for state in job.get("job_state", [])
+            )
+        ]
+        self.assertCountEqual(jobs, expected)
+        self.assertLess(len(jobs), len(asset))
+
+    @all_slurm_api_versions
     def test_jobs_by_node(self, slurm_version, api_version):
         self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
@@ -177,17 +197,13 @@ class TestSlurmrestd(TestSlurmrestdBase):
             [("slurm-jobs", "jobs")],
         )
 
-        def terminated(job):
-            for terminated_state in ["COMPLETED", "FAILED", "TIMEOUT"]:
-                if terminated_state in job["job_state"]:
-                    return True
-            return False
-
         # Select random busy node on cluster
         busy_nodes = NodeSet()
-        for job in asset:
-            if not terminated(job):
+        for job in self.slurmrestd.jobs_current():
+            if job["nodes"]:
                 busy_nodes.update(job["nodes"])
+        if not len(busy_nodes):
+            self.skipTest("No current jobs with allocated nodes in test asset")
         random_busy_node = random.choice(busy_nodes)
 
         jobs = self.slurmrestd.jobs_by_node(random_busy_node)
@@ -197,9 +213,11 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertNotEqual(len(jobs), 0)
         self.assertLess(len(jobs), len(asset))
 
-        # Check all jobs are not completed and have the random busy node allocated.
+        # Check all jobs are active and have the random busy node allocated.
         for job in jobs:
-            self.assertNotIn(job["job_state"], ["COMPLETED", "FAILED", "TIMEOUT"])
+            self.assertFalse(
+                any(state in TERMINAL_JOB_STATES for state in job.get("job_state", []))
+            )
             self.assertIn(
                 random_busy_node,
                 NodeSet(job["nodes"]),
@@ -208,6 +226,33 @@ class TestSlurmrestd(TestSlurmrestdBase):
         # Test get jobs on nonexistent node.
         jobs = self.slurmrestd.jobs_by_node("fail")
         self.assertEqual(jobs, [])
+
+    @mock.patch("slurmweb.slurmrestd.time.time", return_value=1_700_000_000)
+    def test_past_jobs_query_params(self, mock_time):
+        params = Slurmrestd._past_jobs_query_params(6)
+        self.assertEqual(
+            params[:2],
+            [
+                ("start_time", "uts1699978400"),
+                ("end_time", "uts1700000000"),
+            ],
+        )
+        state_params = [(k, v) for k, v in params if k == "state"]
+        self.assertEqual(len(state_params), len(TERMINAL_JOB_STATES))
+        self.assertEqual([v for k, v in state_params], list(TERMINAL_JOB_STATES))
+
+    @mock.patch("slurmweb.slurmrestd.time.time", return_value=1_700_000_000)
+    def test_jobs_past_slurmdb_request(self, mock_time):
+        self.slurmrestd.api_version = LATEST_SUPPORTED_SLURMRESTD_API_VERSION
+        expected_params = Slurmrestd._past_jobs_query_params(3)
+        with mock.patch.object(
+            self.slurmrestd, "_request", return_value=[{"job_id": 1}]
+        ) as request:
+            result = self.slurmrestd.jobs_past(3)
+        self.assertEqual(result, [{"job_id": 1}])
+        request.assert_called_once_with(
+            "slurmdb", "jobs", "jobs", params=expected_params
+        )
 
     @all_slurm_api_versions
     def test_jobs_states(self, slurm_version, api_version):
