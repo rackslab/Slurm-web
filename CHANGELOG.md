@@ -51,6 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduce _jobs-view-past_ action in authorization polic.
   - Assign _jobs-view-past_ permission to all authenticated users in default
     policy.
+  - Introduce `[slurmdbd]` section for `jobs_max_hours` parameter in agent
+    configuration.
+  - Add `[filters]` > `jobs_dbd` agent setting with filtered fields for SlurmDBD
+    accounting service list of jobs.
+  - Add `[cache]` > `jobs_past` agent cache setting to control expiration of
+    list of past jobs from SlurmDBD accounting service.
 
 ### Changed
 - gateway: Add user login in LDAP successful authentication JSON response, for

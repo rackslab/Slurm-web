@@ -197,8 +197,25 @@ filters:
     - tres_per_task
     - user_name
     doc: |
-      List of jobs fields selected in slurmrestd API when retrieving a list of
-      jobs, all other fields arefiltered out.
+      List of slurmctld job fields kept when retrieving a list of current jobs
+      from controller, all other fields are filtered out.
+  jobs_dbd:
+    type: list
+    content: str
+    default:
+    - account
+    - job_id
+    - nodes
+    - partition
+    - priority
+    - qos
+    - state
+    - time
+    - tres
+    - user
+    doc: |
+      List of slurmdbd job fields kept when retrieving the past jobs list from
+      accounting, all other fields are filtered out before normalization.
   acctjob:
     type: list
     content: str
@@ -219,7 +236,6 @@ filters:
     - submit_line
     - time
     - tres
-    - used_gres
     - user
     - wckey
     - working_directory
@@ -499,6 +515,24 @@ cache:
     type: int
     default: 120
     doc: Expiration delay in seconds for associations in cache
+  jobs_past:
+    type: int
+    default: 60
+    doc: Expiration delay in seconds for past jobs list from slurmdbd in cache
+
+slurmdbd:
+  jobs_max_hours:
+    type: int
+    default: 168
+    doc: |
+      Maximum allowed hours query parameter for past jobs.
+
+      This parameter is used to configure the maximum past jobs time range in
+      hours offered to users in the web interface and accepted by the past jobs
+      API (`hours` query parameter on `/jobs/past`).
+
+      This limit is enforced by the agent to protect SlurmDBD accounting
+      service from overly large queries.
 
 metrics:
   enabled:
