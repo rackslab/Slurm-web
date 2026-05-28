@@ -65,13 +65,14 @@ class PrometheusCrawler(ComponentCrawler):
         headers: dict[str, str] | None = None,
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
+        params: dict[str, str] | None = None,
     ) -> requests.Response:
         """Get HTTP response from Prometheus."""
         if headers is None:
             headers = {}
         if method != "GET":
             raise RuntimeError(f"Unsupported request method {method} for Prometheus")
-        return requests.get(f"{self.url}{query}", headers=headers)
+        return requests.get(f"{self.url}{query}", headers=headers, params=params)
 
     def _crawl_nodes_hour(self):
         params = SlurmwebMetricsDB.METRICS_QUERY_PARAMS["nodes"]

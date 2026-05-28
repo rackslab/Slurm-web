@@ -22,6 +22,16 @@ if t.TYPE_CHECKING:
 
 
 from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
+from slurmweb.slurmrestd import Slurmrestd
+
+# Lookback for GET /slurmdb/.../jobs/ when building slurmdb-jobs.json assets.
+# Uses the same query shape as the agent: start_time, end_time, and one state=
+# per terminal state (not state=COMPLETED,FAILED — slurmrestd does not split CSV
+# on state; see Slurmrestd._past_jobs_query_params in slurmweb/slurmrestd/__init__.py).
+SLURMDB_JOBS_CRAWL_HOURS = 168
+
+# Query string for slurmrestd GET requests (dict or repeated keys as pairs).
+QueryParams = dict[str, str] | list[tuple[str, str]]
 
 
 logger = logging.getLogger(__name__)
@@ -77,8 +87,14 @@ class SlurmrestdCrawler(ComponentCrawler):
                     "slurm-job-timeout",
                     "slurm-job-archived",
                     "slurm-job-unfound",
+                    "slurmdb-jobs",
                 ],
                 self._crawl_jobs,
+            ),
+            Asset(
+                "slurmdb-jobs",
+                "slurmdb-jobs",
+                self._crawl_slurmdb_jobs,
             ),
             Asset(
                 "nodes",
@@ -207,13 +223,14 @@ class SlurmrestdCrawler(ComponentCrawler):
         headers: dict[str, str] | None = None,
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
+        params: QueryParams | None = None,
     ) -> requests.Response:
         """Get HTTP response from slurmrestd using cluster authentication."""
         if headers is None:
             headers = self.auth.headers()
         if method != "GET":
             raise RuntimeError(f"Unsupported request method {method} for slurmrestd")
-        return self.cluster.query_slurmrestd(query, headers)
+        return self.cluster.query_slurmrestd(query, headers, params=params)
 
     def _crawl_ping(self):
         # Download ping
@@ -330,6 +347,31 @@ class SlurmrestdCrawler(ComponentCrawler):
             f"/slurmdb/v{self.api_version}/job/{max_job_id * 2}",
             "slurmdb-job-unfound",
         )
+
+        self._crawl_slurmdb_jobs()
+
+    def _crawl_slurmdb_jobs(self):
+        """Download slurmdb-jobs.json: finished jobs in the crawl time window.
+
+        Query params come from Slurmrestd._past_jobs_query_params (list of pairs so
+        requests sends state=COMPLETED&state=FAILED&...). Slurmdbd filters with
+        time_end BETWEEN start_time AND end_time for each terminal state.
+        """
+        jobs = self.dump_component_query(
+            f"/slurmdb/v{self.api_version}/jobs",
+            "slurmdb-jobs",
+            skip_exist=False,
+            limit_dump=30,
+            limit_key="jobs",
+            params=Slurmrestd._past_jobs_query_params(SLURMDB_JOBS_CRAWL_HOURS),
+        )
+        if not jobs or not jobs.get("jobs"):
+            logger.warning(
+                "No terminal jobs from slurmdbd in the last %sh on cluster %s "
+                "(check accounting data or query params)",
+                SLURMDB_JOBS_CRAWL_HOURS,
+                self.cluster.name,
+            )
 
     def _crawl_nodes(self):
         self._cleanup_state = self.cluster.setup_for_nodes()

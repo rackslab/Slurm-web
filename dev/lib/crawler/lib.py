@@ -187,13 +187,17 @@ class DevelopmentHostCluster:
         self.api = self._discover_latest_api_version()
 
     def query_slurmrestd(
-        self, query: str, headers: dict[str, str] | None = None
+        self,
+        query: str,
+        headers: dict[str, str] | None = None,
+        params: dict[str, str] | list[tuple[str, str]] | None = None,
     ) -> requests.Response:
         """Send GET HTTP request to slurmrestd and return Response object.
 
         Args:
             query: Query path to append to prefix.
             headers: Optional HTTP headers. If None, uses auth headers.
+            params: Query string as a dict or list of pairs (for repeated keys).
 
         Returns:
             requests.Response object.
@@ -204,7 +208,9 @@ class DevelopmentHostCluster:
         if headers is None:
             headers = self.auth.headers()
         try:
-            return self.session.get(f"{self.prefix}/{query}", headers=headers)
+            return self.session.get(
+                f"{self.prefix}/{query}", headers=headers, params=params
+            )
         except requests.exceptions.ConnectionError as err:
             raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
 
@@ -1214,6 +1220,7 @@ class ComponentCrawler:
         headers: dict[str, str] | None = None,
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
+        params: dict[str, str] | list[tuple[str, str]] | None = None,
     ) -> requests.Response:
         """Get HTTP response from component. Must be implemented by subclasses.
 
@@ -1222,6 +1229,7 @@ class ComponentCrawler:
             headers: Optional HTTP headers.
             method: HTTP method ("GET" or "POST").
             content: Optional content for POST requests.
+            params: Query string as a dict or list of pairs (GET only).
 
         Returns:
             requests.Response object.
@@ -1280,6 +1288,11 @@ class ComponentCrawler:
         if content_type == "application/json":
             asset = target_dir / f"{_asset_name}.json"
             data = response.json()
+            if isinstance(data, dict) and data.get("errors"):
+                description = data["errors"][0].get("description", data["errors"])
+                raise CrawlerError(
+                    f"slurmrestd returned errors for asset {_asset_name}: {description}"
+                )
         else:
             asset = target_dir / f"{_asset_name}.txt"
             data = response.text
@@ -1324,6 +1337,7 @@ class ComponentCrawler:
         prettify: bool = True,
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
+        params: dict[str, str] | list[tuple[str, str]] | None = None,
     ) -> t.Any:
         """Send HTTP request and save result in assets directory.
 
@@ -1338,6 +1352,7 @@ class ComponentCrawler:
             prettify: If True, format JSON with indentation.
             method: HTTP method ("GET" or "POST").
             content: Optional content for POST requests.
+            params: Query string as a dict or list of pairs (GET only).
 
         Returns:
             Parsed data (dict/list for JSON, string for text).
@@ -1364,7 +1379,7 @@ class ComponentCrawler:
 
         # Make HTTP request
         response = self.get_component_response(
-            query, headers=headers, method=method, content=content
+            query, headers=headers, method=method, content=content, params=params
         )
 
         # Dump response using base method
@@ -1460,12 +1475,13 @@ class TokenizedComponentCrawler(ComponentCrawler):
         headers: dict[str, str] | None = None,
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
+        params: dict[str, str] | None = None,
     ) -> requests.Response:
         """Get HTTP response from component using token authentication."""
         if headers is None:
             headers = {"Authorization": f"Bearer {self.token}"}
         if method == "GET":
-            return requests.get(f"{self.url}{query}", headers=headers)
+            return requests.get(f"{self.url}{query}", headers=headers, params=params)
         elif method == "POST":
             kwargs = {}
             if content:

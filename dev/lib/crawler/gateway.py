@@ -30,6 +30,7 @@ from .lib import (
     busy_node,
     DevelopmentHostCluster,
 )
+from .slurmrestd import SLURMDB_JOBS_CRAWL_HOURS
 
 ADMIN_PASSWORD_ENV_VAR = "SLURMWEB_DEV_ADMIN_PASSWORD"
 
@@ -133,12 +134,14 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "jobs",
                 [
                     "jobs",
+                    "jobs-past",
                     "job-pending",
                     "job-running",
                     "job-archived",
                 ],
                 self._crawl_jobs,
             ),
+            Asset("jobs-past", "jobs-past", self._crawl_jobs_past),
             Asset("job-gpus-running", "job-gpus-running", self._crawl_job_gpus_running),
             Asset("job-gpus-pending", "job-gpus-pending", self._crawl_job_gpus_pending),
             Asset(
@@ -320,7 +323,17 @@ class GatewayCrawler(TokenizedComponentCrawler):
             "job-archived",
         )
 
+        self._crawl_jobs_past()
+
         # FIXME: Download unknown job
+
+    def _crawl_jobs_past(self):
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/jobs/past?hours={SLURMDB_JOBS_CRAWL_HOURS}",
+            "jobs-past",
+            skip_exist=False,
+            limit_dump=100,
+        )
 
     def _crawl_job_gpus_running(self):
         if not self.cluster.has_gpu():

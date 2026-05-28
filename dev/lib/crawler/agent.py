@@ -19,6 +19,7 @@ from .lib import (
     DevelopmentHostCluster,
     busy_node,
 )
+from .slurmrestd import SLURMDB_JOBS_CRAWL_HOURS
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,8 @@ class AgentCrawler(TokenizedComponentCrawler):
             Asset("permissions", "permissions", self._crawl_permissions),
             Asset("ping", "ping", self._crawl_ping),
             Asset("stats", "stats", self._crawl_stats),
-            Asset("jobs", "jobs", self._crawl_jobs),
+            Asset("jobs", ["jobs", "jobs-past"], self._crawl_jobs),
+            Asset("jobs-past", "jobs-past", self._crawl_jobs_past),
             Asset("nodes", "nodes", self._crawl_nodes),
             Asset("jobs-node", "jobs-node", self._crawl_jobs_node),
             Asset("partitions", "partitions", self._crawl_partitions),
@@ -109,6 +111,15 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/jobs",
             "jobs",
+            limit_dump=100,
+        )
+        self._crawl_jobs_past()
+
+    def _crawl_jobs_past(self):
+        self.dump_component_query(
+            f"/v{get_version()}/jobs/past?hours={SLURMDB_JOBS_CRAWL_HOURS}",
+            "jobs-past",
+            skip_exist=False,
             limit_dump=100,
         )
 
