@@ -1,3 +1,6 @@
+# Local SchedMD/slurm checkout for agent reference (see AGENTS.md)
+.slurm/
+
 __pycache__/
 *.egg-info/
 .ninja_log
