@@ -88,6 +88,13 @@ class SlurmrestdCrawler(ComponentCrawler):
                     "slurm-job-archived",
                     "slurm-job-unfound",
                     "slurmdb-jobs",
+                    "slurmdb-job-pending",
+                    "slurmdb-job-running",
+                    "slurmdb-job-completed",
+                    "slurmdb-job-failed",
+                    "slurmdb-job-timeout",
+                    "slurmdb-job-archived",
+                    "slurmdb-job-unfound",
                 ],
                 self._crawl_jobs,
             ),
@@ -160,11 +167,8 @@ class SlurmrestdCrawler(ComponentCrawler):
                 ["slurm-job-gpus-per-task", "slurmdb-job-gpus-per-task"],
                 self._crawl_job_gpus_per_task,
             ),
-            Asset(
-                "job-gpus-gres",
-                ["slurm-job-gpus-gres", "slurmdb-job-gpus-gres"],
-                self._crawl_job_gpus_gres,
-            ),
+            # job-gpus-gres omitted: sbatch --gres has no distinct slurmrestd field;
+            # job records match job-gpus-per-node (tres_per_node).
             Asset(
                 "node-gpus-allocated-with-model",
                 "slurm-node-with-gpus-model-allocated",
@@ -289,7 +293,18 @@ class SlurmrestdCrawler(ComponentCrawler):
         )
 
     def _crawl_jobs(self):
-        self._cleanup_state, job_id_completed = self.cluster.setup_for_jobs()
+        self._cleanup_state, fixture_job_ids = self.cluster.setup_for_jobs()
+
+        for suffix, job_id in fixture_job_ids.items():
+            self.dump_component_query(
+                f"/slurm/v{self.api_version}/job/{job_id}",
+                f"slurm-job-{suffix}",
+            )
+            self.dump_component_query(
+                f"/slurmdb/v{self.api_version}/job/{job_id}",
+                f"slurmdb-job-{suffix}",
+            )
+
         # Download jobs
         jobs = self.dump_component_query(
             f"/slurm/v{self.api_version}/jobs",
@@ -317,6 +332,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             )
             return
 
+        fixture_ids = set(fixture_job_ids.values())
         min_job_id = max_job_id = jobs["jobs"][0]["job_id"]
 
         for _job in jobs["jobs"]:
@@ -324,20 +340,32 @@ class SlurmrestdCrawler(ComponentCrawler):
                 min_job_id = _job["job_id"]
             if _job["job_id"] > max_job_id:
                 max_job_id = _job["job_id"]
+            if _job["job_id"] in fixture_ids:
+                continue
 
             for state in ["RUNNING", "PENDING", "COMPLETED", "FAILED", "TIMEOUT"]:
                 dump_job_state(state)
 
-        logger.info("Waiting for job completed to be archived…")
-        time.sleep(300)  # wait job completed to be archived
-        self.dump_component_query(
-            f"/slurm/v{self.api_version}/job/{job_id_completed}",
-            "slurm-job-archived",
-        )
-        self.dump_component_query(
-            f"/slurmdb/v{self.api_version}/job/{job_id_completed}",
-            "slurmdb-job-archived",
-        )
+        archived_assets = ("slurm-job-archived", "slurmdb-job-archived")
+        if any(
+            not any(self.manager.path.glob(f"{name}.*")) for name in archived_assets
+        ):
+            logger.info("Waiting for job completed to be archived…")
+            time.sleep(300)  # wait job completed to be archived
+            job_id_completed = fixture_job_ids["completed"]
+            self.dump_component_query(
+                f"/slurm/v{self.api_version}/job/{job_id_completed}",
+                archived_assets[0],
+            )
+            self.dump_component_query(
+                f"/slurmdb/v{self.api_version}/job/{job_id_completed}",
+                archived_assets[1],
+            )
+        else:
+            logger.info(
+                "Assets %s already exist, skipping archive wait",
+                ", ".join(archived_assets),
+            )
 
         self.dump_component_query(
             f"/slurm/v{self.api_version}/job/{max_job_id * 2}",
@@ -626,26 +654,6 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurmdb/v{self.api_version}/job/{job_id}",
             "slurmdb-job-gpus-per-task",
-        )
-
-    def _crawl_job_gpus_gres(self):
-        if not self.cluster.has_gpu():
-            logger.warning(
-                "Cluster %s has no GPU, skipping job-gpus-gres", self.cluster.name
-            )
-            return
-        job_id, user = self.cluster.setup_for_job_gpus_gres(
-            self.cluster.gpu_info["gpu_partition"],
-            self.cluster.gpu_info["gpu_per_node"],
-        )
-        self._cleanup_state = {"jobs": [(user, job_id)]}
-        self.dump_component_query(
-            f"/slurm/v{self.api_version}/job/{job_id}",
-            "slurm-job-gpus-gres",
-        )
-        self.dump_component_query(
-            f"/slurmdb/v{self.api_version}/job/{job_id}",
-            "slurmdb-job-gpus-gres",
         )
 
     def _crawl_node_gpus_allocated_with_model(self):

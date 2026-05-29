@@ -137,6 +137,9 @@ class GatewayCrawler(TokenizedComponentCrawler):
                     "jobs-past",
                     "job-pending",
                     "job-running",
+                    "job-completed",
+                    "job-failed",
+                    "job-timeout",
                     "job-archived",
                 ],
                 self._crawl_jobs,
@@ -178,7 +181,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 "job-gpus-per-task",
                 self._crawl_job_gpus_per_task,
             ),
-            Asset("job-gpus-gres", "job-gpus-gres", self._crawl_job_gpus_gres),
+            # job-gpus-gres omitted: sbatch --gres has no distinct slurmrestd field.
             Asset(
                 "nodes",
                 [
@@ -286,7 +289,14 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(f"/api/agents/{self.cluster.name}/stats", "stats")
 
     def _crawl_jobs(self):
-        self._cleanup_state, job_id_completed = self.cluster.setup_for_jobs()
+        self._cleanup_state, fixture_job_ids = self.cluster.setup_for_jobs()
+
+        for suffix, job_id in fixture_job_ids.items():
+            self.dump_component_query(
+                f"/api/agents/{self.cluster.name}/job/{job_id}",
+                f"job-{suffix}",
+            )
+
         jobs = self.dump_component_query(
             f"/api/agents/{self.cluster.name}/jobs",
             "jobs",
@@ -301,7 +311,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
             )
             return
 
-        min_job_id = jobs[0]["job_id"]
+        fixture_ids = set(fixture_job_ids.values())
 
         def dump_job_state() -> None:
             if state in _job["job_state"]:
@@ -311,17 +321,25 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 )
 
         for _job in jobs:
-            if _job["job_id"] < min_job_id:
-                min_job_id = _job["job_id"]
+            if _job["job_id"] in fixture_ids:
+                continue
             for state in ["PENDING", "RUNNING", "COMPLETED", "FAILED", "TIMEOUT"]:
                 dump_job_state()
 
-        logger.info("Waiting for job completed to be archived…")
-        time.sleep(300)  # wait job completed to be archived
-        self.dump_component_query(
-            f"/api/agents/{self.cluster.name}/job/{job_id_completed}",
-            "job-archived",
-        )
+        archived_asset = "job-archived"
+        if not any(self.manager.path.glob(f"{archived_asset}.*")):
+            logger.info("Waiting for job completed to be archived…")
+            time.sleep(300)  # wait job completed to be archived
+            job_id_completed = fixture_job_ids["completed"]
+            self.dump_component_query(
+                f"/api/agents/{self.cluster.name}/job/{job_id_completed}",
+                archived_asset,
+            )
+        else:
+            logger.info(
+                "Asset %s already exists, skipping archive wait",
+                archived_asset,
+            )
 
         self._crawl_jobs_past()
 
@@ -492,22 +510,6 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/api/agents/{self.cluster.name}/job/{job_id}",
             "job-gpus-per-task",
-        )
-
-    def _crawl_job_gpus_gres(self):
-        if not self.cluster.has_gpu():
-            logger.warning(
-                "Cluster %s has no GPU, skipping job-gpus-gres", self.cluster.name
-            )
-            return
-        job_id, user = self.cluster.setup_for_job_gpus_gres(
-            self.cluster.gpu_info["gpu_partition"],
-            self.cluster.gpu_info["gpu_per_node"],
-        )
-        self._cleanup_state = {"jobs": [(user, job_id)]}
-        self.dump_component_query(
-            f"/api/agents/{self.cluster.name}/job/{job_id}",
-            "job-gpus-gres",
         )
 
     def _crawl_nodes(self):

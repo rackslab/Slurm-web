@@ -484,6 +484,7 @@ class DevelopmentHostCluster:
         duration: int = 30,
         timelimit: int = 1,
         wait_running: bool = True,
+        wait_running_timeout_sec: int = 60,
         success: bool = True,
     ) -> int:
         """Submit a job using REST API.
@@ -495,6 +496,8 @@ class DevelopmentHostCluster:
             duration: Job sleep duration in seconds.
             timelimit: Job time limit in minutes.
             wait_running: If True, wait for job to reach RUNNING state.
+            wait_running_timeout_sec: Max seconds to wait for RUNNING when
+                ``wait_running`` is True.
             success: If True, job exits successfully, otherwise fails.
 
         Returns:
@@ -512,9 +515,9 @@ class DevelopmentHostCluster:
         job_params_copy["environment"] = [
             f"USERNAME={user}",
         ]
-        # Add time limit if not already specified
+        # slurmrestd time_limit is in minutes (OpenAPI job_desc_msg)
         if "time_limit" not in job_params_copy:
-            job_params_copy["time_limit"] = timelimit * 60  # Convert minutes to seconds
+            job_params_copy["time_limit"] = timelimit
 
         headers = self.auth.headers()
         headers["Content-Type"] = "application/json"
@@ -564,21 +567,55 @@ class DevelopmentHostCluster:
             logger.debug("Submitted job %s", job_id)
 
             if wait_running:
-                max_tries = 10
-                for idx in range(max_tries):
-                    job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
-                    if "RUNNING" in job["jobs"][0]["job_state"]:
-                        break
-                    if idx == max_tries - 1:
-                        raise CrawlerError(
-                            f"Unable to get job {job_id} in RUNNING state"
-                        )
-                    else:
-                        time.sleep(1)
+                self.wait_for_job_state(
+                    job_id,
+                    {"RUNNING"},
+                    timeout_sec=wait_running_timeout_sec,
+                    abort_states=("FAILED", "TIMEOUT", "CANCELLED", "COMPLETED"),
+                )
             return job_id
 
         except requests.exceptions.ConnectionError as err:
             raise RuntimeError(f"Unable to connect to slurmrestd: {err}") from err
+
+    def wait_for_job_state(
+        self,
+        job_id: int,
+        states: t.Collection[str],
+        *,
+        timeout_sec: int = 180,
+        poll_interval: float = 2.0,
+        abort_states: t.Collection[str] | None = None,
+    ) -> list[str]:
+        """Poll slurmrestd until the job reaches one of *states*."""
+        deadline = time.monotonic() + timeout_sec
+        last_state: list[str] = []
+        while time.monotonic() < deadline:
+            job = self.query_slurmrestd_json(f"/slurm/v{self.api}/job/{job_id}")
+            job_rec = job["jobs"][0]
+            last_state = job_rec["job_state"]
+            if abort_states and any(state in abort_states for state in last_state):
+                reason = job_rec.get("state_reason") or job_rec.get("status", [{}])
+                if isinstance(reason, list) and reason:
+                    reason = reason[0]
+                raise CrawlerError(
+                    f"Job {job_id} reached {last_state} while waiting for "
+                    f"{sorted(states)} ({reason})"
+                )
+            if any(state in states for state in last_state):
+                logger.info("Job %s reached state %s", job_id, last_state)
+                return last_state
+            logger.debug(
+                "Job %s state %s, waiting for one of %s",
+                job_id,
+                last_state,
+                sorted(states),
+            )
+            time.sleep(poll_interval)
+        raise CrawlerError(
+            f"Job {job_id} did not reach {sorted(states)} within {timeout_sec}s "
+            f"(last state {last_state})"
+        )
 
     def _cancel(self, job_id: int) -> bool:
         """Cancel a single job using REST API.
@@ -761,28 +798,40 @@ class DevelopmentHostCluster:
         )
         return {"reservation": "training"}
 
-    def setup_for_jobs(self) -> dict:
-        """Setup cluster for jobs asset. Returns cleanup state."""
-        cleanup_state = {"jobs": []}
+    def _random_gpu_job_params(self) -> dict[str, t.Any]:
+        """Build REST job params for a small GPU job (typed or untyped GRES)."""
+        if not self.has_gpu():
+            return {}
+        info = self.gpu_info
+        partition = info.get("gpu_partition")
+        if not partition:
+            return {}
+        max_gpus = max(info.get("gpu_per_node") or 1, 1)
+        gpu_count = min(random.choice([1, 2]), max_gpus)
+        params: dict[str, t.Any] = {
+            "partition": partition,
+            # GPU partitions are small; avoid huge task counts from setup_for_jobs.
+            "tasks": 1,
+        }
+        gpu_types = [gpu_type for gpu_type in info["gpu_types"] if gpu_type != "n/a"]
+        if gpu_types and random.choice([True, False]):
+            params["tres_per_job"] = f"gres/gpu:{random.choice(gpu_types)}:{gpu_count}"
+        else:
+            params["tres_per_job"] = f"gres/gpu:{gpu_count}"
+        return params
+
+    def setup_for_jobs(self) -> tuple[dict, dict[str, int]]:
+        """Setup cluster for jobs asset.
+
+        Returns:
+            Cleanup state for teardown, and fixture job IDs keyed by asset
+            suffix (failed, completed, pending, timeout). Terminal jobs are
+            dumped by ID because they leave the active queue before crawl.
+        """
+        cleanup_state: dict[str, t.Any] = {"jobs": []}
+        fixture_job_ids: dict[str, int] = {}
         user = self.pick_user()
-        # Submit timeout job
-        job_id = self.submit(
-            user,
-            {"tasks": 1},
-            duration=90,
-            timelimit=1,
-            wait_running=False,
-        )
-        cleanup_state["jobs"].append((user, job_id))
-        # Submit completed job
-        job_id_completed = self.submit(
-            user,
-            {"tasks": 1},
-            duration=1,
-            wait_running=False,
-        )
-        cleanup_state["jobs"].append((user, job_id_completed))
-        # Submit failed job
+
         job_id = self.submit(
             user,
             {"tasks": 1},
@@ -790,18 +839,19 @@ class DevelopmentHostCluster:
             wait_running=False,
             success=False,
         )
+        fixture_job_ids["failed"] = job_id
         cleanup_state["jobs"].append((user, job_id))
-        # Submit 10 random running jobs
-        for _ in range(10):
-            job_id = self.submit(
-                user,
-                {"tasks": random.choice([1, 4, 16, 32, 64, 128])},
-                duration=random.choice([30, 60, 90]),
-                timelimit=2,
-                wait_running=False,
-            )
-            cleanup_state["jobs"].append((user, job_id))
-        # Submit pending job
+
+        job_id_completed = self.submit(
+            user,
+            {"tasks": 1},
+            duration=30,
+            timelimit=2,
+            wait_running=False,
+        )
+        fixture_job_ids["completed"] = job_id_completed
+        cleanup_state["jobs"].append((user, job_id_completed))
+
         job_id = self.submit(
             user,
             {
@@ -811,11 +861,45 @@ class DevelopmentHostCluster:
             duration=30,
             wait_running=False,
         )
+        fixture_job_ids["pending"] = job_id
         cleanup_state["jobs"].append((user, job_id))
-        # Wait for job to timeout
-        logger.info("Waiting for timeout job…")
-        time.sleep(70)
-        return cleanup_state, job_id_completed
+
+        # Submit and wait for timeout before flooding the queue with filler jobs.
+        logger.info("Submitting timeout job and waiting past its time limit…")
+        timeout_timelimit = 1
+        job_id_timeout = self.submit(
+            user,
+            {"tasks": 1},
+            duration=300,
+            timelimit=timeout_timelimit,
+            wait_running=True,
+            wait_running_timeout_sec=600,
+        )
+        fixture_job_ids["timeout"] = job_id_timeout
+        cleanup_state["jobs"].append((user, job_id_timeout))
+        self.wait_for_job_state(
+            job_id_timeout,
+            {"TIMEOUT"},
+            timeout_sec=timeout_timelimit * 60 + 120,
+        )
+
+        for _ in range(10):
+            if self.has_gpu() and random.choice([True, False]):
+                job_params = self._random_gpu_job_params()
+            else:
+                job_params = {
+                    "tasks": random.choice([1, 4, 16, 32, 64, 128]),
+                }
+            job_id = self.submit(
+                user,
+                job_params,
+                duration=random.choice([30, 60, 90]),
+                timelimit=2,
+                wait_running=False,
+            )
+            cleanup_state["jobs"].append((user, job_id))
+
+        return cleanup_state, fixture_job_ids
 
     def setup_for_nodes(self) -> dict:
         """Setup cluster for nodes asset. Returns cleanup state."""
@@ -1008,19 +1092,9 @@ class DevelopmentHostCluster:
         )
         return job_id, user
 
-    def setup_for_job_gpus_gres(
-        self, gpu_partition: str, gpu_per_node: int
-    ) -> tuple[int, str]:
-        """Setup cluster for job-gpus-gres asset. Returns (job_id, user)."""
-        user = self.pick_user()
-        job_id = self.submit(
-            user,
-            {
-                "partition": gpu_partition,
-                "tres_per_job": f"gpu:{gpu_per_node}",
-            },
-        )
-        return job_id, user
+    # No job-gpus-gres crawler asset: sbatch --gres is CLI shorthand only. slurmrestd
+    # job/submit has no separate field for it; the stored job shows the same
+    # tres_per_node as --gpus-per-node (see job-gpus-per-node fixtures).
 
     def setup_for_node_gpus_allocated(
         self, gpu_partition: str, gpu_per_node: int, node_name: str | None = None
