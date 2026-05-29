@@ -1,10 +1,16 @@
 import { describe, expect, test, beforeEach, afterEach, vi } from 'vitest'
 import {
   compareClusterJobSortOrder,
+  compareClusterAcctJobSortOrder,
   jobResourcesTRES,
   jobAllocatedGPU,
   jobRequestedGPU,
   jobResourcesGPU,
+  acctJobResources,
+  acctJobAllocatedGPU,
+  acctJobCpus,
+  countGPUFromAllocatedTRES,
+  countGPUTRESRequest,
   getMBHumanUnit,
   getNodeMainState,
   getNodeAllocationState,
@@ -12,13 +18,13 @@ import {
   getNodeGPU,
   useGatewayAPI
 } from '@/composables/GatewayAPI'
+import type { ClusterAcctJob } from '@/composables/GatewayAPI'
 import jobs from '../assets/jobs.json'
 import jobPending from '../assets/job-pending.json'
 import jobGpuArchived from '../assets/job-gpus-archived.json'
 import jobGpuCompleted from '../assets/job-gpus-completed.json'
 import jobGpuPending from '../assets/job-gpus-pending.json'
 import jobGpuRunning from '../assets/job-gpus-running.json'
-import jobGpuGres from '../assets/job-gpus-gres.json'
 import jobGpuMultiNodes from '../assets/job-gpus-multi-nodes.json'
 import jobGpuType from '../assets/job-gpus-type.json'
 import jobGpuMultiTypes from '../assets/job-gpus-multi-types.json'
@@ -355,6 +361,158 @@ describe('jobResourcesTRES', () => {
   })
 })
 
+const acctJobFixture = (): ClusterAcctJob => ({
+  account: 'optic',
+  job_id: 1,
+  nodes: 'node1',
+  partition: 'gpu',
+  priority: { infinite: false, number: 1, set: true },
+  qos: 'normal',
+  state: { current: ['COMPLETED'], reason: 'None' },
+  time: {},
+  tres: {
+    allocated: [
+      { type: 'cpu', name: '', id: 1, count: 8 },
+      { type: 'mem', name: '', id: 2, count: 4096 },
+      { type: 'node', name: '', id: 4, count: 2 }
+    ],
+    requested: []
+  },
+  user: 'alice'
+})
+
+describe('acctJobResources', () => {
+  test('allocated TRES', () => {
+    expect(acctJobResources(acctJobFixture())).toStrictEqual({
+      node: 2,
+      cpu: 8,
+      memory: 4096
+    })
+  })
+})
+
+describe('countGPUFromAllocatedTRES', () => {
+  test('no gpu gres', () => {
+    expect(
+      countGPUFromAllocatedTRES([
+        { type: 'cpu', name: '', id: 1, count: 8 },
+        { type: 'node', name: '', id: 4, count: 2 }
+      ])
+    ).toBe(0)
+  })
+  test('untyped gpu gres entry', () => {
+    expect(
+      countGPUFromAllocatedTRES([{ type: 'gres', name: 'gpu', id: 1001, count: 4 }])
+    ).toBe(4)
+  })
+  test('typed gpu gres entry', () => {
+    expect(
+      countGPUFromAllocatedTRES([{ type: 'gres', name: 'gpu:h100', id: 1002, count: 2 }])
+    ).toBe(2)
+  })
+  test('sum of multiple typed gpu gres entries', () => {
+    expect(
+      countGPUFromAllocatedTRES([
+        { type: 'gres', name: 'gpu:h100', id: 1002, count: 2 },
+        { type: 'gres', name: 'gpu:h200', id: 1003, count: 3 }
+      ])
+    ).toBe(5)
+  })
+  test('untyped gpu takes precedence over typed entries', () => {
+    expect(
+      countGPUFromAllocatedTRES([
+        { type: 'cpu', name: '', id: 1, count: 1 },
+        { type: 'gres', name: 'gpu', id: 1001, count: 4 },
+        { type: 'gres', name: 'gpu:h100', id: 1002, count: 4 }
+      ])
+    ).toBe(4)
+  })
+  test('full allocated tres with untyped and typed gpu', () => {
+    expect(
+      countGPUFromAllocatedTRES([
+        { type: 'cpu', name: '', id: 1, count: 1 },
+        { type: 'mem', name: '', id: 2, count: 512 },
+        { type: 'node', name: '', id: 4, count: 1 },
+        { type: 'gres', name: 'gpu', id: 1001, count: 4 },
+        { type: 'gres', name: 'gpu:h100', id: 1002, count: 4 }
+      ])
+    ).toBe(4)
+  })
+})
+
+describe('acctJobAllocatedGPU', () => {
+  test('no allocated gpu gres', () => {
+    expect(acctJobAllocatedGPU(acctJobFixture())).toBe(0)
+  })
+  test('allocated gpu gres count', () => {
+    const job = acctJobFixture()
+    job.tres.allocated.push({ type: 'gres', name: 'gpu', id: 1001, count: 4 })
+    expect(acctJobAllocatedGPU(job)).toBe(4)
+  })
+})
+
+describe('acctJobCpus', () => {
+  test('from allocated tres', () => {
+    expect(acctJobCpus(acctJobFixture())).toBe(8)
+  })
+  test('missing allocated cpu returns 0', () => {
+    const job = acctJobFixture()
+    job.tres.allocated = []
+    expect(acctJobCpus(job)).toBe(0)
+  })
+})
+
+describe('compareClusterAcctJobSortOrder resources', () => {
+  test('sort by node then cpu', () => {
+    const a = acctJobFixture()
+    const b = acctJobFixture()
+    b.job_id = 2
+    b.tres.allocated = [
+      { type: 'cpu', name: '', id: 1, count: 16 },
+      { type: 'node', name: '', id: 4, count: 4 }
+    ]
+    expect(compareClusterAcctJobSortOrder(a, b, 'resources', 'asc')).toBe(-1)
+    expect(compareClusterAcctJobSortOrder(b, a, 'resources', 'asc')).toBe(1)
+  })
+})
+
+describe('compareClusterAcctJobSortOrder end', () => {
+  test('desc puts most recent end first', () => {
+    const a = acctJobFixture()
+    const b = acctJobFixture()
+    b.job_id = 2
+    a.time = { end: 100 }
+    b.time = { end: 200 }
+    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'desc')).toBe(1)
+    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'desc')).toBe(-1)
+  })
+
+  test('asc puts oldest end first', () => {
+    const a = acctJobFixture()
+    const b = acctJobFixture()
+    b.job_id = 2
+    a.time = { end: 100 }
+    b.time = { end: 200 }
+    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'asc')).toBe(-1)
+    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'asc')).toBe(1)
+  })
+
+  test('missing end sorts last in desc', () => {
+    const a = acctJobFixture()
+    const b = acctJobFixture()
+    b.job_id = 2
+    b.time = { end: 200 }
+    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'desc')).toBe(1)
+    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'desc')).toBe(-1)
+  })
+})
+
+describe('countGPUTRESRequest', () => {
+  test('comma-separated gres', () => {
+    expect(countGPUTRESRequest('license:1,gpu:2')).toBe(2)
+  })
+})
+
 describe('jobAllocatedGPU', () => {
   // test specific values
   test('empty GRES', () => {
@@ -402,14 +560,25 @@ describe('jobAllocatedGPU', () => {
     job.gres_detail = ['gpu:h100:2(IDX:2-3)', 'gpu:h100:4(IDX:0-3)']
     expect(jobAllocatedGPU(job)).toBe(6)
   })
+  test('allocated tres gres from slurmdbd', () => {
+    const job = {
+      ...jobGpuArchived,
+      gres_detail: [],
+      tres: {
+        allocated: [{ type: 'gres', name: 'gpu', id: 1001, count: 4 }],
+        requested: []
+      }
+    }
+    expect(jobAllocatedGPU(job)).toBe(4)
+  })
   // test with assets
   test('archived job', () => {
     const job = { ...jobGpuArchived }
-    expect(jobAllocatedGPU(job)).toBe(-1)
+    expect(jobAllocatedGPU(job)).toBe(4)
   })
   test('completed job', () => {
     const job = { ...jobGpuCompleted }
-    expect(jobAllocatedGPU(job)).toBe(-1)
+    expect(jobAllocatedGPU(job)).toBe(4)
   })
   test('pending job', () => {
     const job = { ...jobGpuPending }
@@ -417,10 +586,6 @@ describe('jobAllocatedGPU', () => {
   })
   test('running job', () => {
     const job = { ...jobGpuRunning }
-    expect(jobAllocatedGPU(job)).toBeGreaterThan(0)
-  })
-  test('running gres', () => {
-    const job = { ...jobGpuGres }
     expect(jobAllocatedGPU(job)).toBeGreaterThan(0)
   })
   test('running multi nodes', () => {
@@ -555,12 +720,6 @@ describe('jobRequestedGPU', () => {
   })
   test('running job', () => {
     const job = { ...jobGpuPending }
-    const gpu = jobRequestedGPU(job)
-    expect(gpu.count).toBeGreaterThan(0)
-    expect(gpu.reliable).toBeTruthy()
-  })
-  test('running gres', () => {
-    const job = { ...jobGpuGres }
     const gpu = jobRequestedGPU(job)
     expect(gpu.count).toBeGreaterThan(0)
     expect(gpu.reliable).toBeTruthy()

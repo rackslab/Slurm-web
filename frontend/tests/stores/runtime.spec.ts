@@ -146,4 +146,42 @@ describe('Runtime Store', () => {
     expect(runtime.hasClusterPermission('foo', 'view-nodes')).toBeTruthy()
     expect(runtime.hasClusterPermission('bar', 'view-nodes')).toBeFalsy()
   })
+
+  describe('hasAnyPermission', () => {
+    const clusterFoo = {
+      name: 'foo',
+      infrastructure: 'foo',
+      racksdb: true,
+      metrics: true,
+      cache: true,
+      permissions: { roles: ['user'], actions: ['view-jobs'] }
+    }
+
+    test('returns true when no cluster is selected', () => {
+      const runtime = useRuntimeStore()
+      expect(runtime.currentCluster).toBeUndefined()
+      expect(runtime.hasAnyPermission(['view-jobs', 'view-nodes'])).toBe(true)
+    })
+
+    test('returns true when current cluster has at least one permission', () => {
+      const runtime = useRuntimeStore()
+      runtime.addCluster(clusterFoo)
+      runtime.currentCluster = clusterFoo
+      expect(runtime.hasAnyPermission(['view-nodes', 'view-jobs'])).toBe(true)
+    })
+
+    test('returns false when current cluster has none of the permissions', () => {
+      const runtime = useRuntimeStore()
+      runtime.addCluster(clusterFoo)
+      runtime.currentCluster = clusterFoo
+      expect(runtime.hasAnyPermission(['view-nodes', 'jobs-view-past'])).toBe(false)
+    })
+
+    test('returns false for an empty permission list', () => {
+      const runtime = useRuntimeStore()
+      runtime.addCluster(clusterFoo)
+      runtime.currentCluster = clusterFoo
+      expect(runtime.hasAnyPermission([])).toBe(false)
+    })
+  })
 })

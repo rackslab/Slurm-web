@@ -1,28 +1,28 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import JobsView from '@/views/JobsView.vue'
+import JobsPastView from '@/views/JobsPastView.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
-import type { ClusterJob } from '@/composables/GatewayAPI'
-import jobs from '../assets/jobs.json'
+import type { ClusterAcctJob } from '@/composables/GatewayAPI'
+import pastJobs from '../assets/jobs-past.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterJob[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<ClusterAcctJob[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
 }))
 
-describe('JobView.vue', () => {
+describe('JobsPastView.vue', () => {
   beforeEach(() => {
     init_plugins()
     const runtimeStore = useRuntimeStore()
     runtimeStore.availableClusters = [
       {
         name: 'foo',
-        permissions: { roles: [], actions: ['view-jobs'] },
+        permissions: { roles: [], actions: ['jobs-view-past', 'view-jobs'] },
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
@@ -31,87 +31,76 @@ describe('JobView.vue', () => {
       }
     ]
     runtimeStore.currentCluster = runtimeStore.getCluster('foo')
-    // Reset mockClusterDataPoller unable to its default value before every tests.
     mockClusterDataPoller.unable.value = false
+    mockClusterDataPoller.data.value = []
   })
+
   test('display jobs', () => {
-    mockClusterDataPoller.data.value = jobs
-    const wrapper = mount(JobsView, {
+    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
       }
     })
     const table = wrapper.find('main table')
-    // Check presence of main table
     expect(table.exists()).toBeTruthy()
-    // Check columns
     const columns = table.findAll('thead th')
-    //console.log(columns[0].html())
-    expect(columns.length).toBe(9)
+    expect(columns.length).toBe(8)
     expect(columns[0].text()).toBe('#ID')
     expect(columns[1].text()).toBe('State')
-    expect(columns[2].text()).toBe('User (account)')
-    expect(columns[3].text()).toBe('Resources')
-    expect(columns[4].text()).toBe('Partition')
-    expect(columns[5].text()).toBe('QOS')
-    expect(columns[6].text()).toBe('Priority')
-    expect(columns[7].text()).toBe('Reason')
-    expect(columns[8].text()).toBe('View')
-    // Check lines
+    expect(columns[2].text()).toBe('End time')
+    expect(columns[3].text()).toBe('User (account)')
+    expect(columns[4].text()).toBe('Resources')
+    expect(columns[5].text()).toBe('Partition')
+    expect(columns[6].text()).toBe('QOS')
+    expect(columns[7].text()).toBe('View')
     const lines = table.findAll('tbody tr')
     expect(lines.length).toBeGreaterThan(1)
   })
+
   test('show error alert when unable to retrieve jobs', () => {
     mockClusterDataPoller.unable.value = true
-    const wrapper = mount(JobsView, {
+    const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
       }
     })
     expect(wrapper.getComponent(ErrorAlert).text()).toBe('Unable to retrieve jobs from cluster foo')
-    // Check absence of main table
     expect(wrapper.find('main table').exists()).toBeFalsy()
   })
+
   test('show info alert when no job', () => {
     mockClusterDataPoller.data.value = []
-    const wrapper = mount(JobsView, {
+    const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
       }
     })
     expect(wrapper.getComponent(InfoAlert).text()).toBe('No jobs found on cluster foo')
-    // Check absence of main table
     expect(wrapper.find('main table').exists()).toBeFalsy()
   })
-  test('shows Active breadcrumb', () => {
-    mockClusterDataPoller.data.value = jobs
-    const wrapper = mount(JobsView, {
+
+  test('shows Terminated breadcrumb and heading', () => {
+    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
       }
     })
     expect(wrapper.getComponent(ClusterMainLayout).props('breadcrumb')).toEqual([
       { title: 'Jobs', routeName: 'jobs' },
-      { title: 'Active' }
+      { title: 'Terminated' }
     ])
+    expect(wrapper.find('h1').text()).toBe('Jobs Terminated')
   })
-  test('shows scope toggle when jobs-view-past is allowed', () => {
-    useRuntimeStore().getCluster('foo')!.permissions.actions.push('jobs-view-past')
-    mockClusterDataPoller.data.value = jobs
-    const wrapper = mount(JobsView, {
+
+  test('shows scope toggle with Active and Terminated', () => {
+    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
       }
     })
     expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
-  })
-  test('hides scope toggle without jobs-view-past', () => {
-    mockClusterDataPoller.data.value = jobs
-    const wrapper = mount(JobsView, {
-      props: {
-        cluster: 'foo'
-      }
-    })
-    expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(false)
   })
 })
