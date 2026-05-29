@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     documentation.
   - Introduce a custom branding guide.
   - Mention custom site branding feature in overview page.
+  - Mention new _jobs-view-past_ permission in quickstart guide and
+    authorization policy configuration guide.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.45_.

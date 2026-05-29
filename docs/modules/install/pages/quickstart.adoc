@@ -482,7 +482,7 @@ user=@biology
 admin=njones
 
 [user]
-actions=view-stats,view-jobs
+actions=view-stats,view-jobs,jobs-view-past
 
 [admin]
 actions=view-partitions,view-qos,view-accounts,view-reservations,associations-view
@@ -491,7 +491,7 @@ actions=view-partitions,view-qos,view-accounts,view-reservations,associations-vi
 This policy defines *two roles*:
 
 * *user* for members of _biology_ group. This role has permission on
-  `view-stats`, `view-jobs` and `view-nodes` actions.
+  `view-stats`, `view-jobs`, `jobs-view-past` and `view-nodes` actions.
 * *admin* for _njones_ user. This role has permission on `view-partitions`,
   `view-qos`,`view-accounts` and `view-reservations` actions.
 

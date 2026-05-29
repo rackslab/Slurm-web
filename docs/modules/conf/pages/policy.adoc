@@ -64,7 +64,7 @@ user=@rd,@it
 admin=@it
 
 [user]
-actions=view-stats,view-jobs,view-accounts
+actions=view-stats,view-jobs,jobs-view-past,view-accounts
 
 [admin]
 actions=view-nodes,view-partitions,view-qos,view-reservations
@@ -73,8 +73,8 @@ actions=view-nodes,view-partitions,view-qos,view-reservations
 Two roles are defined in this authorization policy:
 
 * *user* role is assigned to all members of _rd_ and _it_ LDAP groups. Users
-  with this role have permissions on `view-stats`, `view-jobs` and
-  `view-accounts` actions.
+  with this role have permissions on `view-stats`, `view-jobs`, `jobs-view-past`
+  and `view-accounts` actions.
 * *admin* role is assigned to all members of _it_ LDAP group. Users with this
   role haves permissions on `view-nodes`, `view-partitions`, `view-qos` and
   `view-reservations` actions.
@@ -100,7 +100,7 @@ admin=@it,jdoe
 actions=view-stats
 
 [user]
-actions=view-stats,view-jobs,view-accounts
+actions=view-stats,view-jobs,jobs-view-past,view-accounts
 
 [admin]
 actions=view-nodes,view-partitions,view-qos,view-reservations
@@ -113,8 +113,8 @@ granted the `view-stats` action.
 Two other roles are defined in this authorization policy:
 
 * *user* role is assigned to all users authenticated on LDAP directory. This
-  role gives permissions on `view-stats`, `view-jobs` and `view-accounts`
-  actions.
+  role gives permissions on `view-stats`, `view-jobs`, `jobs-view-past` and
+  `view-accounts` actions.
 * *admin* role is assigned to all members of _it_ LDAP group and _jdoe_
   individual user. Users with this role haves permissions on `view-nodes`,
   `view-partitions`, `view-qos` and `view-reservations` actions.
