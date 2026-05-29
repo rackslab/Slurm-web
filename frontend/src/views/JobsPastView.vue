@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2023-2024 Rackslab
+  Copyright (c) 2026 Rackslab
 
   This file is part of Slurm-web.
 
@@ -13,31 +13,57 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useJobsPageQuery } from '@/composables/jobs/JobsPageQuery'
 import { useJobsListPaging } from '@/composables/jobs/JobsListPaging'
-import { compareClusterJobSortOrder, jobPriority, type ClusterJob } from '@/composables/GatewayAPI'
+import {
+  acctJobStates,
+  compareClusterAcctJobSortOrder,
+  formatAcctJobEndTime,
+  type ClusterAcctJob
+} from '@/composables/GatewayAPI'
+import { PAST_JOBS_DEFAULT_HOURS } from '@/stores/runtime/jobs'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import JobsFiltersBar from '@/components/jobs/JobsFiltersBar.vue'
-import JobResources from '@/components/jobs/JobResources.vue'
+import AcctJobResources from '@/components/jobs/AcctJobResources.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ArchiveBoxIcon, PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
+import { PlayIcon, PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
-const { updateQueryParameters, setupFilterQuerySync } = useJobsPageQuery('jobs')
 
-const poller = useClusterDataPoller<ClusterJob[]>(cluster, 'jobs', 5000)
-const jobsList = computed(() => poller.data.value ?? [])
+const poller = useClusterDataPoller<ClusterAcctJob[]>(
+  cluster,
+  'jobsPast',
+  60000,
+  PAST_JOBS_DEFAULT_HOURS
+)
+
+const { updateQueryParameters, setupFilterQuerySync } = useJobsPageQuery('jobs-past')
+
+const maxPastHours = computed(
+  () => runtimeStore.currentCluster?.slurmdbd.jobs_max_hours ?? 168
+)
+
+const jobsList = computed((): ClusterAcctJob[] => poller.data.value ?? [])
+
 const { sortedJobs, lastpage, firstjob, lastjob, jobsPages } = useJobsListPaging(jobsList, {
-  match: (job) => runtimeStore.jobs.matchesFilters(job),
-  compareSort: compareClusterJobSortOrder
+  match: (job) => runtimeStore.jobs.matchesAcctJobFilters(job),
+  compareSort: compareClusterAcctJobSortOrder,
+  past: true
 })
+
+const jobsSubtitle = computed(
+  () =>
+    `Jobs finished in the last ${runtimeStore.jobs.pastHours} hour${
+      runtimeStore.jobs.pastHours > 1 ? 's' : ''
+    }`
+)
 
 function sortJobs() {
   /*
@@ -46,8 +72,16 @@ function sortJobs() {
    */
   updateQueryParameters()
   console.log(
-    `Sorting jobs by ${runtimeStore.jobs.activeSort} ordered ${runtimeStore.jobs.activeOrder}`
+    `Sorting jobs by ${runtimeStore.jobs.pastSort} ordered ${runtimeStore.jobs.pastOrder}`
   )
+}
+
+function setPastHours(hours: number) {
+  if (runtimeStore.jobs.pastHours === hours) return
+  runtimeStore.jobs.pastHours = hours
+  poller.setParam(hours)
+  runtimeStore.jobs.page = 1
+  updateQueryParameters()
 }
 
 watch(
@@ -70,6 +104,10 @@ watch(lastpage, (new_last_page) => {
 
 onMounted(() => {
   setupFilterQuerySync()
+  // Avoid stop/restart on mount when route store already matches initial poller param.
+  if (runtimeStore.jobs.pastHours !== PAST_JOBS_DEFAULT_HOURS) {
+    poller.setParam(runtimeStore.jobs.pastHours)
+  }
 })
 </script>
 
@@ -77,16 +115,25 @@ onMounted(() => {
   <ClusterMainLayout
     menu-entry="jobs"
     :cluster="cluster"
-    :breadcrumb="[{ title: 'Jobs', routeName: 'jobs' }, { title: 'Active' }]"
+    :breadcrumb="[{ title: 'Jobs', routeName: 'jobs' }, { title: 'Terminated' }]"
   >
     <div>
-      <JobsFiltersPanel :cluster="cluster" :nb-jobs="sortedJobs.length" />
+      <JobsFiltersPanel
+        :cluster="cluster"
+        :nb-jobs="sortedJobs.length"
+        past-time-range
+        :max-past-hours="maxPastHours"
+        :default-past-hours="PAST_JOBS_DEFAULT_HOURS"
+        @past-hours-change="setPastHours"
+      />
 
       <div class="mx-auto flex items-center justify-between">
         <div class="px-4 py-16 sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Jobs Active</h1>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Jobs Terminated
+          </h1>
           <p class="mt-4 max-w-xl text-sm font-light text-gray-600 dark:text-gray-300">
-            Active jobs in cluster queue
+            {{ jobsSubtitle }}
           </p>
         </div>
 
@@ -104,17 +151,17 @@ onMounted(() => {
 
         <div class="border-gray-200 pb-4">
           <div class="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
-            <JobsSorter @sort="sortJobs" />
+            <JobsSorter past @sort="sortJobs" />
 
             <div class="flex flex-wrap items-center gap-2">
               <RouterLink
                 v-if="runtimeStore.hasPermission('jobs-view-past')"
                 data-testid="jobs-scope-toggle"
-                :to="{ name: 'jobs-past', params: { cluster } }"
+                :to="{ name: 'jobs', params: { cluster } }"
                 class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
               >
-                <ArchiveBoxIcon class="-ml-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
-                Terminated
+                <PlayIcon class="-ml-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
+                Active
               </RouterLink>
               <button
                 type="button"
@@ -127,7 +174,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <JobsFiltersBar />
+        <JobsFiltersBar past />
       </section>
 
       <div class="mt-8 flow-root">
@@ -149,14 +196,11 @@ onMounted(() => {
                 <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
                   <th scope="col" class="w-12 py-3.5 pr-3 text-left sm:pl-6 lg:pl-8">#ID</th>
                   <th scope="col" class="w-16 px-3 py-3.5 text-left">State</th>
+                  <th scope="col" class="px-3 py-3.5 text-left whitespace-nowrap">End time</th>
                   <th scope="col" class="px-3 py-3.5 text-left">User (account)</th>
                   <th scope="col" class="hidden px-3 py-3.5 text-left sm:table-cell">Resources</th>
                   <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">Partition</th>
                   <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">QOS</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-center sm:table-cell">Priority</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:min-w-[100px]">
-                    Reason
-                  </th>
                   <th scope="col" class="max-w-fit py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
                     <span class="sr-only">View</span>
                   </th>
@@ -172,27 +216,18 @@ onMounted(() => {
                     {{ job.job_id }}
                   </td>
                   <td class="px-3 py-4 whitespace-nowrap">
-                    <JobStatusBadge :status="job.job_state" />
+                    <JobStatusBadge :status="acctJobStates(job)" />
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap">
-                    {{ job.user_name }} ({{ job.account }})
-                  </td>
+                  <td class="px-3 py-4 whitespace-nowrap">{{ formatAcctJobEndTime(job) }}</td>
+                  <td class="px-3 py-4 whitespace-nowrap">{{ job.user }} ({{ job.account }})</td>
                   <td class="hidden px-3 py-4 whitespace-nowrap sm:table-cell">
-                    <JobResources :job="job" />
+                    <AcctJobResources :job="job" />
                   </td>
                   <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
                     {{ job.partition }}
                   </td>
                   <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
                     {{ job.qos }}
-                  </td>
-                  <td class="hidden px-3 py-4 text-center whitespace-nowrap sm:table-cell">
-                    {{ jobPriority(job) }}
-                  </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap 2xl:table-cell">
-                    <template v-if="job.state_reason != 'None'">
-                      {{ job.state_reason }}
-                    </template>
                   </td>
                   <td class="h-full text-right font-medium">
                     <RouterLink

@@ -34,22 +34,32 @@ const sidebarOpen = defineModel<boolean>()
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
 const { logoAlt, logoHorizontal, logoHorizontalDark } = useBranding()
-const navigation = [
-  { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permission: 'view-stats' },
-  { name: 'Jobs', route: 'jobs', icon: PlayCircleIcon, permission: 'view-jobs' },
-  { name: 'Resources', route: 'resources', icon: CpuChipIcon, permission: 'view-nodes' },
-  { name: 'QOS', route: 'qos', icon: SwatchIcon, permission: 'view-qos' },
+const navigation: Array<{
+  name: string
+  route: string
+  icon: typeof HomeIcon
+  permissions: string[]
+}> = [
+  { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permissions: ['view-stats'] },
+  {
+    name: 'Jobs',
+    route: 'jobs',
+    icon: PlayCircleIcon,
+    permissions: ['view-jobs', 'jobs-view-past']
+  },
+  { name: 'Resources', route: 'resources', icon: CpuChipIcon, permissions: ['view-nodes'] },
+  { name: 'QOS', route: 'qos', icon: SwatchIcon, permissions: ['view-qos'] },
   {
     name: 'Reservations',
     route: 'reservations',
     icon: CalendarIcon,
-    permission: 'view-reservations'
+    permissions: ['view-reservations']
   },
   {
     name: 'Accounts',
     route: 'accounts',
     icon: UserGroupIcon,
-    permission: 'associations-view'
+    permissions: ['associations-view']
   }
 ]
 </script>
@@ -116,7 +126,7 @@ const navigation = [
                     <ul role="list" class="-mx-2 space-y-1">
                       <li v-for="item in navigation" :key="item.name">
                         <RouterLink
-                          v-if="runtimeStore.hasPermission(item.permission)"
+                          v-if="runtimeStore.hasAnyPermission(item.permissions)"
                           :to="{ name: item.route }"
                           :class="[
                             item.route == entry
@@ -179,7 +189,7 @@ const navigation = [
             <ul role="list" class="-mx-2 space-y-1">
               <li v-for="item in navigation" :key="item.name">
                 <RouterLink
-                  v-if="runtimeStore.hasPermission(item.permission)"
+                  v-if="runtimeStore.hasAnyPermission(item.permissions)"
                   :to="{ name: item.route }"
                   :class="[
                     item.route == entry

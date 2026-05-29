@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add OIDC login page and callback view for OpenID Connect SSO authentication.
   - Support custom branding parameters as defined in UI runtime configuration
     file.
+  - Add page to list last terminated jobs with configurable time window (#325).
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
 - gensession: Add `slurm-web gen-session-key` command to generate gateway
@@ -72,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     route.
   - Add `slurmdbd.jobs_max_hours` setting in agent info response.
 - front:
+  - Display active jobs (ie. not terminated) only in jobs page.
   - Require Node.js >= 20.19.
   - Update dependencies to latest versions (Vite 8, Vitest 4, ESLint 10,
     TypeScript 6, Tailwind CSS 4.3, …).

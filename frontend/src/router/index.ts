@@ -22,6 +22,7 @@ import SettingsAccountView from '@/views/settings/SettingsAccount.vue'
 import SettingsCacheView from '@/views/settings/SettingsCache.vue'
 import ClustersView from '@/views/ClustersView.vue'
 import JobsView from '@/views/JobsView.vue'
+import JobsPastView from '@/views/JobsPastView.vue'
 import JobView from '@/views/JobView.vue'
 import ResourcesView from '@/views/resources/ResourcesView.vue'
 import ResourcesDiagramNodesView from '@/views/resources/ResourcesDiagramNodesView.vue'
@@ -121,6 +122,12 @@ const router = createRouter({
           path: 'jobs',
           name: 'jobs',
           component: JobsView,
+          props: true
+        },
+        {
+          path: 'jobs/past',
+          name: 'jobs-past',
+          component: JobsPastView,
           props: true
         },
         {

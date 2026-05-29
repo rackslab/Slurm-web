@@ -23,6 +23,7 @@ export interface ClusterDescription {
   infrastructure: string
   metrics: boolean
   cache: boolean
+  slurmdbd: ClusterSlurmdbdLimits
   permissions: ClusterPermissions
   versions?: ClusterVersions
   stats?: ClusterStats
@@ -32,6 +33,10 @@ export interface ClusterDescription {
 interface ClusterPermissions {
   roles: string[]
   actions: string[]
+}
+
+export interface ClusterSlurmdbdLimits {
+  jobs_max_hours: number
 }
 
 export interface UserDescription {
@@ -248,10 +253,46 @@ export interface ClusterIndividualJob {
   tres_per_socket?: string
   tres_per_task?: string
   tres_req_str?: string
-  used_gres: string
   user: string
   wckey: { flags: string[]; wckey: string }
   working_directory: string
+}
+
+/** ClusterAcctJob fields exposed by GET /jobs/past */
+export interface ClusterAcctJobState {
+  current: string[]
+  reason: string
+}
+
+export interface ClusterAcctJobTime {
+  end?: number | ClusterOptionalNumber
+  start?: number | ClusterOptionalNumber
+  elapsed?: number
+  submission?: number
+}
+
+export interface ClusterAcctJob {
+  account: string
+  job_id: number
+  nodes: string
+  partition: string
+  priority: ClusterOptionalNumber
+  qos: string
+  state: ClusterAcctJobState
+  time: ClusterAcctJobTime
+  tres: { allocated: ClusterTRES[]; requested: ClusterTRES[] }
+  user: string
+}
+
+export function jobPriority(job: ClusterJob): string {
+  if (!job.job_state.includes('PENDING')) return '-'
+  if (job.priority.set) {
+    if (job.priority.infinite) {
+      return '∞'
+    }
+    return job.priority.number.toString()
+  }
+  return '∅'
 }
 
 /* Compare two ClusterJob a and b on JobSortCriterion.
@@ -299,6 +340,96 @@ export function compareClusterJobSortOrder(
   }
 }
 
+/* Return the resources of a job from accounting. */
+export function acctJobResources(job: ClusterAcctJob): {
+  node: number
+  cpu: number
+  memory: number
+} {
+  return jobResourcesTRES(job.tres?.allocated ?? [])
+}
+
+/* Return the number of CPUs from allocated TRES (0 if missing). */
+export function acctJobCpus(job: ClusterAcctJob): number {
+  const cpu = acctJobResources(job).cpu
+  return cpu >= 0 ? cpu : 0
+}
+
+/* Compare two ClusterAcctJob records on JobSortCriterion. */
+export function compareClusterAcctJobSortOrder(
+  a: ClusterAcctJob,
+  b: ClusterAcctJob,
+  sort: JobSortCriterion,
+  order: JobSortOrder
+): number {
+  if (sort == 'user') {
+    if (a.user > b.user) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (a.user < b.user) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else if (sort == 'state') {
+    const aState = acctJobStates(a).join()
+    const bState = acctJobStates(b).join()
+    if (aState > bState) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (aState < bState) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else if (sort == 'priority') {
+    return compareClusterOptionalNumberOrder(a.priority, b.priority, order)
+  } else if (sort == 'resources') {
+    const aRes = acctJobResources(a)
+    const bRes = acctJobResources(b)
+    if (aRes.node > bRes.node) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (aRes.node < bRes.node) {
+      return order == 'asc' ? -1 : 1
+    }
+    const aCpus = aRes.cpu >= 0 ? aRes.cpu : 0
+    const bCpus = bRes.cpu >= 0 ? bRes.cpu : 0
+    if (aCpus > bCpus) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (aCpus < bCpus) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else if (sort == 'end') {
+    const aEnd = acctJobEndTimestamp(a)
+    const bEnd = acctJobEndTimestamp(b)
+    if (aEnd === undefined && bEnd === undefined) {
+      return compareClusterAcctJobSortOrder(a, b, 'id', order)
+    }
+    if (aEnd === undefined) {
+      return order == 'asc' ? -1 : 1
+    }
+    if (bEnd === undefined) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (aEnd > bEnd) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (aEnd < bEnd) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  } else {
+    if (a.job_id > b.job_id) {
+      return order == 'asc' ? 1 : -1
+    }
+    if (a.job_id < b.job_id) {
+      return order == 'asc' ? -1 : 1
+    }
+    return 0
+  }
+}
+
 export function jobResourcesTRES(tres: ClusterTRES[]): {
   node: number
   cpu: number
@@ -326,7 +457,7 @@ export function jobResourcesTRES(tres: ClusterTRES[]): {
  * "gres/gpu:tesla:2" -> 2
  * "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)" -> 6
  */
-function countGPUTRESRequest(tresRequest: string): number {
+export function countGPUTRESRequest(tresRequest: string): number {
   let total = 0
   for (const _tres of tresRequest.split(',')) {
     // remove optional index between parenthesis
@@ -342,18 +473,49 @@ function countGPUTRESRequest(tresRequest: string): number {
   return total
 }
 
+/* Untyped allocated GPU GRES (name is exactly "gpu"). */
+function isUntypedAllocatedGpuGres(entry: ClusterTRES): boolean {
+  return entry.type === 'gres' && entry.count > 0 && entry.name === 'gpu'
+}
+
+/* Typed allocated GPU GRES (eg. "gpu:h100"). */
+function isTypedAllocatedGpuGres(entry: ClusterTRES): boolean {
+  if (entry.type !== 'gres' || entry.count <= 0) return false
+  return entry.name.startsWith('gpu:')
+}
+
+/*
+ * Return the number of GPUs from allocated TRES (slurmdbd / OpenAPI tres.allocated).
+ *
+ * Slurm may report both an untyped "gpu" line and per-type lines (eg. "gpu:h100").
+ * When the untyped entry is present, use its count only. Otherwise, sum typed entries.
+ */
+export function countGPUFromAllocatedTRES(tres: ClusterTRES[]): number {
+  const untyped = tres.filter(isUntypedAllocatedGpuGres)
+  if (untyped.length > 0) {
+    return untyped.reduce((total, entry) => total + entry.count, 0)
+  }
+  return tres.reduce((total, entry) => {
+    if (!isTypedAllocatedGpuGres(entry)) return total
+    return total + entry.count
+  }, 0)
+}
+
 /*
  * Return number of GPU allocated to a job.
  *
- * For running jobs, allocated GPUs can be retrieved from gres_detail attribute
- * provided by slurmctld. This attribute is an empty string for pending and
- * completed jobs. The attribute does not even exist on archived jobs with
- * attributes from slurmdbd only. When the value is not available, return -1.
+ * Prefer gres_detail from slurmctld when present (typical for running jobs).
+ * Otherwise, parse GPU GRES counts from tres.allocated (slurmdbd / job detail).
+ * Return -1 when neither source reports allocated GPUs.
  */
 export function jobAllocatedGPU(job: ClusterJob | ClusterIndividualJob): number {
   if (job.gres_detail && job.gres_detail.length)
     /* parse strings in job.gres_detail array */
     return job.gres_detail.reduce((gpu, currentGres) => gpu + countGPUTRESRequest(currentGres), 0)
+  if ('tres' in job) {
+    const fromTres = countGPUFromAllocatedTRES(job.tres.allocated)
+    if (fromTres > 0) return fromTres
+  }
   return -1
 }
 
@@ -415,6 +577,32 @@ export function jobResourcesGPU(job: ClusterJob | ClusterIndividualJob): {
   const result = jobAllocatedGPU(job)
   if (result != -1) return { count: result, reliable: true }
   return jobRequestedGPU(job)
+}
+
+/* Return the current states of a job from accounting. */
+export function acctJobStates(job: ClusterAcctJob): string[] {
+  return job.state?.current ?? []
+}
+
+/* Unix end time (seconds) for a terminated accounting job, if set. */
+export function acctJobEndTimestamp(job: ClusterAcctJob): number | undefined {
+  const end = job.time?.end
+  if (end === undefined) return undefined
+  if (typeof end === 'number') return end
+  if (end.set && !end.infinite) return end.number
+  return undefined
+}
+
+/* Format the end time of a terminated accounting job as a human-readable string. */
+export function formatAcctJobEndTime(job: ClusterAcctJob): string {
+  const end = acctJobEndTimestamp(job)
+  if (end === undefined) return '-'
+  return new Date(end * 1000).toLocaleString()
+}
+
+/* Return the number of GPUs allocated to a job from accounting TRES. */
+export function acctJobAllocatedGPU(job: ClusterAcctJob): number {
+  return countGPUFromAllocatedTRES(job.tres.allocated)
 }
 
 /* Convert a number of megabytes into a string with simplified unit (eg. GB, TB)
@@ -819,7 +1007,7 @@ const GatewayClusterAPIKeys = [
   'cache_stats'
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
-const GatewayClusterWithNumberAPIKeys = ['job'] as const
+const GatewayClusterWithNumberAPIKeys = ['job', 'jobsPast'] as const
 export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
 const GatewayClusterWithStringAPIKeys = [
   'node',
@@ -902,6 +1090,10 @@ export function useGatewayAPI() {
   async function jobs(cluster: string, node?: string): Promise<ClusterJob[]> {
     if (node) return await restAPI.get<ClusterJob[]>(`/agents/${cluster}/jobs?node=${node}`)
     return await restAPI.get<ClusterJob[]>(`/agents/${cluster}/jobs`)
+  }
+
+  async function jobsPast(cluster: string, hours: number): Promise<ClusterAcctJob[]> {
+    return await restAPI.get<ClusterAcctJob[]>(`/agents/${cluster}/jobs/past?hours=${hours}`)
   }
 
   async function job(cluster: string, job: number): Promise<ClusterIndividualJob> {
@@ -1070,6 +1262,7 @@ export function useGatewayAPI() {
     ping,
     stats,
     jobs,
+    jobsPast,
     job,
     nodes,
     node,

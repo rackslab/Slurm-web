@@ -24,7 +24,7 @@ export interface ClusterDataPoller<ResponseType> {
   loaded: Ref<boolean>
   setCluster: (newCluster: string) => void
   setCallback: (newCallback: GatewayAnyClusterApiKey) => void
-  setParam: (newOtherParam: string | number) => void
+  setParam: (newOtherParam: string | number | undefined) => void
 }
 
 export function useClusterDataPoller<Type>(
@@ -39,6 +39,13 @@ export function useClusterDataPoller<Type>(
   const unable: Ref<boolean> = ref(false)
   const loaded: Ref<boolean> = ref(false)
   let _stop: boolean = false
+  /*
+   * Monotonic id for each poll loop. stop() bumps this so any in-flight start()
+   * (awaiting poll()) cannot schedule another interval after a restart. Without
+   * this, setParam/setCluster during an active request could leave multiple
+   * setTimeout chains running and stack pollers every timeout ms.
+   */
+  let _pollGeneration = 0
   const gateway = useGatewayAPI()
   const runtime = useRuntimeStore()
   const { reportAuthenticationError, reportPermissionError } = useErrorsHandler()
@@ -76,18 +83,28 @@ export function useClusterDataPoller<Type>(
   }
 
   async function start() {
+    const generation = ++_pollGeneration
     console.log(`Start polling ${callback} on cluster ${cluster}`)
     _stop = false
     await poll()
-    if (!_stop) {
-      _timeout = window.setTimeout(start, timeout, cluster)
+    /* Only the latest loop may arm the next tick (generation still matches). */
+    if (!_stop && generation === _pollGeneration) {
+      _timeout = window.setTimeout(() => {
+        /* Re-check: stop() may have run while the timer was pending. */
+        if (generation === _pollGeneration) {
+          void start()
+        }
+      }, timeout)
     }
   }
 
   function stop() {
     console.log(`Stop polling ${callback} for cluster ${cluster}`)
     _stop = true
+    /* Invalidate in-flight start() so it will not schedule after poll() returns. */
+    _pollGeneration++
     clearTimeout(_timeout)
+    _timeout = -1
     gateway.abort()
   }
 
@@ -105,7 +122,7 @@ export function useClusterDataPoller<Type>(
     start()
   }
 
-  function setParam(newOtherParam: string | number) {
+  function setParam(newOtherParam: string | number | undefined) {
     stop()
     otherParam = newOtherParam
     loaded.value = false

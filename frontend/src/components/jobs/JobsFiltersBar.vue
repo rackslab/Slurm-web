@@ -19,6 +19,8 @@ import {
   SwatchIcon
 } from '@heroicons/vue/20/solid'
 
+const { past = false } = defineProps<{ past?: boolean }>()
+
 const runtimeStore = useRuntimeStore()
 
 const activeFiltersGroups: Array<{
@@ -30,9 +32,11 @@ const activeFiltersGroups: Array<{
 }> = [
   {
     group: 'state',
-    list: 'states',
+    list: past ? 'pastStates' : 'activeStates',
     icon: BoltIcon,
-    removeCallback: runtimeStore.jobs.removeStateFilter,
+    removeCallback: past
+      ? runtimeStore.jobs.removePastStateFilter
+      : runtimeStore.jobs.removeActiveStateFilter,
     colors: {
       badge: 'border-gray-200 dark:border-gray-400 bg-gray-600 dark:bg-gray-500',
       button: 'text-gray-400 hover:bg-gray-700 hover:text-gray-500'
@@ -83,7 +87,7 @@ const activeFiltersGroups: Array<{
 
 <template>
   <!-- Active filters -->
-  <div v-show="!runtimeStore.jobs.emptyFilters()" class="bg-gray-100 dark:bg-gray-800">
+  <div v-show="!runtimeStore.jobs.emptyFilters(past)" class="bg-gray-100 dark:bg-gray-800">
     <div class="mx-auto px-4 py-3 sm:flex sm:items-center sm:px-6 lg:px-8">
       <h3 class="text-sm font-medium text-gray-500">
         <FunnelIcon class="mr-1 h-4 w-4" />

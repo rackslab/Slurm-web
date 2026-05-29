@@ -7,35 +7,65 @@
 -->
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/vue/20/solid'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { JobSortCriterion } from '@/stores/runtime/jobs'
+import type { JobSortCriterion, JobSortOrder } from '@/stores/runtime/jobs'
+
+const { past = false } = defineProps<{ past?: boolean }>()
 
 const runtimeStore = useRuntimeStore()
 
-const sortOptions = [
+const activeSortOptions = [
   { name: '#ID', type: 'id' },
   { name: 'State', type: 'state' },
   { name: 'User', type: 'user' },
   { name: 'Priority', type: 'priority' },
   { name: 'Resources', type: 'resources' }
-]
+] as const
+
+const pastSortOptions = [
+  { name: 'End time', type: 'end' },
+  { name: '#ID', type: 'id' },
+  { name: 'State', type: 'state' },
+  { name: 'User', type: 'user' },
+  { name: 'Resources', type: 'resources' }
+] as const
+
+const sortOptions = computed(() => (past ? pastSortOptions : activeSortOptions))
+
+const selectedSort = computed({
+  get: (): JobSortCriterion => (past ? runtimeStore.jobs.pastSort : runtimeStore.jobs.activeSort),
+  set: (value: JobSortCriterion) => {
+    if (past) {
+      runtimeStore.jobs.pastSort = value
+    } else {
+      runtimeStore.jobs.activeSort = value
+    }
+  }
+})
+
+const selectedOrder = computed({
+  get: (): JobSortOrder => (past ? runtimeStore.jobs.pastOrder : runtimeStore.jobs.activeOrder),
+  set: (value: JobSortOrder) => {
+    if (past) {
+      runtimeStore.jobs.pastOrder = value
+    } else {
+      runtimeStore.jobs.activeOrder = value
+    }
+  }
+})
 
 const emit = defineEmits(['sort'])
 
 function sortSelected(newCriteria: JobSortCriterion) {
-  runtimeStore.jobs.sort = newCriteria
+  selectedSort.value = newCriteria
   emit('sort')
 }
 
 function triggerSortOrder() {
-  console.log(`Trigger job sorter order: ${runtimeStore.jobs.order}`)
-  if (runtimeStore.jobs.order == 'asc') {
-    runtimeStore.jobs.order = 'desc'
-  } else {
-    runtimeStore.jobs.order = 'asc'
-  }
+  selectedOrder.value = selectedOrder.value === 'asc' ? 'desc' : 'asc'
   emit('sort')
 }
 </script>
@@ -47,7 +77,7 @@ function triggerSortOrder() {
       class="relative inline-flex items-center rounded-l-md bg-white px-2 py-1 text-sm font-semibold text-gray-600 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-10 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700 hover:dark:bg-gray-700"
     >
       <span class="sr-only">Order</span>
-      <BarsArrowDownIcon v-if="runtimeStore.jobs.order === 'asc'" class="size-4" />
+      <BarsArrowDownIcon v-if="selectedOrder === 'asc'" class="size-4" />
       <BarsArrowUpIcon v-else class="size-4" />
     </button>
     <Menu as="div" class="relative -ml-px block">
@@ -73,7 +103,7 @@ function triggerSortOrder() {
               <a
                 @click="sortSelected(option.type as JobSortCriterion)"
                 :class="[
-                  option.type == runtimeStore.jobs.sort
+                  option.type == selectedSort
                     ? 'font-medium text-gray-900 dark:text-gray-100'
                     : 'text-gray-500 dark:text-gray-400',
                   active ? 'bg-gray-100 dark:bg-gray-700' : '',
