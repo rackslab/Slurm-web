@@ -19,6 +19,11 @@
 queue and all jobs details.
 
 
+|jobs-view-past
+|Permission to view the past jobs and query finished jobs from slurm
+accounting.
+
+
 |view-nodes
 |Get _Resources_ entry in main menu and permission to view the list of
 compute nodes in cluster with their status in Slurm.
