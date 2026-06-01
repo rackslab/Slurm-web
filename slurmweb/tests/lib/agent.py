@@ -81,7 +81,12 @@ class FakeRacksDBWebBlueprint(Blueprint):
 
 class TestAgentConfBase(unittest.TestCase):
     def setup_agent_conf(
-        self, slurmrestd_parameters=None, racksdb=True, metrics=False, cache=False
+        self,
+        slurmrestd_parameters=None,
+        racksdb=True,
+        metrics=False,
+        cache=False,
+        policy_ini=None,
     ):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
@@ -100,8 +105,15 @@ class TestAgentConfBase(unittest.TestCase):
         # Policy definition path
         policy_defs = os.path.join(vendor_path, "policy.yml")
 
-        # Policy path
-        policy = os.path.join(vendor_path, "policy.ini")
+        # Policy roles path (vendor default or custom content for tests)
+        self.policy = None
+        if policy_ini is not None:
+            self.policy = tempfile.NamedTemporaryFile(mode="w+", suffix=".ini")
+            self.policy.write(policy_ini)
+            self.policy.flush()
+            policy = self.policy.name
+        else:
+            policy = os.path.join(vendor_path, "policy.ini")
 
         # Generate configuration file
         self.conf = tempfile.NamedTemporaryFile(mode="w+")
@@ -145,6 +157,7 @@ class TestAgentBase(TestSlurmrestdClient):
         racksdb=True,
         metrics=False,
         cache=False,
+        policy_ini=None,
         racksdb_format_error=False,
         racksdb_schema_error=False,
         anonymous_user=False,
@@ -163,6 +176,7 @@ class TestAgentBase(TestSlurmrestdClient):
             racksdb=racksdb,
             metrics=metrics,
             cache=cache,
+            policy_ini=policy_ini,
         )
 
         if racksdb:
@@ -204,6 +218,8 @@ class TestAgentBase(TestSlurmrestdClient):
         self.conf.close()
         self.key.close()
         self.slurmrestd_key.close()
+        if self.policy is not None:
+            self.policy.close()
 
         self.app.config.update(
             {

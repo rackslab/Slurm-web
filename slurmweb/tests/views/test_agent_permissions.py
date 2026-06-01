@@ -4,6 +4,9 @@
 #
 # SPDX-License-Identifier: MIT
 
+import textwrap
+import warnings
+
 from slurmweb.version import get_version
 
 from ..lib.agent import TestAgentBase
@@ -98,7 +101,7 @@ class TestAgentPermissions(TestAgentBase):
             {
                 "code": 403,
                 "description": (
-                    "Anonymous role is not allowed to perform action view-stats"
+                    "Anonymous role is not allowed to perform action stats-view"
                 ),
                 "name": "Forbidden",
             },
@@ -130,7 +133,7 @@ class TestAgentPermissions(TestAgentBase):
             {
                 "code": 403,
                 "description": (
-                    "Anonymous role is not allowed to perform action view-accounts"
+                    "Anonymous role is not allowed to perform action accounts-view"
                 ),
                 "name": "Forbidden",
             },
@@ -148,4 +151,30 @@ class TestAgentPermissions(TestAgentBase):
                 "description": "Unable to decode token: Not enough segments",
                 "name": "Unauthorized",
             },
+        )
+
+    def test_deprecated_view_nodes_maps_to_nodes_view(self):
+        with warnings.catch_warnings(record=True) as caught:
+            self.setup_client(
+                policy_ini=textwrap.dedent(
+                    """
+                    [roles]
+                    user=ALL
+
+                    [user]
+                    actions=view-nodes
+                    """
+                ),
+            )
+        response = self.client.get(f"/v{get_version()}/permissions")
+        self.assertEqual(response.status_code, 200)
+        self.assertCountEqual(response.json["actions"], ["nodes-view"])
+        deprecation_warnings = [
+            str(warning.message)
+            for warning in caught
+            if warning.category is UserWarning
+        ]
+        self.assertEqual(
+            deprecation_warnings,
+            ["Action view-nodes is deprecated; use nodes-view instead"],
         )
