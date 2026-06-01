@@ -6,17 +6,17 @@
     "name": "nova",
     "permissions": {
       "actions": [
-        "view-stats",
-        "view-accounts",
+        "stats-view",
+        "accounts-view",
         "associations-view",
-        "view-qos",
+        "qos-view",
         "cache-reset",
-        "view-jobs",
-        "view-reservations",
+        "jobs-view",
+        "reservations-view",
         "cache-view",
         "jobs-view-past",
-        "view-nodes",
-        "view-partitions"
+        "nodes-view",
+        "partitions-view"
       ],
       "roles": [
         "admin"
@@ -34,17 +34,17 @@
     "name": "vortex",
     "permissions": {
       "actions": [
-        "view-reservations",
-        "view-nodes",
-        "view-qos",
+        "reservations-view",
+        "nodes-view",
+        "qos-view",
         "cache-reset",
         "associations-view",
-        "view-partitions",
-        "view-stats",
+        "partitions-view",
+        "stats-view",
         "jobs-view-past",
         "cache-view",
-        "view-jobs",
-        "view-accounts"
+        "jobs-view",
+        "accounts-view"
       ],
       "roles": [
         "admin"
@@ -62,17 +62,17 @@
     "name": "quark",
     "permissions": {
       "actions": [
-        "view-nodes",
-        "view-qos",
+        "nodes-view",
+        "qos-view",
         "jobs-view-past",
-        "view-reservations",
+        "reservations-view",
         "associations-view",
-        "view-stats",
+        "stats-view",
         "cache-view",
-        "view-jobs",
-        "view-partitions",
+        "jobs-view",
+        "partitions-view",
         "cache-reset",
-        "view-accounts"
+        "accounts-view"
       ],
       "roles": [
         "admin"
@@ -90,17 +90,17 @@
     "name": "zenith",
     "permissions": {
       "actions": [
-        "view-accounts",
-        "view-reservations",
+        "accounts-view",
+        "reservations-view",
         "cache-view",
-        "view-partitions",
+        "partitions-view",
         "associations-view",
-        "view-stats",
-        "view-qos",
+        "stats-view",
+        "qos-view",
         "jobs-view-past",
         "cache-reset",
-        "view-jobs",
-        "view-nodes"
+        "jobs-view",
+        "nodes-view"
       ],
       "roles": [
         "admin"
@@ -118,17 +118,17 @@
     "name": "titan",
     "permissions": {
       "actions": [
-        "view-stats",
+        "stats-view",
         "associations-view",
-        "view-qos",
+        "qos-view",
         "cache-reset",
-        "view-partitions",
+        "partitions-view",
         "cache-view",
-        "view-nodes",
-        "view-jobs",
+        "nodes-view",
+        "jobs-view",
         "jobs-view-past",
-        "view-reservations",
-        "view-accounts"
+        "reservations-view",
+        "accounts-view"
       ],
       "roles": [
         "admin"
