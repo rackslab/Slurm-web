@@ -15,8 +15,8 @@
 [cols="1s,4a"]
 |===
 |Action|Description
-{% for action, description in actions.items() %}
+{% for action, definition in actions.items() %}
 |{{ action }}
-|{{ description }}
+|{% if definition is mapping %}{{ definition.description }}{% else %}{{ definition }}{% endif %}
 {% endfor %}
 |===
