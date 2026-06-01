@@ -239,8 +239,8 @@ In this example, the user _cingram_ is member of _users_ and _biology_ groups
 in LDAP directory.
 
 On cluster _emulator_, he is assigned roles _special_ and _user_ with
-permissions on `view-jobs`, `view-qos` and `view-stats` actions.
+permissions on `jobs-view`, `qos-view` and `stats-view` actions.
 
 On cluster _tiny_, he is assigned roles _admin_ and _users_ with permissions on
-`view-accounts`, `view-jobs`, `view-nodes`, `view-partitions`, `view-qos`,
-`view-reservations` and `view-stats` actions.
+`accounts-view`, `jobs-view`, `nodes-view`, `partitions-view`, `qos-view`,
+`reservations-view` and `stats-view` actions.

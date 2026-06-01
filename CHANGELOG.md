@@ -91,6 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs:
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.
+  - Update policy action names in quickstart guide and authorization policy
+    configuration guide.
 
 ### Fixed
 - front:

@@ -64,20 +64,20 @@ user=@rd,@it
 admin=@it
 
 [user]
-actions=view-stats,view-jobs,jobs-view-past,view-accounts
+actions=stats-view,jobs-view,jobs-view-past,accounts-view
 
 [admin]
-actions=view-nodes,view-partitions,view-qos,view-reservations
+actions=nodes-view,partitions-view,qos-view,reservations-view
 ----
 
 Two roles are defined in this authorization policy:
 
 * *user* role is assigned to all members of _rd_ and _it_ LDAP groups. Users
-  with this role have permissions on `view-stats`, `view-jobs`, `jobs-view-past`
-  and `view-accounts` actions.
+  with this role have permissions on `stats-view`, `jobs-view`, `jobs-view-past`
+  and `accounts-view` actions.
 * *admin* role is assigned to all members of _it_ LDAP group. Users with this
-  role haves permissions on `view-nodes`, `view-partitions`, `view-qos` and
-  `view-reservations` actions.
+  role haves permissions on `nodes-view`, `partitions-view`, `qos-view` and
+  `reservations-view` actions.
 
 Members of _it_ group inherit both *user* and *admin* roles with the union of
 all granted actions.
@@ -97,27 +97,27 @@ user=ALL
 admin=@it,jdoe
 
 [anonymous]
-actions=view-stats
+actions=stats-view
 
 [user]
-actions=view-stats,view-jobs,jobs-view-past,view-accounts
+actions=stats-view,jobs-view,jobs-view-past,accounts-view
 
 [admin]
-actions=view-nodes,view-partitions,view-qos,view-reservations
+actions=nodes-view,partitions-view,qos-view,reservations-view
 ----
 
 Anonymous role is enabled in this authorization policy. It is assigned to all
 users when authentication is disabled in Slurm-web gateway. This role is only
-granted the `view-stats` action.
+granted the `stats-view` action.
 
 Two other roles are defined in this authorization policy:
 
 * *user* role is assigned to all users authenticated on LDAP directory. This
-  role gives permissions on `view-stats`, `view-jobs`, `jobs-view-past` and
-  `view-accounts` actions.
+  role gives permissions on `stats-view`, `jobs-view`, `jobs-view-past` and
+  `accounts-view` actions.
 * *admin* role is assigned to all members of _it_ LDAP group and _jdoe_
-  individual user. Users with this role haves permissions on `view-nodes`,
-  `view-partitions`, `view-qos` and `view-reservations` actions.
+  individual user. Users with this role haves permissions on `nodes-view`,
+  `partitions-view`, `qos-view` and `reservations-view` actions.
 
 Members of _it_ group and _jdoe_ inherit both *user* and *admin* roles with the
 union of all granted actions.

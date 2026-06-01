@@ -482,18 +482,18 @@ user=@biology
 admin=njones
 
 [user]
-actions=view-stats,view-jobs,jobs-view-past
+actions=stats-view,jobs-view,jobs-view-past
 
 [admin]
-actions=view-partitions,view-qos,view-accounts,view-reservations,associations-view
+actions=partitions-view,qos-view,accounts-view,reservations-view,associations-view
 ----
 
 This policy defines *two roles*:
 
 * *user* for members of _biology_ group. This role has permission on
-  `view-stats`, `view-jobs`, `jobs-view-past` and `view-nodes` actions.
-* *admin* for _njones_ user. This role has permission on `view-partitions`,
-  `view-qos`,`view-accounts` and `view-reservations` actions.
+  `stats-view`, `jobs-view`, `jobs-view-past` and `nodes-view` actions.
+* *admin* for _njones_ user. This role has permission on `partitions-view`,
+  `qos-view`,`accounts-view` and `reservations-view` actions.
 
 NOTE: Please refer to
 xref:conf:policy.adoc#actions[Authorization policy reference documentation] for
