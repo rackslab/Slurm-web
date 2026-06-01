@@ -20,7 +20,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -28,7 +28,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     runtime.addCluster(clusterFoo)
     runtime.addCluster(clusterBar)
@@ -42,7 +42,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -50,7 +50,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     runtime.addCluster(clusterFoo)
     runtime.addCluster(clusterBar)
@@ -64,7 +64,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -72,7 +72,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     runtime.addCluster(clusterFoo)
     runtime.addCluster(clusterBar)
@@ -86,7 +86,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -108,7 +108,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -116,7 +116,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     runtime.addCluster(clusterFoo)
     runtime.addCluster(clusterBar)
@@ -131,7 +131,7 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs', 'view-nodes'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view', 'nodes-view'] }
     }
     const clusterBar = {
       name: 'bar',
@@ -139,12 +139,12 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user', 'admin'], actions: ['view-jobs'] }
+      permissions: { roles: ['user', 'admin'], actions: ['jobs-view'] }
     }
     runtime.addCluster(clusterFoo)
     runtime.addCluster(clusterBar)
-    expect(runtime.hasClusterPermission('foo', 'view-nodes')).toBeTruthy()
-    expect(runtime.hasClusterPermission('bar', 'view-nodes')).toBeFalsy()
+    expect(runtime.hasClusterPermission('foo', 'nodes-view')).toBeTruthy()
+    expect(runtime.hasClusterPermission('bar', 'nodes-view')).toBeFalsy()
   })
 
   describe('hasAnyPermission', () => {
@@ -154,27 +154,27 @@ describe('Runtime Store', () => {
       racksdb: true,
       metrics: true,
       cache: true,
-      permissions: { roles: ['user'], actions: ['view-jobs'] }
+      permissions: { roles: ['user'], actions: ['jobs-view'] }
     }
 
     test('returns true when no cluster is selected', () => {
       const runtime = useRuntimeStore()
       expect(runtime.currentCluster).toBeUndefined()
-      expect(runtime.hasAnyPermission(['view-jobs', 'view-nodes'])).toBe(true)
+      expect(runtime.hasAnyPermission(['jobs-view', 'nodes-view'])).toBe(true)
     })
 
     test('returns true when current cluster has at least one permission', () => {
       const runtime = useRuntimeStore()
       runtime.addCluster(clusterFoo)
       runtime.currentCluster = clusterFoo
-      expect(runtime.hasAnyPermission(['view-nodes', 'view-jobs'])).toBe(true)
+      expect(runtime.hasAnyPermission(['nodes-view', 'jobs-view'])).toBe(true)
     })
 
     test('returns false when current cluster has none of the permissions', () => {
       const runtime = useRuntimeStore()
       runtime.addCluster(clusterFoo)
       runtime.currentCluster = clusterFoo
-      expect(runtime.hasAnyPermission(['view-nodes', 'jobs-view-past'])).toBe(false)
+      expect(runtime.hasAnyPermission(['nodes-view', 'jobs-view-past'])).toBe(false)
     })
 
     test('returns false for an empty permission list', () => {

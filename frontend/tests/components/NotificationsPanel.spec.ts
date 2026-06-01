@@ -10,7 +10,7 @@ describe('DashboardCharts.vue', () => {
     init_plugins()
     const cluster = {
       name: 'foo',
-      permissions: { roles: ['admin'], actions: ['view-nodes', 'view-jobs'] },
+      permissions: { roles: ['admin'], actions: ['nodes-view', 'jobs-view'] },
       racksdb: true,
       infrastructure: 'foo',
       metrics: true,

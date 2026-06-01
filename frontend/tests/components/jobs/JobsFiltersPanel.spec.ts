@@ -17,7 +17,7 @@ describe('JobsFiltersPanel.vue', () => {
       name: 'foo',
       permissions: {
         roles: ['admin'],
-        actions: ['view-jobs', 'view-accounts', 'view-qos', 'view-partitions']
+        actions: ['jobs-view', 'accounts-view', 'qos-view', 'partitions-view']
       },
       racksdb: true,
       infrastructure: 'foo',
@@ -122,7 +122,7 @@ describe('JobsFiltersPanel.vue', () => {
   test('hides accounts/qos/partitions when permissions are missing', async () => {
     const runtimeStore = useRuntimeStore()
     // Remove permissions before mounting
-    runtimeStore.currentCluster!.permissions.actions = ['view-jobs']
+    runtimeStore.currentCluster!.permissions.actions = ['jobs-view']
     const wrapper = mount(JobsFiltersPanel, {
       props: { cluster: 'foo', nbJobs: 0 },
       global: {

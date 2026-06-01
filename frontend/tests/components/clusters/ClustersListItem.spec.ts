@@ -36,7 +36,7 @@ describe('ClustersListItem.vue', () => {
     mockGatewayAPI.ping.mockReset()
   })
   test('cluster with permission', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockReturnValueOnce(Promise.resolve(ping))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
@@ -57,7 +57,7 @@ describe('ClustersListItem.vue', () => {
     expect(useRuntimeStore().getCluster('foo').error).toBeFalsy()
   })
   test('cluster error', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockImplementationOnce(() => {
       throw new APIServerError(500, 'fake error')
     })
@@ -80,7 +80,7 @@ describe('ClustersListItem.vue', () => {
     expect(useRuntimeStore().getCluster('foo').error).toBeTruthy()
   })
   test('cluster loading', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockReturnValueOnce(Promise.resolve(ping))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
@@ -112,8 +112,8 @@ describe('ClustersListItem.vue', () => {
     // Check cluster status is denied
     expect(wrapper.get('div div p').text()).toBe('Denied')
   })
-  test('cluster without view-stats permission', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-jobs']
+  test('cluster without stats-view permission', async () => {
+    useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view']
     mockGatewayAPI.ping.mockReturnValueOnce(Promise.resolve(ping))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
@@ -131,7 +131,7 @@ describe('ClustersListItem.vue', () => {
     expect(wrapper.get('div div p').text()).toBe('Available')
   })
   test('authentication error', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockImplementationOnce(() => {
       throw new AuthenticationError('fake authentication error')
     })
@@ -146,7 +146,7 @@ describe('ClustersListItem.vue', () => {
     expect(useAuthStore().returnUrl).toBe('/clusters')
   })
   test('emit pinged event when cluster with permissions successfully pings', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockReturnValueOnce(Promise.resolve(ping))
     const wrapper = shallowMount(ClusterListItem, {
       props: {
@@ -162,7 +162,7 @@ describe('ClustersListItem.vue', () => {
     expect(wrapper.emitted('pinged')?.[0]?.[0]).toBe(cluster)
   })
   test('emit pinged event when cluster with permissions fails to ping', async () => {
-    useRuntimeStore().availableClusters[0].permissions.actions = ['view-stats', 'view-jobs']
+    useRuntimeStore().availableClusters[0].permissions.actions = ['stats-view', 'jobs-view']
     mockGatewayAPI.ping.mockImplementationOnce(() => {
       throw new APIServerError(500, 'fake error')
     })

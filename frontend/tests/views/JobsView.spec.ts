@@ -22,7 +22,7 @@ describe('JobView.vue', () => {
     runtimeStore.availableClusters = [
       {
         name: 'foo',
-        permissions: { roles: [], actions: ['view-jobs'] },
+        permissions: { roles: [], actions: ['jobs-view'] },
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,

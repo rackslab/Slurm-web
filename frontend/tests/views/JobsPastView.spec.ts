@@ -22,7 +22,7 @@ describe('JobsPastView.vue', () => {
     runtimeStore.availableClusters = [
       {
         name: 'foo',
-        permissions: { roles: [], actions: ['jobs-view-past', 'view-jobs'] },
+        permissions: { roles: [], actions: ['jobs-view-past', 'jobs-view'] },
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,

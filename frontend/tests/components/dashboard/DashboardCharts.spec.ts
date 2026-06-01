@@ -11,7 +11,7 @@ describe('DashboardCharts.vue', () => {
     init_plugins()
     const cluster = {
       name: 'foo',
-      permissions: { roles: ['admin'], actions: ['view-nodes', 'view-jobs'] },
+      permissions: { roles: ['admin'], actions: ['nodes-view', 'jobs-view'] },
       racksdb: true,
       infrastructure: 'foo',
       metrics: true,
@@ -31,10 +31,10 @@ describe('DashboardCharts.vue', () => {
     wrapper.getComponent(ChartResourcesHistogram)
     wrapper.getComponent(ChartJobsHistogram)
   })
-  test('should not display resources charts without view-nodes permission', () => {
+  test('should not display resources charts without nodes-view permission', () => {
     const runtimeStore = useRuntimeStore()
     runtimeStore.currentCluster!.permissions.actions =
-      runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'view-nodes')
+      runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'nodes-view')
     const wrapper = shallowMount(DashboardCharts, {
       props: {
         cluster: 'foo'
@@ -44,10 +44,10 @@ describe('DashboardCharts.vue', () => {
     expect(wrapper.findComponent(ChartResourcesHistogram).exists()).toBe(false)
     wrapper.getComponent(ChartJobsHistogram)
   })
-  test('should not display jobs charts without view-jobs permission', () => {
+  test('should not display jobs charts without jobs-view permission', () => {
     const runtimeStore = useRuntimeStore()
     runtimeStore.currentCluster!.permissions.actions =
-      runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'view-jobs')
+      runtimeStore.currentCluster!.permissions.actions.filter((action) => action !== 'jobs-view')
     const wrapper = shallowMount(DashboardCharts, {
       props: {
         cluster: 'foo'
