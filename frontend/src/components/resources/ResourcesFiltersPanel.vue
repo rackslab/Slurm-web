@@ -124,7 +124,7 @@ const runtimeStore = useRuntimeStore()
               </Disclosure>
 
               <Disclosure
-                v-if="runtimeStore.hasPermission('view-partitions')"
+                v-if="runtimeStore.hasPermission('partitions-view')"
                 as="div"
                 class="border-t border-t-gray-200 px-4 py-6 dark:border-t-gray-600"
                 v-slot="{ open }"

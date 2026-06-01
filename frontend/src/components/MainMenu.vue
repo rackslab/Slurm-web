@@ -40,20 +40,20 @@ const navigation: Array<{
   icon: typeof HomeIcon
   permissions: string[]
 }> = [
-  { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permissions: ['view-stats'] },
+  { name: 'Dashboard', route: 'dashboard', icon: HomeIcon, permissions: ['stats-view'] },
   {
     name: 'Jobs',
     route: 'jobs',
     icon: PlayCircleIcon,
-    permissions: ['view-jobs', 'jobs-view-past']
+    permissions: ['jobs-view', 'jobs-view-past']
   },
-  { name: 'Resources', route: 'resources', icon: CpuChipIcon, permissions: ['view-nodes'] },
-  { name: 'QOS', route: 'qos', icon: SwatchIcon, permissions: ['view-qos'] },
+  { name: 'Resources', route: 'resources', icon: CpuChipIcon, permissions: ['nodes-view'] },
+  { name: 'QOS', route: 'qos', icon: SwatchIcon, permissions: ['qos-view'] },
   {
     name: 'Reservations',
     route: 'reservations',
     icon: CalendarIcon,
-    permissions: ['view-reservations']
+    permissions: ['reservations-view']
   },
   {
     name: 'Accounts',

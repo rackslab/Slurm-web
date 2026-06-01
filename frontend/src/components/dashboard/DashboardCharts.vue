@@ -79,6 +79,6 @@ onBeforeMount(() => {
       </span>
     </div>
   </div>
-  <ChartResourcesHistogram v-if="runtimeStore.hasPermission('view-nodes')" :cluster="cluster" />
-  <ChartJobsHistogram v-if="runtimeStore.hasPermission('view-jobs')" :cluster="cluster" />
+  <ChartResourcesHistogram v-if="runtimeStore.hasPermission('nodes-view')" :cluster="cluster" />
+  <ChartJobsHistogram v-if="runtimeStore.hasPermission('jobs-view')" :cluster="cluster" />
 </template>

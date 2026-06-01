@@ -83,7 +83,7 @@ onMounted(() => {
     </span>
     <ClusterStats
       v-if="
-        runtimeStore.hasClusterPermission(cluster.name, 'view-stats') && !loading && !cluster.error
+        runtimeStore.hasClusterPermission(cluster.name, 'stats-view') && !loading && !cluster.error
       "
       :cluster-name="cluster.name"
     />
