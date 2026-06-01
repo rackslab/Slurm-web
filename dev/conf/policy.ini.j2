@@ -3,7 +3,7 @@
 anonymous
 
 [anonymous]
-actions=view-stats,view-jobs,view-nodes,view-partitions,view-qos
+actions=stats-view,jobs-view,nodes-view,partitions-view,qos-view
 {% else %}
 
 {% if policy_extra_user_group %}
@@ -15,11 +15,11 @@ admin=@{{ groups[1].name }}
 special={{ users[3].login }}
 
 [user]
-actions=view-stats,view-jobs
+actions=stats-view,jobs-view
 
 [admin]
-actions=view-stats,view-jobs,jobs-view-past,view-nodes,view-partitions,view-qos,view-accounts,associations-view,view-reservations,cache-view,cache-reset
+actions=stats-view,jobs-view,jobs-view-past,nodes-view,partitions-view,qos-view,accounts-view,associations-view,reservations-view,cache-view,cache-reset
 
 [special]
-actions=view-qos
+actions=qos-view
 {% endif %}
