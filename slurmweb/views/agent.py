@@ -130,7 +130,7 @@ def slurmrest(method: str, *args: Tuple[Any, ...]):
     return getattr(current_app.slurmrestd, method)(*args)
 
 
-@rbac_action("view-stats")
+@rbac_action("stats-view")
 def stats():
     total = 0
     running = 0
@@ -162,7 +162,7 @@ def stats():
     )
 
 
-@rbac_action("view-jobs")
+@rbac_action("jobs-view")
 def jobs():
     node = request.args.get("node")
     if node:
@@ -171,7 +171,7 @@ def jobs():
         return jsonify(slurmrest("jobs_current"))
 
 
-@rbac_action("view-jobs")
+@rbac_action("jobs-view")
 def job(job: int):
     return jsonify(slurmrest("job", job))
 
@@ -189,32 +189,32 @@ def jobs_past():
     return jsonify(slurmrest("jobs_past", hours))
 
 
-@rbac_action("view-nodes")
+@rbac_action("nodes-view")
 def nodes():
     return jsonify(slurmrest("nodes"))
 
 
-@rbac_action("view-nodes")
+@rbac_action("nodes-view")
 def node(name: str):
     return jsonify(slurmrest("node", name))
 
 
-@rbac_action("view-partitions")
+@rbac_action("partitions-view")
 def partitions():
     return jsonify(slurmrest("partitions"))
 
 
-@rbac_action("view-qos")
+@rbac_action("qos-view")
 def qos():
     return jsonify(slurmrest("qos"))
 
 
-@rbac_action("view-reservations")
+@rbac_action("reservations-view")
 def reservations():
     return jsonify(slurmrest("reservations"))
 
 
-@rbac_action("view-accounts")
+@rbac_action("accounts-view")
 def accounts():
     return jsonify(slurmrest("accounts"))
 
@@ -268,10 +268,10 @@ def metrics(metric):
 
     # Dictionnary of metrics and required policy actions associations
     metrics_policy_actions = {
-        "nodes": "view-nodes",
-        "cores": "view-nodes",
-        "gpus": "view-nodes",
-        "jobs": "view-jobs",
+        "nodes": "nodes-view",
+        "cores": "nodes-view",
+        "gpus": "nodes-view",
+        "jobs": "jobs-view",
         "cache": "cache-view",
     }
 
