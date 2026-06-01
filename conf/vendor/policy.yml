@@ -1,28 +1,56 @@
 ---
 actions:
-  view-stats: |
+  stats-view: |
     View general cluster statistics in home dashboard and clusters list.
-  view-jobs: |
+  view-stats:
+    description: Deprecated. Use stats-view instead.
+    deprecated: true
+    replaced_by: stats-view
+  jobs-view: |
     Get _Jobs_ entry in main menu and permission to view all users jobs in
     queue and all jobs details.
+  view-jobs:
+    description: Deprecated. Use jobs-view instead.
+    deprecated: true
+    replaced_by: jobs-view
   jobs-view-past: |
     Permission to view the past jobs and query finished jobs from slurm
     accounting.
-  view-nodes: |
+  nodes-view: |
     Get _Resources_ entry in main menu and permission to view the list of
     compute nodes in cluster with their status in Slurm.
-  view-partitions: |
+  view-nodes:
+    description: Deprecated. Use nodes-view instead.
+    deprecated: true
+    replaced_by: nodes-view
+  partitions-view: |
     Permission to filter jobs and nodes by partition.
-  view-qos: |
+  view-partitions:
+    description: Deprecated. Use partitions-view instead.
+    deprecated: true
+    replaced_by: partitions-view
+  qos-view: |
     Get _QOS_ entry in main menu and permission to view the list of defined QOS.
-  view-accounts: |
+  view-qos:
+    description: Deprecated. Use qos-view instead.
+    deprecated: true
+    replaced_by: qos-view
+  accounts-view: |
     Permission to filter jobs by account.
+  view-accounts:
+    description: Deprecated. Use accounts-view instead.
+    deprecated: true
+    replaced_by: accounts-view
   associations-view: |
     Get _Accounts_ entry in main menu and permission to view the list of
     associations (accounts, users and limits).
-  view-reservations: |
+  reservations-view: |
     Get _Reservations_ entry in main menu and permission to view the list of
     defined reservations.
+  view-reservations:
+    description: Deprecated. Use reservations-view instead.
+    deprecated: true
+    replaced_by: reservations-view
   cache-view: |
     Access to cache information and metrics in settings panel.
   cache-reset: |

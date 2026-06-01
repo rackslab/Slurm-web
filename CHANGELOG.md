@@ -79,6 +79,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Require Node.js >= 20.19.
   - Update dependencies to latest versions (Vite 8, Vitest 4, ESLint 10,
     TypeScript 6, Tailwind CSS 4.3, …).
+- conf:
+  - Rename authorization policy actions from `view-*` to `{resource}-view`
+    (`stats-view`, `jobs-view`, `nodes-view`, `partitions-view`, `qos-view`,
+    `accounts-view`, `reservations-view`). Legacy `view-*` names remain accepted
+    in custom `policy.ini` files with deprecation warnings until updated.
+  - Update default vendor `policy.ini` to use new action names.
 - pkgs:
   - Bump minimal version of `RFL.authentication` to 1.8.0.
   - Bump minimal version of `RFL.settings` to v1.8.0.
