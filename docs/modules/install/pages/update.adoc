@@ -457,6 +457,54 @@ See xref:usage:manpages/slurm-web-gen-session-key.adoc[`slurm-web gen-session-ke
 command manpage] and xref:conf:auth/oidc.adoc[OIDC authentication] for more
 details.
 
+=== Authorization policy actions
+
+Slurm-web 7 renames authorization policy actions from the legacy `view-*`
+prefix to `<resource>-view`, consistent with actions such as `associations-view`
+and `cache-view`.
+
+If defined, the custom site policy in [.path]#`/etc/slurm-web/policy.ini`# must
+be updated to use the new action names:
+
+[cols="1,1"]
+|===
+|Deprecated legacy action |New action
+
+|`view-stats` |`stats-view`
+|`view-jobs` |`jobs-view`
+|`view-nodes` |`nodes-view`
+|`view-partitions` |`partitions-view`
+|`view-qos` |`qos-view`
+|`view-accounts` |`accounts-view`
+|`view-reservations` |`reservations-view`
+|===
+
+For example, update a role definition from:
+
+[source,ini]
+----
+[user]
+actions=view-stats,view-jobs,view-nodes
+----
+
+to:
+
+[source,ini]
+----
+[user]
+actions=stats-view,jobs-view,nodes-view
+----
+
+Installations without a custom [.path]#`/etc/slurm-web/policy.ini`# file use the
+updated vendor default policy and do not require this change.
+
+NOTE: Deprecated legacy `view-*` action names remain accepted in custom
+[.path]#`policy.ini`# files. They are automatically mapped to the new names at
+load time, with a deprecation warning logged until the file is updated.
+
+See xref:conf:policy.adoc[authorization policy configuration guide] for the full
+list of actions and roles.
+
 Then follow the xref:#_restart_services[restart services] and
 xref:#_check_status[check status] steps in the general procedure above to
 complete the upgrade.
