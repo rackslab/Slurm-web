@@ -36,8 +36,10 @@ describe('OidcCallbackView.vue', () => {
 
     const authStore = useAuthStore()
     expect(mockGatewayAPI.oidcSession).toHaveBeenCalled()
-    expect(authStore.login).toHaveBeenCalled()
+    expect(authStore.setSession).toHaveBeenCalled()
     expect(authStore.username).toBe('alice')
+    expect(router.push).toHaveBeenCalledTimes(1)
+    expect(router.push).toHaveBeenCalledWith({ name: 'clusters' })
     authStore.logout()
   })
 

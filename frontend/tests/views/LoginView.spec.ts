@@ -84,7 +84,7 @@ describe('LoginView.vue', () => {
       await wrapper.get('input#password').setValue('secret')
       await wrapper.get('button').trigger('submit')
       const authStore = useAuthStore()
-      expect(authStore.login).toHaveBeenCalled()
+      expect(authStore.setSession).toHaveBeenCalled()
       expect(authStore.username).toBe('jdoe')
       expect(authStore.token).toBe('SECRET-TOKEN')
       expect(authStore.groups).toStrictEqual(['scientists'])
@@ -102,7 +102,7 @@ describe('LoginView.vue', () => {
       await wrapper.get('input#password').setValue('secret')
       await wrapper.get('button').trigger('submit')
       const authStore = useAuthStore()
-      expect(authStore.login).not.toHaveBeenCalled()
+      expect(authStore.setSession).not.toHaveBeenCalled()
       expect(authStore.username).toBe(null)
       const runtimeStore = useRuntimeStore()
       expect(runtimeStore.reportError).toHaveBeenCalledWith(
@@ -110,6 +110,26 @@ describe('LoginView.vue', () => {
       )
       expect(wrapper.get('button').classes('animate-horizontal-shake')).toBe(true)
       expect(router.push).toHaveBeenCalledTimes(0)
+    })
+
+    test('successful login redirects to returnUrl when set', async () => {
+      mockGatewayAPI.login.mockReturnValueOnce(
+        Promise.resolve({
+          login: 'jdoe',
+          fullname: 'John Doe',
+          token: 'SECRET-TOKEN',
+          groups: []
+        })
+      )
+      const authStore = useAuthStore()
+      authStore.returnUrl = '/clusters/foo/dashboard'
+      const wrapper = shallowMount(LoginView, {})
+      await wrapper.get('input#user').setValue('jdoe')
+      await wrapper.get('input#password').setValue('secret')
+      await wrapper.get('button').trigger('submit')
+      expect(router.push).toHaveBeenCalledWith('/clusters/foo/dashboard')
+      expect(authStore.returnUrl).toBe(null)
+      authStore.logout()
     })
 
     test('should display info alert when redirected to login page', async () => {
