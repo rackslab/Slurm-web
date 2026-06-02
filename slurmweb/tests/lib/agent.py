@@ -253,26 +253,60 @@ class TestAgentBase(TestSlurmrestdClient):
             self.client.environ_base["HTTP_AUTHORIZATION"] = "Bearer " + token
 
 
-class RemoveActionInPolicy:
-    """Context manager to temporarily remove an action from a role in policy."""
+class ModifyActionsInPolicy:
+    """Context manager to temporarily add or remove actions from a role in policy.
 
-    def __init__(self, policy, role, action):
+    The same changes are applied to the anonymous role when the actions are
+    defined there.
+    """
+
+    @staticmethod
+    def _policy_actions(actions):
+        if not actions:
+            return ()
+        if isinstance(actions, str):
+            return (actions,)
+        return tuple(actions)
+
+    def __init__(self, policy, role, *, remove=(), add=()):
         self.policy = policy
         self.role = role
-        self.action = action
-        self.removed_in_anonymous = False
+        self.remove = self._policy_actions(remove)
+        self.add = self._policy_actions(add)
+        self._removed = {}
+        self._added = {}
+
+    def _apply(self, role_name, role_actions):
+        removed = set()
+        added = set()
+        for action in self.remove:
+            if action in role_actions:
+                role_actions.remove(action)
+                removed.add(action)
+        for action in self.add:
+            if action not in role_actions:
+                role_actions.add(action)
+                added.add(action)
+        if removed:
+            self._removed[role_name] = removed
+        if added:
+            self._added[role_name] = added
+
+    def _restore(self, role_name, role_actions):
+        for action in self._removed.get(role_name, ()):
+            role_actions.add(action)
+        for action in self._added.get(role_name, ()):
+            role_actions.discard(action)
 
     def __enter__(self):
+        self._removed = {}
+        self._added = {}
         for _role in self.policy.loader.roles:
-            if _role.name == self.role:
-                _role.actions.remove(self.action)
-            if _role.name == ANONYMOUS_ROLE and self.action in _role.actions:
-                _role.actions.remove(self.action)
-                self.removed_in_anonymous = True
+            if _role.name in (self.role, ANONYMOUS_ROLE):
+                self._apply(_role.name, _role.actions)
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         for _role in self.policy.loader.roles:
-            if _role.name == self.role:
-                _role.actions.add(self.action)
-            if _role.name == ANONYMOUS_ROLE and self.removed_in_anonymous:
-                _role.actions.add(self.action)
+            if _role.name in self._removed or _role.name in self._added:
+                self._restore(_role.name, _role.actions)

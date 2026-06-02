@@ -10,7 +10,7 @@ from unittest import mock
 from slurmweb.version import get_version
 from slurmweb.errors import SlurmwebMetricsDBError
 
-from ..lib.agent import TestAgentBase, RemoveActionInPolicy
+from ..lib.agent import TestAgentBase, ModifyActionsInPolicy
 from ..lib.utils import mock_prometheus_response
 
 
@@ -103,7 +103,7 @@ class TestAgentMetricsRequest(TestAgentBase):
         )
 
     def test_request_metrics_nodes_denied(self):
-        with RemoveActionInPolicy(self.app.policy, "user", "nodes-view"):
+        with ModifyActionsInPolicy(self.app.policy, "user", remove="nodes-view"):
             with self.assertLogs("slurmweb", level="WARNING") as cm:
                 response = self.client.get(f"/v{get_version()}/metrics/nodes")
         self.assertEqual(response.status_code, 403)
@@ -124,7 +124,7 @@ class TestAgentMetricsRequest(TestAgentBase):
         )
 
     def test_request_metrics_cores_denied(self):
-        with RemoveActionInPolicy(self.app.policy, "user", "nodes-view"):
+        with ModifyActionsInPolicy(self.app.policy, "user", remove="nodes-view"):
             with self.assertLogs("slurmweb", level="WARNING") as cm:
                 response = self.client.get(f"/v{get_version()}/metrics/cores")
         self.assertEqual(response.status_code, 403)
@@ -145,7 +145,7 @@ class TestAgentMetricsRequest(TestAgentBase):
         )
 
     def test_request_metrics_jobs_denied(self):
-        with RemoveActionInPolicy(self.app.policy, "user", "jobs-view"):
+        with ModifyActionsInPolicy(self.app.policy, "user", remove="jobs-view"):
             with self.assertLogs("slurmweb", level="WARNING") as cm:
                 response = self.client.get(f"/v{get_version()}/metrics/jobs")
         self.assertEqual(response.status_code, 403)
@@ -166,7 +166,7 @@ class TestAgentMetricsRequest(TestAgentBase):
         )
 
     def test_request_metrics_cache_denied(self):
-        with RemoveActionInPolicy(self.app.policy, "user", "cache-view"):
+        with ModifyActionsInPolicy(self.app.policy, "user", remove="cache-view"):
             with self.assertLogs("slurmweb", level="WARNING") as cm:
                 response = self.client.get(f"/v{get_version()}/metrics/cache")
         self.assertEqual(response.status_code, 403)
