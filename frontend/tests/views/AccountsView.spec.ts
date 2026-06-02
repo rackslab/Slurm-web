@@ -26,7 +26,10 @@ describe('AccountsView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
     mockClusterDataPoller.data.value = undefined

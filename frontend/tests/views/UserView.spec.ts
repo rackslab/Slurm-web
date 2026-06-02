@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import UserView from '@/views/UserView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
+import { useAuthStore } from '@/stores/auth'
 import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import associations from '../assets/associations.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
@@ -27,7 +28,10 @@ describe('UserView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
     mockClusterDataPoller.data.value = undefined
@@ -38,6 +42,8 @@ describe('UserView.vue', () => {
   test('displays user details', () => {
     mockClusterDataPoller.loaded.value = true
     mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view']
+    useAuthStore().username = 'root'
 
     const wrapper = mount(UserView, {
       props: {
@@ -82,6 +88,44 @@ describe('UserView.vue', () => {
     // Check presence of breadcrumbs
     const breadcrumbs = userAssociationsTable.findAllComponents(AccountBreadcrumb)
     expect(breadcrumbs.length).toBeGreaterThan(0)
+  })
+
+  test('hides view jobs link for other users with jobs-view-own only', () => {
+    mockClusterDataPoller.loaded.value = true
+    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view-own']
+    useAuthStore().username = 'alice'
+
+    const wrapper = mount(UserView, {
+      props: {
+        cluster: 'foo',
+        user: 'root'
+      }
+    })
+
+    const userHeading = wrapper.get('div#user-heading')
+    expect(userHeading.text()).not.toContain('View jobs')
+  })
+
+  test('shows view jobs link with jobs-view-own only for current user', () => {
+    mockClusterDataPoller.loaded.value = true
+    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view-own']
+    useAuthStore().username = 'root'
+
+    const wrapper = mount(UserView, {
+      props: {
+        cluster: 'foo',
+        user: 'root'
+      }
+    })
+
+    const viewJobsLink = wrapper.get('div#user-heading').getComponent(RouterLink)
+    expect(viewJobsLink.props('to')).toEqual({
+      name: 'jobs',
+      params: { cluster: 'foo' },
+      query: { users: 'root' }
+    })
   })
 
   test('shows loading spinner when data is not loaded', () => {

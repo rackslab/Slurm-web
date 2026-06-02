@@ -22,7 +22,7 @@ describe('JobsPastView.vue', () => {
     runtimeStore.availableClusters = [
       {
         name: 'foo',
-        permissions: { roles: [], actions: ['jobs-view-past', 'jobs-view'] },
+        permissions: { roles: [], actions: ['jobs-view-past'] },
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
@@ -32,7 +32,6 @@ describe('JobsPastView.vue', () => {
     ]
     runtimeStore.currentCluster = runtimeStore.getCluster('foo')
     mockClusterDataPoller.unable.value = false
-    mockClusterDataPoller.data.value = []
   })
 
   test('display jobs', () => {
@@ -94,7 +93,8 @@ describe('JobsPastView.vue', () => {
     expect(wrapper.find('h1').text()).toBe('Jobs Terminated')
   })
 
-  test('shows scope toggle with Active and Terminated', () => {
+  test('shows scope toggle when jobs-view is allowed', () => {
+    useRuntimeStore().getCluster('foo')!.permissions.actions.push('jobs-view')
     mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
@@ -102,5 +102,27 @@ describe('JobsPastView.vue', () => {
       }
     })
     expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
+  })
+  test('shows scope toggle when jobs-view-own is allowed', () => {
+    useRuntimeStore().getCluster('foo')!.permissions.actions = [
+      'jobs-view-own',
+      'jobs-view-past-own'
+    ]
+    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    const wrapper = mount(JobsPastView, {
+      props: {
+        cluster: 'foo'
+      }
+    })
+    expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
+  })
+  test('hides scope toggle without jobs-view and jobs-view-own', () => {
+    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    const wrapper = mount(JobsPastView, {
+      props: {
+        cluster: 'foo'
+      }
+    })
+    expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(false)
   })
 })

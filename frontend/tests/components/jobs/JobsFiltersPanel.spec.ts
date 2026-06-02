@@ -119,6 +119,37 @@ describe('JobsFiltersPanel.vue', () => {
     wrapper.unmount()
   })
 
+  test('hides user filter with jobs-view-own only', async () => {
+    const runtimeStore = useRuntimeStore()
+    runtimeStore.currentCluster!.permissions.actions = ['jobs-view-own']
+    const wrapper = mount(JobsFiltersPanel, {
+      props: { cluster: 'foo', nbJobs: 0 },
+      global: {
+        stubs: {
+          teleport: true,
+          Dialog: { template: '<div v-bind="$attrs"><slot /></div>' },
+          DialogPanel: { template: '<div v-bind="$attrs"><slot /></div>' },
+          TransitionRoot: { template: '<div><slot /></div>' },
+          TransitionChild: { template: '<div><slot /></div>' },
+          Disclosure: { template: '<div><slot /></div>' },
+          DisclosureButton: { template: '<button v-bind="$attrs"><slot /></button>' },
+          DisclosurePanel: { template: '<div><slot /></div>' },
+          UserFilterSelector: true,
+          AccountFilterSelector: true,
+          QosFilterSelector: true,
+          PartitionFilterSelector: true
+        }
+      }
+    })
+    await nextTick()
+    runtimeStore.jobs.openFiltersPanel = true
+    await nextTick()
+    const panel = wrapper.find('#jobs-filters-panel')
+    expect(panel.exists()).toBe(true)
+    expect(panel.text()).not.toContain('Users')
+    wrapper.unmount()
+  })
+
   test('hides accounts/qos/partitions when permissions are missing', async () => {
     const runtimeStore = useRuntimeStore()
     // Remove permissions before mounting

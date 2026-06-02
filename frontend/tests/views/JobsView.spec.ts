@@ -105,7 +105,17 @@ describe('JobView.vue', () => {
     })
     expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
   })
-  test('hides scope toggle without jobs-view-past', () => {
+  test('shows scope toggle when jobs-view-past-own is allowed', () => {
+    useRuntimeStore().getCluster('foo')!.permissions.actions = ['jobs-view-own', 'jobs-view-past-own']
+    mockClusterDataPoller.data.value = jobs
+    const wrapper = mount(JobsView, {
+      props: {
+        cluster: 'foo'
+      }
+    })
+    expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
+  })
+  test('hides scope toggle without jobs-view-past and jobs-view-past-own', () => {
     mockClusterDataPoller.data.value = jobs
     const wrapper = mount(JobsView, {
       props: {

@@ -15,7 +15,10 @@ describe('DashboardCharts.vue', () => {
       racksdb: true,
       infrastructure: 'foo',
       metrics: true,
-      cache: true
+      cache: true,
+      slurmdbd: {
+        jobs_max_hours: 168
+      }
     }
     const runtimeStore = useRuntimeStore()
     runtimeStore.availableClusters = [cluster]
