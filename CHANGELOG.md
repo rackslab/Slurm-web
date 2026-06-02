@@ -63,6 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     accounting service list of jobs.
   - Add `[cache]` > `jobs_past` agent cache setting to control expiration of
     list of past jobs from SlurmDBD accounting service.
+  - Introduce `jobs-view-own` and `jobs-view-past-own` actions in authorization
+    policy.
 
 ### Changed
 - gateway:
