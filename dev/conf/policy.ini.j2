@@ -7,7 +7,8 @@ actions=stats-view,jobs-view,nodes-view,partitions-view,qos-view
 {% else %}
 
 {% if policy_extra_user_group %}
-user=@{{ groups[2].name }},@{{ groups[3].name }}
+user=@{{ groups[2].name }}
+limited=@{{ groups[3].name }}
 {% else %}
 user=@{{ groups[2].name }}
 {% endif %}
@@ -15,11 +16,16 @@ admin=@{{ groups[1].name }}
 special={{ users[3].login }}
 
 [user]
-actions=stats-view,jobs-view
+actions=stats-view,jobs-view,jobs-view-past,nodes-view,partitions-view,qos-view
+
+{% if policy_extra_user_group %}
+[limited]
+actions=stats-view,jobs-view-own,jobs-view-past-own,nodes-view,partitions-view,qos-view
+{% endif %}
 
 [admin]
 actions=stats-view,jobs-view,jobs-view-past,nodes-view,partitions-view,qos-view,accounts-view,associations-view,reservations-view,cache-view,cache-reset
 
 [special]
-actions=qos-view
+actions=stats-view,qos-view,jobs-view-own,jobs-view-past-own
 {% endif %}
