@@ -15,16 +15,14 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/20/solid'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
-import {
-  renderClusterOptionalNumber,
-  renderClusterTRES,
-  renderQosLabel,
-  renderWalltime
-} from '@/composables/GatewayAPI'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useAuthStore } from '@/stores/auth'
+import { renderSlurmOptionalNumber } from '@/composables/gateway/slurm/numbers'
+import { renderSlurmTRES } from '@/composables/gateway/slurm/tres'
+import { renderSlurmDurationMinutes } from '@/composables/gateway/slurm/time'
+import { renderQosLabel } from '@/composables/gateway/slurm/qos'
+import type { SlurmAssociation } from '@/composables/gateway/slurm/types'
 
 const { cluster, user } = defineProps<{
   cluster: string
@@ -43,12 +41,11 @@ const canLinkToUserJobs = computed(() => {
   }
   return (
     runtimeStore.hasPermission('jobs-view') ||
-    (authStore.username !== null &&
-      user.toLowerCase() === authStore.username.toLowerCase())
+    (authStore.username !== null && user.toLowerCase() === authStore.username.toLowerCase())
   )
 })
 
-const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterAssociation[]>(
+const { data, unable, loaded, setCluster } = useClusterDataPoller<SlurmAssociation[]>(
   cluster,
   'associations',
   120000
@@ -83,7 +80,7 @@ const associatedAccounts = computed(() => {
   return accounts
 })
 
-function jobLimits(association: ClusterAssociation) {
+function jobLimits(association: SlurmAssociation) {
   return [
     {
       id: 'MaxJobs',
@@ -98,7 +95,7 @@ function jobLimits(association: ClusterAssociation) {
   ]
 }
 
-function resourceLimits(association: ClusterAssociation) {
+function resourceLimits(association: SlurmAssociation) {
   return [
     {
       id: 'GrpTRES',
@@ -118,7 +115,7 @@ function resourceLimits(association: ClusterAssociation) {
   ]
 }
 
-function timeLimits(association: ClusterAssociation) {
+function timeLimits(association: SlurmAssociation) {
   return [
     {
       id: 'GrpWall',
@@ -252,7 +249,7 @@ function timeLimits(association: ClusterAssociation) {
                       >
                         <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                         <dd class="ml-2">
-                          {{ renderClusterOptionalNumber(limit.value) }}
+                          {{ renderSlurmOptionalNumber(limit.value) }}
                         </dd>
                       </div>
                     </dl>
@@ -274,7 +271,7 @@ function timeLimits(association: ClusterAssociation) {
                       >
                         <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                         <dd class="ml-2 font-mono text-xs">
-                          {{ renderClusterTRES(limit.value) }}
+                          {{ renderSlurmTRES(limit.value) }}
                         </dd>
                       </div>
                     </dl>
@@ -296,7 +293,7 @@ function timeLimits(association: ClusterAssociation) {
                       >
                         <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                         <dd class="ml-2">
-                          {{ renderWalltime(limit.value) }}
+                          {{ renderSlurmDurationMinutes(limit.value) }}
                         </dd>
                       </div>
                     </dl>

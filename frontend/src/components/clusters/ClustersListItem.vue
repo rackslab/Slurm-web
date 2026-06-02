@@ -9,12 +9,13 @@
 import { onMounted, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
-import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { TagIcon } from '@heroicons/vue/20/solid'
 import ClusterStats from '@/components/clusters/ClusterStats.vue'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import { type ClusterDescription } from '@/composables/gateway/types/cluster'
 
 const { clusterName } = defineProps<{ clusterName: string }>()
 
@@ -65,7 +66,7 @@ onMounted(() => {
     ]"
     @click="
       cluster.permissions.actions.length > 0 &&
-        router.push({ name: 'dashboard', params: { cluster: cluster.name } })
+      router.push({ name: 'dashboard', params: { cluster: cluster.name } })
     "
   >
     <span class="w-64 text-sm leading-6 font-semibold text-gray-900 dark:text-gray-300">

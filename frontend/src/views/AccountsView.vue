@@ -10,15 +10,15 @@
 import { computed, ref, watch } from 'vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterAssociation, ClusterAccountTreeNode } from '@/composables/GatewayAPI'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import AccountTreeNode from '@/components/accounts/AccountTreeNode.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import type { SlurmAssociation, SlurmAccountTreeNode } from '@/composables/gateway/slurm/types'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable, loaded } = useClusterDataPoller<ClusterAssociation[]>(
+const { data, unable, loaded } = useClusterDataPoller<SlurmAssociation[]>(
   cluster,
   'associations',
   120000
@@ -42,14 +42,14 @@ function toggleAccount(account: string) {
 }
 
 /* Compute the tree of accounts from the cluster associations. */
-const accountTree = computed<ClusterAccountTreeNode[]>(() => {
+const accountTree = computed<SlurmAccountTreeNode[]>(() => {
   if (!data.value || data.value.length === 0) {
     return []
   }
 
   // Create a map of all accounts
-  const accountMap = new Map<string, ClusterAccountTreeNode>()
-  const rootAccounts: ClusterAccountTreeNode[] = []
+  const accountMap = new Map<string, SlurmAccountTreeNode>()
+  const rootAccounts: SlurmAccountTreeNode[] = []
 
   // First pass: create all nodes without duplicating accounts
   for (const association of data.value) {
@@ -61,7 +61,7 @@ const accountTree = computed<ClusterAccountTreeNode[]>(() => {
       }
       continue
     }
-    const node: ClusterAccountTreeNode = {
+    const node: SlurmAccountTreeNode = {
       children: [],
       level: 0,
       account: association.account,
@@ -85,7 +85,7 @@ const accountTree = computed<ClusterAccountTreeNode[]>(() => {
   }
 
   // Sort children alphabetically
-  function sortTree(nodes: ClusterAccountTreeNode[]) {
+  function sortTree(nodes: SlurmAccountTreeNode[]) {
     nodes.sort((a, b) => a.account.localeCompare(b.account))
     for (const node of nodes) {
       sortTree(node.children)
@@ -110,7 +110,7 @@ const availableAccounts = computed<Set<string>>(() => {
 
 /* Auto expand the tree until the total number of visible nodes reaches
  * MAX_AUTO_EXPANDED. */
-function autoExpandTree(nodes: ClusterAccountTreeNode[]) {
+function autoExpandTree(nodes: SlurmAccountTreeNode[]) {
   const queue = [...nodes]
   expandedAccounts.value = new Set()
   let visibleCount = nodes.length

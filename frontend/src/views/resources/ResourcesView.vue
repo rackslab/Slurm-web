@@ -17,8 +17,6 @@ import {
   isResourcesRepresentation
 } from '@/stores/runtime/resources'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import { getMBHumanUnit, getNodeGPU } from '@/composables/GatewayAPI'
-import type { ClusterNode } from '@/composables/GatewayAPI'
 import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
@@ -29,6 +27,9 @@ import ResourcesFiltersBar from '@/components/resources/ResourcesFiltersBar.vue'
 import { foldNodeset, expandNodeset } from '@/composables/Nodeset'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { ChevronRightIcon, MagnifyingGlassPlusIcon } from '@heroicons/vue/20/solid'
+import { nodeGPULabelsFromGRES } from '@/composables/gateway/slurm/node'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
@@ -36,7 +37,7 @@ const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
 const runtimeStore = useRuntimeStore()
 const route = useRoute()
 const router = useRouter()
-const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterNode[]>(
+const { data, unable, loaded, setCluster } = useClusterDataPoller<SlurmNode[]>(
   cluster,
   'nodes',
   10000
@@ -58,21 +59,21 @@ function arraysEqual<CType>(a: Array<CType>, b: Array<CType>): boolean {
   return true
 }
 
-interface FoldedClusterNode extends ClusterNode {
+type FoldedSlurmNode = SlurmNode & {
   number: number
 }
 
-const filteredNodes: Ref<ClusterNode[]> = computed(() => {
+const filteredNodes: Ref<SlurmNode[]> = computed(() => {
   if (!data.value) {
     return []
   }
   return [...data.value].filter((node) => runtimeStore.resources.matchesFilters(node))
 })
 
-const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
-  let previousNode: FoldedClusterNode | undefined = undefined
+const foldedNodes: Ref<FoldedSlurmNode[]> = computed(() => {
+  let previousNode: FoldedSlurmNode | undefined = undefined
   let similarNodes: string[] = []
-  const result: FoldedClusterNode[] = []
+  const result: FoldedSlurmNode[] = []
 
   function finishSet() {
     if (previousNode) {
@@ -86,7 +87,8 @@ const foldedNodes: Ref<FoldedClusterNode[]> = computed(() => {
       previousNode.sockets == currentNode.sockets &&
       previousNode.cores == currentNode.cores &&
       previousNode.real_memory == currentNode.real_memory &&
-      getNodeGPU(previousNode.gres).join(',') == getNodeGPU(currentNode.gres).join(',') &&
+      nodeGPULabelsFromGRES(previousNode.gres).join(',') ==
+        nodeGPULabelsFromGRES(currentNode.gres).join(',') &&
       arraysEqual<string>(previousNode.state, currentNode.state) &&
       arraysEqual<string>(previousNode.partitions, currentNode.partitions)
     ) {

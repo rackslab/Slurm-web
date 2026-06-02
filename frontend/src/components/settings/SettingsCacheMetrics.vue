@@ -8,9 +8,10 @@
 
 <script setup lang="ts">
 import { useTemplateRef, ref } from 'vue'
-import type { ClusterDescription, MetricCacheResult } from '@/composables/GatewayAPI'
 import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { type ClusterDescription } from '@/composables/gateway/types/cluster'
+import { type MetricCacheResult } from '@/composables/gateway/types/metrics'
 
 const { cluster } = defineProps<{ cluster: ClusterDescription }>()
 

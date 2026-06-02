@@ -7,9 +7,9 @@
 -->
 
 <script setup lang="ts">
-import type { ClusterJobExitCode } from '@/composables/GatewayAPI'
+import type { SlurmJobExitCode } from '@/composables/gateway/slurm/types'
 
-const { exit_code } = defineProps<{ exit_code: ClusterJobExitCode }>()
+const { exit_code } = defineProps<{ exit_code: SlurmJobExitCode }>()
 </script>
 
 <template>

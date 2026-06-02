@@ -7,11 +7,11 @@
 -->
 
 <script setup lang="ts">
-import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import { StopCircleIcon } from '@heroicons/vue/24/outline'
+import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 
 const { job, step } = defineProps<{
-  job: ClusterIndividualJob
+  job: SlurmJobDetail
   step: string
 }>()
 </script>

@@ -7,9 +7,9 @@
 -->
 
 <script setup lang="ts">
-import type { ClusterJobComment } from '@/composables/GatewayAPI'
+import type { SlurmJobComment } from '@/composables/gateway/slurm/types'
 
-const { comment } = defineProps<{ comment: ClusterJobComment }>()
+const { comment } = defineProps<{ comment: SlurmJobComment }>()
 </script>
 
 <template>

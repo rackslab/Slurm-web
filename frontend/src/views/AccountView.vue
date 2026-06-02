@@ -16,13 +16,11 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
-import {
-  renderClusterOptionalNumber,
-  renderClusterTRES,
-  renderQosLabel,
-  renderWalltime
-} from '@/composables/GatewayAPI'
+import { renderSlurmOptionalNumber } from '@/composables/gateway/slurm/numbers'
+import { renderSlurmTRES } from '@/composables/gateway/slurm/tres'
+import { renderSlurmDurationMinutes } from '@/composables/gateway/slurm/time'
+import { renderQosLabel } from '@/composables/gateway/slurm/qos'
+import type { SlurmAssociation } from '@/composables/gateway/slurm/types'
 
 const { cluster, account } = defineProps<{
   cluster: string
@@ -30,7 +28,7 @@ const { cluster, account } = defineProps<{
 }>()
 
 const router = useRouter()
-const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterAssociation[]>(
+const { data, unable, loaded, setCluster } = useClusterDataPoller<SlurmAssociation[]>(
   cluster,
   'associations',
   120000
@@ -44,7 +42,7 @@ watch(
 )
 
 /* Find account-level association (without user) */
-const accountAssociation = computed<ClusterAssociation | undefined>(() => {
+const accountAssociation = computed<SlurmAssociation | undefined>(() => {
   if (!data.value) {
     return undefined
   }
@@ -123,7 +121,7 @@ const timeLimits = computed(() => {
   ]
 })
 
-function userJobLimits(association: ClusterAssociation) {
+function userJobLimits(association: SlurmAssociation) {
   if (!accountAssociation.value) {
     return []
   }
@@ -144,7 +142,7 @@ function userJobLimits(association: ClusterAssociation) {
   ]
 }
 
-function userResourceLimits(association: ClusterAssociation) {
+function userResourceLimits(association: SlurmAssociation) {
   if (!accountAssociation.value) {
     return []
   }
@@ -171,7 +169,7 @@ function userResourceLimits(association: ClusterAssociation) {
   ]
 }
 
-function userTimeLimits(association: ClusterAssociation) {
+function userTimeLimits(association: SlurmAssociation) {
   if (!accountAssociation.value) {
     return []
   }
@@ -199,10 +197,10 @@ function userTimeLimits(association: ClusterAssociation) {
   ]
 }
 
-// Compare two ClusterOptionalNumber values
+// Compare two SlurmOptionalNumber values
 function compareOptionalNumber(
-  a: ClusterAssociation['max']['jobs']['total'],
-  b: ClusterAssociation['max']['jobs']['total'],
+  a: SlurmAssociation['max']['jobs']['total'],
+  b: SlurmAssociation['max']['jobs']['total'],
   acceptUnset: boolean = false
 ): boolean {
   if (a.set !== b.set) return acceptUnset
@@ -214,8 +212,8 @@ function compareOptionalNumber(
 
 // Compare two TRES arrays
 function compareTRES(
-  a: ClusterAssociation['max']['tres']['total'],
-  b: ClusterAssociation['max']['tres']['total'],
+  a: SlurmAssociation['max']['tres']['total'],
+  b: SlurmAssociation['max']['tres']['total'],
   acceptAZero: boolean = false
 ): boolean {
   if (a.length === 0 && b.length !== 0) return acceptAZero
@@ -236,7 +234,7 @@ function compareTRES(
 }
 
 // Check if user association has different QOS than account
-function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
+function hasDifferentQos(userAssoc: SlurmAssociation): boolean {
   if (!accountAssociation.value) return true
 
   const accountQos = new Set(accountAssociation.value.qos || [])
@@ -367,7 +365,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                     >
                       <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                       <dd class="ml-2">
-                        {{ renderClusterOptionalNumber(limit.value) }}
+                        {{ renderSlurmOptionalNumber(limit.value) }}
                       </dd>
                     </div>
                   </dl>
@@ -393,7 +391,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                     >
                       <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                       <dd class="ml-2 font-mono">
-                        {{ renderClusterTRES(limit.value) }}
+                        {{ renderSlurmTRES(limit.value) }}
                       </dd>
                     </div>
                   </dl>
@@ -419,7 +417,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                     >
                       <dt class="text-gray-500 dark:text-gray-400">{{ limit.label }}:</dt>
                       <dd class="font ml-2">
-                        {{ renderWalltime(limit.value) }}
+                        {{ renderSlurmDurationMinutes(limit.value) }}
                       </dd>
                     </div>
                   </dl>
@@ -505,7 +503,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                             {{ limit.label }}:
                           </dt>
                           <dd class="ml-2">
-                            {{ renderClusterOptionalNumber(limit.value) }}
+                            {{ renderSlurmOptionalNumber(limit.value) }}
                           </dd>
                         </div>
                       </dl>
@@ -532,7 +530,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                             {{ limit.label }}:
                           </dt>
                           <dd class="ml-2 font-mono text-xs">
-                            {{ renderClusterTRES(limit.value) }}
+                            {{ renderSlurmTRES(limit.value) }}
                           </dd>
                         </div>
                       </dl>
@@ -559,7 +557,7 @@ function hasDifferentQos(userAssoc: ClusterAssociation): boolean {
                             {{ limit.label }}:
                           </dt>
                           <dd class="ml-2">
-                            {{ renderWalltime(limit.value) }}
+                            {{ renderSlurmDurationMinutes(limit.value) }}
                           </dd>
                         </div>
                       </dl>

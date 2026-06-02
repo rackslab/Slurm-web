@@ -14,8 +14,9 @@ import { useRuntimeStore } from '@/stores/runtime'
 import type { ChartResourcesType } from '@/stores/runtime/dashboard'
 import { isChartResourcesType } from '@/stores/runtime/dashboard'
 import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
-import type { GatewayAnyClusterApiKey, MetricResourceState } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { type GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
+import { type MetricResourceState } from '@/composables/gateway/types/metrics'
 
 const { cluster } = defineProps<{ cluster: string }>()
 

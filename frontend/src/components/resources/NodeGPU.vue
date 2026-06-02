@@ -7,18 +7,18 @@
 -->
 
 <script setup lang="ts">
-import { getNodeGPU } from '@/composables/GatewayAPI'
-import type { ClusterNode } from '@/composables/GatewayAPI'
+import { nodeGPULabelsFromGRES } from '@/composables/gateway/slurm/node'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
 const { node } = defineProps<{
-  node: ClusterNode
+  node: SlurmNode
 }>()
-const nodeGPU = getNodeGPU(node.gres)
+const gpuLabels = nodeGPULabelsFromGRES(node.gres)
 </script>
 
 <template>
-  <span v-if="nodeGPU.length" class="text-gray-500">
-    {{ nodeGPU.join(', ') }}
+  <span v-if="gpuLabels.length" class="text-gray-500">
+    {{ gpuLabels.join(', ') }}
   </span>
   <span v-else class="text-gray-400">-</span>
 </template>

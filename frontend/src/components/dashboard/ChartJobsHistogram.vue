@@ -9,9 +9,9 @@
 <script setup lang="ts">
 import { useTemplateRef, watch } from 'vue'
 import { useLiveHistogram } from '@/composables/charts/LiveHistogram'
-import type { MetricJobState } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { type MetricJobState } from '@/composables/gateway/types/metrics'
 
 const { cluster } = defineProps<{ cluster: string }>()
 

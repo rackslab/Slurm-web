@@ -12,13 +12,13 @@ import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
-import type { ClusterNode } from '@/composables/GatewayAPI'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import { useRuntimeStore } from '@/stores/runtime'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
 const { cluster, nodes, loading, mode } = defineProps<{
   cluster: string
-  nodes: ClusterNode[]
+  nodes: SlurmNode[]
   loading?: boolean
   mode?: ResourcesRepresentation
 }>()

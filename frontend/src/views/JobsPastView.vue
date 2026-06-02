@@ -13,12 +13,8 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useJobsPageQuery } from '@/composables/jobs/JobsPageQuery'
 import { useJobsListPaging } from '@/composables/jobs/JobsListPaging'
-import {
-  acctJobStates,
-  compareClusterAcctJobSortOrder,
-  formatAcctJobEndTime,
-  type ClusterAcctJob
-} from '@/composables/GatewayAPI'
+import { acctJobStates, compareAcctJobs, formatAcctJobEndTime } from '@/composables/gateway/slurm/acctJob'
+import type { SlurmAcctJob } from '@/composables/gateway/slurm/types'
 import { PAST_JOBS_DEFAULT_HOURS } from '@/stores/runtime/jobs'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
@@ -37,7 +33,7 @@ const { cluster } = defineProps<{ cluster: string }>()
 const route = useRoute()
 const runtimeStore = useRuntimeStore()
 
-const poller = useClusterDataPoller<ClusterAcctJob[]>(
+const poller = useClusterDataPoller<SlurmAcctJob[]>(
   cluster,
   'jobsPast',
   60000,
@@ -46,15 +42,13 @@ const poller = useClusterDataPoller<ClusterAcctJob[]>(
 
 const { updateQueryParameters, setupFilterQuerySync } = useJobsPageQuery('jobs-past')
 
-const maxPastHours = computed(
-  () => runtimeStore.currentCluster?.slurmdbd.jobs_max_hours ?? 168
-)
+const maxPastHours = computed(() => runtimeStore.currentCluster?.slurmdbd.jobs_max_hours ?? 168)
 
-const jobsList = computed((): ClusterAcctJob[] => poller.data.value ?? [])
+const jobsList = computed(() => poller.data.value ?? [])
 
 const { sortedJobs, lastpage, firstjob, lastjob, jobsPages } = useJobsListPaging(jobsList, {
   match: (job) => runtimeStore.jobs.matchesAcctJobFilters(job),
-  compareSort: compareClusterAcctJobSortOrder,
+  compareSort: compareAcctJobs,
   past: true
 })
 

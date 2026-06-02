@@ -8,8 +8,8 @@
 
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { acctJobStates } from '@/composables/GatewayAPI'
-import type { ClusterAcctJob, ClusterJob } from '@/composables/GatewayAPI'
+import type { SlurmAcctJob, SlurmJob } from '@/composables/gateway/slurm/types'
+import { acctJobStates } from '@/composables/gateway/slurm/acctJob'
 
 /*
  * Jobs view settings
@@ -149,7 +149,7 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
       filters.value.partitions.length == 0
     )
   }
-  function matchesFilters(job: ClusterJob): boolean {
+  function matchesFilters(job: SlurmJob): boolean {
     if (emptyFilters(false)) {
       return true
     }
@@ -204,15 +204,17 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
     return true
   }
 
-  function matchesAcctJobFilters(job: ClusterAcctJob): boolean {
+  function matchesAcctJobFilters(job: SlurmAcctJob): boolean {
     if (emptyFilters(true)) {
       return true
     }
-    const states = acctJobStates(job)
+    const jobStates = acctJobStates(job)
     if (filters.value.pastStates.length != 0) {
       if (
         !filters.value.pastStates.some((state) => {
-          return states.map((_state) => _state.toLocaleLowerCase()).includes(state.toLocaleLowerCase())
+          return jobStates
+            .map((_state) => _state.toLocaleLowerCase())
+            .includes(state.toLocaleLowerCase())
         })
       ) {
         return false
@@ -260,7 +262,11 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
 
   function pastHoursPresets(maxHours: number, defaultHours?: number): number[] {
     const presets = PAST_HOURS_PRESETS.filter((hours) => hours <= maxHours)
-    if (defaultHours != null && defaultHours <= maxHours && !presets.some((h) => h === defaultHours)) {
+    if (
+      defaultHours != null &&
+      defaultHours <= maxHours &&
+      !presets.some((h) => h === defaultHours)
+    ) {
       return [...presets, defaultHours].sort((a, b) => a - b)
     }
     return presets

@@ -10,9 +10,8 @@
 import { ref, computed } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataGetter } from '@/composables/DataGetter'
-import type { ClusterPartition } from '@/composables/GatewayAPI'
+import type { SlurmPartition } from '@/composables/gateway/slurm/types'
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
-
 import {
   Combobox,
   ComboboxButton,
@@ -47,7 +46,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterPartition[]>(cluster, 'partitions')
+const { data } = useClusterDataGetter<SlurmPartition[]>(cluster, 'partitions')
 </script>
 
 <template>

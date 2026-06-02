@@ -21,9 +21,7 @@ const emit = defineEmits<{
 
 const runtimeStore = useRuntimeStore()
 
-const pastHoursPresets = computed(() =>
-  runtimeStore.jobs.pastHoursPresets(maxHours, defaultHours)
-)
+const pastHoursPresets = computed(() => runtimeStore.jobs.pastHoursPresets(maxHours, defaultHours))
 
 const selectedPastHours = computed(() => runtimeStore.jobs.pastHours)
 

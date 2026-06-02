@@ -8,14 +8,14 @@
 
 import { watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
-import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
-import type { MetricValue } from '@/composables/GatewayAPI'
 import { Chart } from 'chart.js/auto'
 import type { ChartOptions, TimeScaleOptions, TimeUnit, Point } from 'chart.js'
 import 'chartjs-adapter-luxon'
 import { DateTime } from 'luxon'
+import { type GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
+import { type MetricValue } from '@/composables/gateway/types/metrics'
 
 export interface DashboardLiveChart<MetricKeyType extends string> {
   metrics: ClusterDataPoller<Record<MetricKeyType, MetricValue[]>>

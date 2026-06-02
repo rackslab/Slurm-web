@@ -12,7 +12,6 @@ import type { Ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
-import { useGatewayAPI, type ClusterDescription } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
@@ -20,6 +19,8 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import { type ClusterDescription } from '@/composables/gateway/types/cluster'
 
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()

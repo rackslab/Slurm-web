@@ -37,7 +37,13 @@ import {
 } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const { cluster, nbJobs, pastTimeRange = false, maxPastHours, defaultPastHours } = defineProps<{
+const {
+  cluster,
+  nbJobs,
+  pastTimeRange = false,
+  maxPastHours,
+  defaultPastHours
+} = defineProps<{
   cluster: string
   nbJobs: number
   pastTimeRange?: boolean
@@ -109,7 +115,7 @@ const stateFiltersModel = computed({
               <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Filters
                 <span
-                  class="text-slurmweb dark:text-slurmweb-light dark:bg-slurmweb-verydark ml-3 hidden rounded-full bg-slurmweb-light px-2.5 py-0.5 text-xs font-medium md:inline-block"
+                  class="text-slurmweb dark:text-slurmweb-light dark:bg-slurmweb-verydark bg-slurmweb-light ml-3 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block"
                   >{{ nbJobs }}</span
                 >
               </h2>

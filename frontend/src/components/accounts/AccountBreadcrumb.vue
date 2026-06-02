@@ -10,12 +10,12 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
+import { type SlurmAssociation } from '@/composables/gateway/slurm/types'
 
 const { cluster, account, associations, showCurrent } = defineProps<{
   cluster: string
   account: string
-  associations: ClusterAssociation[]
+  associations: SlurmAssociation[]
   showCurrent?: boolean
 }>()
 
@@ -29,7 +29,7 @@ const breadcrumb = computed(() => {
 
   const parents: string[] = []
   let currentAccount = accountAssociation.parent_account
-  const accountMap = new Map<string, ClusterAssociation>()
+  const accountMap = new Map<string, SlurmAssociation>()
 
   for (const association of associations) {
     if (!association.user) {

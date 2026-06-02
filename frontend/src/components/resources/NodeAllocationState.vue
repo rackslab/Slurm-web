@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getNodeAllocationState } from '@/composables/GatewayAPI'
+import { nodeAllocationState } from '@/composables/gateway/slurm/node'
 
 const { status } = defineProps<{ status: string[] }>()
 
@@ -18,7 +18,7 @@ interface NodeAllocationLabelColors {
 }
 
 const nodeAllocationLabelColor = computed<NodeAllocationLabelColors>(() => {
-  switch (getNodeAllocationState(status)) {
+  switch (nodeAllocationState(status)) {
     case 'allocated':
       return {
         label: 'allocated',

@@ -8,8 +8,8 @@
 
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import { getNodeMainState } from '@/composables/GatewayAPI'
-import type { ClusterNode, ClusterNodeMainState } from '@/composables/GatewayAPI'
+import { nodeMainState } from '@/composables/gateway/slurm/node'
+import type { SlurmNode, SlurmNodeMainState } from '@/composables/gateway/slurm/types'
 
 /*
  * Resources view settings
@@ -37,7 +37,7 @@ export function isResourcesRepresentation(value: unknown): value is ResourcesRep
 
 export const resourcesStates: Record<
   FiltersClusterNodeMainState,
-  { label: string; status: ClusterNodeMainState[] }
+  { label: string; status: SlurmNodeMainState[] }
 > = {
   up: { label: 'Up', status: ['up'] },
   drain: { label: 'Drain', status: ['drain', 'draining'] },
@@ -73,14 +73,14 @@ export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
     return filters.value.states.length == 0 && filters.value.partitions.length == 0
   }
 
-  function matchesFilters(node: ClusterNode): boolean {
+  function matchesFilters(node: SlurmNode): boolean {
     if (emptyFilters()) {
       return true
     }
     if (filters.value.states.length != 0) {
       if (
         !filters.value.states.some((state) =>
-          resourcesStates[state].status.includes(getNodeMainState(node.state))
+          resourcesStates[state].status.includes(nodeMainState(node.state))
         )
       ) {
         return false

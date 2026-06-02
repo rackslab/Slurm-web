@@ -10,9 +10,9 @@
 import { ref, computed } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataGetter } from '@/composables/DataGetter'
-import type { ClusterQos } from '@/composables/GatewayAPI'
-import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
 
+import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
+import type { SlurmQos } from '@/composables/gateway/slurm/types'
 import {
   Combobox,
   ComboboxButton,
@@ -43,7 +43,7 @@ function queryPlaceholder() {
   }
 }
 
-const { data } = useClusterDataGetter<ClusterQos[]>(cluster, 'qos')
+const { data } = useClusterDataGetter<SlurmQos[]>(cluster, 'qos')
 </script>
 
 <template>

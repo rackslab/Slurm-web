@@ -8,11 +8,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobProgressComment from '@/components/job/JobProgressComment.vue'
 import { CheckIcon } from '@heroicons/vue/20/solid'
+import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 
-const { job } = defineProps<{ job: ClusterIndividualJob }>()
+const { job } = defineProps<{ job: SlurmJobDetail }>()
 
 const current = computed((): [number, boolean] => {
   const now = new Date()

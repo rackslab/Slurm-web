@@ -10,14 +10,15 @@ import { onMounted, onUnmounted, ref, useTemplateRef, watch, nextTick } from 'vu
 import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
-import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { ClusterNode, RacksDBInfrastructureCoordinates } from '@/composables/GatewayAPI'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import { APIServerError } from '@/composables/HTTPErrors'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { useBranding } from '@/composables/Branding'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
+import { type RacksDBInfrastructureCoordinates } from '@/composables/gateway/types/racksdb'
 
 const {
   cluster,
@@ -27,7 +28,7 @@ const {
   loading: nodesLoading
 } = defineProps<{
   cluster: string
-  nodes: ClusterNode[]
+  nodes: SlurmNode[]
   fullscreen: boolean
   mode?: ResourcesRepresentation
   loading?: boolean
@@ -55,7 +56,7 @@ let allNodesPaths: Record<
   string,
   { x: number; y: number; width: number; height: number; path: Path2D }
 > = {}
-const currentNode: Ref<ClusterNode | undefined> = ref()
+const currentNode: Ref<SlurmNode | undefined> = ref()
 let previousPath: Path2D | undefined = undefined
 let coordinates: RacksDBInfrastructureCoordinates | undefined = undefined
 let image: ImageBitmapSource | undefined = undefined
@@ -63,22 +64,22 @@ let bitmap: ImageBitmap | undefined = undefined
 let x_shift: number = 0
 let y_shift: number = 1
 
-function getClusterNode(nodeName: string): ClusterNode | undefined {
+function getSlurmNode(nodeName: string): SlurmNode | undefined {
   try {
     return nodes.filter((node) => node.name == nodeName)[0]
   } catch (error) {
     if (error instanceof Error)
-      console.log(`Error ${error.name} in getClusterNode(${nodeName}): ${error.message}`)
+      console.log(`Error ${error.name} in getSlurmNode(${nodeName}): ${error.message}`)
     return undefined
   }
 }
 
 function getNodeState(nodeName: string): string[] {
-  return getClusterNode(nodeName)?.state || []
+  return getSlurmNode(nodeName)?.state || []
 }
 
 function inSelectedNodes(nodeName: string): boolean {
-  return getClusterNode(nodeName) !== undefined
+  return getSlurmNode(nodeName) !== undefined
 }
 
 function reportAPIServerError(error: APIServerError) {
@@ -156,7 +157,7 @@ function getNodeCoresUsage(nodeName: string): {
   total: number
   percentage: number
 } {
-  const node = getClusterNode(nodeName)
+  const node = getSlurmNode(nodeName)
   if (!node) return { allocated: 0, total: 0, percentage: 0 }
 
   const allocated = node.alloc_cpus || 0
@@ -568,7 +569,7 @@ function setMouseEventHandler() {
       if (isPointInPath) {
         nodeFound = true
         nodeTooltipOpen.value = true
-        currentNode.value = getClusterNode(nodeName)
+        currentNode.value = getSlurmNode(nodeName)
         // Check mouse moved over another node
         if (nodePath.path !== previousPath) {
           // Erase hover ring on previous node

@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getNodeMainState } from '@/composables/GatewayAPI'
+import { nodeMainState } from '@/composables/gateway/slurm/node'
 import {
   BookmarkIcon,
   ArrowRightEndOnRectangleIcon,
@@ -65,7 +65,7 @@ const nodeTagsIcons = computed(() => {
 })
 
 const nodeMainLabelColors = computed<NodeMainLabelColors>(() => {
-  switch (getNodeMainState(status)) {
+  switch (nodeMainState(status)) {
     case 'down':
       return {
         span: 'bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-100',

@@ -7,10 +7,7 @@
  */
 
 import { computed } from 'vue'
-import {
-  useRuntimeConfiguration,
-  type HexColor
-} from '@/plugins/runtimeConfiguration'
+import { useRuntimeConfiguration, type HexColor } from '@/plugins/runtimeConfiguration'
 
 const DEFAULT_LOGOS = {
   login: '/logo/slurm-web_logo.png',
@@ -50,9 +47,7 @@ function parseHexColorToRgb(color: HexColor): { r: number; g: number; b: number 
 export function useBranding() {
   const runtimeConfiguration = useRuntimeConfiguration()
 
-  const logoAlt = computed(
-    () => runtimeConfiguration.logo?.alt ?? DEFAULT_LOGO_ALT
-  )
+  const logoAlt = computed(() => runtimeConfiguration.logo?.alt ?? DEFAULT_LOGO_ALT)
 
   const logoLogin = computed(() =>
     resolveAssetPath(runtimeConfiguration.logo?.login ?? DEFAULT_LOGOS.login)
@@ -64,9 +59,7 @@ export function useBranding() {
     resolveAssetPath(runtimeConfiguration.logo?.horizontal ?? DEFAULT_LOGOS.horizontal)
   )
   const logoHorizontalDark = computed(() =>
-    resolveAssetPath(
-      runtimeConfiguration.logo?.horizontal_dark ?? DEFAULT_LOGOS.horizontal_dark
-    )
+    resolveAssetPath(runtimeConfiguration.logo?.horizontal_dark ?? DEFAULT_LOGOS.horizontal_dark)
   )
 
   const brandMainRgb = computed(() => {

@@ -34,9 +34,7 @@ const authStore = useAuthStore()
 const { login } = useAuthSession()
 const runtimeStore = useRuntimeStore()
 
-const oidcLoginUrl = computed(
-  () => `${runtimeConfiguration.api_server}/api/oidc/login`
-)
+const oidcLoginUrl = computed(() => `${runtimeConfiguration.api_server}/api/oidc/login`)
 
 function reportAuthenticationError(message: string) {
   runtimeStore.reportError(`Authentication error: ${message}`)
@@ -100,12 +98,7 @@ async function submitLogin() {
                 Sign in with OpenID
               </a>
             </div>
-            <form
-              v-else
-              class="space-y-4 md:space-y-6"
-              action="#"
-              @submit.prevent="submitLogin"
-            >
+            <form v-else class="space-y-4 md:space-y-6" action="#" @submit.prevent="submitLogin">
               <div>
                 <label
                   for="user"

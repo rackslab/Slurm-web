@@ -13,12 +13,7 @@ export function useAuthSession() {
   const authStore = useAuthStore()
   const router = useRouter()
 
-  async function login(
-    token: string,
-    username: string,
-    fullname: string,
-    groups: string[]
-  ) {
+  async function login(token: string, username: string, fullname: string, groups: string[]) {
     authStore.setSession(token, username, fullname, groups)
     return router.push(authStore.takePostLoginRoute())
   }

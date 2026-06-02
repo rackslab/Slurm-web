@@ -8,13 +8,13 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
-import { getMBHumanUnit } from '@/composables/GatewayAPI'
-import type { ClusterStats } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
+import { type ClusterStats } from '@/composables/gateway/types/cluster'
 
 const runtimeStore = useRuntimeStore()
 

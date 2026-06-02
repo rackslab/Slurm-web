@@ -5,12 +5,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-import type { ClusterOptionalNumber } from '@/composables/GatewayAPI'
+import type { SlurmOptionalNumber } from '@/composables/gateway/slurm/types'
 
-export function representDuration(
-  start: ClusterOptionalNumber,
-  end: ClusterOptionalNumber
-): string {
+export function representDuration(start: SlurmOptionalNumber, end: SlurmOptionalNumber): string {
   if (!start.set || !end.set) return '-'
 
   let duration = end.number - start.number

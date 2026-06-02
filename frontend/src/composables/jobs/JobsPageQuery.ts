@@ -10,7 +10,11 @@ import { watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
-import { PAST_JOBS_DEFAULT_HOURS, type JobSortCriterion, type JobSortOrder } from '@/stores/runtime/jobs'
+import {
+  PAST_JOBS_DEFAULT_HOURS,
+  type JobSortCriterion,
+  type JobSortOrder
+} from '@/stores/runtime/jobs'
 
 export type JobsPageRouteName = 'jobs' | 'jobs-past'
 

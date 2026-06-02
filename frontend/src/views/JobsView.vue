@@ -13,7 +13,8 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useJobsPageQuery } from '@/composables/jobs/JobsPageQuery'
 import { useJobsListPaging } from '@/composables/jobs/JobsListPaging'
-import { compareClusterJobSortOrder, jobPriority, type ClusterJob } from '@/composables/GatewayAPI'
+import { compareJobs, jobPriorityLabel } from '@/composables/gateway/slurm/job'
+import type { SlurmJob } from '@/composables/gateway/slurm/types'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
@@ -32,11 +33,11 @@ const route = useRoute()
 const runtimeStore = useRuntimeStore()
 const { updateQueryParameters, setupFilterQuerySync } = useJobsPageQuery('jobs')
 
-const poller = useClusterDataPoller<ClusterJob[]>(cluster, 'jobs', 5000)
+const poller = useClusterDataPoller<SlurmJob[]>(cluster, 'jobs', 5000)
 const jobsList = computed(() => poller.data.value ?? [])
 const { sortedJobs, lastpage, firstjob, lastjob, jobsPages } = useJobsListPaging(jobsList, {
   match: (job) => runtimeStore.jobs.matchesFilters(job),
-  compareSort: compareClusterJobSortOrder
+  compareSort: compareJobs
 })
 
 function sortJobs() {
@@ -84,7 +85,9 @@ onMounted(() => {
 
       <div class="mx-auto flex items-center justify-between">
         <div class="px-4 py-16 sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Jobs Active</h1>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Jobs Active
+          </h1>
           <p class="mt-4 max-w-xl text-sm font-light text-gray-600 dark:text-gray-300">
             Active jobs in cluster queue
           </p>
@@ -108,9 +111,7 @@ onMounted(() => {
 
             <div class="flex flex-wrap items-center gap-2">
               <RouterLink
-                v-if="
-                  runtimeStore.hasAnyPermission(['jobs-view-past', 'jobs-view-past-own'])
-                "
+                v-if="runtimeStore.hasAnyPermission(['jobs-view-past', 'jobs-view-past-own'])"
                 data-testid="jobs-scope-toggle"
                 :to="{ name: 'jobs-past', params: { cluster } }"
                 class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
@@ -156,7 +157,10 @@ onMounted(() => {
                   <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">Partition</th>
                   <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">QOS</th>
                   <th scope="col" class="hidden px-3 py-3.5 text-center sm:table-cell">Priority</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:min-w-[100px]">
+                  <th
+                    scope="col"
+                    class="hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:min-w-[100px]"
+                  >
                     Reason
                   </th>
                   <th scope="col" class="max-w-fit py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
@@ -189,7 +193,7 @@ onMounted(() => {
                     {{ job.qos }}
                   </td>
                   <td class="hidden px-3 py-4 text-center whitespace-nowrap sm:table-cell">
-                    {{ jobPriority(job) }}
+                    {{ jobPriorityLabel(job) }}
                   </td>
                   <td class="hidden px-3 py-4 whitespace-nowrap 2xl:table-cell">
                     <template v-if="job.state_reason != 'None'">

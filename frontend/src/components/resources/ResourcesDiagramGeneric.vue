@@ -12,7 +12,6 @@ import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterNode } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
@@ -20,6 +19,7 @@ import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
 import ResourcesDiagramNavigation from '@/components/resources/ResourcesDiagramNavigation.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
 const { cluster, mode } = defineProps<{
   cluster: string
@@ -29,9 +29,9 @@ const { cluster, mode } = defineProps<{
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
 const route = useRoute()
-const { data, unable, loaded } = useClusterDataPoller<ClusterNode[]>(cluster, 'nodes', 10000)
+const { data, unable, loaded } = useClusterDataPoller<SlurmNode[]>(cluster, 'nodes', 10000)
 
-const filteredNodes: Ref<ClusterNode[]> = computed(() => {
+const filteredNodes: Ref<SlurmNode[]> = computed(() => {
   if (!data.value) return []
   return [...data.value].filter((node) => runtimeStore.resources.matchesFilters(node))
 })

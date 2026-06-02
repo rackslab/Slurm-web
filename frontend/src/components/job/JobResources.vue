@@ -7,8 +7,9 @@
 -->
 
 <script setup lang="ts">
-import { jobResourcesTRES, getMBHumanUnit } from '@/composables/GatewayAPI'
-import type { ClusterTRES } from '@/composables/GatewayAPI'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
+import type { SlurmTRES } from '@/composables/gateway/slurm/types'
+import { extractSlurmTRESResources } from '@/composables/gateway/slurm/tres'
 import {
   ServerIcon,
   CpuChipIcon,
@@ -17,12 +18,11 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const { tres, gpu } = defineProps<{
-  tres: ClusterTRES[]
+  tres: SlurmTRES[]
   gpu: { count: number; reliable: boolean }
 }>()
-const resources = jobResourcesTRES(tres)
+const resources = extractSlurmTRESResources(tres)
 </script>
-
 <template>
   <span v-if="resources.node == -1 && resources.cpu == -1 && resources.memory == -1">∅</span>
   <dd v-else class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">

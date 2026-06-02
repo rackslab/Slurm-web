@@ -7,10 +7,7 @@
  */
 
 import type { App, Plugin } from 'vue'
-import type {
-  ColorConfiguration,
-  RuntimeConfiguration
-} from '@/plugins/runtimeConfiguration'
+import type { ColorConfiguration, RuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 
 const COLOR_CSS_VARIABLES: Record<keyof ColorConfiguration, string> = {
   light: '--color-slurmweb-light',
@@ -23,8 +20,7 @@ const COLOR_CSS_VARIABLES: Record<keyof ColorConfiguration, string> = {
 
 export const brandingPlugin: Plugin = {
   install(app: App) {
-    const colors = (app.config.globalProperties.$rc as RuntimeConfiguration | undefined)
-      ?.colors
+    const colors = (app.config.globalProperties.$rc as RuntimeConfiguration | undefined)?.colors
     if (!colors) {
       return
     }

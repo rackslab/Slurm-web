@@ -12,8 +12,6 @@ import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import { jobRequestedGPU, jobAllocatedGPU } from '@/composables/GatewayAPI'
-import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
 import JobProgress from '@/components/job/JobProgress.vue'
 import JobBackButton from '@/components/job/JobBackButton.vue'
@@ -24,6 +22,8 @@ import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 import JobFieldComment from '@/components/job/JobFieldComment.vue'
 import JobFieldExitCode from '@/components/job/JobFieldExitCode.vue'
 import JobResources from '@/components/job/JobResources.vue'
+import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
+import { jobAllocatedGPU, jobRequestedGPU } from '@/composables/gateway/slurm/job'
 
 const { cluster, id } = defineProps<{ cluster: string; id: number }>()
 
@@ -53,7 +53,7 @@ function isValidJobField(key: string): key is JobField {
   return typeof key === 'string' && JobsFields.includes(key as JobField)
 }
 
-const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterIndividualJob>(
+const { data, unable, loaded, setCluster } = useClusterDataPoller<SlurmJobDetail>(
   cluster,
   'job',
   5000,
@@ -157,7 +157,10 @@ const jobFieldsContent = computed(
         id: 'tres-requested',
         label: 'Requested',
         component: JobResources,
-        props: { tres: data.value.tres.requested, gpu: jobRequestedGPU(data.value) }
+        props: {
+          tres: data.value.tres.requested,
+          gpu: jobRequestedGPU(data.value)
+        }
       },
       {
         id: 'tres-allocated',

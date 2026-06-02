@@ -7,11 +7,11 @@
 -->
 
 <script setup lang="ts">
-import { jobResourcesGPU } from '@/composables/GatewayAPI'
-import type { ClusterJob } from '@/composables/GatewayAPI'
+import type { SlurmJob } from '@/composables/gateway/slurm/types'
+import { jobResourcesGPU } from '@/composables/gateway/slurm/job'
 import { ServerIcon, CpuChipIcon, Square3Stack3DIcon } from '@heroicons/vue/24/outline'
 
-const { job } = defineProps<{ job: ClusterJob }>()
+const { job } = defineProps<{ job: SlurmJob }>()
 const gpu = jobResourcesGPU(job)
 </script>
 <template>

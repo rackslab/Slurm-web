@@ -8,7 +8,7 @@
 
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { MetricRange } from '@/composables/GatewayAPI'
+import { type MetricRange } from '@/composables/gateway/types/metrics'
 
 /*
  * Dashboard view settings

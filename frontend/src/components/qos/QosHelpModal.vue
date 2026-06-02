@@ -9,19 +9,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Ref } from 'vue'
-import {
-  renderClusterOptionalNumber,
-  renderClusterTRESHuman,
-  renderWalltime
-} from '@/composables/GatewayAPI'
-import type { ClusterOptionalNumber, ClusterTRES } from '@/composables/GatewayAPI'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
+import { renderSlurmOptionalNumber } from '@/composables/gateway/slurm/numbers'
+import { renderSlurmTRESHuman } from '@/composables/gateway/slurm/tres'
+import { renderSlurmDurationMinutes } from '@/composables/gateway/slurm/time'
+import type { SlurmOptionalNumber, SlurmTRES } from '@/composables/gateway/slurm/types'
 
 export interface QosModalLimitDescription {
   id: string
   qos: string
-  value: ClusterOptionalNumber | ClusterTRES[]
+  value: SlurmOptionalNumber | SlurmTRES[]
 }
 
 const { helpModalShow, limit } = defineProps<{
@@ -37,7 +35,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
     }
   }
 
-  function isClusterTRES(value: unknown): value is ClusterTRES[] {
+  function isSlurmTRES(value: unknown): value is SlurmTRES[] {
     return Array.isArray(value)
   }
 
@@ -45,7 +43,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
     if (!limit) {
       return 'N/A'
     }
-    if (isClusterTRES(limit.value)) {
+    if (isSlurmTRES(limit.value)) {
       return limit.value.length
         ? message
         : `Slurm does not enforce this limit with QOS ${limit.qos}.`
@@ -58,10 +56,10 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
     if (!limit) {
       return 'N/A'
     }
-    if (isClusterTRES(limit.value)) {
-      return renderClusterTRESHuman(limit.value)
+    if (isSlurmTRES(limit.value)) {
+      return renderSlurmTRESHuman(limit.value)
     } else {
-      return renderClusterOptionalNumber(limit.value)
+      return renderSlurmOptionalNumber(limit.value)
     }
   }
 
@@ -161,7 +159,7 @@ const qosMessage: Ref<{ title: string; message: string }> = computed(() => {
         title: 'Maximum jobs time limit',
         message: ifValueDefined(
           `Slurm does not allow jobs requiring more than ${
-            isClusterTRES(limit.value) ? 'N/A' : renderWalltime(limit.value)
+            isSlurmTRES(limit.value) ? 'N/A' : renderSlurmDurationMinutes(limit.value)
           } with this QOS ${limit.qos}.`
         )
       }

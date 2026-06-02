@@ -11,27 +11,25 @@ import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import {
-  renderClusterOptionalNumber,
-  renderClusterTRES,
-  renderQosFlag,
-  renderWalltime
-} from '@/composables/GatewayAPI'
-import type { ClusterQos, ClusterOptionalNumber, ClusterTRES } from '@/composables/GatewayAPI'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import QosHelpModal from '@/components/qos/QosHelpModal.vue'
 import type { QosModalLimitDescription } from '@/components/qos/QosHelpModal.vue'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
+import { renderSlurmOptionalNumber } from '@/composables/gateway/slurm/numbers'
+import { renderSlurmTRES } from '@/composables/gateway/slurm/tres'
+import { renderSlurmDurationMinutes } from '@/composables/gateway/slurm/time'
+import { renderQosFlag } from '@/composables/gateway/slurm/qos'
+import type { SlurmOptionalNumber, SlurmQos, SlurmTRES } from '@/composables/gateway/slurm/types'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable, setCluster } = useClusterDataPoller<ClusterQos[]>(cluster, 'qos', 10000)
+const { data, unable, setCluster } = useClusterDataPoller<SlurmQos[]>(cluster, 'qos', 10000)
 
 const helpModalShow: Ref<boolean> = ref(false)
 const modalQosLimit: Ref<QosModalLimitDescription | undefined> = ref()
 
-function openHelpModal(qos: string, limit: string, value: ClusterOptionalNumber | ClusterTRES[]) {
+function openHelpModal(qos: string, limit: string, value: SlurmOptionalNumber | SlurmTRES[]) {
   modalQosLimit.value = { id: limit, qos: qos, value: value }
   helpModalShow.value = true
 }
@@ -41,7 +39,7 @@ function closeHelpModal() {
   modalQosLimit.value = undefined
 }
 
-function qosJobLimits(qos: ClusterQos) {
+function qosJobLimits(qos: SlurmQos) {
   return [
     {
       id: 'GrpJobs',
@@ -71,7 +69,7 @@ function qosJobLimits(qos: ClusterQos) {
   ]
 }
 
-function qosResourcesLimits(qos: ClusterQos) {
+function qosResourcesLimits(qos: SlurmQos) {
   return [
     {
       id: 'GrpTRES',
@@ -186,7 +184,7 @@ watch(
                       </button>
                       <dt class="visible">{{ limit.label }}:</dt>
                       <dd class="visible ml-2">
-                        {{ renderClusterOptionalNumber(limit.value) }}
+                        {{ renderSlurmOptionalNumber(limit.value) }}
                       </dd>
                     </div>
                   </dl>
@@ -209,7 +207,7 @@ watch(
                       </button>
                       <dt class="visible">{{ limit.label }}:</dt>
                       <dd class="visible ml-2 font-mono text-xs">
-                        {{ renderClusterTRES(limit.value) }}
+                        {{ renderSlurmTRES(limit.value) }}
                       </dd>
                     </div>
                   </dl>
@@ -230,7 +228,7 @@ watch(
                       <QuestionMarkCircleIcon class="text-slurmweb h-5 w-5" />
                     </button>
                     <span class="visible">
-                      {{ renderWalltime(qos.limits.max.wall_clock.per.job) }}
+                      {{ renderSlurmDurationMinutes(qos.limits.max.wall_clock.per.job) }}
                     </span>
                   </div>
                 </td>

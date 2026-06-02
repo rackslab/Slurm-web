@@ -10,15 +10,15 @@
 import { watch } from 'vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
-import type { ClusterReservation } from '@/composables/GatewayAPI'
 import { representDuration } from '@/composables/TimeDuration'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { type SlurmReservation } from '@/composables/gateway/slurm/types'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
-const { data, unable, setCluster } = useClusterDataPoller<ClusterReservation[]>(
+const { data, unable, setCluster } = useClusterDataPoller<SlurmReservation[]>(
   cluster,
   'reservations',
   10000

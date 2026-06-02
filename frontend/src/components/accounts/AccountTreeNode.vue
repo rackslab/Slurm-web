@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import type { ClusterAccountTreeNode } from '@/composables/GatewayAPI'
+import type { SlurmAccountTreeNode } from '@/composables/gateway/slurm/types'
 import {
   ChevronRightIcon,
   ChevronDownIcon,
@@ -18,7 +18,7 @@ import {
 } from '@heroicons/vue/20/solid'
 
 const { node, expandedAccounts, isLast, cluster } = defineProps<{
-  node: ClusterAccountTreeNode
+  node: SlurmAccountTreeNode
   expandedAccounts: Set<string>
   isLast?: boolean
   cluster: string
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 const isExpanded = computed(() => expandedAccounts.has(node.account))
 const hasChildren = computed(() => node.children.length > 0)
 
-function countDescendants(node: ClusterAccountTreeNode): number {
+function countDescendants(node: SlurmAccountTreeNode): number {
   let count = 0
   for (const child of node.children) {
     count += 1 + countDescendants(child)
@@ -39,7 +39,7 @@ function countDescendants(node: ClusterAccountTreeNode): number {
   return count
 }
 
-function collectDescendantUsers(node: ClusterAccountTreeNode, users: Set<string>) {
+function collectDescendantUsers(node: SlurmAccountTreeNode, users: Set<string>) {
   for (const child of node.children) {
     for (const user of child.users ?? []) {
       if (user) {

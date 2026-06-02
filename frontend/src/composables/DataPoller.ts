@@ -13,8 +13,7 @@ import {
   PermissionError,
   CanceledRequestError
 } from '@/composables/HTTPErrors'
-import { useGatewayAPI } from '@/composables/GatewayAPI'
-import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
+import { useGatewayAPI, type GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 

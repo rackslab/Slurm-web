@@ -8,13 +8,14 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
-import type { ClusterDescription, CacheStatistics } from '@/composables/GatewayAPI'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import useDoughnutChart from '@/composables/charts/Doughnut'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ArrowPathIcon } from '@heroicons/vue/20/solid'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
+import { type CacheStatistics } from '@/composables/gateway/types/cache'
+import { type ClusterDescription } from '@/composables/gateway/types/cluster'
 
 const { cluster } = defineProps<{ cluster: ClusterDescription }>()
 

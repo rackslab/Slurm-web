@@ -20,12 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   )
   const returnUrl: Ref<string | null> = ref(null)
 
-  function setSession(
-    _token: string,
-    _username: string,
-    _fullname: string,
-    _groups: string[]
-  ) {
+  function setSession(_token: string, _username: string, _fullname: string, _groups: string[]) {
     token.value = _token
     username.value = _username
     fullname.value = _fullname

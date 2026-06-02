@@ -13,8 +13,6 @@ import { useRuntimeStore } from '@/stores/runtime'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import type { ClusterDataPoller } from '@/composables/DataPoller'
-import { getMBHumanUnit, getNodeGPU, getNodeGPUFromGres } from '@/composables/GatewayAPI'
-import type { ClusterIndividualNode, ClusterJob } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
 import JobStatusBadge from '@/components/job/JobStatusBadge.vue'
@@ -22,6 +20,10 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import BackToResourcesButton from '@/components/resources/BackToResourcesButton.vue'
 import { XCircleIcon } from '@heroicons/vue/20/solid'
+import type { SlurmJob } from '@/composables/gateway/slurm/types'
+import { nodeGPUFromGRES, nodeGPULabelsFromGRES } from '@/composables/gateway/slurm/node'
+import type { SlurmNodeDetail } from '@/composables/gateway/slurm/types'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
 
 const { cluster, nodeName } = defineProps<{ cluster: string; nodeName: string }>()
 
@@ -31,25 +33,22 @@ function roundToDecimal(value: number, decimals: number = 1): number {
   return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
 }
 
-const node = useClusterDataPoller<ClusterIndividualNode>(cluster, 'node', 5000, nodeName)
+const node = useClusterDataPoller<SlurmNodeDetail>(cluster, 'node', 5000, nodeName)
 
 /* Poll jobs on current nodes if user can view active jobs. */
-let jobs: ClusterDataPoller<ClusterJob[]> | undefined
+let jobs: ClusterDataPoller<SlurmJob[]> | undefined
 if (runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own'])) {
-  jobs = useClusterDataPoller<ClusterJob[]>(cluster, 'jobs', 10000, nodeName)
+  jobs = useClusterDataPoller<SlurmJob[]>(cluster, 'jobs', 10000, nodeName)
 }
 
 const gpuAvailable = computed(() => {
   if (!node.data.value) return 0
-  return getNodeGPUFromGres(node.data.value.gres).reduce((gpu, current) => gpu + current.count, 0)
+  return nodeGPUFromGRES(node.data.value.gres).reduce((gpu, current) => gpu + current.count, 0)
 })
 
 const gpuAllocated = computed(() => {
   if (!node.data.value) return 0
-  return getNodeGPUFromGres(node.data.value.gres_used).reduce(
-    (gpu, current) => gpu + current.count,
-    0
-  )
+  return nodeGPUFromGRES(node.data.value.gres_used).reduce((gpu, current) => gpu + current.count, 0)
 })
 
 watch(
@@ -232,7 +231,7 @@ watch(
                   class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                 >
                   <ul class="list-disc pl-4">
-                    <li v-for="gpu in getNodeGPU(node.data.value.gres)" :key="gpu">{{ gpu }}</li>
+                    <li v-for="gpu in nodeGPULabelsFromGRES(node.data.value.gres)" :key="gpu">{{ gpu }}</li>
                   </ul>
                 </dd>
               </div>

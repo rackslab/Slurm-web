@@ -10,9 +10,9 @@
 import { ref, computed } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayDataGetter } from '@/composables/DataGetter'
-import type { UserDescription } from '@/composables/GatewayAPI'
-import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
 
+import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/20/solid'
+import type { UserDescription } from '@/composables/gateway/types/auth'
 import {
   Combobox,
   ComboboxButton,
