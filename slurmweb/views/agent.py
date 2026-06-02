@@ -162,22 +162,56 @@ def stats():
     )
 
 
-@rbac_action("jobs-view")
+@check_jwt
 def jobs():
+    user = request.user
+    if current_app.policy.allowed_user_action(user, "jobs-view"):
+        own_only = False
+    elif current_app.policy.allowed_user_action(user, "jobs-view-own"):
+        own_only = True
+    else:
+        abort(403, "User is not allowed to perform action jobs-view or jobs-view-own")
     node = request.args.get("node")
     if node:
-        return jsonify(slurmrest("jobs_by_node", node))
+        jobs_list = slurmrest("jobs_by_node", node)
     else:
-        return jsonify(slurmrest("jobs_current"))
+        jobs_list = slurmrest("jobs_current")
+    if own_only:
+        login = user.login.lower()
+        jobs_list = [
+            job for job in jobs_list if job.get("user_name", "").lower() == login
+        ]
+    return jsonify(jobs_list)
 
 
-@rbac_action("jobs-view")
+@check_jwt
 def job(job: int):
-    return jsonify(slurmrest("job", job))
+    user = request.user
+    if current_app.policy.allowed_user_action(user, "jobs-view"):
+        own_only = False
+    elif current_app.policy.allowed_user_action(user, "jobs-view-own"):
+        own_only = True
+    else:
+        abort(403, "User is not allowed to perform action jobs-view or jobs-view-own")
+    job_data = slurmrest("job", job)
+    if own_only and job_data.get("user", "").lower() != user.login.lower():
+        abort(404, "Job not found")
+    return jsonify(job_data)
 
 
-@rbac_action("jobs-view-past")
+@check_jwt
 def jobs_past():
+    user = request.user
+    if current_app.policy.allowed_user_action(user, "jobs-view-past"):
+        own_only = False
+    elif current_app.policy.allowed_user_action(user, "jobs-view-past-own"):
+        own_only = True
+    else:
+        abort(
+            403,
+            "User is not allowed to perform action "
+            "jobs-view-past or jobs-view-past-own",
+        )
     settings = current_app.settings.slurmdbd
     if "hours" not in request.args:
         abort(400, "Missing hours query parameter")
@@ -186,7 +220,13 @@ def jobs_past():
     except (TypeError, ValueError):
         abort(400, "Invalid hours query parameter")
     hours = max(1, min(hours, settings.jobs_max_hours))
-    return jsonify(slurmrest("jobs_past", hours))
+    # Always fetch all past jobs from slurmrestd (shared cache); own-only filter
+    # is applied here so restricted users never receive other users' jobs.
+    jobs_list = slurmrest("jobs_past", hours)
+    if own_only:
+        login = user.login.lower()
+        jobs_list = [job for job in jobs_list if job.get("user", "").lower() == login]
+    return jsonify(jobs_list)
 
 
 @rbac_action("nodes-view")

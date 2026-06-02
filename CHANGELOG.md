@@ -12,15 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add support for SSO authentication with OpenID Connect (#268).
   - Add support for branding of UI with custom colors, logos and favicon (#287).
   - Add route to reverse-proxy `/jobs/past` to agents.
-- agent: Add route `/jobs/past` to query last terminated jobs from Slurm
-  accounting service.
+- agent:
+  - Add route `/jobs/past` to query last terminated jobs from Slurm
+    accounting service.
+  - Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
+  - Enforce RBAC actions `jobs-view-own` and `jobs-view-past-own` to restrict
+    job lists and details to the authenticated user (#259).
 - front:
   - Add OIDC login page and callback view for OpenID Connect SSO authentication.
   - Support custom branding parameters as defined in UI runtime configuration
     file.
   - Add page to list last terminated jobs with configurable time window (#325).
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
-- agent: Implement (dummy) Slurm REST API adapter from v0.0.44 to v0.0.45.
 - gensession: Add `slurm-web gen-session-key` command to generate gateway
   session secret file.
 - lib: Support `slurm-web gen-session-key` in compat wrapper.
