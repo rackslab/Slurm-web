@@ -123,6 +123,25 @@ Members of _it_ group and _jdoe_ inherit both *user* and *admin* roles with the
 union of all granted actions.
 ====
 
+.Show example to restrict users to their own jobs
+[%collapsible]
+====
+[source,ini]
+----
+[roles]
+user=ALL
+
+[user]
+actions=stats-view,jobs-view-own,jobs-view-past-own,nodes-view
+----
+
+Authenticated users with the *user* role can access the _Jobs_ menu and see only
+their own active and terminated jobs. The `jobs-view-own` and
+`jobs-view-past-own` actions restrict job lists and details to the
+current user. Users with `jobs-view` or `jobs-view-past` still see all users'
+jobs for the corresponding scope.
+====
+
 [#actions]
 == Available Actions
 
