@@ -10,6 +10,7 @@
 import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useAuthSession } from '@/composables/AuthSession'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { AuthenticationError } from '@/composables/HTTPErrors'
@@ -30,6 +31,7 @@ const highlightPassword: Ref<boolean> = ref(false)
 const shakeLoginButton: Ref<boolean> = ref(false)
 
 const authStore = useAuthStore()
+const { login } = useAuthSession()
 const runtimeStore = useRuntimeStore()
 
 const oidcLoginUrl = computed(
@@ -63,7 +65,7 @@ async function submitLogin() {
   try {
     disableSubmission.value = true
     const response = await gateway.login({ user: username.value, password: password.value })
-    authStore.login(response.token, response.login, response.fullname, response.groups)
+    await login(response.token, response.login, response.fullname, response.groups)
   } catch (error) {
     if (error instanceof AuthenticationError) {
       reportAuthenticationError(error.message)

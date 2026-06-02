@@ -9,10 +9,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import type { RouteLocationRaw } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
-  const router = useRouter()
   const token: Ref<string | null> = ref(localStorage.getItem('token'))
   const username: Ref<string | null> = ref(localStorage.getItem('username'))
   const fullname: Ref<string | null> = ref(localStorage.getItem('fullname'))
@@ -21,27 +20,27 @@ export const useAuthStore = defineStore('auth', () => {
   )
   const returnUrl: Ref<string | null> = ref(null)
 
-  function login(_token: string, _username: string, _fullname: string, _groups: string[]) {
-    // update pinia state
+  function setSession(
+    _token: string,
+    _username: string,
+    _fullname: string,
+    _groups: string[]
+  ) {
     token.value = _token
     username.value = _username
     fullname.value = _fullname
     groups.value = _groups
 
-    // store user details and jwt in local storage to keep user logged in between page refreshes
     localStorage.setItem('token', _token)
     localStorage.setItem('username', _username)
     localStorage.setItem('fullname', _fullname)
     localStorage.setItem('groups', JSON.stringify(_groups))
-
-    // redirect to previous url or default to clusters page
-    const redirectUrl = returnUrl.value || { name: 'clusters' }
-    returnUrl.value = null // Clear returnUrl after use
-    router.push(redirectUrl)
   }
 
-  function anonymousLogin(_token: string) {
-    login(_token, 'anonymous', 'anonymous', [])
+  function takePostLoginRoute(): string | RouteLocationRaw {
+    const redirectUrl = returnUrl.value || { name: 'clusters' }
+    returnUrl.value = null
+    return redirectUrl
   }
 
   function logout() {
@@ -52,5 +51,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('groups')
   }
 
-  return { token, username, fullname, groups, returnUrl, login, anonymousLogin, logout }
+  return { token, username, fullname, groups, returnUrl, setSession, takePostLoginRoute, logout }
 })

@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthSession } from '@/composables/AuthSession'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
@@ -18,7 +18,7 @@ import { AuthenticationError } from '@/composables/HTTPErrors'
 const msg: Ref<string> = ref('')
 
 const gateway = useGatewayAPI()
-const authStore = useAuthStore()
+const { anonymousLogin } = useAuthSession()
 const runtimeStore = useRuntimeStore()
 const runtimeConfiguration = useRuntimeConfiguration()
 
@@ -33,7 +33,7 @@ onMounted(async () => {
   } else {
     try {
       const response = await gateway.anonymousLogin()
-      authStore.anonymousLogin(response.token)
+      await anonymousLogin(response.token)
     } catch (error) {
       if (error instanceof AuthenticationError) {
         reportAuthenticationError(error.message)
