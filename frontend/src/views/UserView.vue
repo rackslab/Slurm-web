@@ -23,6 +23,8 @@ import {
   renderWalltime
 } from '@/composables/GatewayAPI'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
+import { useRuntimeStore } from '@/stores/runtime'
+import { useAuthStore } from '@/stores/auth'
 
 const { cluster, user } = defineProps<{
   cluster: string
@@ -30,6 +32,21 @@ const { cluster, user } = defineProps<{
 }>()
 
 const router = useRouter()
+const runtimeStore = useRuntimeStore()
+const authStore = useAuthStore()
+
+// Link targets active jobs only. Broad jobs-view allows any user; jobs-view-own
+// allows the link on the signed-in user's own profile only.
+const canLinkToUserJobs = computed(() => {
+  if (!runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own'])) {
+    return false
+  }
+  return (
+    runtimeStore.hasPermission('jobs-view') ||
+    (authStore.username !== null &&
+      user.toLowerCase() === authStore.username.toLowerCase())
+  )
+})
 
 const { data, unable, loaded, setCluster } = useClusterDataPoller<ClusterAssociation[]>(
   cluster,
@@ -163,6 +180,7 @@ function timeLimits(association: ClusterAssociation) {
             </div>
           </div>
           <RouterLink
+            v-if="canLinkToUserJobs"
             :to="{ name: 'jobs', params: { cluster }, query: { users: user } }"
             class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-dark focus-visible:outline-slurmweb-dark inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
           >

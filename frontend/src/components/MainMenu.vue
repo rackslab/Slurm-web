@@ -45,7 +45,7 @@ const navigation: Array<{
     name: 'Jobs',
     route: 'jobs',
     icon: PlayCircleIcon,
-    permissions: ['jobs-view', 'jobs-view-past']
+    permissions: ['jobs-view', 'jobs-view-own', 'jobs-view-past', 'jobs-view-past-own']
   },
   { name: 'Resources', route: 'resources', icon: CpuChipIcon, permissions: ['nodes-view'] },
   { name: 'QOS', route: 'qos', icon: SwatchIcon, permissions: ['qos-view'] },

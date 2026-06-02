@@ -54,6 +54,14 @@ const runtimeConfiguration = useRuntimeConfiguration()
 
 const state_filters = computed(() => jobStateFilters(pastTimeRange))
 
+const showUserFilter = computed(
+  () =>
+    runtimeConfiguration.authentication &&
+    (pastTimeRange
+      ? runtimeStore.hasPermission('jobs-view-past')
+      : runtimeStore.hasPermission('jobs-view'))
+)
+
 const stateFiltersModel = computed({
   get: () =>
     pastTimeRange ? runtimeStore.jobs.filters.pastStates : runtimeStore.jobs.filters.activeStates,
@@ -205,7 +213,7 @@ const stateFiltersModel = computed({
                 the list of users cannot be retrieved.
               -->
               <Disclosure
-                v-if="runtimeConfiguration.authentication"
+                v-if="showUserFilter"
                 as="div"
                 class="border-t border-t-gray-200 px-4 py-6 dark:border-t-gray-600"
                 v-slot="{ open }"

@@ -33,9 +33,9 @@ function roundToDecimal(value: number, decimals: number = 1): number {
 
 const node = useClusterDataPoller<ClusterIndividualNode>(cluster, 'node', 5000, nodeName)
 
-/* Poll jobs on current nodes if user has permission on jobs-view action. */
+/* Poll jobs on current nodes if user can view active jobs. */
 let jobs: ClusterDataPoller<ClusterJob[]> | undefined
-if (runtimeStore.hasPermission('jobs-view')) {
+if (runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own'])) {
   jobs = useClusterDataPoller<ClusterJob[]>(cluster, 'jobs', 10000, nodeName)
 }
 
