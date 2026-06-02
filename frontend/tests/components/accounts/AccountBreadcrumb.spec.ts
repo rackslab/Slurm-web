@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import { RouterLink } from 'vue-router'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
 import { init_plugins } from '../../lib/common'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import associations from '../../assets/associations.json'
+import { type SlurmAssociation } from '@/composables/gateway/slurm/types'
 
 describe('AccountBreadcrumb.vue', () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('AccountBreadcrumb.vue', () => {
   })
 
   test('displays empty symbol when account has no parent', () => {
-    const accountAssociations: ClusterAssociation[] = [
+    const accountAssociations: SlurmAssociation[] = [
       {
         account: 'root',
         parent_account: '',
@@ -46,7 +46,7 @@ describe('AccountBreadcrumb.vue', () => {
   })
 
   test('displays single parent account', () => {
-    const accountAssociations: ClusterAssociation[] = [
+    const accountAssociations: SlurmAssociation[] = [
       {
         account: 'root',
         parent_account: '',
@@ -80,7 +80,7 @@ describe('AccountBreadcrumb.vue', () => {
   })
 
   test('displays multiple parent accounts in hierarchy', () => {
-    const accountAssociations: ClusterAssociation[] = [
+    const accountAssociations: SlurmAssociation[] = [
       {
         account: 'root',
         parent_account: '',
@@ -130,7 +130,7 @@ describe('AccountBreadcrumb.vue', () => {
   })
 
   test('displays current account when showCurrent is true', () => {
-    const accountAssociations: ClusterAssociation[] = [
+    const accountAssociations: SlurmAssociation[] = [
       {
         account: 'root',
         parent_account: '',

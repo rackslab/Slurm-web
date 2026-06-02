@@ -3,8 +3,8 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import ChartJobsHistogram from '@/components/dashboard/ChartJobsHistogram.vue'
 import metricsJobsHour from '../../assets/metrics-jobs-hour.json'
-import type { MetricJobState, MetricValue } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { type MetricJobState, type MetricValue } from '@/composables/gateway/types/metrics'
 
 const mockClusterDataPoller = getMockClusterDataPoller<Record<MetricJobState, MetricValue[]>>()
 

@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest'
 import { mount } from '@vue/test-utils'
 import AcctJobResources from '@/components/jobs/AcctJobResources.vue'
-import type { ClusterAcctJob } from '@/composables/GatewayAPI'
+import type { SlurmAcctJob } from '@/composables/gateway/slurm/types'
 
-function acctJobFixture(overrides: Partial<ClusterAcctJob> = {}): ClusterAcctJob {
+function acctJobFixture(overrides: Partial<SlurmAcctJob> = {}): SlurmAcctJob {
   return {
     account: 'optic',
     job_id: 1,

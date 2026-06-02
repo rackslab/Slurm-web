@@ -1,11 +1,11 @@
 import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { MetricCacheResult, MetricValue } from '@/composables/GatewayAPI'
 import SettingsCacheMetrics from '@/components/settings/SettingsCacheMetrics.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import metricsCacheHour from '../../assets/metrics-cache-hour.json'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
+import { type MetricCacheResult, type MetricValue } from '@/composables/gateway/types/metrics'
 
 const mockClusterDataPoller = getMockClusterDataPoller<Record<MetricCacheResult, MetricValue[]>>()
 
@@ -23,7 +23,10 @@ describe('SettingsCacheMetrics.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })

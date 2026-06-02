@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, expect } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { ClusterAcctJob, ClusterJob } from '@/composables/GatewayAPI'
+import type { SlurmAcctJob, SlurmJob } from '@/composables/gateway/slurm/types'
 import {
   ACTIVE_JOB_STATE_FILTERS,
   jobStateFilters,
@@ -11,23 +11,27 @@ import {
   useJobsRuntimeStore
 } from '@/stores/runtime/jobs'
 
-const activeJob: ClusterJob = {
+const activeJob: SlurmJob = {
   job_id: 1,
   user_name: 'alice',
   account: 'physics',
   partition: 'normal',
   qos: 'low',
   job_state: ['RUNNING']
-} as ClusterJob
+} as SlurmJob
 
-const pastJob: ClusterAcctJob = {
+const pastJob = {
   job_id: 2,
   user: 'bob',
   account: 'chemistry',
   partition: 'gpu',
   qos: 'high',
-  state: { current: ['COMPLETED'], reason: 'None' }
-} as ClusterAcctJob
+  state: { current: ['COMPLETED'], reason: 'None' },
+  nodes: '',
+  priority: { set: true, infinite: false, number: 1 },
+  time: {},
+  tres: { allocated: [], requested: [] }
+} as SlurmAcctJob
 
 describe('stores/runtime/jobs.ts', () => {
   beforeEach(() => {
@@ -131,19 +135,13 @@ describe('stores/runtime/jobs.ts', () => {
       store.filters.partitions = ['normal']
 
       expect(store.matchesFilters(activeJob)).toBe(true)
-      expect(
-        store.matchesFilters({ ...activeJob, job_state: ['PENDING'] } as ClusterJob)
-      ).toBe(false)
-      expect(store.matchesFilters({ ...activeJob, user_name: 'bob' } as ClusterJob)).toBe(
+      expect(store.matchesFilters({ ...activeJob, job_state: ['PENDING'] } as SlurmJob)).toBe(false)
+      expect(store.matchesFilters({ ...activeJob, user_name: 'bob' } as SlurmJob)).toBe(false)
+      expect(store.matchesFilters({ ...activeJob, account: 'other' } as SlurmJob)).toBe(false)
+      expect(store.matchesFilters({ ...activeJob, qos: 'high' } as SlurmJob)).toBe(false)
+      expect(store.matchesFilters({ ...activeJob, partition: 'interactive' } as SlurmJob)).toBe(
         false
       )
-      expect(store.matchesFilters({ ...activeJob, account: 'other' } as ClusterJob)).toBe(
-        false
-      )
-      expect(store.matchesFilters({ ...activeJob, qos: 'high' } as ClusterJob)).toBe(false)
-      expect(
-        store.matchesFilters({ ...activeJob, partition: 'interactive' } as ClusterJob)
-      ).toBe(false)
     })
 
     test('state and user matching is case-insensitive', () => {
@@ -151,12 +149,8 @@ describe('stores/runtime/jobs.ts', () => {
       store.filters.activeStates = ['running']
       store.filters.users = ['ALICE']
 
-      expect(
-        store.matchesFilters({ ...activeJob, job_state: ['Running'] } as ClusterJob)
-      ).toBe(true)
-      expect(store.matchesFilters({ ...activeJob, user_name: 'Alice' } as ClusterJob)).toBe(
-        true
-      )
+      expect(store.matchesFilters({ ...activeJob, job_state: ['Running'] } as SlurmJob)).toBe(true)
+      expect(store.matchesFilters({ ...activeJob, user_name: 'Alice' } as SlurmJob)).toBe(true)
     })
   })
 
@@ -177,13 +171,16 @@ describe('stores/runtime/jobs.ts', () => {
       expect(store.matchesAcctJobFilters(pastJob)).toBe(true)
       expect(
         store.matchesAcctJobFilters({
-          ...pastJob,
+          ...pastJob.data,
           state: { current: ['FAILED'], reason: 'None' }
-        } as ClusterAcctJob)
+        })
       ).toBe(false)
-      expect(store.matchesAcctJobFilters({ ...pastJob, user: 'alice' } as ClusterAcctJob)).toBe(
-        false
-      )
+      expect(
+        store.matchesAcctJobFilters({
+          ...pastJob.data,
+          user: 'alice'
+        })
+      ).toBe(false)
     })
 
     test('active state filters do not affect past job matching', () => {

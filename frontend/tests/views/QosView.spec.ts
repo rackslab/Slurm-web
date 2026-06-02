@@ -7,10 +7,10 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterQos } from '@/composables/GatewayAPI'
 import qos from '../assets/qos.json'
+import type { SlurmQos } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterQos[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmQos[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -26,7 +26,10 @@ describe('QosView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
     // Reset mockClusterDataPoller unable to its default value before every tests.

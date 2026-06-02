@@ -26,12 +26,7 @@ describe('useAuthSession', () => {
 
     await login('token-1', 'jdoe', 'John Doe', ['scientists'])
 
-    expect(authStore.setSession).toHaveBeenCalledWith(
-      'token-1',
-      'jdoe',
-      'John Doe',
-      ['scientists']
-    )
+    expect(authStore.setSession).toHaveBeenCalledWith('token-1', 'jdoe', 'John Doe', ['scientists'])
     expect(authStore.token).toBe('token-1')
     expect(router.push).toHaveBeenCalledWith({ name: 'clusters' })
     expect(authStore.returnUrl).toBe(null)

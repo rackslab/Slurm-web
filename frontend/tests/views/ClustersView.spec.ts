@@ -3,13 +3,13 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 import ClustersView from '@/views/ClustersView.vue'
 import clusters from '../assets/clusters.json'
 import { init_plugins } from '../lib/common'
-import type { ClusterDescription } from '@/composables/GatewayAPI'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import { APIServerError, AuthenticationError } from '@/composables/HTTPErrors'
 import { useAuthStore } from '@/stores/auth'
+import { type ClusterDescription } from '@/composables/gateway/types/cluster'
 
 const mockGatewayAPI = {
   clusters: vi.fn()

@@ -7,11 +7,11 @@ import ResourcesView from '@/views/resources/ResourcesView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import type { RouterMock } from 'vue-router-mock'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterNode } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import nodes from '../../assets/nodes.json'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterNode[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmNode[]>()
 
 let router: RouterMock
 
@@ -29,7 +29,10 @@ describe('ResourcesView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })

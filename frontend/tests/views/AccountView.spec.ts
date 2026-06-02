@@ -4,14 +4,14 @@ import { RouterLink } from 'vue-router'
 import AccountView from '@/views/AccountView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import associations from '../assets/associations.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
+import { type SlurmAssociation } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterAssociation[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmAssociation[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -27,7 +27,10 @@ describe('AccountView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
     mockClusterDataPoller.data.value = undefined
@@ -37,7 +40,7 @@ describe('AccountView.vue', () => {
 
   test('displays account details', () => {
     mockClusterDataPoller.loaded.value = true
-    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    mockClusterDataPoller.data.value = associations as SlurmAssociation[]
 
     const wrapper = mount(AccountView, {
       props: {
@@ -156,7 +159,7 @@ describe('AccountView.vue', () => {
 
   test('displays empty symbol when no subaccounts', () => {
     // Create an account with no subaccounts
-    const accountData: ClusterAssociation[] = [
+    const accountData: SlurmAssociation[] = [
       {
         account: 'leaf',
         parent_account: 'root',
@@ -183,7 +186,7 @@ describe('AccountView.vue', () => {
   })
 
   test('shows info alert when account has no user associations', () => {
-    const accountData: ClusterAssociation[] = [
+    const accountData: SlurmAssociation[] = [
       {
         account: 'empty',
         parent_account: '',

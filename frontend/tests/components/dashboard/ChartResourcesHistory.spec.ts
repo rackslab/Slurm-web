@@ -4,8 +4,8 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import ChartResourcesHistogram from '@/components/dashboard/ChartResourcesHistogram.vue'
 import metricsNodesHour from '../../assets/metrics-nodes-hour.json'
-import type { MetricResourceState, MetricValue } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { type MetricResourceState, type MetricValue } from '@/composables/gateway/types/metrics'
 
 const mockClusterDataPoller = getMockClusterDataPoller<Record<MetricResourceState, MetricValue[]>>()
 

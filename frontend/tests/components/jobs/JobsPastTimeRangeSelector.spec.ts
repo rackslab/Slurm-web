@@ -56,7 +56,10 @@ describe('JobsPastTimeRangeSelector.vue', () => {
     const wrapper = mount(JobsPastTimeRangeSelector, {
       props: { maxHours: 24, defaultHours: 6 }
     })
-    await wrapper.findAll('button').find((b) => b.text() === '24 h')?.trigger('click')
+    await wrapper
+      .findAll('button')
+      .find((b) => b.text() === '24 h')
+      ?.trigger('click')
     expect(wrapper.emitted('select')).toEqual([[24]])
   })
 })

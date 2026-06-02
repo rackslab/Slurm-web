@@ -20,20 +20,16 @@ describe('branding plugin', () => {
       colors: { main: '#112233', light: '#aabbcc' }
     }
     app.use(brandingPlugin)
-    expect(
-      document.documentElement.style.getPropertyValue('--color-slurmweb')
-    ).toBe('#112233')
-    expect(
-      document.documentElement.style.getPropertyValue('--color-slurmweb-light')
-    ).toBe('#aabbcc')
+    expect(document.documentElement.style.getPropertyValue('--color-slurmweb')).toBe('#112233')
+    expect(document.documentElement.style.getPropertyValue('--color-slurmweb-light')).toBe(
+      '#aabbcc'
+    )
   })
 
   test('does nothing when runtime configuration has no colors', () => {
     const app = createApp({ template: '<div />' })
     app.config.globalProperties.$rc = {}
     app.use(brandingPlugin)
-    expect(
-      document.documentElement.style.getPropertyValue('--color-slurmweb')
-    ).toBe('')
+    expect(document.documentElement.style.getPropertyValue('--color-slurmweb')).toBe('')
   })
 })

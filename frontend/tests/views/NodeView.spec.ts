@@ -3,15 +3,16 @@ import { mount } from '@vue/test-utils'
 import NodeView from '@/views/NodeView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import { getMBHumanUnit } from '@/composables/GatewayAPI'
-import type { ClusterJob, ClusterNode } from '@/composables/GatewayAPI'
 import NodeMainState from '@/components/resources/NodeMainState.vue'
 import nodeAllocated from '../assets/node-allocated.json'
 import jobsNode from '../assets/jobs-node.json'
 import { nextTick } from 'vue'
+import type { SlurmJob } from '@/composables/gateway/slurm/types'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
 
-const mockNodeDataPoller = getMockClusterDataPoller<ClusterNode>()
-const mockJobsDataPoller = getMockClusterDataPoller<ClusterJob[]>()
+const mockNodeDataPoller = getMockClusterDataPoller<SlurmNode>()
+const mockJobsDataPoller = getMockClusterDataPoller<SlurmJob[]>()
 
 const useClusterDataPoller = vi.hoisted(() => vi.fn())
 vi.mock('@/composables/DataPoller', () => ({
@@ -28,7 +29,10 @@ describe('NodeView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })

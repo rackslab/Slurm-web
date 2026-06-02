@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import { RouterLink } from 'vue-router'
 import AccountTreeNode from '@/components/accounts/AccountTreeNode.vue'
 import { init_plugins } from '../../lib/common'
-import type { ClusterAccountTreeNode } from '@/composables/GatewayAPI'
 import associations from '../../assets/associations.json'
+import { type SlurmAccountTreeNode } from '@/composables/gateway/slurm/types'
 
 describe('AccountTreeNode.vue', () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('AccountTreeNode.vue', () => {
   })
 
   test('renders accounts tree collapsed', () => {
-    const node: ClusterAccountTreeNode = {
+    const node: SlurmAccountTreeNode = {
       account: 'root',
       children: [
         {
@@ -60,7 +60,7 @@ describe('AccountTreeNode.vue', () => {
   })
 
   test('renders children when expanded', () => {
-    const node: ClusterAccountTreeNode = {
+    const node: SlurmAccountTreeNode = {
       account: 'root',
       children: [
         {
@@ -95,7 +95,7 @@ describe('AccountTreeNode.vue', () => {
   })
 
   test('does not show expand button when node has no children', () => {
-    const node: ClusterAccountTreeNode = {
+    const node: SlurmAccountTreeNode = {
       account: 'root',
       children: [],
       level: 0,
@@ -118,7 +118,7 @@ describe('AccountTreeNode.vue', () => {
   })
 
   test('emits toggle event when expand button is clicked', async () => {
-    const node: ClusterAccountTreeNode = {
+    const node: SlurmAccountTreeNode = {
       account: 'root',
       children: [
         {

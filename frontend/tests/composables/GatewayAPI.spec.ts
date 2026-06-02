@@ -1,24 +1,5 @@
 import { describe, expect, test, beforeEach, afterEach, vi } from 'vitest'
-import {
-  compareClusterJobSortOrder,
-  compareClusterAcctJobSortOrder,
-  jobResourcesTRES,
-  jobAllocatedGPU,
-  jobRequestedGPU,
-  jobResourcesGPU,
-  acctJobResources,
-  acctJobAllocatedGPU,
-  acctJobCpus,
-  countGPUFromAllocatedTRES,
-  countGPUTRESRequest,
-  getMBHumanUnit,
-  getNodeMainState,
-  getNodeAllocationState,
-  getNodeGPUFromGres,
-  getNodeGPU,
-  useGatewayAPI
-} from '@/composables/GatewayAPI'
-import type { ClusterAcctJob } from '@/composables/GatewayAPI'
+
 import jobs from '../assets/jobs.json'
 import jobPending from '../assets/job-pending.json'
 import jobGpuArchived from '../assets/job-gpus-archived.json'
@@ -43,6 +24,28 @@ import nodeWithGpusModelIdle from '../assets/node-with-gpus-model-idle.json'
 import nodeWithGpusModelMixed from '../assets/node-with-gpus-model-mixed.json'
 
 import nodeWithoutGpu from '../assets/node-without-gpu.json'
+import { useGatewayAPI } from '@/composables/GatewayAPI'
+import {
+  compareJobs,
+  jobAllocatedGPU,
+  jobRequestedGPU,
+  jobResourcesGPU
+} from '@/composables/gateway/slurm/job'
+import {
+  compareAcctJobs,
+  acctJobResources,
+  acctJobCPUs,
+  acctJobAllocatedGPU
+} from '@/composables/gateway/slurm/acctJob'
+import { countGPUFromAllocatedTRES } from '@/composables/gateway/slurm/gres'
+import { extractSlurmTRESResources } from '@/composables/gateway/slurm/tres'
+import {
+  nodeGPULabelsFromGRES,
+  nodeGPUFromGRES,
+  nodeAllocationState,
+  nodeMainState
+} from '@/composables/gateway/slurm/node'
+import { getMBHumanUnit } from '@/composables/gateway/slurm/sizes'
 
 // Stub REST API for infrastructureImagePng tests; we only care about parsing.
 const mockRestAPI = {
@@ -121,21 +124,21 @@ describe('infrastructureImagePng', () => {
   })
 })
 
-describe('compareClusterJobSorter', () => {
+describe('compareJobs', () => {
   test('compare same jobs', () => {
     const jobA = jobs[1]
     const jobB = jobs[1]
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'id', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'id', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'id', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'id', 'desc')).toBe(0)
   })
   test('compare sort by id', () => {
     const jobA = { ...jobs[1] }
     const jobB = { ...jobs[1] }
     jobB.job_id = jobB.job_id + 1
     // A < B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'id', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'id', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'id', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'id', 'desc')).toBe(1)
   })
   test('compare sort by user', () => {
     const jobA = { ...jobs[1] }
@@ -143,8 +146,8 @@ describe('compareClusterJobSorter', () => {
     jobA.user_name = 'john'
     jobB.user_name = 'mary'
     // A < B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'user', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'user', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'user', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'user', 'desc')).toBe(1)
   })
   test('compare sort by state', () => {
     const jobA = { ...jobs[1] }
@@ -152,8 +155,8 @@ describe('compareClusterJobSorter', () => {
     jobA.job_state = ['RUNNING']
     jobB.job_state = ['TERMINATED']
     // A < B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'state', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'state', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'state', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'state', 'desc')).toBe(1)
   })
   test('compare sort by priority number', () => {
     const jobA = { ...jobs[1] }
@@ -161,8 +164,8 @@ describe('compareClusterJobSorter', () => {
     jobA.priority = { set: true, infinite: false, number: 1 }
     jobB.priority = { set: true, infinite: false, number: 2 }
     // A < B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'priority', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'priority', 'desc')).toBe(1)
   })
   test('compare sort by priority unset', () => {
     const jobA = { ...jobs[1] }
@@ -170,8 +173,8 @@ describe('compareClusterJobSorter', () => {
     jobA.priority = { set: true, infinite: false, number: 1 }
     jobB.priority = { set: false, infinite: false, number: 2 }
     // A > B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'priority', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'priority', 'desc')).toBe(-1)
   })
   test('compare sort by priority unset both', () => {
     const jobA = { ...jobs[1] }
@@ -179,8 +182,8 @@ describe('compareClusterJobSorter', () => {
     jobA.priority = { set: false, infinite: false, number: 1 }
     jobB.priority = { set: false, infinite: false, number: 2 }
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'priority', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'priority', 'desc')).toBe(0)
   })
   test('compare sort by priority infinite', () => {
     const jobA = { ...jobs[1] }
@@ -188,8 +191,8 @@ describe('compareClusterJobSorter', () => {
     jobA.priority = { set: true, infinite: true, number: 0 }
     jobB.priority = { set: true, infinite: false, number: 2 }
     // A > B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'priority', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'priority', 'desc')).toBe(-1)
   })
   test('compare sort by priority infinite both', () => {
     const jobA = { ...jobs[1] }
@@ -197,8 +200,8 @@ describe('compareClusterJobSorter', () => {
     jobA.priority = { set: true, infinite: true, number: 0 }
     jobB.priority = { set: true, infinite: true, number: 2 }
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'priority', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'priority', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'priority', 'desc')).toBe(0)
   })
   test('compare sort by resources nodes number', () => {
     const jobA = { ...jobs[1] }
@@ -208,8 +211,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 2 }
     jobB.cpus = { set: true, infinite: false, number: 3 }
     // A < B (cpus ignored)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(1)
   })
   test('compare sort by resources nodes unset', () => {
     const jobA = { ...jobs[1] }
@@ -219,8 +222,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: false, infinite: false, number: 2 }
     jobB.cpus = { set: true, infinite: false, number: 3 }
     // A > B (cpus ignored)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(-1)
   })
   test('compare sort by resources nodes unset both', () => {
     const jobA = { ...jobs[1] }
@@ -230,8 +233,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: false, infinite: false, number: 1 }
     jobB.cpus = { set: true, infinite: false, number: 4 }
     // A < B (cpus considered)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(1)
   })
   test('compare sort by resources nodes infinite', () => {
     const jobA = { ...jobs[1] }
@@ -241,8 +244,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 2 }
     jobB.cpus = { set: true, infinite: false, number: 3 }
     // A > B (cpus ignored)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(-1)
   })
   test('compare sort by resources nodes infinite both', () => {
     const jobA = { ...jobs[1] }
@@ -252,8 +255,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: true, number: 1 }
     jobB.cpus = { set: true, infinite: false, number: 4 }
     // A < B (cpus considered)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(1)
   })
   test('compare sort by resources cpus number', () => {
     const jobA = { ...jobs[1] }
@@ -263,8 +266,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: true, infinite: false, number: 4 }
     // A < B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(-1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(1)
   })
   test('compare sort by resources cpus number equal', () => {
     const jobA = { ...jobs[1] }
@@ -274,8 +277,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: true, infinite: false, number: 4 }
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(0)
   })
   test('compare sort by resources cpus unset', () => {
     const jobA = { ...jobs[1] }
@@ -285,8 +288,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: false, infinite: false, number: 3 }
     // A > B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(-1)
   })
   test('compare sort by resources cpus unset both', () => {
     const jobA = { ...jobs[1] }
@@ -296,8 +299,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: false, infinite: false, number: 3 }
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(0)
   })
   test('compare sort by resources cpus infinite', () => {
     const jobA = { ...jobs[1] }
@@ -307,8 +310,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: true, infinite: false, number: 4 }
     // A > B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(1)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(-1)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(1)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(-1)
   })
   test('compare sort by resources cpus infinite both', () => {
     const jobA = { ...jobs[1] }
@@ -318,8 +321,8 @@ describe('compareClusterJobSorter', () => {
     jobB.node_count = { set: true, infinite: false, number: 1 }
     jobB.cpus = { set: true, infinite: true, number: 4 }
     // A == B
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'asc')).toBe(0)
-    expect(compareClusterJobSortOrder(jobA, jobB, 'resources', 'desc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'asc')).toBe(0)
+    expect(compareJobs(jobA, jobB, 'resources', 'desc')).toBe(0)
   })
 })
 
@@ -352,16 +355,24 @@ describe('jobResourcesTRES', () => {
         type: 'billing'
       }
     ]
-    expect(jobResourcesTRES(job.tres.requested)).toStrictEqual({ node: 1, cpu: 128, memory: 65536 })
+    expect(extractSlurmTRESResources(job.tres.requested)).toStrictEqual({
+      node: 1,
+      cpu: 128,
+      memory: 65536
+    })
   })
   test('empty TRES', () => {
     const job = jobPending
     job.tres.requested = []
-    expect(jobResourcesTRES(job.tres.requested)).toStrictEqual({ node: -1, cpu: -1, memory: -1 })
+    expect(extractSlurmTRESResources(job.tres.requested)).toStrictEqual({
+      node: -1,
+      cpu: -1,
+      memory: -1
+    })
   })
 })
 
-const acctJobFixture = (): ClusterAcctJob => ({
+const acctJobFixture = () => ({
   account: 'optic',
   job_id: 1,
   nodes: 'node1',
@@ -401,9 +412,7 @@ describe('countGPUFromAllocatedTRES', () => {
     ).toBe(0)
   })
   test('untyped gpu gres entry', () => {
-    expect(
-      countGPUFromAllocatedTRES([{ type: 'gres', name: 'gpu', id: 1001, count: 4 }])
-    ).toBe(4)
+    expect(countGPUFromAllocatedTRES([{ type: 'gres', name: 'gpu', id: 1001, count: 4 }])).toBe(4)
   })
   test('typed gpu gres entry', () => {
     expect(
@@ -451,18 +460,18 @@ describe('acctJobAllocatedGPU', () => {
   })
 })
 
-describe('acctJobCpus', () => {
+describe('acctJobCPUs', () => {
   test('from allocated tres', () => {
-    expect(acctJobCpus(acctJobFixture())).toBe(8)
+    expect(acctJobCPUs(acctJobFixture())).toBe(8)
   })
   test('missing allocated cpu returns 0', () => {
     const job = acctJobFixture()
     job.tres.allocated = []
-    expect(acctJobCpus(job)).toBe(0)
+    expect(acctJobCPUs(job)).toBe(0)
   })
 })
 
-describe('compareClusterAcctJobSortOrder resources', () => {
+describe('compareAcctJobs resources', () => {
   test('sort by node then cpu', () => {
     const a = acctJobFixture()
     const b = acctJobFixture()
@@ -471,20 +480,20 @@ describe('compareClusterAcctJobSortOrder resources', () => {
       { type: 'cpu', name: '', id: 1, count: 16 },
       { type: 'node', name: '', id: 4, count: 4 }
     ]
-    expect(compareClusterAcctJobSortOrder(a, b, 'resources', 'asc')).toBe(-1)
-    expect(compareClusterAcctJobSortOrder(b, a, 'resources', 'asc')).toBe(1)
+    expect(compareAcctJobs(a, b, 'resources', 'asc')).toBe(-1)
+    expect(compareAcctJobs(b, a, 'resources', 'asc')).toBe(1)
   })
 })
 
-describe('compareClusterAcctJobSortOrder end', () => {
+describe('compareAcctJobs end', () => {
   test('desc puts most recent end first', () => {
     const a = acctJobFixture()
     const b = acctJobFixture()
     b.job_id = 2
     a.time = { end: 100 }
     b.time = { end: 200 }
-    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'desc')).toBe(1)
-    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'desc')).toBe(-1)
+    expect(compareAcctJobs(a, b, 'end', 'desc')).toBe(1)
+    expect(compareAcctJobs(b, a, 'end', 'desc')).toBe(-1)
   })
 
   test('asc puts oldest end first', () => {
@@ -493,8 +502,8 @@ describe('compareClusterAcctJobSortOrder end', () => {
     b.job_id = 2
     a.time = { end: 100 }
     b.time = { end: 200 }
-    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'asc')).toBe(-1)
-    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'asc')).toBe(1)
+    expect(compareAcctJobs(a, b, 'end', 'asc')).toBe(-1)
+    expect(compareAcctJobs(b, a, 'end', 'asc')).toBe(1)
   })
 
   test('missing end sorts last in desc', () => {
@@ -502,14 +511,8 @@ describe('compareClusterAcctJobSortOrder end', () => {
     const b = acctJobFixture()
     b.job_id = 2
     b.time = { end: 200 }
-    expect(compareClusterAcctJobSortOrder(a, b, 'end', 'desc')).toBe(1)
-    expect(compareClusterAcctJobSortOrder(b, a, 'end', 'desc')).toBe(-1)
-  })
-})
-
-describe('countGPUTRESRequest', () => {
-  test('comma-separated gres', () => {
-    expect(countGPUTRESRequest('license:1,gpu:2')).toBe(2)
+    expect(compareAcctJobs(a, b, 'end', 'desc')).toBe(1)
+    expect(compareAcctJobs(b, a, 'end', 'desc')).toBe(-1)
   })
 })
 
@@ -819,35 +822,35 @@ describe('getMBHumanUnit', () => {
   })
 })
 
-describe('getNodeGPUFromGres', () => {
+describe('nodeGPUFromGRES', () => {
   // test with specific values
   test('empty', () => {
-    expect(getNodeGPUFromGres('')).toStrictEqual([])
+    expect(nodeGPUFromGRES('')).toStrictEqual([])
   })
   test('simple', () => {
-    expect(getNodeGPUFromGres('gpu:2')).toStrictEqual([{ model: 'unknown', count: 2 }])
+    expect(nodeGPUFromGRES('gpu:2')).toStrictEqual([{ model: 'unknown', count: 2 }])
   })
   test('with model', () => {
-    expect(getNodeGPUFromGres('gpu:h100:4')).toStrictEqual([{ model: 'h100', count: 4 }])
+    expect(nodeGPUFromGRES('gpu:h100:4')).toStrictEqual([{ model: 'h100', count: 4 }])
   })
   test('with index', () => {
-    expect(getNodeGPUFromGres('gpu:2(IDX:0-1)')).toStrictEqual([{ model: 'unknown', count: 2 }])
+    expect(nodeGPUFromGRES('gpu:2(IDX:0-1)')).toStrictEqual([{ model: 'unknown', count: 2 }])
   })
   test('with model and index', () => {
-    expect(getNodeGPUFromGres('gpu:h100:2(IDX:0-1)')).toStrictEqual([{ model: 'h100', count: 2 }])
+    expect(nodeGPUFromGRES('gpu:h100:2(IDX:0-1)')).toStrictEqual([{ model: 'h100', count: 2 }])
   })
   test('with model and socket', () => {
-    expect(getNodeGPUFromGres('gpu:h100:8(S:1,3,5,7)')).toStrictEqual([{ model: 'h100', count: 8 }])
+    expect(nodeGPUFromGRES('gpu:h100:8(S:1,3,5,7)')).toStrictEqual([{ model: 'h100', count: 8 }])
   })
   test('multiple types', () => {
-    expect(getNodeGPUFromGres('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
+    expect(nodeGPUFromGRES('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
       { model: 'unknown', count: 1 },
       { model: 'h100', count: 2 },
       { model: 'h200', count: 4 }
     ])
   })
   test('multiple types with index', () => {
-    expect(getNodeGPUFromGres('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+    expect(nodeGPUFromGRES('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
       { model: 'unknown', count: 1 },
       { model: 'h100', count: 1 },
       { model: 'h200', count: 0 }
@@ -857,190 +860,188 @@ describe('getNodeGPUFromGres', () => {
   test('node with gpu allocated', () => {
     const node = { ...nodeWithGpusAllocated }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
     expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
   })
   test('node with gpu model allocated', () => {
     const node = { ...nodeWithGpusModelAllocated }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
     expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
   })
   test('node with gpu mixed', () => {
     const node = { ...nodeWithGpusMixed }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
     expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
   })
   test('node with gpu momdel mixed', () => {
     const node = { ...nodeWithGpusModelMixed }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
     expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
   })
   test('node with gpu idle', () => {
     const node = { ...nodeWithGpusIdle }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
-    expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
-    ).toBe(0)
+    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
+      0
+    )
   })
   test('node with gpu model idle', () => {
     const node = { ...nodeWithGpusModelIdle }
     expect(
-      getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)
+      nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
-    expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
-    ).toBe(0)
+    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
+      0
+    )
   })
   test('node without gpu', () => {
     const node = { ...nodeWithoutGpu }
-    expect(getNodeGPUFromGres(node.gres).reduce((total, current) => total + current.count, 0)).toBe(
+    expect(nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)).toBe(0)
+    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
       0
     )
-    expect(
-      getNodeGPUFromGres(node.gres_used).reduce((total, current) => total + current.count, 0)
-    ).toBe(0)
   })
 })
 
 describe('getNodeMainState', () => {
   // tests with specific values
   test('node down', () => {
-    expect(getNodeMainState(['DOWN'])).toStrictEqual('down')
+    expect(nodeMainState(['DOWN'])).toStrictEqual('down')
   })
   test('node error', () => {
-    expect(getNodeMainState(['ERROR'])).toStrictEqual('error')
+    expect(nodeMainState(['ERROR'])).toStrictEqual('error')
   })
   test('node future', () => {
-    expect(getNodeMainState(['FUTURE'])).toStrictEqual('future')
+    expect(nodeMainState(['FUTURE'])).toStrictEqual('future')
   })
   test('node drain', () => {
-    expect(getNodeMainState(['IDLE', 'DRAIN'])).toStrictEqual('drain')
+    expect(nodeMainState(['IDLE', 'DRAIN'])).toStrictEqual('drain')
   })
   test('node draining', () => {
-    expect(getNodeMainState(['ALLOCATED', 'DRAIN'])).toStrictEqual('draining')
-    expect(getNodeMainState(['MIXED', 'DRAIN'])).toStrictEqual('draining')
-    expect(getNodeMainState(['IDLE', 'COMPLETING', 'DRAIN'])).toStrictEqual('draining')
+    expect(nodeMainState(['ALLOCATED', 'DRAIN'])).toStrictEqual('draining')
+    expect(nodeMainState(['MIXED', 'DRAIN'])).toStrictEqual('draining')
+    expect(nodeMainState(['IDLE', 'COMPLETING', 'DRAIN'])).toStrictEqual('draining')
   })
   test('node fail', () => {
-    expect(getNodeMainState(['IDLE', 'FAIL'])).toStrictEqual('fail')
+    expect(nodeMainState(['IDLE', 'FAIL'])).toStrictEqual('fail')
   })
   test('node failing', () => {
-    expect(getNodeMainState(['ALLOCATED', 'FAIL'])).toStrictEqual('failing')
-    expect(getNodeMainState(['MIXED', 'FAIL'])).toStrictEqual('failing')
-    expect(getNodeMainState(['IDLE', 'COMPLETING', 'FAIL'])).toStrictEqual('failing')
+    expect(nodeMainState(['ALLOCATED', 'FAIL'])).toStrictEqual('failing')
+    expect(nodeMainState(['MIXED', 'FAIL'])).toStrictEqual('failing')
+    expect(nodeMainState(['IDLE', 'COMPLETING', 'FAIL'])).toStrictEqual('failing')
   })
   test('node idle', () => {
-    expect(getNodeMainState(['IDLE'])).toStrictEqual('up')
+    expect(nodeMainState(['IDLE'])).toStrictEqual('up')
   })
   // tests with assets
   test('asset node down', () => {
     const node = { ...nodeDown }
-    expect(getNodeMainState(node.state)).toStrictEqual('down')
+    expect(nodeMainState(node.state)).toStrictEqual('down')
   })
   test('asset node allocated', () => {
     const node = { ...nodeAllocated }
-    expect(getNodeMainState(node.state)).toStrictEqual('up')
+    expect(nodeMainState(node.state)).toStrictEqual('up')
   })
   test('asset node mixed', () => {
     const node = { ...nodeMixed }
-    expect(getNodeMainState(node.state)).toStrictEqual('up')
+    expect(nodeMainState(node.state)).toStrictEqual('up')
   })
   test('asset node idle', () => {
     const node = { ...nodeIdle }
-    expect(getNodeMainState(node.state)).toStrictEqual('up')
+    expect(nodeMainState(node.state)).toStrictEqual('up')
   })
 })
 
 describe('getNodeAllocationState', () => {
   // tests with specific values
   test('node allocated', () => {
-    expect(getNodeAllocationState(['ALLOCATED'])).toStrictEqual('allocated')
+    expect(nodeAllocationState(['ALLOCATED'])).toStrictEqual('allocated')
   })
   test('node mixed', () => {
-    expect(getNodeAllocationState(['MIXED'])).toStrictEqual('mixed')
+    expect(nodeAllocationState(['MIXED'])).toStrictEqual('mixed')
   })
   test('node down', () => {
-    expect(getNodeAllocationState(['DOWN'])).toStrictEqual('unavailable')
+    expect(nodeAllocationState(['DOWN'])).toStrictEqual('unavailable')
   })
   test('node error', () => {
-    expect(getNodeAllocationState(['ERROR'])).toStrictEqual('unavailable')
+    expect(nodeAllocationState(['ERROR'])).toStrictEqual('unavailable')
   })
   test('node future', () => {
-    expect(getNodeAllocationState(['FUTURE'])).toStrictEqual('unavailable')
+    expect(nodeAllocationState(['FUTURE'])).toStrictEqual('unavailable')
   })
   test('node planned', () => {
-    expect(getNodeAllocationState(['IDLE', 'PLANNED'])).toStrictEqual('planned')
+    expect(nodeAllocationState(['IDLE', 'PLANNED'])).toStrictEqual('planned')
   })
   test('node idle', () => {
-    expect(getNodeAllocationState(['IDLE'])).toStrictEqual('idle')
+    expect(nodeAllocationState(['IDLE'])).toStrictEqual('idle')
   })
   // tests with assets
   test('asset node down', () => {
     const node = { ...nodeDown }
-    expect(getNodeAllocationState(node.state)).toStrictEqual('unavailable')
+    expect(nodeAllocationState(node.state)).toStrictEqual('unavailable')
   })
   test('asset node allocated', () => {
     const node = { ...nodeAllocated }
-    expect(getNodeAllocationState(node.state)).toStrictEqual('allocated')
+    expect(nodeAllocationState(node.state)).toStrictEqual('allocated')
   })
   test('asset node idle', () => {
     const node = { ...nodeIdle }
-    expect(getNodeAllocationState(node.state)).toSatisfy((value) =>
+    expect(nodeAllocationState(node.state)).toSatisfy((value) =>
       ['idle', 'planned'].includes(value)
     )
   })
   test('asset node mixed', () => {
     const node = { ...nodeMixed }
-    expect(getNodeAllocationState(node.state)).toStrictEqual('mixed')
+    expect(nodeAllocationState(node.state)).toStrictEqual('mixed')
   })
 })
 
-describe('getNodeGPU', () => {
+describe('nodeGPULabelsFromGRES', () => {
   // test with specific values
   test('empty', () => {
-    expect(getNodeGPU('')).toStrictEqual([])
+    expect(nodeGPULabelsFromGRES('')).toStrictEqual([])
   })
   test('simple', () => {
-    expect(getNodeGPU('gpu:2')).toStrictEqual(['2 x unknown'])
+    expect(nodeGPULabelsFromGRES('gpu:2')).toStrictEqual(['2 x unknown'])
   })
   test('with model', () => {
-    expect(getNodeGPU('gpu:h100:4')).toStrictEqual(['4 x h100'])
+    expect(nodeGPULabelsFromGRES('gpu:h100:4')).toStrictEqual(['4 x h100'])
   })
   test('with index', () => {
-    expect(getNodeGPU('gpu:2(IDX:0-1)')).toStrictEqual(['2 x unknown'])
+    expect(nodeGPULabelsFromGRES('gpu:2(IDX:0-1)')).toStrictEqual(['2 x unknown'])
   })
   test('with model and index', () => {
-    expect(getNodeGPU('gpu:h100:2(IDX:0-1)')).toStrictEqual(['2 x h100'])
+    expect(nodeGPULabelsFromGRES('gpu:h100:2(IDX:0-1)')).toStrictEqual(['2 x h100'])
   })
   test('with model and multiple indexes', () => {
-    expect(getNodeGPU('gpu:h100:5(IDX:0-2,4-5)')).toStrictEqual(['5 x h100'])
+    expect(nodeGPULabelsFromGRES('gpu:h100:5(IDX:0-2,4-5)')).toStrictEqual(['5 x h100'])
   })
   test('multiple types', () => {
-    expect(getNodeGPU('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
+    expect(nodeGPULabelsFromGRES('gpu:1,gpu:h100:2,gpu:h200:4')).toStrictEqual([
       '1 x unknown',
       '2 x h100',
       '4 x h200'
     ])
   })
   test('multiple types with index', () => {
-    expect(getNodeGPU('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
+    expect(nodeGPULabelsFromGRES('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
       '1 x unknown',
       '1 x h100',
       '0 x h200'
@@ -1049,43 +1050,43 @@ describe('getNodeGPU', () => {
   // test with assets
   test('node with gpu allocated', () => {
     const node = { ...nodeWithGpusAllocated }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
   })
   test('node with gpu model allocated', () => {
     const node = { ...nodeWithGpusModelAllocated }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
   })
   test('node with gpu mixed', () => {
     const node = { ...nodeWithGpusMixed }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
   })
   test('node with gpu model mixed', () => {
     const node = { ...nodeWithGpusModelMixed }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
   })
   test('node with gpu idle', () => {
     const node = { ...nodeWithGpusIdle }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
-    getNodeGPU(node.gres_used).forEach((gpu) => {
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
+    nodeGPULabelsFromGRES(node.gres_used).forEach((gpu) => {
       expect(gpu[0]).toBe('0')
     })
   })
   test('node with gpu model idle', () => {
     const node = { ...nodeWithGpusModelIdle }
-    expect(getNodeGPU(node.gres).length).toBeGreaterThan(0)
-    expect(getNodeGPU(node.gres_used).length).toBeGreaterThan(0)
-    getNodeGPU(node.gres_used).forEach((gpu) => {
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBeGreaterThan(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBeGreaterThan(0)
+    nodeGPULabelsFromGRES(node.gres_used).forEach((gpu) => {
       expect(gpu[0]).toBe('0')
     })
   })
   test('node without gpu', () => {
     const node = { ...nodeWithoutGpu }
-    expect(getNodeGPU(node.gres).length).toBe(0)
-    expect(getNodeGPU(node.gres_used).length).toBe(0)
+    expect(nodeGPULabelsFromGRES(node.gres).length).toBe(0)
+    expect(nodeGPULabelsFromGRES(node.gres_used).length).toBe(0)
   })
 })

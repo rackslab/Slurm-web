@@ -3,14 +3,14 @@ import { mount } from '@vue/test-utils'
 import AccountsView from '@/views/AccountsView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import associations from '../assets/associations.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import AccountTreeNode from '@/components/accounts/AccountTreeNode.vue'
+import { type SlurmAssociation } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterAssociation[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmAssociation[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller

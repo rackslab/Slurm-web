@@ -5,12 +5,12 @@ import { useRuntimeStore } from '@/stores/runtime'
 import JobView from '@/views/JobView.vue'
 import JobBackButton from '@/components/job/JobBackButton.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
-import type { ClusterIndividualJob } from '@/composables/GatewayAPI'
 import jobRunning from '../assets/job-running.json'
 import type { RouterMock } from 'vue-router-mock'
 import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
+import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterIndividualJob>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmJobDetail>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -28,7 +28,10 @@ describe('JobView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })

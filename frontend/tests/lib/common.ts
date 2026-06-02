@@ -3,12 +3,12 @@ import type { Ref } from 'vue'
 import { vi } from 'vitest'
 import { runtimeConfiguration } from '@/plugins/runtimeConfiguration'
 import type { RuntimeConfiguration } from '@/plugins/runtimeConfiguration'
-import type { GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 import { httpPlugin } from '@/plugins/http'
 import { createTestingPinia } from '@pinia/testing'
 import { config, RouterLinkStub } from '@vue/test-utils'
 import { createRouterMock, injectRouterMock } from 'vue-router-mock'
 import type { RouterMock } from 'vue-router-mock'
+import { type GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
 
 const defaultRuntimeConfiguration: RuntimeConfiguration = {
   api_server: 'http://localhost',
@@ -25,10 +25,7 @@ export function init_plugins(
   runtimeConfigurationOverrides: Partial<RuntimeConfiguration> = {}
 ): RouterMock {
   config.global.plugins = [
-    [
-      runtimeConfiguration,
-      { ...defaultRuntimeConfiguration, ...runtimeConfigurationOverrides }
-    ],
+    [runtimeConfiguration, { ...defaultRuntimeConfiguration, ...runtimeConfigurationOverrides }],
     httpPlugin,
     createTestingPinia({
       createSpy: vi.fn,

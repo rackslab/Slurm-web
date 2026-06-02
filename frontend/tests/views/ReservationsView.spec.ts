@@ -5,10 +5,10 @@ import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterReservation } from '@/composables/GatewayAPI'
 import reservations from '../assets/reservations.json'
+import { type SlurmReservation } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterReservation[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmReservation[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -23,7 +23,10 @@ describe('ReservationsView.vue', () => {
         infrastructure: 'foo',
         metrics: true,
         racksdb: false,
-        cache: false
+        cache: false,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
     // Reset mockClusterDataPoller unable to its default value before every tests.

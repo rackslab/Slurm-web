@@ -1,12 +1,12 @@
 import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { CacheStatistics } from '@/composables/GatewayAPI'
 import SettingsCacheStatistics from '@/components/settings/SettingsCacheStatistics.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import cacheStats from '../../assets/cache-stats.json'
+import { type CacheStatistics } from '@/composables/gateway/types/cache'
 
 const mockClusterDataPoller = getMockClusterDataPoller<CacheStatistics>()
 
@@ -33,7 +33,10 @@ describe('SettingsCacheStatistics.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })

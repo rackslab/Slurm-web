@@ -4,12 +4,12 @@ import { useRuntimeStore } from '@/stores/runtime'
 import JobsView from '@/views/JobsView.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
-import type { ClusterJob } from '@/composables/GatewayAPI'
 import jobs from '../assets/jobs.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
+import type { SlurmJob } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterJob[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmJob[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -106,7 +106,10 @@ describe('JobView.vue', () => {
     expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
   })
   test('shows scope toggle when jobs-view-past-own is allowed', () => {
-    useRuntimeStore().getCluster('foo')!.permissions.actions = ['jobs-view-own', 'jobs-view-past-own']
+    useRuntimeStore().getCluster('foo')!.permissions.actions = [
+      'jobs-view-own',
+      'jobs-view-past-own'
+    ]
     mockClusterDataPoller.data.value = jobs
     const wrapper = mount(JobsView, {
       props: {

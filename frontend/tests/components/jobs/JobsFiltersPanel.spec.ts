@@ -1,10 +1,7 @@
 import { describe, test, beforeEach, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import {
-  ACTIVE_JOB_STATE_FILTERS,
-  PAST_JOB_STATE_FILTERS
-} from '@/stores/runtime/jobs'
+import { ACTIVE_JOB_STATE_FILTERS, PAST_JOB_STATE_FILTERS } from '@/stores/runtime/jobs'
 import { init_plugins } from '../../lib/common'
 import JobsFiltersPanel from '@/components/jobs/JobsFiltersPanel.vue'
 import { nextTick } from 'vue'

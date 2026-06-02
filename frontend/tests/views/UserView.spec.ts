@@ -5,14 +5,14 @@ import UserView from '@/views/UserView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useAuthStore } from '@/stores/auth'
-import type { ClusterAssociation } from '@/composables/GatewayAPI'
 import associations from '../assets/associations.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import AccountBreadcrumb from '@/components/accounts/AccountBreadcrumb.vue'
+import { type SlurmAssociation } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterAssociation[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmAssociation[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -41,7 +41,7 @@ describe('UserView.vue', () => {
 
   test('displays user details', () => {
     mockClusterDataPoller.loaded.value = true
-    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    mockClusterDataPoller.data.value = associations as SlurmAssociation[]
     useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view']
     useAuthStore().username = 'root'
 
@@ -92,7 +92,7 @@ describe('UserView.vue', () => {
 
   test('hides view jobs link for other users with jobs-view-own only', () => {
     mockClusterDataPoller.loaded.value = true
-    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    mockClusterDataPoller.data.value = associations as SlurmAssociation[]
     useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view-own']
     useAuthStore().username = 'alice'
 
@@ -109,7 +109,7 @@ describe('UserView.vue', () => {
 
   test('shows view jobs link with jobs-view-own only for current user', () => {
     mockClusterDataPoller.loaded.value = true
-    mockClusterDataPoller.data.value = associations as ClusterAssociation[]
+    mockClusterDataPoller.data.value = associations as SlurmAssociation[]
     useRuntimeStore().availableClusters[0].permissions.actions = ['jobs-view-own']
     useAuthStore().username = 'root'
 

@@ -4,12 +4,12 @@ import { useRuntimeStore } from '@/stores/runtime'
 import JobsPastView from '@/views/JobsPastView.vue'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
-import type { ClusterAcctJob } from '@/composables/GatewayAPI'
 import pastJobs from '../assets/jobs-past.json'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
+import type { SlurmAcctJob } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterAcctJob[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmAcctJob[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller
@@ -35,7 +35,7 @@ describe('JobsPastView.vue', () => {
   })
 
   test('display jobs', () => {
-    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    mockClusterDataPoller.data.value = pastJobs as SlurmAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
@@ -80,7 +80,7 @@ describe('JobsPastView.vue', () => {
   })
 
   test('shows Terminated breadcrumb and heading', () => {
-    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    mockClusterDataPoller.data.value = pastJobs as SlurmAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
@@ -95,7 +95,7 @@ describe('JobsPastView.vue', () => {
 
   test('shows scope toggle when jobs-view is allowed', () => {
     useRuntimeStore().getCluster('foo')!.permissions.actions.push('jobs-view')
-    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    mockClusterDataPoller.data.value = pastJobs as SlurmAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
@@ -108,7 +108,7 @@ describe('JobsPastView.vue', () => {
       'jobs-view-own',
       'jobs-view-past-own'
     ]
-    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    mockClusterDataPoller.data.value = pastJobs as SlurmAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'
@@ -117,7 +117,7 @@ describe('JobsPastView.vue', () => {
     expect(wrapper.find('[data-testid="jobs-scope-toggle"]').exists()).toBe(true)
   })
   test('hides scope toggle without jobs-view and jobs-view-own', () => {
-    mockClusterDataPoller.data.value = pastJobs as ClusterAcctJob[]
+    mockClusterDataPoller.data.value = pastJobs as SlurmAcctJob[]
     const wrapper = mount(JobsPastView, {
       props: {
         cluster: 'foo'

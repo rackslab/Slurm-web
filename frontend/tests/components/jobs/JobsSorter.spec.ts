@@ -1,10 +1,7 @@
 import { describe, test, beforeEach, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useRuntimeStore } from '@/stores/runtime'
-import {
-  PAST_JOBS_DEFAULT_ORDER,
-  PAST_JOBS_DEFAULT_SORT
-} from '@/stores/runtime/jobs'
+import { PAST_JOBS_DEFAULT_ORDER, PAST_JOBS_DEFAULT_SORT } from '@/stores/runtime/jobs'
 import { init_plugins } from '../../lib/common'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
 
@@ -39,24 +36,12 @@ describe('JobsSorter.vue', () => {
 
   test('lists active job sort options by default', () => {
     const wrapper = mountSorter()
-    expect(sortOptionLabels(wrapper)).toEqual([
-      '#ID',
-      'State',
-      'User',
-      'Priority',
-      'Resources'
-    ])
+    expect(sortOptionLabels(wrapper)).toEqual(['#ID', 'State', 'User', 'Priority', 'Resources'])
   })
 
   test('lists past job sort options when past prop is set', () => {
     const wrapper = mountSorter(true)
-    expect(sortOptionLabels(wrapper)).toEqual([
-      'End time',
-      '#ID',
-      'State',
-      'User',
-      'Resources'
-    ])
+    expect(sortOptionLabels(wrapper)).toEqual(['End time', '#ID', 'State', 'User', 'Resources'])
   })
 
   test('highlights the selected active sort criterion', () => {
@@ -70,14 +55,20 @@ describe('JobsSorter.vue', () => {
 
   test('updates active sort and emits sort when a criterion is chosen', async () => {
     const wrapper = mountSorter()
-    await wrapper.findAll('a').find((a) => a.text() === 'User')?.trigger('click')
+    await wrapper
+      .findAll('a')
+      .find((a) => a.text() === 'User')
+      ?.trigger('click')
     expect(useRuntimeStore().jobs.activeSort).toBe('user')
     expect(wrapper.emitted('sort')).toHaveLength(1)
   })
 
   test('updates past sort and emits sort in past mode', async () => {
     const wrapper = mountSorter(true)
-    await wrapper.findAll('a').find((a) => a.text() === '#ID')?.trigger('click')
+    await wrapper
+      .findAll('a')
+      .find((a) => a.text() === '#ID')
+      ?.trigger('click')
     expect(useRuntimeStore().jobs.pastSort).toBe('id')
     expect(wrapper.emitted('sort')).toHaveLength(1)
   })

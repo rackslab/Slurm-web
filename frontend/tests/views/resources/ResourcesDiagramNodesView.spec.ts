@@ -3,9 +3,9 @@ import { mount } from '@vue/test-utils'
 import ResourcesDiagramNodesView from '@/views/resources/ResourcesDiagramNodesView.vue'
 import { init_plugins, getMockClusterDataPoller } from '../../lib/common'
 import ResourcesDiagramGeneric from '@/components/resources/ResourcesDiagramGeneric.vue'
-import type { ClusterNode } from '@/composables/GatewayAPI'
+import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
-const mockClusterDataPoller = getMockClusterDataPoller<ClusterNode[]>()
+const mockClusterDataPoller = getMockClusterDataPoller<SlurmNode[]>()
 
 vi.mock('@/composables/DataPoller', () => ({
   useClusterDataPoller: () => mockClusterDataPoller

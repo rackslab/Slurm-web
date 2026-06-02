@@ -2,11 +2,11 @@ import { describe, test, beforeEach, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import DashboardView from '@/views/DashboardView.vue'
 import { useRuntimeStore } from '@/stores/runtime'
-import type { ClusterStats } from '@/composables/GatewayAPI'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import DashboardCharts from '@/components/dashboard/DashboardCharts.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import stats from '../assets/stats.json'
+import { type ClusterStats } from '@/composables/gateway/types/cluster'
 
 const mockClusterDataPoller = getMockClusterDataPoller<ClusterStats>()
 
@@ -24,7 +24,10 @@ describe('DashboardView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
-        cache: true
+        cache: true,
+        slurmdbd: {
+          jobs_max_hours: 168
+        }
       }
     ]
   })
