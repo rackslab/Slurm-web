@@ -25,8 +25,18 @@ queue and all jobs details.
 |view-jobs
 |Deprecated. Use jobs-view instead.
 
+|jobs-view-own
+|Get _Jobs_ entry in main menu and permission to view only the current
+user's own jobs in queue and own job details.
+
+
 |jobs-view-past
-|Permission to view the past jobs and query finished jobs from slurm
+|Permission to view all users past jobs and query finished jobs from Slurm
+accounting.
+
+
+|jobs-view-past-own
+|Permission to view only the current user's own terminated jobs from Slurm
 accounting.
 
 
