@@ -366,6 +366,8 @@ from controller, all other fields are filtered out.
 
 * `job_id`
 
+* `name`
+
 * `job_state`
 
 * `node_count`
@@ -412,6 +414,8 @@ accounting, all other fields are filtered out before normalization.
 * `account`
 
 * `job_id`
+
+* `name`
 
 * `nodes`
 
