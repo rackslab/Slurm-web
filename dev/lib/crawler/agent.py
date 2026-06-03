@@ -108,6 +108,7 @@ class AgentCrawler(TokenizedComponentCrawler):
         )
 
     def _crawl_jobs(self):
+        self._cleanup_state, _ = self.cluster.setup_for_jobs()
         self.dump_component_query(
             f"/v{get_version()}/jobs",
             "jobs",
@@ -131,6 +132,7 @@ class AgentCrawler(TokenizedComponentCrawler):
         )
 
     def _crawl_jobs_node(self):
+        self._cleanup_state = self.cluster.setup_for_jobs_node()
         # Get nodes first to find a busy one
         nodes = self.dump_component_query(
             f"/v{get_version()}/nodes",

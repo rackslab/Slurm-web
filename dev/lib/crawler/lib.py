@@ -15,6 +15,7 @@ from pathlib import Path
 import shlex
 import time
 import random
+import string
 import logging
 from datetime import datetime, timedelta
 
@@ -40,6 +41,100 @@ logger = logging.getLogger(__name__)
 # Supported slurmrestd API versions to try during discovery, in descending order
 # (newest first)
 SUPPORTED_SLURMRESTD_API_VERSIONS = ["0.0.45", "0.0.44", "0.0.43", "0.0.42", "0.0.41"]
+
+_JOB_NAME_APPS = (
+    "lammps",
+    "gromacs",
+    "openfoam",
+    "fluent",
+    "namd",
+    "wrf",
+    "cesm",
+    "pytorch",
+    "tensorflow",
+    "blast",
+    "star",
+    "salmon",
+    "bowtie",
+    "abaqus",
+    "castep",
+    "vasp",
+    "qe",
+    "paraview",
+    "ffmpeg",
+    "nextflow",
+)
+_JOB_NAME_STAGES = (
+    "equilibration",
+    "production",
+    "minimization",
+    "postprocess",
+    "preprocess",
+    "validation",
+    "benchmark",
+    "sweep",
+    "inference",
+    "training",
+    "compile",
+    "restart",
+    "ensemble",
+    "calibration",
+)
+_JOB_NAME_QUALIFIERS = (
+    "overnight",
+    "quick",
+    "smoke",
+    "regression",
+    "scale-test",
+    "node-test",
+    "retry",
+    "final",
+    "pilot",
+    "debug",
+    "weekly",
+    "nightly",
+)
+_JOB_NAME_DOMAINS = (
+    "weather",
+    "climate",
+    "cfd",
+    "md",
+    "genomics",
+    "seismic",
+    "fusion",
+    "chemistry",
+    "imaging",
+    "ml",
+)
+
+
+def random_job_name() -> str:
+    """Return a random job name similar to real batch submissions."""
+    style = random.randint(0, 5)
+    if style == 0:
+        app = random.choice(_JOB_NAME_APPS)
+        stage = random.choice(_JOB_NAME_STAGES)
+        return f"{app}-{stage}-{random.randint(1, 999):03d}"
+    if style == 1:
+        return (
+            f"{random.choice(_JOB_NAME_APPS)}-{random.choice(_JOB_NAME_QUALIFIERS)}"
+            f"-v{random.randint(1, 9)}"
+        )
+    if style == 2:
+        return (
+            f"{random.choice(_JOB_NAME_DOMAINS)}-{random.choice(_JOB_NAME_STAGES)}"
+            f"-{random.randint(1, 99):02d}"
+        )
+    if style == 3:
+        token = "".join(random.choices(string.ascii_lowercase, k=4))
+        app = random.choice(_JOB_NAME_APPS)
+        return f"{app}-chunk-{token}-{random.randint(1, 64)}"
+    if style == 4:
+        qualifier = random.choice(_JOB_NAME_QUALIFIERS)
+        return f"sim-{qualifier}-{random.randint(1000, 9999)}"
+    run = random.choice(["run", "job", "task", "step"])
+    domain = random.choice(_JOB_NAME_DOMAINS)
+    return f"{domain}-{run}-{random.randint(1, 500):04d}"
 
 
 class BaseAssetsManager:
@@ -518,6 +613,8 @@ class DevelopmentHostCluster:
         # slurmrestd time_limit is in minutes (OpenAPI job_desc_msg)
         if "time_limit" not in job_params_copy:
             job_params_copy["time_limit"] = timelimit
+        if "name" not in job_params_copy:
+            job_params_copy["name"] = random_job_name()
 
         headers = self.auth.headers()
         headers["Content-Type"] = "application/json"
@@ -941,6 +1038,22 @@ class DevelopmentHostCluster:
                 duration=30,
                 timelimit=2,
                 wait_running=False,
+            )
+            cleanup_state["jobs"].append((user, job_id))
+        return cleanup_state
+
+    def setup_for_jobs_node(self) -> dict:
+        """Submit running jobs so nodes are ALLOCATED or MIXED."""
+        cleanup_state: dict[str, t.Any] = {"jobs": []}
+        user = self.pick_user()
+        for _ in range(3):
+            job_id = self.submit(
+                user,
+                {"tasks": 2},
+                duration=120,
+                timelimit=5,
+                wait_running=True,
+                wait_running_timeout_sec=180,
             )
             cleanup_state["jobs"].append((user, job_id))
         return cleanup_state
