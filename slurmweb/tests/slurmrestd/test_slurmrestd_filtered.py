@@ -40,6 +40,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
             # asset.
             self.assertLess(len(jobs[idx].keys()), len(asset[idx].keys()))
             self.assertEqual(jobs[idx]["job_id"], asset[idx]["job_id"])
+            self.assertEqual(jobs[idx]["name"], asset[idx]["name"])
             # Check arbitrary key has been filtered out.
             self.assertIn("accrue_time", asset[idx])
             self.assertNotIn("accrue_time", jobs[idx])
@@ -203,6 +204,7 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         result = self.slurmrestd.jobs_past(6)
         self.assertGreater(len(result), 0)
         job = result[0]
+        self.assertIn("name", job)
         self.assertNotIn("steps", job)
         self.assertNotIn("allocation_nodes", job)
         self.assertIn("user", job)
