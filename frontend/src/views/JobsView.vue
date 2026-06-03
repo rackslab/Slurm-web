@@ -30,7 +30,7 @@ import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { ArchiveBoxIcon, PlusSmallIcon, WindowIcon } from '@heroicons/vue/24/outline'
+import { ArchiveBoxIcon, PlusIcon, WindowIcon } from '@heroicons/vue/24/outline'
 
 const { cluster } = defineProps<{ cluster: string }>()
 
@@ -129,7 +129,7 @@ onMounted(() => {
                 class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
                 @click="runtimeStore.jobs.openFiltersPanel = true"
               >
-                <PlusSmallIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                <PlusIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 Add filters
               </button>
             </div>

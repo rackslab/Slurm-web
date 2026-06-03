@@ -18,7 +18,7 @@ import ClusterListItem from '@/components/clusters/ClustersListItem.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import InfoAlert from '@/components/InfoAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
-import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import { type ClusterDescription } from '@/composables/gateway/types/cluster'
 
@@ -112,7 +112,7 @@ onMounted(() => {
         class="absolute right-0 m-2 flex p-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 hover:dark:text-gray-200"
       >
         Signout
-        <ArrowRightOnRectangleIcon class="h-6 w-6" />
+        <ArrowRightStartOnRectangleIcon class="h-6 w-6" />
       </button>
     </RouterLink>
     <section

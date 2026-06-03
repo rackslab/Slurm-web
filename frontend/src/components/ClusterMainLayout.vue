@@ -13,7 +13,7 @@ import type { Ref } from 'vue'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import { useAuthStore } from '@/stores/auth'
-import { Bars3Icon, ArrowRightOnRectangleIcon, ServerStackIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, ArrowRightStartOnRectangleIcon, ServerStackIcon } from '@heroicons/vue/24/outline'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import MainMenu from '@/components/MainMenu.vue'
 import ClustersPopOver from '@/components/ClustersPopOver.vue'
@@ -112,7 +112,7 @@ onMounted(() => {
               role="link"
               class="p-2.5 text-gray-400 hover:text-gray-500 lg:-m-2.5 dark:text-gray-400 hover:dark:text-gray-200"
             >
-              <ArrowRightOnRectangleIcon class="h-6 w-6" />
+              <ArrowRightStartOnRectangleIcon class="h-6 w-6" />
             </button>
           </RouterLink>
         </div>
