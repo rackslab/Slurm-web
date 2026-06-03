@@ -13,6 +13,7 @@ import {
 
 const activeJob: SlurmJob = {
   job_id: 1,
+  name: 'simulation',
   user_name: 'alice',
   account: 'physics',
   partition: 'normal',
@@ -22,6 +23,7 @@ const activeJob: SlurmJob = {
 
 const pastJob = {
   job_id: 2,
+  name: 'wrap',
   user: 'bob',
   account: 'chemistry',
   partition: 'gpu',
@@ -53,8 +55,17 @@ describe('stores/runtime/jobs.ts', () => {
       users: [],
       accounts: [],
       qos: [],
-      partitions: []
+      partitions: [],
+      name: ''
     })
+  })
+
+  test('clearNameFilter resets name filter', () => {
+    const store = useJobsRuntimeStore()
+    store.filters.name = 'batch'
+    store.clearNameFilter()
+    expect(store.filters.name).toBe('')
+    expect(store.hasNameFilter()).toBe(false)
   })
 
   test('jobStateFilters returns active or past state options', () => {
@@ -118,6 +129,13 @@ describe('stores/runtime/jobs.ts', () => {
 
     store.filters.users = ['alice']
     expect(store.emptyFilters(true)).toBe(false)
+
+    store.filters.users = []
+    store.filters.name = '  sim  '
+    expect(store.emptyFilters(false)).toBe(false)
+    expect(store.emptyFilters(true)).toBe(false)
+    store.filters.name = '   '
+    expect(store.emptyFilters(false)).toBe(true)
   })
 
   describe('matchesFilters', () => {
@@ -151,6 +169,18 @@ describe('stores/runtime/jobs.ts', () => {
 
       expect(store.matchesFilters({ ...activeJob, job_state: ['Running'] } as SlurmJob)).toBe(true)
       expect(store.matchesFilters({ ...activeJob, user_name: 'Alice' } as SlurmJob)).toBe(true)
+    })
+
+    test('filters by name substring and regex', () => {
+      const store = useJobsRuntimeStore()
+      store.filters.name = 'sim'
+      expect(store.matchesFilters(activeJob)).toBe(true)
+      expect(store.matchesFilters({ ...activeJob, name: 'batch' } as SlurmJob)).toBe(false)
+
+      store.filters.name = '/^sim/'
+      expect(store.matchesFilters(activeJob)).toBe(true)
+      expect(store.matchesFilters({ ...activeJob, name: 'sim-run-42' } as SlurmJob)).toBe(true)
+      expect(store.matchesFilters({ ...activeJob, name: 'asimulation' } as SlurmJob)).toBe(false)
     })
   })
 
@@ -188,6 +218,13 @@ describe('stores/runtime/jobs.ts', () => {
       store.filters.activeStates = ['pending']
       expect(store.matchesAcctJobFilters(pastJob)).toBe(true)
     })
+
+    test('filters by name', () => {
+      const store = useJobsRuntimeStore()
+      store.filters.name = 'wrap'
+      expect(store.matchesAcctJobFilters(pastJob)).toBe(true)
+      expect(store.matchesAcctJobFilters({ ...pastJob, name: 'other' } as SlurmAcctJob)).toBe(false)
+    })
   })
 
   describe('query', () => {
@@ -206,6 +243,7 @@ describe('stores/runtime/jobs.ts', () => {
       store.filters.accounts = ['physics']
       store.filters.qos = ['low']
       store.filters.partitions = ['normal', 'gpu']
+      store.filters.name = '  sim  '
 
       expect(store.query()).toEqual({
         page: 2,
@@ -215,7 +253,8 @@ describe('stores/runtime/jobs.ts', () => {
         users: 'alice',
         accounts: 'physics',
         qos: 'low',
-        partitions: 'normal,gpu'
+        partitions: 'normal,gpu',
+        name: 'sim'
       })
     })
   })
@@ -234,6 +273,7 @@ describe('stores/runtime/jobs.ts', () => {
       store.pastOrder = 'asc'
       store.filters.pastStates = ['completed']
       store.filters.users = ['bob']
+      store.filters.name = '/wrap/'
 
       expect(store.pastQuery()).toEqual({
         page: 3,
@@ -241,7 +281,8 @@ describe('stores/runtime/jobs.ts', () => {
         sort: 'user',
         order: 'asc',
         states: 'completed',
-        users: 'bob'
+        users: 'bob',
+        name: '/wrap/'
       })
     })
   })

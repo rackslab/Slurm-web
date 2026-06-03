@@ -12,9 +12,12 @@ import jobGpuPerSocket from '../../../assets/job-gpus-per-socket.json'
 import jobGpuPerTask from '../../../assets/job-gpus-per-task.json'
 import {
   compareJobs,
+  jobNameLabel,
+  isJobNameEmpty,
   jobAllocatedGPU,
   jobRequestedGPU,
-  jobResourcesGPU
+  jobResourcesGPU,
+  jobNameMatches
 } from '@/composables/gateway/slurm/job'
 
 describe('compareJobs', () => {
@@ -494,5 +497,47 @@ describe('jobResourcesGPU', () => {
     job.tres_per_socket = ''
     job.tres_per_task = ''
     expect(jobResourcesGPU(job)).toStrictEqual({ count: 2, reliable: true })
+  })
+})
+
+describe('jobNameLabel', () => {
+  test('returns ∅ for empty or whitespace-only names', () => {
+    expect(jobNameLabel('')).toBe('∅')
+    expect(jobNameLabel('   ')).toBe('∅')
+    expect(jobNameLabel(undefined)).toBe('∅')
+    expect(isJobNameEmpty('')).toBe(true)
+  })
+
+  test('returns trimmed name when set', () => {
+    expect(jobNameLabel('  simulation  ')).toBe('simulation')
+    expect(isJobNameEmpty('simulation')).toBe(false)
+  })
+})
+
+describe('jobNameMatches', () => {
+  test('matches substring case-insensitively', () => {
+    expect(jobNameMatches('sim', 'MySimulation')).toBe(true)
+    expect(jobNameMatches('SIM', 'mysimulation')).toBe(true)
+    expect(jobNameMatches('other', 'MySimulation')).toBe(false)
+  })
+
+  test('matches regex when wrapped in slashes', () => {
+    expect(jobNameMatches('/^batch$/', 'batch')).toBe(true)
+    expect(jobNameMatches('/^batch$/', 'batch-extra')).toBe(false)
+    expect(jobNameMatches('/bench/i', 'MyBench')).toBe(true)
+  })
+
+  test('returns false for invalid regex', () => {
+    expect(jobNameMatches('/[/', 'anything')).toBe(false)
+  })
+
+  test('handles empty job name', () => {
+    expect(jobNameMatches('foo', '')).toBe(false)
+    expect(jobNameMatches('', '')).toBe(true)
+    expect(jobNameMatches('/^$/', '')).toBe(true)
+  })
+
+  test('handles undefined job name as empty', () => {
+    expect(jobNameMatches('foo', undefined)).toBe(false)
   })
 })

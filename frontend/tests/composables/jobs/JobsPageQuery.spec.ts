@@ -51,6 +51,7 @@ describe('useJobsPageQuery', () => {
     runtime.jobs.filters.accounts = []
     runtime.jobs.filters.qos = []
     runtime.jobs.filters.partitions = []
+    runtime.jobs.filters.name = ''
     runtime.currentCluster = {
       name: 'foo',
       infrastructure: 'foo',
@@ -73,7 +74,8 @@ describe('useJobsPageQuery', () => {
         users: 'alice,bob',
         accounts: 'proj',
         qos: 'normal',
-        partitions: 'gpu'
+        partitions: 'gpu',
+        name: '/foo,bar/'
       }
 
       const { syncFiltersFromRoute } = mountJobsPageQuery('jobs')
@@ -88,6 +90,7 @@ describe('useJobsPageQuery', () => {
       expect(runtime.jobs.filters.accounts).toEqual(['proj'])
       expect(runtime.jobs.filters.qos).toEqual(['normal'])
       expect(runtime.jobs.filters.partitions).toEqual(['gpu'])
+      expect(runtime.jobs.filters.name).toBe('/foo,bar/')
     })
 
     test('syncs past jobs filters and clamps past_hours', () => {
@@ -136,6 +139,7 @@ describe('useJobsPageQuery', () => {
       const runtime = useRuntimeStore()
       runtime.jobs.filters.users = ['stale']
       runtime.jobs.filters.activeStates = ['running']
+      runtime.jobs.filters.name = 'stale-name'
       router.currentRoute.value.query = {}
 
       const { syncFiltersFromRoute } = mountJobsPageQuery('jobs')
@@ -143,6 +147,7 @@ describe('useJobsPageQuery', () => {
 
       expect(runtime.jobs.filters.users).toEqual([])
       expect(runtime.jobs.filters.activeStates).toEqual([])
+      expect(runtime.jobs.filters.name).toBe('')
     })
   })
 
@@ -250,6 +255,20 @@ describe('useJobsPageQuery', () => {
       expect(router.push).toHaveBeenCalledWith({
         name: 'jobs-past',
         query: { states: 'timeout' }
+      })
+    })
+
+    test('updates route when name filter changes', async () => {
+      const { setupFilterQuerySync } = mountJobsPageQuery('jobs')
+      setupFilterQuerySync()
+      vi.mocked(router.push).mockClear()
+
+      useRuntimeStore().jobs.filters.name = 'simulation'
+      await flushPromises()
+
+      expect(router.push).toHaveBeenCalledWith({
+        name: 'jobs',
+        query: { name: 'simulation' }
       })
     })
   })

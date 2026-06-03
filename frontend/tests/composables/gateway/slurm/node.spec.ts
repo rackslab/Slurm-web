@@ -93,25 +93,25 @@ describe('nodeGPUFromGRES', () => {
     expect(
       nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
-    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
-      0
-    )
+    expect(
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBe(0)
   })
   test('node with gpu model idle', () => {
     const node = { ...nodeWithGpusModelIdle }
     expect(
       nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)
     ).toBeGreaterThan(0)
-    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
-      0
-    )
+    expect(
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBe(0)
   })
   test('node without gpu', () => {
     const node = { ...nodeWithoutGpu }
     expect(nodeGPUFromGRES(node.gres).reduce((total, current) => total + current.count, 0)).toBe(0)
-    expect(nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)).toBe(
-      0
-    )
+    expect(
+      nodeGPUFromGRES(node.gres_used).reduce((total, current) => total + current.count, 0)
+    ).toBe(0)
   })
 })
 
@@ -236,11 +236,9 @@ describe('nodeGPULabelsFromGRES', () => {
     ])
   })
   test('multiple types with index', () => {
-    expect(nodeGPULabelsFromGRES('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')).toStrictEqual([
-      '1 x unknown',
-      '1 x h100',
-      '0 x h200'
-    ])
+    expect(
+      nodeGPULabelsFromGRES('gpu:1(IDX:0),gpu:h100:1(IDX:1),gpu:h200:0(IDX:N/A)')
+    ).toStrictEqual(['1 x unknown', '1 x h100', '0 x h200'])
   })
   // test with assets
   test('node with gpu allocated', () => {
