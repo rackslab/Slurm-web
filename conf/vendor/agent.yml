@@ -182,6 +182,7 @@ filters:
     - cpus
     - gres_detail
     - job_id
+    - name
     - job_state
     - node_count
     - nodes
@@ -205,6 +206,7 @@ filters:
     default:
     - account
     - job_id
+    - name
     - nodes
     - partition
     - priority
