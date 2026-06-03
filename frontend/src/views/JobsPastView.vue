@@ -13,7 +13,12 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useJobsPageQuery } from '@/composables/jobs/JobsPageQuery'
 import { useJobsListPaging } from '@/composables/jobs/JobsListPaging'
-import { acctJobStates, compareAcctJobs, formatAcctJobEndTime } from '@/composables/gateway/slurm/acctJob'
+import {
+  acctJobStates,
+  compareAcctJobs,
+  formatAcctJobEndTime
+} from '@/composables/gateway/slurm/acctJob'
+import { isJobNameEmpty, jobNameLabel } from '@/composables/gateway/slurm/job'
 import type { SlurmAcctJob } from '@/composables/gateway/slurm/types'
 import { PAST_JOBS_DEFAULT_HOURS } from '@/stores/runtime/jobs'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
@@ -185,17 +190,61 @@ onMounted(() => {
         >
         <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle">
-            <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-500">
+            <table class="w-full min-w-full divide-y divide-gray-300 dark:divide-gray-500">
               <thead>
                 <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
-                  <th scope="col" class="w-12 py-3.5 pr-3 text-left sm:pl-6 lg:pl-8">#ID</th>
-                  <th scope="col" class="w-16 px-3 py-3.5 text-left">State</th>
-                  <th scope="col" class="px-3 py-3.5 text-left whitespace-nowrap">End time</th>
-                  <th scope="col" class="px-3 py-3.5 text-left">User (account)</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left sm:table-cell">Resources</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">Partition</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">QOS</th>
-                  <th scope="col" class="max-w-fit py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
+                  <th
+                    scope="col"
+                    class="w-0 py-3.5 pr-3 whitespace-nowrap sm:pl-6 lg:pr-5 lg:pl-8 xl:pl-10"
+                  >
+                    #ID
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:px-6"
+                  >
+                    State
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:px-6"
+                  >
+                    End time
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-full max-w-0 px-3 py-3.5 text-left 2xl:table-cell 2xl:px-6"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:px-6"
+                  >
+                    User (account)
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap sm:table-cell lg:px-5 xl:px-6"
+                  >
+                    Resources
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:table-cell xl:px-6"
+                  >
+                    Partition
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:table-cell xl:px-6"
+                  >
+                    QOS
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 py-3.5 pr-4 pl-3 whitespace-nowrap sm:pr-6 lg:pr-8 lg:pl-5 xl:pr-10"
+                  >
                     <span class="sr-only">View</span>
                   </th>
                 </tr>
@@ -205,22 +254,37 @@ onMounted(() => {
               >
                 <tr v-for="job in sortedJobs.slice(firstjob, lastjob)" :key="job.job_id">
                   <td
-                    class="py-4 pr-3 font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pl-8 dark:text-gray-100"
+                    class="w-0 py-4 pr-3 font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pr-5 lg:pl-8 xl:pl-10 dark:text-gray-100"
                   >
                     {{ job.job_id }}
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap">
+                  <td class="w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:px-6">
                     <JobStatusBadge :status="acctJobStates(job)" />
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap">{{ formatAcctJobEndTime(job) }}</td>
-                  <td class="px-3 py-4 whitespace-nowrap">{{ job.user }} ({{ job.account }})</td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap sm:table-cell">
+                  <td class="w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:px-6">
+                    {{ formatAcctJobEndTime(job) }}
+                  </td>
+                  <td class="hidden w-full max-w-0 px-3 py-4 2xl:table-cell 2xl:px-6">
+                    <span
+                      :class="[
+                        isJobNameEmpty(job.name) ? 'text-gray-400 dark:text-gray-600' : '',
+                        'block truncate'
+                      ]"
+                      :title="isJobNameEmpty(job.name) ? undefined : job.name"
+                    >
+                      {{ jobNameLabel(job.name) }}
+                    </span>
+                  </td>
+                  <td class="w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:px-6">
+                    {{ job.user }} ({{ job.account }})
+                  </td>
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap sm:table-cell lg:px-5 xl:px-6">
                     <AcctJobResources :job="job" />
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:table-cell xl:px-6">
                     {{ job.partition }}
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:table-cell xl:px-6">
                     {{ job.qos }}
                   </td>
                   <td class="h-full text-right font-medium">

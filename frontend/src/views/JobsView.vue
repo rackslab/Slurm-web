@@ -13,7 +13,12 @@ import { useRuntimeStore } from '@/stores/runtime'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useJobsPageQuery } from '@/composables/jobs/JobsPageQuery'
 import { useJobsListPaging } from '@/composables/jobs/JobsListPaging'
-import { compareJobs, jobPriorityLabel } from '@/composables/gateway/slurm/job'
+import {
+  compareJobs,
+  jobNameLabel,
+  isJobNameEmpty,
+  jobPriorityLabel
+} from '@/composables/gateway/slurm/job'
 import type { SlurmJob } from '@/composables/gateway/slurm/types'
 import ClusterMainLayout from '@/components/ClusterMainLayout.vue'
 import JobsSorter from '@/components/jobs/JobsSorter.vue'
@@ -133,7 +138,7 @@ onMounted(() => {
         <JobsFiltersBar />
       </section>
 
-      <div class="mt-8 flow-root">
+      <div class="mt-8 flow-root min-w-0">
         <ErrorAlert v-if="poller.unable.value"
           >Unable to retrieve jobs from cluster
           <span class="font-medium">{{ cluster }}</span></ErrorAlert
@@ -145,25 +150,69 @@ onMounted(() => {
         <InfoAlert v-else-if="sortedJobs.length == 0"
           >No jobs found on cluster <span class="font-medium">{{ cluster }}</span></InfoAlert
         >
-        <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div v-else class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 xl:overflow-x-clip">
           <div class="inline-block min-w-full py-2 align-middle">
-            <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-500">
+            <table class="w-full min-w-full divide-y divide-gray-300 dark:divide-gray-500">
               <thead>
                 <tr class="text-sm font-semibold text-gray-900 dark:text-gray-200">
-                  <th scope="col" class="w-12 py-3.5 pr-3 text-left sm:pl-6 lg:pl-8">#ID</th>
-                  <th scope="col" class="w-16 px-3 py-3.5 text-left">State</th>
-                  <th scope="col" class="px-3 py-3.5 text-left">User (account)</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left sm:table-cell">Resources</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">Partition</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-left xl:table-cell">QOS</th>
-                  <th scope="col" class="hidden px-3 py-3.5 text-center sm:table-cell">Priority</th>
                   <th
                     scope="col"
-                    class="hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:min-w-[100px]"
+                    class="w-0 py-3.5 pr-3 whitespace-nowrap sm:pl-6 lg:pr-5 lg:pl-8 xl:pl-10"
+                  >
+                    #ID
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:px-6"
+                  >
+                    State
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-full max-w-0 overflow-hidden px-3 py-3.5 text-left xl:table-cell xl:px-5 2xl:px-6"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    class="w-0 max-w-xs px-3 py-3.5 text-left lg:max-w-sm lg:px-5 xl:max-w-md xl:px-6"
+                  >
+                    User (account)
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap sm:table-cell lg:px-5 xl:px-6"
+                  >
+                    Resources
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:table-cell xl:px-6"
+                  >
+                    Partition
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-left whitespace-nowrap lg:px-5 xl:table-cell xl:px-6"
+                  >
+                    QOS
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 px-3 py-3.5 text-center whitespace-nowrap sm:table-cell lg:px-5 xl:px-6"
+                  >
+                    Priority
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden w-0 max-w-md overflow-hidden px-3 py-3.5 text-left 2xl:table-cell 2xl:max-w-lg 2xl:px-6"
                   >
                     Reason
                   </th>
-                  <th scope="col" class="max-w-fit py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
+                  <th
+                    scope="col"
+                    class="w-0 py-3.5 pr-4 pl-3 whitespace-nowrap sm:pr-6 lg:pr-8 lg:pl-5 xl:pr-10"
+                  >
                     <span class="sr-only">View</span>
                   </th>
                 </tr>
@@ -173,32 +222,57 @@ onMounted(() => {
               >
                 <tr v-for="job in sortedJobs.slice(firstjob, lastjob)" :key="job.job_id">
                   <td
-                    class="py-4 pr-3 font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pl-8 dark:text-gray-100"
+                    class="w-0 py-4 pr-3 font-medium whitespace-nowrap text-gray-900 sm:pl-6 lg:pr-5 lg:pl-8 xl:pl-10 dark:text-gray-100"
                   >
                     {{ job.job_id }}
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap">
+                  <td class="w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:px-6">
                     <JobStatusBadge :status="job.job_state" />
                   </td>
-                  <td class="px-3 py-4 whitespace-nowrap">
-                    {{ job.user_name }} ({{ job.account }})
+                  <td
+                    class="hidden w-full max-w-0 overflow-hidden px-3 py-4 xl:table-cell xl:px-5 2xl:px-6"
+                  >
+                    <span
+                      :class="[
+                        isJobNameEmpty(job.name) ? 'text-gray-400 dark:text-gray-600' : '',
+                        'block truncate'
+                      ]"
+                      :title="isJobNameEmpty(job.name) ? undefined : job.name"
+                    >
+                      {{ jobNameLabel(job.name) }}
+                    </span>
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap sm:table-cell">
+                  <td
+                    class="w-0 max-w-xs overflow-hidden px-3 py-4 lg:max-w-sm lg:px-5 xl:max-w-md xl:px-6"
+                  >
+                    <span class="block truncate" :title="`${job.user_name} (${job.account})`">
+                      {{ job.user_name }} ({{ job.account }})
+                    </span>
+                  </td>
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap sm:table-cell lg:px-5 xl:px-6">
                     <JobResources :job="job" />
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:table-cell xl:px-6">
                     {{ job.partition }}
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap xl:table-cell">
+                  <td class="hidden w-0 px-3 py-4 whitespace-nowrap lg:px-5 xl:table-cell xl:px-6">
                     {{ job.qos }}
                   </td>
-                  <td class="hidden px-3 py-4 text-center whitespace-nowrap sm:table-cell">
+                  <td
+                    class="hidden w-0 px-3 py-4 text-center whitespace-nowrap sm:table-cell lg:px-5 xl:px-6"
+                  >
                     {{ jobPriorityLabel(job) }}
                   </td>
-                  <td class="hidden px-3 py-4 whitespace-nowrap 2xl:table-cell">
-                    <template v-if="job.state_reason != 'None'">
+                  <td
+                    class="hidden w-0 max-w-md overflow-hidden px-3 py-4 2xl:table-cell 2xl:max-w-lg 2xl:px-6"
+                  >
+                    <span
+                      v-if="job.state_reason != 'None'"
+                      class="block truncate"
+                      :title="job.state_reason"
+                    >
                       {{ job.state_reason }}
-                    </template>
+                    </span>
                   </td>
                   <td class="h-full text-right font-medium">
                     <RouterLink

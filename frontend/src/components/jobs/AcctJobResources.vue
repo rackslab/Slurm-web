@@ -8,7 +8,11 @@
 
 <script setup lang="ts">
 import type { SlurmAcctJob } from '@/composables/gateway/slurm/types'
-import { acctJobAllocatedGPU, acctJobCPUs, acctJobResources } from '@/composables/gateway/slurm/acctJob'
+import {
+  acctJobAllocatedGPU,
+  acctJobCPUs,
+  acctJobResources
+} from '@/composables/gateway/slurm/acctJob'
 import { ServerIcon, CpuChipIcon, Square3Stack3DIcon } from '@heroicons/vue/24/outline'
 
 const { job } = defineProps<{ job: SlurmAcctJob }>()

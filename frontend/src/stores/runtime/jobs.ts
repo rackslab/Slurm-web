@@ -10,6 +10,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { SlurmAcctJob, SlurmJob } from '@/composables/gateway/slurm/types'
 import { acctJobStates } from '@/composables/gateway/slurm/acctJob'
+import { jobNameMatches } from '@/composables/gateway/slurm/job'
 
 /*
  * Jobs view settings
@@ -24,6 +25,7 @@ export interface JobsViewFilters {
   accounts: string[]
   qos: string[]
   partitions: string[]
+  name: string
 }
 
 export interface JobsQueryParameters {
@@ -35,6 +37,7 @@ export interface JobsQueryParameters {
   accounts?: string
   qos?: string
   partitions?: string
+  name?: string
   page?: number
 }
 
@@ -98,7 +101,8 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
     users: [],
     accounts: [],
     qos: [],
-    partitions: []
+    partitions: [],
+    name: ''
   })
 
   function restoreSortDefault(): void {
@@ -139,6 +143,15 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
   function removePartitionFilter(partition: string) {
     filters.value.partitions = filters.value.partitions.filter((element) => element != partition)
   }
+
+  function hasNameFilter(): boolean {
+    return filters.value.name.trim() !== ''
+  }
+
+  function clearNameFilter() {
+    filters.value.name = ''
+  }
+
   function emptyFilters(past = false): boolean {
     const states = past ? filters.value.pastStates : filters.value.activeStates
     return (
@@ -146,7 +159,8 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
       filters.value.users.length == 0 &&
       filters.value.accounts.length == 0 &&
       filters.value.qos.length == 0 &&
-      filters.value.partitions.length == 0
+      filters.value.partitions.length == 0 &&
+      !hasNameFilter()
     )
   }
   function matchesFilters(job: SlurmJob): boolean {
@@ -199,6 +213,9 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
       ) {
         return false
       }
+    }
+    if (hasNameFilter() && !jobNameMatches(filters.value.name, job.name)) {
+      return false
     }
 
     return true
@@ -256,6 +273,9 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
         return false
       }
     }
+    if (hasNameFilter() && !jobNameMatches(filters.value.name, job.name)) {
+      return false
+    }
 
     return true
   }
@@ -274,17 +294,20 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
 
   function query(): JobsQueryParameters {
     const result: JobsQueryParameters = {}
-    if (page.value != 1) {
-      result.page = page.value
-    }
     if (activeSort.value != 'id') {
       result.sort = activeSort.value
     }
     if (activeOrder.value != 'asc') {
       result.order = activeOrder.value
     }
+    if (page.value != 1) {
+      result.page = page.value
+    }
     if (filters.value.activeStates.length > 0) {
       result.states = filters.value.activeStates.join()
+    }
+    if (hasNameFilter()) {
+      result.name = filters.value.name.trim()
     }
     if (filters.value.users.length > 0) {
       result.users = filters.value.users.join()
@@ -303,9 +326,6 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
 
   function pastQuery(): JobsQueryParameters {
     const result: JobsQueryParameters = {}
-    if (page.value != 1) {
-      result.page = page.value
-    }
     if (pastSort.value !== PAST_JOBS_DEFAULT_SORT) {
       result.sort = pastSort.value
     }
@@ -315,8 +335,14 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
     if (pastHours.value !== PAST_JOBS_DEFAULT_HOURS) {
       result.past_hours = pastHours.value
     }
+    if (page.value != 1) {
+      result.page = page.value
+    }
     if (filters.value.pastStates.length > 0) {
       result.states = filters.value.pastStates.join()
+    }
+    if (hasNameFilter()) {
+      result.name = filters.value.name.trim()
     }
     if (filters.value.users.length > 0) {
       result.users = filters.value.users.join()
@@ -352,6 +378,8 @@ export const useJobsRuntimeStore = defineStore('jobsRuntime', () => {
     removeAccountFilter,
     removeQosFilter,
     removePartitionFilter,
+    clearNameFilter,
+    hasNameFilter,
     emptyFilters,
     matchesFilters,
     matchesAcctJobFilters,

@@ -24,6 +24,7 @@ export interface SlurmAcctJobTime {
 export interface SlurmAcctJob {
   account: string
   job_id: number
+  name: string
   nodes: string
   partition: string
   priority: SlurmOptionalNumber

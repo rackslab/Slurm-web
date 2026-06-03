@@ -50,6 +50,34 @@ export function compareJobs(
   }
 }
 
+export function isJobNameEmpty(name: string | undefined): boolean {
+  return (name ?? '').trim() === ''
+}
+
+/** Display label for a job name in list views; empty names show ∅. */
+export function jobNameLabel(name: string | undefined): string {
+  return isJobNameEmpty(name) ? '∅' : (name ?? '').trim()
+}
+
+/**
+ * Return whether a job name matches the filter pattern.
+ * Patterns wrapped in slashes (e.g. `/^batch-/i`) are treated as JavaScript
+ * regular expressions; otherwise the pattern is a case-insensitive substring.
+ * Invalid regex syntax never matches.
+ */
+export function jobNameMatches(pattern: string, jobName: string | undefined): boolean {
+  const name = jobName ?? ''
+  const match = pattern.match(/^\/(.+)\/([gimsuy]*)$/)
+  if (match) {
+    try {
+      return new RegExp(match[1], match[2]).test(name)
+    } catch {
+      return false
+    }
+  }
+  return name.toLowerCase().includes(pattern.toLowerCase())
+}
+
 export function jobPriorityLabel(job: SlurmJob): string {
   if (!job.job_state.includes('PENDING')) return '-'
   if (job.priority.set) {

@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add page to list last terminated jobs with configurable time window (#325).
   - Support `jobs-view-own` and `jobs-view-past-own` permissions in jobs menu,
     scope toggles and filters panel.
+  - Display job names in active and terminated jobs pages (#346).
+  - Add possibility to filter jobs by name (substring or regex) in active and
+    terminated jobs pages.
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - gensession: Add `slurm-web gen-session-key` command to generate gateway
   session secret file.

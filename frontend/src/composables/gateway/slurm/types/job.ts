@@ -76,6 +76,7 @@ export interface SlurmJob {
   cpus: SlurmOptionalNumber
   gres_detail: string[]
   job_id: number
+  name: string
   job_state: string[]
   node_count: SlurmOptionalNumber
   nodes: string

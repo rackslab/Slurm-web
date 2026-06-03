@@ -15,6 +15,7 @@ import PartitionFilterSelector from '@/components/filters/PartitionFilterSelecto
 import UserFilterSelector from '@/components/jobs/UserFilterSelector.vue'
 import AccountFilterSelector from '@/components/jobs/AccountFilterSelector.vue'
 import QosFilterSelector from '@/components/jobs/QosFilterSelector.vue'
+import JobNameFilterInput from '@/components/jobs/JobNameFilterInput.vue'
 import JobsPastTimeRangeSelector from '@/components/jobs/JobsPastTimeRangeSelector.vue'
 
 import {
@@ -33,7 +34,8 @@ import {
   RectangleGroupIcon,
   UserIcon,
   UsersIcon,
-  SwatchIcon
+  SwatchIcon,
+  TagIcon
 } from '@heroicons/vue/20/solid'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
@@ -211,6 +213,34 @@ const stateFiltersModel = computed({
                       >
                     </div>
                   </div>
+                </DisclosurePanel>
+              </Disclosure>
+              <Disclosure
+                as="div"
+                class="border-t border-t-gray-200 px-4 py-6 dark:border-t-gray-600"
+                v-slot="{ open }"
+              >
+                <h3 class="-mx-2 -my-3 flow-root">
+                  <DisclosureButton
+                    id="disclosure-name-btn"
+                    class="flex w-full items-center justify-between px-2 py-3 text-sm text-gray-400"
+                  >
+                    <span class="flex">
+                      <TagIcon
+                        class="-mt-1 mr-2 -ml-1 h-8 w-8 rounded-full bg-sky-600 p-2 text-white"
+                      />
+                      <span class="font-medium text-gray-900 dark:text-gray-100">Name</span>
+                    </span>
+                    <span class="ml-6 flex items-center">
+                      <ChevronDownIcon
+                        :class="[open ? '-rotate-180' : 'rotate-0', 'h-5 w-5 transform']"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </DisclosureButton>
+                </h3>
+                <DisclosurePanel class="pt-6">
+                  <JobNameFilterInput />
                 </DisclosurePanel>
               </Disclosure>
               <!--

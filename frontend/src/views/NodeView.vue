@@ -231,7 +231,9 @@ watch(
                   class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                 >
                   <ul class="list-disc pl-4">
-                    <li v-for="gpu in nodeGPULabelsFromGRES(node.data.value.gres)" :key="gpu">{{ gpu }}</li>
+                    <li v-for="gpu in nodeGPULabelsFromGRES(node.data.value.gres)" :key="gpu">
+                      {{ gpu }}
+                    </li>
                   </ul>
                 </dd>
               </div>

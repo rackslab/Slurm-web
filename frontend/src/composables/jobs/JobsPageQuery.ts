@@ -20,15 +20,28 @@ export type JobsPageRouteName = 'jobs' | 'jobs-past'
 
 const ACTIVE_JOBS_QUERY_PARAMETERS = [
   'sort',
+  'order',
+  'page',
   'states',
+  'name',
   'users',
   'accounts',
-  'page',
   'qos',
   'partitions'
 ] as const
 
-const PAST_JOBS_QUERY_PARAMETERS = [...ACTIVE_JOBS_QUERY_PARAMETERS, 'past_hours'] as const
+const PAST_JOBS_QUERY_PARAMETERS = [
+  'sort',
+  'order',
+  'past_hours',
+  'page',
+  'states',
+  'name',
+  'users',
+  'accounts',
+  'qos',
+  'partitions'
+] as const
 
 export function useJobsPageQuery(routeName: JobsPageRouteName) {
   const route = useRoute()
@@ -65,6 +78,7 @@ export function useJobsPageQuery(routeName: JobsPageRouteName) {
     runtimeStore.jobs.filters.accounts = []
     runtimeStore.jobs.filters.qos = []
     runtimeStore.jobs.filters.partitions = []
+    runtimeStore.jobs.filters.name = ''
     if (routeName === 'jobs-past') {
       runtimeStore.jobs.filters.pastStates = []
     } else {
@@ -118,6 +132,9 @@ export function useJobsPageQuery(routeName: JobsPageRouteName) {
       /* Retrieve the partitions filters from query and update the store */
       runtimeStore.jobs.filters.partitions = (route.query.partitions as string).split(',')
     }
+    if (route.query.name) {
+      runtimeStore.jobs.filters.name = route.query.name as string
+    }
     if (routeName === 'jobs-past') {
       runtimeStore.jobs.pastHours = syncPastHoursFromRoute()
     }
@@ -153,6 +170,10 @@ export function useJobsPageQuery(routeName: JobsPageRouteName) {
     )
     watch(
       () => runtimeStore.jobs.filters.partitions,
+      () => updateQueryParameters()
+    )
+    watch(
+      () => runtimeStore.jobs.filters.name,
       () => updateQueryParameters()
     )
     watch(

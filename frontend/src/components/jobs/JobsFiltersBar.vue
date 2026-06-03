@@ -16,7 +16,8 @@ import {
   RectangleGroupIcon,
   UserIcon,
   UsersIcon,
-  SwatchIcon
+  SwatchIcon,
+  TagIcon
 } from '@heroicons/vue/20/solid'
 
 const { past = false } = defineProps<{ past?: boolean }>()
@@ -25,15 +26,15 @@ const runtimeStore = useRuntimeStore()
 
 const activeFiltersGroups: Array<{
   group: string
-  list: keyof JobsViewFilters
   icon: FunctionalComponent
+  values: (filters: JobsViewFilters) => string[]
   removeCallback: (this: typeof runtimeStore.jobs, filter: string) => void
   colors: { badge: string; button: string }
 }> = [
   {
     group: 'state',
-    list: past ? 'pastStates' : 'activeStates',
     icon: BoltIcon,
+    values: (filters) => (past ? filters.pastStates : filters.activeStates),
     removeCallback: past
       ? runtimeStore.jobs.removePastStateFilter
       : runtimeStore.jobs.removeActiveStateFilter,
@@ -43,9 +44,22 @@ const activeFiltersGroups: Array<{
     }
   },
   {
+    group: 'name',
+    icon: TagIcon,
+    values: (filters) => {
+      const name = filters.name.trim()
+      return name ? [name] : []
+    },
+    removeCallback: runtimeStore.jobs.clearNameFilter,
+    colors: {
+      badge: 'border-gray-200 dark:border-gray-400 bg-sky-600',
+      button: 'text-sky-200 hover:bg-sky-700 hover:text-white'
+    }
+  },
+  {
     group: 'user',
-    list: 'users',
     icon: UserIcon,
+    values: (filters) => filters.users,
     removeCallback: runtimeStore.jobs.removeUserFilter,
     colors: {
       badge: 'border-gray-200 dark:border-gray-400 bg-emerald-500',
@@ -54,8 +68,8 @@ const activeFiltersGroups: Array<{
   },
   {
     group: 'account',
-    list: 'accounts',
     icon: UsersIcon,
+    values: (filters) => filters.accounts,
     removeCallback: runtimeStore.jobs.removeAccountFilter,
     colors: {
       badge: 'border-gray-200 dark:border-gray-400 bg-yellow-500',
@@ -64,8 +78,8 @@ const activeFiltersGroups: Array<{
   },
   {
     group: 'qos',
-    list: 'qos',
     icon: SwatchIcon,
+    values: (filters) => filters.qos,
     removeCallback: runtimeStore.jobs.removeQosFilter,
     colors: {
       badge: 'border-gray-200 dark:border-gray-400 bg-purple-500',
@@ -74,8 +88,8 @@ const activeFiltersGroups: Array<{
   },
   {
     group: 'partition',
-    list: 'partitions',
     icon: RectangleGroupIcon,
+    values: (filters) => filters.partitions,
     removeCallback: runtimeStore.jobs.removePartitionFilter,
     colors: {
       badge: 'border-gray-200 dark:border-gray-400 bg-amber-700',
@@ -100,14 +114,14 @@ const activeFiltersGroups: Array<{
         <div class="-m-1 flex flex-wrap items-center">
           <template v-for="activeFilterGroup in activeFiltersGroups" :key="activeFilterGroup.group">
             <span
-              v-for="activeFilter in runtimeStore.jobs.filters[activeFilterGroup.list]"
-              :key="activeFilter"
+              v-for="activeFilter in activeFilterGroup.values(runtimeStore.jobs.filters)"
+              :key="`${activeFilterGroup.group}-${activeFilter}`"
               :class="[
                 activeFilterGroup.colors.badge,
                 'm-1 inline-flex items-center rounded-full border py-1.5 pr-2 pl-3 text-xs font-medium text-white'
               ]"
             >
-              <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4"></component>
+              <component :is="activeFilterGroup.icon" class="mr-1 h-4 w-4" />
               <span>{{ activeFilter }}</span>
               <button
                 type="button"
