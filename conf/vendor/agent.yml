@@ -423,10 +423,19 @@ jwt:
 racksdb:
   enabled:
     type: bool
-    default: true
     doc: |
       Control if RacksDB integration feature for advanced visualization of
       resources is enabled.
+
+      When this parameter is omitted in configuration, the agent tries to load
+      the RacksDB database and schema and disables the feature if unable to
+      load (_auto_ mode).
+
+      When this parameter is set to _yes_, RacksDB is required and the agent
+      fails to start if the library, database or schema cannot be loaded.
+
+      When this parameter is set to _no_, RacksDB integration is disabled and
+      the database is not loaded.
   # The default values in this section must be synchronized with RacksDB library
   # defaults.
   db:
