@@ -4,10 +4,12 @@
 #
 # SPDX-License-Identifier: MIT
 
+import builtins
 import unittest
 from unittest import mock
 import tempfile
 import os
+import sys
 from importlib.util import find_spec
 
 import werkzeug
@@ -31,6 +33,17 @@ def is_racksdb_available():
     return find_spec("racksdb") is not None
 
 
+def _racksdb_import_blocker():
+    real_import = builtins.__import__
+
+    def import_mock(name, globals=None, locals=None, fromlist=(), level=0):
+        if level == 0 and (name == "racksdb" or name.startswith("racksdb.")):
+            raise ModuleNotFoundError("No module named 'racksdb'")
+        return real_import(name, globals, locals, fromlist, level)
+
+    return import_mock
+
+
 CONF_TPL = """
 [service]
 cluster=test
@@ -42,9 +55,9 @@ key={{ key }}
 definition={{ policy_defs }}
 vendor_roles={{ policy }}
 
-{% if not racksdb %}
+{% if racksdb is not none %}
 [racksdb]
-enabled=no
+enabled={{ 'yes' if racksdb else 'no' }}
 {% endif %}
 
 [slurmrestd]
@@ -83,7 +96,7 @@ class TestAgentConfBase(unittest.TestCase):
     def setup_agent_conf(
         self,
         slurmrestd_parameters=None,
-        racksdb=True,
+        racksdb=None,
         metrics=False,
         cache=False,
         policy_ini=None,
@@ -154,22 +167,24 @@ class TestAgentBase(TestSlurmrestdClient):
     def setup_client(
         self,
         slurmrestd_parameters=None,
-        racksdb=True,
+        racksdb=None,
         metrics=False,
         cache=False,
         policy_ini=None,
         racksdb_format_error=False,
         racksdb_schema_error=False,
+        racksdb_import_error=False,
         anonymous_user=False,
         anonymous_enabled=True,
         use_token=True,
     ):
         # Check if RacksDB is available for mocking
-        try:
-            from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
-        except ModuleNotFoundError:
-            # RacksDB not available, disable it in config
-            racksdb = False
+        if not racksdb_import_error:
+            try:
+                from racksdb.errors import RacksDBFormatError, RacksDBSchemaError
+            except ModuleNotFoundError:
+                # RacksDB not available, disable it in config
+                racksdb = False
 
         self.setup_agent_conf(
             slurmrestd_parameters=slurmrestd_parameters,
@@ -179,25 +194,47 @@ class TestAgentBase(TestSlurmrestdClient):
             policy_ini=policy_ini,
         )
 
-        if racksdb:
-            # RacksDB is available, start app with mocked RacksDB web blueprint
-            with mock.patch("racksdb.web.app.RacksDBWebBlueprint") as m:
-                if racksdb_format_error:
-                    m.side_effect = RacksDBFormatError("fake db format error")
-                elif racksdb_schema_error:
-                    m.side_effect = RacksDBSchemaError("fake db schema error")
-                else:
-                    m.return_value = FakeRacksDBWebBlueprint()
-                self.app = SlurmwebAppAgent(
-                    SlurmwebAppSeed.with_parameters(
-                        debug=False,
-                        log_flags=["ALL"],
-                        log_component=None,
-                        debug_flags=[],
-                        conf_defs=self.conf_defs,
-                        conf=self.conf.name,
-                    )
-                )
+        if racksdb is not False:
+            app_seed = SlurmwebAppSeed.with_parameters(
+                debug=False,
+                log_flags=["ALL"],
+                log_component=None,
+                debug_flags=[],
+                conf_defs=self.conf_defs,
+                conf=self.conf.name,
+            )
+            if racksdb_import_error:
+                # RacksDB is installed in the test environment but we must simulate a
+                # missing library.
+                #
+                # A simple mock.patch side_effect on RacksDBWebBlueprint is not enough:
+                # the agent catches ModuleNotFoundError on the import statements in
+                # _init_racksdb(), before the blueprint class is used.
+                #
+                # Earlier imports in this test helper also cache racksdb in
+                # sys.modules, so the agent would reuse cached modules and never raise.
+                # Drop cached modules so lazy-import goes through builtins.__import__,
+                # then block that path to reproduce a missing optional dependency.
+                stashed_racksdb_modules = {}
+                for key in list(sys.modules):
+                    if key == "racksdb" or key.startswith("racksdb."):
+                        stashed_racksdb_modules[key] = sys.modules.pop(key)
+                try:
+                    with mock.patch("builtins.__import__", _racksdb_import_blocker()):
+                        self.app = SlurmwebAppAgent(app_seed)
+                finally:
+                    # Restore modules for other tests in the same process.
+                    sys.modules.update(stashed_racksdb_modules)
+            else:
+                # RacksDB is available, start app with mocked RacksDB web blueprint
+                with mock.patch("racksdb.web.app.RacksDBWebBlueprint") as m:
+                    if racksdb_format_error:
+                        m.side_effect = RacksDBFormatError("fake db format error")
+                    elif racksdb_schema_error:
+                        m.side_effect = RacksDBSchemaError("fake db schema error")
+                    else:
+                        m.return_value = FakeRacksDBWebBlueprint()
+                    self.app = SlurmwebAppAgent(app_seed)
         else:
             # RacksDB disabled in config or not available
             self.app = SlurmwebAppAgent(

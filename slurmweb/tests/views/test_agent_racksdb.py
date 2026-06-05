@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+from unittest import mock
 
 from ..lib.agent import TestAgentBase, is_racksdb_available
 from ..lib.utils import flask_404_description
@@ -16,7 +17,7 @@ class TestAgentRacksDBEnabledRequest(TestAgentBase):
         self.setup_client()
 
     def test_request_racksdb(self):
-        # Check FakeRacksDBWebBlueprint is called when racksdb is enabled (by default).
+        # Check FakeRacksDBWebBlueprint is called in auto mode (enabled omitted).
         response = self.client.get("/racksdb/fake")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -46,11 +47,10 @@ class TestAgentRacksDBUnabledRequest(TestAgentBase):
 
 
 class TestAgentRacksDBDisabledRequest(TestAgentBase):
-    def setUp(self):
+    @mock.patch("racksdb.web.app.RacksDBWebBlueprint")
+    def test_request_racksdb(self, mock_blueprint):
         self.setup_client(racksdb=False)
-
-    def test_request_racksdb(self):
-        # Check FakeRacksDBWebBlueprint is not registered when racksdb is disabled.
+        mock_blueprint.assert_not_called()
         response = self.client.get("/racksdb/fake")
         self.assertEqual(response.status_code, 404)
         self.assertEqual(

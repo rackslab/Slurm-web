@@ -23,29 +23,103 @@ class TestAgentApp(TestAgentBase):
             with self.assertNoLogs("slurmweb", level="ERROR"):
                 self.setup_client()
 
+    #
+    # RacksDB integration tests: auto mode
+    #
+
     @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
-    def test_app_racksdb_format_error(self):
-        with self.assertLogs("slurmweb", level="ERROR") as cm:
+    def test_app_racksdb_loaded_auto(self):
+        self.setup_client()
+        self.assertTrue(self.app.racksdb_active)
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_format_error_auto(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
             self.setup_client(racksdb_format_error=True)
+        self.assertIn(
+            "WARNING:slurmweb.apps.agent:Unable to load RacksDB database: fake db "
+            "format error, RacksDB integration will be disabled",
+            cm.output,
+        )
+        self.assertFalse(self.app.racksdb_active)
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_schema_error_auto(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            self.setup_client(racksdb_schema_error=True)
+        self.assertIn(
+            "WARNING:slurmweb.apps.agent:Unable to load RacksDB schema: fake db "
+            "schema error, RacksDB integration will be disabled",
+            cm.output,
+        )
+        self.assertFalse(self.app.racksdb_active)
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_import_error_auto(self):
+        with self.assertLogs("slurmweb", level="WARNING") as cm:
+            self.setup_client(racksdb_import_error=True)
+        self.assertIn(
+            "WARNING:slurmweb.apps.agent:RacksDB library is not installed, "
+            "disabling integration",
+            cm.output,
+        )
+        self.assertFalse(self.app.racksdb_active)
+
+    #
+    # RacksDB integration tests: explicit `enabled=yes`
+    #
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_loaded_enabled_yes(self):
+        self.setup_client(racksdb=True)
+        self.assertTrue(self.app.racksdb_active)
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_format_error_enabled_yes(self):
+        with self.assertRaisesRegex(SystemExit, "1"):
+            with self.assertLogs("slurmweb", level="CRITICAL") as cm:
+                self.setup_client(racksdb=True, racksdb_format_error=True)
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.apps.agent:Unable to load RacksDB database: fake db "
-                "format error"
+                "CRITICAL:slurmweb.apps.agent:Unable to load RacksDB database: fake "
+                "db format error"
             ],
         )
 
     @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
-    def test_app_racksdb_schema_error(self):
-        with self.assertLogs("slurmweb", level="ERROR") as cm:
-            self.setup_client(racksdb_schema_error=True)
+    def test_app_racksdb_schema_error_enabled_yes(self):
+        with self.assertRaisesRegex(SystemExit, "1"):
+            with self.assertLogs("slurmweb", level="CRITICAL") as cm:
+                self.setup_client(racksdb=True, racksdb_schema_error=True)
         self.assertEqual(
             cm.output,
             [
-                "ERROR:slurmweb.apps.agent:Unable to load RacksDB schema: fake db "
+                "CRITICAL:slurmweb.apps.agent:Unable to load RacksDB schema: fake db "
                 "schema error"
             ],
         )
+
+    @unittest.skipIf(not is_racksdb_available(), "RacksDB not installed")
+    def test_app_racksdb_import_error_enabled_yes(self):
+        with self.assertRaisesRegex(SystemExit, "1"):
+            with self.assertLogs("slurmweb", level="CRITICAL") as cm:
+                self.setup_client(racksdb=True, racksdb_import_error=True)
+        self.assertIn(
+            "CRITICAL:slurmweb.apps.agent:RacksDB library is not installed: "
+            "No module named 'racksdb'",
+            cm.output,
+        )
+
+    #
+    # RacksDB integration tests: explicit `enabled=no`
+    #
+
+    @mock.patch("racksdb.web.app.RacksDBWebBlueprint")
+    def test_app_racksdb_disabled_no_import(self, mock_blueprint):
+        self.setup_client(racksdb=False)
+        mock_blueprint.assert_not_called()
+        self.assertFalse(self.app.racksdb_active)
 
     def test_app_slurmrestd_socket_deprecated(self):
         with self.assertLogs("slurmweb", level="WARNING") as cm:
