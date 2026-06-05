@@ -45,7 +45,7 @@ def info():
         "metrics": current_app.settings.metrics.enabled,
         "cache": current_app.settings.cache.enabled,
         "racksdb": {
-            "enabled": current_app.settings.racksdb.enabled,
+            "enabled": current_app.racksdb_active,
             "infrastructure": current_app.settings.racksdb.infrastructure,
             "version": racksdb_get_version(),
         },

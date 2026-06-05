@@ -88,6 +88,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Filter only actives jobs (ie. not terminated) in response of `/jobs`
     route.
   - Add `slurmdbd.jobs_max_hours` setting in agent info response.
+  - When `[racksdb]` > `enabled` is omitted in configuration, the agent tries to
+    load the database and schema and disables the feature if unable to load.
+    Explicit `enabled=yes` now fails agent startup on load errors (previously
+    fail-soft with error in logs).
 - front:
   - Display active jobs (ie. not terminated) only in jobs page.
   - Require Node.js >= 20.19.
