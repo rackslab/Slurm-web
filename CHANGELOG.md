@@ -57,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     authorization policy configuration guide.
   - Document `jobs-view-own` and `jobs-view-past-own` actions in authorization
     policy guide.
+  - Mention possibility to remove RacksDB load warning logs by disabling
+    integration in quickstart guide.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.45_.

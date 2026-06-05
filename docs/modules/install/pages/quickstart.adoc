@@ -701,10 +701,14 @@ tags=blade
 
 [NOTE]
 ====
+By default, RacksDB integration is in _auto_ mode: the agent tries to load the
+database and schema and disables the feature with a warning in logs if unable to
+load.
+
 If you don't need this
 xref:overview:overview.adoc#nodes-status[advanced interactive graphical representations]
-feature, RacksDB integration can be completely disabled with the following lines
-in [.path]#`/etc/slurm-web/agent.ini`#:
+feature and want to suppress the warning in logs, RacksDB integration can be
+disabled with the following lines in [.path]#`/etc/slurm-web/agent.ini`#:
 
 [source,ini]
 ----
