@@ -71,6 +71,12 @@ class SlurmwebExecGenSessionKey(SlurmwebExecBase):
             default=SlurmwebAppDefaults.GATEWAY.site_configuration,
             type=Path,
         )
+        parser.add_argument(
+            "--set-ownership",
+            dest="set_ownership",
+            action="store_true",
+            help="Require root and assign generated key file to slurm-web user",
+        )
 
         parser.set_defaults(app=SlurmwebExecGenSessionKey.app)
         return parser

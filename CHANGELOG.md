@@ -29,8 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add possibility to filter jobs by name (substring or regex) in active and
     terminated jobs pages.
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
-- gensession: Add `slurm-web gen-session-key` command to generate gateway
-  session secret file.
+- gensession:
+  - Add `slurm-web gen-session-key` command to generate gateway session secret
+    file.
+  - Add `--set-ownership` option to require root and assign generated session
+    secret key to _slurm-web_ system user.
 - genjwt: Add `--set-ownership` option to require root and assign generated JWT
   signing key to _slurm-web_ system user.
 - lib: Support `slurm-web gen-session-key` in compat wrapper.
@@ -104,6 +107,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - genjwt: Allow `slurm-web gen-jwt-key` to run as non-root user to generate JWT
   signing key without changing ownership or ACLs. Root is still required with
   `--set-ownership` or `--with-slurm`.
+- gensession: Allow `slurm-web gen-session-key` to run as non-root user to
+  generate session secret key without changing ownership. Root is still required
+  with `--set-ownership`.
 - conf:
   - Rename authorization policy actions from `view-*` to `{resource}-view`
     (`stats-view`, `jobs-view`, `nodes-view`, `partitions-view`, `qos-view`,

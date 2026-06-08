@@ -21,24 +21,47 @@ class SlurmwebAppGenSessionKey(SlurmwebGenericApp):
 
     def __init__(self, seed: SlurmwebAppSeed):
         super().__init__(seed)
+        self.set_ownership = seed.set_ownership
 
     def run(self):
+        """Generate the gateway session secret key file.
+
+        When run as root, the key file is created if missing and ownership is
+        assigned to the slurm-web system user. When run as a non-root user, the
+        key file is created with the caller's ownership and no chown is
+        performed. With --set-ownership, root is required and the command exits
+        with an error otherwise.
+
+        The parent directory of service.session_key must already exist; it is
+        not created by this command. If the key file already exists, it is left
+        unchanged.
+        """
         logger.info("Running %s", self.NAME)
 
-        if os.geteuid():
-            logger.critical("This script must run as root")
+        if os.geteuid() == 0:
+            apply_ownership = True
+        elif self.set_ownership:
+            logger.critical("This command must run as root to set ownership")
             sys.exit(1)
+        else:
+            apply_ownership = False
 
         session_key_path = self.settings.service.session_key
         if session_key_path.exists():
             logger.warning("Session key file %s already exists", session_key_path)
         else:
-            session_key_path.parent.mkdir(parents=True, exist_ok=True)
+            if not session_key_path.parent.is_dir():
+                logger.critical(
+                    "Session key parent directory %s not found",
+                    session_key_path.parent,
+                )
+                sys.exit(1)
             session_key_path.write_text(secrets.token_urlsafe(64), encoding="utf-8")
             session_key_path.chmod(0o600)
             logger.info("Generated session key file %s", session_key_path)
 
-        self.set_user_permission("slurm-web")
+        if apply_ownership:
+            self.set_user_permission("slurm-web")
 
     def set_user_permission(self, user):
         session_key_path = self.settings.service.session_key
