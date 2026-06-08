@@ -37,6 +37,7 @@ class TestGenJWTExec(unittest.TestCase):
             seed.conf, Path(SlurmwebAppDefaults.GATEWAY.site_configuration)
         )
         self.assertEqual(seed.with_slurm, False)
+        self.assertEqual(seed.set_ownership, False)
 
     def test_seed_version(self):
         with mock.patch("sys.stdout", new=io.StringIO()) as stdout:
@@ -62,6 +63,11 @@ class TestGenJWTExec(unittest.TestCase):
         seed = self._parse(["--with-slurm"])
         self.assertIsInstance(seed, SlurmwebAppSeed)
         self.assertEqual(seed.with_slurm, True)
+
+    def test_set_ownership(self):
+        seed = self._parse(["--set-ownership"])
+        self.assertIsInstance(seed, SlurmwebAppSeed)
+        self.assertEqual(seed.set_ownership, True)
 
     def test_seed_wrong_args(self):
         with self.assertRaisesRegex(SystemExit, "2"):

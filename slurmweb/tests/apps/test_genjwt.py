@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-import os
 from unittest import mock
 from pathlib import Path
 
@@ -28,6 +27,7 @@ class TestGenJwtApp(TestAgentConfBase):
                 conf_defs=self.conf_defs,
                 conf=self.conf.name,
                 with_slurm=False,
+                set_ownership=False,
             )
         )
         # Close conf and keys file handlers to remove temporary files
@@ -38,16 +38,49 @@ class TestGenJwtApp(TestAgentConfBase):
     def test_setup(self):
         self.setup()
 
-    def test_run_as_root(self):
-        if os.geteuid() == 0:
-            self.skipTest("Cannot test error message as root")
+    @mock.patch("slurmweb.apps.genjwt.subprocess.run")
+    @mock.patch("slurmweb.apps.genjwt.shutil.chown")
+    @mock.patch("slurmweb.apps.genjwt.pwd.getpwnam")
+    @mock.patch("slurmweb.apps.genjwt.os.geteuid")
+    def test_run_non_root(
+        self, mock_os_geteuid, mock_pwd_getpwnam, mock_shutil_chown, mock_subprocess_run
+    ):
         self.setup()
+        mock_os_geteuid.return_value = 1000
+        self.app.run()
+        mock_shutil_chown.assert_not_called()
+        mock_subprocess_run.assert_not_called()
+
+    @mock.patch("slurmweb.apps.genjwt.os.geteuid")
+    def test_run_non_root_set_ownership(self, mock_os_geteuid):
+        self.setup()
+        self.app.set_ownership = True
+        mock_os_geteuid.return_value = 1000
         with self.assertRaisesRegex(SystemExit, "1"):
             with self.assertLogs("slurmweb", level="CRITICAL") as cm:
                 self.app.run()
         self.assertEqual(
             cm.output,
-            ["CRITICAL:slurmweb.apps.genjwt:This script must run as root"],
+            [
+                "CRITICAL:slurmweb.apps.genjwt:"
+                "This command must run as root to set ownership or ACLs"
+            ],
+        )
+
+    @mock.patch("slurmweb.apps.genjwt.os.geteuid")
+    def test_run_non_root_with_slurm(self, mock_os_geteuid):
+        self.setup()
+        self.app.with_slurm = True
+        mock_os_geteuid.return_value = 1000
+        with self.assertRaisesRegex(SystemExit, "1"):
+            with self.assertLogs("slurmweb", level="CRITICAL") as cm:
+                self.app.run()
+        self.assertEqual(
+            cm.output,
+            [
+                "CRITICAL:slurmweb.apps.genjwt:"
+                "This command must run as root to set ownership or ACLs"
+            ],
         )
 
     @mock.patch("slurmweb.apps.genjwt.subprocess.run")
