@@ -39,6 +39,7 @@ class TestGenSessionKeyExec(unittest.TestCase):
         self.assertEqual(
             seed.conf, Path(SlurmwebAppDefaults.GATEWAY.site_configuration)
         )
+        self.assertEqual(seed.set_ownership, False)
 
     def test_seed_version(self):
         with mock.patch("sys.stdout", new=io.StringIO()) as stdout:
@@ -59,6 +60,11 @@ class TestGenSessionKeyExec(unittest.TestCase):
         self.assertEqual(seed.conf_defs, Path("/dev/null1"))
         self.assertIsInstance(seed.conf, Path)
         self.assertEqual(seed.conf, Path("/dev/null2"))
+
+    def test_set_ownership(self):
+        seed = self._parse(["--set-ownership"])
+        self.assertIsInstance(seed, SlurmwebAppSeed)
+        self.assertEqual(seed.set_ownership, True)
 
     def test_seed_wrong_args(self):
         with self.assertRaisesRegex(SystemExit, "2"):
