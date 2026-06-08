@@ -84,6 +84,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     policy.
   - Add `name` in whitelisted fields for `jobs` and `jobs_dbd` default filters
     in agent configuration.
+  - Document non-root usage and `--set-ownership` option in
+    `slurm-web-gen-jwt-key` and `slurm-web-gen-session-key` manpages.
 
 ### Changed
 - gateway:

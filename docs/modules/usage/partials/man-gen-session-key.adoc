@@ -7,9 +7,18 @@
 The Slurm-web gateway requires a server-side session secret key at startup
 (`service.session_key`, default [.path]#`/var/lib/slurm-web/session.key`#). This
 command generates the session secret key file and protects it with restrictive
-permissions for the _slurm-web_ system user.
+permissions.
+
+When run as root, the generated key file is assigned to the _slurm-web_ system
+user. When run as a non-root user, the key file is created with the caller's
+ownership and no ownership changes are applied. The parent directory of
+`service.session_key` must already exist; this command does not create it.
 
 include::gateway-opts.adoc[]
+
+[.cli-opt]#*--set-ownership*#::
+  Require root and assign the generated key file to the _slurm-web_ system user.
+  Exit with an error when not run as root.
 
 == Exit status
 

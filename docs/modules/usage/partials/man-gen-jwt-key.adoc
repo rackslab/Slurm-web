@@ -9,10 +9,20 @@ two components: the gateway and agents. Both of these components authentication
 user requests with JWT and signing key. This command generates the JWT signing
 key file and protect it with restrictive permissions.
 
+When run as root, the generated key file is assigned to the _slurm-web_ system
+user. When run as a non-root user, the key file is created with the caller's
+ownership and no ownership or ACL changes are applied. The parent directory of
+the JWT key path must already exist.
+
 include::gateway-opts.adoc[]
+
+[.cli-opt]#*--set-ownership*#::
+  Require root and assign the generated key file to the _slurm-web_ system user.
+  Exit with an error when not run as root.
 
 [.cli-opt]#*--with-slurm*#::
   Add read ACL permission on JWT signing key for slurm system user as well.
+  This option requires root.
 
 == Exit status
 
