@@ -77,6 +77,12 @@ class SlurmwebExecGenJWT(SlurmwebExecBase):
             action="store_true",
             help="Also give read permission on JWT key to slurm user",
         )
+        parser.add_argument(
+            "--set-ownership",
+            dest="set_ownership",
+            action="store_true",
+            help="Require root and assign generated key file to slurm-web user",
+        )
 
         parser.set_defaults(app=SlurmwebExecGenJWT.app)
         return parser

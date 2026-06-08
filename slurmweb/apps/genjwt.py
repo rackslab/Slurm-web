@@ -26,13 +26,30 @@ class SlurmwebAppGenJWT(SlurmwebGenericApp):
     def __init__(self, seed: SlurmwebAppSeed):
         super().__init__(seed)
         self.with_slurm = seed.with_slurm
+        self.set_ownership = seed.set_ownership
 
     def run(self):
+        """Generate the JWT signing key file.
+
+        When run as root, the key file is created if missing and ownership is
+        assigned to the slurm-web system user. With --with-slurm, a read ACL is
+        also added for the slurm system user. When run as a non-root user, the
+        key file is created with the caller's ownership and no chown or ACL
+        changes are performed. With --set-ownership or --with-slurm, root is
+        required and the command exits with an error otherwise.
+
+        The parent directory of jwt.key must already exist; it is not created
+        by this command. If the key file already exists, it is left unchanged.
+        """
         logger.info("Running %s", self.NAME)
 
-        if os.geteuid():
-            logger.critical("This script must run as root")
+        if os.geteuid() == 0:
+            apply_ownership = True
+        elif self.set_ownership or self.with_slurm:
+            logger.critical("This command must run as root to set ownership or ACLs")
             sys.exit(1)
+        else:
+            apply_ownership = False
         if self.settings.jwt.key.exists():
             logger.warning("JWT key %s already exist", self.settings.jwt.key)
         else:
@@ -42,9 +59,10 @@ class SlurmwebAppGenJWT(SlurmwebGenericApp):
                 logger.critical("Error while generating JWT key: %s", err)
                 sys.exit(1)
 
-        self.set_user_permission("slurm-web")
-        if self.with_slurm:
-            self.set_user_permission("slurm", acl=True)
+        if apply_ownership:
+            self.set_user_permission("slurm-web")
+            if self.with_slurm:
+                self.set_user_permission("slurm", acl=True)
 
     def set_user_permission(self, user, acl=False):
         try:

@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
 - gensession: Add `slurm-web gen-session-key` command to generate gateway
   session secret file.
+- genjwt: Add `--set-ownership` option to require root and assign generated JWT
+  signing key to _slurm-web_ system user.
 - lib: Support `slurm-web gen-session-key` in compat wrapper.
 - pkgs:
   - Add dependency on `RFL.authentication[jwt]` extra package provided
@@ -99,6 +101,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Require Node.js >= 20.19.
   - Update dependencies to latest versions (Vite 8, Vitest 4, ESLint 10,
     TypeScript 6, Tailwind CSS 4.3, …).
+- genjwt: Allow `slurm-web gen-jwt-key` to run as non-root user to generate JWT
+  signing key without changing ownership or ACLs. Root is still required with
+  `--set-ownership` or `--with-slurm`.
 - conf:
   - Rename authorization policy actions from `view-*` to `{resource}-view`
     (`stats-view`, `jobs-view`, `nodes-view`, `partitions-view`, `qos-view`,
