@@ -42,6 +42,9 @@ gateway = [
     "RFL.authentication[ldap] >= 1.8.0",
     "RFL.authentication[oidc] >= 1.8.0",
 ]
+container = [
+    "gunicorn",
+]
 tests = [
     "coverage",
     "Jinja2",

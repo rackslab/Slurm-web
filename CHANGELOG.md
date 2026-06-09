@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add gateway dependency on `RFL.authentication[oidc]` extra package provided
     in RFL >= 1.8.0.
   - Add dependency on `RFL.build` >= 1.8.0 for testing.
+  - Add container extra package for containers specific dependencies.
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
   - Add upgrade guide for migration from v6 to v7, with specific section for
