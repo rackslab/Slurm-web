@@ -1,0 +1,86 @@
+# Slurm-web Compose demo (agent + gateway).
+#
+# For step-by-step instructions to get this stack up and running, follow the
+# reference online quickstart guide:
+#     https://docs.rackslab.io/slurm-web/install/quickstart/compose.html
+#
+# Prerequisites (not included in this file):
+#   - A reachable slurmrestd
+#   - ./conf/ with agent.ini and gateway.ini
+#   - ./keys/ for shared secrets under /var/lib/slurm-web
+#
+# Usage:
+#   cd containers
+#   mkdir -p conf keys
+#   docker compose pull
+#   LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose up -d
+#
+# By default, services run as the slurm-web user from the image. When using the
+# ./keys bind mount, set LOCAL_UID and LOCAL_GID so generated files are owned by
+# the host user managing this directory. Rootless Podman users should also apply
+# the keep-id instructions from the quickstart guide.
+#
+# Access the dashboard at http://localhost:5011.
+
+name: slurm-web
+
+services:
+  agent:
+    image: ghcr.io/rackslab/slurm-web-agent:latest
+    restart: unless-stopped
+    user: "${LOCAL_UID:-slurm-web}:${LOCAL_GID:-slurm-web}"
+    ports:
+      - "5012:5012"
+    volumes:
+      - ./conf/agent.ini:/etc/slurm-web/agent.ini:ro
+      - ./keys:/var/lib/slurm-web
+    # Optional dependencies. Uncomment the services below and this block to make
+    # the agent wait for Redis and Prometheus before starting.
+    # depends_on:
+    #   - redis
+    #   - prometheus
+
+  gateway:
+    image: ghcr.io/rackslab/slurm-web-gateway:latest
+    restart: unless-stopped
+    user: "${LOCAL_UID:-slurm-web}:${LOCAL_GID:-slurm-web}"
+    ports:
+      - "5011:5011"
+    volumes:
+      - ./conf/gateway.ini:/etc/slurm-web/gateway.ini:ro
+      - ./keys:/var/lib/slurm-web
+
+  # Redis caching service. This is used by the agent to cache Slurm REST
+  # responses so repeated dashboard requests hit Redis instead of Slurm which
+  # lowers load on the workload manager and improves UI responsiveness.
+  #
+  # This service is optional but recommended. Uncomment it with the agent
+  # depends_on entry above and enable [cache] in agent.ini.
+  #
+  # redis:
+  #   image: docker.io/library/redis:7-alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+
+  # Prometheus collects OpenMetrics exposed by the agent on /metrics and stores
+  # time series. The agent then queries this database, so the UI can produce
+  # charts with historical values.
+  #
+  # This service is optional. Uncomment it with the agent depends_on entry above,
+  # enable [metrics] in agent.ini and provide conf/prometheus/prometheus.yml.
+  #
+  # prometheus:
+  #   image: docker.io/prom/prometheus:v2.55.1
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  #     - prometheus-data:/prometheus
+  #   command:
+  #     - --config.file=/etc/prometheus/prometheus.yml
+  #     - --storage.tsdb.path=/prometheus
+
+volumes:
+  prometheus-data:

@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add possibility to filter jobs by name (substring or regex) in active and
     terminated jobs pages.
 - Add support for Slurm REST API v0.0.45 provided by Slurm 26.05+ (#718)
+- Add Dockerfile for multi-staged agent and gateway containers (#266).
+- Add compose file to quickly deploy for Slurm-web stack in mono-cluster mode.
 - gensession:
   - Add `slurm-web gen-session-key` command to generate gateway session secret
     file.
