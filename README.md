@@ -60,8 +60,8 @@ Get more details in
 
 To install and start using Slurm-web in a few steps, follow the
 [quickstart guide](https://docs.rackslab.io/slurm-web/install/quickstart/index.html)!
-Packages are available for most Linux distributions for easy installation and
-upgrade.
+Containers and system packages are available for most Linux distributions for
+easy installation and upgrade.
 
 ## Documentation
 
