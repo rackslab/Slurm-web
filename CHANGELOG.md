@@ -126,6 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pkgs:
   - Bump minimal version of `RFL.authentication` to 1.8.0.
   - Bump minimal version of `RFL.settings` to v1.8.0.
+  - Bump minimal version of `RacksDB[web]` to v0.7.0.
 - docs:
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.

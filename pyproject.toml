@@ -33,7 +33,7 @@ dev = [
 agent = [
     "ClusterShell",
     "prometheus-client",
-    "RacksDB[web]",
+    "RacksDB[web] >= 0.7.0",
     "redis",
     "requests",
 ]
