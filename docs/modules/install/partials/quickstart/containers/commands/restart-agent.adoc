@@ -1,0 +1,15 @@
+// Restart Slurm-web agent. Include inside Docker/Podman tabs.
+
+ifeval::["{quickstart}" == "containers"]
+[source,console,subs=attributes]
+----
+$ {runtime} restart slurm-web-agent
+----
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+[source,console,subs=attributes]
+----
+$ {compose-env} {compose-cmd} restart agent
+----
+endif::[]

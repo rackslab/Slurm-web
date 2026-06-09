@@ -92,10 +92,7 @@ See xref:conf:conf/gateway.adoc#_ldap[full `ldap` parameter reference].
 
 Restart the gateway after any change to [.path]#`gateway.ini`#:
 
-[source,console]
-----
-# systemctl restart slurm-web-gateway.service  # or slurm-web-gateway-uwsgi.service
-----
+include::partial$restart/gateway.adoc[]
 
 [#troubleshooting]
 == Troubleshooting
@@ -105,9 +102,12 @@ This command is installed with Slurm-web gateway. It validates
 xref:conf:conf/gateway.adoc#_ldap[LDAP settings] in the gateway configuration
 file:
 
+include::partial$commands/ldap-check.adoc[]
+
+For example, when LDAP is configured successfully:
+
 [source,console]
 ----
-# slurm-web ldap-check
 INFO ⸬ Running slurm-web ldap-check
 Found 10 user(s) in LDAP directory:
 - sstevenson (Scott Stevenson) [users, admin]
@@ -128,10 +128,7 @@ message is printed to help diagnose the error.
 
 To help diagnose errors, use the following flags for more detailed debug output:
 
-[source,console]
-----
-# slurm-web ldap-check --debug --debug-flags rfl
-----
+include::partial$commands/ldap-check-debug.adoc[]
 
 This adds LDAP request filters sent to the server and intermediate results.
 

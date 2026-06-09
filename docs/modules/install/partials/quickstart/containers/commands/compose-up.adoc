@@ -1,0 +1,6 @@
+// Start or update the Compose stack. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {compose-env} {compose-cmd} up -d
+----

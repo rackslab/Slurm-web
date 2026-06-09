@@ -1,0 +1,16 @@
+ifeval::["{quickstart}" == "packages"]
+[source,console]
+----
+# systemctl restart slurm-web-agent.service
+----
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+:tab-body: partial$quickstart/containers/commands/restart-agent.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+:tab-body: partial$quickstart/containers/commands/compose-up.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+endif::[]

@@ -1,0 +1,22 @@
+// Generate Slurm-web gateway session key. Include inside Docker/Podman tabs.
+
+ifeval::["{quickstart}" == "containers"]
+[source,console,subs=attributes]
+----
+$ {runtime} run --rm \
+    {podman-userns} {container-user} \
+    {secrets-volume} \
+    ghcr.io/rackslab/slurm-web-gateway:latest gen-session-key
+INFO ⸬ Running slurm-web gen-session-key
+INFO ⸬ Generated session key file /var/lib/slurm-web/session.key
+----
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+[source,console,subs=attributes]
+----
+$ {compose-env} {compose-cmd} run --rm gateway gen-session-key
+INFO ⸬ Running slurm-web gen-session-key
+INFO ⸬ Generated session key file /var/lib/slurm-web/session.key
+----
+endif::[]

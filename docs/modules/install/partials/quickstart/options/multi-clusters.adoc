@@ -1,0 +1,25 @@
+// Shared: multi-cluster deployment notes.
+
+=== Multi-clusters
+
+Slurm-web is designed to support
+xref:overview:architecture.adoc#multiclusters[distributed setup] with a central
+server and multiple clusters. Compared to the steps above, the following changes
+must be considered:
+
+. <<#slurmrestd,Install and setup `slurmrestd`>> on all clusters.
+. Install `Slurm-web` agent on all clusters, colocated on the same hosts as
+  `slurmrestd`.
+. Install `Slurm-web` gateway on the central server.
+. Setup xref:conf:wsgi/index.adoc[production HTTP servers] with HTTPS (SSL/TLS)
+  for all agents and the gateway.
+. Set URL of all agents in
+  xref:conf:conf/gateway.adoc#_agents[`agents` section of gateway configuration].
+. Generate JWT signing key on central server and deploy this key on all agents
+  servers (same key must be shared by all agents and the gateway).
+. Deploy the RacksDB database at the default path on all agent servers
+  (<<#racksdb,auto-loaded on restart>>).
+. Deploy <<#policy,custom policy>> on all agents servers.
+. Setup <<#cache,in-memory cache>> on all agents servers.
+
+Et voilà!

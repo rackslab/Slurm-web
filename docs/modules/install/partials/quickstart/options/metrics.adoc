@@ -1,0 +1,124 @@
+// Shared: metrics export.
+
+[#_metrics_optional]
+=== Metrics
+
+Slurm-web offers the possibility to
+xref:overview:overview.adoc#metrics[export Slurm metrics] in
+https://openmetrics.io/[OpenMetrics] format and integrate with
+https://prometheus.io/[Prometheus]. This feature can be used to store metrics in
+timeseries databases and draw diagrams of historical data.
+
+This feature is disabled by default.
+
+ifeval::["{quickstart}" == "compose"]
+In [.path]#`compose.yaml`#, uncomment the `prometheus` service and the
+`prometheus` entry in the agent `depends_on` block.
+
+Create the Prometheus configuration directory in your Compose project:
+
+[source,console]
+----
+$ mkdir -p conf/prometheus
+----
+
+Create [.path]#`conf/prometheus/prometheus.yml`#:
+
+[source,yaml]
+----
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: slurm
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["agent:5012"]
+----
+
+Add `[metrics]` to [.path]#`conf/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+host=http://prometheus:9090
+restrict=
+  10.0.0.0/8
+  172.16.0.0/12
+  192.168.0.0/16
+----
+
+Restart the stack after adding these files:
+
+include::partial$quickstart/restart-agent.adoc[]
+
+The Prometheus UI is available at http://localhost:9090[http://localhost:9090] —
+check _Status_ → _Targets_ for the `slurm` scrape job.
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+Create Prometheus configuration on the host:
+
+[source,yaml]
+----
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: slurm
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["AGENT_HOST:5012"]
+----
+
+Save this file as [.path]#`/etc/slurm-web/prometheus.yml`# and replace
+`AGENT_HOST` with the hostname or address where the agent container is reachable
+from the Prometheus container.
+
+Start Prometheus:
+
+:tab-body: partial$quickstart/containers/commands/prometheus.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+
+Add `[metrics]` to [.path]#`{config-dir}/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+host=http://PROMETHEUS_HOST:9090
+restrict=
+  10.0.0.0/8
+  172.16.0.0/12
+  192.168.0.0/16
+----
+
+Replace `PROMETHEUS_HOST` with the hostname or address where the Prometheus
+container is reachable from the agent container.
+
+Restart the _agent_ component to apply the new configuration:
+
+include::partial$quickstart/restart-agent.adoc[]
+endif::[]
+
+ifeval::["{quickstart}" == "packages"]
+It can be enabled with the following lines in [.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+----
+
+Restart the _agent_ component to apply the new configuration:
+
+include::partial$quickstart/restart-agent.adoc[]
+endif::[]
+
+.More details
+****
+* xref:conf:metrics.adoc[Metrics export configuration documentation].
+****

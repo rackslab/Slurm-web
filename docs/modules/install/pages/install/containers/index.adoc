@@ -1,7 +1,40 @@
 = Installation with Containers
+:distribsdir: https://rackslab.io/images/distribs
 
-This section contains documentation to install Slurm-web with the following
-Linux containers technologies:
+Slurm-web is distributed as OCI container images for the _agent_ and _gateway_
+components, published on GitHub Container Registry (GHCR).
 
-* xref:install/containers/docker.adoc[Docker]
-* xref:install/containers/podman.adoc[Podman]
+Install and runtime reference:
+
+++++
+<style>
+.quickstart-mode {
+  align-items: center;
+  display: flex;
+  margin-top: 1em;
+}
+.quickstart-mode-icon img {
+  margin-right: 1.5em;
+}
+</style>
+++++
+
+[.quickstart-mode]
+--
+image:{distribsdir}/docker.png[Docker,xref=install/containers/docker.adoc,role=quickstart-mode-icon] xref:install/containers/docker.adoc[**Docker**] — `docker run` and Docker Compose.
+--
+
+[.quickstart-mode]
+--
+image:{distribsdir}/podman.png[Podman,xref=install/containers/podman.adoc,role=quickstart-mode-icon] xref:install/containers/podman.adoc[**Podman**] — `podman run` and Podman Compose.
+--
+
+++++
+<div style="margin-top: 3em;"></div>
+++++
+
+NOTE: Slurm-web containers are *fully compatible with Kubernetes*. While Slurm-web
+does not ship Kubernetes specific installation guide, the published OCI images
+on GHCR are standard containers which can be deployed in Kubernetes (or any other
+orchestrator that runs OCI images) using the same configuration, secrets, and
+networking principles described in the containers and Compose guides.

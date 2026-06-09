@@ -1,0 +1,28 @@
+// Docker/Podman tab wrapper. Set :tab-body: (partial path) on the including
+// page, for example:
+//   :tab-body: partial$quickstart/containers/commands/pull-images.adoc
+
+:container-user: --user $(id -u slurm-web):$(id -g slurm-web)
+:secrets-volume: -v /var/lib/slurm-web:/var/lib/slurm-web
+:compose-env: LOCAL_UID=$(id -u) LOCAL_GID=$(id -g)
+
+[tabs]
+======
+Docker::
++
+====
+:runtime: docker
+:compose-cmd: docker compose
+:podman-userns:
+include::{tab-body}[]
+====
+
+Podman::
++
+====
+:runtime: podman
+:compose-cmd: podman compose
+:podman-userns: --userns=keep-id
+include::{tab-body}[]
+====
+======

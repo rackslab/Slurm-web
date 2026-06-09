@@ -1,0 +1,62 @@
+[tabs]
+======
+System packages::
++
+====
+[source,console]
+----
+# slurm-web connect-check
+----
+====
+
+Docker::
++
+====
+[source,console]
+----
+$ docker run --rm \
+    --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /etc/slurm-web/agent.ini:/etc/slurm-web/agent.ini:ro \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-agent:latest connect-check
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman run --rm \
+    --userns=keep-id --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /etc/slurm-web/agent.ini:/etc/slurm-web/agent.ini:ro \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-agent:latest connect-check
+----
+
+NOTE: With rootful Podman, omit `--userns=keep-id`.
+====
+
+Compose::
++
+====
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose run --rm agent connect-check
+----
+
+With Podman Compose:
+
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) podman compose run --rm agent connect-check
+----
+====
+======
+
+When successful, the command prints:
+
+[source,console]
+----
+✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
+----

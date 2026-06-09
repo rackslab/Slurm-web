@@ -1,0 +1,275 @@
+= Quickstart with system packages
+:quickstart: packages
+:config-dir: /etc/slurm-web
+
+image:https://rackslab.io/images/distribs/packages.png[System packages,float=right]
+
+This guide installs Slurm-web from system packages on the cluster and
+gateway hosts.
+
+include::partial$quickstart/requirements.adoc[]
+
+include::partial$quickstart/slurmrestd.adoc[]
+
+== Install Slurm-web
+
+Jump to the package installation procedure for your host distribution:
+
+* <<dnf,DNF>> — RHEL, CentOS, Rocky Linux, AlmaLinux, Fedora
+* <<apt,APT>> — Debian, Ubuntu
+* <<zypper,Zypper>> — SLES, openSUSE
+
+[#dnf]
+=== DNF
+
+This procedure works on
+https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
+https://www.centos.org/[CentOS],
+https://rockylinux.org/[Rocky Linux] and
+https://almalinux.org/[AlmaLinux OS].
+
+[NOTE]
+====
+On RHEL, CentOS and Rocky Linux some dependencies are missing in standard
+distribution repositories. You must enable
+https://docs.fedoraproject.org/en-US/epel/[EPEL] repositories to get all
+requirements on these distributions:
+
+[source,shell]
+----
+# dnf install -y epel-release
+----
+====
+
+include::partial$install/signing-dnf.adoc[]
+
+include::partial$install/repo-dnf.adoc[]
+
+:tab: RHEL
+:tab-el-note:
+
+[tabs]
+======
+include::partial$install/tabs-el.adoc[]
+
+include::partial$install/tabs-fedora.adoc[]
+======
+
+:!tab-el-note:
+:!tab:
+
+include::partial$install/install-dnf.adoc[]
+
+[#apt]
+=== APT
+
+This procedure works https://debian.org/[Debian] and
+https://ubuntu.com/[Ubuntu].
+
+include::partial$install/signing-apt.adoc[]
+
+include::partial$install/repo-apt.adoc[]
+
+[tabs]
+======
+include::partial$install/tabs-deb.adoc[]
+
+include::partial$install/tabs-ubuntu.adoc[]
+======
+
+include::partial$install/install-apt.adoc[]
+
+[#zypper]
+=== Zypper
+
+This procedure works on
+https://www.suse.com/products/server/[SUSE Linux Entreprise Server (SLES)] and
+https://www.opensuse.org/[openSUSE LEAP].
+
+include::partial$install/signing-zypper.adoc[]
+
+include::partial$install/repo-zypper.adoc[]
+
+:tab: SLES
+:tab-el-note:
+
+[tabs]
+======
+include::partial$install/tabs-zypper.adoc[]
+======
+
+:!tab-el-note:
+:!tab:
+
+include::partial$install/install-zypper.adoc[]
+
+[sidebar]
+--
+.More links
+* xref:install/index.adoc[Installation Guide] with all supported installation
+  methods.
+--
+
+[#_initial_setup]
+== Initial setup
+
+Create _agent_ configuration file [.path]#`/etc/slurm-web/agent.ini`# to set the
+cluster name, for example:
+
+[source,ini]
+----
+[service]
+cluster=nova
+----
+
+Create _gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`# with
+URL to the _agent_:
+
+[source,ini]
+----
+[agents]
+url=http://localhost:5012
+----
+
+NOTE: By default, Slurm-web agent listens on port TCP/5012 of loopback network
+interface. This can be changed with `port` parameter in
+xref:conf:conf/agent.adoc#_service[`service` section of agent configuration].
+
+[sidebar]
+--
+.More links
+* xref:conf:conf/agent.adoc[]
+* xref:conf:conf/gateway.adoc[]
+--
+
+[#_slurm_web_secret_keys]
+== Slurm-web secret keys
+
+Before starting gateway services, generate two secret files on the gateway host
+as root with the `slurm-web` CLI: a gateway session secret to secure server-side
+login state during authentication flows, and a https://jwt.io/[JSON Web Token]
+(JWT) signing key for authentication between Slurm-web components.
+
+Generate the gateway session secret key (default
+[.path]#`/var/lib/slurm-web/session.key`#) with:
+
+[source,console]
+----
+# slurm-web gen-session-key --set-ownership
+INFO ⸬ Running slurm-web gen-session-key
+INFO ⸬ Generated session key file /var/lib/slurm-web/session.key
+INFO ⸬ Setting ownership of session key for slurm-web user
+----
+
+Generate the JWT signing key (default [.path]#`/var/lib/slurm-web/jwt.key`#)
+with:
+
+[source,console]
+----
+# slurm-web gen-jwt-key --set-ownership
+INFO ⸬ Running slurm-web gen-jwt-key
+INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
+INFO ⸬ Setting read permission on key for slurm-web user
+----
+
+[sidebar]
+--
+.More links
+* xref:overview:architecture.adoc#protocols[Protocols and security] involved in Slurm-web architecture
+* xref:usage:manpages/slurm-web-gen-session-key.adoc[`slurm-web gen-session-key` command manpage]
+* xref:usage:manpages/slurm-web-gen-jwt-key.adoc[`slurm-web gen-jwt-key` command manpage]
+--
+
+[#_slurm_jwt_siging_key]
+== Slurm JWT siging key
+
+For Slurm-web authentication to `slurmrestd`, copy the Slurm JWT signing key
+into the agent secrets directory as [.path]#`slurmrestd.key`#:
+
+[source,console]
+----
+# cp /var/spool/slurm/jwt_hs256.key /var/lib/slurm-web/slurmrestd.key
+----
+
+Restrict access to this sensitive file with read permission to the _slurm-web_
+system user only:
+
+[source,console]
+----
+# chown slurm-web:slurm-web /var/lib/slurm-web/slurmrestd.key
+# chmod 400 /var/lib/slurm-web/slurmrestd.key
+----
+
+NOTE: With this configuration, Slurm-web agent automatically generates its
+tokens with short lifespan for authentication to `slurmrestd`. As an
+alternative, Slurm-web supports _static_ tokens. Please refer to
+xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
+
+To test Slurm-web agent and `slurmrestd` service configuration parameters, you
+can run
+xref:usage:manpages/slurm-web-connect-check.adoc[`slurm-web connect-check`]
+command. It tries to send HTTP request to `slurmrestd` with Slurm-web agent
+configuration parameters and reports the status. For example:
+
+[source,console]
+----
+# slurm-web connect-check
+✅ connection successful! (cluster: hpc, slurm: 25.11.0, api: 0.0.44)
+----
+
+== First Access
+
+Slurm-web is now ready to start!
+
+Enable and start the _agent_ and _gateway_ native services:
+
+[source,console]
+----
+# systemctl enable --now slurm-web-agent.service
+# systemctl enable --now slurm-web-gateway.service
+----
+
+Connect your browser to the _gateway_ on http://localhost:5011. You should see
+the dashboard of the configured cluster:
+
+image:conf:slurm-web_policy_admin.png[]
+
+[NOTE]
+====
+By default, Slurm-web gateway native service listens for incoming network
+connections on port TCP/5011. This can be changed with `port` parameter in
+xref:conf:conf/gateway.adoc#_service[`service` section of gateway configuration].
+
+Also, the gateway native service is bound to the loopback network interface by
+default. This restricts access to localhost for security reasons. It is
+recommended to setup <<production,production HTTP server>> for external access
+to Slurm-web. However, this can be changed with the following lines in the
+_gateway_ configuration file [.path]#`/etc/slurm-web/gateway.ini`#:
+
+[source,ini]
+----
+[service]
+interface=HOSTNAME_OR_IP
+
+[ui]
+host=http://HOSTNAME_OR_IP:5011
+----
+
+Actual values depend on your DNS hostname or the public IP address of the host.
+
+Slurm-web is now available on: http://HOSTNAME_OR_IP:5011
+
+Please refer to
+xref:conf:conf/gateway.adoc[gateway configuration reference documentation] for
+more details.
+====
+
+TIP: In case of failure, please refer to
+xref:misc:troubleshooting.adoc#native[troubleshooting guide] for help.
+
+.More details
+****
+* xref:conf:conf/gateway.adoc[Gateway configuration reference documentation]
+****
+
+include::partial$quickstart/going-further.adoc[]

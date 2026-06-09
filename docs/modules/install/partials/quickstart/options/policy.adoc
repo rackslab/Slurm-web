@@ -1,0 +1,17 @@
+// Shared: authorization policy setup.
+
+[#policy]
+=== Authorization Policy
+
+At this stage, the _agent_ is running with default authorization policy. You can
+create a file [.path]#`{config-dir}/policy.ini`# to define your custom RBAC
+fine-grain policy with specific roles.
+
+Follow xref:conf:policy.adoc[Authorization policy reference documentation] to
+learn the policy file format, review examples and choose the actions granted to
+each role.
+
+.More details
+****
+* xref:conf:policy.adoc[Authorization policy reference documentation]
+****

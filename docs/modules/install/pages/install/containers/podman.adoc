@@ -1,5 +1,9 @@
 = Podman
+:runtime-name: Podman
+:runtime-cmd: podman
+:compose-title: Podman Compose
+:compose-cmd: podman compose
 
-CAUTION: Installation of Slurm-web with Docker containers is not supported yet.
-This feature is currently in the https://slurm-web.com/roadmap/[roadmap].
-https://rackslab.io/en/contact/[Contact us] if you need this feature.
+image:https://rackslab.io/images/distribs/podman.png[Podman,float=right]
+
+include::partial$install/containers-runtime.adoc[]

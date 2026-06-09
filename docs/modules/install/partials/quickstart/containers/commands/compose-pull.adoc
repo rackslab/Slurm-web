@@ -1,0 +1,6 @@
+// Pull Compose stack images. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {compose-cmd} pull
+----

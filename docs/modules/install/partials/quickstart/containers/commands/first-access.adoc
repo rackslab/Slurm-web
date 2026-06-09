@@ -1,0 +1,27 @@
+// Start Slurm-web services. Include inside Docker/Podman tabs.
+
+ifeval::["{quickstart}" == "containers"]
+[source,console,subs=attributes]
+----
+$ {runtime} run -d --name slurm-web-agent \
+    -p 5012:5012 \
+    {podman-userns} {container-user} \
+    -v {config-dir}/agent.ini:/etc/slurm-web/agent.ini:ro \
+    {secrets-volume} \
+    ghcr.io/rackslab/slurm-web-agent:latest
+
+$ {runtime} run -d --name slurm-web-gateway \
+    -p 5011:5011 \
+    {podman-userns} {container-user} \
+    -v {config-dir}/gateway.ini:/etc/slurm-web/gateway.ini:ro \
+    {secrets-volume} \
+    ghcr.io/rackslab/slurm-web-gateway:latest
+----
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+[source,console,subs=attributes]
+----
+$ {compose-env} {compose-cmd} up -d
+----
+endif::[]

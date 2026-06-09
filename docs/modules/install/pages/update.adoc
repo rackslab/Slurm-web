@@ -9,7 +9,7 @@ steps for updating to latest major version.
 
 == General Procedure
 
-=== Update Packages
+=== System packages
 
 Depending on host Linux distribution, run this command to update Slurm-web
 packages:
@@ -45,9 +45,7 @@ SLES and openSUSE::
 ====
 ======
 
-=== Restart Services
-
-Run these command to restart services:
+Restart services:
 
 [tabs]
 ======
@@ -74,9 +72,7 @@ When using xref:conf:wsgi/index.adoc[production HTTP server]:
 ====
 ======
 
-=== Check Status
-
-Check status of services:
+Check status:
 
 [tabs]
 ======
@@ -104,6 +100,167 @@ When using xref:conf:wsgi/index.adoc[production HTTP server]:
 ======
 
 Services must be *active* and *running*.
+
+=== Containers
+
+Pull the latest Slurm-web images:
+
+[tabs]
+======
+Docker::
++
+====
+[source,console]
+----
+$ docker pull ghcr.io/rackslab/slurm-web-agent:latest
+$ docker pull ghcr.io/rackslab/slurm-web-gateway:latest
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman pull ghcr.io/rackslab/slurm-web-agent:latest
+$ podman pull ghcr.io/rackslab/slurm-web-gateway:latest
+----
+====
+======
+
+Pulling images does not update already running containers. Stop and remove the
+current containers, then create them again with the same options used at
+deployment, including the bind mounts and user options described in
+xref:install/containers/index.adoc[the containers install reference].
+
+[tabs]
+======
+Docker::
++
+====
+[source,console]
+----
+$ docker rm -f slurm-web-gateway slurm-web-agent
+$ docker run -d --name slurm-web-agent [MOUNTS] \
+    --user $(id -u slurm-web):$(id -g slurm-web) \
+    ghcr.io/rackslab/slurm-web-agent:latest
+$ docker run -d --name slurm-web-gateway [MOUNTS] \
+    --user $(id -u slurm-web):$(id -g slurm-web) \
+    ghcr.io/rackslab/slurm-web-gateway:latest
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman rm -f slurm-web-gateway slurm-web-agent
+$ podman run -d --name slurm-web-agent [MOUNTS] \
+    --userns=keep-id --user $(id -u slurm-web):$(id -g slurm-web) \
+    ghcr.io/rackslab/slurm-web-agent:latest
+$ podman run -d --name slurm-web-gateway [MOUNTS] \
+    --userns=keep-id --user $(id -u slurm-web):$(id -g slurm-web) \
+    ghcr.io/rackslab/slurm-web-gateway:latest
+----
+
+With rootful Podman, omit `--userns=keep-id`.
+====
+======
+
+Check status:
+
+[tabs]
+======
+Docker::
++
+====
+[source,console]
+----
+$ docker ps --filter name=slurm-web-
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman ps --filter name=slurm-web-
+----
+====
+======
+
+=== Compose
+
+Pull the latest Slurm-web images:
+
+[tabs]
+======
+Docker Compose::
++
+====
+[source,console]
+----
+$ docker compose pull
+----
+====
+
+Podman Compose::
++
+====
+[source,console]
+----
+$ podman compose pull
+----
+====
+======
+
+Apply the updated images:
+
+[tabs]
+======
+Docker Compose::
++
+====
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose up -d
+----
+====
+
+Podman Compose::
++
+====
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) podman compose up -d
+----
+====
+======
+
+Check status:
+
+[tabs]
+======
+Docker Compose::
++
+====
+[source,console]
+----
+$ docker compose ps
+----
+====
+
+Podman Compose::
++
+====
+[source,console]
+----
+$ podman compose ps
+----
+====
+======
 
 Connect to Slurm-web web interface with your browser to check it is
 up-and-running.
@@ -443,10 +600,7 @@ state during authentication flows. Installations upgraded from version 6 do not
 have this file. Generate it as root after upgrading packages and before
 restarting the gateway:
 
-[source,console]
-----
-# slurm-web gen-session-key
-----
+include::conf:partial$commands/gen-session-key.adoc[]
 
 NOTE: By default, the session secret key file is generated in
 [.path]#`/var/lib/slurm-web/session.key`#. You can set `session_key` in the

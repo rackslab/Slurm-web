@@ -1,0 +1,64 @@
+= Quickstart with containers
+:quickstart: containers
+:config-dir: /etc/slurm-web
+
+image:https://rackslab.io/images/distribs/docker.png[Containers,float=right]
+
+This guide installs Slurm-web with OCI container images using `docker run` or
+`podman run`.
+This path is generic and versatile; it is recommended for running containers in
+production and custom orchestration (systemd, Kubernetes, your own Compose file).
+
+include::partial$quickstart/requirements.adoc[]
+
+include::partial$quickstart/slurmrestd.adoc[]
+
+== Pull images
+
+Pull the published images from GitHub Container Registry (GHCR):
+
+:tab-body: partial$quickstart/containers/commands/pull-images.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+
+TIP: Pin images to a release tag (for example `ghcr.io/rackslab/slurm-web-agent:v{version}`)
+instead of `latest` for reproducible deployments.
+
+include::partial$quickstart/containers/storage-layout.adoc[]
+
+[#_initial_setup]
+== Initial setup
+
+Create _agent_ configuration file [.path]#`{config-dir}/agent.ini`# to set the
+cluster name and `slurmrestd` URI, for example:
+
+[source,ini]
+----
+[service]
+cluster=nova
+
+[slurmrestd]
+uri=http://SLURMRESTD_HOST:6820
+----
+
+Replace `nova` with your cluster name and `SLURMRESTD_HOST` with a hostname or
+address reachable from the agent container.
+
+Create _gateway_ configuration file [.path]#`{config-dir}/gateway.ini`# with at least:
+
+[source,ini,subs=attributes]
+----
+[agents]
+url=http://AGENT_HOST:5012
+----
+
+Replace `AGENT_HOST` in `[agents] url` with the hostname or IP where the agent
+container is reachable from the gateway.
+
+[sidebar]
+--
+.More links
+* xref:conf:conf/agent.adoc[]
+* xref:conf:conf/gateway.adoc[]
+--
+
+include::partial$quickstart/containers/sections.adoc[]

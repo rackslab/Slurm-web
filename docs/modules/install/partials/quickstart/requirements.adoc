@@ -1,0 +1,32 @@
+[#_requirements]
+== Requirements
+
+:fn-slurm-version: footnote:slurm-version[Slurm-web {version} actually requires Slurm REST API v{api_version} available in Slurm 24.05 and above. Please refer to xref:overview:architecture.adoc#slurm-versions[Slurm REST API versions section] for more details.]
+
+* Cluster with Slurm >= 24.05 {fn-slurm-version} and
+https://slurm.schedmd.com/accounting.html[accounting enabled]
+
+ifeval::["{quickstart}" == "packages"]
+* Host with a supported GNU/Linux distribution among:
+** CentOS
+** AlmaLinux
+** Rocky Linux
+** Fedora
+** RHEL
+** Debian
+** Ubuntu
+** SUSE Linux Enterprise Server (SLES)
+** openSUSE
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+* Host with https://docs.docker.com/engine/[Docker Engine] or
+https://podman.io/[Podman]
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+* Host with https://docs.docker.com/engine/[Docker Engine] and the
+https://docs.docker.com/compose/[Docker Compose] plugin, or
+https://podman.io/[Podman] with
+https://docs.podman.io/en/latest/markdown/podman-compose.1.html[`podman compose`]
+endif::[]

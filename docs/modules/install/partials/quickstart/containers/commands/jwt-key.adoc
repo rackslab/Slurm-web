@@ -1,0 +1,22 @@
+// Generate Slurm-web JWT signing key. Include inside Docker/Podman tabs.
+
+ifeval::["{quickstart}" == "containers"]
+[source,console,subs=attributes]
+----
+$ {runtime} run --rm \
+    {podman-userns} {container-user} \
+    {secrets-volume} \
+    ghcr.io/rackslab/slurm-web-gateway:latest gen-jwt-key
+INFO ⸬ Running slurm-web gen-jwt-key
+INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
+----
+endif::[]
+
+ifeval::["{quickstart}" == "compose"]
+[source,console,subs=attributes]
+----
+$ {compose-env} {compose-cmd} run --rm gateway gen-jwt-key
+INFO ⸬ Running slurm-web gen-jwt-key
+INFO ⸬ Generating JWT private key file /var/lib/slurm-web/jwt.key
+----
+endif::[]

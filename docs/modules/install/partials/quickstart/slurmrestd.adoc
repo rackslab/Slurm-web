@@ -1,0 +1,143 @@
+[#_slurm_jwt_authentication]
+== Slurm JWT authentication
+
+include::conf:partial$slurm-jwt.adoc[]
+
+[#slurmrestd]
+== Install `slurmrestd`
+
+:slurm-install-guide: https://slurm.schedmd.com/quickstart_admin.html
+:slurm-rest-quickstart: https://slurm.schedmd.com/rest_quickstart.html
+
+:epel: https://docs.fedoraproject.org/en-US/epel/
+:debian: https://www.debian.org/
+
+Slurm-web extracts Slurm information from the REST API provided its `slurmrestd`
+daemon. This daemon must be installed on the host. The installation method
+depends on the origin of Slurm packages deployed on the cluster:
+
+[tabs]
+======
+SchedMD RPM packages::
++
+====
+On clusters deployed with SchedMD official RPM packages, install `slurmrestd`
+daemon with this command:
+
+[source,console]
+----
+# dnf install slurm-slurmrestd
+----
+
+TIP: Please refer to {slurm-install-guide}[SchedMD official Slurm installation
+guide] for more help.
+====
+
+EPEL::
++
+====
+On clusters deployed with RPM packages from {epel}[EPEL community],
+install `slurmrestd` daemon with this command:
+
+[source,console]
+----
+# dnf install slurm-slurmrestd
+----
+====
+
+SchedMD Deb packages::
++
+====
+On clusters deployed with SchedMD official Deb packages, install `slurmrestd`
+daemon with this command:
+
+[source,console]
+----
+# apt install slurm-smd-slurmrestd
+----
+
+TIP: Please refer to {slurm-install-guide}[SchedMD official Slurm installation
+guide] for more help.
+====
+
+Debian::
++
+====
+On clusters deployed with RPM packages from {debian}[Debian community], install
+`slurmrestd` with this command:
+
+[source,console]
+----
+# apt install slurmrestd
+----
+====
+======
+
+== Setup `slurmrestd`
+
+Create [.path]#`/etc/systemd/system/slurmrestd.service.d/slurm-web.conf`#
+drop-in configuration override for `slurmrestd` service:
+
+[source,ini]
+----
+[Service]
+# Unset vendor unit ExecStart and Environment to avoid cumulative definition
+ExecStart=
+Environment=
+Environment="SLURM_JWT=daemon"
+ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS -a rest_auth/jwt unix:/run/slurmrestd/slurmrestd.socket
+RuntimeDirectory=slurmrestd
+RuntimeDirectoryMode=0755
+User=slurmrestd
+Group=slurmrestd
+DynamicUser=yes
+----
+
+NOTE: With this configuration, `slurmrestd` listens for incoming connections on
+Unix socket with _jwt_ authentication method. It is also possible to configure
+`slurmrestd` to listen on TCP/IP socket. Please refer to
+xref:conf:slurmrestd.adoc[`slurmrestd` configuration page] for more details.
+
+Make `systemd` reload units changes on disk:
+
+[source,console]
+----
+# systemctl daemon-reload
+----
+
+Enable and start `slurmrestd` service:
+
+[source,console]
+----
+# systemctl enable --now slurmrestd.service
+----
+
+To check `slurmrestd` daemon is properly running with JWT authentication, run
+this command:
+
+[source,console,subs=attributes]
+----
+# export $(scontrol token)
+# curl -H X-SLURM-USER-TOKEN:$SLURM_JWT --unix-socket /run/slurmrestd/slurmrestd.socket http://slurm/slurm/v{api_version}/diag
+{
+   "meta": {
+     "plugin": {
+      "type": "openapi\/slurmctld",
+      "name": "Slurm OpenAPI slurmctld",
+      "data_parser": "data_parser\/v{api_version}",
+      "accounting_storage": "accounting_storage\/slurmdbd"
+    },
+   }
+  …
+}
+----
+
+In case of failure, please refer to
+xref:misc:troubleshooting.adoc#slurmrestd[troubleshooting guide] for help.
+
+[sidebar]
+--
+.More links
+* {slurm-rest-quickstart}[Official Slurm REST quickstart guide] with more
+  details about `slurmrestd` service configuration.
+--

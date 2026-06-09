@@ -1,7 +1,7 @@
 = Installation from Sources
 
 CAUTION: Installation of Slurm-web from sources is not recommanded for most
-users, please prefer xref:install/distribs/index.adoc[supported distribution packages].
+users, please prefer xref:install/distribs/index.adoc[supported system packages].
 This procedure is intended to developers who want to contribute to Slurm-web.
 
 Download Slurm-web source code:

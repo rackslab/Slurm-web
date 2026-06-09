@@ -100,10 +100,7 @@ set.
 
 Restart the gateway after any change to [.path]#`gateway.ini`#:
 
-[source,console]
-----
-# systemctl restart slurm-web-gateway.service  # or slurm-web-gateway-uwsgi.service
-----
+include::partial$restart/gateway.adoc[]
 
 See xref:conf:conf/gateway.adoc#_oidc[full `oidc` parameter reference].
 

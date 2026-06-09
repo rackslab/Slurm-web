@@ -1,0 +1,8 @@
+// Start Redis for container quickstart. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {runtime} run -d --name slurm-web-redis \
+    -p 6379:6379 \
+    docker.io/library/redis:7-alpine
+----

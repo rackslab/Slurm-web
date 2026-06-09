@@ -17,7 +17,7 @@ icon:glasses[] Get a xref:overview.adoc[complete overview] of Slurm-web
 to discover its most advanced features.
 
 icon:download[] For installation procedure, checkout the
-xref:install:quickstart.adoc[quickstart guide].
+xref:install:quickstart/index.adoc[quickstart guide].
 
 {empty} +
 {empty} +

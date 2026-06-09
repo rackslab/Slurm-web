@@ -1,0 +1,13 @@
+// Recreate Slurm-web agent with RacksDB mount. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {runtime} rm -f slurm-web-agent
+$ {runtime} run -d --name slurm-web-agent \
+    -p 5012:5012 \
+    {podman-userns} {container-user} \
+    -v {config-dir}/agent.ini:/etc/slurm-web/agent.ini:ro \
+    {secrets-volume} \
+    -v /var/lib/racksdb:/var/lib/racksdb:ro \
+    ghcr.io/rackslab/slurm-web-agent:latest
+----

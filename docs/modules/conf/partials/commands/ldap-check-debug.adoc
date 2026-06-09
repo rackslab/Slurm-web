@@ -1,0 +1,55 @@
+[tabs]
+======
+System packages::
++
+====
+[source,console]
+----
+# slurm-web ldap-check --debug --debug-flags rfl
+----
+====
+
+Docker::
++
+====
+[source,console]
+----
+$ docker run --rm \
+    --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /etc/slurm-web/gateway.ini:/etc/slurm-web/gateway.ini:ro \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-gateway:latest ldap-check --debug --debug-flags rfl
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman run --rm \
+    --userns=keep-id --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /etc/slurm-web/gateway.ini:/etc/slurm-web/gateway.ini:ro \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-gateway:latest ldap-check --debug --debug-flags rfl
+----
+
+NOTE: With rootful Podman, omit `--userns=keep-id`.
+====
+
+Compose::
++
+====
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose run --rm gateway ldap-check --debug --debug-flags rfl
+----
+
+With Podman Compose:
+
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) podman compose run --rm gateway ldap-check --debug --debug-flags rfl
+----
+====
+======

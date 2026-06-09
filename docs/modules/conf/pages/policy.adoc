@@ -58,29 +58,36 @@ comma-separated <<#actions,list of actions>> granted to the role.
 [source,ini]
 ----
 [roles]
-# Members of scientists have the user role
-user=@rd,@it
-# Members of it group have the the admin role
-admin=@it
+user=@biology
+admin=njones
 
 [user]
-actions=stats-view,jobs-view,jobs-view-past,accounts-view
+actions=stats-view,jobs-view,jobs-view-past,nodes-view
 
 [admin]
-actions=nodes-view,partitions-view,qos-view,reservations-view
+actions=partitions-view,qos-view,accounts-view,reservations-view,associations-view
 ----
 
-Two roles are defined in this authorization policy:
+This policy defines *two roles*:
 
-* *user* role is assigned to all members of _rd_ and _it_ LDAP groups. Users
-  with this role have permissions on `stats-view`, `jobs-view`, `jobs-view-past`
-  and `accounts-view` actions.
-* *admin* role is assigned to all members of _it_ LDAP group. Users with this
-  role haves permissions on `nodes-view`, `partitions-view`, `qos-view` and
-  `reservations-view` actions.
+* *user* for members of _biology_ group. This role has permission on
+  `stats-view`, `jobs-view`, `jobs-view-past` and `nodes-view` actions.
+* *admin* for _njones_ user. This role has permission on `partitions-view`,
+  `qos-view`, `accounts-view`, `reservations-view` and `associations-view`
+  actions.
 
-Members of _it_ group inherit both *user* and *admin* roles with the union of
-all granted actions.
+User _njones_ who is also member of _biology_ group is granted both _user_ and
+_admin_ roles, she has access to everything:
+
+image:slurm-web_policy_admin.png[]
+
+Another user in _biology_ group can only view jobs and nodes:
+
+image:slurm-web_policy_user.png[]
+
+Access to the cluster is denied to all other users:
+
+image:slurm-web_policy_others.png[]
 ====
 
 .Show full example

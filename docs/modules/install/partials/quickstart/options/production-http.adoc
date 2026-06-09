@@ -1,0 +1,20 @@
+// Shared: production HTTP server (WSGI).
+
+[#production]
+=== Production HTTP server
+
+At this stage, Slurm-web is served by native Python HTTP services. This setup is
+convenient for evaluation, but it is not recommended for production: network
+communications are not secured with TLS and the service is not integrated behind
+a production HTTP server.
+
+For a production deployment, follow the
+xref:conf:wsgi/index.adoc[Production HTTP server setup guide]. It explains how
+to serve Slurm-web with supported HTTP servers such as Nginx, Apache or Caddy,
+how to expose the gateway and agent WSGI applications, and how to update
+Slurm-web configuration for the public URL.
+
+.More details
+****
+* xref:conf:wsgi/index.adoc[Production HTTP server setup guide].
+****

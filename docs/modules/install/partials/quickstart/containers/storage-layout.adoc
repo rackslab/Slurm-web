@@ -1,0 +1,77 @@
+// Storage layout for containers and compose quickstarts.
+// Requires :quickstart: on the including page.
+
+[#_storage_layout]
+== Storage layout
+
+Agent and gateway read configuration from [.path]#`/etc/slurm-web/`# and secrets
+from [.path]#`/var/lib/slurm-web/`# _inside_ containers. Those paths are fixed;
+what varies is how you persist files on the host.
+
+ifeval::["{quickstart}" == "compose"]
+This guide keeps configuration and secrets in local directories next to
+`compose.yaml`:
+
+|===
+| Host (project dir) | Container path | Purpose
+
+| [.path]#`./conf/`#
+| [.path]#`/etc/slurm-web/`#
+| Configuration files
+
+| [.path]#`./keys/`#
+| [.path]#`/var/lib/slurm-web/`#
+| Secrets (session and JWT signing keys)
+|===
+
+Create the project layout in your Compose working directory:
+
+[source,console]
+----
+$ mkdir -p conf keys
+----
+
+The reference stack uses `LOCAL_UID` and `LOCAL_GID` in later commands so files
+created in [.path]#`keys/`# remain owned by your host user.
+
+TIP: For rootless Podman Compose, named volumes and other storage alternatives,
+see the xref:install/containers/index.adoc[containers reference installation guide].
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+This guide stores files on the host under the same paths as inside containers:
+
+|===
+| Host | Container path | Purpose
+
+| [.path]#`/etc/slurm-web/`#
+| [.path]#`/etc/slurm-web/`#
+| Configuration files
+
+| [.path]#`/var/lib/slurm-web/`#
+| [.path]#`/var/lib/slurm-web/`#
+| Secrets (session and JWT signing keys)
+|===
+
+Create a `slurm-web` system user on the host and the secrets directory:
+
+[source,console]
+----
+$ sudo useradd --system --user-group --home-dir /var/lib/slurm-web --create-home slurm-web
+$ sudo chown -R slurm-web:slurm-web /var/lib/slurm-web
+----
+
+Create the configuration directory:
+
+[source,console]
+----
+$ sudo mkdir -p /etc/slurm-web
+$ sudo chown -R root:slurm-web /etc/slurm-web
+$ sudo chmod 0750 /etc/slurm-web
+----
+
+The `docker` / `podman` commands below use the `slurm-web` host account.
+
+TIP: For rootless Podman, named volumes and other storage alternatives, see the
+xref:install/containers/index.adoc[containers reference installation guide].
+endif::[]

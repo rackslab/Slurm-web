@@ -67,6 +67,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     policy guide.
   - Mention possibility to remove RacksDB load warning logs by disabling
     integration in quickstart guide.
+  - Add container installation and quickstart documentation for Docker, Podman
+    and the reference Compose stack.
+  - Add container troubleshooting commands to check Slurm-web component versions
+    and inspect container access and application logs.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.45_.
@@ -132,6 +136,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update Slurm REST API supported versions section in architecture page.
   - Update policy action names in quickstart guide and authorization policy
     configuration guide.
+  - Move the illustrated authorization policy example from quickstart guide to
+    authorization policy configuration guide.
 
 ### Fixed
 - front:

@@ -1,0 +1,21 @@
+== Going Further
+
+Slurm-web is now running. The following optional sections help you improve
+performance, secure access, customize authorization and enable advanced
+features.
+
+include::partial$quickstart/options/cache.adoc[]
+
+include::partial$quickstart/options/authentication.adoc[]
+
+include::partial$quickstart/options/policy.adoc[]
+
+ifeval::["{quickstart}" == "packages"]
+include::partial$quickstart/options/production-http.adoc[]
+endif::[]
+
+include::partial$quickstart/options/racksdb.adoc[]
+
+include::partial$quickstart/options/metrics.adoc[]
+
+include::partial$quickstart/options/multi-clusters.adoc[]

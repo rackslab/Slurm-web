@@ -1,0 +1,42 @@
+= Quickstart
+:page-aliases: quickstart.adoc
+:distribsdir: https://rackslab.io/images/distribs
+
+Slurm-web can be installed in several ways. Choose the guide that matches your
+deployment environment below.
+
+++++
+<style>
+.quickstart-mode {
+  margin-top: 2em;
+}
+.quickstart-mode-icon img {
+  margin-right: 1.5em;
+}
+</style>
+++++
+
+[.quickstart-mode]
+--
+image:{distribsdir}/packages.png[System packages,xref=quickstart/packages.adoc,float=left,role=quickstart-mode-icon]
+
+xref:quickstart/packages.adoc[**System packages**] — install from system
+packages repositories on RHEL, Debian, Ubuntu, SUSE, and related distributions.
+--
+
+[.quickstart-mode]
+--
+image:{distribsdir}/docker.png[Containers,xref=quickstart/containers.adoc,float=left,role=quickstart-mode-icon]
+
+xref:quickstart/containers.adoc[**Containers**] — OCI images with `docker run` or
+`podman run`; recommended for running containers in production and custom
+orchestration.
+--
+
+[.quickstart-mode]
+--
+image:{distribsdir}/docker-compose.png[Compose,xref=quickstart/compose.adoc,float=left,role=quickstart-mode-icon]
+
+xref:quickstart/compose.adoc[**Compose**] — reference mono-cluster stack with
+`docker compose` or `podman compose` for quick evaluation.
+--

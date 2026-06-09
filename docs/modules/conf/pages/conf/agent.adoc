@@ -22,7 +22,7 @@ configuration. This example is provided only to illustrate the syntax of the
 file, its parameters and possible values. Most parameters are actually optional.
 You should define only the sections and parameters that are either really
 required or those for which you want to override default value. Please refer to
-the xref:install:quickstart.adoc[quickstart guide] to understand the parameters
+the xref:install:quickstart/index.adoc[quickstart guides] to understand the parameters
 you are supposed to define in most cases.
 
 NOTE: This example file is also installed in Slurm-web agent distribution

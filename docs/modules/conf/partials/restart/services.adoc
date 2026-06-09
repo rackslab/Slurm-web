@@ -1,0 +1,60 @@
+[tabs]
+======
+Native service::
++
+====
+When using default native services:
+
+[source,console]
+----
+# systemctl restart slurm-web-gateway.service slurm-web-agent.service
+----
+====
+
+Production HTTP server::
++
+====
+When using xref:conf:wsgi/index.adoc[production HTTP server]:
+
+[source,console]
+----
+# systemctl restart slurm-web-gateway-uwsgi.service slurm-web-agent-uwsgi.service
+----
+====
+
+Containers::
++
+====
+When using raw containers:
+
+[source,console]
+----
+$ docker restart slurm-web-gateway slurm-web-agent
+----
+
+With Podman:
+
+[source,console]
+----
+$ podman restart slurm-web-gateway slurm-web-agent
+----
+====
+
+Compose::
++
+====
+When using the reference Compose stack:
+
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose restart gateway agent
+----
+
+With Podman Compose:
+
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) podman compose restart gateway agent
+----
+====
+======

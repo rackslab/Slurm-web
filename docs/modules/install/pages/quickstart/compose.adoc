@@ -1,0 +1,72 @@
+= Quickstart with Compose
+:page-aliases: quickstart/docker.adoc, quickstart/podman.adoc
+:quickstart: compose
+:config-dir: conf
+
+image:https://rackslab.io/images/distribs/docker-compose.png[Compose,float=right]
+
+This guide installs Slurm-web with the reference Compose mono-cluster stack
+(agent, gateway, optional Redis and Prometheus) using `docker compose` or
+`podman compose`. It is intended for a quick end-to-end evaluation.
+
+include::partial$quickstart/requirements.adoc[]
+
+include::partial$quickstart/slurmrestd.adoc[]
+
+== Download Compose file
+
+From your chosen working directory, download the reference Compose file from the
+`main` branch:
+
+[source,console]
+----
+$ curl -fsSL -o compose.yaml https://raw.githubusercontent.com/rackslab/Slurm-web/main/containers/compose.yaml
+----
+
+Pull the stack images:
+
+:tab-body: partial$quickstart/containers/commands/compose-pull.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+
+TIP: Pin images to a release tag in [.path]#`compose.yaml`# (for example
+`ghcr.io/rackslab/slurm-web-agent:v{version}`) instead of `latest` for
+reproducible deployments.
+
+include::partial$quickstart/containers/storage-layout.adoc[]
+
+[#_initial_setup]
+== Initial setup
+
+Create _agent_ configuration file [.path]#`{config-dir}/agent.ini`# to set the
+cluster name and `slurmrestd` URI, for example:
+
+[source,ini]
+----
+[service]
+cluster=nova
+
+[slurmrestd]
+uri=http://SLURMRESTD_HOST:6820
+----
+
+Replace `nova` with your cluster name and `SLURMRESTD_HOST` with a hostname or
+address reachable from the agent container (for Compose on Linux,
+`host.docker.internal` is a common choice).
+
+Create _gateway_ configuration file [.path]#`{config-dir}/gateway.ini`# with
+external URL to the _agent_:
+
+[source,ini,subs=attributes]
+----
+[agents]
+url=http://agent:5012
+----
+
+[sidebar]
+--
+.More links
+* xref:conf:conf/agent.adoc[]
+* xref:conf:conf/gateway.adoc[]
+--
+
+include::partial$quickstart/containers/sections.adoc[]

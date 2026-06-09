@@ -1,0 +1,7 @@
+// Pull Slurm-web container images. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {runtime} pull ghcr.io/rackslab/slurm-web-agent:latest
+$ {runtime} pull ghcr.io/rackslab/slurm-web-gateway:latest
+----

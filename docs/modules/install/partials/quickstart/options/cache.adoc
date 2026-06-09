@@ -1,0 +1,109 @@
+// Shared: Redis cache setup.
+
+[#cache]
+=== In-memory Cache
+
+Slurm-web has a xref:overview:overview.adoc#cache[transparent caching feature]
+which can use https://redis.io/[Redis] (or any compatible alternative) in-memory
+database to cache Slurm responses.
+
+IMPORTANT: It is highly recommended to setup cache on Slurm-web agent to
+significantly reduce the amount of repetitive requests sent to Slurm and reduce
+its load.
+
+ifeval::["{quickstart}" == "compose"]
+The reference Compose stack in [.path]#`compose.yaml`# includes a Redis service
+commented out by default. Uncomment the `redis` service and the `redis` entry in
+the agent `depends_on` block, then append to [.path]#`{config-dir}/agent.ini`#:
+
+[source,ini]
+----
+[cache]
+enabled=yes
+host=redis
+----
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+Start Redis container alongside the agent:
+
+:tab-body: partial$quickstart/containers/commands/redis.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+
+Edit _agent_ configuration file [.path]#`{config-dir}/agent.ini`# to enable cache:
+
+[source,ini]
+----
+[cache]
+enabled=yes
+----
+endif::[]
+
+ifeval::["{quickstart}" == "packages"]
+Install Redis:
+
+[tabs]
+======
+APT::
++
+====
+For https://debian.org/[Debian] and https://ubuntu.com/[Ubuntu], run this
+command:
+
+[source,console]
+----
+# apt install redis-server
+----
+====
+
+DNF::
++
+====
+For
+https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux[RHEL],
+https://www.centos.org/[CentOS],
+https://rockylinux.org/[Rocky Linux] and
+https://almalinux.org/[AlmaLinux OS], run this command:
+
+[source,console]
+----
+# dnf install redis
+----
+
+Start and enable the service:
+
+[source,console]
+----
+# systemctl enable --now redis.service
+----
+====
+======
+
+Edit _agent_ configuration file [.path]#`/etc/slurm-web/agent.ini`# to enable
+cache:
+
+[source,ini]
+----
+[cache]
+enabled=yes
+----
+endif::[]
+
+NOTE: It is also possible to setup a remote Redis server, configure a password
+to access a server secured in protected mode or adjust cache timeouts. More
+details in
+xref:conf:conf/agent.adoc#_cache[`cache` section of agent configuration file].
+
+ifeval::["{quickstart}" == "compose"]
+Restart the stack to apply the new configuration:
+endif::[]
+ifeval::["{quickstart}" != "compose"]
+Restart the _agent_ component to apply the new configuration:
+endif::[]
+
+include::partial$quickstart/restart-agent.adoc[]
+
+.More details
+****
+* xref:conf:conf/agent.adoc[Agent configuration reference documentation]
+****

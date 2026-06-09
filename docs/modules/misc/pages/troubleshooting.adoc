@@ -218,6 +218,84 @@ Caddy:: Run this command:
 # journalctl --unit caddy.service
 ----
 
+[#containers]
+== Containers
+
+This section provides instructions to troubleshoot Slurm-web when running with
+OCI containers or the reference Compose stack.
+
+The following commands assume the default ports published by the container
+quickstarts: TCP/5011 for the gateway and TCP/5012 for the agent.
+
+Test Slurm-web gateway API is available with this command:
+
+[source,console,subs=attributes]
+----
+$ curl http://localhost:5011/api/version
+Slurm-web gateway v{version}
+----
+
+Test Slurm-web agent API is available with this command:
+
+[source,console,subs=attributes]
+----
+$ curl http://localhost:5012/version
+Slurm-web agent v{version}
+----
+
+Slurm-web container images run Gunicorn with access and error logs written to
+standard output and standard error. Container runtime logs therefore include
+HTTP access logs and application errors.
+
+[tabs]
+======
+Docker::
++
+====
+[source,console]
+----
+$ docker logs slurm-web-gateway
+$ docker logs slurm-web-agent
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman logs slurm-web-gateway
+$ podman logs slurm-web-agent
+----
+====
+
+Docker Compose::
++
+====
+[source,console]
+----
+$ docker compose logs gateway agent
+----
+====
+
+Podman Compose::
++
+====
+[source,console]
+----
+$ podman compose logs gateway agent
+----
+====
+======
+
+Use the `-f` option to follow logs in real time, for example:
+
+[source,console]
+----
+$ docker logs -f slurm-web-gateway
+$ docker compose logs -f gateway agent
+----
+
 [#authentication]
 == Authentication
 

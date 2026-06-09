@@ -1,0 +1,102 @@
+// RacksDB option for all quickstart guides.
+
+[#racksdb]
+=== RacksDB database
+
+Slurm-web can use xref:racksdb:overview:start.adoc[RacksDB] to generate
+xref:overview:overview.adoc#nodes-status[advanced interactive graphical representations]
+of datacenters racks with the compute nodes. For this feature, RacksDB database
+must be defined with your HPC cluster infrastructure. This is actually quick and
+easy based on
+xref:racksdb:install:quickstart.adoc#examples[the examples provided].
+
+Some requirements must be fulfilled in this database:
+
+* The infrastructure must have the same name as the cluster
+  <<_initial_setup,previously declared>> in _agent_ configuration file.
+* The _compute_ tag must be assigned to all compute nodes declared in Slurm
+  configuration.
+
+[NOTE]
+====
+You can choose another tag name but you must declare it in
+xref:conf:conf/agent.adoc#_racksdb[`racksdb` section of agent configuration],
+for example:
+
+[source,ini]
+----
+[racksdb]
+tags=blade
+----
+====
+
+ifeval::["{quickstart}" == "compose"]
+Create a [.path]#`racksdb/`# directory next to your configuration directory and
+add your infrastructure files:
+
+[source,console]
+----
+$ mkdir -p racksdb
+----
+
+Mount [.path]#`racksdb/`# read-only on the _agent_ container at
+[.path]#`/var/lib/racksdb`# by adding the corresponding volume in
+[.path]#`compose.yaml`#:
+
+[source,diff]
+----
+ services:
+   agent:
+     volumes:
+       - ./conf/agent.ini:/etc/slurm-web/agent.ini:ro
+       - ./keys:/var/lib/slurm-web
++      - ./racksdb:/var/lib/racksdb:ro
+----
+
+Restart the stack to apply the new mount:
+
+include::partial$quickstart/restart-agent.adoc[]
+endif::[]
+
+ifeval::["{quickstart}" == "containers"]
+
+Stop and remove the existing _agent_ container before starting it again with the
+new [.path]#`/var/lib/racksdb`# read-only volume argument:
+
+:tab-body: partial$quickstart/containers/commands/racksdb-agent.adoc
+include::partial$quickstart/containers/runtime-tabs.adoc[]
+endif::[]
+
+ifeval::["{quickstart}" == "packages"]
+Restart the _agent_ component to load the RacksDB database:
+
+include::partial$quickstart/restart-agent.adoc[]
+endif::[]
+
+[NOTE]
+====
+By default, RacksDB integration is in _auto_ mode: the agent tries to load the
+database and schema and disables the feature with a warning in logs if unable to
+load.
+
+If you don't need this
+xref:overview:overview.adoc#nodes-status[advanced interactive graphical representations]
+feature and want to suppress the warning in logs, RacksDB integration can be
+disabled with the following lines in [.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[racksdb]
+enabled=no
+----
+====
+
+[sidebar]
+--
+.More links
+
+* xref:racksdb:overview:start.adoc[RacksDB reference documentation]
+* xref:racksdb:install:quickstart.adoc[RacksDB quickstart guide]
+* xref:racksdb:db:structure.adoc[RacksDB database structure reference]
+* xref:conf:conf/agent.adoc#_racksdb[Agent `racksdb` configuration reference]
+--

@@ -1,0 +1,16 @@
+// Shared: gateway authentication setup.
+
+[#_setup_authentication]
+=== User Authentication
+
+To restrict access to the dashboard, enable authentication on the gateway and
+choose either LDAP or OpenID Connect (OIDC). Only one method is active per
+deployment.
+
+See xref:conf:auth/index.adoc[authentication documentation] for an overview and
+setup guides:
+
+* xref:conf:auth/ldap.adoc[LDAP authentication] — username and password against a
+  directory (default method)
+* xref:conf:auth/oidc.adoc[OIDC authentication] — single sign-on with Keycloak,
+  Authentik, or another OIDC provider

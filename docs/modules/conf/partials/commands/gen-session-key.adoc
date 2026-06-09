@@ -1,0 +1,53 @@
+[tabs]
+======
+System packages::
++
+====
+[source,console]
+----
+# slurm-web gen-session-key
+----
+====
+
+Docker::
++
+====
+[source,console]
+----
+$ docker run --rm \
+    --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-gateway:latest gen-session-key
+----
+====
+
+Podman::
++
+====
+[source,console]
+----
+$ podman run --rm \
+    --userns=keep-id --user $(id -u slurm-web):$(id -g slurm-web) \
+    -v /var/lib/slurm-web:/var/lib/slurm-web \
+    ghcr.io/rackslab/slurm-web-gateway:latest gen-session-key
+----
+
+NOTE: With rootful Podman, omit `--userns=keep-id`.
+====
+
+Compose::
++
+====
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) docker compose run --rm gateway gen-session-key
+----
+
+With Podman Compose:
+
+[source,console]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) podman compose run --rm gateway gen-session-key
+----
+====
+======

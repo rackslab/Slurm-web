@@ -1,5 +1,9 @@
 Add permission to _slurm_ user on Slurm-web JWT signing key:
 
+NOTE: This procedure applies to package deployments with native services or a
+production HTTP server. Container deployments should use a JWT-based
+`slurmrestd` access mode instead.
+
 [source,console]
 ----
 # slurm-web gen-jwt-key --with-slurm

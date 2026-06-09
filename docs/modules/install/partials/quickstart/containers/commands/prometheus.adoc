@@ -1,0 +1,12 @@
+// Start Prometheus for container quickstart. Include inside Docker/Podman tabs.
+
+[source,console,subs=attributes]
+----
+$ {runtime} run -d --name slurm-web-prometheus \
+    -p 9090:9090 \
+    -v /etc/slurm-web/prometheus.yml:/etc/prometheus/prometheus.yml:ro \
+    -v prometheus-data:/prometheus \
+    docker.io/prom/prometheus:v2.55.1 \
+    --config.file=/etc/prometheus/prometheus.yml \
+    --storage.tsdb.path=/prometheus
+----

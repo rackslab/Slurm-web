@@ -1,0 +1,274 @@
+Slurm-web publishes OCI images for the _agent_ and _gateway_ on GitHub Container
+Registry (GHCR). {runtime-name} can run these images directly with
+`{runtime-cmd} run`, or with the reference Compose stack using `{compose-cmd}`.
+
+For full walkthroughs, see xref:quickstart/containers.adoc[Quickstart with
+containers] and xref:quickstart/compose.adoc[Quickstart with Compose].
+
+== Images
+
+* `ghcr.io/rackslab/slurm-web-agent` — cluster agent
+* `ghcr.io/rackslab/slurm-web-gateway` — web gateway and UI
+
+Use the `latest` tag for evaluation or a release tag matching a git tag (for
+example `v{version}`).
+
+== `{runtime-cmd} run`
+
+This section describes how to run Slurm-web with standalone `{runtime-cmd} run`
+commands: persistent storage layout, file ownership requirements and the
+typical commands used to start and check the agent and gateway containers.
+
+=== Storage layout
+
+Agent and gateway read configuration from [.path]#`/etc/slurm-web/`# and
+secrets from [.path]#`/var/lib/slurm-web/`# _inside_ containers. Those paths are
+fixed; the container command decides where the data is stored on the host.
+
+For production-style `run` commands, keep the same paths on the host:
+
+|===
+| Host | Container path | Purpose
+
+| [.path]#`/etc/slurm-web/`#
+| [.path]#`/etc/slurm-web/`#
+| `agent.ini`, `gateway.ini`
+
+| [.path]#`/var/lib/slurm-web/`#
+| [.path]#`/var/lib/slurm-web/`#
+| `session.key`, `jwt.key`, `slurmrestd.key`
+|===
+
+Slurm-web containers run as an unprivileged user. With bind mounts, the numeric
+UID and GID from the host are preserved, so the container process must run with
+the UID/GID that owns writable files on the host.
+
+Create a `slurm-web` system user on the host and let the
+operating system allocate its UID/GID for the secrets directory:
+
+[source,console]
+----
+$ sudo useradd --system --user-group --home-dir /var/lib/slurm-web --create-home slurm-web
+$ sudo chown -R slurm-web:slurm-web /var/lib/slurm-web
+----
+
+Create the configuration directory:
+
+[source,console]
+----
+$ sudo mkdir -p /etc/slurm-web
+$ sudo chown -R root:slurm-web /etc/slurm-web
+$ sudo chmod 0750 /etc/slurm-web
+----
+
+Then run Slurm-web containers with:
+
+[source,console]
+----
+--user $(id -u slurm-web):$(id -g slurm-web)
+----
+
+ifeval::["{runtime-cmd}" == "podman"]
+With **rootless** Podman, run the command as the host account that owns the bind
+mounts and add:
+
+[source,console]
+----
+--userns=keep-id
+----
+
+This maps the host UID/GID into the container user namespace.
+
+With **rootful** Podman, omit `--userns=keep-id` and use the same ownership
+strategy as Docker.
+endif::[]
+
+[NOTE]
+--
+As an alternative to bind mounts, you can use Docker/Podman **named volumes**
+for persistent data. The in-container paths stay the same; only the `-v` source
+changes. For example, create a secrets volume:
+
+[source,console,subs=attributes]
+----
+$ {runtime-cmd} volume create slurmweb-secrets
+----
+
+Then replace the secrets bind mount:
+
+[source,diff]
+----
+-    -v /var/lib/slurm-web:/var/lib/slurm-web \
++    -v slurmweb-secrets:/var/lib/slurm-web \
+----
+
+If you also use a named volume for configuration, create and populate it with
+`agent.ini` and `gateway.ini`, then mount it at [.path]#`/etc/slurm-web/`#.
+Copy `slurmrestd.key` into the secrets volume with a one-shot `run` before
+starting the agent.
+--
+
+=== Deploy
+
+For a complete deployment walkthrough with `run` commands, see
+xref:quickstart/containers.adoc[Quickstart with containers].
+
+Pull the images:
+
+[source,console,subs=attributes]
+----
+$ {runtime-cmd} pull ghcr.io/rackslab/slurm-web-agent:latest
+$ {runtime-cmd} pull ghcr.io/rackslab/slurm-web-gateway:latest
+----
+
+Typical commands:
+
+[source,console,subs=attributes]
+----
+$ {runtime-cmd} run -d --name slurm-web-agent [OPTIONS] ghcr.io/rackslab/slurm-web-agent:latest
+$ {runtime-cmd} run -d --name slurm-web-gateway [OPTIONS] ghcr.io/rackslab/slurm-web-gateway:latest
+$ {runtime-cmd} run --rm [OPTIONS] ghcr.io/rackslab/slurm-web-agent:latest connect-check
+----
+
+== {compose-title}
+
+The reference mono-cluster Compose stack is defined in
+[.path]#`containers/compose.yaml`# in the source repository (_agent_, _gateway_,
+optional _Redis_ and _Prometheus_).
+
+Download [.path]#`compose.yaml`# into your working directory:
+
+[source,console]
+----
+$ curl -fsSL -o compose.yaml https://raw.githubusercontent.com/rackslab/Slurm-web/main/containers/compose.yaml
+----
+
+=== Storage layout
+
+The reference stack keeps configuration and secrets next to
+[.path]#`compose.yaml`# for a self-contained evaluation:
+
+|===
+| Host (project dir) | Container path | Purpose
+
+| [.path]#`./conf/`#
+| [.path]#`/etc/slurm-web/`#
+| `agent.ini`, `gateway.ini`, optional Prometheus config
+
+| [.path]#`./keys/`#
+| [.path]#`/var/lib/slurm-web/`#
+| `session.key`, `jwt.key`, `slurmrestd.key`
+|===
+
+Create the project layout with:
+
+[source,console]
+----
+$ mkdir -p conf keys
+----
+
+With bind mounts, the container process must run with a UID/GID allowed to
+write in the host [.path]#`./keys/`# directory. The reference Compose file uses
+`LOCAL_UID` and `LOCAL_GID` to set this runtime user, so define these variables
+with the host owner of [.path]#`./keys/`# (typically your login user) for
+`compose run`, `compose up` and `compose restart` commands:
+
+[source,console,subs=attributes]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) {compose-cmd} up -d
+----
+
+ifeval::["{runtime-cmd}" == "podman"]
+With **rootless** Podman Compose, add Podman's `keep-id` user namespace mapping
+in the Compose file:
+
+[source,yaml]
+----
+x-podman:
+  in_pod: false
+
+services:
+  agent:
+    userns_mode: "keep-id"
+  gateway:
+    userns_mode: "keep-id"
+----
+
+NOTE: Some `podman compose` implementations create a pod by default; `--userns`
+and pods cannot be used together, so `x-podman.in_pod: false` is required for
+this rootless Podman mode.
+endif::[]
+
+[NOTE]
+--
+You can also replace bind mounts with named volumes. For example, replace the
+secrets bind mount:
+
+[source,diff]
+----
+ services:
+   agent:
+     volumes:
+-      - ./keys:/var/lib/slurm-web
++      - slurmweb-keys:/var/lib/slurm-web
+   gateway:
+     volumes:
+-      - ./keys:/var/lib/slurm-web
++      - slurmweb-keys:/var/lib/slurm-web
+ volumes:
++  slurmweb-keys:
+   prometheus-data:
+----
+
+The `compose run` commands then write generated secrets into the volume. Copy
+`slurmrestd.key` into the volume with a one-shot `compose run` or `run` before
+starting the stack.
+--
+
+=== Deploy
+
+For a complete deployment walkthrough with the reference stack, see
+xref:quickstart/compose.adoc[Quickstart with Compose].
+
+Pull the images:
+
+[source,console,subs=attributes]
+----
+$ {compose-cmd} pull
+----
+
+Typical commands:
+
+[source,console,subs=attributes]
+----
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) {compose-cmd} run --rm gateway gen-jwt-key
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) {compose-cmd} run --rm gateway gen-session-key
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) {compose-cmd} up -d
+$ LOCAL_UID=$(id -u) LOCAL_GID=$(id -g) {compose-cmd} run --rm agent connect-check
+----
+
+== Environment variables
+
+Optional environment variables for long-running services:
+
+[cols="1,2"]
+|===
+| Variable | Description
+
+| `SLURMWEB_BIND`
+| Gunicorn bind address (default `0.0.0.0:5012` for agent, `0.0.0.0:5011` for gateway)
+
+| `SLURMWEB_WORKERS`
+| Number of Gunicorn worker processes (default `4`)
+|===
+
+[sidebar]
+--
+.More links
+
+* xref:install/containers/index.adoc[Containers overview]
+* xref:quickstart/containers.adoc[Quickstart with containers]
+* xref:quickstart/compose.adoc[Quickstart with Compose]
+* xref:conf:conf/agent.adoc[Agent configuration reference]
+* xref:conf:conf/gateway.adoc[Gateway configuration reference]
+--
