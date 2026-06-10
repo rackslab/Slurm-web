@@ -1,22 +1,3 @@
-Fedora 42::
-+
-====
-[source,subs=attributes]
-----
-[rackslab]
-name=Rackslab
-baseurl=https://pkgs.rackslab.io/rpm/fc42/main/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-
-[rackslab-{pkgs-derivative}]
-name=Rackslab {pkgs-derivative}
-baseurl=https://pkgs.rackslab.io/rpm/fc42/{pkgs-derivative}/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-----
-====
-
 Fedora 43::
 +
 ====
@@ -31,6 +12,25 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 [rackslab-{pkgs-derivative}]
 name=Rackslab {pkgs-derivative}
 baseurl=https://pkgs.rackslab.io/rpm/fc43/{pkgs-derivative}/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====
+
+Fedora 44::
++
+====
+[source,subs=attributes]
+----
+[rackslab]
+name=Rackslab
+baseurl=https://pkgs.rackslab.io/rpm/fc44/main/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+[rackslab-{pkgs-derivative}]
+name=Rackslab {pkgs-derivative}
+baseurl=https://pkgs.rackslab.io/rpm/fc44/{pkgs-derivative}/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----

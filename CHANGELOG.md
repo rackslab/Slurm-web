@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add container extra package for containers specific dependencies.
 - docs:
   - Mention official support of Ubuntu 26.04 LTS _« Resolute Raccoon »_.
+  - Mention official support of Fedora 44.
   - Add upgrade guide for migration from v6 to v7, with specific section for
     gateway session key creation and authorization policy actions rename.
   - Add Authentication pages with detailed LDAP and OIDC authentication flows
@@ -149,6 +150,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - front: Drop Node.js 18 support.
 - pkgs: Drop testing dependency on _parameterized_ external library.
+- docs: Drop support of Fedora 42, Debian 12 _« bookworm »_ and Ubuntu 24.04
+  LTS.
 
 ## [6.1.0] - 2026-05-12
 

@@ -355,28 +355,6 @@ RHEL 10::
 ----
 ====
 
-Fedora 42::
-+
-====
-[source,diff]
-----
---- a/etc/yum.repos.d/rackslab.repo
-+++ b/etc/yum.repos.d/rackslab.repo
-@@ -4,8 +4,8 @@
- gpgcheck=1
- gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-
--[rackslab-slurmweb-6]
--name=Rackslab slurmweb-6
--baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-6/$basearch/
-+[rackslab-slurmweb-7]
-+name=Rackslab slurmweb-7
-+baseurl=https://pkgs.rackslab.io/rpm/fc42/slurmweb-7/$basearch/
- gpgcheck=1
- gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
-----
-====
-
 Fedora 43::
 +
 ====
@@ -394,6 +372,28 @@ Fedora 43::
 +[rackslab-slurmweb-7]
 +name=Rackslab slurmweb-7
 +baseurl=https://pkgs.rackslab.io/rpm/fc43/slurmweb-7/$basearch/
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+----
+====
+
+Fedora 44::
++
+====
+[source,diff]
+----
+--- a/etc/yum.repos.d/rackslab.repo
++++ b/etc/yum.repos.d/rackslab.repo
+@@ -4,8 +4,8 @@
+ gpgcheck=1
+ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
+
+-[rackslab-slurmweb-6]
+-name=Rackslab slurmweb-6
+-baseurl=https://pkgs.rackslab.io/rpm/fc44/slurmweb-6/$basearch/
++[rackslab-slurmweb-7]
++name=Rackslab slurmweb-7
++baseurl=https://pkgs.rackslab.io/rpm/fc44/slurmweb-7/$basearch/
  gpgcheck=1
  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rackslab
 ----
@@ -417,24 +417,6 @@ from _slurmweb-6_ to _slurmweb-7_:
 
 [tabs]
 ======
-Debian 12 _« bookworm »_::
-+
-====
-[source,diff]
-----
---- a/etc/apt/sources.list.d/rackslab.sources
-+++ b/etc/apt/sources.list.d/rackslab.sources
-@@ -1,6 +1,6 @@
- Types: deb
- URIs: https://pkgs.rackslab.io/deb
- Suites: bookworm
--Components: main slurmweb-6
-+Components: main slurmweb-7
- Architectures: amd64
- Signed-By: /usr/share/keyrings/rackslab.gpg
-----
-====
-
 Debian 13 _« trixie »_::
 +
 ====
@@ -482,24 +464,6 @@ Debian unstable _« sid »_::
  Types: deb
  URIs: https://pkgs.rackslab.io/deb
  Suites: sid
--Components: main slurmweb-6
-+Components: main slurmweb-7
- Architectures: amd64
- Signed-By: /usr/share/keyrings/rackslab.gpg
-----
-====
-
-Ubuntu 24.04 LTS::
-+
-====
-[source,diff]
-----
---- a/etc/apt/sources.list.d/rackslab.sources
-+++ b/etc/apt/sources.list.d/rackslab.sources
-@@ -1,6 +1,6 @@
- Types: deb
- URIs: https://pkgs.rackslab.io/deb
- Suites: ubuntu24.04
 -Components: main slurmweb-6
 +Components: main slurmweb-7
  Architectures: amd64
