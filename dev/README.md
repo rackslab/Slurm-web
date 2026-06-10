@@ -214,10 +214,10 @@ In the Keycloak Admin Console (**realm `slurm`**, not `master`):
 
 Build development packages with Fatbuildr:
 
-For example, Debian _bookworm_ packages:
+For example, Debian _trixie_ packages:
 
 ```console
-$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d bookworm --sources 6.1.0~dev1@.
+$ fatbuildrctl --uri https://build.rackslab.io/devs build -a slurm-web -d trixie --sources 6.1.0~dev1@.
 ```
 
 Or RPM _el8_ packages:
