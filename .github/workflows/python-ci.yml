@@ -84,8 +84,8 @@ jobs:
             python3-rfl-authentication+jwt
             python3-rfl-authentication+ldap
             python3-rfl-authentication+oidc
-        - container: fedora:43
-          rackslab-repo: fc43
+        - container: fedora:44
+          rackslab-repo: fc44
           racksdb-pkg: python3-racksdb+web
           rfl-auth-pkgs: >-
             python3-rfl-authentication+jwt
@@ -166,16 +166,12 @@ jobs:
       fail-fast: false
       matrix:
         envs:
-        - container: debian:oldstable
-          rackslab-repo: bookworm
         - container: debian:stable
           rackslab-repo: trixie
         - container: debian:testing
           rackslab-repo: forky
         - container: debian:unstable
           rackslab-repo: sid
-        - container: ubuntu:noble
-          rackslab-repo: ubuntu24.04
         - container: ubuntu:resolute
           rackslab-repo: ubuntu26.04
     runs-on: ubuntu-latest
