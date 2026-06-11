@@ -226,7 +226,7 @@ agents:
     ex: /path/to/certificate.pem
   version:
     type: str
-    default: 6.0.0
+    default: 7.0.0
     doc: |
       Minimal support version of Slurm-web agent API
 
@@ -236,7 +236,7 @@ agents:
       the default value only.
   racksdb_version:
     type: str
-    default: 0.5.0
+    default: 0.7.0
     doc: |
       Minimal supported version of RacksDB API
 

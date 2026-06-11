@@ -512,7 +512,7 @@ the default value only.
 
 
 
-*Default:* `6.0.0`
+*Default:* `7.0.0`
 
 |-
 
@@ -529,7 +529,7 @@ the default value only.
 
 
 
-*Default:* `0.5.0`
+*Default:* `0.7.0`
 
 |-
 
