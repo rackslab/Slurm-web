@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Fixed
-- front: Update dependencies to fix CVE-2026-53571 (vite), CVE-2026-9697 and
-  CVE-2026-9678 (undici).
+- front: Update dependencies to fix CVE-2026-53571 (vite), CVE-2026-9697,
+  CVE-2026-9678 (undici) and CVE-2026-12143 (form-data).
 
 ## [7.0.0] - 2026-06-11
 
