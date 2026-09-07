@@ -79,9 +79,10 @@ def user_token(url: str, user: str):
 def admin_user(dev_host: DevelopmentHostClient, cluster: str):
     """Return name of a user in admin group for the given cluster."""
 
-    _, stdout, _ = dev_host.exec(["firehpc", "status", "--cluster", cluster, "--json"])
-    cluster_status = json.loads(stdout.read())
-    stdout.close()
+    _, stdout, _ = dev_host.exec_completed(
+        ["firehpc", "status", "--cluster", cluster, "--json"]
+    )
+    cluster_status = json.loads(stdout)
 
     for group in cluster_status["groups"]:
         if group["name"] == "admin":

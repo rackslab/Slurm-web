@@ -18,10 +18,25 @@ from paths import CONF_DIR, REPO_ROOT
 from devenv.cluster import ClusterChannel
 from devenv.constants import CLUSTERS, DEBUG_FLAGS
 from devenv.ports import PortAllocator, PortForward, runcmd
+from remote import exec_remote_command
 
 logger = logging.getLogger(__name__)
 
 VENDOR_AGENT_YML = REPO_ROOT / "conf" / "vendor" / "agent.yml"
+
+
+def _parse_scontrol_token_output(output: str) -> str:
+    output = output.strip()
+    if not output:
+        raise ValueError("command produced no output")
+    if "=" not in output:
+        raise ValueError(f"unexpected output format (expected SLURM_JWT=...): {output}")
+    key, token = output.split("=", 1)
+    if key != "SLURM_JWT":
+        raise ValueError(f"unexpected variable name '{key}' (expected SLURM_JWT)")
+    if not token:
+        raise ValueError("empty token value")
+    return token
 
 
 @dataclass
@@ -53,14 +68,28 @@ class SlurmwebAgent:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader(CONF_DIR))
         template = environment.get_template("policy.ini.j2")
         self.policy_path = tmpdir / f"policy-{self.name}.ini"
-        _, stdout, _ = self.channel.connection.exec_command(
-            shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
-        )
+        cmd = shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
+        exit_code, stdout, stderr = exec_remote_command(self.channel.connection, cmd)
         try:
-            self.cluster_status = json.loads(stdout.read())
-        except json.decoder.JSONDecodeError:
-            logger.critical("Unable to load %s cluster status", self.name)
-            raise
+            self.cluster_status = json.loads(stdout)
+        except json.decoder.JSONDecodeError as err:
+            details = []
+            if exit_code != 0:
+                details.append(f"exit code {exit_code}")
+            stderr = stderr.strip()
+            if stderr:
+                details.append(f"stderr: {stderr}")
+            stdout = stdout.strip()
+            if stdout:
+                details.append(f"stdout: {stdout}")
+            else:
+                details.append("stdout was empty")
+            message = (
+                f"Unable to load {self.name} cluster status: invalid JSON ({err}). "
+                f"Remote `firehpc status` failed ({'; '.join(details)})."
+            )
+            logger.critical(message)
+            raise RuntimeError(message) from err
         with open(self.policy_path, "w+") as fh:
             fh.write(
                 template.render(
@@ -117,12 +146,32 @@ class SlurmwebAgent:
                         "username=slurm",
                     ]
                 )
-                _, stdout, _ = self.channel.connection.exec_command(cmd)
+                exit_code, stdout, stderr = exec_remote_command(
+                    self.channel.connection, cmd
+                )
                 try:
-                    slurmrestd_token = stdout.read().decode().split("=")[1]
-                except IndexError:
-                    logger.critical("Unable to get static JWT on cluster %s", self.name)
-                    raise
+                    slurmrestd_token = _parse_scontrol_token_output(stdout)
+                except ValueError as err:
+                    details = []
+                    if exit_code != 0:
+                        details.append(f"exit code {exit_code}")
+                    stderr = stderr.strip()
+                    if stderr:
+                        details.append(f"stderr: {stderr}")
+                    stdout = stdout.strip()
+                    if stdout:
+                        details.append(f"stdout: {stdout}")
+                    else:
+                        details.append("stdout was empty")
+                    remote_details = "; ".join(details)
+                    message = (
+                        f"Unable to get static JWT on cluster {self.name}: {err}. "
+                        f"Remote `scontrol token` failed ({remote_details}). "
+                        f"Check that Slurm is running and JWT authentication is "
+                        f"configured on admin.{self.name}."
+                    )
+                    logger.critical(message)
+                    raise RuntimeError(message) from err
             else:
                 logger.info(
                     "Downloading remote Slurm JWT signing key for cluster %s",

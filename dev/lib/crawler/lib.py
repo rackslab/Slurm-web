@@ -32,6 +32,7 @@ from rfl.settings.errors import (
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 
 from paths import ASSETS
+from remote import exec_remote_command
 
 if t.TYPE_CHECKING:
     from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
@@ -244,6 +245,23 @@ class DevelopmentHostClient:
             logger.warning("Channel exception occurred, reconnecting to %s", self.host)
             self.exec(cmd, retries - 1, reconnect=True)
 
+    def exec_completed(
+        self, cmd: list[str], retries: int = 3, reconnect: bool = False
+    ) -> tuple[int, str, str]:
+        if not retries:
+            raise CrawlerError(
+                f"Unable to execute command on development host: {shlex.join(cmd)}"
+            )
+
+        logger.debug("Running command on development host: %s", shlex.join(cmd))
+        try:
+            if reconnect:
+                self.connect()
+            return exec_remote_command(self._client, shlex.join(cmd))
+        except paramiko.ssh_exception.ChannelException:
+            logger.warning("Channel exception occurred, reconnecting to %s", self.host)
+            return self.exec_completed(cmd, retries - 1, reconnect=True)
+
 
 class DevelopmentHostCluster:
     def __init__(
@@ -267,15 +285,14 @@ class DevelopmentHostCluster:
             self.prefix = uri.geturl()
 
         # check cluster has slurm emulator mode enabled
-        _, stdout, _ = self.dev_host.exec(
+        _, stdout, _ = self.dev_host.exec_completed(
             ["firehpc", "status", "--cluster", self.name, "--json"]
         )
-        self.status = json.loads(stdout.read())
+        self.status = json.loads(stdout)
 
         self.emulator = self.status["settings"]["slurm_emulator"]
         self.users = [user["login"] for user in self.status["users"]]
         self.groups = self.status["groups"]
-        stdout.close()
         self._gpu_info = None
 
         # Discover and save the latest supported slurmrestd API version
