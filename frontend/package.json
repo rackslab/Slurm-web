@@ -52,7 +52,7 @@
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.7",
+    "vitest": "^4.1.11",
     "vue-router-mock": "^2.0.2",
     "vue-tsc": "^3.3.2"
   },
