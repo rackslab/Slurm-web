@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - front: Update dependencies to fix CVE-2026-53571 (vite), CVE-2026-9697,
   CVE-2026-9678, CVE-2026-9697, CVE-2026-84961 (undici), CVE-2026-12143
-  (form-data), CVE-2026-42035 (axios), CVE-2026-13311 (shell-quote),
-  GHSA-r28c-9q8g-f849 (postcss), CVE-2026-13149, CVE-2026-14257, CVE-2026-69152
-  (brace-expansion), CVE-2026-67213 (nanoid), CVE-2026-9358
-  (postcss-selector-parser) and CVE-2026-84373 (@vitest/mocker).
+  (form-data), CVE-2026-42035, CVE-2026-101903, CVE-2026-101906,
+  CVE-2026-101909 (axios), CVE-2026-13311 (shell-quote), GHSA-r28c-9q8g-f849
+  (postcss), CVE-2026-13149, CVE-2026-14257, CVE-2026-69152 (brace-expansion),
+  CVE-2026-67213 (nanoid), CVE-2026-9358 (postcss-selector-parser) and
+  CVE-2026-84373 (@vitest/mocker).
 
 ## [7.0.0] - 2026-06-11
 
