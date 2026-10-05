@@ -624,18 +624,81 @@ class SlurmrestdFiltered(SlurmrestdAdapter):
             super()._acctjob(job_id, **kwargs), self.filters.acctjob
         )
 
+    @staticmethod
+    def _job_start(record: t.Dict) -> int:
+        """Best-effort start timestamp, across slurmctld and slurmdbd schemas."""
+        for path in (("start_time",), ("time", "start")):
+            value = record
+            for key in path:
+                value = value.get(key) if isinstance(value, dict) else None
+            if isinstance(value, dict):
+                value = value.get("number")
+            if isinstance(value, (int, float)):
+                return int(value)
+        return 0
+
+    @staticmethod
+    def _array_task(record: t.Dict):
+        """Array task id (or None for non-array jobs), across both schemas."""
+        task = record.get("array_task_id")  # slurmctld flat schema
+        if task is None:
+            array = record.get("array")  # slurmdbd nested schema
+            task = array.get("task_id") if isinstance(array, dict) else None
+        if isinstance(task, dict):
+            return task.get("number") if task.get("set", True) else None
+        return task
+
     def job(self, job_id: int):
+        # A single job-id can map to MANY records: array tasks (each with a
+        # distinct internal job-id), requeue/preempt lifecycle duplicates, and
+        # reused job-ids. Taking [0] of each list and blindly merging them mixes
+        # unrelated records into one incoherent job (e.g. the live state of the
+        # running task merged with the accounting of an unrelated terminated
+        # job). Select coherent records instead: the live record is
+        # authoritative for current state; the accounting record is the one
+        # describing the SAME task/run.
         try:
-            result = self._acctjob(job_id)
-        except IndexError:
-            raise SlurmrestdNotFoundError(f"Job {job_id} not found")
-        # try to enrich result with additional fields from slurmctld
+            acct_records = self._request("slurmdb", f"job/{job_id}", "jobs")
+        except (SlurmrestdInternalError, SlurmrestdNotFoundError):
+            # Accounting is optional: a cluster may run without slurmdbd (the
+            # slurmdb query then errors or 404s). Job detail is served from
+            # slurmctld alone in that case.
+            acct_records = []
         try:
-            result.update(self._ctldjob(job_id, ignore_notfound=True))
+            ctld_records = self._request(
+                "slurm", f"job/{job_id}", "jobs", ignore_notfound=True
+            )
         except SlurmrestdInternalError as err:
             if err.error != 2017:
                 raise err
-            # pass the error, the job is just not available in ctld queue
+            # job is just not available in the ctld queue anymore
+            ctld_records = []
+        if not acct_records and not ctld_records:
+            raise SlurmrestdNotFoundError(f"Job {job_id} not found")
+
+        # Live record (authoritative for current state): the most recently
+        # started still-queued task for this id.
+        live = max(ctld_records, key=self._job_start) if ctld_records else None
+        if live is not None:
+            live_job_id = live.get("job_id")
+            live_task = self._array_task(live)
+            matching = [
+                record
+                for record in acct_records
+                if record.get("job_id") == live_job_id
+                and self._array_task(record) == live_task
+            ] or acct_records
+            acct = max(matching, key=self._job_start) if matching else None
+        else:
+            # No live record: most recent accounting record (disambiguates
+            # reused job-ids and requeue duplicates).
+            acct = max(acct_records, key=self._job_start)
+
+        result = {}
+        if acct is not None:
+            result = SlurmrestdFiltered.filter_fields(acct, self.filters.acctjob)
+        if live is not None:
+            result.update(SlurmrestdFiltered.filter_fields(live, self.filters.ctldjob))
         return result
 
     def nodes(self):
