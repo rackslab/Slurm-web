@@ -14,12 +14,12 @@ layout:
     - compute
     - gpu
   - name: login
-    slot: 22
+    slot: 23
     type: container
     tags:
     - login
   - name: admin
-    slot: 25
+    slot: 26
     type: container
     tags:
     - admin
