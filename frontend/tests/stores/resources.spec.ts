@@ -26,4 +26,16 @@ describe('stores/runtime/resources.ts', () => {
     expect(store.showNodeNames).toBe(true)
     expect(localStorage.getItem('showNodeNames')).toBe('true')
   })
+
+  test('query omits default representation and layout', () => {
+    const store = useResourcesRuntimeStore()
+    expect(store.query()).toEqual({})
+  })
+
+  test('query keeps a non-default layout', () => {
+    const store = useResourcesRuntimeStore()
+    store.layout = '3d'
+    store.representation = 'cores'
+    expect(store.query()).toEqual({ layout: '3d', representation: 'cores' })
+  })
 })

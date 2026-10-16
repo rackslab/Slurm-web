@@ -108,6 +108,33 @@ describe('ResourcesDiagramGeneric.vue', () => {
       await nextTick()
       expect(router.push).toHaveBeenCalledTimes(2)
     })
+
+    test('renders the 3D scene when layout is 3d', () => {
+      useRuntimeStore().resources.layout = '3d'
+      const wrapper = mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'nodes' },
+        global: {
+          stubs: { ResourcesCanvas: true, ResourcesScene3D: true, ResourcesDiagramNavigation: true }
+        }
+      })
+      expect(wrapper.findComponent(ResourcesCanvas).exists()).toBe(false)
+      wrapper.getComponent({ name: 'ResourcesScene3D' })
+    })
+
+    test('syncs layout changes with the URL', async () => {
+      const runtime = useRuntimeStore()
+      mockClusterDataPoller.data.value = []
+      mount(ResourcesDiagramGeneric, {
+        props: { cluster: 'foo', mode: 'nodes' },
+        global: { stubs: { ResourcesCanvas: true, ResourcesDiagramNavigation: true } }
+      })
+      const callsBefore = router.push.mock.calls.length
+      runtime.resources.layout = '3d'
+      await nextTick()
+      const lastCall = router.push.mock.calls.at(-1)?.[0] as { query: { layout: string } }
+      expect(router.push.mock.calls.length).toBe(callsBefore + 1)
+      expect(lastCall.query.layout).toBe('3d')
+    })
   })
 
   describe('cores mode', () => {

@@ -78,3 +78,30 @@ describe('infrastructureImagePng', () => {
     expect(parsedCoordinates).toStrictEqual(coordinates)
   })
 })
+
+describe('infrastructureGltf', () => {
+  beforeEach(() => {
+    mockRestAPI.postRaw.mockResolvedValue({
+      data: { asset: { version: '2.0' }, buffers: [] }
+    })
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  test('posts the glTF draw and returns the document', async () => {
+    const gateway = useGatewayAPI()
+    const document = await gateway.infrastructureGltf('cluster', 'infra')
+
+    expect(mockRestAPI.postRaw).toHaveBeenCalledWith(
+      '/agents/cluster/racksdb/draw/infrastructure/infra.gltf',
+      {
+        infrastructure: { ghost_unselected: true }
+      },
+      true,
+      'json'
+    )
+    expect(document).toEqual({ asset: { version: '2.0' }, buffers: [] })
+  })
+})

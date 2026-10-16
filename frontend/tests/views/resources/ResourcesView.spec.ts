@@ -151,4 +151,30 @@ describe('ResourcesView.vue', () => {
     expect(router.push.mock.calls.length).toBe(callsBeforeClick + 1)
     expect(lastCall.query.representation).toBe('cores')
   })
+
+  test('initializes layout from query parameter', async () => {
+    mockClusterDataPoller.data.value = nodes
+    router.setQuery({ layout: '3d' })
+    mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    await nextTick()
+    expect(useRuntimeStore().resources.layout).toBe('3d')
+  })
+
+  test('syncs layout changes with URL query', async () => {
+    const runtime = useRuntimeStore()
+    mockClusterDataPoller.data.value = nodes
+    mount(ResourcesView, {
+      props: { cluster: 'foo' },
+      global: { stubs: { ResourcesDiagramThumbnail: true } }
+    })
+    const callsBeforeClick = router.push.mock.calls.length
+    runtime.resources.layout = '3d'
+    await nextTick()
+    const lastCall = router.push.mock.calls.at(-1)?.[0] as { query: { layout: string } }
+    expect(router.push.mock.calls.length).toBe(callsBeforeClick + 1)
+    expect(lastCall.query.layout).toBe('3d')
+  })
 })

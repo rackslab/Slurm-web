@@ -1,4 +1,5 @@
 import { describe, test, beforeEach, expect } from 'vitest'
+import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import ResourcesDiagramThumbnail from '@/components/resources/ResourcesDiagramThumbnail.vue'
 import { init_plugins } from '../../lib/common'
@@ -86,7 +87,8 @@ describe('ResourcesDiagramThumbnail.vue', () => {
     await wrapper.get('[data-testid="resources-thumbnail-fullscreen"]').trigger('click')
     expect(router.push).toHaveBeenCalledWith({
       name: 'resources-diagram-nodes',
-      params: { cluster: 'foo' }
+      params: { cluster: 'foo' },
+      query: {}
     })
   })
 
@@ -99,8 +101,35 @@ describe('ResourcesDiagramThumbnail.vue', () => {
     await wrapper.get('[data-testid="resources-thumbnail-fullscreen"]').trigger('click')
     expect(router.push).toHaveBeenCalledWith({
       name: 'resources-diagram-cores',
-      params: { cluster: 'foo' }
+      params: { cluster: 'foo' },
+      query: {}
     })
+  })
+
+  test('clicking 3D layout renders the scene', async () => {
+    const wrapper = mount(ResourcesDiagramThumbnail, {
+      props: { cluster: 'foo', nodes, mode: 'nodes' },
+      global: { stubs: { ResourcesCanvas: true, ResourcesScene3D: true } }
+    })
+    await wrapper.trigger('mouseover')
+    await wrapper.get('[data-testid="resources-thumbnail-layout-3d"]').trigger('click')
+    await nextTick()
+    expect(useRuntimeStore().resources.layout).toBe('3d')
+    expect(wrapper.findComponent({ name: 'ResourcesCanvas' }).exists()).toBe(false)
+    wrapper.getComponent({ name: 'ResourcesScene3D' })
+  })
+
+  test('shows 3D camera controls on thumbnail hover only', async () => {
+    useRuntimeStore().resources.layout = '3d'
+    const wrapper = mount(ResourcesDiagramThumbnail, {
+      props: { cluster: 'foo', nodes, mode: 'nodes' },
+      global: { stubs: { ResourcesCanvas: true, ResourcesScene3D: true } }
+    })
+    expect(wrapper.html()).toContain('show-camera-controls="false"')
+    await wrapper.trigger('mouseover')
+    expect(wrapper.html()).toContain('show-camera-controls="true"')
+    await wrapper.trigger('mouseleave')
+    expect(wrapper.html()).toContain('show-camera-controls="false"')
   })
 
   test('clicking cores mode switch updates runtime store representation', async () => {
