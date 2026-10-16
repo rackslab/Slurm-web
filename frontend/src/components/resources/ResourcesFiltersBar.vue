@@ -46,7 +46,7 @@ const activeFiltersGroups: Array<{
 </script>
 
 <template>
-  <section aria-labelledby="filter-heading" class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
+  <section aria-labelledby="filter-heading" class="-mx-4 mt-4 sm:-mx-6 lg:-mx-8">
     <h2 id="filter-heading" class="sr-only">Filters</h2>
 
     <div class="border-gray-200 pb-4 dark:border-gray-700">

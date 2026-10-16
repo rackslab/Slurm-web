@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- front: Add a 3D layout on resources diagrams, beside the 2D view, for both
+  nodes and cores representations. Requires a RacksDB build that can draw
+  infrastructure glTF.
+
 ### Fixed
 - front: Update dependencies to fix CVE-2026-53571 (vite), CVE-2026-9697,
   CVE-2026-9678, CVE-2026-9697, CVE-2026-84961 (undici), CVE-2026-12143

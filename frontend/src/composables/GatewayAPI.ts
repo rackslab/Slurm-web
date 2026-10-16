@@ -33,6 +33,11 @@ import type {
   RacksDBAPIImage,
   RacksDBInfrastructureCoordinates
 } from '@/composables/gateway/types/racksdb'
+
+export interface GltfDocument {
+  asset?: { version?: string }
+  [key: string]: unknown
+}
 import type {
   SlurmAcctJob,
   SlurmAssociation,
@@ -292,6 +297,21 @@ export function useGatewayAPI() {
     ]
   }
 
+  async function infrastructureGltf(
+    cluster: string,
+    infrastructure: string
+  ): Promise<GltfDocument> {
+    const response = await restAPI.postRaw<AxiosResponse<GltfDocument>>(
+      `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.gltf`,
+      {
+        infrastructure: { ghost_unselected: true }
+      },
+      true,
+      'json'
+    )
+    return response.data
+  }
+
   function abort() {
     console.log('Aborting requests')
     restAPI.abortController()
@@ -324,6 +344,7 @@ export function useGatewayAPI() {
     metrics_jobs,
     metrics_cache,
     infrastructureImagePng,
+    infrastructureGltf,
     abort,
     isValidGatewayGenericAPIKey,
     isValidGatewayClusterAPIKey,

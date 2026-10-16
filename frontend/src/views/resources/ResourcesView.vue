@@ -14,6 +14,7 @@ import type { LocationQueryRaw } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import {
   isFiltersClusterNodeMainState,
+  isResourcesLayout,
   isResourcesRepresentation
 } from '@/stores/runtime/resources'
 import { useClusterDataPoller } from '@/composables/DataPoller'
@@ -37,6 +38,10 @@ const foldedNodesShow: Ref<Record<string, boolean>> = ref({})
 const runtimeStore = useRuntimeStore()
 const route = useRoute()
 const router = useRouter()
+
+if (isResourcesLayout(route.query.layout)) {
+  runtimeStore.resources.layout = route.query.layout
+}
 const { data, unable, loaded, setCluster } = useClusterDataPoller<SlurmNode[]>(
   cluster,
   'nodes',
@@ -138,6 +143,12 @@ watch(
     updateQueryParameters()
   }
 )
+watch(
+  () => runtimeStore.resources.layout,
+  () => {
+    updateQueryParameters()
+  }
+)
 /*
  * Update foldedNodesShow record when foldedNodes.value is updated. This is not
  * a computed ref because computed refs are read-only and we need to modify
@@ -167,9 +178,16 @@ watch(
 )
 
 onMounted(() => {
-  if (['states', 'partitions', 'representation'].some((parameter) => parameter in route.query)) {
+  if (
+    ['states', 'partitions', 'representation', 'layout'].some(
+      (parameter) => parameter in route.query
+    )
+  ) {
     if (route.query.representation && isResourcesRepresentation(route.query.representation)) {
       runtimeStore.resources.representation = route.query.representation
+    }
+    if (route.query.layout && isResourcesLayout(route.query.layout)) {
+      runtimeStore.resources.layout = route.query.layout
     }
     if (route.query.states) {
       /* Retrieve the states filters from query and update the store */

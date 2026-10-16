@@ -19,6 +19,12 @@ import { useBranding } from '@/composables/Branding'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { SlurmNode } from '@/composables/gateway/slurm/types'
 import { type RacksDBInfrastructureCoordinates } from '@/composables/gateway/types/racksdb'
+import {
+  coresPercentage,
+  getNodeFillColor,
+  getNodeStrokeColor,
+  progressBarColor
+} from '@/composables/resources/nodeColors'
 
 const {
   cluster,
@@ -92,37 +98,6 @@ function reportOtherError(error: Error) {
   unable.value = true
 }
 
-function getNodeStrokeColor(states: string[]): string | undefined {
-  const strokeColors = {
-    DOWN: '#c10007',
-    DRAINING: '#b380c4',
-    DRAIN: '#b654d6'
-  }
-  for (const [status, color] of Object.entries(strokeColors)) {
-    if (states.includes(status)) {
-      return color
-    }
-  }
-  return undefined
-}
-
-function getNodeFillColor(states: string[]): string {
-  const fillColors = {
-    DOWN: '#c10007',
-    IDLE: '#70e079',
-    MIXED: '#ffd230',
-    ALLOCATED: '#e17100'
-  }
-  let fillColor = '#ffffff'
-  for (const [status, color] of Object.entries(fillColors)) {
-    if (states.includes(status)) {
-      fillColor = color
-      break
-    }
-  }
-  return fillColor
-}
-
 function drawNodeHoverRing(ctx: CanvasRenderingContext2D, nodePath: Path2D): void {
   ctx.strokeStyle = '#74a5d6' // hover color
   ctx.stroke(nodePath)
@@ -162,16 +137,8 @@ function getNodeCoresUsage(nodeName: string): {
 
   const allocated = node.alloc_cpus || 0
   const total = node.cpus || 0
-  const percentage = total > 0 ? (allocated / total) * 100 : 0
 
-  return { allocated, total, percentage }
-}
-
-function progressBarColor(percentage: number): string {
-  if (percentage == 100) return '#f54900'
-  else if (percentage >= 80) return '#fe9a00'
-  else if (percentage >= 30) return '#ffd230'
-  else return '#7ccf00'
+  return { allocated, total, percentage: coresPercentage(node) }
 }
 
 function drawCoresProgressBar(

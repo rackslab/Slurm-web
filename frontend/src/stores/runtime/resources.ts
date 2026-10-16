@@ -19,6 +19,8 @@ const filtersClusterNodeMainStates = ['down', 'error', 'drain', 'fail', 'up'] as
 export type FiltersClusterNodeMainState = (typeof filtersClusterNodeMainStates)[number]
 const resourcesRepresentations = ['nodes', 'cores'] as const
 export type ResourcesRepresentation = (typeof resourcesRepresentations)[number]
+const resourcesLayouts = ['2d', '3d'] as const
+export type ResourcesLayout = (typeof resourcesLayouts)[number]
 
 export function isFiltersClusterNodeMainState(
   value: unknown
@@ -33,6 +35,10 @@ export function isResourcesRepresentation(value: unknown): value is ResourcesRep
   return (
     typeof value === 'string' && (resourcesRepresentations as readonly string[]).indexOf(value) >= 0
   )
+}
+
+export function isResourcesLayout(value: unknown): value is ResourcesLayout {
+  return typeof value === 'string' && (resourcesLayouts as readonly string[]).indexOf(value) >= 0
 }
 
 export const resourcesStates: Record<
@@ -55,12 +61,14 @@ export interface ResourcesQueryParameters {
   states?: string
   partitions?: string
   representation?: ResourcesRepresentation
+  layout?: ResourcesLayout
 }
 
 export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
   const openFiltersPanel = ref(false)
   const filters = ref<ResourcesViewFilters>({ states: [], partitions: [] })
   const representation = ref<ResourcesRepresentation>('nodes')
+  const layout = ref<ResourcesLayout>('2d')
   const showNodeNames = ref<boolean>(JSON.parse(localStorage.getItem('showNodeNames') || 'true'))
 
   function removeStateFilter(state: string) {
@@ -99,6 +107,9 @@ export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
     if (representation.value !== 'nodes') {
       result.representation = representation.value
     }
+    if (layout.value !== '2d') {
+      result.layout = layout.value
+    }
     if (filters.value.states.length > 0) {
       result.states = filters.value.states.join()
     }
@@ -116,6 +127,7 @@ export const useResourcesRuntimeStore = defineStore('resourcesRuntime', () => {
     openFiltersPanel,
     filters,
     representation,
+    layout,
     showNodeNames,
     removeStateFilter,
     removePartitionFilter,

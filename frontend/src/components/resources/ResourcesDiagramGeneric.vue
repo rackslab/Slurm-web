@@ -7,15 +7,18 @@
 -->
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, watch, defineAsyncComponent } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useRuntimeStore } from '@/stores/runtime'
-import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
+import { isFiltersClusterNodeMainState, isResourcesLayout } from '@/stores/runtime/resources'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
+const ResourcesScene3D = defineAsyncComponent(
+  () => import('@/components/resources/ResourcesScene3D.vue')
+)
 import ResourcesDiagramNavigation from '@/components/resources/ResourcesDiagramNavigation.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -29,6 +32,10 @@ const { cluster, mode } = defineProps<{
 const runtimeStore = useRuntimeStore()
 const router = useRouter()
 const route = useRoute()
+
+if (isResourcesLayout(route.query.layout)) {
+  runtimeStore.resources.layout = route.query.layout
+}
 const { data, unable, loaded } = useClusterDataPoller<SlurmNode[]>(cluster, 'nodes', 10000)
 
 const filteredNodes: Ref<SlurmNode[]> = computed(() => {
@@ -52,6 +59,12 @@ watch(
 )
 watch(
   () => runtimeStore.resources.filters.partitions,
+  () => {
+    updateQueryParameters()
+  }
+)
+watch(
+  () => runtimeStore.resources.layout,
   () => {
     updateQueryParameters()
   }
@@ -99,7 +112,15 @@ onMounted(() => {
       >
     </div>
 
+    <ResourcesScene3D
+      v-if="runtimeStore.resources.layout === '3d'"
+      :cluster="cluster"
+      :nodes="filteredNodes"
+      :fullscreen="true"
+      :mode="mode"
+    />
     <ResourcesCanvas
+      v-else
       :cluster="cluster"
       :nodes="filteredNodes"
       :fullscreen="true"

@@ -7,12 +7,16 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch, defineAsyncComponent } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
 import { ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
-import type { ResourcesRepresentation } from '@/stores/runtime/resources'
+const ResourcesScene3D = defineAsyncComponent(
+  () => import('@/components/resources/ResourcesScene3D.vue')
+)
+import type { ResourcesLayout, ResourcesRepresentation } from '@/stores/runtime/resources'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
@@ -33,14 +37,16 @@ const currentMode = computed<ResourcesRepresentation>(() => mode ?? 'nodes')
 function toggleFullScreen() {
   router.push({
     name: mode === 'cores' ? 'resources-diagram-cores' : 'resources-diagram-nodes',
-    params: { cluster }
+    params: { cluster },
+    query: runtimeStore.resources.query() as LocationQueryRaw
   })
 }
 
 function positionFullscreenButton(x_shift: number, canvas_width: number) {
-  if (fullscreenButton.value) {
-    fullscreenButton.value.style.left = (x_shift + canvas_width).toString() + 'px'
+  if (runtimeStore.resources.layout === '3d' || !fullscreenButton.value) {
+    return
   }
+  fullscreenButton.value.style.left = (x_shift + canvas_width).toString() + 'px'
 }
 
 function mouseOverThumbnail() {
@@ -50,6 +56,25 @@ function mouseOverThumbnail() {
 function updateMode(newMode: ResourcesRepresentation) {
   runtimeStore.resources.representation = newMode
 }
+
+function updateLayout(newLayout: ResourcesLayout) {
+  runtimeStore.resources.layout = newLayout
+}
+
+watch(
+  () => runtimeStore.resources.layout,
+  (layout) => {
+    if (layout === '3d' && fullscreenButton.value) {
+      fullscreenButton.value.style.left = 'auto'
+    }
+  }
+)
+
+const segmentButton =
+  'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
+const segmentActive = 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+const segmentIdle =
+  'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700'
 </script>
 
 <template>
@@ -63,44 +88,82 @@ function updateMode(newMode: ResourcesRepresentation) {
       ref="fullscreenButton"
       @click="toggleFullScreen()"
       data-testid="resources-thumbnail-fullscreen"
-      class="absolute top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
+      :class="[
+        runtimeStore.resources.layout === '3d' ? 'right-4' : '',
+        'absolute top-4 z-20 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100'
+      ]"
     >
       <span class="sr-only">fullscreen</span>
       <ArrowsPointingOutIcon class="h-6 w-6" aria-hidden="true" />
     </button>
-    <span
+    <div
       v-show="displayFullscreenButton"
-      class="absolute top-4 left-1/2 isolate inline-flex -translate-x-1/2 rounded-md shadow-xs"
+      class="absolute top-4 left-1/2 z-20 flex -translate-x-1/2 gap-2"
       data-testid="resources-thumbnail-mode-switch"
     >
-      <button
-        type="button"
-        :class="[
-          currentMode === 'nodes'
-            ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
-            : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
-          'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
-        ]"
-        data-testid="resources-thumbnail-mode-nodes"
-        @click="updateMode('nodes')"
-      >
-        Nodes
-      </button>
-      <button
-        type="button"
-        :class="[
-          currentMode === 'cores'
-            ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
-            : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
-          'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
-        ]"
-        data-testid="resources-thumbnail-mode-cores"
-        @click="updateMode('cores')"
-      >
-        Cores
-      </button>
-    </span>
+      <span class="isolate inline-flex rounded-md shadow-xs">
+        <button
+          type="button"
+          :class="[
+            runtimeStore.resources.layout === '2d' ? segmentActive : segmentIdle,
+            segmentButton,
+            'rounded-l-md'
+          ]"
+          data-testid="resources-thumbnail-layout-2d"
+          @click="updateLayout('2d')"
+        >
+          2D
+        </button>
+        <button
+          type="button"
+          :class="[
+            runtimeStore.resources.layout === '3d' ? segmentActive : segmentIdle,
+            segmentButton,
+            'rounded-r-md'
+          ]"
+          data-testid="resources-thumbnail-layout-3d"
+          @click="updateLayout('3d')"
+        >
+          3D
+        </button>
+      </span>
+      <span class="isolate inline-flex rounded-md shadow-xs">
+        <button
+          type="button"
+          :class="[
+            currentMode === 'nodes' ? segmentActive : segmentIdle,
+            segmentButton,
+            'rounded-l-md'
+          ]"
+          data-testid="resources-thumbnail-mode-nodes"
+          @click="updateMode('nodes')"
+        >
+          Nodes
+        </button>
+        <button
+          type="button"
+          :class="[
+            currentMode === 'cores' ? segmentActive : segmentIdle,
+            segmentButton,
+            'rounded-r-md'
+          ]"
+          data-testid="resources-thumbnail-mode-cores"
+          @click="updateMode('cores')"
+        >
+          Cores
+        </button>
+      </span>
+    </div>
+    <ResourcesScene3D
+      v-if="runtimeStore.resources.layout === '3d'"
+      :cluster="cluster"
+      :nodes="nodes"
+      :fullscreen="false"
+      :mode="mode"
+      :show-camera-controls="displayFullscreenButton"
+    />
     <ResourcesCanvas
+      v-else
       :cluster="cluster"
       :nodes="nodes"
       :fullscreen="false"
