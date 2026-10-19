@@ -5,9 +5,11 @@
 # SPDX-License-Identifier: MIT
 
 import urllib
+from unittest import mock
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
 from slurmweb.slurmrestd import TERMINAL_JOB_STATES
+from slurmweb.slurmrestd.errors import SlurmrestdNotFoundError
 from ..lib.utils import SlurmwebAssetUnavailable, all_slurm_api_versions
 from ..lib.slurmrestd import (
     TestSlurmrestdBase,
@@ -60,6 +62,119 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         # Check arbitrary key has been filtered out.
         self.assertIn("array_job_id", slurm_asset[0])
         self.assertNotIn("array_job_id", job)
+
+    def test_job_multi_record_coherent(self):
+        """A job-id mapping to many slurmdbd records (an unrelated terminated
+        job that reused the id, plus an array task's preempted and current
+        runs) must resolve to the live task's own accounting -- not the
+        reused-id job, and not merely the newest record overall. _request is
+        mocked directly (keyed on the component) to avoid version-specific
+        fixtures."""
+        acct = [
+            {
+                "job_id": 1,
+                "array": {"task_id": {"set": False, "number": 0}},
+                "time": {"start": {"number": 5000}},
+                "state": {"current": ["FAILED"]},
+            },
+            {
+                "job_id": 1,
+                "array": {
+                    "job_id": {"number": 1},
+                    "task_id": {"set": True, "number": 5},
+                },
+                "time": {"start": {"number": 2000}},
+                "state": {"current": ["PREEMPTED"]},
+            },
+            {
+                "job_id": 1,
+                "array": {
+                    "job_id": {"number": 1},
+                    "task_id": {"set": True, "number": 5},
+                },
+                "time": {"start": {"number": 3000}},
+                "state": {"current": ["RUNNING"]},
+            },
+        ]
+        ctld = [
+            {
+                "job_id": 1,
+                "array_job_id": {"number": 1},
+                "array_task_id": {"set": True, "number": 5},
+                "start_time": {"number": 3000},
+                "job_state": ["RUNNING"],
+            }
+        ]
+        with mock.patch.object(
+            self.slurmrestd,
+            "_request",
+            side_effect=lambda component, *a, **k: {"slurmdb": acct, "slurm": ctld}[
+                component
+            ],
+        ):
+            job = self.slurmrestd.job(1)
+        # The accounting half is the current run of the live task (start 3000),
+        # not the reused-id job (start 5000) nor the preempted run (start 2000).
+        self.assertEqual(job["time"]["start"]["number"], 3000)
+
+    def test_job_aged_out_of_slurmctld(self):
+        """When the job is gone from slurmctld (empty list), job() returns the
+        most recent accounting record without raising IndexError."""
+        acct = [
+            {
+                "job_id": 2,
+                "array": {"task_id": {"set": False, "number": 0}},
+                "time": {"start": {"number": 1000}},
+                "state": {"current": ["FAILED"]},
+            },
+            {
+                "job_id": 2,
+                "array": {"task_id": {"set": False, "number": 0}},
+                "time": {"start": {"number": 2000}},
+                "state": {"current": ["COMPLETED"]},
+            },
+        ]
+        with mock.patch.object(
+            self.slurmrestd,
+            "_request",
+            side_effect=lambda component, *a, **k: {"slurmdb": acct, "slurm": []}[
+                component
+            ],
+        ):
+            job = self.slurmrestd.job(2)
+        self.assertEqual(job["time"]["start"]["number"], 2000)
+
+    def test_job_not_found(self):
+        """No records in either source -> SlurmrestdNotFoundError."""
+        with mock.patch.object(
+            self.slurmrestd,
+            "_request",
+            side_effect=lambda component, *a, **k: [],
+        ):
+            with self.assertRaises(SlurmrestdNotFoundError):
+                self.slurmrestd.job(3)
+
+    def test_job_without_accounting(self):
+        """Accounting is optional: when the slurmdb query fails because the
+        cluster has no slurmdbd, job detail is served from slurmctld alone
+        instead of propagating the error."""
+        ctld = [
+            {
+                "job_id": 4,
+                "array_task_id": {"set": False, "number": 0},
+                "start_time": {"number": 7000},
+                "job_state": ["RUNNING"],
+            }
+        ]
+
+        def fake(component, *args, **kwargs):
+            if component == "slurmdb":
+                raise SlurmrestdNotFoundError("no slurmdbd")
+            return ctld
+
+        with mock.patch.object(self.slurmrestd, "_request", side_effect=fake):
+            job = self.slurmrestd.job(4)  # must not raise
+        self.assertIsInstance(job, dict)
 
     @all_slurm_api_versions
     def test_nodes(self, slurm_version, api_version):
