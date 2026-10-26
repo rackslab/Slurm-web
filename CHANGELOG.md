@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GHSA-r28c-9q8g-f849 (postcss), CVE-2026-13149, CVE-2026-14257,
   CVE-2026-69152, CVE-2026-102278 (brace-expansion), CVE-2026-67213
   (nanoid), CVE-2026-9358 (postcss-selector-parser), CVE-2026-84373
-  (@vitest/mocker) and CVE-2026-93749 (source-map-js).
+  (@vitest/mocker), CVE-2026-93749 (source-map-js), CVE-2026-111755 and
+  CVE-2026-111756 (follow-redirects).
 
 ## [7.0.0] - 2026-06-11
 
