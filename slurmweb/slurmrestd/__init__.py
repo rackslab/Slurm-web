@@ -513,6 +513,11 @@ class Slurmrestd:
         for gres_s in gres_full.split(","):
             if not len(gres_s):
                 continue
+            # Slurm <= 25.11 prints an untyped GPU with topology enabled as
+            # "gpu:(null):N". That token is not an index, so drop it before
+            # cutting at the first parenthesis. Slurm 26.05 omits the blank
+            # type (SchedMD/slurm@fc3f077e04d6f02f591f1c569e632db6103b3ff5).
+            gres_s = gres_s.replace("(null)", "")
             # Remove index if present
             gres_s = gres_s.split("(")[0]
             gres = gres_s.split(":")
