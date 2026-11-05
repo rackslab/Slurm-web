@@ -27,7 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     CVE-2026-102278
   - nanoid: CVE-2026-67213
   - postcss-selector-parser: CVE-2026-9358
-  - @vitest/mocker: CVE-2026-84373
+  - @vue/server-renderer: GHSA-g2v6-rqmx-r4w6
+  - @vitest/mocker: CVE-2026-84373, CVE-2026-112949, CVE-2026-112950
   - source-map-js: CVE-2026-93749
   - follow-redirects: CVE-2026-111755, CVE-2026-111756
 
