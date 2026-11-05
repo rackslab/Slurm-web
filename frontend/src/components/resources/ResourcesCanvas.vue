@@ -35,7 +35,7 @@ const {
 }>()
 
 const emit = defineEmits(['imageSize'])
-const unable = defineModel({ required: true, default: false })
+const unable = defineModel<boolean>({ required: true, default: false })
 
 const router = useRouter()
 const route = useRoute()
