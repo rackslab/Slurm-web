@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+from unittest import mock
 import urllib
 
 from slurmweb.slurmrestd import SlurmrestdFiltered
@@ -60,6 +61,36 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         # Check arbitrary key has been filtered out.
         self.assertIn("array_job_id", slurm_asset[0])
         self.assertNotIn("array_job_id", job)
+
+    def test_job_requeued_uses_latest_submission(self):
+        # A requeued job is several slurmdbd rows. Detail keeps the greatest
+        # time.submission, even when that row is not first, and still merges
+        # controller fields.
+        acct = [
+            {
+                "job_id": 13075,
+                "time": {"submission": 1000, "end": 1001},
+                "state": {"current": ["NODE_FAIL"]},
+            },
+            {
+                "job_id": 13075,
+                "time": {"submission": 2000, "end": 0},
+                "state": {"current": ["RUNNING"]},
+            },
+        ]
+        ctld = [{"job_id": 13075, "command": "/bin/sleep"}]
+
+        def fake_request(component, endpoint, key, ignore_notfound=False, params=None):
+            if component == "slurmdb":
+                return acct
+            return ctld
+
+        with mock.patch.object(self.slurmrestd, "_request", side_effect=fake_request):
+            job = self.slurmrestd.job(13075)
+
+        self.assertEqual(job["time"]["submission"], 2000)
+        self.assertEqual(job["state"]["current"], ["RUNNING"])
+        self.assertEqual(job["command"], "/bin/sleep")
 
     @all_slurm_api_versions
     def test_nodes(self, slurm_version, api_version):

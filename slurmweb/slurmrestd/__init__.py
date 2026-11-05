@@ -390,7 +390,13 @@ class Slurmrestd:
         return self._request("slurm", f"job/{job_id}", "jobs", **kwargs)[0]
 
     def _acctjob(self, job_id: int, **kwargs):
-        return self._request("slurmdb", f"job/{job_id}", "jobs", **kwargs)[0]
+        records = self._request("slurmdb", f"job/{job_id}", "jobs", **kwargs)
+        if not records:
+            raise IndexError
+        # slurmdbd keeps one row per requeue attempt, and another row when the same job
+        # id is issued again after the id range cycles. Return the job with the greatest
+        # time.submission value.
+        return max(records, key=lambda record: record["time"]["submission"])
 
     def nodes(self, **kwargs):
         return self._request("slurm", "nodes", "nodes", **kwargs)

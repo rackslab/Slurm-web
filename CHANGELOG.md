@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Fixed
+- agent: Job detail showed the first attempt of a requeued job, with that
+  attempt's state, times and exit code. The same page showed an older job when
+  Slurm issued the same id again after the id range cycled. The accounting row
+  with the greatest submission time is now used (#778). Initially reported by
+  @pramasoul in #752.
 - agent: On Slurm <= 25.11, count untyped GPU with topology enabled in GRES
   strings reported as `gpu:(null):N` so `/metrics` keeps responding when nodes
   are mixed or allocated (#769).
