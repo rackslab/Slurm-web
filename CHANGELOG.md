@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Fixed
+- agent: On Slurm <= 25.11, count untyped GPU with topology enabled in GRES
+  strings reported as `gpu:(null):N` so `/metrics` keeps responding when nodes
+  are mixed or allocated (#769).
 - front: Update dependencies to fix CVE-2026-53571, CVE-2026-112942 (vite),
   CVE-2026-9697, CVE-2026-9678, CVE-2026-9697, CVE-2026-84961, CVE-2026-109869
   (undici), CVE-2026-12143 (form-data), CVE-2026-42035, CVE-2026-101903,

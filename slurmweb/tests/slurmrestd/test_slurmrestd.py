@@ -421,8 +421,13 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertEqual(
             self.slurmrestd.node_gres_extract_gpus("gpu:h100:0(IDX:N/A)"), 0
         )
+        # typed GPU and contiguous index list.
         self.assertEqual(
             self.slurmrestd.node_gres_extract_gpus("gpu:h100:4(IDX:0-3)"), 4
+        )
+        # typed GPU and non-contiguous index list.
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:h100:4(IDX:0,2,5,7)"), 4
         )
         self.assertEqual(
             self.slurmrestd.node_gres_extract_gpus(
@@ -435,4 +440,26 @@ class TestSlurmrestd(TestSlurmrestdBase):
                 "gpu:h100:2(IDX:0-1),gpu:h200:4(IDX:2-5)"
             ),
             6,
+        )
+        # Slurm <= 25.11, untyped GPU with topology, none allocated.
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:(null):0(IDX:N/A)"), 0
+        )
+        # Slurm <= 25.11, untyped GPU with topology, one GPU allocated.
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus("gpu:(null):1(IDX:0)"), 1
+        )
+        # Slurm <= 25.11, untyped GPU and shard with topology, shards in use.
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus(
+                "gpu:(null):0(IDX:N/A),shard:(null):2(2/4)"
+            ),
+            0,
+        )
+        # Slurm <= 25.11, untyped GPU and shard with topology, GPUs allocated.
+        self.assertEqual(
+            self.slurmrestd.node_gres_extract_gpus(
+                "gpu:(null):2(IDX:0-1),shard:(null):0(0/4)"
+            ),
+            2,
         )
