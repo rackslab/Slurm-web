@@ -16,15 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - agent: On Slurm <= 25.11, count untyped GPU with topology enabled in GRES
   strings reported as `gpu:(null):N` so `/metrics` keeps responding when nodes
   are mixed or allocated (#769).
-- front: Update dependencies to fix CVE-2026-53571, CVE-2026-112942 (vite),
-  CVE-2026-9697, CVE-2026-9678, CVE-2026-9697, CVE-2026-84961, CVE-2026-109869
-  (undici), CVE-2026-12143 (form-data), CVE-2026-42035, CVE-2026-101903,
-  CVE-2026-101906, CVE-2026-101909 (axios), CVE-2026-13311, CVE-2026-102422
-  (shell-quote), GHSA-r28c-9q8g-f849 (postcss), CVE-2026-13149, CVE-2026-14257,
-  CVE-2026-69152, CVE-2026-102278 (brace-expansion), CVE-2026-67213
-  (nanoid), CVE-2026-9358 (postcss-selector-parser), CVE-2026-84373
-  (@vitest/mocker), CVE-2026-93749 (source-map-js), CVE-2026-111755 and
-  CVE-2026-111756 (follow-redirects).
+- front: Update dependencies to fix:
+  - vite: CVE-2026-53571, CVE-2026-112942
+  - undici: CVE-2026-9697, CVE-2026-9678, CVE-2026-84961, CVE-2026-109869
+  - form-data: CVE-2026-12143
+  - axios: CVE-2026-42035, CVE-2026-101903, CVE-2026-101906, CVE-2026-101909
+  - shell-quote: CVE-2026-13311, CVE-2026-102422
+  - postcss: GHSA-r28c-9q8g-f849
+  - brace-expansion: CVE-2026-13149, CVE-2026-14257, CVE-2026-69152,
+    CVE-2026-102278
+  - nanoid: CVE-2026-67213
+  - postcss-selector-parser: CVE-2026-9358
+  - @vitest/mocker: CVE-2026-84373
+  - source-map-js: CVE-2026-93749
+  - follow-redirects: CVE-2026-111755, CVE-2026-111756
 
 ## [7.0.0] - 2026-06-11
 
