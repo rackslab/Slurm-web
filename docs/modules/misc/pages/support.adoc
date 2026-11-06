@@ -1,6 +1,23 @@
 = Support
 
-Need help to deploy or setup Slurm-web? Get technical support.
+Need help to deploy or setup Slurm-web? There are multiple ways to get technical
+support.
+
+== Professional Support
+
+When uptime and response times matter, https://rackslab.io[Rackslab] offers
+https://slurm-web.com/pricing/[Enterprise and OEM licenses] backed by an SLA:
+
+* *Enterprise* — professional support with a service level agreement and a
+  4-hour guaranteed response time (8×5 CET), for a fixed number of clusters and
+  users (from 10 nodes and 10 users).
+* *OEM* — the same support for integrators and vendors, with unlimited
+  clusters and users, designed for custom integration.
+
+With either license, you work with Rackslab's engineers, the people who build
+and maintain the project. Their expertise covers Slurm-web in production and
+the HPC clusters it is built for. Compare both offers on the
+https://slurm-web.com/pricing/[pricing page].
 
 == Community Support
 
@@ -13,12 +30,16 @@ This support is provided by the community with best-effort participation of
 Rackslab team. Please mind that people might not be available to answer your
 questions.
 
-== Commercial Support
+== Sponsorship
 
-*Rackslab* offers commercial support to help organizations securing their
-deployment of Slurm-web with service level agreement (SLA) and minimal response
-time.
+If your organization uses Slurm-web, https://slurm-web.com/sponsors/[become a sponsor]
+at the bronze, silver, or gold level to fund its continued development.
 
-Our professional team has a unique expertise to offer a wide range of services
-from assistance to setup the installation to the most advanced bug resolution.
-https://rackslab.io/en/contant/[Contact us] for more information.
+Sponsors vote on https://slurm-web.com/roadmap/[roadmap priorities], bringing
+the needs of their HPC and AI users and administrators into development
+decisions. Your organization's logo also appears on the project website,
+giving visibility to your support and recognition for your contribution.
+
+Sponsors make Slurm-web sustainable by funding the time needed to maintain
+the software, fix bugs, and develop new features. Their support helps keep
+the project actively maintained and freely available to everyone.
