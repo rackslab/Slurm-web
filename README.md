@@ -69,10 +69,6 @@ The [full documentation](https://docs.rackslab.io/slurm-web/) of Slurm-web is
 available online with software architecture details, installation guide,
 configuration references, troubleshooting guide, etc.
 
-## Status
-
-Slurm-web is considered stable and ready for production.
-
 ## Authors
 
 Slurm-web is developed and maintained by [Rackslab](https://rackslab.io),
@@ -83,6 +79,22 @@ administration, operations and management.
 
 Need help to deploy or setup Slurm-web? There are multiple ways to get technical
 support.
+
+### Professional
+
+When uptime and response times matter, [Rackslab](https://rackslab.io) offers
+[Enterprise and OEM licenses](https://slurm-web.com/pricing/) backed by an SLA:
+
+* **Enterprise** — professional support with a service level agreement and a
+  4-hour guaranteed response time (8×5 CET), for a fixed number of clusters and
+  users (from 10 nodes and 10 users).
+* **OEM** — the same support for integrators and vendors, with unlimited
+  clusters and users, designed for custom integration.
+
+With either license, you work with Rackslab's engineers, the people who build
+and maintain the project. Their expertise covers Slurm-web in production and
+the HPC clusters it is built for. Compare both offers on the
+[pricing page](https://slurm-web.com/pricing/).
 
 ### Community
 
@@ -104,15 +116,19 @@ This support is provided by the community with best-effort participation of
 Rackslab team. Please mind that people might not be available to answer your
 questions.
 
-### Professional
+## Sponsorship
 
-[Rackslab](https://rackslab.io) offers commercial support to help organizations
-secure their deployment of Slurm-web with service level agreement (SLA) and
-minimal response time.
+If your organization uses Slurm-web, [become a sponsor](https://slurm-web.com/sponsors/)
+at the bronze, silver, or gold level to fund its continued development.
 
-Our professional team has a unique expertise to offer a wide range of services
-from assistance to setup the installation to the most advanced bug resolution.
-[Contact us](https://rackslab.io/en/contact/) for more information.
+Sponsors vote on [roadmap priorities](https://slurm-web.com/roadmap/), bringing
+the needs of their HPC and AI users and administrators into development
+decisions. Your organization's logo also appears on the project website,
+giving visibility to your support and recognition for your contribution.
+
+Sponsors make Slurm-web sustainable by funding the time needed to maintain
+the software, fix bugs, and develop new features. Their support helps keep
+the project actively maintained and freely available to everyone.
 
 ## Development
 
