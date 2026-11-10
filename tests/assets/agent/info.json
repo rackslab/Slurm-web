@@ -10,5 +10,5 @@
   "slurmdbd": {
     "jobs_max_hours": 168
   },
-  "version": "7.0.0"
+  "version": "7.1.0"
 }
