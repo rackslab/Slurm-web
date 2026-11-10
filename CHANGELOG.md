@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.1.0] - 2026-11-10
 
-### Fixed
+### Fixed
 - agent: Job detail showed the first attempt of a requeued job, with that
   attempt's state, times and exit code. The same page showed an older job when
   Slurm issued the same id again after the id range cycled. The accounting row
