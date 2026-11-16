@@ -17,6 +17,7 @@ import time
 import random
 import string
 import logging
+import re
 from datetime import datetime, timedelta
 
 import requests
@@ -205,6 +206,26 @@ def load_settings(definitions: str, dev_tmp_dir: Path, overrides: str):
         logger.critical(err)
         sys.exit(1)
     return settings
+
+
+def parse_gpu_gres(gres_s: str) -> tuple[str | None, int] | None:
+    """Parse one GRES item and return (model, count) for GPU, or None otherwise.
+
+    Parenthesized details are removed before splitting on colons: topology
+    "(S:0-1)", indexes "(IDX:0-3)" and the blank type "(null)" printed by
+    Slurm <= 25.11 for untyped GPU with topology. Model is None for untyped GPU.
+
+    Examples:
+        "gpu:h100:4(IDX:0-3)" → ("h100", 4)
+        "gpu:4(S:0-1)" → (None, 4)
+        "gpu:(null):4(S:0-1)" → (None, 4)
+        "shard:16(S:0-1)" → None
+    """
+    gres = re.sub(r"\([^)]*\)", "", gres_s.strip()).split(":")
+    if gres[0] != "gpu":
+        return None
+    model = gres[1] if len(gres) > 2 and gres[1] else None
+    return model, int(gres[-1])
 
 
 def busy_node(node):
@@ -476,14 +497,9 @@ class DevelopmentHostCluster:
         for node in nodes["nodes"]:
             if partition and partition not in node["partitions"]:
                 continue
-            all_gres = node.get("gres", "").split(",")
-            for gres_s in all_gres:
-                if not gres_s.strip():
-                    continue
-                gres = gres_s.split(":")
-                if gres[0] == "gpu" and len(gres) > 2:
-                    result.append(node["name"])
-                    break
+            gpus = [parse_gpu_gres(g) for g in node.get("gres", "").split(",") if g]
+            if any(gpu is not None and gpu[0] is not None for gpu in gpus):
+                result.append(node["name"])
         return result
 
     def find_gpu_nodes_without_model(self, partition: str | None = None) -> list[str]:
@@ -501,19 +517,12 @@ class DevelopmentHostCluster:
         for node in nodes["nodes"]:
             if partition and partition not in node["partitions"]:
                 continue
-            all_gres = node.get("gres", "").split(",")
-            has_gpu = False
-            has_model = False
-            for gres_s in all_gres:
-                if not gres_s.strip():
-                    continue
-                gres = gres_s.split(":")
-                if gres[0] == "gpu":
-                    has_gpu = True
-                    if len(gres) > 2:
-                        has_model = True
-                        break
-            if has_gpu and not has_model:
+            gpus = [
+                gpu
+                for gpu in (parse_gpu_gres(g) for g in node.get("gres", "").split(","))
+                if gpu is not None
+            ]
+            if gpus and all(model is None for model, _ in gpus):
                 result.append(node["name"])
         return result
 
@@ -1354,16 +1363,13 @@ class DevelopmentHostCluster:
                 ):
                     has_gpu = True
                     for gres_s in all_gres:
-                        gres = gres_s.split(":")
+                        gpu = parse_gpu_gres(gres_s)
                         # skip non-gpu gres
-                        if gres[0] != "gpu":
+                        if gpu is None:
                             continue
-                        if len(gres) > 2:
-                            gpu_types.append(gres[1])
-                            gpu_per_node += int(gres[2])
-                        else:
-                            gpu_types.append("n/a")
-                            gpu_per_node += int(gres[1])
+                        model, count = gpu
+                        gpu_types.append(model if model is not None else "n/a")
+                        gpu_per_node += count
                         gpu_partition = node["partitions"][0]
                     break
 
