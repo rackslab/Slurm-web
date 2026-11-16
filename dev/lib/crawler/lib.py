@@ -955,8 +955,10 @@ class DevelopmentHostCluster:
 
         Returns:
             Cleanup state for teardown, and fixture job IDs keyed by asset
-            suffix (failed, completed, pending, timeout). Terminal jobs are
-            dumped by ID because they leave the active queue before crawl.
+            suffix (failed, completed, pending, timeout, running). Terminal jobs
+            are dumped by ID because they leave the active queue before crawl.
+            The running job is a fixture so the asset does not depend on other
+            jobs being in the queue during the crawl.
         """
         cleanup_state: dict[str, t.Any] = {"jobs": []}
         fixture_job_ids: dict[str, int] = {}
@@ -1012,6 +1014,19 @@ class DevelopmentHostCluster:
             {"TIMEOUT"},
             timeout_sec=timeout_timelimit * 60 + 120,
         )
+
+        # Submit running job after the timeout wait, so it is still running when
+        # fixtures are dumped, and before filler jobs, so it gets resources.
+        job_id = self.submit(
+            user,
+            {"tasks": 1},
+            duration=600,
+            timelimit=15,
+            wait_running=True,
+            wait_running_timeout_sec=180,
+        )
+        fixture_job_ids["running"] = job_id
+        cleanup_state["jobs"].append((user, job_id))
 
         for _ in range(10):
             if self.has_gpu() and random.choice([True, False]):
