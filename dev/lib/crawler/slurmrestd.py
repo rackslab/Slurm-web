@@ -439,6 +439,8 @@ class SlurmrestdCrawler(ComponentCrawler):
                     f"/slurm/v{self.api_version}/node/{_node['name']}",
                     "slurm-node-draining",
                 )
+                # Draining node is also MIXED or ALLOCATED, do not dump it as such.
+                continue
             if "MIXED" in _node["state"]:
                 self.dump_component_query(
                     f"/slurm/v{self.api_version}/node/{_node['name']}",

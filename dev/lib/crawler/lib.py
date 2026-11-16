@@ -1110,7 +1110,79 @@ class DevelopmentHostCluster:
                 wait_running=False,
             )
             cleanup_state["jobs"].append((user, job_id))
+        self._setup_nodes_transient_states(user, cleanup_state)
         return cleanup_state
+
+    def _setup_nodes_transient_states(self, user: str, cleanup_state: dict) -> None:
+        """Set nodes in transient states, that only last while jobs are running or
+        pending: one node DRAINING and one node PLANNED, keeping one node IDLE.
+
+        Nodes are taken in a partition other than the first one, so that DOWN,
+        DRAIN, MIXED and ALLOCATED states set up in the first partition are not
+        altered. This partition must have at least 4 nodes.
+        """
+        partitions = self.partitions()
+        candidates = [
+            partition
+            for partition in partitions[1:]
+            if len(self.nodes_partition(partition)) >= 4
+        ]
+        if not candidates:
+            logger.warning(
+                "Cluster %s has no secondary partition with at least 4 nodes, "
+                "unable to set nodes DRAINING and PLANNED",
+                self.name,
+            )
+            return
+        partition = candidates[0]
+        node_busy, node_planned, node_draining = self.nodes_partition(partition)[:3]
+
+        # DRAINING: drain a node while a job is running on it.
+        job_id = self.submit(
+            user,
+            {"partition": partition, "tasks": 1, "required_nodes": [node_draining]},
+            duration=600,
+            timelimit=15,
+            wait_running=True,
+            wait_running_timeout_sec=180,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        self.node_update(node_draining, "DRAIN", "Scheduled maintenance")
+        cleanup_state["nodes_drain"].append(node_draining)
+
+        # PLANNED: run an exclusive job on a node, then submit a job that requires
+        # this node and another idle one. Backfill scheduler plans the pending job
+        # and marks the idle node PLANNED.
+        job_id = self.submit(
+            user,
+            {
+                "partition": partition,
+                "tasks": 1,
+                "required_nodes": [node_busy],
+                "shared": ["none"],
+            },
+            duration=600,
+            timelimit=15,
+            wait_running=True,
+            wait_running_timeout_sec=180,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        job_id = self.submit(
+            user,
+            {
+                "partition": partition,
+                "tasks": 2,
+                "minimum_nodes": 2,
+                "required_nodes": [node_busy, node_planned],
+                "shared": ["none"],
+            },
+            duration=30,
+            timelimit=2,
+            wait_running=False,
+        )
+        cleanup_state["jobs"].append((user, job_id))
+        # Backfill scheduler runs every 30 seconds by default.
+        self.wait_for_node_state(node_planned, {"PLANNED"}, timeout_sec=120)
 
     def setup_for_stats(self) -> dict:
         """Setup cluster for stats asset. Returns cleanup state."""
