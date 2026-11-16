@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
+- conf: Prepend default list of supported API versions in `[slurmrestd]` >
+  `versions` parameter with _0.0.46_.
 
 ## [7.1.0] - 2026-11-10
 
