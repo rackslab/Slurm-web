@@ -1456,6 +1456,7 @@ class ComponentCrawler:
         limit_key: str | None = None,
         skip_exist: bool = True,
         prettify: bool = True,
+        expect_errors: bool = False,
     ) -> t.Any:
         """Save component response to asset file.
 
@@ -1467,6 +1468,8 @@ class ComponentCrawler:
             limit_key: Optional key in dict to limit (for nested limiting).
             skip_exist: If True, skip if asset already exists.
             prettify: If True, format JSON with indentation.
+            expect_errors: If True, save JSON responses that report errors instead of
+                failing. Used for assets that capture error responses on purpose.
 
         Returns:
             Parsed data (dict/list for JSON, string for text).
@@ -1499,7 +1502,7 @@ class ComponentCrawler:
         if content_type == "application/json":
             asset = target_dir / f"{_asset_name}.json"
             data = response.json()
-            if isinstance(data, dict) and data.get("errors"):
+            if not expect_errors and isinstance(data, dict) and data.get("errors"):
                 description = data["errors"][0].get("description", data["errors"])
                 raise CrawlerError(
                     f"slurmrestd returned errors for asset {_asset_name}: {description}"
@@ -1549,6 +1552,7 @@ class ComponentCrawler:
         method: str = "GET",
         content: dict[str, t.Any] | None = None,
         params: dict[str, str] | list[tuple[str, str]] | None = None,
+        expect_errors: bool = False,
     ) -> t.Any:
         """Send HTTP request and save result in assets directory.
 
@@ -1564,6 +1568,8 @@ class ComponentCrawler:
             method: HTTP method ("GET" or "POST").
             content: Optional content for POST requests.
             params: Query string as a dict or list of pairs (GET only).
+            expect_errors: If True, save JSON responses that report errors instead of
+                failing.
 
         Returns:
             Parsed data (dict/list for JSON, string for text).
@@ -1602,6 +1608,7 @@ class ComponentCrawler:
             limit_key=limit_key,
             skip_exist=skip_exist,
             prettify=prettify,
+            expect_errors=expect_errors,
         )
 
     def count_assets_to_crawl(self, asset_filter: list[str] | None = None) -> int:

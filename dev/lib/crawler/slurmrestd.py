@@ -271,6 +271,7 @@ class SlurmrestdCrawler(ComponentCrawler):
                 f"/slurm/v{self.api_version}/jobs",
                 "slurm-jwt-invalid-token",
                 {"X-SLURM-USER-NAME": self.auth.jwt_user, "X-SLURM-USER-TOKEN": "fail"},
+                expect_errors=True,
             )
             # if JWT auth and ability to generate token, test expired token
             if self.auth.jwt_mode == "auto":
@@ -283,6 +284,7 @@ class SlurmrestdCrawler(ComponentCrawler):
                             duration=-1, claimset={"sun": self.auth.jwt_user}
                         ),
                     },
+                    expect_errors=True,
                 )
 
     def _crawl_openapi(self):
@@ -356,6 +358,7 @@ class SlurmrestdCrawler(ComponentCrawler):
             self.dump_component_query(
                 f"/slurm/v{self.api_version}/job/{job_id_completed}",
                 archived_assets[0],
+                expect_errors=True,
             )
             self.dump_component_query(
                 f"/slurmdb/v{self.api_version}/job/{job_id_completed}",
@@ -370,6 +373,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurm/v{self.api_version}/job/{max_job_id * 2}",
             "slurm-job-unfound",
+            expect_errors=True,
         )
         self.dump_component_query(
             f"/slurmdb/v{self.api_version}/job/{max_job_id * 2}",
@@ -455,6 +459,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurm/v{self.api_version}/node/unexisting-node",
             "slurm-node-unfound",
+            expect_errors=True,
         )
 
     def _crawl_job_gpus_running(self):
@@ -531,6 +536,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurm/v{self.api_version}/job/{job_id}",
             "slurm-job-gpus-archived",
+            expect_errors=True,
         )
         self.dump_component_query(
             f"/slurmdb/v{self.api_version}/job/{job_id}",
