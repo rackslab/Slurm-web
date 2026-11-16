@@ -8,7 +8,7 @@ asciidoc:
     table-caption: false
     version: 7.1.0
     api_version: 0.0.41
-    api_version_latest: 0.0.45
+    api_version_latest: 0.0.46
     pkgs-derivative: slurmweb-7
 nav:
 - modules/overview/nav.adoc
