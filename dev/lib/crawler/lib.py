@@ -747,6 +747,43 @@ class DevelopmentHostCluster:
             f"(last state {last_state})"
         )
 
+    def wait_for_node_state(
+        self,
+        node_name: str,
+        states: t.Collection[str],
+        *,
+        timeout_sec: int = 60,
+        poll_interval: float = 2.0,
+    ) -> list[str] | None:
+        """Poll slurmrestd until node state contains all *states*.
+
+        Returns:
+            Node state when reached, or None on timeout.
+        """
+        deadline = time.monotonic() + timeout_sec
+        last_state: list[str] = []
+        while time.monotonic() < deadline:
+            node = self.query_slurmrestd_json(f"/slurm/v{self.api}/node/{node_name}")
+            last_state = node["nodes"][0]["state"]
+            if all(state in last_state for state in states):
+                logger.info("Node %s reached state %s", node_name, last_state)
+                return last_state
+            logger.debug(
+                "Node %s state %s, waiting for %s",
+                node_name,
+                last_state,
+                sorted(states),
+            )
+            time.sleep(poll_interval)
+        logger.warning(
+            "Node %s did not reach %s within %ss (last state %s)",
+            node_name,
+            sorted(states),
+            timeout_sec,
+            last_state,
+        )
+        return None
+
     def _cancel(self, job_id: int) -> bool:
         """Cancel a single job using REST API.
 
@@ -1302,9 +1339,16 @@ class DevelopmentHostCluster:
         }
         if node_name:
             job_params["required_nodes"] = [node_name]
-        job_id = self.submit(user, job_params)
-        logger.debug("Sleeping for 10 seconds after submitting job with gpus mixed")
-        time.sleep(10)
+        # Job must last long enough to keep the node MIXED until it is crawled.
+        job_id = self.submit(
+            user,
+            job_params,
+            duration=300,
+            timelimit=10,
+            wait_running_timeout_sec=180,
+        )
+        # Node state may not be updated as soon as job is running, wait for it.
+        self.wait_for_node_state(self.job_nodes(job_id)[0], {"MIXED"})
 
         return job_id, user
 
