@@ -28,6 +28,7 @@ readme = "README.md"
 [project.optional-dependencies]
 dev = [
     "Flask-Cors",
+    "paramiko",
     "sshtunnel",
 ]
 agent = [
