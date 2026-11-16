@@ -1668,11 +1668,11 @@ class ComponentCrawler:
                         # Array limiting: limit the list itself
                         _data = data[:limit_dump]
                 logger.info("Dumping json asset %s", asset)
-                fh.write(json.dumps(_data, indent=2 if prettify else None))
-                # FIXME: add newline
+                # Terminate with newline as expected by pre-commit end-of-file-fixer.
+                fh.write(json.dumps(_data, indent=2 if prettify else None) + "\n")
             else:
                 logger.info("Dumping text asset %s", asset)
-                fh.write(data)
+                fh.write(data if data.endswith("\n") else data + "\n")
 
         return data
 
