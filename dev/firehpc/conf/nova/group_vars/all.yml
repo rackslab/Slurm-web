@@ -11,7 +11,7 @@ common_devs_priorities:
   slurmweb-5: 900
 common_hpckit_derivatives:
 - main
-- slurm25.11
+- slurm26.11
 fhpc_slurm_with_jwt: true
 fhpc_slurmrestd_with_unix_socket: false
 slurm_params:
