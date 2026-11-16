@@ -41,7 +41,14 @@ logger = logging.getLogger(__name__)
 
 # Supported slurmrestd API versions to try during discovery, in descending order
 # (newest first)
-SUPPORTED_SLURMRESTD_API_VERSIONS = ["0.0.45", "0.0.44", "0.0.43", "0.0.42", "0.0.41"]
+SUPPORTED_SLURMRESTD_API_VERSIONS = [
+    "0.0.46",
+    "0.0.45",
+    "0.0.44",
+    "0.0.43",
+    "0.0.42",
+    "0.0.41",
+]
 
 _JOB_NAME_APPS = (
     "lammps",
