@@ -30,7 +30,14 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        # Python < 3.10 builds are not available on Ubuntu >= 26.04 runners
+        # for actions/setup-python, older Ubuntu LTS is used for these versions.
+        include:
+          - os: "ubuntu-24.04"
+            python-version: "3.8"
+          - os: "ubuntu-24.04"
+            python-version: "3.9"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
