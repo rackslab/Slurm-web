@@ -512,6 +512,39 @@ class Slurmrestd:
     def qos(self: str, **kwargs):
         return self._request("slurmdb", "qos", "qos", **kwargs)
 
+    def accounts_coordinators(self) -> t.Dict[str, t.List[str]]:
+        """Return mapping of account names to the sorted list of their effective
+        coordinators logins. As in Slurm, coordinators of an account are also
+        coordinators of all its sub-accounts: slurmrestd reports these inherited
+        coordinators on sub-accounts as well (with direct flag false). Account names
+        and logins are lowercased.
+
+        Raw accounts are explicitly retrieved from the base class to be independent
+        of fields filters settings."""
+        result: t.Dict[str, t.List[str]] = {}
+        # Coordinators are only populated by slurmrestd when explicitly requested.
+        # Call the base class method rather than self.accounts(), as subclasses
+        # overrides filter out coordinators field and do not accept query parameters.
+        for account in Slurmrestd.accounts(self, params={"WithCoordinators": "true"}):
+            logins: t.Set[str] = set()
+            for coordinator in account.get("coordinators", []):
+                if isinstance(coordinator, dict):
+                    coordinator = coordinator.get("name", "")
+                if coordinator:
+                    logins.add(coordinator.lower())
+            result[account["name"].lower()] = sorted(logins)
+        return result
+
+    def coordinated_accounts(self, login: str) -> t.Set[str]:
+        """Return the set of lowercased names of accounts coordinated by the given
+        user login, including sub-accounts of directly coordinated accounts."""
+        login = login.lower()
+        return {
+            account
+            for account, logins in self.accounts_coordinators().items()
+            if login in logins
+        }
+
     @staticmethod
     def node_gres_extract_gpus(gres_full: str) -> int:
         """Return the number of GPU in gres string."""
@@ -764,3 +797,10 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
 
     def qos(self):
         return self._cached(CacheKey("qos"), self.cache.qos, super().qos)
+
+    def accounts_coordinators(self):
+        return self._cached(
+            CacheKey("accounts-coordinators"),
+            self.cache.accounts,
+            super().accounts_coordinators,
+        )

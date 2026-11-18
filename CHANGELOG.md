@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add support for Slurm REST API v0.0.46 provided by Slurm 26.11+ (#781).
-- agent: Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
+- agent:
+  - Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
+  - Resolve accounts coordinated by users, including sub-accounts, from Slurm
+    accounts and associations (#260).
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
