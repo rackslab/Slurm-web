@@ -37,7 +37,7 @@ const node = useClusterDataPoller<SlurmNodeDetail>(cluster, 'node', 5000, nodeNa
 
 /* Poll jobs on current nodes if user can view active jobs. */
 let jobs: ClusterDataPoller<SlurmJob[]> | undefined
-if (runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own'])) {
+if (runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own', 'jobs-view-coord'])) {
   jobs = useClusterDataPoller<SlurmJob[]>(cluster, 'jobs', 10000, nodeName)
 }
 
