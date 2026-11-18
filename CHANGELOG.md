@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Prepend default list of supported API versions in `[slurmrestd]` >
     `versions` parameter with _0.0.46_.
   - Add `account` in default `[filters]` > `acctjob` agent setting.
+  - Introduce `jobs-view-coord` and `jobs-view-past-coord` actions in
+    authorization policy (#260).
 
 ### Changed
 - docs:
