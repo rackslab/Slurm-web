@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - docs:
   - Update configuration reference documentation.
+  - Update authorization policy actions reference documentation.
+  - Add example with `jobs-view-coord` and `jobs-view-past-coord` actions in
+    authorization policy guide (#260).
   - Update Slurm REST API supported versions section in architecture page.
 
 ### Fixed
