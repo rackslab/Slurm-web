@@ -16,12 +16,19 @@ actions:
   jobs-view-own: |
     Get _Jobs_ entry in main menu and permission to view only the current
     user's own jobs in queue and own job details.
+  jobs-view-coord: |
+    Get _Jobs_ entry in main menu and permission to view jobs in queue and job
+    details of the accounts coordinated by the current user, including their
+    sub-accounts.
   jobs-view-past: |
     Permission to view all users past jobs and query finished jobs from Slurm
     accounting.
   jobs-view-past-own: |
     Permission to view only the current user's own terminated jobs from Slurm
     accounting.
+  jobs-view-past-coord: |
+    Permission to view terminated jobs from Slurm accounting of the accounts
+    coordinated by the current user, including their sub-accounts.
   nodes-view: |
     Get _Resources_ entry in main menu and permission to view the list of
     compute nodes in cluster with their status in Slurm.

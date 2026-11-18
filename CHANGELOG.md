@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for Slurm REST API v0.0.46 provided by Slurm 26.11+ (#781).
 - agent: Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
-- conf: Prepend default list of supported API versions in `[slurmrestd]` >
-  `versions` parameter with _0.0.46_.
+- conf:
+  - Prepend default list of supported API versions in `[slurmrestd]` >
+    `versions` parameter with _0.0.46_.
+  - Introduce `jobs-view-coord` and `jobs-view-past-coord` actions in
+    authorization policy (#260).
 
 ### Changed
 - docs:
