@@ -166,30 +166,46 @@ def jobs_scope(
     user_key: str, past: bool = False
 ) -> Optional[Callable[[Dict[str, Any]], bool]]:
     """Return a predicate function to select the jobs the user is allowed to view:
-    all jobs with broad action and own jobs with own action. Actions on past jobs
-    are checked when past is True, actions on active jobs otherwise. Return None if
-    the user is not allowed to view any job.
+    all jobs with broad action, own jobs with own action and jobs of coordinated
+    accounts with coord action. Actions on past jobs are checked when past is True,
+    actions on active jobs otherwise. Return None if the user is not allowed to view
+    any job.
     """
     if past:
-        broad, own = "jobs-view-past", "jobs-view-past-own"
+        broad, own, coord = (
+            "jobs-view-past",
+            "jobs-view-past-own",
+            "jobs-view-past-coord",
+        )
     else:
-        broad, own = "jobs-view", "jobs-view-own"
+        broad, own, coord = "jobs-view", "jobs-view-own", "jobs-view-coord"
     user = request.user
     policy = current_app.policy
     if policy.allowed_user_action(user, broad):
         # Broad action gives access to all jobs: return a predicate that accepts any
         # job, so that views select jobs the same way whatever the user permissions.
         return lambda job: True
-    if not policy.allowed_user_action(user, own):
-        # Without broad nor own action, the user is not allowed to view any job:
-        # return None so that views respond with HTTP/403 error.
+    allow_own = policy.allowed_user_action(user, own)
+    allow_coord = policy.allowed_user_action(user, coord)
+    if not allow_own and not allow_coord:
+        # Without broad, own nor coord action, the user is not allowed to view any
+        # job: return None so that views respond with HTTP/403 error.
         return None
     login = user.login.lower()
+    accounts = slurmrest("coordinated_accounts", login) if allow_coord else set()
 
     def allowed(job: Dict[str, Any]) -> bool:
-        # The user can view its own jobs, ie. when the user login is found in the
-        # job field named user_key, compared case-insensitively.
-        return (job.get(user_key) or "").lower() == login
+        # With own action, the user can view its own jobs, ie. when the user login
+        # is found in the job field named user_key, compared case-insensitively.
+        if allow_own and (job.get(user_key) or "").lower() == login:
+            return True
+        # With coord action, the user can view the jobs submitted under the
+        # accounts it coordinates, including their sub-accounts. The account is
+        # taken from the job account field, or from its association as a fallback.
+        # Without coord action, the set of accounts is empty and the job is not
+        # selected.
+        account = job.get("account") or (job.get("association") or {}).get("account")
+        return (account or "").lower() in accounts
 
     return allowed
 
@@ -232,8 +248,8 @@ def jobs_past():
     except (TypeError, ValueError):
         abort(400, "Invalid hours query parameter")
     hours = max(1, min(hours, settings.jobs_max_hours))
-    # Always fetch all past jobs from slurmrestd (shared cache); own-only filter
-    # is applied here so restricted users never receive other users' jobs.
+    # Always fetch all past jobs from slurmrestd (shared cache); own/coord filters
+    # are applied here so restricted users never receive other users' jobs.
     jobs_list = slurmrest("jobs_past", hours)
     jobs_list = [job for job in jobs_list if allowed(job)]
     return jsonify(jobs_list)
