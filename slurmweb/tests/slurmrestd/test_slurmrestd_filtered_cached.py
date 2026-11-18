@@ -7,7 +7,7 @@
 from unittest import mock
 import urllib
 
-from slurmweb.slurmrestd import SlurmrestdFilteredCached
+from slurmweb.slurmrestd import Slurmrestd, SlurmrestdFilteredCached
 from slurmweb.cache import CachingService, CacheKey
 from slurmweb.errors import SlurmwebCacheError
 
@@ -119,3 +119,39 @@ class TestSlurmrestdFilteredCached(TestSlurmrestdBase):
             self.slurmrestd.jobs()
         self.slurmrestd.service.get.assert_called_once_with(CacheKey("jobs"))
         self.slurmrestd.service.put.assert_called_once()
+
+    def test_accounts_coordinators_not_in_cache(self):
+        self.slurmrestd.service.get = mock.Mock(return_value=None)
+        self.slurmrestd.service.put = mock.Mock()
+        self.slurmrestd.service.count_hit = mock.Mock()
+        self.slurmrestd.service.count_miss = mock.Mock()
+        # Accounts coordinators must be computed from raw accounts, independently
+        # of accounts fields filter which does not select coordinators by default.
+        self.assertNotIn("coordinators", self.settings.filters.accounts)
+        with mock.patch.object(
+            Slurmrestd,
+            "accounts",
+            return_value=[{"name": "physic", "coordinators": [{"name": "alice"}]}],
+        ), mock.patch.object(Slurmrestd, "associations", return_value=[]):
+            coordinators = self.slurmrestd.accounts_coordinators()
+        self.assertEqual(coordinators, {"physic": ["alice"]})
+        key = CacheKey("accounts-coordinators")
+        self.slurmrestd.service.get.assert_called_once_with(key)
+        self.slurmrestd.service.put.assert_called_once_with(
+            key, coordinators, self.settings.cache.accounts
+        )
+        self.slurmrestd.service.count_miss.assert_called_once_with(key)
+
+    def test_accounts_coordinators_in_cache(self):
+        cached = {"physic": ["alice"]}
+        self.slurmrestd.service.get = mock.Mock(return_value=cached)
+        self.slurmrestd.service.put = mock.Mock()
+        self.slurmrestd.service.count_hit = mock.Mock()
+        self.slurmrestd.service.count_miss = mock.Mock()
+        with mock.patch.object(Slurmrestd, "accounts") as accounts:
+            self.assertEqual(self.slurmrestd.coordinated_accounts("alice"), {"physic"})
+        accounts.assert_not_called()
+        self.slurmrestd.service.put.assert_not_called()
+        self.slurmrestd.service.count_hit.assert_called_once_with(
+            CacheKey("accounts-coordinators")
+        )

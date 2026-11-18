@@ -380,6 +380,88 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertCountEqual(accounts, asset)
 
     @all_slurm_api_versions
+    def test_accounts_coordinators(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [accounts_asset, _] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [
+                ("slurm-accounts", "accounts"),
+                ("slurmdb-associations", "associations"),
+            ],
+        )
+        coordinators = self.slurmrestd.accounts_coordinators()
+        self.assertCountEqual(
+            coordinators.keys(),
+            [account["name"].lower() for account in accounts_asset],
+        )
+        for logins in coordinators.values():
+            self.assertIsInstance(logins, list)
+
+    def test_accounts_coordinators_tree(self):
+        accounts = [
+            {"name": "root", "coordinators": []},
+            {"name": "physic", "coordinators": [{"name": "Alice", "direct": True}]},
+            {"name": "acoustic", "coordinators": []},
+            {"name": "optic", "coordinators": ["bob"]},
+            {"name": "laser", "coordinators": []},
+            {"name": "biology", "coordinators": [{"name": "carol", "direct": True}]},
+            {"name": "orphan"},
+        ]
+        associations = [
+            {"account": "root", "user": "", "parent_account": ""},
+            {"account": "root", "user": "root", "parent_account": ""},
+            {"account": "physic", "user": "", "parent_account": "root"},
+            {"account": "acoustic", "user": "", "parent_account": "physic"},
+            # User associations must not be considered for accounts tree.
+            {"account": "acoustic", "user": "dave", "parent_account": ""},
+            {"account": "optic", "user": "", "parent_account": "physic"},
+            {"account": "laser", "user": "", "parent_account": "optic"},
+            {"account": "biology", "user": "", "parent_account": "root"},
+        ]
+        with mock.patch.object(
+            Slurmrestd, "accounts", return_value=accounts
+        ), mock.patch.object(Slurmrestd, "associations", return_value=associations):
+            coordinators = self.slurmrestd.accounts_coordinators()
+            self.assertEqual(
+                coordinators,
+                {
+                    "root": [],
+                    "physic": ["alice"],
+                    "acoustic": ["alice"],
+                    "optic": ["alice", "bob"],
+                    "laser": ["alice", "bob"],
+                    "biology": ["carol"],
+                    "orphan": [],
+                },
+            )
+            self.assertEqual(
+                self.slurmrestd.coordinated_accounts("ALICE"),
+                {"physic", "acoustic", "optic", "laser"},
+            )
+            self.assertEqual(
+                self.slurmrestd.coordinated_accounts("bob"), {"optic", "laser"}
+            )
+            self.assertEqual(self.slurmrestd.coordinated_accounts("dave"), set())
+
+    def test_accounts_coordinators_cycle(self):
+        accounts = [
+            {"name": "a", "coordinators": [{"name": "alice"}]},
+            {"name": "b", "coordinators": []},
+        ]
+        associations = [
+            {"account": "a", "user": "", "parent_account": "b"},
+            {"account": "b", "user": "", "parent_account": "a"},
+        ]
+        with mock.patch.object(
+            Slurmrestd, "accounts", return_value=accounts
+        ), mock.patch.object(Slurmrestd, "associations", return_value=associations):
+            self.assertEqual(
+                self.slurmrestd.accounts_coordinators(),
+                {"a": ["alice"], "b": ["alice"]},
+            )
+
+    @all_slurm_api_versions
     def test_reservations(self, slurm_version, api_version):
         self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
