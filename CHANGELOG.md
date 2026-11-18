@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
   - Resolve accounts coordinated by users, including sub-accounts, from Slurm
     accounts and associations (#260).
+  - Enforce RBAC actions `jobs-view-coord` and `jobs-view-past-coord` to
+    restrict job lists and details to the accounts coordinated by the
+    authenticated user, in addition to own jobs with `jobs-view-own` and
+    `jobs-view-past-own` actions (#260).
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
