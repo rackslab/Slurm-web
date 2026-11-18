@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     restrict job lists and details to the accounts coordinated by the
     authenticated user, in addition to own jobs with `jobs-view-own` and
     `jobs-view-past-own` actions (#260).
+- front: Support `jobs-view-coord` and `jobs-view-past-coord` permissions in
+  jobs menu, scope toggles and node jobs (#260).
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
 - conf:
   - Prepend default list of supported API versions in `[slurmrestd]` >
