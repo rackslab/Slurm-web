@@ -251,6 +251,220 @@ class TestAgentViews(TestAgentBase):
                 response = self.client.get(f"/v{get_version()}/jobs")
         self.assertEqual(len(response.json), 2)
 
+    def test_request_jobs_coord_only(self):
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        jobs = [
+            {
+                "job_id": 1,
+                "user_name": "test",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 2,
+                "user_name": "other",
+                "account": "physic",
+                "job_state": ["PENDING"],
+            },
+            {
+                "job_id": 3,
+                "user_name": "other",
+                "account": "Acoustic",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 4,
+                "user_name": "other",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy, "user", remove="jobs-view", add="jobs-view-coord"
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_current", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([job["job_id"] for job in response.json], [2, 3])
+
+    def test_request_jobs_coord_and_own(self):
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        jobs = [
+            {
+                "job_id": 1,
+                "user_name": "test",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 2,
+                "user_name": "other",
+                "account": "physic",
+                "job_state": ["PENDING"],
+            },
+            {
+                "job_id": 3,
+                "user_name": "other",
+                "account": "Acoustic",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 4,
+                "user_name": "other",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy,
+            "user",
+            remove="jobs-view",
+            add=("jobs-view-own", "jobs-view-coord"),
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_current", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([job["job_id"] for job in response.json], [1, 2, 3])
+
+    def test_request_jobs_coord_none(self):
+        # User with jobs-view-coord but coordinator of no account gets empty list.
+        jobs = [
+            {
+                "job_id": 1,
+                "user_name": "test",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 2,
+                "user_name": "other",
+                "account": "physic",
+                "job_state": ["PENDING"],
+            },
+            {
+                "job_id": 3,
+                "user_name": "other",
+                "account": "Acoustic",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 4,
+                "user_name": "other",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy, "user", remove="jobs-view", add="jobs-view-coord"
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_current", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd,
+                "accounts_coordinators",
+                return_value={"physic": ["other"]},
+            ):
+                response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, [])
+
+    def test_request_jobs_coord_precedence(self):
+        # Add jobs-view-coord in addition to jobs-view: broad action wins and
+        # coordinated accounts are not even resolved.
+        jobs = [
+            {
+                "job_id": 1,
+                "user_name": "test",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 2,
+                "user_name": "other",
+                "account": "physic",
+                "job_state": ["PENDING"],
+            },
+            {
+                "job_id": 3,
+                "user_name": "other",
+                "account": "Acoustic",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 4,
+                "user_name": "other",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+        ]
+        with ModifyActionsInPolicy(self.app.policy, "user", add="jobs-view-coord"):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_current", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators"
+            ) as accounts_coordinators:
+                response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual(len(response.json), 4)
+        accounts_coordinators.assert_not_called()
+
+    def test_request_jobs_own_no_coord_resolution(self):
+        # Coordinated accounts are not resolved without jobs-view-coord.
+        jobs = [
+            {
+                "job_id": 1,
+                "user_name": "test",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 2,
+                "user_name": "other",
+                "account": "physic",
+                "job_state": ["PENDING"],
+            },
+            {
+                "job_id": 3,
+                "user_name": "other",
+                "account": "Acoustic",
+                "job_state": ["RUNNING"],
+            },
+            {
+                "job_id": 4,
+                "user_name": "other",
+                "account": "biology",
+                "job_state": ["RUNNING"],
+            },
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy, "user", remove="jobs-view", add="jobs-view-own"
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_current", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators"
+            ) as accounts_coordinators:
+                response = self.client.get(f"/v{get_version()}/jobs")
+        self.assertEqual([job["job_id"] for job in response.json], [1])
+        accounts_coordinators.assert_not_called()
+
     def test_request_jobs_denied(self):
         with ModifyActionsInPolicy(self.app.policy, "user", remove="jobs-view"):
             response = self.client.get(f"/v{get_version()}/jobs")
@@ -360,6 +574,79 @@ class TestAgentViews(TestAgentBase):
             ):
                 response = self.client.get(f"/v{get_version()}/jobs/past?hours=6")
         self.assertEqual(len(response.json), 2)
+
+    def test_request_jobs_past_coord_only(self):
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        jobs = [
+            {"job_id": 10, "user": "test", "account": "biology"},
+            {"job_id": 11, "user": "other", "account": "physic"},
+            {"job_id": 12, "user": "other", "account": "acoustic"},
+            {"job_id": 13, "user": "other", "account": "biology"},
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy,
+            "user",
+            remove="jobs-view-past",
+            add="jobs-view-past-coord",
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_past", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/jobs/past?hours=6")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([job["job_id"] for job in response.json], [11, 12])
+
+    def test_request_jobs_past_coord_and_own(self):
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        jobs = [
+            {"job_id": 10, "user": "test", "account": "biology"},
+            {"job_id": 11, "user": "other", "account": "physic"},
+            {"job_id": 12, "user": "other", "account": "acoustic"},
+            {"job_id": 13, "user": "other", "account": "biology"},
+        ]
+        with ModifyActionsInPolicy(
+            self.app.policy,
+            "user",
+            remove="jobs-view-past",
+            add=("jobs-view-past-own", "jobs-view-past-coord"),
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_past", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/jobs/past?hours=6")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([job["job_id"] for job in response.json], [10, 11, 12])
+
+    def test_request_jobs_past_coord_precedence(self):
+        jobs = [
+            {"job_id": 10, "user": "test", "account": "biology"},
+            {"job_id": 11, "user": "other", "account": "physic"},
+            {"job_id": 12, "user": "other", "account": "acoustic"},
+            {"job_id": 13, "user": "other", "account": "biology"},
+        ]
+        with ModifyActionsInPolicy(self.app.policy, "user", add="jobs-view-past-coord"):
+            with mock.patch.object(
+                self.app.slurmrestd, "jobs_past", return_value=jobs
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators"
+            ) as accounts_coordinators:
+                response = self.client.get(f"/v{get_version()}/jobs/past?hours=6")
+        self.assertEqual(len(response.json), 4)
+        accounts_coordinators.assert_not_called()
 
     def test_request_jobs_past_denied(self):
         with ModifyActionsInPolicy(
@@ -553,6 +840,102 @@ class TestAgentViews(TestAgentBase):
                 response = self.client.get(f"/v{get_version()}/job/2")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, other_job)
+
+    def test_request_job_coord_only(self):
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        job = {"job_id": 2, "user": "other", "account": "acoustic"}
+        with ModifyActionsInPolicy(
+            self.app.policy, "user", remove="jobs-view", add="jobs-view-coord"
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "job", return_value=job
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/job/2")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, job)
+
+    def test_request_job_coord_only_association_account(self):
+        # Account is taken from association when missing at job top-level.
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        job = {"job_id": 2, "user": "other", "association": {"account": "physic"}}
+        with ModifyActionsInPolicy(
+            self.app.policy, "user", remove="jobs-view", add="jobs-view-coord"
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "job", return_value=job
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/job/2")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, job)
+
+    def test_request_job_coord_only_not_found(self):
+        # Neither own job, nor in a coordinated account.
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        job = {"job_id": 4, "user": "other", "account": "biology"}
+        with ModifyActionsInPolicy(
+            self.app.policy,
+            "user",
+            remove="jobs-view",
+            add=("jobs-view-own", "jobs-view-coord"),
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "job", return_value=job
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/job/4")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.json,
+            {
+                "code": 404,
+                "description": "Job not found",
+                "name": "Not Found",
+            },
+        )
+
+    def test_request_job_coord_and_own(self):
+        # Own job outside coordinated accounts.
+        coordinators = {
+            "root": [],
+            "physic": ["test"],
+            "acoustic": ["test"],
+            "biology": ["other"],
+        }
+        job = {"job_id": 1, "user": "test", "account": "biology"}
+        with ModifyActionsInPolicy(
+            self.app.policy,
+            "user",
+            remove="jobs-view",
+            add=("jobs-view-own", "jobs-view-coord"),
+        ):
+            with mock.patch.object(
+                self.app.slurmrestd, "job", return_value=job
+            ), mock.patch.object(
+                self.app.slurmrestd, "accounts_coordinators", return_value=coordinators
+            ):
+                response = self.client.get(f"/v{get_version()}/job/1")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, job)
 
     def test_request_job_denied(self):
         with ModifyActionsInPolicy(

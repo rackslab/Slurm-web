@@ -380,6 +380,86 @@ class TestSlurmrestd(TestSlurmrestdBase):
         self.assertCountEqual(accounts, asset)
 
     @all_slurm_api_versions
+    def test_accounts_coordinators(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [accounts_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurmdb-accounts-coordinators", "accounts")],
+        )
+        coordinators = self.slurmrestd.accounts_coordinators()
+        # Coordinators must be explicitly requested to slurmrestd with one request.
+        self.slurmrestd.session.get.assert_called_once()
+        self.assertEqual(
+            self.slurmrestd.session.get.call_args[1]["params"],
+            {"WithCoordinators": "true"},
+        )
+        # Expected coordinators are computed from the asset, with both direct and
+        # inherited coordinators reported by Slurm on accounts.
+        expected = {
+            account["name"].lower(): sorted(
+                {
+                    coordinator["name"].lower()
+                    for coordinator in account.get("coordinators", [])
+                }
+            )
+            for account in accounts_asset
+        }
+        self.assertEqual(coordinators, expected)
+        for login in {login for logins in expected.values() for login in logins}:
+            self.assertEqual(
+                self.slurmrestd.coordinated_accounts(login),
+                {account for account, logins in expected.items() if login in logins},
+            )
+
+    def test_accounts_coordinators_inherited(self):
+        # Accounts as reported by slurmrestd with coordinators requested, including
+        # coordinators inherited from parent accounts (direct flag false).
+        accounts = [
+            {"name": "root", "coordinators": []},
+            {"name": "physic", "coordinators": [{"name": "Alice", "direct": True}]},
+            {"name": "acoustic", "coordinators": [{"name": "alice", "direct": False}]},
+            {
+                "name": "optic",
+                "coordinators": [
+                    {"name": "bob", "direct": True},
+                    {"name": "alice", "direct": False},
+                ],
+            },
+            {"name": "biology", "coordinators": ["carol"]},
+            {"name": "orphan"},
+        ]
+        with mock.patch.object(
+            Slurmrestd, "accounts", return_value=accounts
+        ) as accounts_mock, mock.patch.object(
+            Slurmrestd, "associations"
+        ) as associations_mock:
+            coordinators = self.slurmrestd.accounts_coordinators()
+            # Coordinators must be explicitly requested to slurmrestd, associations
+            # are not required.
+            accounts_mock.assert_called_once_with(
+                self.slurmrestd, params={"WithCoordinators": "true"}
+            )
+            associations_mock.assert_not_called()
+            self.assertEqual(
+                coordinators,
+                {
+                    "root": [],
+                    "physic": ["alice"],
+                    "acoustic": ["alice"],
+                    "optic": ["alice", "bob"],
+                    "biology": ["carol"],
+                    "orphan": [],
+                },
+            )
+            self.assertEqual(
+                self.slurmrestd.coordinated_accounts("ALICE"),
+                {"physic", "acoustic", "optic"},
+            )
+            self.assertEqual(self.slurmrestd.coordinated_accounts("bob"), {"optic"})
+            self.assertEqual(self.slurmrestd.coordinated_accounts("dave"), set())
+
+    @all_slurm_api_versions
     def test_reservations(self, slurm_version, api_version):
         self.setup_slurmrestd(slurm_version, api_version)
         [asset] = self.mock_slurmrestd_responses(
