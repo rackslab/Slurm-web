@@ -64,6 +64,11 @@ include = ['slurmweb*']
 "Homepage" = "https://github.com/rackslab/slurm-web"
 "Bug Tracker" = "https://github.com/rackslab/slurm-web/issues"
 
+[tool.ruff]
+# Oldest target supported by ruff, Python 3.6 compatibility is still required
+# (eg. no parenthesized context managers).
+target-version = "py37"
+
 [tool.ruff.lint]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
 select = ["E", "F"]
