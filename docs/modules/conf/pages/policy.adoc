@@ -149,6 +149,40 @@ current user. Users with `jobs-view` or `jobs-view-past` still see all users'
 jobs for the corresponding scope.
 ====
 
+.Show example to allow account coordinators to view jobs of their accounts
+[%collapsible]
+====
+[source,ini]
+----
+[roles]
+user=ALL
+
+[user]
+actions=stats-view,jobs-view-own,jobs-view-coord,jobs-view-past-own,jobs-view-past-coord,nodes-view
+----
+
+Authenticated users with the *user* role can access the _Jobs_ menu and see
+their own active and terminated jobs. Additionally, Slurm accounts coordinators
+also see all active and terminated jobs of the accounts they coordinate. The
+`jobs-view-coord` and `jobs-view-past-coord` actions restrict job lists and
+details to the accounts coordinated by the current user. When combined with
+`jobs-view-own` and `jobs-view-past-own` actions, users see both their own jobs
+and the jobs of their coordinated accounts.
+
+As in Slurm, coordinators of an account are also considered coordinators of all
+its sub-accounts. Accounts coordinators are defined in Slurm accounting
+database, for example with this command:
+
+[source,console]
+----
+# sacctmgr add coordinator account=physic names=jdoe
+----
+
+In this example, user _jdoe_ is able to see jobs of _physic_ account and all
+its sub-accounts. Users with `jobs-view` or `jobs-view-past` still see all
+users' jobs for the corresponding scope.
+====
+
 [#actions]
 == Available Actions
 

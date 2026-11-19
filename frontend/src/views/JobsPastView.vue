@@ -154,7 +154,9 @@ onMounted(() => {
 
             <div class="flex flex-wrap items-center gap-2">
               <RouterLink
-                v-if="runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own'])"
+                v-if="
+                  runtimeStore.hasAnyPermission(['jobs-view', 'jobs-view-own', 'jobs-view-coord'])
+                "
                 data-testid="jobs-scope-toggle"
                 :to="{ name: 'jobs', params: { cluster } }"
                 class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"

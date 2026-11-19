@@ -512,6 +512,62 @@ class Slurmrestd:
     def qos(self: str, **kwargs):
         return self._request("slurmdb", "qos", "qos", **kwargs)
 
+    def accounts_coordinators(self) -> t.Dict[str, t.List[str]]:
+        """Return mapping of account names to the sorted list of their effective
+        coordinators logins. As in Slurm, coordinators of an account are also
+        coordinators of all its sub-accounts. Account names and logins are
+        lowercased.
+
+        Raw accounts and associations are explicitly retrieved from the base class
+        to be independent of fields filters settings."""
+        coordinators: t.Dict[str, t.Set[str]] = {}
+        for account in Slurmrestd.accounts(self):
+            name = account["name"].lower()
+            coordinators[name] = set()
+            for coordinator in account.get("coordinators", []):
+                if isinstance(coordinator, dict):
+                    coordinator = coordinator.get("name", "")
+                if coordinator:
+                    coordinators[name].add(coordinator.lower())
+
+        # Build tree of sub-accounts with account-level associations, ie.
+        # associations without user.
+        children: t.Dict[str, t.Set[str]] = {}
+        for association in Slurmrestd.associations(self):
+            if association.get("user"):
+                continue
+            parent = association.get("parent_account", "").lower()
+            if not parent:
+                continue
+            children.setdefault(parent, set()).add(association["account"].lower())
+
+        result: t.Dict[str, t.Set[str]] = {account: set() for account in coordinators}
+        for account, account_coordinators in coordinators.items():
+            if not account_coordinators:
+                continue
+            # Propagate coordinators to all sub-accounts, with a set of visited
+            # accounts to protect against cycles.
+            visited: t.Set[str] = set()
+            stack = [account]
+            while stack:
+                current = stack.pop()
+                if current in visited:
+                    continue
+                visited.add(current)
+                result.setdefault(current, set()).update(account_coordinators)
+                stack.extend(children.get(current, set()))
+        return {account: sorted(logins) for account, logins in result.items()}
+
+    def coordinated_accounts(self, login: str) -> t.Set[str]:
+        """Return the set of lowercased names of accounts coordinated by the given
+        user login, including sub-accounts of directly coordinated accounts."""
+        login = login.lower()
+        return {
+            account
+            for account, logins in self.accounts_coordinators().items()
+            if login in logins
+        }
+
     @staticmethod
     def node_gres_extract_gpus(gres_full: str) -> int:
         """Return the number of GPU in gres string."""
@@ -764,3 +820,10 @@ class SlurmrestdFilteredCached(SlurmrestdFiltered):
 
     def qos(self):
         return self._cached(CacheKey("qos"), self.cache.qos, super().qos)
+
+    def accounts_coordinators(self):
+        return self._cached(
+            CacheKey("accounts-coordinators"),
+            self.cache.accounts,
+            super().accounts_coordinators,
+        )

@@ -9,14 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add support for Slurm REST API v0.0.46 provided by Slurm 26.11+ (#781).
-- agent: Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
+- agent:
+  - Implement (dummy) Slurm REST API adapter from v0.0.45 to v0.0.46.
+  - Resolve accounts coordinated by users, including sub-accounts, from Slurm
+    accounts and associations (#260).
+  - Enforce RBAC actions `jobs-view-coord` and `jobs-view-past-coord` to
+    restrict job lists and details to the accounts coordinated by the
+    authenticated user, in addition to own jobs with `jobs-view-own` and
+    `jobs-view-past-own` actions (#260).
+- front: Support `jobs-view-coord` and `jobs-view-past-coord` permissions in
+  jobs menu, scope toggles and node jobs (#260).
 - pkgs: Add dependency on _paramiko_ external library in _dev_ extra package.
-- conf: Prepend default list of supported API versions in `[slurmrestd]` >
-  `versions` parameter with _0.0.46_.
+- conf:
+  - Prepend default list of supported API versions in `[slurmrestd]` >
+    `versions` parameter with _0.0.46_.
+  - Introduce `jobs-view-coord` and `jobs-view-past-coord` actions in
+    authorization policy (#260).
+  - Add `account` in default `[filters]` > `acctjob` agent setting.
 
 ### Changed
 - docs:
   - Update configuration reference documentation.
+  - Update authorization policy actions reference documentation.
+  - Add example with `jobs-view-coord` and `jobs-view-past-coord` actions in
+    authorization policy guide (#260).
   - Update Slurm REST API supported versions section in architecture page.
 
 ## [7.1.0] - 2026-11-10

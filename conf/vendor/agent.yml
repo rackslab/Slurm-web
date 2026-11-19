@@ -223,6 +223,7 @@ filters:
     type: list
     content: str
     default:
+    - account
     - association
     - comment
     - derived_exit_code
