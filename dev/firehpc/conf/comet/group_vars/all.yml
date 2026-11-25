@@ -28,6 +28,17 @@ slurm_qos:
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
   - Priority=100
+# Account coordinators, as on nova cluster, to crawl test assets of accounts with
+# coordinators. The first member of physic group coordinates physic account and
+# its acoustic and optic sub-accounts, the first member of optic group
+# coordinates optic account only.
+slurm_coordinators:
+- account: physic
+  users:
+  - "{{ (fhpc_groups | selectattr('name', 'equalto', 'physic') | first).members[0] }}"
+- account: optic
+  users:
+  - "{{ (fhpc_groups | selectattr('name', 'equalto', 'optic') | first).members[0] }}"
 slurm_partitions:
 - name: normal
   nodes: cn[1-4]

@@ -41,6 +41,18 @@ slurm_qos:
   - MaxSubmitJobsPA=30
   - Priority=100
   - Preempt=low
+# Account coordinators to test jobs-view-coord and jobs-view-past-coord actions,
+# assigned to members of physic group with limited role in Slurm-web policy.
+# The first member of physic group coordinates physic account and its acoustic
+# and optic sub-accounts, the first member of optic group coordinates optic
+# account only.
+slurm_coordinators:
+- account: physic
+  users:
+  - "{{ (fhpc_groups | selectattr('name', 'equalto', 'physic') | first).members[0] }}"
+- account: optic
+  users:
+  - "{{ (fhpc_groups | selectattr('name', 'equalto', 'optic') | first).members[0] }}"
 slurm_partitions:
 - name: normal
   nodes: cn[1-4]

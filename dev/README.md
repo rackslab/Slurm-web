@@ -25,6 +25,11 @@ Slurm-web features:
 | zenith | 25.05 (0.0.43) | Debian 13 | JWT auto, TCP | ✓ | ✓ | untyped GPUs, GPU TRES limits in QOS, LDAP memberOf |
 | comet | 24.11 (0.0.42) | Rocky Linux 9 | local, Unix socket | ✗ | ✗ | typed GPUs, optional features disabled |
 
+On all clusters, the first member of _physic_ group coordinates _physic_
+account and its sub-accounts, and the first member of _optic_ group coordinates
+_optic_ account. On nova, these users get `jobs-view-coord` and
+`jobs-view-past-coord` permissions with the extra user group policy.
+
 > [!NOTE]
 > No cluster is deployed on Debian 14 _« forky »_ because hpck.it does not
 > provide Slurm packages for this distribution: PMIx version available in Debian
