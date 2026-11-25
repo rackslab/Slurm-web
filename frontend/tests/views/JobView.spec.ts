@@ -59,18 +59,13 @@ describe('JobView.vue', () => {
       params: { cluster: 'foo', user: jobRunning.user }
     })
 
-    // Account field has RouterLink, so check JobFieldRaw component and props.
-    // If the account is empty, the component is not rendered. This is actually a
-    // workaround for this Slurm bug:
-    // https://support.schedmd.com/show_bug.cgi?id=24215
-    if (jobRunning.association.account !== '') {
-      const accountField = wrapper.get('dl div#account').getComponent(JobFieldRaw)
-      expect(accountField.props('field')).toBe(jobRunning.association.account)
-      expect(accountField.props('to')).toEqual({
-        name: 'account',
-        params: { cluster: 'foo', account: jobRunning.association.account }
-      })
-    }
+    // Account field has RouterLink, so check JobFieldRaw component and props
+    const accountField = wrapper.get('dl div#account').getComponent(JobFieldRaw)
+    expect(accountField.props('field')).toBe(jobRunning.account)
+    expect(accountField.props('to')).toEqual({
+      name: 'account',
+      params: { cluster: 'foo', account: jobRunning.account }
+    })
     // Fields without RouterLink should have text directly accessible
     expect(wrapper.get('dl div#group dd').text()).toBe(jobRunning.group)
     expect(wrapper.get('dl div#priority dd').text()).toBe(jobRunning.priority.number.toString())
