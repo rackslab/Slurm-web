@@ -1,13 +1,14 @@
 {
+  "account": "biology",
   "accrue_time": {
     "infinite": false,
-    "number": 1780303582,
+    "number": 1795619861,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 18,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jhayes",
+  "current_working_directory": "/home/jlam",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,20 +65,20 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780303582,
+    "number": 1795619863,
     "set": true
   },
-  "name": "allocation",
+  "name": "cfd-job-0173",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "cn4",
+  "nodes": "cn1",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 454,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +97,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jhayes/slurm-1291.out",
+  "stdout_expanded": "/home/jlam/slurm-6.out",
   "steps": [
     {
       "CPU": {
@@ -136,9 +137,9 @@
       "nodes": {
         "count": 1,
         "list": [
-          "cn4"
+          "cn1"
         ],
-        "range": "cn4"
+        "range": "cn1"
       },
       "state": [
         "CANCELLED"
@@ -156,7 +157,7 @@
         }
       },
       "step": {
-        "id": "1291.batch",
+        "id": "6.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -173,10 +174,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 72,
+        "elapsed": 68,
         "end": {
           "infinite": false,
-          "number": 1780303654,
+          "number": 1795619931,
           "set": true
         },
         "limit": {
@@ -186,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780303582,
+          "number": 1795619863,
           "set": true
         },
         "suspended": 0,
@@ -246,9 +247,9 @@
     "set": true
   },
   "time": {
-    "elapsed": 70,
-    "eligible": 1780303582,
-    "end": 1780303652,
+    "elapsed": 67,
+    "eligible": 1795619861,
+    "end": 1795619930,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -256,11 +257,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 0,
+      "number": 2,
       "set": true
     },
-    "start": 1780303582,
-    "submission": 1780303582,
+    "start": 1795619863,
+    "submission": 1795619861,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -340,10 +341,10 @@
   "tres_per_socket": "",
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "user": "jhayes",
+  "user": "jlam",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jhayes"
+  "working_directory": "/home/jlam"
 }

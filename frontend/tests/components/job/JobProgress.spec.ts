@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import JobProgress from '@/components/job/JobProgress.vue'
 import jobPending from '../../assets/job-pending.json'
@@ -8,7 +8,15 @@ import jobFailed from '../../assets/job-failed.json'
 import jobTimeout from '../../assets/job-timeout.json'
 
 describe('JobProgress.vue', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
   test('display job progress of pending job', () => {
+    // Pending job asset is crawled with a begin time in the future. Set current
+    // time after its eligible time so the test does not depend on the date it is
+    // run.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime((jobPending.time.eligible + 60) * 1000)
     const wrapper = mount(JobProgress, {
       props: {
         job: jobPending

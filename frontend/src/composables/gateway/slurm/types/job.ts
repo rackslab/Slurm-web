@@ -94,6 +94,7 @@ export interface SlurmJob {
 }
 
 export interface SlurmJobDetail {
+  account: string
   accrue_time?: SlurmOptionalNumber
   association: { account: string; cluster: string; id: number; partition: string; user: string }
   batch_flag?: boolean

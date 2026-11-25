@@ -1,13 +1,14 @@
 {
+  "account": "biology",
   "accrue_time": {
     "infinite": false,
-    "number": 1780139577,
+    "number": 1795620906,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 16,
+    "id": 11,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/ccollins",
+  "current_working_directory": "/home/kho",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -66,10 +67,10 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139578,
+    "number": 1795620908,
     "set": true
   },
-  "name": "allocation",
+  "name": "fluent-regression-v6",
   "node_count": {
     "infinite": false,
     "number": 1,
@@ -79,7 +80,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 181,
+    "number": 363,
     "set": true
   },
   "qos": "normal",
@@ -98,7 +99,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/ccollins/slurm-5452.out",
+  "stdout_expanded": "/home/kho/slurm-25.out",
   "steps": [
     {
       "CPU": {
@@ -142,7 +143,6 @@
         ],
         "range": "gpu1"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -159,7 +159,7 @@
         }
       },
       "step": {
-        "id": "5452.batch",
+        "id": "25.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -189,7 +189,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139578,
+          "number": 1795620908,
           "set": true
         },
         "suspended": 0,
@@ -229,12 +229,6 @@
           {
             "count": 1,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 1,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -262,7 +256,7 @@
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1780139577,
+    "eligible": 1795620906,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -271,11 +265,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
-    "start": 1780139578,
-    "submission": 1780139577,
+    "start": 1795620908,
+    "submission": 1795620906,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -325,12 +319,6 @@
       {
         "count": 1,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 1,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -363,12 +351,6 @@
       {
         "count": 1,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 1,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -378,11 +360,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=1,gres/gpu:h100=1",
-  "user": "ccollins",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=1",
+  "user": "kho",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/ccollins"
+  "working_directory": "/home/kho"
 }

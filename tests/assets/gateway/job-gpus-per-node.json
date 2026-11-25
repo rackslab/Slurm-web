@@ -1,13 +1,14 @@
 {
+  "account": "acoustic",
   "accrue_time": {
     "infinite": false,
-    "number": 1780139581,
+    "number": 1795619854,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 18,
+    "id": 16,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/jhayes",
+  "current_working_directory": "/home/jjackson",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -67,10 +68,10 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139582,
+    "number": 1795619857,
     "set": true
   },
-  "name": "allocation",
+  "name": "blast-nightly-v8",
   "node_count": {
     "infinite": false,
     "number": 2,
@@ -80,7 +81,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 454,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -95,11 +96,11 @@
     "current": [
       "RUNNING"
     ],
-    "reason": "None"
+    "reason": "ReqNodeNotAvail"
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jhayes/slurm-5454.out",
+  "stdout_expanded": "/home/jjackson/slurm-1.out",
   "steps": [
     {
       "CPU": {
@@ -143,7 +144,6 @@
         ],
         "range": "gpu1"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "5454.batch",
+        "id": "1.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +177,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 2,
         "end": {
           "infinite": false,
           "number": 0,
@@ -190,7 +190,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139582,
+          "number": 1795619857,
           "set": true
         },
         "suspended": 0,
@@ -230,12 +230,6 @@
           {
             "count": 1,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 1,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -262,8 +256,8 @@
     "set": true
   },
   "time": {
-    "elapsed": 1,
-    "eligible": 1780139581,
+    "elapsed": 2,
+    "eligible": 1795619854,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -272,11 +266,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 3,
       "set": true
     },
-    "start": 1780139582,
-    "submission": 1780139581,
+    "start": 1795619857,
+    "submission": 1795619854,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -326,12 +320,6 @@
       {
         "count": 2,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 2,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -364,7 +352,7 @@
       {
         "count": 2,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
@@ -373,11 +361,11 @@
   "tres_per_node": "gres/gpu:1",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=2,mem=1G,node=2,billing=2,gres/gpu=2",
-  "user": "jhayes",
+  "tres_req_str": "cpu=2,mem=1G,node=2,billing=2,gres/gpu:h100=2",
+  "user": "jjackson",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jhayes"
+  "working_directory": "/home/jjackson"
 }

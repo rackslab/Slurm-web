@@ -1,7 +1,8 @@
 {
+  "account": "biology",
   "accrue_time": {
     "infinite": false,
-    "number": 1780140255,
+    "number": 1795619930,
     "set": true
   },
   "association": {
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/rpowers",
+  "current_working_directory": "/home/jlam",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,20 +65,20 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780140256,
+    "number": 1795619930,
     "set": true
   },
-  "name": "allocation",
+  "name": "sim-pilot-7430",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "cn1",
+  "nodes": "cn2",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 636,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +97,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/rpowers/slurm-5521.out",
+  "stdout_expanded": "/home/jlam/slurm-7.out",
   "steps": [
     {
       "CPU": {
@@ -136,11 +137,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "cn1"
+          "cn2"
         ],
-        "range": "cn1"
+        "range": "cn2"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "5521.batch",
+        "id": "7.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -174,7 +174,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 69,
+        "elapsed": 2,
         "end": {
           "infinite": false,
           "number": 0,
@@ -187,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780140256,
+          "number": 1795619930,
           "set": true
         },
         "suspended": 0,
@@ -247,21 +247,21 @@
     "set": true
   },
   "time": {
-    "elapsed": 69,
-    "eligible": 1780140255,
+    "elapsed": 2,
+    "eligible": 1795619930,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 15,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 0,
       "set": true
     },
-    "start": 1780140256,
-    "submission": 1780140255,
+    "start": 1795619930,
+    "submission": 1795619930,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -341,10 +341,10 @@
   "tres_per_socket": "",
   "tres_per_task": "",
   "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
-  "user": "rpowers",
+  "user": "jlam",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rpowers"
+  "working_directory": "/home/jlam"
 }

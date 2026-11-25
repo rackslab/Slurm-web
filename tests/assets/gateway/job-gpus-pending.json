@@ -1,4 +1,5 @@
 {
+  "account": "acoustic",
   "accrue_time": {
     "infinite": false,
     "number": 0,
@@ -7,7 +8,7 @@
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 12,
+    "id": 15,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/mwilliams",
+  "current_working_directory": "/home/jedwards",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,10 +65,10 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139617,
+    "number": 1795620871,
     "set": true
   },
-  "name": "allocation",
+  "name": "wrf-preprocess-649",
   "node_count": {
     "infinite": false,
     "number": 1,
@@ -77,7 +78,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 818,
+    "number": 545,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +97,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/mwilliams/slurm-5516.out",
+  "stdout_expanded": "/home/jedwards/slurm-22.out",
   "steps": [],
   "submit_line": "",
   "tasks": {
@@ -106,7 +107,7 @@
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1780143217,
+    "eligible": 1795624471,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -119,7 +120,7 @@
       "set": true
     },
     "start": 0,
-    "submission": 1780139617,
+    "submission": 1795620871,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -164,7 +165,7 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
@@ -173,11 +174,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
-  "user": "mwilliams",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=4",
+  "user": "jedwards",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/mwilliams"
+  "working_directory": "/home/jedwards"
 }

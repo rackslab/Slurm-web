@@ -1,13 +1,14 @@
 {
+  "account": "biology",
   "accrue_time": {
     "infinite": false,
-    "number": 1780140640,
+    "number": 1795620904,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 12,
+    "id": 10,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 2,
     "set": true
   },
-  "current_working_directory": "/home/mwilliams",
+  "current_working_directory": "/home/jlam",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -67,10 +68,10 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780140641,
+    "number": 1795620905,
     "set": true
   },
-  "name": "allocation",
+  "name": "lammps-chunk-wuhn-19",
   "node_count": {
     "infinite": false,
     "number": 2,
@@ -80,7 +81,7 @@
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 818,
+    "number": 90,
     "set": true
   },
   "qos": "normal",
@@ -99,7 +100,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/mwilliams/slurm-5535.out",
+  "stdout_expanded": "/home/jlam/slurm-24.out",
   "steps": [
     {
       "CPU": {
@@ -143,7 +144,6 @@
         ],
         "range": "gpu1"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -160,7 +160,7 @@
         }
       },
       "step": {
-        "id": "5535.batch",
+        "id": "24.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -177,7 +177,7 @@
         "count": 1
       },
       "time": {
-        "elapsed": 0,
+        "elapsed": 1,
         "end": {
           "infinite": false,
           "number": 0,
@@ -190,7 +190,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780140641,
+          "number": 1795620905,
           "set": true
         },
         "suspended": 0,
@@ -230,12 +230,6 @@
           {
             "count": 4,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 4,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -262,8 +256,8 @@
     "set": true
   },
   "time": {
-    "elapsed": 0,
-    "eligible": 1780140640,
+    "elapsed": 1,
+    "eligible": 1795620904,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -275,8 +269,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1780140641,
-    "submission": 1780140640,
+    "start": 1795620905,
+    "submission": 1795620904,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -326,12 +320,6 @@
       {
         "count": 8,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 8,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -364,7 +352,7 @@
       {
         "count": 8,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
@@ -373,11 +361,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=8",
-  "user": "mwilliams",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=8",
+  "user": "jlam",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/mwilliams"
+  "working_directory": "/home/jlam"
 }

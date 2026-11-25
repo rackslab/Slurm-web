@@ -1,13 +1,14 @@
 {
+  "account": "acoustic",
   "accrue_time": {
     "infinite": false,
-    "number": 1780139583,
+    "number": 1795620871,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 9,
+    "id": 14,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/jli",
+  "current_working_directory": "/home/jsantos",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,20 +65,20 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139584,
+    "number": 1795620871,
     "set": true
   },
-  "name": "allocation",
+  "name": "sim-quick-5655",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "gpu2",
+  "nodes": "gpu1",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 909,
+    "number": 636,
     "set": true
   },
   "qos": "normal",
@@ -96,7 +97,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/jli/slurm-5455.out",
+  "stdout_expanded": "/home/jsantos/slurm-23.out",
   "steps": [
     {
       "CPU": {
@@ -136,11 +137,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu2"
+          "gpu1"
         ],
-        "range": "gpu2"
+        "range": "gpu1"
       },
-      "pid": "",
       "state": [
         "COMPLETED"
       ],
@@ -157,7 +157,7 @@
         }
       },
       "step": {
-        "id": "5455.batch",
+        "id": "23.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -174,10 +174,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 30,
+        "elapsed": 31,
         "end": {
           "infinite": false,
-          "number": 1780139614,
+          "number": 1795620902,
           "set": true
         },
         "limit": {
@@ -187,7 +187,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139584,
+          "number": 1795620871,
           "set": true
         },
         "suspended": 0,
@@ -227,12 +227,6 @@
           {
             "count": 4,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 4,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -259,9 +253,9 @@
     "set": true
   },
   "time": {
-    "elapsed": 30,
-    "eligible": 1780139583,
-    "end": 1780139614,
+    "elapsed": 31,
+    "eligible": 1795620871,
+    "end": 1795620902,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -269,11 +263,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 0,
       "set": true
     },
-    "start": 1780139584,
-    "submission": 1780139583,
+    "start": 1795620871,
+    "submission": 1795620871,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -323,12 +317,6 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 4,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -361,7 +349,7 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
@@ -370,11 +358,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
-  "user": "jli",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=4",
+  "user": "jsantos",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/jli"
+  "working_directory": "/home/jsantos"
 }

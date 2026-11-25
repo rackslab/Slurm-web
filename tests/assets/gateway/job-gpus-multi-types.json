@@ -1,13 +1,14 @@
 {
+  "account": "admin",
   "accrue_time": {
     "infinite": false,
-    "number": 1780139617,
+    "number": 1795619859,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 12,
+    "id": 9,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/mwilliams",
+  "current_working_directory": "/home/emorales",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -66,20 +67,20 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139617,
+    "number": 1795619860,
     "set": true
   },
-  "name": "allocation",
+  "name": "weather-preprocess-54",
   "node_count": {
     "infinite": false,
     "number": 1,
     "set": true
   },
-  "nodes": "gpu1",
+  "nodes": "gpu2",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 818,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -98,7 +99,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/mwilliams/slurm-5517.out",
+  "stdout_expanded": "/home/emorales/slurm-2.out",
   "steps": [
     {
       "CPU": {
@@ -138,11 +139,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu1"
+          "gpu2"
         ],
-        "range": "gpu1"
+        "range": "gpu2"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -159,7 +159,7 @@
         }
       },
       "step": {
-        "id": "5517.batch",
+        "id": "2.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -189,7 +189,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139617,
+          "number": 1795619860,
           "set": true
         },
         "suspended": 0,
@@ -229,12 +229,6 @@
           {
             "count": 1,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 1,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -262,7 +256,7 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1780139617,
+    "eligible": 1795619859,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -271,11 +265,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 0,
+      "number": 1,
       "set": true
     },
-    "start": 1780139617,
-    "submission": 1780139617,
+    "start": 1795619860,
+    "submission": 1795619859,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -325,12 +319,6 @@
       {
         "count": 1,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 1,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -363,12 +351,6 @@
       {
         "count": 1,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 1,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -378,11 +360,11 @@
   "tres_per_node": "gres/gpu:h100:1",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=1,gres/gpu:h100=1",
-  "user": "mwilliams",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=1",
+  "user": "emorales",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/mwilliams"
+  "working_directory": "/home/emorales"
 }
