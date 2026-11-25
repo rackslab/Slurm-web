@@ -1,7 +1,8 @@
 {
+  "account": "biology",
   "accrue_time": {
     "infinite": false,
-    "number": 1780140255,
+    "number": 0,
     "set": true
   },
   "association": {
@@ -20,10 +21,10 @@
   },
   "cpus": {
     "infinite": false,
-    "number": 128,
+    "number": 16,
     "set": true
   },
-  "current_working_directory": "/home/rpowers",
+  "current_working_directory": "/home/jlam",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -64,20 +65,20 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780140316,
+    "number": 1795619861,
     "set": true
   },
-  "name": "allocation",
+  "name": "weather-run-0226",
   "node_count": {
     "infinite": false,
-    "number": 4,
+    "number": 1,
     "set": true
   },
   "nodes": "None assigned",
-  "partition": "gpu",
+  "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 636,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -96,30 +97,30 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/rpowers/slurm-5528.out",
+  "stdout_expanded": "/home/jlam/slurm-5.out",
   "steps": [],
   "submit_line": "",
   "tasks": {
     "infinite": false,
-    "number": 128,
+    "number": 16,
     "set": true
   },
   "time": {
     "elapsed": 0,
-    "eligible": 1780140255,
+    "eligible": 1795623461,
     "end": 0,
     "limit": {
       "infinite": false,
-      "number": 2,
+      "number": 1,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 70,
+      "number": -3529,
       "set": true
     },
     "start": 0,
-    "submission": 1780140255,
+    "submission": 1795619861,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -138,13 +139,13 @@
     "allocated": [],
     "requested": [
       {
-        "count": 128,
+        "count": 16,
         "id": 1,
         "name": "",
         "type": "cpu"
       },
       {
-        "count": 65536,
+        "count": 8192,
         "id": 2,
         "name": "",
         "type": "mem"
@@ -156,28 +157,22 @@
         "type": "node"
       },
       {
-        "count": 128,
+        "count": 16,
         "id": 5,
         "name": "",
         "type": "billing"
-      },
-      {
-        "count": 2,
-        "id": 1001,
-        "name": "gpu",
-        "type": "gres"
       }
     ]
   },
-  "tres_per_job": "gres/gpu:2",
+  "tres_per_job": "",
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=128,mem=64G,node=1,billing=128,gres/gpu=2",
-  "user": "rpowers",
+  "tres_req_str": "cpu=16,mem=8G,node=1,billing=16",
+  "user": "jlam",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rpowers"
+  "working_directory": "/home/jlam"
 }

@@ -1,13 +1,14 @@
 {
+  "account": "acoustic",
   "accrue_time": {
     "infinite": false,
-    "number": 1780139579,
+    "number": 1795620237,
     "set": true
   },
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 10,
+    "id": 15,
     "partition": "",
     "user": ""
   },
@@ -23,7 +24,7 @@
     "number": 1,
     "set": true
   },
-  "current_working_directory": "/home/rpowers",
+  "current_working_directory": "/home/jedwards",
   "derived_exit_code": {
     "return_code": {
       "infinite": false,
@@ -66,10 +67,10 @@
   "group": "slurm",
   "last_sched_evaluation": {
     "infinite": false,
-    "number": 1780139580,
+    "number": 1795620238,
     "set": true
   },
-  "name": "allocation",
+  "name": "climate-training-59",
   "node_count": {
     "infinite": false,
     "number": 1,
@@ -98,7 +99,7 @@
   },
   "stderr_expanded": "",
   "stdin_expanded": "",
-  "stdout_expanded": "/home/rpowers/slurm-5453.out",
+  "stdout_expanded": "/home/jedwards/slurm-20.out",
   "steps": [
     {
       "CPU": {
@@ -142,7 +143,6 @@
         ],
         "range": "gpu1"
       },
-      "pid": "",
       "state": [
         "RUNNING"
       ],
@@ -159,7 +159,7 @@
         }
       },
       "step": {
-        "id": "5453.batch",
+        "id": "20.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -189,7 +189,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139580,
+          "number": 1795620238,
           "set": true
         },
         "suspended": 0,
@@ -229,12 +229,6 @@
           {
             "count": 4,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 4,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -262,7 +256,7 @@
   },
   "time": {
     "elapsed": 1,
-    "eligible": 1780139579,
+    "eligible": 1795620237,
     "end": 0,
     "limit": {
       "infinite": false,
@@ -274,8 +268,8 @@
       "number": 1,
       "set": true
     },
-    "start": 1780139580,
-    "submission": 1780139579,
+    "start": 1795620238,
+    "submission": 1795620237,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -325,12 +319,6 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 4,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -363,7 +351,7 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
@@ -372,11 +360,11 @@
   "tres_per_node": "",
   "tres_per_socket": "",
   "tres_per_task": "",
-  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu=4",
-  "user": "rpowers",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1,gres/gpu:h100=4",
+  "user": "jedwards",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rpowers"
+  "working_directory": "/home/jedwards"
 }

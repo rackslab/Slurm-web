@@ -1,8 +1,9 @@
 {
+  "account": "biology",
   "association": {
     "account": "",
     "cluster": "hpc",
-    "id": 15,
+    "id": 12,
     "partition": "",
     "user": ""
   },
@@ -48,12 +49,12 @@
     ]
   },
   "group": "slurm",
-  "name": "allocation",
-  "nodes": "gpu1",
+  "name": "pytorch-sweep-904",
+  "nodes": "gpu2",
   "partition": "gpu",
   "priority": {
     "infinite": false,
-    "number": 90,
+    "number": 363,
     "set": true
   },
   "qos": "normal",
@@ -103,11 +104,10 @@
       "nodes": {
         "count": 1,
         "list": [
-          "gpu1"
+          "gpu2"
         ],
-        "range": "gpu1"
+        "range": "gpu2"
       },
-      "pid": "",
       "state": [
         "COMPLETED"
       ],
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "5518.batch",
+        "id": "21.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -144,7 +144,7 @@
         "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1780139650,
+          "number": 1795620271,
           "set": true
         },
         "limit": {
@@ -154,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780139620,
+          "number": 1795620241,
           "set": true
         },
         "suspended": 0,
@@ -194,12 +194,6 @@
           {
             "count": 4,
             "id": 1001,
-            "name": "gpu",
-            "type": "gres"
-          },
-          {
-            "count": 4,
-            "id": 1002,
             "name": "gpu:h100",
             "type": "gres"
           }
@@ -222,8 +216,8 @@
   "submit_line": "",
   "time": {
     "elapsed": 30,
-    "eligible": 1780139619,
-    "end": 1780139650,
+    "eligible": 1795620239,
+    "end": 1795620271,
     "limit": {
       "infinite": false,
       "number": 1,
@@ -231,11 +225,11 @@
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
-    "start": 1780139620,
-    "submission": 1780139619,
+    "start": 1795620241,
+    "submission": 1795620239,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -285,12 +279,6 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
-        "type": "gres"
-      },
-      {
-        "count": 4,
-        "id": 1002,
         "name": "gpu:h100",
         "type": "gres"
       }
@@ -323,15 +311,15 @@
       {
         "count": 4,
         "id": 1001,
-        "name": "gpu",
+        "name": "gpu:h100",
         "type": "gres"
       }
     ]
   },
-  "user": "madams",
+  "user": "cchapman",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/madams"
+  "working_directory": "/home/cchapman"
 }

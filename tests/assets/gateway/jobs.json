@@ -1,17 +1,17 @@
 [
   {
-    "account": "optic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
-      "number": 1,
+      "number": 16,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 6512,
+    "job_id": 5,
     "job_state": [
       "PENDING"
     ],
-    "name": "blast-ensemble-815",
+    "name": "weather-run-0226",
     "node_count": {
       "infinite": false,
       "number": 1,
@@ -21,7 +21,7 @@
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 454,
+      "number": 1000,
       "set": true
     },
     "qos": "normal",
@@ -33,38 +33,38 @@
     "state_reason": "BeginTime",
     "tasks": {
       "infinite": false,
-      "number": 1,
+      "number": 16,
       "set": true
     },
     "tres_per_job": "",
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "jhayes"
+    "user_name": "jlam"
   },
   {
-    "account": "optic",
+    "account": "biology",
     "cpus": {
       "infinite": false,
       "number": 1,
       "set": true
     },
     "gres_detail": [],
-    "job_id": 6513,
+    "job_id": 6,
     "job_state": [
       "RUNNING"
     ],
-    "name": "vasp-smoke-v6",
+    "name": "cfd-job-0173",
     "node_count": {
       "infinite": false,
       "number": 1,
       "set": true
     },
-    "nodes": "cn2",
+    "nodes": "cn1",
     "partition": "normal",
     "priority": {
       "infinite": false,
-      "number": 454,
+      "number": 1000,
       "set": true
     },
     "qos": "normal",
@@ -83,6 +83,6 @@
     "tres_per_node": "",
     "tres_per_socket": "",
     "tres_per_task": "",
-    "user_name": "jhayes"
+    "user_name": "jlam"
   }
 ]

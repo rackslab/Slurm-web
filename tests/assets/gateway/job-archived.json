@@ -1,4 +1,5 @@
 {
+  "account": "biology",
   "association": {
     "account": "",
     "cluster": "hpc",
@@ -48,12 +49,12 @@
     ]
   },
   "group": "slurm",
-  "name": "allocation",
+  "name": "abaqus-regression-v5",
   "nodes": "cn1",
   "partition": "normal",
   "priority": {
     "infinite": false,
-    "number": 636,
+    "number": 1000,
     "set": true
   },
   "qos": "normal",
@@ -107,7 +108,6 @@
         ],
         "range": "cn1"
       },
-      "pid": "",
       "state": [
         "COMPLETED"
       ],
@@ -124,7 +124,7 @@
         }
       },
       "step": {
-        "id": "5522.batch",
+        "id": "4.batch",
         "name": "batch",
         "stderr": "",
         "stderr_expanded": "",
@@ -141,10 +141,10 @@
         "count": 1
       },
       "time": {
-        "elapsed": 1,
+        "elapsed": 30,
         "end": {
           "infinite": false,
-          "number": 1780140257,
+          "number": 1795619893,
           "set": true
         },
         "limit": {
@@ -154,7 +154,7 @@
         },
         "start": {
           "infinite": false,
-          "number": 1780140256,
+          "number": 1795619863,
           "set": true
         },
         "suspended": 0,
@@ -209,21 +209,21 @@
   ],
   "submit_line": "",
   "time": {
-    "elapsed": 1,
-    "eligible": 1780140255,
-    "end": 1780140257,
+    "elapsed": 30,
+    "eligible": 1795619861,
+    "end": 1795619893,
     "limit": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
     "planned": {
       "infinite": false,
-      "number": 1,
+      "number": 2,
       "set": true
     },
-    "start": 1780140256,
-    "submission": 1780140255,
+    "start": 1795619863,
+    "submission": 1795619861,
     "suspended": 0,
     "system": {
       "microseconds": 0,
@@ -298,10 +298,10 @@
       }
     ]
   },
-  "user": "rpowers",
+  "user": "jlam",
   "wckey": {
     "flags": [],
     "wckey": ""
   },
-  "working_directory": "/home/rpowers"
+  "working_directory": "/home/jlam"
 }
