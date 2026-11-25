@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update configuration reference documentation.
   - Update Slurm REST API supported versions section in architecture page.
 
+### Fixed
+- front: Show account in job page again with Slurm REST API >= 0.0.43 by using
+  job `account` field instead of `association.account`, always empty with these
+  versions (SchedMD bug 24215).
+
 ## [7.1.0] - 2026-11-10
 
 ### Fixed

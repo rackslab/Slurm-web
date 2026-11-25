@@ -98,8 +98,8 @@ const jobFieldsContent = computed(
         label: 'Account',
         component: JobFieldRaw,
         props: {
-          field: data.value.association.account,
-          to: { name: 'account', params: { cluster, account: data.value.association.account } }
+          field: data.value.account,
+          to: { name: 'account', params: { cluster, account: data.value.account } }
         }
       },
       {
@@ -263,19 +263,7 @@ onMounted(() => {
                     </span>
                   </a>
                 </dt>
-                <!--
-                  If the account is empty, do not render the component. This is actually a
-                  workaround for this Slurm bug:
-
-                  https://support.schedmd.com/show_bug.cgi?id=24215
-
-                   With Slurm REST API v0.0.43 and v0.0.44, this field is always empty.
-                -->
-                <component
-                  v-if="!(field.id === 'account' && data.association.account === '')"
-                  :is="field.component"
-                  v-bind="field.props"
-                />
+                <component :is="field.component" v-bind="field.props" />
               </div>
             </dl>
           </div>
