@@ -1,14 +1,14 @@
 common_pkgs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_pkgs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 common_with_devs_repos: true
 common_devs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_devs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 common_hpckit_derivatives:
 - main
 - slurm25.05
@@ -19,15 +19,16 @@ slurm_params:
   PriorityWeightFairshare: 1000
   PriorityWeightQOS: 100
   SelectType: select/cons_tres
+  AccountingStorageTRES: gres/gpu
 slurm_qos:
 - name: study
   args:
   - Flags=OverPartQOS
-  - GrpTRES=node=50
+  - GrpTRES=node=50,gres/gpu=4
   - GrpJobs=60
   - MaxTRES=cpu=128
   - MaxWall=8:00:00
-  - MaxTRESPU=cpu=128,mem=65536
+  - MaxTRESPU=cpu=128,mem=65536,gres/gpu=2
   - MaxTRESPA=cpu=196,mem=131072
   - MaxJobsPU=10
   - MaxSubmitJobsPU=20
@@ -48,10 +49,11 @@ slurm_partitions:
     State: UP
     DefMemPerCPU: 512
 slurm_gpus_models_map:
-  Nvidia H100: h100
+  Nvidia H100: {}
 slurmweb_enabled: true
 slurmweb_agent_settings:
   metrics:
     enabled: true
 redis_enabled: true
 metrics_enabled: true
+ldap_with_memberof: true

@@ -12,12 +12,39 @@ Deploy emulated clusters on development server:
 
 ```console
 $ ssh firehpc.dev.rackslab.io
-$ firehpc deploy --db firehpc/db --cluster nova --os debian14 --custom firehpc/conf/nova
-$ firehpc deploy --db firehpc/db --cluster zenith --os debian13 --custom firehpc/conf/zenith --users nova
-$ firehpc deploy --db firehpc/db --cluster quark --os rocky8 --custom firehpc/conf/quark --users nova
-$ firehpc deploy --db firehpc/db --cluster vortex --os rocky9 --custom firehpc/conf/vortex --users nova
-$ firehpc deploy --db firehpc/db --cluster titan --os debian13 --custom firehpc/conf/titan --slurm-emulator --users nova
+$ firehpc deploy --db firehpc/db --cluster nova --os debian13 --custom firehpc/conf/nova
+$ firehpc deploy --db firehpc/db --cluster zenith --os debian13 --custom firehpc/conf/zenith --users-from nova
+$ firehpc deploy --db firehpc/db --cluster pulsar --os rocky10 --custom firehpc/conf/pulsar --users-from nova
+$ firehpc deploy --db firehpc/db --cluster comet --os rocky9 --custom firehpc/conf/comet --users-from nova
+$ firehpc deploy --db firehpc/db --cluster titan --os debian13 --custom firehpc/conf/titan --slurm-emulator --users-from nova
 ```
+
+Each cluster covers a different set of Slurm versions, operating systems and
+Slurm-web features:
+
+| Cluster | Slurm (API) | OS | slurmrestd | Metrics | RacksDB | Highlights |
+|---------|-------------|----|------------|---------|---------|------------|
+| nova | 26.11 (0.0.46) | Debian 13 | JWT auto, TCP | ✓ | ✓ | typed + untyped GPUs, GPU shards, QOS preemption, gateway in subdirectory, extra user group policy |
+| pulsar | 26.05 (0.0.45) | Rocky Linux 10 | JWT auto, Unix socket | ✓ | ✓ | mixed typed GPUs (H100 + H200), overlapping partitions |
+| titan | 25.11 (0.0.44) | Debian 13 | JWT static, Unix socket | ✓ | ✓ | Slurm emulator with 500+ nodes, multiple racks, oversubscribed and drained partitions, no slurmdbd archive |
+| zenith | 25.05 (0.0.43) | Debian 13 | JWT auto, TCP | ✓ | ✓ | untyped GPUs, GPU TRES limits in QOS, LDAP memberOf |
+| comet | 24.11 (0.0.42) | Rocky Linux 9 | local, Unix socket | ✗ | ✗ | typed GPUs, optional features disabled |
+
+> [!NOTE]
+> No cluster is deployed on Debian 14 _« forky »_ because hpck.it does not
+> provide Slurm packages for this distribution: PMIx version available in Debian
+> repositories is incompatible with Slurm (checked in November 2026).
+>
+> - Debian _forky_ provides PMIx `7.0.0~rc1-3`, _trixie_ provides `5.0.7-1`
+>   ([sources.debian.org](https://sources.debian.org/src/pmix/)).
+> - Slurm configure script only detects PMIx major versions 2 to 6 and fails
+>   with `unable to locate pmix installation` when `--with-pmix` is given with
+>   another version
+>   ([`auxdir/x_ac_pmix.m4` in tag `slurm-26-11-0-1`](https://github.com/SchedMD/slurm/blob/slurm-26-11-0-1/auxdir/x_ac_pmix.m4)).
+> - Debian hit the same build failure
+>   ([bug #1149781](https://bugs.debian.org/1149781)) and its own `slurm-wlm`
+>   package is built without PMIx since `26.05.5-1` in _forky_
+>   ([changelog](https://sources.debian.org/src/slurm-wlm/26.05.5-1/debian/changelog/)).
 
 FireHPC creates 10 fake users accounts that can be used to login on Slurm-web.
 The first one is admin on all clusters. Run this command to view users generated
@@ -80,7 +107,7 @@ $ cd frontend && npm ci
 $ npm run dev
 ```
 
-Open http://localhost:5173/ — Slurm-web should be up-and-running with three
+Open http://localhost:5173/ — Slurm-web should be up-and-running with five
 clusters.
 
 The dev server proxies `/config.json`, `/logo`, and `/favicon.ico` to the gateway
@@ -161,8 +188,10 @@ Setup your browser to use this SOCKS5 proxy with remote DNS resolution.
 Slurm-web can be accessed on all clusters, eg.:
 
 * http://admin.titan/
-* http://admin.nova/
-* http://admin.vortex/
+* http://admin.nova/slurm-web/
+* http://admin.zenith/
+* http://admin.pulsar/
+* http://admin.comet/
 
 ## Additional tests
 

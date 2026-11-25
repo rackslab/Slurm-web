@@ -13,8 +13,8 @@ DEV_HOST = "firehpc.dev.rackslab.io"
 CLUSTERS = {
     "nova": {"auth": "jwt", "scheme": "http", "policy_extra_user_group": True},
     "zenith": {"auth": "jwt", "scheme": "http"},
-    "quark": {"auth": "local", "racksdb": False, "metrics": False},
-    "vortex": {"auth": "jwt", "scheme": "http", "metrics": False},
+    "pulsar": {"auth": "jwt"},
+    "comet": {"auth": "local", "racksdb": False, "metrics": False},
     "titan": {"auth": "jwt", "mode": "static"},
 }
 

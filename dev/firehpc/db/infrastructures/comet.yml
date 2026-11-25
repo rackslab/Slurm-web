@@ -1,4 +1,4 @@
-description: Quark HPC cluster
+description: Comet HPC cluster
 layout:
 - rack: R2-A02
   nodes:

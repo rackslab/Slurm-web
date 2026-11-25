@@ -1,17 +1,17 @@
 common_pkgs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_pkgs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 common_with_devs_repos: true
 common_hpckit_derivatives:
 - main
-- slurm24.05
+- slurm25.11
 common_devs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_devs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 fhpc_slurm_with_jwt: true
 slurm_with_db_archive: false
 slurm_params:
@@ -27,6 +27,7 @@ slurm_partitions:
     MaxTime: INFINITE
     State: UP
     DefMemPerCPU: 512
+    OverSubscribe: "FORCE:2"
 - name: debug
   nodes: cn[081-099]
   params:
@@ -39,8 +40,12 @@ slurm_partitions:
     MaxTime: "10:00"
     State: UP
     DefMemPerCPU: 512
-slurm_gpus_models_map:
-  Nvidia H100: h100
+- name: maintenance
+  nodes: cn[531-532]
+  params:
+    MaxTime: INFINITE
+    State: DRAIN
+    DefMemPerCPU: 512
 slurm_qos:
 - name: critical
   args:
@@ -50,6 +55,11 @@ slurm_qos:
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
   - Priority=200
+- name: standby
+  args:
+  - MaxTRESPU=cpu=256
+  - MaxWall=12:00:00
+  - Priority=10
 slurmweb_enabled: true
 slurmweb_slurmrestd_jwt_mode: static
 slurmweb_agent_settings:

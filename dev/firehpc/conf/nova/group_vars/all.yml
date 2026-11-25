@@ -1,14 +1,14 @@
 common_pkgs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_pkgs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 common_with_devs_repos: true
 common_devs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_devs_priorities:
-  slurmweb-5: 900
+  slurmweb-7: 900
 common_hpckit_derivatives:
 - main
 - slurm26.11
@@ -19,7 +19,14 @@ slurm_params:
   PriorityWeightFairshare: 1000
   PriorityWeightQOS: 100
   SelectType: select/cons_tres
+  PreemptType: preempt/qos
+  PreemptMode: REQUEUE
+  AccountingStorageTRES: "gres/gpu:h100,gres/shard"
 slurm_qos:
+- name: low
+  args:
+  - MaxWall=1-00:00:00
+  - Priority=10
 - name: study
   args:
   - Flags=OverPartQOS
@@ -33,6 +40,7 @@ slurm_qos:
   - MaxSubmitJobsPU=20
   - MaxSubmitJobsPA=30
   - Priority=100
+  - Preempt=low
 slurm_partitions:
 - name: normal
   nodes: cn[1-4]
@@ -48,9 +56,13 @@ slurm_partitions:
     State: UP
     DefMemPerCPU: 512
 slurm_gpus_models_map:
-  Nvidia H100: h100
-  generic: null
+  Nvidia H100:
+    type: h100
+  generic: {}
+slurm_shards_per_gpu:
+  gpu-xl-generic: 4
 slurmweb_enabled: true
+slurmweb_gateway_subdir: slurm-web/
 slurmweb_agent_settings:
   metrics:
     enabled: true

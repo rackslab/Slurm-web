@@ -1,22 +1,20 @@
 common_pkgs_derivatives:
 - main
-- slurmweb-5
+- slurmweb-7
 common_pkgs_priorities:
-  slurmweb-5: 90
+  slurmweb-7: 900
 common_with_devs_repos: true
 common_devs_derivatives:
 - main
-- slurmweb-5
-common_devs_priorities:
-  slurmweb-5: 90
 common_hpckit_derivatives:
-- main
-- slurm24.05
+- slurm26.05
+fhpc_slurm_with_jwt: true
 slurm_params:
   PriorityType: priority/multifactor
   PriorityWeightFairshare: 1000
   PriorityWeightQOS: 100
   SelectType: select/cons_tres
+  AccountingStorageTRES: "gres/gpu:h100,gres/gpu:h200"
 slurm_qos:
 - name: study
   args:
@@ -45,7 +43,20 @@ slurm_partitions:
     MaxTime: "2:0:0"
     State: UP
     DefMemPerCPU: 512
+- name: all
+  nodes: cn[1-4],gpu[1-2]
+  params:
+    MaxTime: "1:0:0"
+    State: UP
+    DefMemPerCPU: 512
 slurm_gpus_models_map:
-  Nvidia H100: h100
+  Nvidia H100:
+    type: h100
+  Nvidia H200:
+    type: h200
 slurmweb_enabled: true
+slurmweb_agent_settings:
+  metrics:
+    enabled: true
 redis_enabled: true
+metrics_enabled: true
