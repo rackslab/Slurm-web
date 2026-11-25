@@ -10,13 +10,11 @@ import logging
 import os
 import shutil
 import signal
-import socket
 import sys
 import tempfile
 import time
 from pathlib import Path
 
-import paramiko
 from rfl.authentication.jwt import jwt_gen_key
 from racksdb import RacksDB
 
@@ -24,10 +22,8 @@ from paths import DEV_ROOT, REALM_IMPORT_FILENAME, REPO_ROOT
 from devenv.agent import SlurmwebAgent
 from devenv.constants import (
     CLUSTERS,
-    DEV_HOST,
     FRONTEND_PORT,
     GATEWAY_SERVICE_PORT,
-    USER,
 )
 from devenv.gateway import SlurmwebGateway
 from devenv import keycloak as keycloak_dev
@@ -123,18 +119,6 @@ def main():
         schema=str(RACKSDB_SCHEMA),
     )
 
-    ssh_client = paramiko.SSHClient()
-    ssh_client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
-    logger.info("Connecting to development host %s", DEV_HOST)
-    try:
-        ssh_client.connect(DEV_HOST, username=USER)
-    except socket.gaierror as err:
-        logger.error("Unable to get address of %s: %s", DEV_HOST, str(err))
-        sys.exit(1)
-    except paramiko.ssh_exception.PasswordRequiredException as err:
-        logger.error("Unable to connect on %s@%s: %s", USER, DEV_HOST, str(err))
-        sys.exit(1)
-
     tmpdir = Path(tempfile.mkdtemp(prefix="slurm-web-dev"))
     atexit.register(delete_tmpdir, tmpdir)
 
@@ -152,14 +136,16 @@ def main():
             ui_name = CLUSTERS[infrastructure.name]["name"]
         else:
             ui_name = infrastructure.name
-        agent = SlurmwebAgent.init(
-            DEV_HOST,
-            port_allocator,
-            ssh_client,
-            infrastructure.name,
-            ui_name,
-            cluster_id,
-        )
+        try:
+            agent = SlurmwebAgent.init(
+                port_allocator,
+                infrastructure.name,
+                ui_name,
+                cluster_id,
+            )
+        except RuntimeError as err:
+            logger.error(err)
+            sys.exit(1)
         agent.render_policy(tmpdir, args.anonymous)
         cluster_cfg = CLUSTERS[infrastructure.name]
         cluster_racksdb_enabled = cluster_cfg.get("racksdb", True)
@@ -232,8 +218,6 @@ def main():
         gateway.stop()
         for agent in agents:
             agent.stop()
-        logger.info("Closing SSH connection")
-        ssh_client.close()
         logger.info("Stopping development environment tunnels")
 
 

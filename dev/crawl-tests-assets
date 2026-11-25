@@ -10,7 +10,6 @@ from pathlib import Path
 import argparse
 import shutil
 import sys
-import getpass
 import logging
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
@@ -19,8 +18,6 @@ from rfl.log import setup_logger
 
 from crawler.lib import (
     load_settings,
-    DevelopmentHostClient,
-    DevelopmentHostConnectionError,
     DevelopmentHostCluster,
     SUPPORTED_SLURMRESTD_API_VERSIONS,
 )
@@ -35,8 +32,6 @@ from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
 logger = logging.getLogger("crawl-tests-assets")
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "crawler"]
-DEV_HOST = "firehpc.dev.rackslab.io"
-USER = getpass.getuser()
 GATEWAY_PREFERRED_INFRASTRUCTURE = "nova"
 METRICS_PREFERRED_INFRASTRUCTURE = "titan"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
@@ -92,14 +87,12 @@ def slurmweb_cluster_name(infrastructure: str):
 
 def _create_cluster(
     infrastructure: str,
-    dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
 ) -> DevelopmentHostCluster:
     """Create and return a DevelopmentHostCluster instance for the given infrastructure.
 
     Args:
         infrastructure: The infrastructure/cluster name
-        dev_host: Development host client
         dev_tmp_dir: Temporary directory for development environment
 
     Returns:
@@ -117,13 +110,12 @@ def _create_cluster(
         settings.slurmrestd.jwt_lifespan,
         settings.slurmrestd.jwt_token,
     )
-    cluster = DevelopmentHostCluster(dev_host, infrastructure, settings, auth)
+    cluster = DevelopmentHostCluster(infrastructure, settings, auth)
     return cluster
 
 
 def _get_clusters_with_latest_api(
     clusters_to_process: list[str],
-    dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
     clusters_cache: dict[str, DevelopmentHostCluster],
 ) -> set[str]:
@@ -131,7 +123,6 @@ def _get_clusters_with_latest_api(
 
     Args:
         clusters_to_process: List of infrastructure names to check.
-        dev_host: Development host client.
         dev_tmp_dir: Temporary directory for development environment.
         clusters_cache: Dictionary mapping infrastructure names to clusters.
 
@@ -144,7 +135,7 @@ def _get_clusters_with_latest_api(
     for infrastructure in clusters_to_process:
         if infrastructure not in clusters_cache:
             clusters_cache[infrastructure] = _create_cluster(
-                infrastructure, dev_host, dev_tmp_dir
+                infrastructure, dev_tmp_dir
             )
         cluster = clusters_cache[infrastructure]
 
@@ -306,7 +297,6 @@ def _crawl_assets(
 def _run_crawl(
     clusters_to_process: list[str],
     components_to_process: list[str],
-    dev_host: DevelopmentHostClient,
     dev_tmp_dir: Path,
     token: str,
     asset_filter: list[str] | None = None,
@@ -317,13 +307,11 @@ def _run_crawl(
     # Initialize clusters once and cache them
     clusters_cache: dict[str, DevelopmentHostCluster] = {}
     for infrastructure in clusters_to_process:
-        clusters_cache[infrastructure] = _create_cluster(
-            infrastructure, dev_host, dev_tmp_dir
-        )
+        clusters_cache[infrastructure] = _create_cluster(infrastructure, dev_tmp_dir)
 
     # Discover which clusters support the latest API version
     clusters_with_latest_api = _get_clusters_with_latest_api(
-        clusters_to_process, dev_host, dev_tmp_dir, clusters_cache
+        clusters_to_process, dev_tmp_dir, clusters_cache
     )
 
     if "gateway" in components_to_process or "agent" in components_to_process:
@@ -452,16 +440,8 @@ def main() -> None:
         components_to_process = all_components
         logger.info("Processing all components: %s", components_to_process)
 
-    dev_host = DevelopmentHostClient(DEV_HOST, USER)
-    try:
-        dev_host.connect()
-    except DevelopmentHostConnectionError as err:
-        logger.error(err)
-        sys.exit(1)
-
     # Get Slurm-web JWT for authentication on gateway and agent
     token = slurmweb_token(
-        dev_host,
         slurmweb_cluster_name(GATEWAY_PREFERRED_INFRASTRUCTURE),
         GATEWAY_PREFERRED_INFRASTRUCTURE,
         dev_tmp_dir,
@@ -476,7 +456,6 @@ def main() -> None:
         _run_crawl(
             clusters_to_process,
             components_to_process,
-            dev_host,
             dev_tmp_dir,
             token,
             asset_filter,

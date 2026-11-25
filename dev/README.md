@@ -2,16 +2,11 @@
 
 ## Setup Development Environment
 
-Copy FireHPC configuration files on development server:
+Deploy emulated clusters with [FireHPC](https://github.com/rackslab/FireHPC)
+from `dev/` directory of Slurm-web source tree:
 
 ```console
-$ scp -r firehpc firehpc.dev.rackslab.io:
-```
-
-Deploy emulated clusters on development server:
-
-```console
-$ ssh firehpc.dev.rackslab.io
+$ cd dev
 $ firehpc deploy --db firehpc/db --cluster nova --os debian13 --custom firehpc/conf/nova
 $ firehpc deploy --db firehpc/db --cluster zenith --os debian13 --custom firehpc/conf/zenith --users-from nova
 $ firehpc deploy --db firehpc/db --cluster pulsar --os rocky10 --custom firehpc/conf/pulsar --users-from nova
@@ -90,13 +85,10 @@ _gateway_):
 $ dev/setup-dev-environment
 ```
 
-By default, the script connects on development server with local user name. It
-is possible to use an alternate remote user name with `LOGNAME` environment
-variable:
-
-```console
-$ LOGNAME=jdoe dev/setup-dev-environment
-```
+The script runs `firehpc` commands locally to get clusters users and groups,
+reaches cluster nodes with `firehpc ssh` and reads Redis passwords and Slurm JWT
+keys in local FireHPC clusters state directory
+(`~/.local/state/firehpc/clusters/` or `$XDG_STATE_HOME/firehpc/clusters/`).
 
 ## Frontend
 
@@ -176,11 +168,11 @@ $ curl --silent --unix-socket /tmp/slurmrestd-nova.socket  \
 
 ## Remote Installation
 
-To access Slurm-web deployed in containers, create SSH SOCKS5 proxy on
-development server:
+To access Slurm-web deployed in containers, create SSH SOCKS5 proxy on the host
+running the clusters containers:
 
 ```console
-$ ssh -D 2223 firehpc.dev.rackslab.io
+$ ssh -D 2223 <host>
 ```
 
 Setup your browser to use this SOCKS5 proxy with remote DNS resolution.

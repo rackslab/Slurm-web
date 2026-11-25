@@ -5,20 +5,18 @@
 # SPDX-License-Identifier: MIT
 
 from dataclasses import dataclass
-import json
 import logging
 import shlex
 import subprocess
 from pathlib import Path
 
 import jinja2
-import paramiko
 
 from paths import CONF_DIR, REPO_ROOT
 from devenv.cluster import ClusterChannel
 from devenv.constants import CLUSTERS, DEBUG_FLAGS
 from devenv.ports import PortAllocator, PortForward, runcmd
-from remote import exec_remote_command
+from fhpc import cluster_state_dir, cluster_status, run_firehpc
 
 logger = logging.getLogger(__name__)
 
@@ -53,43 +51,24 @@ class SlurmwebAgent:
     @classmethod
     def init(
         cls,
-        host: str,
         port_allocator: PortAllocator,
-        ssh_client: paramiko.client.SSHClient,
         name: str,
         ui_name: str,
         cluster_id: int,
     ):
         forwards = port_allocator.allocate()
-        channel = ClusterChannel.connect(host, ssh_client, forwards, name, cluster_id)
+        channel = ClusterChannel.connect(forwards, name)
         return cls(name, ui_name, channel, forwards, 5013 + cluster_id)
 
     def render_policy(self, tmpdir: Path, anonymous: bool) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader(CONF_DIR))
         template = environment.get_template("policy.ini.j2")
         self.policy_path = tmpdir / f"policy-{self.name}.ini"
-        cmd = shlex.join(["firehpc", "status", "--cluster", self.name, "--json"])
-        exit_code, stdout, stderr = exec_remote_command(self.channel.connection, cmd)
         try:
-            self.cluster_status = json.loads(stdout)
-        except json.decoder.JSONDecodeError as err:
-            details = []
-            if exit_code != 0:
-                details.append(f"exit code {exit_code}")
-            stderr = stderr.strip()
-            if stderr:
-                details.append(f"stderr: {stderr}")
-            stdout = stdout.strip()
-            if stdout:
-                details.append(f"stdout: {stdout}")
-            else:
-                details.append("stdout was empty")
-            message = (
-                f"Unable to load {self.name} cluster status: invalid JSON ({err}). "
-                f"Remote `firehpc status` failed ({'; '.join(details)})."
-            )
-            logger.critical(message)
-            raise RuntimeError(message) from err
+            self.cluster_status = cluster_status(self.name)
+        except RuntimeError as err:
+            logger.critical(err)
+            raise
         with open(self.policy_path, "w+") as fh:
             fh.write(
                 template.render(
@@ -113,18 +92,15 @@ class SlurmwebAgent:
     ) -> None:
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader(CONF_DIR))
         template = environment.get_template("agent.ini.j2")
-        sftp = self.channel.connection.open_sftp()
-        logger.info("Reading remote redis password for cluster %s", self.name)
+        state_dir = cluster_state_dir(self.name)
+        logger.info("Reading redis password for cluster %s", self.name)
         redis_password = None
         if cache_enabled:
             try:
-                with sftp.open(
-                    f".local/state/firehpc/clusters/{self.name}/redis/redis.password"
-                ) as fh:
-                    redis_password = fh.read().decode()
+                redis_password = (state_dir / "redis" / "redis.password").read_text()
             except FileNotFoundError:
                 logger.warning(
-                    "Remote Redis password file not found for cluster %s, force "
+                    "Redis password not found in FireHPC state of cluster %s, force "
                     "disabling cache",
                     self.name,
                 )
@@ -135,19 +111,13 @@ class SlurmwebAgent:
         if CLUSTERS[self.name]["auth"] == "jwt":
             if CLUSTERS[self.name].get("mode") == "static":
                 logger.info("Generating static JWT for cluster %s", self.name)
-                cmd = shlex.join(
-                    [
-                        "firehpc",
-                        "ssh",
-                        f"admin.{self.name}",
-                        "scontrol",
-                        "token",
-                        "lifespan=infinite",
-                        "username=slurm",
-                    ]
-                )
-                exit_code, stdout, stderr = exec_remote_command(
-                    self.channel.connection, cmd
+                exit_code, stdout, stderr = run_firehpc(
+                    "ssh",
+                    f"admin.{self.name}",
+                    "scontrol",
+                    "token",
+                    "lifespan=infinite",
+                    "username=slurm",
                 )
                 try:
                     slurmrestd_token = _parse_scontrol_token_output(stdout)
@@ -163,31 +133,23 @@ class SlurmwebAgent:
                         details.append(f"stdout: {stdout}")
                     else:
                         details.append("stdout was empty")
-                    remote_details = "; ".join(details)
                     message = (
                         f"Unable to get static JWT on cluster {self.name}: {err}. "
-                        f"Remote `scontrol token` failed ({remote_details}). "
+                        f"`scontrol token` failed ({'; '.join(details)}). "
                         f"Check that Slurm is running and JWT authentication is "
                         f"configured on admin.{self.name}."
                     )
                     logger.critical(message)
                     raise RuntimeError(message) from err
             else:
-                logger.info(
-                    "Downloading remote Slurm JWT signing key for cluster %s",
-                    self.name,
-                )
-                try:
-                    with sftp.open(
-                        f".local/state/firehpc/clusters/{self.name}/slurm/jwt_hs256.key"
-                    ) as fh:
-                        slurm_jwt_key = fh.read()
-                    slurmrestd_jwt_key = tmpdir / f"{self.name}_jwt_hs256.key"
-                    with open(slurmrestd_jwt_key, "wb+") as fh:
-                        fh.write(slurm_jwt_key)
-                except FileNotFoundError:
+                logger.info("Reading Slurm JWT signing key for cluster %s", self.name)
+                slurm_jwt_key = state_dir / "slurm" / "jwt_hs256.key"
+                if slurm_jwt_key.exists():
+                    slurmrestd_jwt_key = slurm_jwt_key
+                else:
                     logger.warning(
-                        "Remote Slurm JWT signature key not found for cluster %s",
+                        "Slurm JWT signing key not found in FireHPC state of cluster "
+                        "%s",
                         self.name,
                     )
         if CLUSTERS[self.name].get("scheme", "unix") == "unix":

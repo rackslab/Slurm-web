@@ -7,10 +7,8 @@
 # SPDX-License-Identifier: MIT
 
 from __future__ import annotations
-import typing as t
 import sys
 import os
-import json
 import random
 import getpass
 import time
@@ -19,8 +17,7 @@ import logging
 
 import requests
 
-if t.TYPE_CHECKING:
-    from .lib import DevelopmentHostClient
+from fhpc import cluster_status
 
 from .lib import (
     Asset,
@@ -76,15 +73,12 @@ def user_token(url: str, user: str):
     return response.json()["token"]
 
 
-def admin_user(dev_host: DevelopmentHostClient, cluster: str):
+def admin_user(cluster: str):
     """Return name of a user in admin group for the given cluster."""
 
-    _, stdout, _ = dev_host.exec_completed(
-        ["firehpc", "status", "--cluster", cluster, "--json"]
-    )
-    cluster_status = json.loads(stdout)
+    status = cluster_status(cluster)
 
-    for group in cluster_status["groups"]:
+    for group in status["groups"]:
         if group["name"] == "admin":
             return group["members"][0]
 
@@ -93,13 +87,12 @@ def admin_user(dev_host: DevelopmentHostClient, cluster: str):
 
 
 def slurmweb_token(
-    dev_host: DevelopmentHostClient,
     cluster: str,
     infrastructure: str,
     dev_tmp_dir: Path,
 ):
     # Retrieve admin user account to connect
-    user = admin_user(dev_host, infrastructure)
+    user = admin_user(infrastructure)
     logger.info("Found user %s in group admin on cluster %s", user, cluster)
 
     # Get gateway HTTP base URL from configuration

@@ -4,10 +4,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-import getpass
-
-DEV_HOST = "firehpc.dev.rackslab.io"
-
 # Dict of clusters settings to control cluster names in UI, slurmrestd access
 # (TCP/IP or Unix socket) and authentication.
 CLUSTERS = {
@@ -17,8 +13,6 @@ CLUSTERS = {
     "comet": {"auth": "local", "racksdb": False, "metrics": False},
     "titan": {"auth": "jwt", "mode": "static"},
 }
-
-USER = getpass.getuser()
 
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3"]
 

@@ -10,9 +10,7 @@ from __future__ import annotations
 import sys
 import typing as t
 import json
-import socket
 from pathlib import Path
-import shlex
 import time
 import random
 import string
@@ -21,7 +19,6 @@ import re
 from datetime import datetime, timedelta
 
 import requests
-import paramiko
 
 from rfl.settings import RuntimeSettings
 from rfl.settings.errors import (
@@ -33,7 +30,7 @@ from rfl.settings.errors import (
 from slurmweb.slurmrestd.unix import SlurmrestdUnixAdapter
 
 from paths import ASSETS
-from remote import exec_remote_command
+from fhpc import cluster_status
 
 if t.TYPE_CHECKING:
     from slurmweb.slurmrestd.auth import SlurmrestdAuthentifier
@@ -233,73 +230,13 @@ def busy_node(node):
     return "ALLOCATED" in node["state"] or "MIXED" in node["state"]
 
 
-class DevelopmentHostConnectionError(Exception):
-    pass
-
-
-class DevelopmentHostClient:
-    def __init__(self, host, user):
-        self._client = None
-        self.host = host
-        self.user = user
-
-    def connect(self):
-        self._client = paramiko.SSHClient()
-        self._client.load_host_keys(Path("~/.ssh/known_hosts").expanduser())
-        logger.info("Connecting to development host %s", self.host)
-        try:
-            self._client.connect(self.host, username=self.user)
-        except socket.gaierror as err:
-            raise DevelopmentHostConnectionError(
-                f"Unable to get address of {self.host}: {err}"
-            ) from err
-        except paramiko.ssh_exception.PasswordRequiredException as err:
-            raise DevelopmentHostConnectionError(
-                f"Unable to connect on {self.user}@{self.host}: {err}"
-            ) from err
-
-    def exec(self, cmd: list[str], retries: int = 3, reconnect: bool = False):
-        if not retries:
-            raise CrawlerError(
-                f"Unable to execute command on development host: {shlex.join(cmd)}"
-            )
-
-        logger.debug("Running command on development host: %s", shlex.join(cmd))
-        try:
-            if reconnect:
-                self.connect()
-            return self._client.exec_command(shlex.join(cmd))
-        except paramiko.ssh_exception.ChannelException:
-            logger.warning("Channel exception occurred, reconnecting to %s", self.host)
-            self.exec(cmd, retries - 1, reconnect=True)
-
-    def exec_completed(
-        self, cmd: list[str], retries: int = 3, reconnect: bool = False
-    ) -> tuple[int, str, str]:
-        if not retries:
-            raise CrawlerError(
-                f"Unable to execute command on development host: {shlex.join(cmd)}"
-            )
-
-        logger.debug("Running command on development host: %s", shlex.join(cmd))
-        try:
-            if reconnect:
-                self.connect()
-            return exec_remote_command(self._client, shlex.join(cmd))
-        except paramiko.ssh_exception.ChannelException:
-            logger.warning("Channel exception occurred, reconnecting to %s", self.host)
-            return self.exec_completed(cmd, retries - 1, reconnect=True)
-
-
 class DevelopmentHostCluster:
     def __init__(
         self,
-        dev_host: DevelopmentHostClient,
         name: str,
         settings: RuntimeSettings,
         auth: SlurmrestdAuthentifier,
     ):
-        self.dev_host = dev_host
         self.name = name
         self.settings = settings
         self.auth = auth
@@ -313,10 +250,7 @@ class DevelopmentHostCluster:
             self.prefix = uri.geturl()
 
         # check cluster has slurm emulator mode enabled
-        _, stdout, _ = self.dev_host.exec_completed(
-            ["firehpc", "status", "--cluster", self.name, "--json"]
-        )
-        self.status = json.loads(stdout)
+        self.status = cluster_status(self.name)
 
         self.emulator = self.status["settings"]["slurm_emulator"]
         self.users = [user["login"] for user in self.status["users"]]

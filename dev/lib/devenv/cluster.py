@@ -9,11 +9,11 @@ import logging
 import shlex
 import subprocess
 
-import paramiko
 import sshtunnel
 
-from devenv.constants import CLUSTERS, USER
+from devenv.constants import CLUSTERS
 from devenv.ports import PortForward, runcmd
+from fhpc import cluster_remote, firehpc_cmd, run_firehpc
 
 logger = logging.getLogger(__name__)
 
@@ -21,53 +21,58 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ClusterChannel:
     name: str
-    connection: paramiko.client.SSHClient
     forwarder: sshtunnel.SSHTunnelForwarder
+    remote_process: subprocess.Popen
     process: subprocess.Popen
 
     @classmethod
     def connect(
         cls,
-        host: str,
-        ssh_client: paramiko.client.SSHClient,
         forwards: dict[str, PortForward],
         cluster: str,
-        cluster_id: int,
     ):
+        remote = cluster_remote(cluster)
+        logger.info(
+            "Opening tunnels to cluster %s through %s@%s:%d",
+            cluster,
+            remote.user,
+            remote.host,
+            remote.port,
+        )
         remote_bind_addresses = []
         local_bind_addresses = []
 
         for forward in forwards.values():
             remote_bind_addresses.append(
                 (
-                    f"admin.{cluster}.{ssh_client.get_transport().get_username()}",
+                    # Containers names are suffixed by remote user namespace.
+                    f"admin.{cluster}.{remote.user}",
                     forward.remote,
                 )
             )
             local_bind_addresses.append(("localhost", forward.local))
         forwarder = sshtunnel.SSHTunnelForwarder(
-            host,
-            ssh_username=USER,
+            (remote.host, remote.port),
+            ssh_username=remote.user,
             allow_agent=True,
             remote_bind_addresses=remote_bind_addresses,
             local_bind_addresses=local_bind_addresses,
         )
         forwarder.start()
 
+        remote_process = None
         process = None
         if CLUSTERS[cluster].get("scheme", "unix") == "unix":
-            cmd = shlex.join(
-                [
-                    "firehpc",
-                    "ssh",
-                    f"admin.{cluster}",
-                    "socat",
-                    f"TCP-LISTEN:{forwards['slurmrestd'].remote},fork",
-                    "UNIX-CONNECT:/run/slurmrestd/slurmrestd.socket",
-                ]
+            # Expose slurmrestd Unix socket on TCP port in cluster admin node.
+            cmd = firehpc_cmd(
+                "ssh",
+                f"admin.{cluster}",
+                "socat",
+                f"TCP-LISTEN:{forwards['slurmrestd'].remote},fork,reuseaddr",
+                "UNIX-CONNECT:/run/slurmrestd/slurmrestd.socket",
             )
-            logger.info("Running command on development server: %s", cmd)
-            ssh_client.exec_command(cmd)
+            logger.info("Running command locally: %s", shlex.join(cmd))
+            remote_process = runcmd(cmd)
 
             cmd = [
                 "socat",
@@ -77,12 +82,13 @@ class ClusterChannel:
             logger.info("Running command locally: %s", shlex.join(cmd))
             process = runcmd(cmd)
 
-        return cls(cluster, ssh_client, forwarder, process)
+        return cls(cluster, forwarder, remote_process, process)
 
     def stop(self) -> None:
-        logger.info("Stopping %s remote socat command", self.name)
-        cmd = shlex.join(["firehpc", "ssh", f"admin.{self.name}", "killall", "socat"])
-        self.connection.exec_command(cmd)
+        if self.remote_process:
+            logger.info("Stopping %s remote socat command", self.name)
+            run_firehpc("ssh", f"admin.{self.name}", "killall", "socat")
+            self.remote_process.kill()
         logger.info("Stopping %s forwarder", self.name)
         self.forwarder.stop()
         if self.process:
