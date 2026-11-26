@@ -38,6 +38,9 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       target: 'esnext',  // required for top-level await used by runtimeConfiguration plugin
+      // The 3D view chunk with three.js weights about 650kB. It is loaded
+      // dynamically, only when the 3D layout of resources diagrams is displayed.
+      chunkSizeWarningLimit: 700,
       rollupOptions: {
         output: {
           manualChunks(id) {
