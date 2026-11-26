@@ -158,6 +158,18 @@ const router = createRouter({
           props: true
         },
         {
+          path: 'resources/3d/nodes',
+          name: 'resources-3d-nodes',
+          component: ResourcesDiagramNodesView,
+          props: (route: RouteLocation) => ({ cluster: route.params.cluster, layout: '3d' })
+        },
+        {
+          path: 'resources/3d/cores',
+          name: 'resources-3d-cores',
+          component: ResourcesDiagramCoresView,
+          props: (route: RouteLocation) => ({ cluster: route.params.cluster, layout: '3d' })
+        },
+        {
           path: 'node/:nodeName',
           name: 'node',
           component: NodeView,

@@ -9,9 +9,11 @@
 <script setup lang="ts">
 import ResourcesDiagramGeneric from '@/components/resources/ResourcesDiagramGeneric.vue'
 
-const { cluster } = defineProps<{ cluster: string }>()
+import type { ResourcesLayout } from '@/stores/runtime/resources'
+
+const { cluster, layout = '2d' } = defineProps<{ cluster: string; layout?: ResourcesLayout }>()
 </script>
 
 <template>
-  <ResourcesDiagramGeneric :cluster="cluster" mode="nodes" />
+  <ResourcesDiagramGeneric :cluster="cluster" mode="nodes" :layout="layout" />
 </template>

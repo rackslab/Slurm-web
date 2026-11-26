@@ -19,6 +19,7 @@ const filtersClusterNodeMainStates = ['down', 'error', 'drain', 'fail', 'up'] as
 export type FiltersClusterNodeMainState = (typeof filtersClusterNodeMainStates)[number]
 const resourcesRepresentations = ['nodes', 'cores'] as const
 export type ResourcesRepresentation = (typeof resourcesRepresentations)[number]
+export type ResourcesLayout = '2d' | '3d'
 
 export function isFiltersClusterNodeMainState(
   value: unknown
@@ -33,6 +34,15 @@ export function isResourcesRepresentation(value: unknown): value is ResourcesRep
   return (
     typeof value === 'string' && (resourcesRepresentations as readonly string[]).indexOf(value) >= 0
   )
+}
+
+/* Return the name of the route of resources diagram with the given layout and
+ * representation. */
+export function resourcesDiagramRouteName(
+  layout: ResourcesLayout,
+  representation: ResourcesRepresentation
+): string {
+  return `resources-${layout === '3d' ? '3d' : 'diagram'}-${representation}`
 }
 
 export const resourcesStates: Record<

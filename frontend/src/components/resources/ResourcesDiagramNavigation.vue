@@ -8,48 +8,91 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import type { ResourcesRepresentation } from '@/stores/runtime/resources'
+import type { LocationQueryRaw } from 'vue-router'
+import { useRuntimeStore } from '@/stores/runtime'
+import { resourcesDiagramRouteName } from '@/stores/runtime/resources'
+import type { ResourcesLayout, ResourcesRepresentation } from '@/stores/runtime/resources'
 
-const { cluster, currentView } = defineProps<{
+const {
+  cluster,
+  currentView,
+  layout = '2d'
+} = defineProps<{
   cluster: string
   currentView: ResourcesRepresentation
+  layout?: ResourcesLayout
 }>()
 
 const router = useRouter()
+const runtimeStore = useRuntimeStore()
 
-function switchToNodes() {
-  router.push({ name: 'resources-diagram-nodes', params: { cluster } })
+/* Navigate to diagram with the given layout and representation, keeping
+ * filters. */
+function navigate(targetLayout: ResourcesLayout, representation: ResourcesRepresentation) {
+  router.push({
+    name: resourcesDiagramRouteName(targetLayout, representation),
+    params: { cluster },
+    query: runtimeStore.resources.query() as LocationQueryRaw
+  })
 }
 
-function switchToCores() {
-  router.push({ name: 'resources-diagram-cores', params: { cluster } })
+function switchTo(representation: ResourcesRepresentation) {
+  navigate(layout, representation)
 }
+
+function switchLayout(targetLayout: ResourcesLayout) {
+  navigate(targetLayout, currentView)
+}
+
+const buttonClasses =
+  'relative inline-flex items-center px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
+const activeClasses = 'bg-slurmweb dark:bg-slurmweb-dark text-white'
+const inactiveClasses =
+  'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700'
 </script>
 
 <template>
-  <div class="flex justify-center">
+  <div class="flex items-center justify-center gap-3">
     <span class="isolate inline-flex rounded-md shadow-xs">
       <button
         type="button"
+        data-testid="resources-diagram-layout-2d"
+        :class="[layout === '2d' ? activeClasses : inactiveClasses, buttonClasses, 'rounded-l-md']"
+        @click="switchLayout('2d')"
+      >
+        2D
+      </button>
+      <button
+        type="button"
+        data-testid="resources-diagram-layout-3d"
+        :class="[layout === '3d' ? activeClasses : inactiveClasses, buttonClasses, 'rounded-r-md']"
+        @click="switchLayout('3d')"
+      >
+        3D
+      </button>
+    </span>
+    <span class="isolate inline-flex rounded-md shadow-xs">
+      <button
+        type="button"
+        data-testid="resources-diagram-mode-nodes"
         :class="[
-          currentView === 'nodes'
-            ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
-            : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
-          'relative inline-flex items-center rounded-l-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
+          currentView === 'nodes' ? activeClasses : inactiveClasses,
+          buttonClasses,
+          'rounded-l-md'
         ]"
-        @click="switchToNodes"
+        @click="switchTo('nodes')"
       >
         Nodes
       </button>
       <button
         type="button"
+        data-testid="resources-diagram-mode-cores"
         :class="[
-          currentView === 'cores'
-            ? 'bg-slurmweb dark:bg-slurmweb-dark text-white'
-            : 'bg-white text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700',
-          'relative inline-flex items-center rounded-r-md px-3 py-2 text-xs font-semibold ring-1 ring-gray-300 ring-inset focus:z-10 dark:ring-gray-600'
+          currentView === 'cores' ? activeClasses : inactiveClasses,
+          buttonClasses,
+          'rounded-r-md'
         ]"
-        @click="switchToCores"
+        @click="switchTo('cores')"
       >
         Cores
       </button>

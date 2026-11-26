@@ -17,7 +17,13 @@ const router = useRouter()
 const route = useRoute()
 
 const returnRoute = computed(() => {
-  const validRoutes = ['resources', 'resources-diagram-nodes', 'resources-diagram-cores']
+  const validRoutes = [
+    'resources',
+    'resources-diagram-nodes',
+    'resources-diagram-cores',
+    'resources-3d-nodes',
+    'resources-3d-cores'
+  ]
   const queryRoute = route.query.returnTo as string
   return validRoutes.includes(queryRoute) ? queryRoute : 'resources'
 })

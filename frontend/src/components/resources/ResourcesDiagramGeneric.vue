@@ -7,23 +7,35 @@
 -->
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, watch } from 'vue'
 import type { Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { useRuntimeStore } from '@/stores/runtime'
-import { isFiltersClusterNodeMainState } from '@/stores/runtime/resources'
-import type { ResourcesRepresentation } from '@/stores/runtime/resources'
+import {
+  isFiltersClusterNodeMainState,
+  resourcesDiagramRouteName
+} from '@/stores/runtime/resources'
+import type { ResourcesLayout, ResourcesRepresentation } from '@/stores/runtime/resources'
 import ResourcesCanvas from '@/components/resources/ResourcesCanvas.vue'
+// The 3D view and three.js are loaded only when the 3D layout is selected.
+const ResourcesScene3D = defineAsyncComponent(
+  () => import('@/components/resources/ResourcesScene3D.vue')
+)
 import ResourcesDiagramNavigation from '@/components/resources/ResourcesDiagramNavigation.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { SlurmNode } from '@/composables/gateway/slurm/types'
 
-const { cluster, mode } = defineProps<{
+const {
+  cluster,
+  mode,
+  layout = '2d'
+} = defineProps<{
   cluster: string
   mode: ResourcesRepresentation
+  layout?: ResourcesLayout
 }>()
 
 const runtimeStore = useRuntimeStore()
@@ -38,7 +50,7 @@ const filteredNodes: Ref<SlurmNode[]> = computed(() => {
 
 function updateQueryParameters() {
   router.push({
-    name: `resources-diagram-${mode}`,
+    name: resourcesDiagramRouteName(layout, mode),
     params: { cluster },
     query: runtimeStore.resources.query() as LocationQueryRaw
   })
@@ -80,7 +92,7 @@ onMounted(() => {
       <h3 class="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
         Cluster {{ cluster }}
       </h3>
-      <ResourcesDiagramNavigation :cluster="cluster" :current-view="mode" />
+      <ResourcesDiagramNavigation :cluster="cluster" :current-view="mode" :layout="layout" />
       <button
         type="button"
         class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
@@ -99,7 +111,14 @@ onMounted(() => {
       >
     </div>
 
+    <ResourcesScene3D
+      v-if="layout === '3d'"
+      :cluster="cluster"
+      :nodes="filteredNodes"
+      :mode="mode"
+    />
     <ResourcesCanvas
+      v-else
       :cluster="cluster"
       :nodes="filteredNodes"
       :fullscreen="true"
