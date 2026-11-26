@@ -9,6 +9,7 @@
 import { createRouter, createWebHistory, type RouteLocation } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useRuntimeStore } from '@/stores/runtime'
+import type { ResourcesLayout, ResourcesRepresentation } from '@/stores/runtime/resources'
 import { useRuntimeConfiguration } from '@/plugins/runtimeConfiguration'
 import DashboardView from '@/views/DashboardView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -25,8 +26,7 @@ import JobsView from '@/views/JobsView.vue'
 import JobsPastView from '@/views/JobsPastView.vue'
 import JobView from '@/views/JobView.vue'
 import ResourcesView from '@/views/resources/ResourcesView.vue'
-import ResourcesDiagramNodesView from '@/views/resources/ResourcesDiagramNodesView.vue'
-import ResourcesDiagramCoresView from '@/views/resources/ResourcesDiagramCoresView.vue'
+import ResourcesDiagramView from '@/views/resources/ResourcesDiagramView.vue'
 import NodeView from '@/views/NodeView.vue'
 import QosView from '@/views/QosView.vue'
 import ReservationsView from '@/views/ReservationsView.vue'
@@ -36,6 +36,12 @@ import UserView from '@/views/UserView.vue'
 import JobsStatusBadges from '@/views/tests/JobsStatusBadges.vue'
 import NodesStatusBadges from '@/views/tests/NodesStatusBadges.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
+
+/* Return route props of resources diagram view with the given representation and
+ * layout. */
+function resourcesDiagramProps(mode: ResourcesRepresentation, layout: ResourcesLayout) {
+  return (route: RouteLocation) => ({ cluster: route.params.cluster, mode, layout })
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -148,26 +154,26 @@ const router = createRouter({
         {
           path: 'resources/diagram/nodes',
           name: 'resources-diagram-nodes',
-          component: ResourcesDiagramNodesView,
-          props: true
+          component: ResourcesDiagramView,
+          props: resourcesDiagramProps('nodes', '2d')
         },
         {
           path: 'resources/diagram/cores',
           name: 'resources-diagram-cores',
-          component: ResourcesDiagramCoresView,
-          props: true
+          component: ResourcesDiagramView,
+          props: resourcesDiagramProps('cores', '2d')
         },
         {
           path: 'resources/3d/nodes',
           name: 'resources-3d-nodes',
-          component: ResourcesDiagramNodesView,
-          props: (route: RouteLocation) => ({ cluster: route.params.cluster, layout: '3d' })
+          component: ResourcesDiagramView,
+          props: resourcesDiagramProps('nodes', '3d')
         },
         {
           path: 'resources/3d/cores',
           name: 'resources-3d-cores',
-          component: ResourcesDiagramCoresView,
-          props: (route: RouteLocation) => ({ cluster: route.params.cluster, layout: '3d' })
+          component: ResourcesDiagramView,
+          props: resourcesDiagramProps('cores', '3d')
         },
         {
           path: 'node/:nodeName',
