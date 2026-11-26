@@ -10,7 +10,12 @@ import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch 
 import type { Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // Micro icons, designed to be displayed at 16px in buttons
-import { ArrowPathIcon, HomeIcon, ViewfinderCircleIcon } from '@heroicons/vue/16/solid'
+import {
+  ArrowPathIcon,
+  HomeIcon,
+  QuestionMarkCircleIcon,
+  ViewfinderCircleIcon
+} from '@heroicons/vue/16/solid'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
@@ -20,6 +25,9 @@ import type { CameraMode, ResourcesViewer } from '@/lib/resources3d/viewer'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ResourcesNodeTooltip from '@/components/resources/ResourcesNodeTooltip.vue'
+import MouseButtonIcon from '@/components/resources/MouseButtonIcon.vue'
+import KeyCap from '@/components/resources/KeyCap.vue'
+import ArrowKeys from '@/components/resources/ArrowKeys.vue'
 
 const {
   cluster,
@@ -40,6 +48,8 @@ const container = useTemplateRef<HTMLDivElement>('container')
 const loading = ref(true)
 const errorMessage: Ref<string | null> = ref(null)
 const cameraMode: Ref<CameraMode> = ref('free')
+// Help of mouse and keyboard controls, hidden by default
+const showHelp = ref(false)
 const hovered: Ref<{ name: string; x: number; y: number } | null> = ref(null)
 
 const hoveredNode = computed(() =>
@@ -127,6 +137,11 @@ function resetCamera() {
   viewer?.focusKeyboard()
 }
 
+function toggleHelp() {
+  showHelp.value = !showHelp.value
+  viewer?.focusKeyboard()
+}
+
 watch(
   () => [nodes, mode] as const,
   () => {
@@ -208,6 +223,75 @@ const inactiveClasses =
         >
           <HomeIcon class="h-4 w-4" aria-hidden="true" />
           <span class="sr-only">Reset view</span>
+        </button>
+      </div>
+
+      <div class="pointer-events-none absolute bottom-4 left-6 flex flex-col items-start gap-2">
+        <div
+          v-if="showHelp"
+          id="resources-scene-help"
+          data-testid="resources-scene-help"
+          class="flex flex-col gap-1.5 rounded-md bg-white/90 px-3 py-2 text-xs text-gray-600 shadow-md ring-1 ring-gray-300 dark:bg-gray-800/90 dark:text-gray-300 dark:ring-gray-600"
+        >
+          <template v-if="cameraMode === 'free'">
+            <p
+              data-testid="resources-scene-help-mouse"
+              class="flex flex-wrap items-center gap-x-4 gap-y-1"
+            >
+              <span class="inline-flex items-center gap-1.5">
+                <MouseButtonIcon button="left" /><span class="sr-only">Left drag:</span> rotate
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <MouseButtonIcon button="right" /><span class="sr-only">Right drag:</span> pan
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <MouseButtonIcon button="wheel" /><span class="sr-only">Scroll:</span> zoom
+              </span>
+            </p>
+            <p
+              data-testid="resources-scene-help-keyboard"
+              class="flex flex-wrap items-center gap-x-4 gap-y-1"
+            >
+              <span class="inline-flex items-center gap-1.5">
+                <ArrowKeys />
+                move
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <KeyCap>Shift</KeyCap>+
+                <ArrowKeys directions="vertical" />
+                <span class="ml-0.5">up/down</span>
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <KeyCap>Ctrl</KeyCap>+
+                <ArrowKeys />
+                <span class="ml-0.5">rotate</span>
+              </span>
+            </p>
+          </template>
+          <p
+            v-else
+            data-testid="resources-scene-help-turntable"
+            class="inline-flex items-center gap-1.5"
+          >
+            <MouseButtonIcon button="wheel" /><span class="sr-only">Scroll:</span> zoom
+          </p>
+        </div>
+        <button
+          type="button"
+          data-testid="resources-scene-help-toggle"
+          :title="showHelp ? 'Hide controls help' : 'Show controls help'"
+          :aria-expanded="showHelp"
+          aria-controls="resources-scene-help"
+          :class="[
+            showHelp
+              ? activeClasses
+              : 'bg-white/90 text-gray-600 hover:bg-white dark:bg-gray-800/90 dark:text-gray-300 hover:dark:bg-gray-800',
+            'pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-1 ring-gray-300 dark:ring-gray-600'
+          ]"
+          @click="toggleHelp"
+        >
+          <QuestionMarkCircleIcon class="h-4 w-4" aria-hidden="true" />
+          <span class="sr-only">{{ showHelp ? 'Hide' : 'Show' }} controls help</span>
         </button>
       </div>
 
