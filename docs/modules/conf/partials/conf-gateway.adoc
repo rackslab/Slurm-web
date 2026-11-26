@@ -529,7 +529,7 @@ the default value only.
 
 
 
-*Default:* `0.7.0`
+*Default:* `0.8.0`
 
 |-
 

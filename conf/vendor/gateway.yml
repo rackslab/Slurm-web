@@ -236,7 +236,7 @@ agents:
       the default value only.
   racksdb_version:
     type: str
-    default: 0.7.0
+    default: 0.8.0
     doc: |
       Minimal supported version of RacksDB API
 
