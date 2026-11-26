@@ -33,7 +33,7 @@ Many features in a reactive & responsive web UI:
 * Live jobs status update
 * Colored badges to visualize job status at a glance
 * GPU resources utilization monitoring
-* Advanced visualization of node status with racking topology
+* Advanced 2D and 3D visualization of node status with racking topology
 * Intuitive visualization of account tree, QOS and advanced reservations
 * Dark mode support
 * Custom UI branding (colors, logos, favicon)
