@@ -90,15 +90,25 @@ def main():
             png = assembly.parent / BITMAPS_DIR / f"{assembly.stem}-{size}.png"
             builder.build(outputs=[png], rule=f"png-{size}", inputs=[assembly])
 
+    shadow = (
+        "convert $in -gravity 'northwest' -background 'rgba(255,255,255,0)' "
+        "-splice '10x10' "
+        r'\( +clone -background black -shadow "30x3-1-1" \) +swap '
+        r"-background none -mosaic +repage \( +clone "
+        r'-background black -shadow "30x8+5+5" \) +swap '
+        "-background none -mosaic +repage"
+    )
+    builder.rule(name="shadow", command=f"{shadow} $out")
+    # Screenshots too heavy in PNG (ex: 3D views) are saved in WebP. Color channels
+    # are rounded to 6 bits before lossless compression, like libwebp near-lossless
+    # mode which is not available in ImageMagick. Contrary to lossy WebP, colors are
+    # not subsampled and thin details are kept sharp. Alpha channel is not rounded
+    # to keep the shadow gradient smooth.
     builder.rule(
-        name="shadow",
+        name="shadow-webp",
         command=(
-            "convert $in -gravity 'northwest' -background 'rgba(255,255,255,0)' "
-            "-splice '10x10' "
-            r'\( +clone -background black -shadow "30x3-1-1" \) +swap '
-            r"-background none -mosaic +repage \( +clone "
-            r'-background black -shadow "30x8+5+5" \) +swap '
-            "-background none -mosaic +repage $out"
+            f"{shadow} +dither -channel RGB -posterize 64 +channel "
+            "-define webp:lossless=true -define webp:method=6 $out"
         ),
     )
 
@@ -107,6 +117,13 @@ def main():
         raw = Path(SCREENSHOTS_DIR) / RAW_DIR / raw_s
         shadowed = Path(SCREENSHOTS_DIR) / SHADOWED_DIR / raw.name
         builder.build(outputs=[shadowed], rule="shadow", inputs=[raw])
+
+    for raw_s in rules.get("shadowed_webp", []):
+        raw = Path(SCREENSHOTS_DIR) / RAW_DIR / raw_s
+        shadowed = (Path(SCREENSHOTS_DIR) / SHADOWED_DIR / raw.stem).with_suffix(
+            ".webp"
+        )
+        builder.build(outputs=[shadowed], rule="shadow-webp", inputs=[raw])
 
     builder.run()
 
