@@ -25,9 +25,9 @@ import type { CameraMode, ResourcesViewer } from '@/lib/resources3d/viewer'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import ResourcesNodeTooltip from '@/components/resources/ResourcesNodeTooltip.vue'
-import MouseButtonIcon from '@/components/resources/MouseButtonIcon.vue'
-import KeyCap from '@/components/resources/KeyCap.vue'
-import ArrowKeys from '@/components/resources/ArrowKeys.vue'
+import MouseButtonIcon from '@/components/input/MouseButtonIcon.vue'
+import KeyboardKey from '@/components/input/KeyboardKey.vue'
+import KeyboardArrowKeys from '@/components/input/KeyboardArrowKeys.vue'
 
 const {
   cluster,
@@ -253,17 +253,17 @@ const inactiveClasses =
               class="flex flex-wrap items-center gap-x-4 gap-y-1"
             >
               <span class="inline-flex items-center gap-1.5">
-                <ArrowKeys />
+                <KeyboardArrowKeys />
                 move
               </span>
               <span class="inline-flex items-center gap-1">
-                <KeyCap>Shift</KeyCap>+
-                <ArrowKeys directions="vertical" />
+                <KeyboardKey>Shift</KeyboardKey>+
+                <KeyboardArrowKeys directions="vertical" />
                 <span class="ml-0.5">up/down</span>
               </span>
               <span class="inline-flex items-center gap-1">
-                <KeyCap>Ctrl</KeyCap>+
-                <ArrowKeys />
+                <KeyboardKey>Ctrl</KeyboardKey>+
+                <KeyboardArrowKeys />
                 <span class="ml-0.5">rotate</span>
               </span>
             </p>

@@ -10,7 +10,7 @@
  * keys on both sides of down key. With vertical directions, only up and down
  * keys are displayed. */
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon } from '@heroicons/vue/16/solid'
-import KeyCap from '@/components/resources/KeyCap.vue'
+import KeyboardKey from '@/components/input/KeyboardKey.vue'
 
 const { directions = 'all' } = defineProps<{
   directions?: 'all' | 'vertical'
@@ -25,25 +25,25 @@ const { directions = 'all' } = defineProps<{
     ]"
     :data-directions="directions"
   >
-    <KeyCap
+    <KeyboardKey
       small
       data-key="up"
       :class="directions === 'all' ? 'col-start-2 row-start-1' : 'row-start-1'"
     >
       <ArrowUpIcon class="h-2.5 w-2.5" aria-hidden="true" /><span class="sr-only">Up</span>
-    </KeyCap>
-    <KeyCap v-if="directions === 'all'" small data-key="left" class="col-start-1 row-start-2">
+    </KeyboardKey>
+    <KeyboardKey v-if="directions === 'all'" small data-key="left" class="col-start-1 row-start-2">
       <ArrowLeftIcon class="h-2.5 w-2.5" aria-hidden="true" /><span class="sr-only">Left</span>
-    </KeyCap>
-    <KeyCap
+    </KeyboardKey>
+    <KeyboardKey
       small
       data-key="down"
       :class="directions === 'all' ? 'col-start-2 row-start-2' : 'row-start-2'"
     >
       <ArrowDownIcon class="h-2.5 w-2.5" aria-hidden="true" /><span class="sr-only">Down</span>
-    </KeyCap>
-    <KeyCap v-if="directions === 'all'" small data-key="right" class="col-start-3 row-start-2">
+    </KeyboardKey>
+    <KeyboardKey v-if="directions === 'all'" small data-key="right" class="col-start-3 row-start-2">
       <ArrowRightIcon class="h-2.5 w-2.5" aria-hidden="true" /><span class="sr-only">Right</span>
-    </KeyCap>
+    </KeyboardKey>
   </span>
 </template>

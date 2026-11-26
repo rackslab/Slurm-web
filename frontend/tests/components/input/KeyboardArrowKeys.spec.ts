@@ -1,10 +1,10 @@
 import { describe, test, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ArrowKeys from '@/components/resources/ArrowKeys.vue'
+import KeyboardArrowKeys from '@/components/input/KeyboardArrowKeys.vue'
 
-describe('ArrowKeys.vue', () => {
+describe('KeyboardArrowKeys.vue', () => {
   test('lays out all arrow keys like keyboards', () => {
-    const wrapper = mount(ArrowKeys)
+    const wrapper = mount(KeyboardArrowKeys)
     const grid = wrapper.get('[data-directions="all"]')
     expect(grid.classes()).toContain('grid-cols-3')
     const key = (name: string) => wrapper.get(`kbd[data-key="${name}"]`)
@@ -23,7 +23,7 @@ describe('ArrowKeys.vue', () => {
   })
 
   test('lays out vertical arrow keys in a column', () => {
-    const wrapper = mount(ArrowKeys, { props: { directions: 'vertical' } })
+    const wrapper = mount(KeyboardArrowKeys, { props: { directions: 'vertical' } })
     expect(wrapper.get('[data-directions="vertical"]').classes()).toContain('grid-cols-1')
     expect(wrapper.findAll('kbd').map((k) => k.attributes('data-key'))).toStrictEqual([
       'up',
