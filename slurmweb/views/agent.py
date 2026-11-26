@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import Any, Tuple
+from typing import Any, Callable, Dict, Optional, Tuple
 import logging
 
 from flask import Response, current_app, jsonify, abort, request
@@ -162,56 +162,68 @@ def stats():
     )
 
 
+def jobs_scope(
+    user_key: str, past: bool = False
+) -> Optional[Callable[[Dict[str, Any]], bool]]:
+    """Return a predicate function to select the jobs the user is allowed to view:
+    all jobs with broad action and own jobs with own action. Actions on past jobs
+    are checked when past is True, actions on active jobs otherwise. Return None if
+    the user is not allowed to view any job.
+    """
+    if past:
+        broad, own = "jobs-view-past", "jobs-view-past-own"
+    else:
+        broad, own = "jobs-view", "jobs-view-own"
+    user = request.user
+    policy = current_app.policy
+    if policy.allowed_user_action(user, broad):
+        # Broad action gives access to all jobs: return a predicate that accepts any
+        # job, so that views select jobs the same way whatever the user permissions.
+        return lambda job: True
+    if not policy.allowed_user_action(user, own):
+        # Without broad nor own action, the user is not allowed to view any job:
+        # return None so that views respond with HTTP/403 error.
+        return None
+    login = user.login.lower()
+
+    def allowed(job: Dict[str, Any]) -> bool:
+        # The user can view its own jobs, ie. when the user login is found in the
+        # job field named user_key, compared case-insensitively.
+        return (job.get(user_key) or "").lower() == login
+
+    return allowed
+
+
 @check_jwt
 def jobs():
-    user = request.user
-    if current_app.policy.allowed_user_action(user, "jobs-view"):
-        own_only = False
-    elif current_app.policy.allowed_user_action(user, "jobs-view-own"):
-        own_only = True
-    else:
-        abort(403, "User is not allowed to perform action jobs-view or jobs-view-own")
+    allowed = jobs_scope("user_name")
+    if allowed is None:
+        abort(403, "User is not allowed to view jobs")
     node = request.args.get("node")
     if node:
         jobs_list = slurmrest("jobs_by_node", node)
     else:
         jobs_list = slurmrest("jobs_current")
-    if own_only:
-        login = user.login.lower()
-        jobs_list = [
-            job for job in jobs_list if job.get("user_name", "").lower() == login
-        ]
+    jobs_list = [job for job in jobs_list if allowed(job)]
     return jsonify(jobs_list)
 
 
 @check_jwt
 def job(job: int):
-    user = request.user
-    if current_app.policy.allowed_user_action(user, "jobs-view"):
-        own_only = False
-    elif current_app.policy.allowed_user_action(user, "jobs-view-own"):
-        own_only = True
-    else:
-        abort(403, "User is not allowed to perform action jobs-view or jobs-view-own")
+    allowed = jobs_scope("user")
+    if allowed is None:
+        abort(403, "User is not allowed to view jobs")
     job_data = slurmrest("job", job)
-    if own_only and job_data.get("user", "").lower() != user.login.lower():
+    if not allowed(job_data):
         abort(404, "Job not found")
     return jsonify(job_data)
 
 
 @check_jwt
 def jobs_past():
-    user = request.user
-    if current_app.policy.allowed_user_action(user, "jobs-view-past"):
-        own_only = False
-    elif current_app.policy.allowed_user_action(user, "jobs-view-past-own"):
-        own_only = True
-    else:
-        abort(
-            403,
-            "User is not allowed to perform action "
-            "jobs-view-past or jobs-view-past-own",
-        )
+    allowed = jobs_scope("user", past=True)
+    if allowed is None:
+        abort(403, "User is not allowed to view past jobs")
     settings = current_app.settings.slurmdbd
     if "hours" not in request.args:
         abort(400, "Missing hours query parameter")
@@ -223,9 +235,7 @@ def jobs_past():
     # Always fetch all past jobs from slurmrestd (shared cache); own-only filter
     # is applied here so restricted users never receive other users' jobs.
     jobs_list = slurmrest("jobs_past", hours)
-    if own_only:
-        login = user.login.lower()
-        jobs_list = [job for job in jobs_list if job.get("user", "").lower() == login]
+    jobs_list = [job for job in jobs_list if allowed(job)]
     return jsonify(jobs_list)
 
 

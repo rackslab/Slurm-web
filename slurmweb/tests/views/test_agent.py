@@ -259,9 +259,7 @@ class TestAgentViews(TestAgentBase):
             response.json,
             {
                 "code": 403,
-                "description": (
-                    "User is not allowed to perform action jobs-view or jobs-view-own"
-                ),
+                "description": "User is not allowed to view jobs",
                 "name": "Forbidden",
             },
         )
@@ -377,10 +375,7 @@ class TestAgentViews(TestAgentBase):
             response.json,
             {
                 "code": 403,
-                "description": (
-                    "User is not allowed to perform action "
-                    "jobs-view-past or jobs-view-past-own"
-                ),
+                "description": "User is not allowed to view past jobs",
                 "name": "Forbidden",
             },
         )
@@ -571,9 +566,7 @@ class TestAgentViews(TestAgentBase):
             response.json,
             {
                 "code": 403,
-                "description": (
-                    "User is not allowed to perform action jobs-view or jobs-view-own"
-                ),
+                "description": "User is not allowed to view jobs",
                 "name": "Forbidden",
             },
         )
