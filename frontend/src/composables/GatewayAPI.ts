@@ -256,18 +256,21 @@ export function useGatewayAPI() {
     )
   }
 
+  /* Return RacksDB racks colors drawing parameters adapted to color scheme. */
+  function racksColors(): Record<string, string> {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return { frame: '#555555', pane: '#505050' }
+    }
+    return {}
+  }
+
   async function infrastructureImagePng(
     cluster: string,
     infrastructure: string,
     width: number,
     height: number
   ): Promise<[RacksDBAPIImage, RacksDBInfrastructureCoordinates]> {
-    let rack_colors
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      rack_colors = { frame: '#555555', pane: '#505050' }
-    } else {
-      rack_colors = {}
-    }
+    const rack_colors = racksColors()
     const response = await restAPI.postRaw<AxiosResponse>(
       `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.png?coordinates`,
       {
@@ -290,6 +293,20 @@ export function useGatewayAPI() {
       new Blob([image], { type: image.type }) as RacksDBAPIImage,
       coordinates as RacksDBInfrastructureCoordinates
     ]
+  }
+
+  /* Return 3D representation of the infrastructure in glTF binary format. */
+  async function infrastructureGlb(cluster: string, infrastructure: string): Promise<ArrayBuffer> {
+    const response = await restAPI.postRaw<AxiosResponse<ArrayBuffer>>(
+      `/agents/${cluster}/racksdb/draw/infrastructure/${infrastructure}.glb`,
+      {
+        infrastructure: { ghost_unselected: true },
+        colors: { racks: [racksColors()] }
+      },
+      true,
+      'arraybuffer'
+    )
+    return response.data
   }
 
   function abort() {
@@ -324,6 +341,7 @@ export function useGatewayAPI() {
     metrics_jobs,
     metrics_cache,
     infrastructureImagePng,
+    infrastructureGlb,
     abort,
     isValidGatewayGenericAPIKey,
     isValidGatewayClusterAPIKey,
