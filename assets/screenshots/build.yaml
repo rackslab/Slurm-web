@@ -40,3 +40,7 @@ shadowed:
 - screenshot_accounts_tree.png
 - screenshot_account_page.png
 - screenshot_perms.png
+# List raw screenshots for which versions with dropped shadow must be generated
+# in WebP format, for screenshots too heavy in PNG (ex: 3D views).
+shadowed_webp:
+- screenshot_cores_3d.png
