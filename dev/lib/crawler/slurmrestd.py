@@ -207,6 +207,11 @@ class SlurmrestdCrawler(ComponentCrawler):
             Asset("partitions", "slurm-partitions", self._crawl_partitions),
             Asset("qos", "slurm-qos", self._crawl_qos),
             Asset("accounts", "slurm-accounts", self._crawl_accounts),
+            Asset(
+                "accounts-coordinators",
+                "slurmdb-accounts-coordinators",
+                self._crawl_accounts_coordinators,
+            ),
             Asset("reservations", "slurm-reservations", self._crawl_reservations),
             Asset("associations", "slurmdb-associations", self._crawl_associations),
         }
@@ -890,6 +895,15 @@ class SlurmrestdCrawler(ComponentCrawler):
         self.dump_component_query(
             f"/slurmdb/v{self.api_version}/accounts",
             "slurm-accounts",
+        )
+
+    def _crawl_accounts_coordinators(self):
+        # Download accounts with their coordinators, only populated by slurmrestd
+        # when explicitly requested.
+        self.dump_component_query(
+            f"/slurmdb/v{self.api_version}/accounts",
+            "slurmdb-accounts-coordinators",
+            params={"WithCoordinators": "true"},
         )
 
     def _crawl_reservations(self):
