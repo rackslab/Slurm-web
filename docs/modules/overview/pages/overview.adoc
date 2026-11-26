@@ -76,6 +76,15 @@ its health and activity.
 
 image::slurm-web_nodes_fullscreen.png[with=500px]
 
+In fullscreen, the racks can also be explored in a 3D view, based on the
+xref:racksdb:usage:3d.adoc[3D representations] of the infrastructure generated
+by RacksDB. The nodes are colored with their status in the datacenter rooms.
+Move the camera freely with the mouse and the keyboard arrows, or let it orbit
+automatically around the racks. The 3D view is also available for cores
+allocations, with progress bars on the front of the nodes.
+
+image::screenshot_cores_3d.webp[width=80%]
+
 == Cores Allocations
 
 Slurm-web provides a more detailed and in-depth view of CPU cores usage and allocations
