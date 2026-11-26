@@ -12,13 +12,21 @@ import { useRouter, useRoute } from 'vue-router'
 import { useRuntimeStore } from '@/stores/runtime'
 import type { ResourcesRepresentation } from '@/stores/runtime/resources'
 import { APIServerError } from '@/composables/HTTPErrors'
-import NodeMainState from '@/components/resources/NodeMainState.vue'
-import NodeAllocationState from '@/components/resources/NodeAllocationState.vue'
+import ResourcesNodeTooltip from '@/components/resources/ResourcesNodeTooltip.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { useBranding } from '@/composables/Branding'
 import { useGatewayAPI } from '@/composables/GatewayAPI'
 import type { SlurmNode } from '@/composables/gateway/slurm/types'
 import { type RacksDBInfrastructureCoordinates } from '@/composables/gateway/types/racksdb'
+import {
+  CORES_BAR_BACKGROUND_COLOR,
+  FILTERED_NODE_COLOR,
+  HOVER_COLOR,
+  getNodeCoresUsage,
+  getNodeFillColor,
+  getNodeStrokeColor,
+  progressBarColor
+} from '@/lib/resources/colors'
 
 const {
   cluster,
@@ -92,39 +100,8 @@ function reportOtherError(error: Error) {
   unable.value = true
 }
 
-function getNodeStrokeColor(states: string[]): string | undefined {
-  const strokeColors = {
-    DOWN: '#c10007',
-    DRAINING: '#b380c4',
-    DRAIN: '#b654d6'
-  }
-  for (const [status, color] of Object.entries(strokeColors)) {
-    if (states.includes(status)) {
-      return color
-    }
-  }
-  return undefined
-}
-
-function getNodeFillColor(states: string[]): string {
-  const fillColors = {
-    DOWN: '#c10007',
-    IDLE: '#70e079',
-    MIXED: '#ffd230',
-    ALLOCATED: '#e17100'
-  }
-  let fillColor = '#ffffff'
-  for (const [status, color] of Object.entries(fillColors)) {
-    if (states.includes(status)) {
-      fillColor = color
-      break
-    }
-  }
-  return fillColor
-}
-
 function drawNodeHoverRing(ctx: CanvasRenderingContext2D, nodePath: Path2D): void {
-  ctx.strokeStyle = '#74a5d6' // hover color
+  ctx.strokeStyle = HOVER_COLOR
   ctx.stroke(nodePath)
 }
 
@@ -152,28 +129,6 @@ function drawNodeStroke(
   ctx.lineWidth = 1
 }
 
-function getNodeCoresUsage(nodeName: string): {
-  allocated: number
-  total: number
-  percentage: number
-} {
-  const node = getSlurmNode(nodeName)
-  if (!node) return { allocated: 0, total: 0, percentage: 0 }
-
-  const allocated = node.alloc_cpus || 0
-  const total = node.cpus || 0
-  const percentage = total > 0 ? (allocated / total) * 100 : 0
-
-  return { allocated, total, percentage }
-}
-
-function progressBarColor(percentage: number): string {
-  if (percentage == 100) return '#f54900'
-  else if (percentage >= 80) return '#fe9a00'
-  else if (percentage >= 30) return '#ffd230'
-  else return '#7ccf00'
-}
-
 function drawCoresProgressBar(
   ctx: CanvasRenderingContext2D,
   node_x: number,
@@ -184,7 +139,7 @@ function drawCoresProgressBar(
 ): void {
   // Determine if node is wider than tall
   const isHorizontal = node_width > node_height
-  const backgroundColor = '#e5e7eb' // gray-200
+  const backgroundColor = CORES_BAR_BACKGROUND_COLOR
 
   if (isHorizontal) {
     // Horizontal progress bar (left to right)
@@ -429,7 +384,7 @@ function drawNodeCoresMode(
   node_height: number
 ): void {
   // Draw cores progress bar
-  const coresUsage = getNodeCoresUsage(nodeName)
+  const coresUsage = getNodeCoresUsage(getSlurmNode(nodeName))
   drawCoresProgressBar(ctx, node_x, node_y, node_width, node_height, coresUsage)
 
   // Draw node stroke if its color is defined
@@ -519,7 +474,7 @@ async function updateCanvas(fullUpdate: boolean = true) {
         nodePath.rect(node_x, node_y, nodeCoordinates[2] - 1, nodeCoordinates[3])
 
         if (!inSelectedNodes(nodeName)) {
-          ctx.fillStyle = '#aaaaaa'
+          ctx.fillStyle = FILTERED_NODE_COLOR
           ctx.fill(nodePath)
         } else {
           if (mode === 'cores') {
@@ -704,28 +659,7 @@ onUnmounted(() => {
       </div>
 
       <aside ref="nodeTooltip" :class="[nodeTooltipOpen ? '' : 'hidden', 'absolute']">
-        <div
-          v-if="currentNode"
-          class="w-40 overflow-hidden rounded-md bg-white shadow-lg dark:bg-gray-800"
-        >
-          <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-            <li class="bg-gray-200 py-2 text-center text-sm dark:bg-gray-700 dark:text-gray-100">
-              <strong>Node {{ currentNode.name }}</strong>
-            </li>
-            <li class="flex px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
-              <NodeMainState :status="currentNode.state" />
-            </li>
-            <li class="flex justify-between px-4 py-1 text-xs text-gray-400 dark:text-gray-200">
-              <NodeAllocationState :status="currentNode.state" />
-              <span
-                v-if="mode === 'cores'"
-                class="text-right text-xs text-gray-400 dark:text-gray-200"
-              >
-                {{ currentNode.alloc_cpus }}/{{ currentNode.cpus }}
-              </span>
-            </li>
-          </ul>
-        </div>
+        <ResourcesNodeTooltip v-if="currentNode" :node="currentNode" :mode="mode" />
         <div
           class="absolute right-0 left-0 m-auto h-0 w-0 border-x-[12px] border-t-[10px] border-x-transparent border-t-white dark:border-t-gray-800"
         ></div>
