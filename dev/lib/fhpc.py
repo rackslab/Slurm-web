@@ -74,6 +74,34 @@ def cluster_status(cluster: str) -> dict[str, Any]:
         ) from err
 
 
+def cluster_coordinators(cluster: str) -> dict[str, list[str]]:
+    """Return mapping of Slurm accounts names to the list of their coordinators
+    logins on the given cluster, for accounts with coordinators only. Slurm also
+    reports coordinators of parent accounts on sub-accounts. Return an empty
+    mapping if coordinators cannot be retrieved."""
+    # Remote command is given as a single argument, otherwise FireHPC parses
+    # sacctmgr options as its own.
+    exit_code, stdout, stderr = run_firehpc(
+        "ssh",
+        f"admin.{cluster}",
+        "sacctmgr --noheader --parsable2 list accounts withcoord "
+        "format=Account,Coordinators",
+    )
+    if exit_code != 0:
+        logger.warning(
+            "Unable to get account coordinators on cluster %s: %s",
+            cluster,
+            stderr.strip() or f"exit code {exit_code}",
+        )
+        return {}
+    coordinators: dict[str, list[str]] = {}
+    for line in stdout.splitlines():
+        account, _, logins = line.strip().partition("|")
+        if account and logins:
+            coordinators[account] = logins.split(",")
+    return coordinators
+
+
 @dataclass
 class ClusterRemote:
     """SSH destination of the host running the containers of a cluster."""

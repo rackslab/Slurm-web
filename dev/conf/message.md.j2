@@ -5,3 +5,11 @@ Some groups of users are defined in this environment:
 {% for group in groups %}
 * **{{ group.name }}**: {{ group.members|join(', ') }}
 {% endfor %}
+{% if coordinators %}
+
+Some users are coordinators of Slurm accounts, including sub-accounts, on all
+clusters:
+
+{% for account, logins in coordinators.items() %}* {{ account }}: {{ logins|join(', ') }}
+{% endfor -%}
+{% endif %}

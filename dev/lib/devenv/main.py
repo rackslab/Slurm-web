@@ -18,6 +18,7 @@ from pathlib import Path
 from rfl.authentication.jwt import jwt_gen_key
 from racksdb import RacksDB
 
+from fhpc import cluster_coordinators
 from paths import DEV_ROOT, REALM_IMPORT_FILENAME, REPO_ROOT
 from devenv.agent import SlurmwebAgent
 from devenv.constants import (
@@ -199,10 +200,13 @@ def main():
         branding_theme=args.branding_theme,
     )
     if args.service_message:
+        # All development clusters share the same users, groups and account
+        # coordinators, they are retrieved on the first cluster only.
         gateway.render_message(
             tmpdir,
             agents[0].cluster_status["users"],
             agents[0].cluster_status["groups"],
+            cluster_coordinators(agents[0].name),
         )
     gateway.launch(
         skip_ui_copy=args.ui is None and args.branding_theme is None,

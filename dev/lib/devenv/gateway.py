@@ -85,11 +85,13 @@ class SlurmwebGateway:
                 )
             )
 
-    def render_message(self, tmpdir: Path, users, groups):
+    def render_message(self, tmpdir: Path, users, groups, coordinators):
         environment = jinja2.Environment(loader=jinja2.FileSystemLoader(CONF_DIR))
         template = environment.get_template("message.md.j2")
         with open(self.message_path, "w+") as fh:
-            fh.write(template.render(users=users, groups=groups))
+            fh.write(
+                template.render(users=users, groups=groups, coordinators=coordinators)
+            )
 
     def launch(
         self,
