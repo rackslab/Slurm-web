@@ -1,0 +1,104 @@
+{
+  "accounts": [
+    {
+      "associations": [],
+      "coordinators": [
+        {
+          "name": "jsantos",
+          "direct": false
+        }
+      ],
+      "description": "acoustic",
+      "name": "acoustic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "admin",
+      "name": "admin",
+      "organization": "admin",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "biology",
+      "name": "biology",
+      "organization": "biology",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [
+        {
+          "name": "ekelly",
+          "direct": true
+        },
+        {
+          "name": "jsantos",
+          "direct": false
+        }
+      ],
+      "description": "optic",
+      "name": "optic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [
+        {
+          "name": "jsantos",
+          "direct": true
+        }
+      ],
+      "description": "physic",
+      "name": "physic",
+      "organization": "physic",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "default root account",
+      "name": "root",
+      "organization": "root",
+      "flags": []
+    },
+    {
+      "associations": [],
+      "coordinators": [],
+      "description": "scientists",
+      "name": "scientists",
+      "organization": "scientists",
+      "flags": []
+    }
+  ],
+  "meta": {
+    "plugin": {
+      "type": "openapi/slurmdbd",
+      "name": "Slurm OpenAPI slurmdbd",
+      "data_parser": "data_parser/v0.0.46",
+      "accounting_storage": "accounting_storage/slurmdbd"
+    },
+    "client": {
+      "source": "192.168.170.125:6820(fd:20)",
+      "user": "nobody",
+      "group": ""
+    },
+    "command": [],
+    "slurm": {
+      "version": {
+        "major": "26",
+        "micro": "0",
+        "minor": "11"
+      },
+      "release": "26.11.0",
+      "cluster": "hpc"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
