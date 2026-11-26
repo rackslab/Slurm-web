@@ -4,6 +4,7 @@ import type { RouterMock } from 'vue-router-mock'
 import { useRuntimeStore } from '@/stores/runtime'
 import ResourcesScene3D from '@/components/resources/ResourcesScene3D.vue'
 import ResourcesNodeTooltip from '@/components/resources/ResourcesNodeTooltip.vue'
+import MouseButtonIcon from '@/components/resources/MouseButtonIcon.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { APIServerError } from '@/composables/HTTPErrors'
@@ -148,6 +149,55 @@ describe('ResourcesScene3D.vue', () => {
     callbacks.onCameraModeChange('turntable')
     await flushPromises()
     expect(turntable.classes()).toContain('bg-slurmweb')
+  })
+
+  test('hides help by default and toggles it with help button', async () => {
+    const wrapper = mount(ResourcesScene3D, { props: { cluster: 'foo', nodes, mode: 'nodes' } })
+    await flushPromises()
+    const toggle = wrapper.get('[data-testid="resources-scene-help-toggle"]')
+    expect(wrapper.find('[data-testid="resources-scene-help"]').exists()).toBe(false)
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    await toggle.trigger('click')
+    expect(wrapper.find('[data-testid="resources-scene-help"]').exists()).toBe(true)
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+    expect(toggle.classes()).toContain('bg-slurmweb')
+    expect(mockViewer.focusKeyboard).toHaveBeenCalled()
+    await toggle.trigger('click')
+    expect(wrapper.find('[data-testid="resources-scene-help"]').exists()).toBe(false)
+  })
+
+  test('shows mouse and keyboard help in free mode', async () => {
+    const wrapper = mount(ResourcesScene3D, { props: { cluster: 'foo', nodes, mode: 'nodes' } })
+    await flushPromises()
+    await wrapper.get('[data-testid="resources-scene-help-toggle"]').trigger('click')
+    const mouse = wrapper.get('[data-testid="resources-scene-help-mouse"]')
+    expect(
+      mouse.findAllComponents(MouseButtonIcon).map((icon) => icon.props('button'))
+    ).toStrictEqual(['left', 'right', 'wheel'])
+    expect(mouse.text()).toContain('rotate')
+    expect(mouse.text()).toContain('pan')
+    expect(mouse.text()).toContain('zoom')
+    const keyboard = wrapper.get('[data-testid="resources-scene-help-keyboard"]')
+    const keys = keyboard.findAll('kbd').map((key) => key.text())
+    expect(keys).toContain('Shift')
+    expect(keys).toContain('Ctrl')
+    expect(keyboard.text()).toContain('move')
+    expect(keyboard.text()).toContain('up/down')
+    expect(keyboard.text()).toContain('rotate')
+    expect(wrapper.find('[data-testid="resources-scene-help-turntable"]').exists()).toBe(false)
+  })
+
+  test('shows zoom help in turntable mode', async () => {
+    const wrapper = mount(ResourcesScene3D, { props: { cluster: 'foo', nodes, mode: 'nodes' } })
+    await flushPromises()
+    await wrapper.get('[data-testid="resources-scene-help-toggle"]').trigger('click')
+    callbacks.onCameraModeChange('turntable')
+    await flushPromises()
+    expect(wrapper.find('[data-testid="resources-scene-help-mouse"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="resources-scene-help-keyboard"]').exists()).toBe(false)
+    const help = wrapper.get('[data-testid="resources-scene-help-turntable"]')
+    expect(help.getComponent(MouseButtonIcon).props('button')).toBe('wheel')
+    expect(help.text()).toContain('zoom')
   })
 
   test('shows tooltip of hovered node', async () => {
