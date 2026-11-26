@@ -78,3 +78,23 @@ describe('infrastructureImagePng', () => {
     expect(parsedCoordinates).toStrictEqual(coordinates)
   })
 })
+
+describe('infrastructureGlb', () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  test('requests glb drawing of infrastructure', async () => {
+    const glb = new Uint8Array([0x67, 0x6c, 0x54, 0x46]).buffer
+    mockRestAPI.postRaw.mockResolvedValue({ headers: {}, data: glb })
+    const gateway = useGatewayAPI()
+    const result = await gateway.infrastructureGlb('cluster', 'infra')
+    expect(result).toBe(glb)
+    expect(mockRestAPI.postRaw).toHaveBeenCalledWith(
+      '/agents/cluster/racksdb/draw/infrastructure/infra.glb',
+      { infrastructure: { ghost_unselected: true }, colors: { racks: [{}] } },
+      true,
+      'arraybuffer'
+    )
+  })
+})
