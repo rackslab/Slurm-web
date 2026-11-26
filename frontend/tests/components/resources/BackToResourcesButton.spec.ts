@@ -90,6 +90,40 @@ describe('BackToResourcesButton', () => {
     })
   })
 
+  test('navigates to resources-3d-cores when returnTo query param is resources-3d-cores', async () => {
+    router.setQuery({ returnTo: 'resources-3d-cores' })
+
+    const wrapper = mount(BackToResourcesButton, {
+      props: {
+        cluster: 'foo'
+      }
+    })
+
+    await wrapper.find('button').trigger('click')
+
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'resources-3d-cores',
+      params: { cluster: 'foo' }
+    })
+  })
+
+  test('navigates to resources-3d-nodes when returnTo query param is resources-3d-nodes', async () => {
+    router.setQuery({ returnTo: 'resources-3d-nodes' })
+
+    const wrapper = mount(BackToResourcesButton, {
+      props: {
+        cluster: 'foo'
+      }
+    })
+
+    await wrapper.find('button').trigger('click')
+
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'resources-3d-nodes',
+      params: { cluster: 'foo' }
+    })
+  })
+
   test('navigates to resources when returnTo query param is resources', async () => {
     router.setQuery({ returnTo: 'resources' })
 

@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, expect } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
-import { useResourcesRuntimeStore } from '@/stores/runtime/resources'
+import { resourcesDiagramRouteName, useResourcesRuntimeStore } from '@/stores/runtime/resources'
 
 describe('stores/runtime/resources.ts', () => {
   beforeEach(() => {
@@ -25,5 +25,12 @@ describe('stores/runtime/resources.ts', () => {
     await nextTick()
     expect(store.showNodeNames).toBe(true)
     expect(localStorage.getItem('showNodeNames')).toBe('true')
+  })
+
+  test('resourcesDiagramRouteName returns routes of layouts and representations', () => {
+    expect(resourcesDiagramRouteName('2d', 'nodes')).toBe('resources-diagram-nodes')
+    expect(resourcesDiagramRouteName('2d', 'cores')).toBe('resources-diagram-cores')
+    expect(resourcesDiagramRouteName('3d', 'nodes')).toBe('resources-3d-nodes')
+    expect(resourcesDiagramRouteName('3d', 'cores')).toBe('resources-3d-cores')
   })
 })
