@@ -1624,6 +1624,7 @@ class ComponentCrawler:
         content: dict[str, t.Any] | None = None,
         params: dict[str, str] | list[tuple[str, str]] | None = None,
         expect_errors: bool = False,
+        always_query: bool = False,
     ) -> t.Any:
         """Send HTTP request and save result in assets directory.
 
@@ -1641,12 +1642,16 @@ class ComponentCrawler:
             params: Query string as a dict or list of pairs (GET only).
             expect_errors: If True, save JSON responses that report errors instead of
                 failing.
+            always_query: If True, send the request even when the asset already
+                exists, to return the response data to the caller. The existing
+                asset is still left untouched when skip_exist is True.
 
         Returns:
-            Parsed data (dict/list for JSON, string for text).
+            Parsed data (dict/list for JSON, string for text). None when the asset
+            already exists and the request is skipped.
         """
         # Check if asset exists (for skip_exist optimization)
-        if skip_exist:
+        if skip_exist and not always_query:
             if isinstance(asset_name, dict):
                 all_asset_exist = True
                 target_dir = (

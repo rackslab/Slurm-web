@@ -316,7 +316,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         jobs = self.dump_component_query(
             f"/slurm/v{self.api_version}/jobs",
             "slurm-jobs",
-            skip_exist=False,
+            always_query=True,
             limit_dump=30,
             limit_key="jobs",
         )
@@ -397,7 +397,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         jobs = self.dump_component_query(
             f"/slurmdb/v{self.api_version}/jobs",
             "slurmdb-jobs",
-            skip_exist=False,
+            always_query=True,
             limit_dump=30,
             limit_key="jobs",
             params=Slurmrestd._past_jobs_query_params(SLURMDB_JOBS_CRAWL_HOURS),
@@ -416,7 +416,7 @@ class SlurmrestdCrawler(ComponentCrawler):
         nodes = self.dump_component_query(
             f"/slurm/v{self.api_version}/nodes",
             "slurm-nodes",
-            skip_exist=False,
+            always_query=True,
             limit_dump=100,
             limit_key="nodes",
         )

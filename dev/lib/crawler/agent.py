@@ -120,7 +120,6 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/jobs/past?hours={SLURMDB_JOBS_CRAWL_HOURS}",
             "jobs-past",
-            skip_exist=False,
             limit_dump=100,
         )
 
@@ -128,7 +127,6 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/nodes",
             "nodes",
-            skip_exist=False,
         )
 
     def _crawl_jobs_node(self):
@@ -137,7 +135,7 @@ class AgentCrawler(TokenizedComponentCrawler):
         nodes = self.dump_component_query(
             f"/v{get_version()}/nodes",
             "nodes",
-            skip_exist=False,
+            always_query=True,
         )
         # Get jobs which have resources on any of the busy nodes
         try:
