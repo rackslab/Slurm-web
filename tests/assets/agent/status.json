@@ -19,6 +19,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "job-metrics": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "jobs": {
     "content-type": "application/json",
     "status": 200

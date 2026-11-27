@@ -71,6 +71,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "job-metrics": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "job-pending": {
     "content-type": "application/json",
     "status": 200

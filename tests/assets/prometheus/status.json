@@ -26,5 +26,25 @@
   "cache-hour": {
     "content-type": "application/json",
     "status": 200
+  },
+  "job-cpu": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-memory": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-memory-allocated": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-gpu": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "job-gpu-memory": {
+    "content-type": "application/json",
+    "status": 200
   }
 }
