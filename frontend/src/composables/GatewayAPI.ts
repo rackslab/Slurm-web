@@ -25,6 +25,8 @@ import type {
 } from '@/composables/gateway/types/cluster'
 import type {
   JobMetrics,
+  JobMetricsDetail,
+  JobMetricsQuery,
   MetricCacheResult,
   MetricJobState,
   MetricResourceState,
@@ -75,10 +77,14 @@ export const GatewayClusterWithStringAPIKeys = [
 ] as const
 export type GatewayClusterWithStringAPIKey = (typeof GatewayClusterWithStringAPIKeys)[number]
 
+export const GatewayClusterWithQueryAPIKeys = ['job_metrics_query'] as const
+export type GatewayClusterWithQueryAPIKey = (typeof GatewayClusterWithQueryAPIKeys)[number]
+
 export type GatewayAnyClusterApiKey =
   | GatewayClusterAPIKey
   | GatewayClusterWithNumberAPIKey
   | GatewayClusterWithStringAPIKey
+  | GatewayClusterWithQueryAPIKey
 
 export function isValidGatewayGenericAPIKey(key: string): key is GatewayGenericAPIKey {
   return typeof key === 'string' && GatewayGenericAPIKeys.includes(key as GatewayGenericAPIKey)
@@ -103,6 +109,15 @@ export function isValidGatewayClusterWithNumberAPIKey(
   return (
     typeof key === 'string' &&
     GatewayClusterWithNumberAPIKeys.includes(key as GatewayClusterWithNumberAPIKey)
+  )
+}
+
+export function isValidGatewayClusterWithQueryAPIKey(
+  key: string
+): key is GatewayClusterWithQueryAPIKey {
+  return (
+    typeof key === 'string' &&
+    GatewayClusterWithQueryAPIKeys.includes(key as GatewayClusterWithQueryAPIKey)
   )
 }
 
@@ -206,6 +221,21 @@ export function useGatewayAPI() {
 
   async function job_metrics(cluster: string, job: number): Promise<JobMetrics> {
     return await restAPI.get<JobMetrics>(`/agents/${cluster}/job/${job}/metrics`)
+  }
+
+  /* Return job metrics with optional detail per node or GPU and time range. */
+  async function job_metrics_query(
+    cluster: string,
+    query: JobMetricsQuery
+  ): Promise<JobMetrics | JobMetricsDetail> {
+    const parameters = new URLSearchParams()
+    if (query.detail) parameters.set('detail', 'true')
+    if (query.start !== undefined) parameters.set('start', query.start.toString())
+    if (query.end !== undefined) parameters.set('end', query.end.toString())
+    const suffix = parameters.size ? `?${parameters.toString()}` : ''
+    return await restAPI.get<JobMetrics | JobMetricsDetail>(
+      `/agents/${cluster}/job/${query.job}/metrics${suffix}`
+    )
   }
 
   async function cache_stats(cluster: string): Promise<CacheStatistics> {
@@ -332,6 +362,7 @@ export function useGatewayAPI() {
     jobsPast,
     job,
     job_metrics,
+    job_metrics_query,
     nodes,
     node,
     partitions,
@@ -352,6 +383,7 @@ export function useGatewayAPI() {
     isValidGatewayGenericAPIKey,
     isValidGatewayClusterAPIKey,
     isValidGatewayClusterWithStringAPIKey,
-    isValidGatewayClusterWithNumberAPIKey
+    isValidGatewayClusterWithNumberAPIKey,
+    isValidGatewayClusterWithQueryAPIKey
   }
 }

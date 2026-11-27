@@ -49,6 +49,23 @@ export type MetricCacheResult = 'hit' | 'miss'
 export type JobMetric = 'cpu' | 'memory' | 'memory_allocated' | 'gpu' | 'gpu_memory'
 export type JobMetrics = Partial<Record<JobMetric, MetricValue[]>>
 
+/* Series of a job metric for a node, or for a GPU of a node with GPU metrics */
+export interface JobMetricDetailSeries {
+  node: string
+  gpu?: string
+  values: MetricValue[]
+}
+export type JobMetricsDetail = Partial<Record<JobMetric, JobMetricDetailSeries[]>>
+
+/* Query of job metrics, with optional detail per node or GPU and time range in
+ * timestamps (seconds). */
+export interface JobMetricsQuery {
+  job: number
+  detail?: boolean
+  start?: number
+  end?: number
+}
+
 export function isMetricRange(range: unknown): range is MetricRange {
   return typeof range === 'string' && MetricRanges.includes(range as MetricRange)
 }

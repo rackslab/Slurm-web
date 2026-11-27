@@ -20,6 +20,8 @@ import {
 } from '@/composables/GatewayAPI'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
+import type { PollerParam } from '@/composables/DataPoller'
+import type { JobMetricsQuery } from '@/composables/gateway/types/metrics'
 
 export function useGatewayDataGetter<Type>(
   callback: GatewayGenericAPIKey,
@@ -71,7 +73,7 @@ export function useGatewayDataGetter<Type>(
 export function useClusterDataGetter<Type>(
   cluster: string,
   initialCallback: GatewayAnyClusterApiKey,
-  initialOtherParam?: string | number
+  initialOtherParam?: PollerParam
 ) {
   let callback = initialCallback
   let otherParam = initialOtherParam
@@ -94,6 +96,8 @@ export function useClusterDataGetter<Type>(
         data.value = (await gateway[callback](cluster, otherParam as string)) as Type
       } else if (gateway.isValidGatewayClusterWithNumberAPIKey(callback)) {
         data.value = (await gateway[callback](cluster, otherParam as number)) as Type
+      } else if (gateway.isValidGatewayClusterWithQueryAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as JobMetricsQuery)) as Type
       } else {
         data.value = (await gateway[callback](cluster)) as Type
       }
@@ -116,7 +120,7 @@ export function useClusterDataGetter<Type>(
     get()
   }
 
-  function setParam(newOtherParam: string | number) {
+  function setParam(newOtherParam: PollerParam) {
     otherParam = newOtherParam
     loaded.value = false
     get()
