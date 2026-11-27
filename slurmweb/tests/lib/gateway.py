@@ -95,6 +95,7 @@ def fake_slurmweb_agent(cluster: str):
         cache=True,
         slurmdbd=SlurmwebAgentSlurmdbdSettings(jobs_max_hours=168),
         url=f"http://{cluster}",
+        job_metrics=["cpu", "memory", "memory_allocated", "gpu", "gpu_memory"],
     )
 
 

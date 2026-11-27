@@ -30,6 +30,13 @@ class TestGatewayViews(TestGatewayBase):
             {
                 "infrastructure": "foo",
                 "metrics": True,
+                "job_metrics": [
+                    "cpu",
+                    "memory",
+                    "memory_allocated",
+                    "gpu",
+                    "gpu_memory",
+                ],
                 "cache": True,
                 "name": "foo",
                 "permissions": permissions,
@@ -60,6 +67,13 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "foo",
                     "metrics": True,
+                    "job_metrics": [
+                        "cpu",
+                        "memory",
+                        "memory_allocated",
+                        "gpu",
+                        "gpu_memory",
+                    ],
                     "cache": True,
                     "name": "foo",
                     "permissions": permissions,
@@ -69,6 +83,13 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "bar",
                     "metrics": True,
+                    "job_metrics": [
+                        "cpu",
+                        "memory",
+                        "memory_allocated",
+                        "gpu",
+                        "gpu_memory",
+                    ],
                     "cache": True,
                     "name": "bar",
                     "permissions": permissions,
@@ -78,6 +99,13 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "baz",
                     "metrics": True,
+                    "job_metrics": [
+                        "cpu",
+                        "memory",
+                        "memory_allocated",
+                        "gpu",
+                        "gpu_memory",
+                    ],
                     "cache": True,
                     "name": "baz",
                     "permissions": permissions,
@@ -127,6 +155,13 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "foo",
                     "metrics": True,
+                    "job_metrics": [
+                        "cpu",
+                        "memory",
+                        "memory_allocated",
+                        "gpu",
+                        "gpu_memory",
+                    ],
                     "cache": True,
                     "name": "foo",
                     "permissions": permissions,
@@ -136,6 +171,13 @@ class TestGatewayViews(TestGatewayBase):
                 {
                     "infrastructure": "bar",
                     "metrics": True,
+                    "job_metrics": [
+                        "cpu",
+                        "memory",
+                        "memory_allocated",
+                        "gpu",
+                        "gpu_memory",
+                    ],
                     "cache": True,
                     "name": "bar",
                     "permissions": permissions,
