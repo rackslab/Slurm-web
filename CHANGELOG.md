@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     job details page, when jobs metrics are available on the cluster (#288).
   - Add fullscreen view of jobs metrics charts, like resources diagrams, with
     navigation between CPU and GPU, usage and memory (#288).
+  - Add settings drawer in fullscreen view of jobs metrics charts, to display
+    metrics per node or per GPU, select nodes or GPUs and zoom on a time range,
+    with settings kept in URL query (#288).
 - dev:
   - Deploy CEEMS exporter and fake NVIDIA DCGM exporter with different flavors
     on _nova_, _zenith_ and _pulsar_ development clusters, and enable CEEMS

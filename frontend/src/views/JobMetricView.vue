@@ -7,9 +7,10 @@
 -->
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
+import { AdjustmentsHorizontalIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useClusterDataPoller } from '@/composables/DataPoller'
 import { isJobMetricChartId, useJobMetricsCharts } from '@/composables/JobMetricsCharts'
 import type {
@@ -18,6 +19,7 @@ import type {
   JobMetricResource
 } from '@/composables/JobMetricsCharts'
 import JobMetricChart from '@/components/job/JobMetricChart.vue'
+import JobMetricSettingsPane from '@/components/job/JobMetricSettingsPane.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
@@ -26,14 +28,90 @@ import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 const { cluster, id, metric } = defineProps<{ cluster: string; id: number; metric: string }>()
 
 const router = useRouter()
+const route = useRoute()
+
+/* Settings of the chart, kept in route query: detail per node or GPU (view),
+ * selection of nodes or GPUs (series) and time range (start and end
+ * timestamps in seconds). */
+interface JobMetricSettings {
+  detail: boolean
+  selection: string[]
+  start?: number
+  end?: number
+}
+
+function queryTimestamp(name: string): number | undefined {
+  const value = route.query[name]
+  if (typeof value !== 'string' || !/^\d+$/.test(value)) return undefined
+  return parseInt(value)
+}
+
+const settings = computed((): JobMetricSettings => {
+  const series = route.query.series
+  return {
+    detail: route.query.view === 'detail',
+    selection: typeof series === 'string' && series.length ? series.split(',') : [],
+    start: queryTimestamp('start'),
+    end: queryTimestamp('end')
+  }
+})
+
+function settingsQuery(value: JobMetricSettings): LocationQueryRaw {
+  const query: LocationQueryRaw = {}
+  if (value.detail) {
+    query.view = 'detail'
+    if (value.selection.length) query.series = value.selection.join(',')
+  }
+  if (value.start !== undefined) query.start = value.start.toString()
+  if (value.end !== undefined) query.end = value.end.toString()
+  return query
+}
+
+function updateSettings(changes: Partial<JobMetricSettings>) {
+  router.replace({
+    name: 'job-metric',
+    params: { cluster, id, metric },
+    query: settingsQuery({ ...settings.value, ...changes })
+  })
+}
+
+const detail = computed({
+  get: () => settings.value.detail,
+  set: (value: boolean) => updateSettings({ detail: value })
+})
+const selection = computed({
+  get: () => settings.value.selection,
+  set: (value: string[]) => updateSettings({ selection: value })
+})
+const start = computed({
+  get: () => settings.value.start,
+  set: (value: number | undefined) => updateSettings({ start: value })
+})
+const end = computed({
+  get: () => settings.value.end,
+  set: (value: number | undefined) => updateSettings({ end: value })
+})
 
 const job = useClusterDataPoller<SlurmJobDetail>(cluster, 'job', 5000, id)
 
-const { metrics, displayedCharts, range, chartSeries } = useJobMetricsCharts(
-  () => cluster,
-  () => id,
-  () => job.data.value
-)
+/* Settings drawer, opened with settings button like filters panels */
+const settingsOpen = ref(false)
+
+const { metrics, displayedCharts, range, chartSeries, chartDetailItems, chartDetailSeries } =
+  useJobMetricsCharts(
+    () => cluster,
+    () => id,
+    () => job.data.value,
+    () => ({ detail: settings.value.detail, start: settings.value.start, end: settings.value.end })
+  )
+
+/* Time range of the job in timestamps (seconds), up to now for running jobs */
+const jobStart = computed(() => job.data.value?.time.start ?? 0)
+const jobEnd = computed(() => {
+  const now = Math.floor(Date.now() / 1000)
+  const end = job.data.value?.time.end ?? 0
+  return end && end < now ? end : now
+})
 
 const chart = computed(() => displayedCharts.value.find((chart) => chart.id === metric))
 
@@ -69,9 +147,18 @@ function kindTarget(kind: JobMetricKind): JobMetricChartDefinition | undefined {
   return chart.value ? findChart(chart.value.resource, kind) : undefined
 }
 
+/* Switch to another chart, keeping settings. The selection of nodes or GPUs is
+ * kept only for charts of the same resource. */
 function switchTo(target: JobMetricChartDefinition | undefined) {
   if (!target || target.id === metric) return
-  router.push({ name: 'job-metric', params: { cluster, id, metric: target.id } })
+  router.push({
+    name: 'job-metric',
+    params: { cluster, id, metric: target.id },
+    query: settingsQuery({
+      ...settings.value,
+      selection: target.resource === chart.value?.resource ? settings.value.selection : []
+    })
+  })
 }
 
 /* Go back to job page when the metric is unknown, or when it is not displayed
@@ -167,16 +254,28 @@ function navigationClasses(
         </span>
       </div>
       <div v-else></div>
-      <button
-        type="button"
-        class="justify-self-end rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
-        data-testid="job-metric-close"
-        title="Close"
-        @click="backToJob()"
-      >
-        <span class="sr-only">Close</span>
-        <XMarkIcon class="h-6 w-6" />
-      </button>
+      <div class="flex items-center justify-end gap-3">
+        <button
+          v-if="chart"
+          type="button"
+          class="bg-slurmweb dark:bg-slurmweb-verydark hover:bg-slurmweb-darker focus-visible:outline-slurmweb inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+          data-testid="job-metric-settings-open"
+          @click="settingsOpen = true"
+        >
+          <AdjustmentsHorizontalIcon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          Settings
+        </button>
+        <button
+          type="button"
+          class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:text-gray-600 hover:dark:bg-gray-700 hover:dark:text-gray-100"
+          data-testid="job-metric-close"
+          title="Close"
+          @click="backToJob()"
+        >
+          <span class="sr-only">Close</span>
+          <XMarkIcon class="h-6 w-6" />
+        </button>
+      </div>
     </div>
 
     <div v-if="job.unable.value" class="px-6">
@@ -197,10 +296,21 @@ function navigationClasses(
         :key="chart.id"
         :title="chart.title"
         :unit="chart.unit"
-        :series="chartSeries(chart)"
+        :series="detail ? chartDetailSeries(chart, selection) : chartSeries(chart)"
         :range="range"
         :loaded="metrics.loaded.value"
         :fullscreen="true"
+      />
+      <JobMetricSettingsPane
+        v-model:open="settingsOpen"
+        v-model:detail="detail"
+        v-model:selection="selection"
+        v-model:start="start"
+        v-model:end="end"
+        :resource="chart.resource"
+        :items="chartDetailItems(chart)"
+        :job-start="jobStart"
+        :job-end="jobEnd"
       />
     </div>
   </div>

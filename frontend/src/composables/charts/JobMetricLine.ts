@@ -71,14 +71,21 @@ export function useJobMetricLine(
   }
 
   function datasets(): ChartDataset<'line', MetricValue[]>[] {
+    /* Areas are filled under a single plain series only, filled areas of multiple
+     * series (eg. per node) would hide each other. */
+    const filled = series.value.filter((serie) => !serie.dashed).length === 1
     return series.value.map((serie) => ({
       label: serie.label,
       data: serie.values,
       borderColor: serie.color,
-      backgroundColor: serie.dashed ? 'transparent' : serie.color.replace(/1\)$/, '0.2)'),
+      backgroundColor: serie.dashed
+        ? 'transparent'
+        : filled
+          ? serie.color.replace(/1\)$/, '0.2)')
+          : serie.color,
       borderDash: serie.dashed ? [6, 4] : [],
       borderWidth: 2,
-      fill: !serie.dashed,
+      fill: filled && !serie.dashed,
       pointRadius: 0,
       tension: 0.2
     }))
