@@ -70,6 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add example with `jobs-view-coord` and `jobs-view-past-coord` actions in
     authorization policy guide (#260).
   - Update Slurm REST API supported versions section in architecture page.
+  - Add jobs metrics section in metrics page with CEEMS exporter integration
+    (#288).
 
 ### Fixed
 - front: Show account in job page again with Slurm REST API >= 0.0.43 by using
