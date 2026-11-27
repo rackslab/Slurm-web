@@ -240,6 +240,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 ],
                 self._crawl_metrics,
             ),
+            Asset("job-metrics", "job-metrics", self._crawl_job_metrics),
             Asset("cache-stats", "cache-stats", self._crawl_cache_stats),
         }
 
@@ -843,6 +844,23 @@ class GatewayCrawler(TokenizedComponentCrawler):
                     f"metrics-{metric}-{_range}",
                     prettify=False,
                 )
+
+    def _crawl_job_metrics(self):
+        if not self.cluster.has_job_metrics() or not self.cluster.has_gpu():
+            logger.warning(
+                "Cluster %s has no jobs metrics or no GPU, skipping job-metrics",
+                self.cluster.name,
+            )
+            return
+        job_id, user, _ = self.cluster.setup_for_job_metrics(
+            self.cluster.gpu_info["gpu_partition"],
+            self.cluster.gpu_info["gpu_per_node"],
+        )
+        self._cleanup_state = {"jobs": [(user, job_id)]}
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/job/{job_id}/metrics",
+            "job-metrics",
+        )
 
     def _crawl_cache_stats(self):
         self.dump_component_query(

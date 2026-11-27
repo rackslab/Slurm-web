@@ -34,6 +34,8 @@ logger = logging.getLogger("crawl-tests-assets")
 DEBUG_FLAGS = ["slurmweb", "rfl", "werkzeug", "urllib3", "crawler"]
 GATEWAY_PREFERRED_INFRASTRUCTURE = "nova"
 METRICS_PREFERRED_INFRASTRUCTURE = "titan"
+# Infrastructure with CEEMS exporter and GPU to crawl jobs metrics assets.
+JOB_METRICS_PREFERRED_INFRASTRUCTURE = "nova"
 # Map between infrastructure names and cluster names that are visible in Slurm-web.
 MAP_CLUSTER_NAMES = {}
 
@@ -207,11 +209,15 @@ def _count_total_assets(
 
         # Count prometheus assets
         if "prometheus" in components_to_process:
-            if infrastructure == METRICS_PREFERRED_INFRASTRUCTURE:
+            crawl_metrics = infrastructure == METRICS_PREFERRED_INFRASTRUCTURE
+            crawl_job_metrics = infrastructure == JOB_METRICS_PREFERRED_INFRASTRUCTURE
+            if crawl_metrics or crawl_job_metrics:
                 prometheus_crawler = PrometheusCrawler(
                     cluster.settings.metrics.host.geturl(),
                     cluster.settings.metrics.job,
                     cluster,
+                    metrics=crawl_metrics,
+                    job_metrics=crawl_job_metrics,
                 )
                 total_assets += prometheus_crawler.count_assets_to_crawl(asset_filter)
     return total_assets
@@ -280,11 +286,14 @@ def _crawl_assets(
                 )
 
         if "prometheus" in components_to_process:
-            if crawl_metrics:
+            crawl_job_metrics = infrastructure == JOB_METRICS_PREFERRED_INFRASTRUCTURE
+            if crawl_metrics or crawl_job_metrics:
                 prometheus_crawler = PrometheusCrawler(
                     cluster.settings.metrics.host.geturl(),
                     cluster.settings.metrics.job,
                     cluster,
+                    metrics=crawl_metrics,
+                    job_metrics=crawl_job_metrics,
                 )
                 prometheus_crawler.crawl_all_assets(progress_bar, asset_filter)
             else:

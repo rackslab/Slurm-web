@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Deploy CEEMS exporter and fake NVIDIA DCGM exporter with different flavors
     on _nova_, _zenith_ and _pulsar_ development clusters, and enable CEEMS
     jobs metrics exporter in development agents (#288).
+  - Crawl jobs metrics tests assets of agent, gateway and Prometheus on _nova_
+    development cluster with a job consuming CPU, memory and GPU (#288).
   - Set repositories priorities with dnf semantics on _pulsar_ development
     cluster, so Slurm packages come from hpck.it instead of EPEL.
 - pkgs:

@@ -39,6 +39,23 @@ logger = logging.getLogger(__name__)
 
 # Supported slurmrestd API versions to try during discovery, in descending order
 # (newest first)
+# Batch script of jobs submitted to crawl jobs metrics. It holds 512MB of memory
+# and keeps one CPU busy, so CPU and memory usage are not null in metrics.
+JOB_METRICS_SCRIPT = """#!/bin/bash
+python3 - <<'PYTHON'
+import time
+data = bytearray(512 * 2**20)
+for i in range(0, len(data), 4096):
+    data[i] = 1
+end = time.time() + 3600
+while time.time() < end:
+    sum(range(100000))
+PYTHON
+"""
+# Delay in seconds after start of jobs submitted to crawl jobs metrics, to let
+# Prometheus scrape enough samples of exporters metrics.
+JOB_METRICS_SAMPLING_DELAY = 180
+
 SUPPORTED_SLURMRESTD_API_VERSIONS = [
     "0.0.46",
     "0.0.45",
@@ -548,6 +565,7 @@ class DevelopmentHostCluster:
         wait_running: bool = True,
         wait_running_timeout_sec: int = 60,
         success: bool = True,
+        script: str | None = None,
     ) -> int:
         """Submit a job using REST API.
 
@@ -561,13 +579,18 @@ class DevelopmentHostCluster:
             wait_running_timeout_sec: Max seconds to wait for RUNNING when
                 ``wait_running`` is True.
             success: If True, job exits successfully, otherwise fails.
+            script: Optional batch script which replaces the default sleep script,
+                duration and success arguments are then ignored.
 
         Returns:
             The submitted job ID.
         """
 
         # Build job script
-        script = f"#!/bin/bash\nsleep {duration} && {'true' if success else 'false'}"
+        if script is None:
+            script = (
+                f"#!/bin/bash\nsleep {duration} && {'true' if success else 'false'}"
+            )
 
         # Create a copy of job_params to avoid modifying the original
         job_params_copy = job_params.copy()
@@ -1162,6 +1185,39 @@ class DevelopmentHostCluster:
             },
         )
         return job_id, user
+
+    def has_job_metrics(self) -> bool:
+        """Check if jobs metrics are enabled on cluster agent."""
+        return bool(
+            self.settings.metrics.enabled and self.settings.metrics.job_exporters
+        )
+
+    def setup_for_job_metrics(
+        self, gpu_partition: str, gpu_per_node: int
+    ) -> tuple[int, str, int]:
+        """Setup cluster for job metrics assets: submit a job with GPU which
+        consumes CPU and memory, and wait for exporters metrics to be scraped by
+        Prometheus. Returns (job_id, user, start timestamp)."""
+        user = self.pick_user()
+        job_id = self.submit(
+            user,
+            {
+                "partition": gpu_partition,
+                "tasks": 2,
+                "tres_per_job": f"gres/gpu:{gpu_per_node}",
+            },
+            timelimit=15,
+            wait_running_timeout_sec=180,
+            script=JOB_METRICS_SCRIPT,
+        )
+        start = int(time.time())
+        logger.info(
+            "Waiting %d seconds for job %d metrics to be scraped",
+            JOB_METRICS_SAMPLING_DELAY,
+            job_id,
+        )
+        time.sleep(JOB_METRICS_SAMPLING_DELAY)
+        return job_id, user, start
 
     def setup_for_job_gpus_pending(
         self, gpu_partition: str, gpu_per_node: int
