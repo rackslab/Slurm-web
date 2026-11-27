@@ -189,6 +189,13 @@ metrics collected by third-party exporters on compute nodes. The charts cover
 the whole job lifetime, from its start time to its end time, or now for running
 jobs.
 
+Every chart can be opened in fullscreen view. In this view, a settings pane
+permits to display metrics per node (CPU and memory charts) or per GPU (GPU
+charts) instead of the job aggregate, to select the nodes or GPUs to display,
+and to zoom on a time range of the job. Metrics are then queried again with a
+resolution adapted to the selected time range. These settings are kept in the
+URL, so the view can be shared with other users permitted to view the job.
+
 Supported exporter is https://ceems-dev.github.io/ceems/[CEEMS]
 (_Compute Energy & Emissions Monitoring Stack_). Slurm-web relies only on CEEMS
 metrics, it does not query GPU vendor specific metrics directly.
