@@ -1250,5 +1250,46 @@ compatible) is enabled.
 
 |-
 
+|job_exporters
+|list[str]
+|List of Prometheus exporters which provide metrics of resources usage by
+individual jobs, displayed in job details page. When this list is empty,
+jobs metrics are disabled.
+
+With _ceems_ exporter, CPU and memory usage metrics are computed with
+metrics of compute units exported by CEEMS exporter. GPU usage metrics are
+provided by CEEMS recording rules for GPU, they must be loaded in
+Prometheus to get these metrics.
+
+This parameter is used only when `enabled` is _yes_.
+
+
+
+*Example:* `ceems`
+
+
+*Choices:*
+
+
+* `ceems`
+
+_No default value_
+
+|-
+
+|ceems_job
+|str
+|Name of Prometheus job which scrapes CEEMS exporter metrics.
+
+This parameter is used only when _ceems_ is in `job_exporters`.
+
+
+
+
+
+*Default:* `ceems`
+
+|-
+
 
 |===
