@@ -10,11 +10,13 @@ import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import jobRunning from '../assets/job-running.json'
 import jobGpusRunning from '../assets/job-gpus-running.json'
 import jobMetrics from '../assets/job-metrics.json'
-import type { JobMetric, JobMetrics } from '@/composables/gateway/types/metrics'
+import jobMetricsDetail from '../assets/job-metrics-detail.json'
+import JobMetricSettingsPane from '@/components/job/JobMetricSettingsPane.vue'
+import type { JobMetric, JobMetrics, JobMetricsDetail } from '@/composables/gateway/types/metrics'
 import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 
 const mockJobDataPoller = getMockClusterDataPoller<SlurmJobDetail>()
-const mockMetricsDataPoller = getMockClusterDataPoller<JobMetrics>()
+const mockMetricsDataPoller = getMockClusterDataPoller<JobMetrics | JobMetricsDetail>()
 
 const useClusterDataPoller = vi.hoisted(() => vi.fn())
 vi.mock('@/composables/DataPoller', () => ({
@@ -42,7 +44,19 @@ function setClusterJobMetrics(metrics: JobMetric[]) {
 
 function mountView(metric: string, job: unknown = jobGpusRunning) {
   mockJobDataPoller.data.value = job as SlurmJobDetail
-  return mount(JobMetricView, { props: { cluster: 'foo', id: 1234, metric } })
+  return mount(JobMetricView, {
+    props: { cluster: 'foo', id: 1234, metric },
+    global: {
+      stubs: {
+        // Headless UI stubs for settings drawer
+        teleport: true,
+        Dialog: { template: '<div v-bind="$attrs"><slot /></div>' },
+        DialogPanel: { template: '<div v-bind="$attrs"><slot /></div>' },
+        TransitionRoot: { props: ['show'], template: '<div v-if="show"><slot /></div>' },
+        TransitionChild: { template: '<div><slot /></div>' }
+      }
+    }
+  })
 }
 
 describe('JobMetricView.vue', () => {
@@ -91,7 +105,8 @@ describe('JobMetricView.vue', () => {
     await wrapper.get('[data-testid="job-metric-nav-gpu"]').trigger('click')
     expect(router.push).toHaveBeenCalledWith({
       name: 'job-metric',
-      params: { cluster: 'foo', id: 1234, metric: 'gpu-memory' }
+      params: { cluster: 'foo', id: 1234, metric: 'gpu-memory' },
+      query: {}
     })
   })
   test('switch kind of usage keeping resource', async () => {
@@ -99,7 +114,8 @@ describe('JobMetricView.vue', () => {
     await wrapper.get('[data-testid="job-metric-nav-usage"]').trigger('click')
     expect(router.push).toHaveBeenCalledWith({
       name: 'job-metric',
-      params: { cluster: 'foo', id: 1234, metric: 'gpu' }
+      params: { cluster: 'foo', id: 1234, metric: 'gpu' },
+      query: {}
     })
   })
   test('no navigation to current chart', async () => {
@@ -194,5 +210,131 @@ describe('JobMetricView.vue', () => {
     const wrapper = mountView('cpu')
     expect(wrapper.getComponent(ErrorAlert).text()).toBe('Unable to retrieve job metrics.')
     expect(wrapper.findComponent(JobMetricChart).exists()).toBe(false)
+  })
+  test('poll aggregated metrics of whole job by default', () => {
+    mountView('cpu')
+    expect(useClusterDataPoller).toHaveBeenCalledWith('foo', 'job_metrics_query', 30000, {
+      job: 1234,
+      detail: undefined,
+      start: undefined,
+      end: undefined
+    })
+    expect(mockMetricsDataPoller.setParam).not.toHaveBeenCalled()
+  })
+  test('read settings from route query', () => {
+    router.setQuery({ view: 'detail', series: 'gpu2.nova', start: '1800000000', end: 'fail' })
+    mockMetricsDataPoller.data.value = jobMetricsDetail
+    const wrapper = mountView('memory')
+    expect(useClusterDataPoller).toHaveBeenCalledWith('foo', 'job_metrics_query', 30000, {
+      job: 1234,
+      detail: true,
+      start: 1800000000,
+      end: undefined
+    })
+    const pane = wrapper.getComponent(JobMetricSettingsPane)
+    expect(pane.props('detail')).toBe(true)
+    expect(pane.props('selection')).toEqual(['gpu2.nova'])
+    expect(pane.props('start')).toBe(1800000000)
+    expect(pane.props('end')).toBeUndefined()
+    expect(pane.props('resource')).toBe('cpu')
+    expect(pane.props('items')).toEqual([
+      { id: 'gpu1.nova', label: 'gpu1.nova' },
+      { id: 'gpu2.nova', label: 'gpu2.nova' }
+    ])
+  })
+  test('display detailed series of selected nodes with allocated memory', () => {
+    router.setQuery({ view: 'detail', series: 'gpu2.nova' })
+    mockMetricsDataPoller.data.value = jobMetricsDetail
+    const wrapper = mountView('memory')
+    const series = wrapper.getComponent(JobMetricChart).props('series')
+    expect(series.map((serie) => serie.label)).toEqual(['gpu2.nova', 'gpu2.nova allocated'])
+    expect(series[1].dashed).toBe(true)
+    // Node keeps its color whatever the selection, allocated memory has the same color.
+    expect(series[0].color).toBe(series[1].color)
+    expect(series[0].values).toEqual(jobMetricsDetail.memory[1].values)
+    expect(series[1].values).toEqual(jobMetricsDetail.memory_allocated[1].values)
+  })
+  test('display detailed series of all GPUs', () => {
+    router.setQuery({ view: 'detail' })
+    mockMetricsDataPoller.data.value = jobMetricsDetail
+    const wrapper = mountView('gpu')
+    const series = wrapper.getComponent(JobMetricChart).props('series')
+    expect(series.map((serie) => serie.label)).toEqual(['gpu1.nova · GPU 0', 'gpu2.nova · GPU 0'])
+    expect(series[0].color).not.toBe(series[1].color)
+    expect(wrapper.getComponent(JobMetricSettingsPane).props('items')).toEqual([
+      { id: 'gpu1.nova/0', label: 'gpu1.nova · GPU 0' },
+      { id: 'gpu2.nova/0', label: 'gpu2.nova · GPU 0' }
+    ])
+  })
+  test('no aggregated values while detailed series are loaded', () => {
+    // Detailed series are still loaded after switching back to job view.
+    mockMetricsDataPoller.data.value = jobMetricsDetail
+    const wrapper = mountView('cpu')
+    expect(wrapper.getComponent(JobMetricChart).props('series')[0].values).toEqual([])
+  })
+  test('restrict range to time range of settings', () => {
+    const start = jobGpusRunning.time.start + 60
+    router.setQuery({ start: start.toString() })
+    const wrapper = mountView('cpu')
+    expect(wrapper.getComponent(JobMetricChart).props('range').min).toBe(start * 1000)
+  })
+  test('update route query with settings', async () => {
+    router.setQuery({ start: '1800000000' })
+    const wrapper = mountView('cpu')
+    const pane = wrapper.getComponent(JobMetricSettingsPane)
+    pane.vm.$emit('update:detail', true)
+    expect(router.replace).toHaveBeenLastCalledWith({
+      name: 'job-metric',
+      params: { cluster: 'foo', id: 1234, metric: 'cpu' },
+      query: { view: 'detail', start: '1800000000' }
+    })
+    pane.vm.$emit('update:end', 1800000600)
+    expect(router.replace).toHaveBeenLastCalledWith({
+      name: 'job-metric',
+      params: { cluster: 'foo', id: 1234, metric: 'cpu' },
+      query: { start: '1800000000', end: '1800000600' }
+    })
+  })
+  test('update route query with selection in detail view', async () => {
+    router.setQuery({ view: 'detail' })
+    const wrapper = mountView('cpu')
+    wrapper.getComponent(JobMetricSettingsPane).vm.$emit('update:selection', ['cn1', 'cn2'])
+    expect(router.replace).toHaveBeenLastCalledWith({
+      name: 'job-metric',
+      params: { cluster: 'foo', id: 1234, metric: 'cpu' },
+      query: { view: 'detail', series: 'cn1,cn2' }
+    })
+  })
+  test('keep settings when switching kind of usage', async () => {
+    router.setQuery({ view: 'detail', series: 'gpu1.nova', start: '1800000000' })
+    const wrapper = mountView('cpu')
+    await wrapper.get('[data-testid="job-metric-nav-memory"]').trigger('click')
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'job-metric',
+      params: { cluster: 'foo', id: 1234, metric: 'memory' },
+      query: { view: 'detail', series: 'gpu1.nova', start: '1800000000' }
+    })
+  })
+  test('drop selection when switching resource', async () => {
+    router.setQuery({ view: 'detail', series: 'gpu1.nova', end: '1800000000' })
+    const wrapper = mountView('cpu')
+    await wrapper.get('[data-testid="job-metric-nav-gpu"]').trigger('click')
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'job-metric',
+      params: { cluster: 'foo', id: 1234, metric: 'gpu' },
+      query: { view: 'detail', end: '1800000000' }
+    })
+  })
+  test('open settings drawer', async () => {
+    const wrapper = mountView('cpu')
+    const pane = wrapper.getComponent(JobMetricSettingsPane)
+    // Drawer is closed by default, chart has full width.
+    expect(pane.props('open')).toBe(false)
+    await wrapper.get('[data-testid="job-metric-settings-open"]').trigger('click')
+    expect(pane.props('open')).toBe(true)
+    pane.vm.$emit('update:open', false)
+    await nextTick()
+    expect(pane.props('open')).toBe(false)
+    expect(wrapper.find('[data-testid="job-metric-settings-open"]').exists()).toBe(true)
   })
 })
