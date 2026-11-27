@@ -19,3 +19,17 @@ export function getMBHumanUnit(megabytes: number): string {
   }
   return `${Math.round(value * 100) / 100}${units[divides]}`
 }
+
+/* Convert a number of bytes into a string with simplified unit (eg. MB, GB) when
+ * possible. Round value with up to 2 decimals. */
+export function getBytesHumanUnit(bytes: number): string {
+  if (!bytes) return '0'
+  let value = bytes
+  let divides = 0
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+  while (value >= 1024 && divides < units.length - 1) {
+    value /= 1024
+    divides += 1
+  }
+  return `${Math.round(value * 100) / 100}${units[divides]}`
+}
