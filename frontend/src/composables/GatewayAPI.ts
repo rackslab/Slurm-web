@@ -24,6 +24,7 @@ import type {
   ClusterStats
 } from '@/composables/gateway/types/cluster'
 import type {
+  JobMetrics,
   MetricCacheResult,
   MetricJobState,
   MetricResourceState,
@@ -60,7 +61,7 @@ export const GatewayClusterAPIKeys = [
 ] as const
 export type GatewayClusterAPIKey = (typeof GatewayClusterAPIKeys)[number]
 
-export const GatewayClusterWithNumberAPIKeys = ['job', 'jobsPast'] as const
+export const GatewayClusterWithNumberAPIKeys = ['job', 'job_metrics', 'jobsPast'] as const
 export type GatewayClusterWithNumberAPIKey = (typeof GatewayClusterWithNumberAPIKeys)[number]
 
 export const GatewayClusterWithStringAPIKeys = [
@@ -203,6 +204,10 @@ export function useGatewayAPI() {
     return await restAPI.get<SlurmAssociation[]>(`/agents/${cluster}/associations`)
   }
 
+  async function job_metrics(cluster: string, job: number): Promise<JobMetrics> {
+    return await restAPI.get<JobMetrics>(`/agents/${cluster}/job/${job}/metrics`)
+  }
+
   async function cache_stats(cluster: string): Promise<CacheStatistics> {
     return await restAPI.get<CacheStatistics>(`/agents/${cluster}/cache/stats`)
   }
@@ -326,6 +331,7 @@ export function useGatewayAPI() {
     jobs,
     jobsPast,
     job,
+    job_metrics,
     nodes,
     node,
     partitions,

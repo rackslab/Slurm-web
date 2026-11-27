@@ -6,6 +6,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import type { JobMetric } from '@/composables/gateway/types/metrics'
+
 export interface ClusterSlurmdbdLimits {
   jobs_max_hours: number
 }
@@ -38,6 +40,7 @@ export interface ClusterDescription {
   racksdb: boolean
   infrastructure: string
   metrics: boolean
+  job_metrics?: JobMetric[]
   cache: boolean
   slurmdbd: ClusterSlurmdbdLimits
   permissions: ClusterPermissions

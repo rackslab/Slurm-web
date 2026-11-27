@@ -39,6 +39,16 @@ export type MetricJobState =
 
 export type MetricCacheResult = 'hit' | 'miss'
 
+/* Metrics of resources usage by individual jobs:
+ * - cpu: CPU usage in percent of allocated CPUs
+ * - memory: memory usage in bytes
+ * - memory_allocated: memory allocated to the job in bytes
+ * - gpu: GPU usage in percent, averaged over allocated GPUs
+ * - gpu_memory: GPU memory usage in percent, averaged over allocated GPUs
+ */
+export type JobMetric = 'cpu' | 'memory' | 'memory_allocated' | 'gpu' | 'gpu_memory'
+export type JobMetrics = Partial<Record<JobMetric, MetricValue[]>>
+
 export function isMetricRange(range: unknown): range is MetricRange {
   return typeof range === 'string' && MetricRanges.includes(range as MetricRange)
 }
