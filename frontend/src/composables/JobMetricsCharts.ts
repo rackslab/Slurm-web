@@ -27,9 +27,16 @@ export function isJobMetricChartId(id: unknown): id is JobMetricChartId {
   return typeof id === 'string' && JobMetricChartIds.includes(id as JobMetricChartId)
 }
 
+/* Resource and kind of usage of job metric charts, combined in fullscreen view
+ * navigation. */
+export type JobMetricResource = 'cpu' | 'gpu'
+export type JobMetricKind = 'usage' | 'memory'
+
 export interface JobMetricChartDefinition {
   id: JobMetricChartId
   title: string
+  resource: JobMetricResource
+  kind: JobMetricKind
   unit: JobMetricUnit
   /* Metric which must be available in cluster to display the chart */
   metric: JobMetric
@@ -41,6 +48,8 @@ export const JOB_METRIC_CHARTS: JobMetricChartDefinition[] = [
   {
     id: 'cpu',
     title: 'CPU usage',
+    resource: 'cpu',
+    kind: 'usage',
     unit: 'percent',
     metric: 'cpu',
     series: [{ metric: 'cpu', label: 'CPU', color: 'rgba(59, 130, 246, 1)' }]
@@ -48,6 +57,8 @@ export const JOB_METRIC_CHARTS: JobMetricChartDefinition[] = [
   {
     id: 'memory',
     title: 'Memory usage',
+    resource: 'cpu',
+    kind: 'memory',
     unit: 'bytes',
     metric: 'memory',
     series: [
@@ -63,6 +74,8 @@ export const JOB_METRIC_CHARTS: JobMetricChartDefinition[] = [
   {
     id: 'gpu',
     title: 'GPU usage',
+    resource: 'gpu',
+    kind: 'usage',
     unit: 'percent',
     metric: 'gpu',
     series: [{ metric: 'gpu', label: 'GPU', color: 'rgba(168, 85, 247, 1)' }],
@@ -71,6 +84,8 @@ export const JOB_METRIC_CHARTS: JobMetricChartDefinition[] = [
   {
     id: 'gpu-memory',
     title: 'GPU memory usage',
+    resource: 'gpu',
+    kind: 'memory',
     unit: 'percent',
     metric: 'gpu_memory',
     series: [{ metric: 'gpu_memory', label: 'GPU memory', color: 'rgba(236, 72, 153, 1)' }],

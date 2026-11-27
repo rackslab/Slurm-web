@@ -39,6 +39,7 @@ const { metrics, displayedCharts, range, chartSeries } = useJobMetricsCharts(
         :series="chartSeries(chart)"
         :range="range"
         :loaded="metrics.loaded.value"
+        :fullscreen-route="{ name: 'job-metric', params: { cluster, id, metric: chart.id } }"
       />
     </div>
   </div>

@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (#289).
   - Add charts of CPU, memory, GPU and GPU memory usage over job lifetime in
     job details page, when jobs metrics are available on the cluster (#288).
+  - Add fullscreen view of jobs metrics charts, like resources diagrams, with
+    navigation between CPU and GPU, usage and memory (#288).
 - dev:
   - Deploy CEEMS exporter and fake NVIDIA DCGM exporter with different flavors
     on _nova_, _zenith_ and _pulsar_ development clusters, and enable CEEMS
