@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `/job/<id>/metrics` endpoint with the same permissions as job details
     (#288).
   - Report available jobs metrics in `/info` endpoint.
+- gateway:
+  - Add `/api/agents/<cluster>/job/<id>/metrics` endpoint to retrieve metrics of
+    resources usage by individual jobs (#288).
+  - Report available jobs metrics in clusters list, with backward
+    compatibility for agents which do not report this information.
 - front:
   - Support `jobs-view-coord` and `jobs-view-past-coord` permissions in jobs
     menu, scope toggles and node jobs (#260).
