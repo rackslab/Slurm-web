@@ -55,6 +55,7 @@ interface MockClusterDataPoller<ResultType> {
   loaded: Ref<boolean>
   setCallback: (newCallback: GatewayAnyClusterApiKey) => void
   setParam: (newOtherParam: string | number) => void
+  pause: () => void
 }
 
 export function getMockClusterDataPoller<ResultType>(): MockClusterDataPoller<ResultType> {
@@ -63,6 +64,7 @@ export function getMockClusterDataPoller<ResultType>(): MockClusterDataPoller<Re
     unable: ref(false),
     loaded: ref(true),
     setCallback: vi.fn(),
-    setParam: vi.fn()
+    setParam: vi.fn(),
+    pause: vi.fn()
   }
 }

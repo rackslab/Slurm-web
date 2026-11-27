@@ -6,6 +6,8 @@ import JobView from '@/views/JobView.vue'
 import JobBackButton from '@/components/job/JobBackButton.vue'
 import { init_plugins, getMockClusterDataPoller } from '../lib/common'
 import jobRunning from '../assets/job-running.json'
+import jobPending from '../assets/job-pending.json'
+import JobMetricsCharts from '@/components/job/JobMetricsCharts.vue'
 import type { RouterMock } from 'vue-router-mock'
 import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
@@ -28,6 +30,7 @@ describe('JobView.vue', () => {
         racksdb: true,
         infrastructure: 'foo',
         metrics: true,
+        job_metrics: ['cpu', 'memory', 'memory_allocated', 'gpu', 'gpu_memory'],
         cache: true,
         slurmdbd: {
           jobs_max_hours: 168
@@ -88,5 +91,46 @@ describe('JobView.vue', () => {
     // #user hash in route while group field is not highlighted.
     expect(wrapper.get('dl div#user').classes('bg-slurmweb-light')).toBe(true)
     expect(wrapper.get('dl div#group').classes('bg-slurmweb-light')).toBe(false)
+  })
+  test('display job metrics charts for started job', () => {
+    mockClusterDataPoller.data.value = jobRunning
+    mockClusterDataPoller.loaded.value = true
+    const wrapper = mount(JobView, {
+      props: { cluster: 'foo', id: 1234 },
+      global: { stubs: { JobMetricsCharts: true } }
+    })
+    const charts = wrapper.findComponent(JobMetricsCharts)
+    expect(charts.exists()).toBe(true)
+    expect(charts.props('cluster')).toBe('foo')
+    expect(charts.props('id')).toBe(1234)
+  })
+  test('hide job metrics charts for pending job', () => {
+    mockClusterDataPoller.data.value = jobPending
+    mockClusterDataPoller.loaded.value = true
+    const wrapper = mount(JobView, {
+      props: { cluster: 'foo', id: 1234 },
+      global: { stubs: { JobMetricsCharts: true } }
+    })
+    expect(wrapper.findComponent(JobMetricsCharts).exists()).toBe(false)
+  })
+  test('hide job metrics charts when metrics are disabled', () => {
+    useRuntimeStore().availableClusters[0].metrics = false
+    mockClusterDataPoller.data.value = jobRunning
+    mockClusterDataPoller.loaded.value = true
+    const wrapper = mount(JobView, {
+      props: { cluster: 'foo', id: 1234 },
+      global: { stubs: { JobMetricsCharts: true } }
+    })
+    expect(wrapper.findComponent(JobMetricsCharts).exists()).toBe(false)
+  })
+  test('hide job metrics charts without job metrics on cluster', () => {
+    useRuntimeStore().availableClusters[0].job_metrics = []
+    mockClusterDataPoller.data.value = jobRunning
+    mockClusterDataPoller.loaded.value = true
+    const wrapper = mount(JobView, {
+      props: { cluster: 'foo', id: 1234 },
+      global: { stubs: { JobMetricsCharts: true } }
+    })
+    expect(wrapper.findComponent(JobMetricsCharts).exists()).toBe(false)
   })
 })
