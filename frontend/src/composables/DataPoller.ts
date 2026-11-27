@@ -24,6 +24,7 @@ export interface ClusterDataPoller<ResponseType> {
   setCluster: (newCluster: string) => void
   setCallback: (newCallback: GatewayAnyClusterApiKey) => void
   setParam: (newOtherParam: string | number | undefined) => void
+  pause: () => void
 }
 
 export function useClusterDataPoller<Type>(
@@ -107,6 +108,17 @@ export function useClusterDataPoller<Type>(
     gateway.abort()
   }
 
+  /* Stop polling without aborting in-flight requests, which are shared with other
+   * pollers through the gateway abort controller. Polling restarts with
+   * setCluster(), setCallback() or setParam(). */
+  function pause() {
+    console.log(`Pause polling ${callback} for cluster ${cluster}`)
+    _stop = true
+    _pollGeneration++
+    clearTimeout(_timeout)
+    _timeout = -1
+  }
+
   function setCluster(newCluster: string) {
     stop()
     cluster = newCluster
@@ -135,5 +147,5 @@ export function useClusterDataPoller<Type>(
     stop()
   })
 
-  return { data, unable, loaded, setCluster, setCallback, setParam }
+  return { data, unable, loaded, setCluster, setCallback, setParam, pause }
 }
