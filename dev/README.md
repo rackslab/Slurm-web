@@ -19,11 +19,15 @@ Slurm-web features:
 
 | Cluster | Slurm (API) | OS | slurmrestd | Metrics | RacksDB | Highlights |
 |---------|-------------|----|------------|---------|---------|------------|
-| nova | 26.11 (0.0.46) | Debian 13 | JWT auto, TCP | ✓ | ✓ | typed + untyped GPUs, GPU shards, QOS preemption, gateway in subdirectory, extra user group policy |
-| pulsar | 26.05 (0.0.45) | Rocky Linux 10 | JWT auto, Unix socket | ✓ | ✓ | mixed typed GPUs (H100 + H200), overlapping partitions |
+| nova | 26.11 (0.0.46) | Debian 13 | JWT auto, TCP | ✓ | ✓ | typed + untyped GPUs, GPU shards, QOS preemption, gateway in subdirectory, extra user group policy, CEEMS (DCGM 4.8.4 flavor) |
+| pulsar | 26.05 (0.0.45) | Rocky Linux 10 | JWT auto, Unix socket | ✓ | ✓ | mixed typed GPUs (H100 + H200), overlapping partitions, CEEMS (DCGM current flavor) |
 | titan | 25.11 (0.0.44) | Debian 13 | JWT static, Unix socket | ✓ | ✓ | Slurm emulator with 500+ nodes, multiple racks, oversubscribed and drained partitions, no slurmdbd archive |
-| zenith | 25.05 (0.0.43) | Debian 13 | JWT auto, TCP | ✓ | ✓ | untyped GPUs, GPU TRES limits in QOS, LDAP memberOf |
+| zenith | 25.05 (0.0.43) | Debian 13 | JWT auto, TCP | ✓ | ✓ | untyped GPUs, GPU TRES limits in QOS, LDAP memberOf, CEEMS (DCGM legacy flavor) |
 | comet | 24.11 (0.0.42) | Rocky Linux 9 | local, Unix socket | ✗ | ✗ | typed GPUs, optional features disabled |
+
+On nova, zenith and pulsar, the CEEMS exporter and a fake NVIDIA DCGM exporter
+run on compute nodes for jobs metrics, with a different DCGM exporter flavor
+on each cluster.
 
 On all clusters, the first member of _physic_ group coordinates _physic_
 account and its sub-accounts, and the first member of _optic_ group coordinates
