@@ -921,19 +921,93 @@ class DevelopmentHostCluster:
             params["tres_per_job"] = f"gres/gpu:{gpu_count}"
         return params
 
+    def wait_for_job_acct_records(
+        self,
+        job_id: int,
+        count: int,
+        *,
+        timeout_sec: int = 120,
+        poll_interval: float = 2.0,
+    ) -> None:
+        """Poll slurmrestd until slurmdbd has at least *count* records for job."""
+        deadline = time.monotonic() + timeout_sec
+        nb_records = 0
+        while time.monotonic() < deadline:
+            response = self.query_slurmrestd_json(f"/slurmdb/v{self.api}/job/{job_id}")
+            nb_records = len(response["jobs"])
+            if nb_records >= count:
+                logger.info("Job %s has %d records in accounting", job_id, nb_records)
+                return
+            logger.debug(
+                "Job %s has %d records in accounting, waiting for %d",
+                job_id,
+                nb_records,
+                count,
+            )
+            time.sleep(poll_interval)
+        raise CrawlerError(
+            f"Job {job_id} did not reach {count} records in accounting within "
+            f"{timeout_sec}s (last count {nb_records})"
+        )
+
+    def setup_requeued_job(self, user: str) -> int:
+        """Submit a job and get it requeued after a node failure, so that slurmdbd
+        keeps multiple records (one per run) for this job.
+
+        The job runs exclusively on its node, which is set DOWN while the job is
+        running. slurmctld terminates the job with NODE_FAIL and requeues it. The
+        node is resumed right after so the cluster is left in its initial state.
+
+        Returns:
+            The requeued job ID.
+        """
+        logger.info("Submitting job and requeuing it after node failure…")
+        job_id = self.submit(
+            user,
+            {"tasks": 1, "shared": ["none"], "requeue": True},
+            duration=600,
+            timelimit=15,
+            wait_running=True,
+            wait_running_timeout_sec=180,
+        )
+        nodes = self.job_nodes(job_id)
+        for node in nodes:
+            self.node_update(node, "DOWN", "Requeue job test")
+        try:
+            # After node failure, the job is requeued and goes back to PENDING
+            # state, hold by slurmctld with BeginTime reason for some time.
+            self.wait_for_job_state(
+                job_id,
+                {"PENDING"},
+                timeout_sec=120,
+                abort_states=("FAILED", "TIMEOUT", "CANCELLED", "COMPLETED"),
+            )
+        finally:
+            for node in nodes:
+                self.node_resume(node)
+        # slurmdbd records are updated asynchronously by slurmctld.
+        self.wait_for_job_acct_records(job_id, 2)
+        return job_id
+
     def setup_for_jobs(self) -> tuple[dict, dict[str, int]]:
         """Setup cluster for jobs asset.
 
         Returns:
             Cleanup state for teardown, and fixture job IDs keyed by asset
-            suffix (failed, completed, pending, timeout, running). Terminal jobs
-            are dumped by ID because they leave the active queue before crawl.
-            The running job is a fixture so the asset does not depend on other
-            jobs being in the queue during the crawl.
+            suffix (requeued, failed, completed, pending, timeout, running).
+            Terminal jobs are dumped by ID because they leave the active queue
+            before crawl. The running job is a fixture so the asset does not
+            depend on other jobs being in the queue during the crawl.
         """
         cleanup_state: dict[str, t.Any] = {"jobs": []}
         fixture_job_ids: dict[str, int] = {}
         user = self.pick_user()
+
+        # Setup requeued job first, before any other fixture job is submitted, so
+        # that no other job is killed when its node is set DOWN.
+        job_id = self.setup_requeued_job(user)
+        fixture_job_ids["requeued"] = job_id
+        cleanup_state["jobs"].append((user, job_id))
 
         job_id = self.submit(
             user,

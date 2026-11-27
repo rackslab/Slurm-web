@@ -134,6 +134,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                     "job-completed",
                     "job-failed",
                     "job-timeout",
+                    "job-requeued",
                     "job-archived",
                 ],
                 self._crawl_jobs,
