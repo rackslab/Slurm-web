@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     restrict job lists and details to the accounts coordinated by the
     authenticated user, in addition to own jobs with `jobs-view-own` and
     `jobs-view-past-own` actions (#260).
+  - Return previous runs of requeued jobs stored in accounting in
+    `previous_runs` key of individual job response (#777).
 - front:
   - Support `jobs-view-coord` and `jobs-view-past-coord` permissions in jobs
     menu, scope toggles and node jobs (#260).
