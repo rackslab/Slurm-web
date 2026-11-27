@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     restrict job lists and details to the accounts coordinated by the
     authenticated user, in addition to own jobs with `jobs-view-own` and
     `jobs-view-past-own` actions (#260).
+  - Query metrics of resources usage by individual jobs (CPU, memory, GPU and
+    GPU memory) in Prometheus with pluggable jobs metrics exporters, starting
+    with CEEMS exporter and its GPU recording rules, and serve them on new
+    `/job/<id>/metrics` endpoint with the same permissions as job details
+    (#288).
+  - Report available jobs metrics in `/info` endpoint.
 - front:
   - Support `jobs-view-coord` and `jobs-view-past-coord` permissions in jobs
     menu, scope toggles and node jobs (#260).

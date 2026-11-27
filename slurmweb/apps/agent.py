@@ -42,6 +42,7 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
         SlurmwebAppRoute(f"/v{get_version()}/jobs", views.jobs),
         SlurmwebAppRoute(f"/v{get_version()}/jobs/past", views.jobs_past),
         SlurmwebAppRoute(f"/v{get_version()}/job/<int:job>", views.job),
+        SlurmwebAppRoute(f"/v{get_version()}/job/<int:job>/metrics", views.job_metrics),
         SlurmwebAppRoute(f"/v{get_version()}/nodes", views.nodes),
         SlurmwebAppRoute(f"/v{get_version()}/node/<name>", views.node),
         SlurmwebAppRoute(f"/v{get_version()}/partitions", views.partitions),
@@ -140,11 +141,13 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
 
         self.metrics_collector = None
         self.metrics_db = None
+        self.job_metrics = None
         if self.settings.metrics.enabled:
             # Lazy load metrics module to avoid failing on missing optional external
             # dependency when feature is actually disabled.
             from ..metrics.collector import SlurmWebMetricsCollector, make_wsgi_app
             from ..metrics.db import SlurmwebMetricsDB
+            from ..metrics.jobs import SlurmwebJobMetrics, build_exporters
 
             self.metrics_collector = SlurmWebMetricsCollector(
                 self.slurmrestd, self.cache
@@ -155,6 +158,14 @@ class SlurmwebAppAgent(SlurmwebWebApp, RFLTokenizedRBACWebApp):
             self.metrics_db = SlurmwebMetricsDB(
                 self.settings.metrics.host, self.settings.metrics.job
             )
+            if self.settings.metrics.job_exporters:
+                try:
+                    self.job_metrics = SlurmwebJobMetrics(
+                        self.metrics_db, build_exporters(self.settings.metrics)
+                    )
+                except SlurmwebConfigurationError as err:
+                    logger.critical("Configuration error: %s", err)
+                    sys.exit(1)
 
     def _init_racksdb(self):
         """Load RacksDB blueprint according to enabled tri-state configuration."""

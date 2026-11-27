@@ -6,6 +6,7 @@
 
 from typing import Any, Callable, Dict, Optional, Tuple
 import logging
+import time
 
 from flask import Response, current_app, jsonify, abort, request
 from rfl.web.tokens import rbac_action, check_jwt
@@ -43,6 +44,11 @@ def info():
     data = {
         "cluster": current_app.settings.service.cluster,
         "metrics": current_app.settings.metrics.enabled,
+        "job_metrics": (
+            current_app.job_metrics.available()
+            if current_app.job_metrics is not None
+            else []
+        ),
         "cache": current_app.settings.cache.enabled,
         "racksdb": {
             "enabled": current_app.racksdb_active,
@@ -233,6 +239,38 @@ def job(job: int):
     if not allowed(job_data):
         abort(404, "Job not found")
     return jsonify(job_data)
+
+
+@check_jwt
+def job_metrics(job: int):
+    if current_app.job_metrics is None:
+        error = "Jobs metrics are disabled, unable to query values"
+        logger.warning(error)
+        abort(501, error)
+    allowed = jobs_scope("user")
+    if allowed is None:
+        abort(403, "User is not allowed to view jobs")
+    job_data = slurmrest("job", job)
+    if not allowed(job_data):
+        abort(404, "Job not found")
+
+    # Select time range of the job. Return an empty set of metrics if the job is not
+    # started yet. For running jobs, the end time is either 0 or the expected end
+    # time in the future, then the range ends now.
+    times = job_data.get("time") or {}
+    start = times.get("start") or 0
+    end = times.get("end") or 0
+    now = int(time.time())
+    if not start or start > now:
+        return jsonify({})
+    if not end or end > now:
+        end = now
+
+    try:
+        return jsonify(current_app.job_metrics.request(job, start, end))
+    except SlurmwebMetricsDBError as err:
+        logger.warning(str(err))
+        abort(500, str(err))
 
 
 @check_jwt

@@ -9,6 +9,7 @@ import collections
 from datetime import datetime, timedelta
 import asyncio
 import logging
+import urllib.parse
 
 import aiohttp
 
@@ -130,7 +131,9 @@ class SlurmwebMetricsDB:
             *[self._request(*self._query(id, params, last)) for id in params.ids]
         )
 
-    async def _request(self, id, params, query):
+    async def _get(self, query):
+        """Send GET request on Prometheus HTTP API with the given query path and
+        parameters. Return the decoded JSON response."""
         try:
             async with aiohttp.ClientSession() as session:
                 url = f"{self.base_uri.geturl()}{self.REQUEST_BASE_PATH}{query}"
@@ -142,7 +145,7 @@ class SlurmwebMetricsDB:
                             f"database request {url}"
                         )
                     try:
-                        json = await response.json()
+                        return await response.json()
                     except aiohttp.client_exceptions.ContentTypeError as err:
                         raise SlurmwebMetricsDBError(
                             "Unsupported Content-Type for metrics database request "
@@ -152,6 +155,31 @@ class SlurmwebMetricsDB:
             raise SlurmwebMetricsDBError(
                 f"Metrics database connection error: {str(err)}"
             ) from err
+
+    @staticmethod
+    def query_range_path(promql: str, start: int, end: int, step: int) -> str:
+        """Return path and parameters of Prometheus HTTP API range query, relative
+        to API base path."""
+        return (
+            f"query_range?query={urllib.parse.quote(promql, safe='')}"
+            f"&start={start}&end={end}&step={step}"
+        )
+
+    async def query_range(self, promql: str, start: int, end: int, step: int):
+        """Send PromQL range query between start and end timestamps (in seconds) with
+        the given step (in seconds). Return the list of series in result, possibly
+        empty."""
+        query = self.query_range_path(promql, start, end, step)
+        json = await self._get(query)
+        try:
+            return json["data"]["result"]
+        except (KeyError, TypeError) as err:
+            raise SlurmwebMetricsDBError(
+                f"Unexpected result on metrics query {query}"
+            ) from err
+
+    async def _request(self, id, params, query):
+        json = await self._get(query)
 
         # Check result is not empty
         if not json["data"]["result"]:
