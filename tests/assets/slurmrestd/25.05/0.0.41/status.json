@@ -63,6 +63,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-requeued": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-running": {
     "content-type": "application/json",
     "status": 200
@@ -228,6 +232,10 @@
     "status": 200
   },
   "slurmdb-job-pending": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-job-requeued": {
     "content-type": "application/json",
     "status": 200
   },
