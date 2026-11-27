@@ -73,7 +73,11 @@ class AgentCrawler(TokenizedComponentCrawler):
                 "metrics-cache-hour",
                 self._crawl_metrics_cache_hour,
             ),
-            Asset("job-metrics", "job-metrics", self._crawl_job_metrics),
+            Asset(
+                "job-metrics",
+                ["job-metrics", "job-metrics-detail"],
+                self._crawl_job_metrics,
+            ),
             Asset("cache-stats", "cache-stats", self._crawl_cache_stats),
             Asset("cache-reset", "cache-reset", self._crawl_cache_reset),
         }
@@ -227,6 +231,10 @@ class AgentCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/v{get_version()}/job/{job_id}/metrics",
             "job-metrics",
+        )
+        self.dump_component_query(
+            f"/v{get_version()}/job/{job_id}/metrics?detail=true",
+            "job-metrics-detail",
         )
 
     def _crawl_cache_stats(self):

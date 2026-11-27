@@ -240,7 +240,11 @@ class GatewayCrawler(TokenizedComponentCrawler):
                 ],
                 self._crawl_metrics,
             ),
-            Asset("job-metrics", "job-metrics", self._crawl_job_metrics),
+            Asset(
+                "job-metrics",
+                ["job-metrics", "job-metrics-detail"],
+                self._crawl_job_metrics,
+            ),
             Asset("cache-stats", "cache-stats", self._crawl_cache_stats),
         }
 
@@ -860,6 +864,10 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/api/agents/{self.cluster.name}/job/{job_id}/metrics",
             "job-metrics",
+        )
+        self.dump_component_query(
+            f"/api/agents/{self.cluster.name}/job/{job_id}/metrics?detail=true",
+            "job-metrics-detail",
         )
 
     def _crawl_cache_stats(self):
