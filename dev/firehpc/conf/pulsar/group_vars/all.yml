@@ -1,13 +1,18 @@
 common_pkgs_derivatives:
 - main
 - slurmweb-7
+# On RedHat based distributions, dnf selects the repository with the lowest
+# priority value (default 99). Prefer slurmweb-7 over main.
 common_pkgs_priorities:
-  slurmweb-7: 900
+  slurmweb-7: 50
 common_with_devs_repos: true
 common_devs_derivatives:
 - main
 common_hpckit_derivatives:
 - slurm26.05
+# Prefer hpck.it Slurm packages over EPEL Slurm packages with the same names.
+common_hpckit_priorities:
+  slurm26.05: 50
 fhpc_slurm_with_jwt: true
 slurm_params:
   PriorityType: priority/multifactor
@@ -71,3 +76,7 @@ slurmweb_agent_settings:
     enabled: true
 redis_enabled: true
 metrics_enabled: true
+# Deploy CEEMS exporter and fake NVIDIA DCGM exporter on compute nodes for jobs
+# metrics, with DCGM exporter 4.9.0+ default counters metric names.
+ceems_enabled: true
+nvidia_fake_dcgm_flavor: current

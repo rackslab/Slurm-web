@@ -1,6 +1,13 @@
 {
   "cache": true,
   "cluster": "nova",
+  "job_metrics": [
+    "cpu",
+    "memory",
+    "memory_allocated",
+    "gpu",
+    "gpu_memory"
+  ],
   "metrics": true,
   "racksdb": {
     "enabled": true,

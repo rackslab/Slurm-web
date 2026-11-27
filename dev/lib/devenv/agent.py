@@ -177,6 +177,7 @@ class SlurmwebAgent:
                     prometheus_port=self.forwards["prometheus"].local,
                     infrastructure=self.name if self.ui_name != self.name else None,
                     metrics_enabled=metrics_enabled,
+                    ceems_enabled=CLUSTERS[self.name].get("ceems", False),
                 )
             )
 

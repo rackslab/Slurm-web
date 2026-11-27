@@ -53,7 +53,7 @@ class TestGatewayApp(TestGatewayBase):
         # Check SlurmwebAgent object is instanciated with all its attributes.
         agent = agents[agent_info["cluster"]]
         self.assertIsInstance(agent, SlurmwebAgent)
-        self.assertEqual(len(vars(agent)), 7)
+        self.assertEqual(len(vars(agent)), 8)
         self.assertEqual(agent.cluster, agent_info["cluster"])
         self.assertEqual(agent.racksdb.enabled, agent_info["racksdb"]["enabled"])
         self.assertEqual(agent.racksdb.version, agent_info["racksdb"]["version"])
@@ -62,11 +62,22 @@ class TestGatewayApp(TestGatewayBase):
         )
         self.assertEqual(agent.metrics, agent_info["metrics"])
         self.assertEqual(agent.cache, agent_info["cache"])
+        self.assertEqual(agent.job_metrics, agent_info["job_metrics"])
         self.assertEqual(
             agent.slurmdbd.jobs_max_hours, agent_info["slurmdbd"]["jobs_max_hours"]
         )
         self.assertEqual(agent.version, agent_info["version"])
         self.assertEqual(agent.url, self.app.settings.agents.url[0].geturl())
+
+    @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
+    def test_agents_without_job_metrics(self, mock_get):
+        # Agents < 8.0.0 do not report job_metrics in info, they must still be
+        # accepted with an empty list of jobs metrics.
+        agent_info, mock_get.return_value = mock_agent_aio_response(asset="info")
+        del agent_info["job_metrics"]
+        agents = self.app.agents
+        self.assertIn(agent_info["cluster"], agents)
+        self.assertEqual(agents[agent_info["cluster"]].job_metrics, [])
 
     @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
     def test_agents_missing_key(self, mock_get):

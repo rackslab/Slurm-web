@@ -47,4 +47,7 @@ password={{ redis_password }}
 [metrics]
 enabled=yes
 host=http://localhost:{{ prometheus_port }}
+{% if ceems_enabled %}
+job_exporters=ceems
+{% endif %}
 {% endif %}

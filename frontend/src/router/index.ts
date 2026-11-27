@@ -25,6 +25,7 @@ import ClustersView from '@/views/ClustersView.vue'
 import JobsView from '@/views/JobsView.vue'
 import JobsPastView from '@/views/JobsPastView.vue'
 import JobView from '@/views/JobView.vue'
+import JobMetricView from '@/views/JobMetricView.vue'
 import ResourcesView from '@/views/resources/ResourcesView.vue'
 import ResourcesDiagramView from '@/views/resources/ResourcesDiagramView.vue'
 import NodeView from '@/views/NodeView.vue'
@@ -143,6 +144,16 @@ const router = createRouter({
           props: (route: RouteLocation) => ({
             cluster: route.params.cluster,
             id: parseInt(route.params.id as string)
+          })
+        },
+        {
+          path: 'job/:id/metrics/:metric',
+          name: 'job-metric',
+          component: JobMetricView,
+          props: (route: RouteLocation) => ({
+            cluster: route.params.cluster,
+            id: parseInt(route.params.id as string),
+            metric: route.params.metric
           })
         },
         {

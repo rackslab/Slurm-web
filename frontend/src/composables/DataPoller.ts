@@ -14,6 +14,7 @@ import {
   CanceledRequestError
 } from '@/composables/HTTPErrors'
 import { useGatewayAPI, type GatewayAnyClusterApiKey } from '@/composables/GatewayAPI'
+import type { JobMetricsQuery } from '@/composables/gateway/types/metrics'
 import { useRuntimeStore } from '@/stores/runtime'
 import { useErrorsHandler } from '@/composables/ErrorsHandler'
 
@@ -23,14 +24,18 @@ export interface ClusterDataPoller<ResponseType> {
   loaded: Ref<boolean>
   setCluster: (newCluster: string) => void
   setCallback: (newCallback: GatewayAnyClusterApiKey) => void
-  setParam: (newOtherParam: string | number | undefined) => void
+  setParam: (newOtherParam: PollerParam) => void
+  pause: () => void
 }
+
+/* Additional parameter of gateway API request */
+export type PollerParam = string | number | JobMetricsQuery | undefined
 
 export function useClusterDataPoller<Type>(
   cluster: string,
   initialCallback: GatewayAnyClusterApiKey,
   timeout: number,
-  initialOtherParam?: number | string
+  initialOtherParam?: PollerParam
 ): ClusterDataPoller<Type> {
   let callback = initialCallback
   let otherParam = initialOtherParam
@@ -62,6 +67,8 @@ export function useClusterDataPoller<Type>(
         data.value = (await gateway[callback](cluster, otherParam as string)) as Type
       } else if (gateway.isValidGatewayClusterWithNumberAPIKey(callback)) {
         data.value = (await gateway[callback](cluster, otherParam as number)) as Type
+      } else if (gateway.isValidGatewayClusterWithQueryAPIKey(callback)) {
+        data.value = (await gateway[callback](cluster, otherParam as JobMetricsQuery)) as Type
       } else {
         data.value = (await gateway[callback](cluster)) as Type
       }
@@ -107,6 +114,17 @@ export function useClusterDataPoller<Type>(
     gateway.abort()
   }
 
+  /* Stop polling without aborting in-flight requests, which are shared with other
+   * pollers through the gateway abort controller. Polling restarts with
+   * setCluster(), setCallback() or setParam(). */
+  function pause() {
+    console.log(`Pause polling ${callback} for cluster ${cluster}`)
+    _stop = true
+    _pollGeneration++
+    clearTimeout(_timeout)
+    _timeout = -1
+  }
+
   function setCluster(newCluster: string) {
     stop()
     cluster = newCluster
@@ -121,7 +139,7 @@ export function useClusterDataPoller<Type>(
     start()
   }
 
-  function setParam(newOtherParam: string | number | undefined) {
+  function setParam(newOtherParam: PollerParam) {
     stop()
     otherParam = newOtherParam
     loaded.value = false
@@ -135,5 +153,5 @@ export function useClusterDataPoller<Type>(
     stop()
   })
 
-  return { data, unable, loaded, setCluster, setCallback, setParam }
+  return { data, unable, loaded, setCluster, setCallback, setParam, pause }
 }

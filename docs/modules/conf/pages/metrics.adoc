@@ -15,7 +15,9 @@ This first section explains how to <<start,enable this metrics feature>>. For
 security reasons, access to exported metrics can be
 <<restrict,restricted to specific hosts>>. Next section explains how to
 <<prometheus,configure Prometheus>> to collect Slurm-web metrics. Then
-<<query,metrics query settings>> are explained and the last section provides a
+<<query,metrics query settings>> are explained. The following section explains
+how to display <<jobs,metrics of resources usage by individual jobs>> collected
+by third-party exporters. The last section provides a
 <<reference,reference list of all available metrics>>.
 
 [#start]
@@ -165,6 +167,115 @@ enabled=yes
 host=https://metrics.company.ltd
 job=slurmweb
 ----
+
+.More details
+****
+* xref:conf/agent.adoc#_metrics[Agent configuration reference documentation for metrics section].
+****
+
+[#jobs]
+== Jobs Metrics
+
+When metrics feature is enabled, Slurm-web can display charts of resources
+usage by individual jobs in job details page:
+
+* CPU usage, in percentage of allocated CPUs,
+* Memory usage, compared to memory allocated to the job,
+* GPU usage, in percentage averaged over allocated GPUs,
+* GPU memory usage, in percentage averaged over allocated GPUs.
+
+These metrics are not exported by Slurm-web. Slurm-web queries Prometheus for
+metrics collected by third-party exporters on compute nodes. The charts cover
+the whole job lifetime, from its start time to its end time, or now for running
+jobs.
+
+Every chart can be opened in fullscreen view. In this view, a settings pane
+permits to display metrics per node (CPU and memory charts) or per GPU (GPU
+charts) instead of the job aggregate, to select the nodes or GPUs to display,
+and to zoom on a time range of the job. Metrics are then queried again with a
+resolution adapted to the selected time range. These settings are kept in the
+URL, so the view can be shared with other users permitted to view the job.
+
+Supported exporter is https://ceems-dev.github.io/ceems/[CEEMS]
+(_Compute Energy & Emissions Monitoring Stack_). Slurm-web relies only on CEEMS
+metrics, it does not query GPU vendor specific metrics directly.
+
+=== CEEMS Exporter
+
+Deploy
+https://ceems-dev.github.io/ceems/docs/components/ceems-exporter[CEEMS exporter]
+with its Slurm collector on all compute nodes, and configure Prometheus to
+scrape these exporters with a dedicated job, for example in
+[.path]#`/etc/prometheus/prometheus.yml`#:
+
+[source,yaml]
+----
+scrape_configs:
+  - job_name: ceems
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+        - cn1:9010
+        - cn2:9010
+----
+
+CPU and memory usage are computed with the metrics of compute units exported by
+CEEMS exporter, no additional configuration is required in Prometheus.
+
+GPU metrics are provided by CEEMS recording rules, which join the metrics of GPU
+vendor exporter (eg. NVIDIA DCGM exporter) with the GPU to job mapping exported
+by CEEMS exporter. The GPU usage and GPU memory usage of jobs are then available
+with `uuid:ceems_gpu_usage:ratio` and `uuid:ceems_gpu_memory_usage:ratio`
+series. Load the
+https://github.com/ceems-dev/ceems/tree/main/etc/prometheus/rules[CEEMS recording rules]
+for your GPU vendor in Prometheus to get GPU charts, for example:
+
+[source,yaml]
+----
+rule_files:
+  - /etc/prometheus/rules/*.rules
+----
+
+IMPORTANT: With NVIDIA DCGM exporter >= 4.8.3, which renamed `Hostname` label to
+`hostname`, CEEMS recording rules require a CEEMS release including the fix of
+https://github.com/ceems-dev/ceems/issues/651[CEEMS issue #651]. Without this
+fix, GPU metrics of jobs are empty. With NVIDIA DCGM exporter >= 4.9.0, deploy
+the counters CSV file recommended by CEEMS, as default counters of DCGM exporter
+have new metric names not supported by CEEMS recording rules (see
+https://github.com/ceems-dev/ceems/issues/652[CEEMS issue #652]).
+
+NOTE: With cgroup v2, Slurm >= 26.05 names cgroups of jobs with their Slurm
+unique identifier (SLUID) instead of their numeric job ID. CEEMS exporter does
+not track jobs with this cgroups layout up to CEEMS 0.16.3 at least (see
+https://github.com/ceems-dev/ceems/issues/654[CEEMS issue #654]). With
+Slurm >= 26.05.2, set `CgroupJobIdPaths=yes` in Slurm
+[.path]#`cgroup.conf`# to keep cgroups of jobs named with their numeric job ID.
+There is no workaround with Slurm 26.05.0 and 26.05.1, which do not support this
+parameter.
+
+Then enable CEEMS exporter for jobs metrics in
+[.path]#`/etc/slurm-web/agent.ini`#:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+job_exporters=ceems
+----
+
+By default, Slurm-web selects CEEMS metrics scraped by Prometheus job named
+`ceems`. This can be changed with `ceems_job` setting, for example:
+
+[source,ini]
+----
+[metrics]
+enabled=yes
+job_exporters=ceems
+ceems_job=ceems-exporter
+----
+
+Jobs metrics are available to all users permitted to view the job details, no
+additional permission is required in authorization policy.
 
 .More details
 ****

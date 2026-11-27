@@ -22,12 +22,15 @@ import JobFieldRaw from '@/components/job/JobFieldRaw.vue'
 import JobFieldComment from '@/components/job/JobFieldComment.vue'
 import JobFieldExitCode from '@/components/job/JobFieldExitCode.vue'
 import JobResources from '@/components/job/JobResources.vue'
+import JobMetricsCharts from '@/components/job/JobMetricsCharts.vue'
+import { useRuntimeStore } from '@/stores/runtime'
 import type { SlurmJobDetail } from '@/composables/gateway/slurm/types'
 import { jobAllocatedGPU, jobRequestedGPU } from '@/composables/gateway/slurm/job'
 
 const { cluster, id } = defineProps<{ cluster: string; id: number }>()
 
 const route = useRoute()
+const runtimeStore = useRuntimeStore()
 
 const JobsFields = [
   'user',
@@ -175,6 +178,14 @@ const jobFieldsContent = computed(
   }
 )
 
+/* Jobs metrics are displayed when enabled on the cluster and the job is started. */
+const showMetrics = computed((): boolean => {
+  const description = runtimeStore.getCluster(cluster)
+  if (!description?.metrics || !description.job_metrics?.length) return false
+  if (!data.value?.time.start) return false
+  return data.value.time.start * 1000 <= Date.now()
+})
+
 /* highlight this field for some time */
 function highlightField(field: JobField) {
   displayTags.value[field].highlight = true
@@ -269,6 +280,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <JobMetricsCharts v-if="showMetrics" :cluster="cluster" :id="id" :job="data" />
     </div>
   </ClusterMainLayout>
 </template>

@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import typing as t
 import time
 import collections
 import asyncio
@@ -61,6 +62,7 @@ class SlurmwebAgent:
         cache: bool,
         slurmdbd: SlurmwebAgentSlurmdbdSettings,
         url: str,
+        job_metrics: t.Optional[t.List[str]] = None,
     ):
         self.version = version
         self.cluster = cluster
@@ -69,6 +71,7 @@ class SlurmwebAgent:
         self.racksdb = racksdb
         self.slurmdbd = slurmdbd
         self.url = url
+        self.job_metrics = job_metrics or []
 
     @classmethod
     def from_json(cls, url, data):
@@ -81,6 +84,8 @@ class SlurmwebAgent:
                 data["cache"],
                 SlurmwebAgentSlurmdbdSettings(**data["slurmdbd"]),
                 url,
+                # Jobs metrics are not reported by agents < 8.0.0
+                data.get("job_metrics", []),
             )
         except KeyError as err:
             raise SlurmwebAgentError(
@@ -138,6 +143,9 @@ class SlurmwebAppGateway(SlurmwebWebApp, RFLTokenizedWebApp):
         ),
         SlurmwebAppRoute("/api/agents/<cluster>/jobs", views.jobs),
         SlurmwebAppRoute("/api/agents/<cluster>/jobs/past", views.jobs_past),
+        SlurmwebAppRoute(
+            "/api/agents/<cluster>/job/<int:job>/metrics", views.job_metrics
+        ),
         SlurmwebAppRoute("/api/agents/<cluster>/job/<int:job>", views.job),
         SlurmwebAppRoute("/api/agents/<cluster>/nodes", views.nodes),
         SlurmwebAppRoute("/api/agents/<cluster>/node/<name>", views.node),

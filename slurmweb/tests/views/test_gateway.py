@@ -112,6 +112,17 @@ class TestGatewayViews(TestGatewayBase):
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(response.json.keys(), ["hit", "miss"])
 
+    @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.get")
+    def test_job_metrics(self, mock_get):
+        self.app_set_agents({"foo": fake_slurmweb_agent("foo")})
+        asset, mock_get.return_value = mock_agent_aio_response(asset="job-metrics")
+        response = self.client.get("/api/agents/foo/job/42/metrics")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, asset)
+        self.assertEqual(
+            mock_get.call_args.args[0], f"http://foo/v{get_version()}/job/42/metrics"
+        )
+
     @mock.patch("slurmweb.views.gateway.aiohttp.ClientSession.post")
     def test_cache_reset(self, mock_post):
         self.app_set_agents({"foo": fake_slurmweb_agent("foo")})

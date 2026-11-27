@@ -67,4 +67,8 @@ slurmweb_agent_settings:
     enabled: true
 redis_enabled: true
 metrics_enabled: true
+# Deploy CEEMS exporter and fake NVIDIA DCGM exporter on compute nodes for jobs
+# metrics, with DCGM exporter < 4.8.3 metric names and Hostname label.
+ceems_enabled: true
+nvidia_fake_dcgm_flavor: legacy
 ldap_with_memberof: true

@@ -99,6 +99,7 @@ async def get_cluster(agent):
             "racksdb": agent.racksdb.enabled,
             "infrastructure": agent.racksdb.infrastructure,
             "metrics": agent.metrics,
+            "job_metrics": agent.job_metrics,
             "cache": agent.cache,
             "slurmdbd": {
                 "jobs_max_hours": agent.slurmdbd.jobs_max_hours,
@@ -255,6 +256,12 @@ def jobs_past(cluster: str):
 @validate_cluster
 def job(cluster: str, job: int):
     return proxy_agent(cluster, f"job/{job}", request.token)
+
+
+@check_jwt
+@validate_cluster
+def job_metrics(cluster: str, job: int):
+    return proxy_agent(cluster, f"job/{job}/metrics", request.token)
 
 
 @check_jwt
