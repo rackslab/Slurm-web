@@ -72,6 +72,16 @@ describe('JobMetricsCharts.vue', () => {
     // x-axis starts at job start time
     expect(charts[0].props('range').min).toBe(jobGpusRunning.time.start * 1000)
   })
+  test('link each chart to its fullscreen view', () => {
+    const wrapper = mountCharts(jobGpusRunning)
+    const charts = wrapper.findAllComponents(JobMetricChart)
+    expect(charts.map((chart) => chart.props('fullscreenRoute'))).toEqual(
+      ['cpu', 'memory', 'gpu', 'gpu-memory'].map((metric) => ({
+        name: 'job-metric',
+        params: { cluster: 'foo', id: 1234, metric: metric }
+      }))
+    )
+  })
   test('hide GPU charts for job without GPU', () => {
     const wrapper = mountCharts(jobRunning)
     const charts = wrapper.findAllComponents(JobMetricChart)
