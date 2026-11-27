@@ -71,6 +71,9 @@ jwt_key={{ slurmrestd_key }}
 {% if metrics %}
 [metrics]
 enabled=yes
+{% if job_exporters %}
+job_exporters={{ job_exporters | join(',') }}
+{% endif %}
 {% endif %}
 
 {% if cache %}
@@ -100,6 +103,7 @@ class TestAgentConfBase(unittest.TestCase):
         metrics=False,
         cache=False,
         policy_ini=None,
+        job_exporters=None,
     ):
         # Generate JWT signing key
         self.key = tempfile.NamedTemporaryFile(mode="w+")
@@ -141,6 +145,7 @@ class TestAgentConfBase(unittest.TestCase):
                 racksdb=racksdb,
                 metrics=metrics,
                 cache=cache,
+                job_exporters=job_exporters,
             )
         )
         self.conf.seek(0)
@@ -171,6 +176,7 @@ class TestAgentBase(TestSlurmrestdClient):
         metrics=False,
         cache=False,
         policy_ini=None,
+        job_exporters=None,
         racksdb_format_error=False,
         racksdb_schema_error=False,
         racksdb_import_error=False,
@@ -192,6 +198,7 @@ class TestAgentBase(TestSlurmrestdClient):
             metrics=metrics,
             cache=cache,
             policy_ini=policy_ini,
+            job_exporters=job_exporters,
         )
 
         if racksdb is not False:
