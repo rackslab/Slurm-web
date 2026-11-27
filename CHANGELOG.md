@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add `account` in default `[filters]` > `acctjob` agent setting.
   - Introduce `jobs-view-coord` and `jobs-view-past-coord` actions in
     authorization policy (#260).
+  - Add `job_exporters` and `ceems_job` parameters in `[metrics]` section of
+    agent settings (#288).
 
 ### Changed
 - pkgs: Bump minimal required version of RacksDB to 0.8.0 (#289).
