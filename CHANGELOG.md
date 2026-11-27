@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `/job/<id>/metrics` endpoint with the same permissions as job details
     (#288).
   - Report available jobs metrics in `/info` endpoint.
+  - Accept `detail` query parameter on `/job/<id>/metrics` endpoint to return
+    jobs metrics per node and per GPU, and `start` and `end` query parameters
+    to restrict metrics to a time range within the job lifetime, with a
+    resolution adapted to this range (#288).
 - gateway:
   - Add `/api/agents/<cluster>/job/<id>/metrics` endpoint to retrieve metrics of
     resources usage by individual jobs (#288).

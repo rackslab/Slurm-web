@@ -50,11 +50,15 @@ class SlurmwebJobMetricsExporter:
 
     name: str = None
     provides: t.Tuple[str, ...] = ()
+    # Labels of detailed series for every metric, with "node" key for the label of
+    # node name and optional "gpu" key for the label of GPU index.
+    detail_labels: t.Dict[str, t.Dict[str, str]] = {}
 
-    def promql(self, metric: str, job: int, window: int) -> str:
+    def promql(self, metric: str, job: int, window: int, detail: bool = False) -> str:
         """Return PromQL expression which evaluates to a single series of the given
-        metric for the given job. Window is the duration in seconds of range vectors
-        for functions over time."""
+        metric for the given job, or to one series per node or GPU, with labels
+        defined in detail_labels, when detail is True. Window is the duration in
+        seconds of range vectors for functions over time."""
         raise NotImplementedError
 
 
@@ -71,6 +75,13 @@ class SlurmwebJobMetricsExporterCEEMS(SlurmwebJobMetricsExporter):
     # Names of CEEMS recording rules for GPU metrics per compute unit
     GPU_USAGE_RULE = "uuid:ceems_gpu_usage:ratio"
     GPU_MEMORY_USAGE_RULE = "uuid:ceems_gpu_memory_usage:ratio"
+    detail_labels = {
+        "cpu": {"node": "hostname"},
+        "memory": {"node": "hostname"},
+        "memory_allocated": {"node": "hostname"},
+        "gpu": {"node": "hostname", "gpu": "index"},
+        "gpu_memory": {"node": "hostname", "gpu": "index"},
+    }
 
     def __init__(self, prometheus_job: t.Optional[str] = None):
         self.prometheus_job = prometheus_job
@@ -81,27 +92,40 @@ class SlurmwebJobMetricsExporterCEEMS(SlurmwebJobMetricsExporter):
             labels.append(f'job="{_escape(self.prometheus_job)}"')
         return "{" + ",".join(labels) + "}"
 
-    def promql(self, metric: str, job: int, window: int) -> str:
+    def _aggregation(self, operator: str, metric: str, detail: bool) -> str:
+        """Return aggregation operator, grouped by labels of metric detailed series
+        when detail is True."""
+        if not detail:
+            return operator
+        return f"{operator} by ({', '.join(self.detail_labels[metric].values())}) "
+
+    def promql(self, metric: str, job: int, window: int, detail: bool = False) -> str:
+        if metric not in self.provides:
+            raise SlurmwebMetricsDBError(f"Unsupported job metric {metric}")
         selector = self._selector(job)
         if metric == "cpu":
             return (
-                f"sum(rate(ceems_compute_unit_cpu_user_seconds_total{selector}"
+                f"{self._aggregation('sum', metric, detail)}"
+                f"(rate(ceems_compute_unit_cpu_user_seconds_total{selector}"
                 f"[{window}s]) + rate(ceems_compute_unit_cpu_system_seconds_total"
-                f"{selector}[{window}s])) / sum(ceems_compute_unit_cpus{selector}) "
-                "* 100"
+                f"{selector}[{window}s])) / {self._aggregation('sum', metric, detail)}"
+                f"(ceems_compute_unit_cpus{selector}) * 100"
             )
         if metric == "memory":
-            return f"sum(ceems_compute_unit_memory_used_bytes{selector})"
+            return (
+                f"{self._aggregation('sum', metric, detail)}"
+                f"(ceems_compute_unit_memory_used_bytes{selector})"
+            )
         if metric == "memory_allocated":
-            return f"sum(ceems_compute_unit_memory_total_bytes{selector})"
+            return (
+                f"{self._aggregation('sum', metric, detail)}"
+                f"(ceems_compute_unit_memory_total_bytes{selector})"
+            )
         # Labels of series produced by recording rules depend on the rules, only
         # filter on compute unit identifier.
         selector = "{" + f'uuid="{_escape(job)}"' + "}"
-        if metric == "gpu":
-            return f"avg({self.GPU_USAGE_RULE}{selector})"
-        if metric == "gpu_memory":
-            return f"avg({self.GPU_MEMORY_USAGE_RULE}{selector})"
-        raise SlurmwebMetricsDBError(f"Unsupported job metric {metric}")
+        rule = self.GPU_USAGE_RULE if metric == "gpu" else self.GPU_MEMORY_USAGE_RULE
+        return f"{self._aggregation('avg', metric, detail)}({rule}{selector})"
 
 
 EXPORTERS = {
@@ -151,28 +175,75 @@ class SlurmwebJobMetrics:
         window = max(JOB_METRICS_MIN_WINDOW, step)
         return step, window
 
-    def request(self, job: int, start: int, end: int) -> t.Dict[str, t.List]:
+    def request(
+        self, job: int, start: int, end: int, detail: bool = False
+    ) -> t.Dict[str, t.List]:
         """Return dict of available metrics for the given job between start and end
         timestamps in seconds. Values are lists of [timestamp in ms, value] pairs,
-        possibly empty when no data is available for the job."""
+        possibly empty when no data is available for the job.
+
+        When detail is True, values are lists of series per node or per GPU, as
+        dicts with node name in node key, GPU index in gpu key for GPU metrics, and
+        list of [timestamp in ms, value] pairs in values key."""
         metrics = self.available()
         step, window = self.resolution(start, end)
         # Round boundaries on step so successive requests select the same points.
         start = start - start % step
-        results = asyncio_run(self._requests(metrics, job, start, end, step, window))
+        results = asyncio_run(
+            self._requests(metrics, job, start, end, step, window, detail)
+        )
         return dict(zip(metrics, results))
 
-    async def _requests(self, metrics, job, start, end, step, window):
+    async def _requests(self, metrics, job, start, end, step, window, detail):
         return await asyncio.gather(
             *[
-                self._request(metric, job, start, end, step, window)
+                self._request(metric, job, start, end, step, window, detail)
                 for metric in metrics
             ]
         )
 
-    async def _request(self, metric, job, start, end, step, window):
-        promql = self.exporters[metric].promql(metric, job, window)
+    @staticmethod
+    def _values(job, metric, series):
+        try:
+            return [
+                # Convert timestamps from seconds to milliseconds and values from
+                # strings to floats.
+                [int(timestamp * 1000), float(value)]
+                for timestamp, value in series["values"]
+                if not math.isnan(float(value))
+            ]
+        except (KeyError, TypeError, ValueError) as err:
+            raise SlurmwebMetricsDBError(
+                f"Unexpected result on job {job} metric {metric} query"
+            ) from err
+
+    def _detail(self, job, metric, results):
+        """Return list of detailed series sorted by node name and GPU index."""
+        labels = self.exporters[metric].detail_labels[metric]
+        detail = []
+        for series in results:
+            item = {}
+            for key, label in labels.items():
+                value = (series.get("metric") or {}).get(label)
+                if value is None:
+                    raise SlurmwebMetricsDBError(
+                        f"Missing label {label} in job {job} metric {metric} series"
+                    )
+                item[key] = value
+            item["values"] = self._values(job, metric, series)
+            detail.append(item)
+
+        def sort_key(item):
+            gpu = item.get("gpu", "")
+            return (item["node"], int(gpu) if gpu.isdigit() else 0, gpu)
+
+        return sorted(detail, key=sort_key)
+
+    async def _request(self, metric, job, start, end, step, window, detail):
+        promql = self.exporters[metric].promql(metric, job, window, detail)
         series = await self.db.query_range(promql, start, end, step)
+        if detail:
+            return self._detail(job, metric, series)
         if not series:
             return []
         if len(series) > 1:
@@ -182,15 +253,4 @@ class SlurmwebJobMetrics:
                 job,
                 metric,
             )
-        try:
-            return [
-                # Convert timestamps from seconds to milliseconds and values from
-                # strings to floats.
-                [int(timestamp * 1000), float(value)]
-                for timestamp, value in series[0]["values"]
-                if not math.isnan(float(value))
-            ]
-        except (KeyError, TypeError, ValueError) as err:
-            raise SlurmwebMetricsDBError(
-                f"Unexpected result on job {job} metric {metric} query"
-            ) from err
+        return self._values(job, metric, series[0])

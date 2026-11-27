@@ -247,6 +247,23 @@ def job_metrics(job: int):
         error = "Jobs metrics are disabled, unable to query values"
         logger.warning(error)
         abort(501, error)
+
+    # Parse optional query parameters: detail per node and per GPU, and requested
+    # time range in timestamps (seconds).
+    detail = request.args.get("detail", "false").lower()
+    if detail not in ("true", "false"):
+        abort(400, f"Invalid detail parameter {detail}")
+    detail = detail == "true"
+    requested = {}
+    for parameter in ("start", "end"):
+        value = request.args.get(parameter)
+        if value is None:
+            continue
+        try:
+            requested[parameter] = int(value)
+        except ValueError:
+            abort(400, f"Invalid {parameter} parameter {value}")
+
     allowed = jobs_scope("user")
     if allowed is None:
         abort(403, "User is not allowed to view jobs")
@@ -266,8 +283,14 @@ def job_metrics(job: int):
     if not end or end > now:
         end = now
 
+    # Restrict the time range to the requested range, within the job time range.
+    start = max(start, requested.get("start", start))
+    end = min(end, requested.get("end", end))
+    if start >= end:
+        return jsonify({})
+
     try:
-        return jsonify(current_app.job_metrics.request(job, start, end))
+        return jsonify(current_app.job_metrics.request(job, start, end, detail))
     except SlurmwebMetricsDBError as err:
         logger.warning(str(err))
         abort(500, str(err))
