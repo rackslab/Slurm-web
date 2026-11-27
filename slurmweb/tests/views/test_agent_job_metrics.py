@@ -37,13 +37,13 @@ class TestAgentJobMetricsRequest(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json["job_metrics"], list(JOB_METRICS))
 
-    def request_job_metrics(self, job, metrics=None):
+    def request_job_metrics(self, job, metrics=None, query=""):
         with mock.patch.object(
             self.app.slurmrestd, "job", return_value=job
         ), mock.patch.object(
             self.app.job_metrics, "request", return_value=metrics
         ) as mock_request:
-            response = self.client.get(f"/v{get_version()}/job/42/metrics")
+            response = self.client.get(f"/v{get_version()}/job/42/metrics{query}")
         return response, mock_request
 
     def test_job_metrics_completed(self):
@@ -51,7 +51,81 @@ class TestAgentJobMetricsRequest(TestAgentBase):
         response, mock_request = self.request_job_metrics(fake_job(1000, 2000), metrics)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, metrics)
-        mock_request.assert_called_once_with(42, 1000, 2000)
+        mock_request.assert_called_once_with(42, 1000, 2000, False)
+
+    def test_job_metrics_detail(self):
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?detail=true"
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_request.assert_called_once_with(42, 1000, 2000, True)
+
+    def test_job_metrics_detail_false(self):
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?detail=false"
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_request.assert_called_once_with(42, 1000, 2000, False)
+
+    def test_job_metrics_detail_invalid(self):
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?detail=fail"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Invalid detail parameter fail", response.text)
+        mock_request.assert_not_called()
+
+    def test_job_metrics_range(self):
+        # Requested range within job range.
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?start=1200&end=1500"
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_request.assert_called_once_with(42, 1200, 1500, False)
+
+    def test_job_metrics_range_clamped(self):
+        # Requested range is restricted to job range.
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?start=500&end=3000&detail=true"
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_request.assert_called_once_with(42, 1000, 2000, True)
+
+    def test_job_metrics_range_only_start(self):
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?start=1500"
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_request.assert_called_once_with(42, 1500, 2000, False)
+
+    def test_job_metrics_range_outside_job(self):
+        # Requested range does not overlap job range: no metrics are requested.
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?start=3000&end=4000"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, {})
+        mock_request.assert_not_called()
+
+    def test_job_metrics_range_empty(self):
+        response, mock_request = self.request_job_metrics(
+            fake_job(1000, 2000), {}, "?start=1500&end=1200"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, {})
+        mock_request.assert_not_called()
+
+    def test_job_metrics_range_invalid(self):
+        for query, description in [
+            ("?start=fail", "Invalid start parameter fail"),
+            ("?end=1.5", "Invalid end parameter 1.5"),
+        ]:
+            response, mock_request = self.request_job_metrics(
+                fake_job(1000, 2000), {}, query
+            )
+            self.assertEqual(response.status_code, 400)
+            self.assertIn(description, response.text)
+            mock_request.assert_not_called()
 
     def test_job_metrics_running(self):
         # Running job, end time is unknown (0): range ends now.

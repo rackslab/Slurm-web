@@ -78,6 +78,38 @@ class TestJobMetricsExporterCEEMS(unittest.TestCase):
         exporter = SlurmwebJobMetricsExporterCEEMS('ce"ems')
         self.assertIn('job="ce\\"ems"', exporter.promql("memory", 42, 60))
 
+    def test_promql_detail(self):
+        selector = '{uuid="42",manager="slurm",job="ceems"}'
+        self.assertEqual(
+            self.exporter.promql("cpu", 42, 60, detail=True),
+            "sum by (hostname) (rate(ceems_compute_unit_cpu_user_seconds_total"
+            f"{selector}[60s]) + rate(ceems_compute_unit_cpu_system_seconds_total"
+            f"{selector}[60s])) / sum by (hostname) (ceems_compute_unit_cpus"
+            f"{selector}) * 100",
+        )
+        self.assertEqual(
+            self.exporter.promql("memory", 42, 60, detail=True),
+            f"sum by (hostname) (ceems_compute_unit_memory_used_bytes{selector})",
+        )
+        self.assertEqual(
+            self.exporter.promql("memory_allocated", 42, 60, detail=True),
+            f"sum by (hostname) (ceems_compute_unit_memory_total_bytes{selector})",
+        )
+        self.assertEqual(
+            self.exporter.promql("gpu", 42, 60, detail=True),
+            'avg by (hostname, index) (uuid:ceems_gpu_usage:ratio{uuid="42"})',
+        )
+        self.assertEqual(
+            self.exporter.promql("gpu_memory", 42, 60, detail=True),
+            'avg by (hostname, index) (uuid:ceems_gpu_memory_usage:ratio{uuid="42"})',
+        )
+
+    def test_detail_labels(self):
+        for metric in JOB_METRICS:
+            self.assertEqual(self.exporter.detail_labels[metric]["node"], "hostname")
+        self.assertEqual(self.exporter.detail_labels["gpu"]["gpu"], "index")
+        self.assertNotIn("gpu", self.exporter.detail_labels["cpu"])
+
     def test_promql_unsupported(self):
         with self.assertRaisesRegex(
             SlurmwebMetricsDBError, "^Unsupported job metric fail$"
@@ -109,7 +141,7 @@ class FakeExporter(SlurmwebJobMetricsExporter):
     name = "fake"
     provides = ("gpu", "cpu")
 
-    def promql(self, metric, job, window):
+    def promql(self, metric, job, window, detail=False):
         return f"fake_{metric}"
 
 
@@ -182,6 +214,65 @@ class TestJobMetrics(unittest.TestCase):
                 "gpu_memory": [],
             },
         )
+
+    def test_request_detail(self):
+        def labelled(labels, values):
+            return {"metric": labels, "values": values}
+
+        responses = {
+            "cpu": [
+                labelled({"hostname": "cn2"}, [[1000, "20"]]),
+                labelled({"hostname": "cn1"}, [[1000, "10"], [1015, "NaN"]]),
+            ],
+            "memory": [labelled({"hostname": "cn1"}, [[1000, "1024"]])],
+            "memory_allocated": [labelled({"hostname": "cn1"}, [[1000, "4096"]])],
+            "gpu": [
+                labelled({"hostname": "gpu1", "index": "10"}, [[1000, "3"]]),
+                labelled({"hostname": "gpu1", "index": "2"}, [[1000, "2"]]),
+                labelled({"hostname": "gpu0", "index": "1"}, [[1000, "1"]]),
+            ],
+            "gpu_memory": [],
+        }
+
+        async def query_range(promql, start, end, step):
+            for metric in JOB_METRICS:
+                if promql == self.job_metrics.exporters[metric].promql(
+                    metric, 42, 60, True
+                ):
+                    return responses[metric]
+            self.fail(f"Unexpected query {promql}")
+
+        with mock.patch.object(self.db, "query_range", side_effect=query_range):
+            result = self.job_metrics.request(42, 1000, 1020, detail=True)
+        self.assertEqual(
+            result,
+            {
+                # Series are sorted by node, NaN values are discarded.
+                "cpu": [
+                    {"node": "cn1", "values": [[1000000, 10.0]]},
+                    {"node": "cn2", "values": [[1000000, 20.0]]},
+                ],
+                "memory": [{"node": "cn1", "values": [[1000000, 1024.0]]}],
+                "memory_allocated": [{"node": "cn1", "values": [[1000000, 4096.0]]}],
+                # GPU series are sorted by node and numeric GPU index.
+                "gpu": [
+                    {"node": "gpu0", "gpu": "1", "values": [[1000000, 1.0]]},
+                    {"node": "gpu1", "gpu": "2", "values": [[1000000, 2.0]]},
+                    {"node": "gpu1", "gpu": "10", "values": [[1000000, 3.0]]},
+                ],
+                "gpu_memory": [],
+            },
+        )
+
+    def test_request_detail_missing_label(self):
+        async def query_range(promql, start, end, step):
+            return [{"metric": {}, "values": [[1000, "1"]]}]
+
+        with mock.patch.object(self.db, "query_range", side_effect=query_range):
+            with self.assertRaisesRegex(
+                SlurmwebMetricsDBError, "^Missing label hostname in job 42 metric"
+            ):
+                self.job_metrics.request(42, 1000, 1020, detail=True)
 
     def test_request_nan(self):
         # NaN values, eg. division by zero, are discarded.
