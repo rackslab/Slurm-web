@@ -4,7 +4,8 @@ import { useGatewayAPI } from '@/composables/GatewayAPI'
 
 // Stub REST API for infrastructureImagePng tests; we only care about parsing.
 const mockRestAPI = {
-  postRaw: vi.fn()
+  postRaw: vi.fn(),
+  get: vi.fn()
 }
 
 vi.mock('@/composables/RESTAPI', () => ({
@@ -96,5 +97,36 @@ describe('infrastructureGlb', () => {
       true,
       'arraybuffer'
     )
+  })
+})
+
+describe('job_metrics_query', () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  test('requests job metrics without options', async () => {
+    mockRestAPI.get.mockResolvedValue({})
+    await useGatewayAPI().job_metrics_query('foo', { job: 42 })
+    expect(mockRestAPI.get).toHaveBeenCalledWith('/agents/foo/job/42/metrics')
+  })
+
+  test('requests job metrics with detail and time range', async () => {
+    mockRestAPI.get.mockResolvedValue({})
+    await useGatewayAPI().job_metrics_query('foo', {
+      job: 42,
+      detail: true,
+      start: 1000,
+      end: 2000
+    })
+    expect(mockRestAPI.get).toHaveBeenCalledWith(
+      '/agents/foo/job/42/metrics?detail=true&start=1000&end=2000'
+    )
+  })
+
+  test('omits detail when false', async () => {
+    mockRestAPI.get.mockResolvedValue({})
+    await useGatewayAPI().job_metrics_query('foo', { job: 42, detail: false, end: 2000 })
+    expect(mockRestAPI.get).toHaveBeenCalledWith('/agents/foo/job/42/metrics?end=2000')
   })
 })
