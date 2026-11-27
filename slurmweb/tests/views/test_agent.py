@@ -679,6 +679,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )
@@ -698,6 +699,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )
@@ -717,6 +719,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )
@@ -736,6 +739,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )
@@ -755,11 +759,44 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )
         self.assertEqual(
             response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
+        )
+
+    @all_slurm_api_versions
+    def test_request_job_requeued(self, slurm_version, api_version):
+        self.setup_slurmrestd(slurm_version, api_version)
+        [slurmdb_job_asset, slurm_job_asset] = self.mock_slurmrestd_responses(
+            slurm_version,
+            api_version,
+            [("slurmdb-job-requeued", "jobs"), ("slurm-job-requeued", "jobs")],
+        )
+        # Requeued job asset must contain multiple runs in accounting.
+        self.assertGreater(len(slurmdb_job_asset), 1)
+        runs = sorted(slurmdb_job_asset, key=lambda run: run["time"]["submission"])
+        response = self.client.get(f"/v{get_version()}/job/1")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json, dict)
+        # Latest run is at top-level, merged with slurmctld fields.
+        self.assertEqual(response.json["time"], runs[-1]["time"])
+        self.assertEqual(response.json["state"], runs[-1]["state"])
+        self.assertEqual(
+            response.json["tres_req_str"], slurm_job_asset[0]["tres_req_str"]
+        )
+        # Previous runs are sorted by submission time, without slurmctld fields.
+        self.assertEqual(len(response.json["previous_runs"]), len(runs) - 1)
+        for previous_run, run in zip(response.json["previous_runs"], runs[:-1]):
+            self.assertEqual(previous_run["time"], run["time"])
+            self.assertEqual(previous_run["state"], run["state"])
+            self.assertNotIn("tres_req_str", previous_run)
+            self.assertNotIn("previous_runs", previous_run)
+        # First run has been terminated by node failure.
+        self.assertIn(
+            "NODE_FAIL", response.json["previous_runs"][0]["state"]["current"]
         )
 
     @all_slurm_api_versions
@@ -774,6 +811,7 @@ class TestAgentViews(TestAgentBase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.json, dict)
         self.assertEqual(response.json["state"], slurmdb_job_asset[0]["state"])
+        self.assertEqual(response.json["previous_runs"], [])
         self.assertEqual(
             response.json["association"], slurmdb_job_asset[0]["association"]
         )

@@ -75,6 +75,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "job-requeued": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "job-running": {
     "content-type": "application/json",
     "status": 200

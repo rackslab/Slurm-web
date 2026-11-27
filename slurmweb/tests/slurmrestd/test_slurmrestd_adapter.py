@@ -97,7 +97,7 @@ class TestSlurmrestdAdapter(TestSlurmrestdBase):
             [("slurmdb-job-running", "jobs")],
         )
 
-        job = self.slurmrestd._acctjob(1)
+        [job] = self.slurmrestd._acctjob(1)
 
         self.assertIsInstance(job["steps"], list)
         for step in job["steps"]:

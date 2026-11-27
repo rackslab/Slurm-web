@@ -1,0 +1,518 @@
+{
+  "account": "admin",
+  "accrue_time": {
+    "infinite": false,
+    "number": 0,
+    "set": true
+  },
+  "association": {
+    "account": "",
+    "cluster": "hpc",
+    "id": 9,
+    "partition": "",
+    "user": ""
+  },
+  "batch_flag": true,
+  "command": "",
+  "comment": {
+    "administrator": "",
+    "job": "",
+    "system": ""
+  },
+  "cpus": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "current_working_directory": "/home/emorales",
+  "derived_exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "exit_code": {
+    "return_code": {
+      "infinite": false,
+      "number": 0,
+      "set": true
+    },
+    "signal": {
+      "id": {
+        "infinite": false,
+        "number": 0,
+        "set": false
+      },
+      "name": ""
+    },
+    "status": [
+      "SUCCESS"
+    ]
+  },
+  "gres_detail": [],
+  "group": "slurm",
+  "last_sched_evaluation": {
+    "infinite": false,
+    "number": 1795730114,
+    "set": true
+  },
+  "name": "sim-debug-4312",
+  "node_count": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "nodes": "None assigned",
+  "partition": "normal",
+  "previous_runs": [
+    {
+      "account": "admin",
+      "association": {
+        "account": "",
+        "cluster": "hpc",
+        "id": 9,
+        "partition": "",
+        "user": ""
+      },
+      "comment": {
+        "administrator": "",
+        "job": "",
+        "system": ""
+      },
+      "derived_exit_code": {
+        "return_code": {
+          "infinite": false,
+          "number": 0,
+          "set": true
+        },
+        "signal": {
+          "id": {
+            "infinite": false,
+            "number": 0,
+            "set": false
+          },
+          "name": ""
+        },
+        "status": [
+          "SUCCESS"
+        ]
+      },
+      "exit_code": {
+        "return_code": {
+          "infinite": false,
+          "number": 1,
+          "set": true
+        },
+        "signal": {
+          "id": {
+            "infinite": false,
+            "number": 0,
+            "set": false
+          },
+          "name": ""
+        },
+        "status": [
+          "ERROR"
+        ]
+      },
+      "group": "slurm",
+      "name": "sim-debug-4312",
+      "nodes": "cn1",
+      "partition": "normal",
+      "priority": {
+        "infinite": false,
+        "number": 909,
+        "set": true
+      },
+      "qos": "normal",
+      "script": "",
+      "state": {
+        "current": [
+          "NODE_FAIL"
+        ],
+        "reason": "None"
+      },
+      "steps": [
+        {
+          "CPU": {
+            "governor": "0",
+            "requested_frequency": {
+              "max": {
+                "infinite": false,
+                "number": 0,
+                "set": true
+              },
+              "min": {
+                "infinite": false,
+                "number": 0,
+                "set": true
+              }
+            }
+          },
+          "exit_code": {
+            "return_code": {
+              "infinite": false,
+              "number": 0,
+              "set": false
+            },
+            "signal": {
+              "id": {
+                "infinite": false,
+                "number": 0,
+                "set": false
+              },
+              "name": ""
+            },
+            "status": [
+              "PENDING"
+            ]
+          },
+          "kill_request_user": "",
+          "nodes": {
+            "count": 1,
+            "list": [
+              "cn1"
+            ],
+            "range": "cn1"
+          },
+          "state": [
+            "CANCELLED"
+          ],
+          "statistics": {
+            "CPU": {
+              "actual_frequency": 0
+            },
+            "energy": {
+              "consumed": {
+                "infinite": false,
+                "number": 0,
+                "set": true
+              }
+            }
+          },
+          "step": {
+            "id": "426.batch",
+            "name": "batch",
+            "stderr": "",
+            "stderr_expanded": "",
+            "stdin": "",
+            "stdin_expanded": "",
+            "stdout": "",
+            "stdout_expanded": ""
+          },
+          "submit_line": "",
+          "task": {
+            "distribution": "Unknown"
+          },
+          "tasks": {
+            "count": 1
+          },
+          "time": {
+            "elapsed": 2,
+            "end": {
+              "infinite": false,
+              "number": 1795730116,
+              "set": true
+            },
+            "limit": {
+              "infinite": true,
+              "number": 0,
+              "set": false
+            },
+            "start": {
+              "infinite": false,
+              "number": 1795730114,
+              "set": true
+            },
+            "suspended": 0,
+            "system": {
+              "microseconds": 0,
+              "seconds": 0
+            },
+            "total": {
+              "microseconds": 0,
+              "seconds": 0
+            },
+            "user": {
+              "microseconds": 0,
+              "seconds": 0
+            }
+          },
+          "tres": {
+            "allocated": [
+              {
+                "count": 64,
+                "id": 1,
+                "name": "",
+                "type": "cpu"
+              },
+              {
+                "count": 32768,
+                "id": 2,
+                "name": "",
+                "type": "mem"
+              },
+              {
+                "count": 1,
+                "id": 4,
+                "name": "",
+                "type": "node"
+              }
+            ],
+            "consumed": {
+              "average": [],
+              "max": [],
+              "min": [],
+              "total": []
+            },
+            "requested": {
+              "average": [],
+              "max": [],
+              "min": [],
+              "total": []
+            }
+          }
+        }
+      ],
+      "submit_line": "",
+      "time": {
+        "elapsed": 2,
+        "eligible": 1795730114,
+        "end": 1795730116,
+        "limit": {
+          "infinite": false,
+          "number": 15,
+          "set": true
+        },
+        "planned": {
+          "infinite": false,
+          "number": 0,
+          "set": true
+        },
+        "start": 1795730114,
+        "submission": 1795730114,
+        "suspended": 0,
+        "system": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "total": {
+          "microseconds": 0,
+          "seconds": 0
+        },
+        "user": {
+          "microseconds": 0,
+          "seconds": 0
+        }
+      },
+      "tres": {
+        "allocated": [
+          {
+            "count": 64,
+            "id": 1,
+            "name": "",
+            "type": "cpu"
+          },
+          {
+            "count": 32768,
+            "id": 2,
+            "name": "",
+            "type": "mem"
+          },
+          {
+            "count": -2,
+            "id": 3,
+            "name": "",
+            "type": "energy"
+          },
+          {
+            "count": 1,
+            "id": 4,
+            "name": "",
+            "type": "node"
+          },
+          {
+            "count": 64,
+            "id": 5,
+            "name": "",
+            "type": "billing"
+          }
+        ],
+        "requested": [
+          {
+            "count": 1,
+            "id": 1,
+            "name": "",
+            "type": "cpu"
+          },
+          {
+            "count": 512,
+            "id": 2,
+            "name": "",
+            "type": "mem"
+          },
+          {
+            "count": 1,
+            "id": 4,
+            "name": "",
+            "type": "node"
+          },
+          {
+            "count": 1,
+            "id": 5,
+            "name": "",
+            "type": "billing"
+          }
+        ]
+      },
+      "user": "emorales",
+      "wckey": {
+        "flags": [],
+        "wckey": ""
+      },
+      "working_directory": "/home/emorales"
+    }
+  ],
+  "priority": {
+    "infinite": false,
+    "number": 909,
+    "set": true
+  },
+  "qos": "normal",
+  "script": "",
+  "shared": [],
+  "sockets_per_node": {
+    "infinite": false,
+    "number": 0,
+    "set": false
+  },
+  "state": {
+    "current": [
+      "PENDING"
+    ],
+    "reason": "None"
+  },
+  "stderr_expanded": "",
+  "stdin_expanded": "",
+  "stdout_expanded": "/home/emorales/slurm-426.out",
+  "steps": [],
+  "submit_line": "",
+  "tasks": {
+    "infinite": false,
+    "number": 1,
+    "set": true
+  },
+  "time": {
+    "elapsed": 0,
+    "eligible": 1795730237,
+    "end": 0,
+    "limit": {
+      "infinite": false,
+      "number": 15,
+      "set": true
+    },
+    "planned": {
+      "infinite": false,
+      "number": -40,
+      "set": true
+    },
+    "start": 0,
+    "submission": 1795730116,
+    "suspended": 0,
+    "system": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "total": {
+      "microseconds": 0,
+      "seconds": 0
+    },
+    "user": {
+      "microseconds": 0,
+      "seconds": 0
+    }
+  },
+  "tres": {
+    "allocated": [
+      {
+        "count": 64,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 32768,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": -2,
+        "id": 3,
+        "name": "",
+        "type": "energy"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 64,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ],
+    "requested": [
+      {
+        "count": 1,
+        "id": 1,
+        "name": "",
+        "type": "cpu"
+      },
+      {
+        "count": 512,
+        "id": 2,
+        "name": "",
+        "type": "mem"
+      },
+      {
+        "count": 1,
+        "id": 4,
+        "name": "",
+        "type": "node"
+      },
+      {
+        "count": 1,
+        "id": 5,
+        "name": "",
+        "type": "billing"
+      }
+    ]
+  },
+  "tres_per_job": "",
+  "tres_per_node": "",
+  "tres_per_socket": "",
+  "tres_per_task": "",
+  "tres_req_str": "cpu=1,mem=512M,node=1,billing=1",
+  "user": "emorales",
+  "wckey": {
+    "flags": [],
+    "wckey": ""
+  },
+  "working_directory": "/home/emorales"
+}

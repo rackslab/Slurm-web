@@ -61,21 +61,31 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         # Check arbitrary key has been filtered out.
         self.assertIn("array_job_id", slurm_asset[0])
         self.assertNotIn("array_job_id", job)
+        self.assertEqual(job["previous_runs"], [])
 
-    def test_job_requeued_uses_latest_submission(self):
-        # A requeued job is several slurmdbd rows. Detail keeps the greatest
-        # time.submission, even when that row is not first, and still merges
-        # controller fields.
+    def test_job_requeued_previous_runs(self):
+        # A requeued job is several slurmdbd rows. Detail returns the run with the
+        # greatest time.submission at top-level, even when that row is not first,
+        # merged with controller fields. Other runs are returned in previous_runs
+        # sorted by submission time.
         acct = [
-            {
-                "job_id": 13075,
-                "time": {"submission": 1000, "end": 1001},
-                "state": {"current": ["NODE_FAIL"]},
-            },
             {
                 "job_id": 13075,
                 "time": {"submission": 2000, "end": 0},
                 "state": {"current": ["RUNNING"]},
+                "accrue_time": 1,
+            },
+            {
+                "job_id": 13075,
+                "time": {"submission": 1500, "end": 1600},
+                "state": {"current": ["NODE_FAIL"]},
+                "accrue_time": 1,
+            },
+            {
+                "job_id": 13075,
+                "time": {"submission": 1000, "end": 1001},
+                "state": {"current": ["NODE_FAIL"]},
+                "accrue_time": 1,
             },
         ]
         ctld = [{"job_id": 13075, "command": "/bin/sleep"}]
@@ -91,6 +101,14 @@ class TestSlurmrestdFiltered(TestSlurmrestdBase):
         self.assertEqual(job["time"]["submission"], 2000)
         self.assertEqual(job["state"]["current"], ["RUNNING"])
         self.assertEqual(job["command"], "/bin/sleep")
+        self.assertEqual(
+            [run["time"]["submission"] for run in job["previous_runs"]], [1000, 1500]
+        )
+        # Previous runs are filtered and not enriched with controller fields.
+        for run in job["previous_runs"]:
+            self.assertNotIn("accrue_time", run)
+            self.assertNotIn("command", run)
+            self.assertNotIn("previous_runs", run)
 
     @all_slurm_api_versions
     def test_nodes(self, slurm_version, api_version):

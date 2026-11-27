@@ -63,6 +63,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurm-job-requeued": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurm-job-running": {
     "content-type": "application/json",
     "status": 200
@@ -247,6 +251,10 @@
     "content-type": "application/json",
     "status": 200
   },
+  "slurmdb-job-requeued": {
+    "content-type": "application/json",
+    "status": 200
+  },
   "slurmdb-job-running": {
     "content-type": "application/json",
     "status": 200
@@ -256,6 +264,10 @@
     "status": 200
   },
   "slurmdb-job-unfound": {
+    "content-type": "application/json",
+    "status": 200
+  },
+  "slurmdb-jobs": {
     "content-type": "application/json",
     "status": 200
   },

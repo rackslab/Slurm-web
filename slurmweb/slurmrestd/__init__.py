@@ -389,14 +389,14 @@ class Slurmrestd:
     def _ctldjob(self, job_id: int, **kwargs):
         return self._request("slurm", f"job/{job_id}", "jobs", **kwargs)[0]
 
-    def _acctjob(self, job_id: int, **kwargs):
+    def _acctjob(self, job_id: int, **kwargs) -> t.List[t.Dict[str, t.Any]]:
         records = self._request("slurmdb", f"job/{job_id}", "jobs", **kwargs)
         if not records:
             raise IndexError
         # slurmdbd keeps one row per requeue attempt, and another row when the same job
-        # id is issued again after the id range cycles. Return the job with the greatest
-        # time.submission value.
-        return max(records, key=lambda record: record["time"]["submission"])
+        # id is issued again after the id range cycles. Return all runs sorted by
+        # time.submission, the latest run is the last item.
+        return sorted(records, key=lambda record: record["time"]["submission"])
 
     def nodes(self, **kwargs):
         return self._request("slurm", "nodes", "nodes", **kwargs)
@@ -663,17 +663,22 @@ class SlurmrestdFiltered(SlurmrestdAdapter):
             super()._ctldjob(job_id, **kwargs), self.filters.ctldjob
         )
 
-    def _acctjob(self, job_id: int, **kwargs):
+    def _acctjob(self, job_id: int, **kwargs) -> t.List[t.Dict[str, t.Any]]:
         return SlurmrestdFiltered.filter_fields(
             super()._acctjob(job_id, **kwargs), self.filters.acctjob
         )
 
     def job(self, job_id: int):
         try:
-            result = self._acctjob(job_id)
+            runs = self._acctjob(job_id)
         except IndexError:
             raise SlurmrestdNotFoundError(f"Job {job_id} not found")
-        # try to enrich result with additional fields from slurmctld
+        # Latest run is returned with all its fields, previous runs of requeued jobs
+        # are attached in previous_runs key.
+        result = runs[-1]
+        result["previous_runs"] = runs[:-1]
+        # try to enrich latest run with additional fields from slurmctld, which only
+        # knows about current run.
         try:
             result.update(self._ctldjob(job_id, ignore_notfound=True))
         except SlurmrestdInternalError as err:

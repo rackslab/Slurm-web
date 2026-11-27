@@ -134,6 +134,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
                     "job-completed",
                     "job-failed",
                     "job-timeout",
+                    "job-requeued",
                     "job-archived",
                 ],
                 self._crawl_jobs,
@@ -294,7 +295,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         jobs = self.dump_component_query(
             f"/api/agents/{self.cluster.name}/jobs",
             "jobs",
-            skip_exist=False,
+            always_query=True,
             limit_dump=100,
         )
 
@@ -343,7 +344,6 @@ class GatewayCrawler(TokenizedComponentCrawler):
         self.dump_component_query(
             f"/api/agents/{self.cluster.name}/jobs/past?hours={SLURMDB_JOBS_CRAWL_HOURS}",
             "jobs-past",
-            skip_exist=False,
             limit_dump=100,
         )
 
@@ -511,7 +511,7 @@ class GatewayCrawler(TokenizedComponentCrawler):
         nodes = self.dump_component_query(
             f"/api/agents/{self.cluster.name}/nodes",
             "nodes",
-            skip_exist=False,
+            always_query=True,
         )
 
         # Get jobs which have resources on any of the busy nodes

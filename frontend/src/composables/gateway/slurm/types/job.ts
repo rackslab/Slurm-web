@@ -112,6 +112,9 @@ export interface SlurmJobDetail {
   node_count?: SlurmOptionalNumber
   nodes: string
   partition: string
+  /** Previous runs of requeued job retrieved from accounting, sorted by submission
+   * time. Only present at top-level of the latest run. */
+  previous_runs?: SlurmJobDetail[]
   priority: SlurmOptionalNumber
   qos: string
   script: string
